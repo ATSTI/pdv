@@ -1,0 +1,353 @@
+object fPDV_Rec: TfPDV_Rec
+  Left = 361
+  Height = 412
+  Top = 157
+  Width = 678
+  Caption = 'fPDV_Rec'
+  ClientHeight = 412
+  ClientWidth = 678
+  LCLVersion = '1.8.4.0'
+  object GroupBox1: TGroupBox
+    Left = -3
+    Height = 456
+    Top = 0
+    Width = 681
+    Caption = 'Frente De caixa'
+    ClientHeight = 435
+    ClientWidth = 679
+    TabOrder = 0
+    object Panel2: TPanel
+      Left = 217
+      Height = 136
+      Top = 265
+      Width = 248
+      ClientHeight = 136
+      ClientWidth = 248
+      Color = clGray
+      ParentColor = False
+      TabOrder = 1
+      object BitBtn22: TBitBtn
+        Left = 17
+        Height = 88
+        Top = 15
+        Width = 103
+        Caption = 'Desconto %'
+        TabOrder = 0
+      end
+      object BitBtn23: TBitBtn
+        Left = 128
+        Height = 88
+        Top = 15
+        Width = 103
+        Caption = 'Desconto $'
+        TabOrder = 1
+      end
+    end
+    object Panel4: TPanel
+      Left = 264
+      Height = 50
+      Top = 0
+      Width = 162
+      Caption = 'Pagamento'
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -21
+      Font.Name = '@Malgun Gothic'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 3
+    end
+    object GroupBox3: TGroupBox
+      Left = 240
+      Height = 184
+      Top = 80
+      Width = 200
+      ClientHeight = 182
+      ClientWidth = 198
+      Color = clActiveBorder
+      ParentColor = False
+      TabOrder = 4
+      object Edit1: TEdit
+        Left = 8
+        Height = 32
+        Top = 0
+        Width = 178
+        TabOrder = 0
+      end
+      object BitBtn1: TBitBtn
+        Left = 8
+        Height = 30
+        Top = 32
+        Width = 35
+        Caption = '1'
+        TabOrder = 1
+      end
+      object BitBtn2: TBitBtn
+        Left = 48
+        Height = 30
+        Top = 32
+        Width = 35
+        Caption = '2'
+        TabOrder = 2
+      end
+      object BitBtn3: TBitBtn
+        Left = 88
+        Height = 30
+        Top = 32
+        Width = 35
+        Caption = '3'
+        TabOrder = 3
+      end
+      object BitBtn4: TBitBtn
+        Left = 128
+        Height = 30
+        Top = 32
+        Width = 58
+        Caption = 'Limpar'
+        TabOrder = 4
+      end
+      object BitBtn6: TBitBtn
+        Left = 128
+        Height = 30
+        Top = 64
+        Width = 59
+        Caption = 'Fechar'
+        TabOrder = 5
+      end
+      object BitBtn12: TBitBtn
+        Left = 88
+        Height = 30
+        Top = 96
+        Width = 35
+        Caption = '9'
+        TabOrder = 6
+      end
+      object BitBtn7: TBitBtn
+        Left = 8
+        Height = 30
+        Top = 96
+        Width = 35
+        Caption = '7'
+        TabOrder = 7
+      end
+      object BitBtn8: TBitBtn
+        Left = 88
+        Height = 30
+        Top = 64
+        Width = 35
+        Caption = '6'
+        TabOrder = 8
+      end
+      object BitBtn11: TBitBtn
+        Left = 48
+        Height = 30
+        Top = 96
+        Width = 35
+        Caption = '8'
+        TabOrder = 9
+      end
+      object BitBtn10: TBitBtn
+        Left = 8
+        Height = 30
+        Top = 64
+        Width = 35
+        Caption = '4'
+        TabOrder = 10
+      end
+      object BitBtn5: TBitBtn
+        Left = 48
+        Height = 30
+        Top = 64
+        Width = 35
+        Caption = '5'
+        TabOrder = 11
+      end
+      object BitBtn13: TBitBtn
+        Left = 8
+        Height = 30
+        Top = 128
+        Width = 75
+        Caption = '0'
+        TabOrder = 12
+      end
+      object BitBtn14: TBitBtn
+        Left = 128
+        Height = 62
+        Top = 96
+        Width = 58
+        Caption = 'Enter'
+        TabOrder = 13
+      end
+      object BitBtn15: TBitBtn
+        Left = 88
+        Height = 30
+        Top = 128
+        Width = 35
+        Caption = ','
+        TabOrder = 14
+      end
+    end
+    object Panel3: TPanel
+      Left = 464
+      Height = 365
+      Top = 80
+      Width = 218
+      ClientHeight = 365
+      ClientWidth = 218
+      Color = clGray
+      ParentColor = False
+      TabOrder = 2
+      object GroupBox2: TGroupBox
+        Left = 8
+        Height = 129
+        Top = 8
+        Width = 193
+        Caption = 'Pagamentos'
+        ClientHeight = 108
+        ClientWidth = 191
+        TabOrder = 0
+        object DBGrid1: TDBGrid
+          Left = 0
+          Height = 108
+          Top = 0
+          Width = 191
+          Align = alClient
+          Color = clWindow
+          Columns = <          
+            item
+              Title.Caption = 'Forma'
+              Width = 100
+            end          
+            item
+              Title.Caption = 'Valor'
+            end>
+          Scrollbars = ssVertical
+          TabOrder = 0
+        end
+      end
+      object Edit3: TEdit
+        Left = 8
+        Height = 32
+        Top = 152
+        Width = 193
+        Enabled = False
+        TabOrder = 1
+        Text = 'Valor Total:                                  0,00'
+      end
+      object Edit4: TEdit
+        Left = 8
+        Height = 32
+        Top = 176
+        Width = 193
+        Enabled = False
+        TabOrder = 2
+        Text = 'Descontos:                                  0,00'
+      end
+      object Edit5: TEdit
+        Left = 8
+        Height = 32
+        Top = 200
+        Width = 193
+        Enabled = False
+        TabOrder = 3
+        Text = 'Total Pago:                                  0,00'
+      end
+      object Edit6: TEdit
+        Left = 8
+        Height = 32
+        Top = 224
+        Width = 193
+        Enabled = False
+        TabOrder = 4
+        Text = 'Restante:                                      0,00 '
+      end
+      object Edit7: TEdit
+        Left = 8
+        Height = 32
+        Top = 248
+        Width = 193
+        Enabled = False
+        TabOrder = 5
+        Text = 'Troco:                                           0,00'
+      end
+    end
+    object Panel1: TPanel
+      Left = -2
+      Height = 331
+      Top = 88
+      Width = 226
+      ClientHeight = 331
+      ClientWidth = 226
+      Color = clGray
+      ParentColor = False
+      TabOrder = 0
+      object Edit2: TEdit
+        Left = 24
+        Height = 32
+        Top = 15
+        Width = 184
+        Color = clMenuHighlight
+        Enabled = False
+        TabOrder = 0
+        Text = 'Tipo De Pagamento'
+      end
+      object BitBtn9: TBitBtn
+        Left = 24
+        Height = 24
+        Top = 51
+        Width = 184
+        Caption = 'Dinheiro -F1'
+        TabOrder = 1
+      end
+      object BitBtn17: TBitBtn
+        Left = 24
+        Height = 25
+        Top = 126
+        Width = 184
+        Caption = 'Cartão Visa -F4'
+        TabOrder = 2
+      end
+      object BitBtn18: TBitBtn
+        Left = 24
+        Height = 24
+        Top = 76
+        Width = 184
+        Caption = 'Cartão Visa Eletron -F2'
+        TabOrder = 3
+      end
+      object BitBtn19: TBitBtn
+        Left = 24
+        Height = 24
+        Top = 150
+        Width = 184
+        Caption = 'Cartão American Express -F5'
+        TabOrder = 4
+      end
+      object BitBtn20: TBitBtn
+        Left = 24
+        Height = 24
+        Top = 101
+        Width = 184
+        Caption = 'Cartão Mastercard -F3'
+        TabOrder = 5
+      end
+      object BitBtn16: TBitBtn
+        Left = 264
+        Height = 16
+        Top = 264
+        Width = 184
+        Caption = 'BitBtn16'
+        TabOrder = 6
+      end
+      object BitBtn21: TBitBtn
+        Left = 24
+        Height = 28
+        Top = 175
+        Width = 184
+        Caption = 'Cheque -F6'
+        TabOrder = 7
+      end
+    end
+  end
+end

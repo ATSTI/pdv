@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="10"/>
+    <BuildModes Active="Default"/>
+    <Units Count="19">
+      <Unit0>
+        <Filename Value="prjPDV.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="30" Y="22"/>
+        <UsageCount Value="90"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="updv.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fPdv"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uPdv"/>
+        <TopLine Value="247"/>
+        <CursorPos X="3" Y="249"/>
+        <UsageCount Value="90"/>
+        <Bookmarks Count="5">
+          <Item0 X="11" Y="316" ID="3"/>
+          <Item1 Y="281" ID="4"/>
+          <Item2 X="30" Y="244" ID="5"/>
+          <Item3 X="20" Y="139" ID="1"/>
+          <Item4 X="36" Y="387" ID="2"/>
+        </Bookmarks>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="updv_rec.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fPDV_Rec"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="6"/>
+        <CursorPos X="30" Y="23"/>
+        <UsageCount Value="89"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="..\geral\umovimento.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uMovimento"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="157"/>
+        <CursorPos Y="172"/>
+        <UsageCount Value="87"/>
+        <Loaded Value="True"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="..\geral\umovimentodetalhe.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uMovimentoDetalhe"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="266"/>
+        <CursorPos X="10" Y="280"/>
+        <UsageCount Value="82"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="dmPdv"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="DataModule"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="193"/>
+        <CursorPos X="23" Y="193"/>
+        <UsageCount Value="81"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="uprodutoproc.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fProdutoProc"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uProdutoProc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="33"/>
+        <CursorPos X="62" Y="135"/>
+        <UsageCount Value="78"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="..\geral\umovimentoproc.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fMovimentoProc"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uMovimentoProc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="55"/>
+        <CursorPos X="45" Y="57"/>
+        <UsageCount Value="33"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="..\geral\uvenda.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="637"/>
+        <CursorPos X="38" Y="656"/>
+        <UsageCount Value="37"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="..\geral\urecebimento.pas"/>
+        <UnitName Value="uRecebimento"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="400"/>
+        <CursorPos X="13" Y="413"/>
+        <UsageCount Value="35"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="umovimentodetalhe.pas"/>
+        <UnitName Value="uMovimentoDetalhe"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="241"/>
+        <CursorPos X="25" Y="483"/>
+        <UsageCount Value="18"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="udmpdv.pas"/>
+        <ComponentName Value="dmPdv"/>
+        <ResourceBaseClass Value="DataModule"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="14"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="..\datamodule\udm.pas"/>
+        <UnitName Value="uDM"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="260"/>
+        <CursorPos X="34" Y="413"/>
+        <UsageCount Value="4"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="..\estoque\uprodutoproc.pas"/>
+        <UnitName Value="uProdutoProc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="31"/>
+        <UsageCount Value="4"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="..\estoque\ulotetransfere.pas"/>
+        <HasResources Value="True"/>
+        <UnitName Value="uLoteTransfere"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="676"/>
+        <CursorPos X="84" Y="696"/>
+        <UsageCount Value="9"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="..\estoque\ulotetransfere.lfm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="5"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="..\..\..\..\..\..\..\usr\share\lazarus\1.8.4\lcl\include\application.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1386"/>
+        <CursorPos Y="1400"/>
+        <UsageCount Value="6"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="..\..\..\..\..\..\..\usr\share\lazarus\1.8.4\lcl\include\customform.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1006"/>
+        <CursorPos Y="1020"/>
+        <UsageCount Value="8"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="..\..\..\..\..\..\..\usr\share\lazarus\1.8.4\lcl\include\control.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="3484"/>
+        <CursorPos Y="3501"/>
+        <UsageCount Value="9"/>
+      </Unit18>
+    </Units>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="updv.pas"/>
+        <Caret Line="211" Column="20" TopLine="204"/>
+      </Position1>
+      <Position2>
+        <Filename Value="updv.pas"/>
+        <Caret Line="218" Column="20" TopLine="211"/>
+      </Position2>
+      <Position3>
+        <Filename Value="updv.pas"/>
+        <Caret Line="162" Column="18" TopLine="160"/>
+      </Position3>
+      <Position4>
+        <Filename Value="updv.pas"/>
+        <Caret Line="163" Column="18" TopLine="161"/>
+      </Position4>
+      <Position5>
+        <Filename Value="updv.pas"/>
+        <Caret Line="162" Column="18" TopLine="160"/>
+      </Position5>
+      <Position6>
+        <Filename Value="updv.pas"/>
+        <Caret Line="165" Column="22" TopLine="161"/>
+      </Position6>
+      <Position7>
+        <Filename Value="updv.pas"/>
+        <Caret Line="99" Column="32" TopLine="73"/>
+      </Position7>
+      <Position8>
+        <Filename Value="updv.pas"/>
+        <Caret Line="311" Column="46" TopLine="295"/>
+      </Position8>
+      <Position9>
+        <Filename Value="updv.pas"/>
+        <Caret Line="188" TopLine="161"/>
+      </Position9>
+      <Position10>
+        <Filename Value="updv.pas"/>
+        <Caret Line="138" Column="68" TopLine="132"/>
+      </Position10>
+      <Position11>
+        <Filename Value="updv.pas"/>
+        <Caret Line="140" Column="71" TopLine="122"/>
+      </Position11>
+      <Position12>
+        <Filename Value="updv.pas"/>
+        <Caret Line="411" Column="44" TopLine="388"/>
+      </Position12>
+      <Position13>
+        <Filename Value="updv.pas"/>
+        <Caret Line="192" Column="53" TopLine="181"/>
+      </Position13>
+      <Position14>
+        <Filename Value="updv.pas"/>
+        <Caret Line="194" Column="53" TopLine="183"/>
+      </Position14>
+      <Position15>
+        <Filename Value="updv.pas"/>
+        <Caret Line="241" Column="3" TopLine="239"/>
+      </Position15>
+      <Position16>
+        <Filename Value="updv.pas"/>
+        <Caret Line="240" Column="3" TopLine="238"/>
+      </Position16>
+      <Position17>
+        <Filename Value="updv.pas"/>
+        <Caret Line="241" Column="3" TopLine="239"/>
+      </Position17>
+      <Position18>
+        <Filename Value="updv.pas"/>
+        <Caret Line="240" Column="3" TopLine="238"/>
+      </Position18>
+      <Position19>
+        <Filename Value="updv.pas"/>
+        <Caret Line="241" Column="3" TopLine="239"/>
+      </Position19>
+      <Position20>
+        <Filename Value="updv.pas"/>
+        <Caret Line="242" Column="3" TopLine="240"/>
+      </Position20>
+      <Position21>
+        <Filename Value="updv.pas"/>
+        <Caret Line="243" Column="3" TopLine="241"/>
+      </Position21>
+      <Position22>
+        <Filename Value="updv.pas"/>
+        <Caret Line="244" Column="3" TopLine="242"/>
+      </Position22>
+      <Position23>
+        <Filename Value="updv.pas"/>
+        <Caret Line="245" Column="3" TopLine="243"/>
+      </Position23>
+      <Position24>
+        <Filename Value="updv.pas"/>
+        <Caret Line="246" Column="3" TopLine="244"/>
+      </Position24>
+      <Position25>
+        <Filename Value="updv.pas"/>
+        <Caret Line="245" Column="3" TopLine="243"/>
+      </Position25>
+      <Position26>
+        <Filename Value="updv.pas"/>
+        <Caret Line="244" Column="3" TopLine="242"/>
+      </Position26>
+      <Position27>
+        <Filename Value="updv.pas"/>
+        <Caret Line="245" Column="3" TopLine="243"/>
+      </Position27>
+      <Position28>
+        <Filename Value="updv.pas"/>
+        <Caret Line="246" Column="3" TopLine="244"/>
+      </Position28>
+      <Position29>
+        <Filename Value="updv.pas"/>
+        <Caret Line="247" Column="3" TopLine="245"/>
+      </Position29>
+      <Position30>
+        <Filename Value="updv.pas"/>
+        <Caret Line="248" Column="3" TopLine="246"/>
+      </Position30>
+    </JumpHistory>
+  </ProjectSession>
+</CONFIG>

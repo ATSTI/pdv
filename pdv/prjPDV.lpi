@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectOptions>
+    <Version Value="10"/>
+    <PathDelim Value="\"/>
+    <General>
+      <SessionStorage Value="InProjectDir"/>
+      <MainUnit Value="0"/>
+      <Title Value="prjPDV"/>
+      <ResourceType Value="res"/>
+      <UseXPManifest Value="True"/>
+      <Icon Value="0"/>
+    </General>
+    <BuildModes Count="1">
+      <Item1 Name="Default" Default="True"/>
+    </BuildModes>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+    <RunParams>
+      <local>
+        <FormatVersion Value="1"/>
+      </local>
+    </RunParams>
+    <RequiredPackages Count="5">
+      <Item1>
+        <PackageName Value="DateTimeCtrls"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="FCL"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="RunTimeTypeInfoControls"/>
+      </Item3>
+      <Item4>
+        <PackageName Value="SynEdit"/>
+      </Item4>
+      <Item5>
+        <PackageName Value="LCL"/>
+      </Item5>
+    </RequiredPackages>
+    <Units Count="8">
+      <Unit0>
+        <Filename Value="prjPDV.lpr"/>
+        <IsPartOfProject Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="updv.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fPdv"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uPdv"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="updv_rec.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fPDV_Rec"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="..\geral\umovimento.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uMovimento"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="..\geral\umovimentodetalhe.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uMovimentoDetalhe"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="dmPdv"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="DataModule"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="uprodutoproc.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fProdutoProc"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uProdutoProc"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="..\geral\umovimentoproc.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fMovimentoProc"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uMovimentoProc"/>
+      </Unit7>
+    </Units>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="11"/>
+    <PathDelim Value="\"/>
+    <Target>
+      <Filename Value="prjPDV"/>
+    </Target>
+    <SearchPaths>
+      <IncludeFiles Value="$(ProjOutDir)"/>
+      <OtherUnitFiles Value="..\geral"/>
+      <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+    </SearchPaths>
+    <Linking>
+      <Options>
+        <Win32>
+          <GraphicApplication Value="True"/>
+        </Win32>
+      </Options>
+    </Linking>
+  </CompilerOptions>
+  <Debugging>
+    <Exceptions Count="3">
+      <Item1>
+        <Name Value="EAbort"/>
+      </Item1>
+      <Item2>
+        <Name Value="ECodetoolError"/>
+      </Item2>
+      <Item3>
+        <Name Value="EFOpenError"/>
+      </Item3>
+    </Exceptions>
+  </Debugging>
+</CONFIG>
