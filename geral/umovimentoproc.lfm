@@ -1,22 +1,23 @@
 object fMovimentoProc: TfMovimentoProc
-  Left = 457
-  Height = 519
-  Top = 284
-  Width = 823
+  Left = 205
+  Height = 587
+  Top = 30
+  Width = 940
   Caption = 'fMovimentoProc'
-  ClientHeight = 519
-  ClientWidth = 823
+  ClientHeight = 587
+  ClientWidth = 940
   OnCreate = FormCreate
   OnShow = FormShow
+  Position = poScreenCenter
   LCLVersion = '1.8.4.0'
   object Panel1: TPanel
     Left = 0
     Height = 64
     Top = 0
-    Width = 823
+    Width = 940
     Align = alTop
     ClientHeight = 64
-    ClientWidth = 823
+    ClientWidth = 940
     Color = clSilver
     Font.CharSet = ANSI_CHARSET
     Font.Height = -37
@@ -28,9 +29,9 @@ object fMovimentoProc: TfMovimentoProc
     TabOrder = 0
     object Label1: TLabel
       Left = 16
-      Height = 19
+      Height = 21
       Top = 11
-      Width = 60
+      Width = 58
       Caption = 'Período'
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
@@ -42,9 +43,9 @@ object fMovimentoProc: TfMovimentoProc
     end
     object edDataIni: TDateTimePicker
       Left = 88
-      Height = 25
+      Height = 26
       Top = 8
-      Width = 113
+      Width = 105
       CenturyFrom = 1941
       MaxDate = 44196
       MinDate = 43313
@@ -62,17 +63,17 @@ object fMovimentoProc: TfMovimentoProc
       TimeFormat = tf24
       TimeDisplay = tdHMS
       DateMode = dmComboBox
-      Date = 43325
-      Time = 0.781326111107774
+      Date = 1.7E308
+      Time = 1.7E308
       UseDefaultSeparators = True
       HideDateTimeParts = []
       MonthNames = 'Long'
     end
     object edDataFim: TDateTimePicker
       Left = 232
-      Height = 25
+      Height = 26
       Top = 8
-      Width = 113
+      Width = 105
       CenturyFrom = 1941
       MaxDate = 44196
       MinDate = 43313
@@ -98,12 +99,12 @@ object fMovimentoProc: TfMovimentoProc
     end
   end
   object Panel2: TPanel
-    Left = 747
-    Height = 455
+    Left = 864
+    Height = 523
     Top = 64
     Width = 76
     Align = alRight
-    ClientHeight = 455
+    ClientHeight = 523
     ClientWidth = 76
     Color = clSilver
     ParentColor = False
@@ -287,9 +288,9 @@ object fMovimentoProc: TfMovimentoProc
   end
   object DBGrid1: TDBGrid
     Left = 0
-    Height = 455
+    Height = 523
     Top = 64
-    Width = 747
+    Width = 864
     Align = alClient
     Color = clWindow
     Columns = <    
@@ -317,5 +318,19 @@ object fMovimentoProc: TfMovimentoProc
     DataSet = dmPdv.sqBusca
     left = 631
     top = 24
+  end
+  object ActionList1: TActionList
+    left = 520
+    top = 24
+    object acBuscar: TAction
+      Caption = 'Busca'
+      OnExecute = acBuscarExecute
+      ShortCut = 119
+    end
+    object acFechar: TAction
+      Caption = 'acFechar'
+      OnExecute = acFecharExecute
+      ShortCut = 115
+    end
   end
 end

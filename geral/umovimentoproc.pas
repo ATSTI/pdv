@@ -6,13 +6,16 @@ interface
 
 uses
   Classes, SysUtils, db, FileUtil, DateTimePicker, Forms, Controls, Graphics,
-  Dialogs, ExtCtrls, StdCtrls, DBGrids, udmpdv;
+  Dialogs, ExtCtrls, StdCtrls, DBGrids, ActnList, udmpdv;
 
 type
 
   { TfMovimentoProc }
 
   TfMovimentoProc = class(TForm)
+    acBuscar: TAction;
+    acFechar: TAction;
+    ActionList1: TActionList;
     btnEXC: TImage;
     btnPROC: TImage;
     btnSALV: TImage;
@@ -23,6 +26,8 @@ type
     Label1: TLabel;
     Panel1: TPanel;
     Panel2: TPanel;
+    procedure acBuscarExecute(Sender: TObject);
+    procedure acFecharExecute(Sender: TObject);
     procedure btnPROCClick(Sender: TObject);
     procedure btnSALVClick(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
@@ -45,6 +50,11 @@ implementation
 { TfMovimentoProc }
 
 procedure TfMovimentoProc.btnPROCClick(Sender: TObject);
+begin
+  acBuscar.Execute;
+end;
+
+procedure TfMovimentoProc.acBuscarExecute(Sender: TObject);
 var sqlProc: String;
 begin
   sqlProc := 'SELECT m.CODMOVIMENTO, m.CONTROLE, m.DATAMOVIMENTO, v.CODVENDA ';
@@ -65,6 +75,11 @@ begin
     codMovimentoProc := dmPdv.sqBusca.FieldByName('CODMOVIMENTO').AsInteger;
     codVendaProc     := dmPdv.sqBusca.FieldByName('CODVENDA').AsInteger;
   end;
+end;
+
+procedure TfMovimentoProc.acFecharExecute(Sender: TObject);
+begin
+  Close;
 end;
 
 procedure TfMovimentoProc.btnSALVClick(Sender: TObject);
@@ -90,6 +105,8 @@ procedure TfMovimentoProc.FormShow(Sender: TObject);
 begin
   codMovimentoProc:=0;
   codVendaProc:=0;
+  edDataIni.Date:=Now;
+  edDataFim.Date:=Now;
 end;
 
 end.

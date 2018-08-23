@@ -475,7 +475,7 @@ begin
   str := str + QuotedStr(Self.Controle) + ',';
   str := str + QuotedStr(Self.Status1);
   str := str + ')';
-  DecimalSeparator := '.';
+  DecimalSeparator := ',';
 
   if (dmPdv.executaSql(str)) then
     Result := Self.CodVenda
