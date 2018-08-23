@@ -19,7 +19,7 @@ class AtsProduto:
         
         #order = odoo.env['pos.order']
         hj = datetime.now()
-        hj = hj - timedelta(days=220)
+        hj = hj - timedelta(days=10)
         hj = datetime.strftime(hj,'%Y-%m-%d %H:%M:%S')
         
         grupo = sist.env['pos.category']
@@ -41,33 +41,37 @@ class AtsProduto:
                 db.insert(insere)
 
         prod_ids = sist.env['product.product'].search([
-           ('create_date', '>=', hj),
+           ('write_date', '>=', hj),
            ('sale_ok', '=', True)])
         for product_id in sist.env['product.product'].browse(prod_ids):
+            ncm = ''
+            if product_id.fiscal_classification_id:
+                ncm = product_id.fiscal_classification_id.code
+                ncm = re.sub('[^0-9]', '', ncm)
+            p_custo = 0.0
+            if product_id.standard_price:
+                p_custo = product_id.standard_price
+            p_venda = 0.0
+            if product_id.list_price:
+                p_venda = product_id.list_price
+            produto = product_id.name.encode('ascii', 'ignore')				
             sqlp = 'select codproduto from produtos where codproduto = %s' %(product_id.id)
             prods = db.query(sqlp)
+            #import pdb; pdb.set_trace()
             if not len(prods):
+                print ('Incluindo - %s' %(product_id.name))
                 #import pudb;pu.db
-                print (product_id.name)
+                
                 cat = ''
                 if product_id.pos_categ_id:
                     cat = product_id.pos_categ_id.name
                 fam = ''
                 if product_id.pos_categ_id.parent_id:
                     fam = product_id.pos_categ_id.parent_id.name
-                ncm = ''
-                if product_id.fiscal_classification_id:
-                    ncm = product_id.fiscal_classification_id.code
-                    ncm = re.sub('[^0-9]', '', ncm)
-                p_custo = 0.0
-                if product_id.standard_price:
-                    p_custo = product_id.standard_price
-                p_venda = 0.0
-                if product_id.list_price:
-                    p_venda = product_id.list_price
                 codp = str(product_id.id)
                 if product_id.default_code:
                     codp = product_id.default_code
+                un = product_id.uom_id.name.encode('ascii', 'ignore')
                 insere = 'INSERT INTO PRODUTOS (CODPRODUTO, UNIDADEMEDIDA, PRODUTO, PRECOMEDIO, CODPRO,\
                           TIPOPRECOVENDA, ORIGEM, NCM, VALORUNITARIOATUAL, VALOR_PRAZO, TIPO'
                 if fam:
@@ -76,8 +80,8 @@ class AtsProduto:
                     insere += ', CATEGORIA'
                 insere += ') VALUES ('
                 insere += str(product_id.id)
-                insere += ', \'' + str(product_id.uom_id.name.encode('ascii', 'ignore')) + '\''
-                insere += ', \'' + str(product_id.name.encode('ascii', 'ignore')) + '\''
+                insere += ', \'' + un.decode() + '\''
+                insere += ', \'' + produto.decode() + '\''
                 insere += ',' + str(p_custo)
                 insere += ', \'' + str(codp) + '\''
                 insere += ',\'F\''
@@ -94,6 +98,14 @@ class AtsProduto:
                 print (codp+'-'+product_id.name)
                 # print ' Cadastrando : %s - %s' % (str(row[0]), row[1])
                 db.insert(insere)
-
+            else:
+                print ('Alterando - %s' %(product_id.name))
+                altera = 'UPDATE PRODUTOS SET PRODUTO = '
+                altera += '\'' + produto.decode() + '\''
+                altera += ', VALOR_PRAZO = ' + str(p_venda)
+                altera += ', NCM = ' +  '\'' + str(ncm) + '\''
+                altera += ', ORIGEM = ' + str(product_id.origin) 
+                altera += ' WHERE CODPRODUTO = ' + str(product_id.id)
+                db.insert(altera)
 p = AtsProduto()
 p.produtos()
