@@ -1,0 +1,87 @@
+object fSenhaNova: TfSenhaNova
+  Left = 256
+  Height = 240
+  Top = 250
+  Width = 320
+  Caption = 'Cadastrar/Alterar Senha'
+  ClientHeight = 240
+  ClientWidth = 320
+  Position = poDesktopCenter
+  LCLVersion = '1.8.4.0'
+  object edSenhaNova: TLabeledEdit
+    Left = 72
+    Height = 23
+    Top = 104
+    Width = 121
+    EchoMode = emPassword
+    EditLabel.AnchorSideLeft.Control = edSenhaNova
+    EditLabel.AnchorSideRight.Control = edSenhaNova
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = edSenhaNova
+    EditLabel.Left = 72
+    EditLabel.Height = 15
+    EditLabel.Top = 86
+    EditLabel.Width = 121
+    EditLabel.Caption = 'Nova Senha'
+    EditLabel.ParentColor = False
+    PasswordChar = '*'
+    TabOrder = 1
+  end
+  object edSenhaConfirma: TLabeledEdit
+    Left = 72
+    Height = 23
+    Top = 160
+    Width = 121
+    EchoMode = emPassword
+    EditLabel.AnchorSideLeft.Control = edSenhaConfirma
+    EditLabel.AnchorSideRight.Control = edSenhaConfirma
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = edSenhaConfirma
+    EditLabel.Left = 72
+    EditLabel.Height = 15
+    EditLabel.Top = 142
+    EditLabel.Width = 121
+    EditLabel.Caption = 'Confirma Senha'
+    EditLabel.ParentColor = False
+    PasswordChar = '*'
+    TabOrder = 2
+    OnKeyPress = edSenhaConfirmaKeyPress
+  end
+  object btnFechar: TBitBtn
+    Left = 208
+    Height = 30
+    Top = 201
+    Width = 75
+    Caption = 'Fechar'
+    OnClick = btnFecharClick
+    TabOrder = 3
+  end
+  object btnConfirma: TBitBtn
+    Left = 128
+    Height = 30
+    Top = 201
+    Width = 75
+    Caption = 'Confirma'
+    OnClick = btnConfirmaClick
+    TabOrder = 4
+  end
+  object edSenhaAtual: TLabeledEdit
+    Left = 72
+    Height = 23
+    Top = 40
+    Width = 121
+    EchoMode = emPassword
+    EditLabel.AnchorSideLeft.Control = edSenhaAtual
+    EditLabel.AnchorSideRight.Control = edSenhaAtual
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = edSenhaAtual
+    EditLabel.Left = 72
+    EditLabel.Height = 15
+    EditLabel.Top = 22
+    EditLabel.Width = 121
+    EditLabel.Caption = 'Senha ATUAL'
+    EditLabel.ParentColor = False
+    PasswordChar = '*'
+    TabOrder = 0
+  end
+end

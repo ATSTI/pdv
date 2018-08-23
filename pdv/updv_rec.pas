@@ -23,6 +23,7 @@ type
     acCheque: TAction;
     acOutros: TAction;
     acFechar: TAction;
+    acDinheiro: TAction;
     ActionList1: TActionList;
     BitBtn1: TBitBtn;
     BitBtn10: TBitBtn;
@@ -43,7 +44,6 @@ type
     btnDescontoValor: TBitBtn;
     BitBtn24: TBitBtn;
     BitBtn25: TBitBtn;
-    BitBtn26: TBitBtn;
     BitBtn3: TBitBtn;
     BitBtn4: TBitBtn;
     BitBtn5: TBitBtn;
@@ -98,6 +98,7 @@ type
     procedure acChequeExecute(Sender: TObject);
     procedure acDescontoPercentualExecute(Sender: TObject);
     procedure acDescontoValorExecute(Sender: TObject);
+    procedure acDinheiroExecute(Sender: TObject);
     procedure acFecharExecute(Sender: TObject);
     procedure acOutrosExecute(Sender: TObject);
     procedure acPrazoExecute(Sender: TObject);
@@ -106,6 +107,7 @@ type
     procedure BitBtn19Click(Sender: TObject);
     procedure BitBtn20Click(Sender: TObject);
     procedure BitBtn21Click(Sender: TObject);
+    procedure BitBtn26Click(Sender: TObject);
     procedure BitBtn27Click(Sender: TObject);
     procedure btnDescontoPercentClick(Sender: TObject);
     procedure BitBtn24Click(Sender: TObject);
@@ -123,11 +125,12 @@ type
     vResto: Double;
     vDesconto: Double;
     vTroco: Double;
-
+    function RemoveAcento(Str: string): string;
     procedure calcula_total;
     procedure grava_desconto;
     procedure registra_valores(v_vlr: Double);
     procedure encerra_venda();
+    procedure imprimir();
   public
     vStatus : Integer;
     vVendedor: Integer;
@@ -166,9 +169,22 @@ begin
   vCodVenda := 0;
   edCliente.Text := vClienteNome;
   edVendedor.Text := vVendedorNome;
-  edValorTotal.Text:= vValor;
+  edValorTotal.Text:= FormatFloat('#,,,0.00',vValorVenda);
   edValorVendaTotal.Text := vValor;
   calcula_total;
+end;
+
+function TfPDV_Rec.RemoveAcento(Str: string): string;
+  const
+  ComAcento = 'àâêôûãõáéíóúçüÀÂÊÔÛÃÕÁÉÍÓÚÇÜ';
+  SemAcento = 'aaeouaoaeioucuAAEOUAOAEIOUCU';
+var
+   x: Integer;
+begin;
+  for x := 1 to Length(Str) do
+  if Pos(Str[x],ComAcento) <> 0 then
+    Str[x] := SemAcento[Pos(Str[x], ComAcento)];
+  Result := Str;
 end;
 
 procedure TfPDV_Rec.calcula_total;
@@ -333,6 +349,104 @@ begin
   end;}
 end;
 
+procedure TfPDV_Rec.imprimir();
+var
+ IMPRESSORA:TextFile;
+ Texto,Texto1,Texto2,Texto3,Texto4,texto5, texto6, logradouro,cep,fone, clientecupom, doccli : string;//Para recortar parte da descrição do produto,nome
+ portaIMP : string;
+ produto_cupomf : string;
+begin
+  if (not dmPdv.sqEmpresa.Active) then
+    dmPdv.sqEmpresa.Open;
+  {----- aqui monto o endereço-----}
+  logradouro := '  ' + dmPdv.sqEmpresaENDERECO.Value +
+     ', ' + dmPdv.sqEmpresaBAIRRO.Value;
+  cep :=  '  ' + dmPdv.sqEmpresaCIDADE.Value + ' - ' + dmPdv.sqEmpresaUF.Value +
+  ' - ' + dmPdv.sqEmpresaCEP.Value;
+  fone := '  (19)' + dmPdv.sqEmpresaFONE.Value + ' / ' + dmPdv.sqEmpresaFONE_1.Value +
+  ' / ' + dmPdv.sqEmpresaFONE_2.Value;
+  {------------------------DADOS DO CLIENTE--------------------------}
+  clientecupom := '  ' + IntToStr(vCliente) + '-' + vClienteNome;
+  Texto  := '----------------------------------------' ;
+  Texto1 := '  ' + FormatDateTime('dd/mm/yyyy', Now) + '  Pedido :  ' +
+    IntToStr(vCodMovimento);
+  Texto2 := '----------------------------------------' ;
+  Texto4 := '  Produto       UN     Qtde   V.Un.  V.Total ' ;
+  Texto5 := '  ' + DateTimeToStr(Now) + ' Total.: R$     ';
+  dmPdv.sqBusca.Close;
+  dmPdv.sqBusca.SQL.Clear;
+  dmPdv.sqBusca.SQL.Text := 'SELECT * FROM PARAMETRO WHERE PARAMETRO = ' +
+    QuotedStr('PORTA IMPRESSORA');
+  dmPdv.sqBusca.Open;
+  if dmPdv.sqBusca.IsEmpty then
+  begin
+    ShowMessage('Parametro: PORTA IMPRESSORA não informado');
+    Exit;
+  end;
+  //portaIMP := dmPdv.sqBusca.FieldByName('DADOS').AsString;
+  //if (dm.portaImpressora2 <> '') then
+  //,  portaIMP := dm.portaImpressora2;
+  portaIMP := 'C:\home\imprime.txt';
+  AssignFile(IMPRESSORA,portaIMP);
+  try
+    Rewrite(IMPRESSORA);
+    Writeln(Impressora, '  VENDA');
+    Writeln(IMPRESSORA);
+    Writeln(Impressora, RemoveAcento(Format('  %-36s',[dmPdv.sqEmpresaRAZAO.Value])));
+    Writeln(Impressora, logradouro);
+    Writeln(Impressora, cep);
+    Writeln(Impressora, fone);
+    // Writeln(Impressora, c10cpi + Format('%-36s',['CNPJ :' + dm.cds_empresaCNPJ_CPF.Value]));
+    Writeln(Impressora, texto);
+    Writeln(Impressora, clientecupom);
+    Writeln(Impressora, doccli);
+    Writeln(Impressora, texto);
+    Writeln(Impressora, texto1);
+    Writeln(Impressora, texto2);
+    Writeln(Impressora, texto4);
+    {-------------------Imprimi itens do boleto-----------------}
+
+    dmPdv.sqLancamentos.First;
+    while not dmPdv.sqLancamentos.Eof do
+    begin
+
+      dmPdv.sqLancamentos.RecordCount;
+      texto3 := '';
+      texto6 := '  ';
+      //texto6 := Format('%-4s',[fVendas.cds_Mov_detCODPRO.Value]);
+      texto3 := texto3 + Format('                %-2s',[dmPdv.sqLancamentosUNIDADEMEDIDA.Value]);
+      texto3 := texto3 + Format('    %6.2n',[dmPdv.sqLancamentosQUANTIDADE.AsFloat]);
+      texto3 := texto3 + Format(' %6.2n',[dmPdv.sqLancamentosPRECO.AsFloat]);
+      texto3 := texto3 + Format('   %6.2n',[dmPdv.sqLancamentosVALTOTAL.value]);
+
+      //produto_cupomf := trim(dmPdv.sqLancamentosCODPRO.Value) + '-' +
+      //   trim(dmPdv.sqLancamentosDESCPRODUTO.Value) + ' - ' + trim(fVendas.cds_Mov_detMARCA.Value);
+      produto_cupomf := trim(dmPdv.sqLancamentosDESCPRODUTO.Value);
+      texto6 := texto6 + '  ' + Copy(produto_cupomf, 0, 36);       //descrição do produto
+      Writeln(Impressora, RemoveAcento(texto6));
+      if (length(produto_cupomf)>36) then
+      begin
+        texto6 := '    ' + Copy(produto_cupomf, 37, 72);       //descrição do produto
+        Writeln(Impressora, RemoveAcento(texto6));
+      end;
+
+      Writeln(Impressora, RemoveAcento(texto3));//NOME DO PRODUTO
+      //with Printer.Canvas do
+      //begin
+      //  Font.Name := 'Courier New';
+      //  Font.Size := 4;
+      //end;
+      dmPdv.sqLancamentos.next;
+    end;
+    texto3 := '';
+    texto6 := '';
+
+  finally
+    CloseFile(IMPRESSORA);
+  end;
+
+end;
+
 procedure TfPDV_Rec.edPagamentoKeyPress(Sender: TObject; var Key: char);
 begin
   if Key = #13 then
@@ -359,7 +473,7 @@ end;
 
 procedure TfPDV_Rec.BitBtn9Click(Sender: TObject);
 begin
-  lblForma.Caption:='1-Dinheiro';
+
 end;
 
 procedure TfPDV_Rec.btnDscClick(Sender: TObject);
@@ -404,6 +518,12 @@ begin
   calcula_total;
 end;
 
+procedure TfPDV_Rec.acDinheiroExecute(Sender: TObject);
+begin
+  lblForma.Caption:='1-Dinheiro';
+  edPagamento.SetFocus;
+end;
+
 procedure TfPDV_Rec.acFecharExecute(Sender: TObject);
 begin
   if vStatus = 1 then
@@ -417,17 +537,20 @@ begin
     Exit;
   end;
   encerra_venda();
+  imprimir();
   Close;
 end;
 
 procedure TfPDV_Rec.acOutrosExecute(Sender: TObject);
 begin
   lblForma.Caption:='6-Outros';
+  edPagamento.SetFocus;
 end;
 
 procedure TfPDV_Rec.acPrazoExecute(Sender: TObject);
 begin
   lblForma.Caption:='4-Crédito';
+  edPagamento.SetFocus;
 end;
 
 procedure TfPDV_Rec.acDescontoPercentualExecute(Sender: TObject);
@@ -445,16 +568,19 @@ end;
 procedure TfPDV_Rec.acCartaoDebitoExecute(Sender: TObject);
 begin
   lblForma.Caption:='2-Cartão Débito';
+  edPagamento.SetFocus;
 end;
 
 procedure TfPDV_Rec.acChequeExecute(Sender: TObject);
 begin
   lblForma.Caption:='5-Cheque';
+  edPagamento.SetFocus;
 end;
 
 procedure TfPDV_Rec.acCartaoCreditoExecute(Sender: TObject);
 begin
   lblForma.Caption:='3-Cartão Crédito';
+  edPagamento.SetFocus;
 end;
 
 procedure TfPDV_Rec.BitBtn20Click(Sender: TObject);
@@ -465,6 +591,10 @@ end;
 procedure TfPDV_Rec.BitBtn21Click(Sender: TObject);
 begin
 
+end;
+
+procedure TfPDV_Rec.BitBtn26Click(Sender: TObject);
+begin
 end;
 
 procedure TfPDV_Rec.BitBtn27Click(Sender: TObject);

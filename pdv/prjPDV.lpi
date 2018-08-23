@@ -39,7 +39,7 @@
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="9">
+    <Units Count="17">
       <Unit0>
         <Filename Value="prjPDV.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -88,6 +88,7 @@
         <Filename Value="..\geral\umovimentoproc.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fMovimentoProc"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uMovimentoProc"/>
       </Unit7>
@@ -99,6 +100,62 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uExecutaIntegracao"/>
       </Unit8>
+      <Unit9>
+        <Filename Value="..\geral\uvenda.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="..\geral\urecebimento.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uRecebimento"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="ulogin.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fLogin"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uLogin"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="..\upadraobusca.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fPadraoBusca"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uPadraoBusca"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="uvendedorbusca.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fVendedorBusca"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uVendedorBusca"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="uclientebusca.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fClienteBusca"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uClienteBusca"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="usenhanova.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fSenhaNova"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uSenhaNova"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="updv2.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form1"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uPdv2"/>
+      </Unit16>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -109,7 +166,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="..\geral"/>
+      <OtherUnitFiles Value="..\geral;.."/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>
@@ -121,7 +178,7 @@
     </Linking>
   </CompilerOptions>
   <Debugging>
-    <Exceptions Count="4">
+    <Exceptions Count="3">
       <Item1>
         <Name Value="EAbort"/>
       </Item1>
@@ -131,9 +188,6 @@
       <Item3>
         <Name Value="EFOpenError"/>
       </Item3>
-      <Item4>
-        <Name Value="EInOutError"/>
-      </Item4>
     </Exceptions>
   </Debugging>
 </CONFIG>

@@ -1,0 +1,76 @@
+object fLogin: TfLogin
+  Left = 256
+  Height = 237
+  Top = 250
+  Width = 538
+  Caption = 'Acesso ao Sistema'
+  ClientHeight = 237
+  ClientWidth = 538
+  Position = poDesktopCenter
+  LCLVersion = '1.8.4.0'
+  object btnLogin: TBitBtn
+    Left = 352
+    Height = 28
+    Top = 88
+    Width = 91
+    Caption = 'Entrar'
+    OnClick = btnLoginClick
+    TabOrder = 2
+  end
+  object edLogin: TLabeledEdit
+    Left = 48
+    Height = 23
+    Top = 88
+    Width = 136
+    EditLabel.AnchorSideLeft.Control = edLogin
+    EditLabel.AnchorSideRight.Control = edLogin
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = edLogin
+    EditLabel.Left = 48
+    EditLabel.Height = 15
+    EditLabel.Top = 70
+    EditLabel.Width = 136
+    EditLabel.Caption = 'Usuário'
+    EditLabel.ParentColor = False
+    TabOrder = 0
+    OnKeyPress = edLoginKeyPress
+  end
+  object edSenha: TLabeledEdit
+    Left = 216
+    Height = 23
+    Top = 88
+    Width = 120
+    EchoMode = emPassword
+    EditLabel.AnchorSideLeft.Control = edSenha
+    EditLabel.AnchorSideRight.Control = edSenha
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = edSenha
+    EditLabel.Left = 216
+    EditLabel.Height = 15
+    EditLabel.Top = 70
+    EditLabel.Width = 120
+    EditLabel.Caption = 'Senha'
+    EditLabel.ParentColor = False
+    PasswordChar = '*'
+    TabOrder = 1
+    OnKeyPress = edSenhaKeyPress
+  end
+  object Label1: TLabel
+    Cursor = crHandPoint
+    Left = 56
+    Height = 16
+    Top = 184
+    Width = 115
+    Caption = 'Cadastrar/Alterar Senha'
+    DragCursor = crHandPoint
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -13
+    Font.Name = 'Arial Narrow'
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
+    Font.Style = [fsUnderline]
+    ParentColor = False
+    ParentFont = False
+    OnClick = Label1Click
+  end
+end

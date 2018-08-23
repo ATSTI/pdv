@@ -20,71 +20,74 @@ type
     acNova: TAction;
     ActionList1: TActionList;
     BitBtn1: TBitBtn;
+    BitBtn8: TBitBtn;
     BitBtn9: TBitBtn;
     btnInfo: TBitBtn;
+    btnVnd1: TBitBtn;
     btnVnd2: TBitBtn;
     btnVnd3: TBitBtn;
     btnVnd4: TBitBtn;
     btnVnd5: TBitBtn;
     btnVnd6: TBitBtn;
-    btnVnd7: TBitBtn;
-    btnVnd8: TBitBtn;
     BitBtn2: TBitBtn;
     BitBtn3: TBitBtn;
-    BitBtn4: TBitBtn;
-    BitBtn5: TBitBtn;
-    BitBtn7: TBitBtn;
-    BitBtn8: TBitBtn;
-    btnVnd1: TBitBtn;
     btnNovo: TBitBtn;
     btnVendas: TBitBtn;
     btnReceber: TBitBtn;
-    dsLanc: TDataSource;
+    btnVnd7: TBitBtn;
+    btnVnd8: TBitBtn;
+    cbPercentual: TCheckBox;
     DBGrid1: TDBGrid;
+    dsLanc: TDataSource;
     edCliente: TEdit;
+    edDesconto: TEdit;
+    edPreco: TMaskEdit;
+    edProduto: TEdit;
+    edTotalGeral: TMaskEdit;
     edVendedorNome: TEdit;
     edVendedor: TEdit;
     edCaixa: TEdit;
-    edProdutoDesc: TEdit;
-    edProduto: TEdit;
-    edDesconto: TEdit;
-    edTotalGeral: TMaskEdit;
+    edProdutoDescX: TEdit;
     edClienteNome: TEdit;
-    GroupBox1: TGroupBox;
-    GroupBox2: TGroupBox;
-    GroupBox3: TGroupBox;
-    GroupBox4: TGroupBox;
-    GroupBox5: TGroupBox;
+    Image1: TImage;
     Image3: TImage;
     Image4: TImage;
     Image5: TImage;
     Label1: TLabel;
     Label10: TLabel;
-    lblPedido: TLabel;
+    Label11: TLabel;
     Label12: TLabel;
     Label13: TLabel;
     Label14: TLabel;
-    lblSenha: TLabel;
+    Label15: TLabel;
+    Label16: TLabel;
+    Label6: TLabel;
+    Label9: TLabel;
     lblNumItem: TLabel;
+    lblPedido: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
-    Label6: TLabel;
     Label7: TLabel;
     Label8: TLabel;
-    Label9: TLabel;
-    edPreco: TMaskEdit;
-    edTotal: TMaskEdit;
+    edQtde: TMaskEdit;
+    edProdutoDesc: TMemo;
+    lblSenha: TLabel;
     MenuItem1: TMenuItem;
     Panel1: TPanel;
+    Panel10: TPanel;
+    Panel11: TPanel;
     Panel2: TPanel;
-    Panel3: TPanel;
     Panel4: TPanel;
+    Panel5: TPanel;
+    Panel6: TPanel;
+    Panel7: TPanel;
+    Panel8: TPanel;
+    Panel9: TPanel;
     pnInfo: TPanel;
     PopupMenu1: TPopupMenu;
     TIButton2: TTIButton;
-    edQtde: TTIFloatSpinEdit;
     procedure acFecharExecute(Sender: TObject);
     procedure acNovaExecute(Sender: TObject);
     procedure acProcurarExecute(Sender: TObject);
@@ -92,6 +95,8 @@ type
     procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
+    procedure BitBtn4Click(Sender: TObject);
+    procedure BitBtn5Click(Sender: TObject);
     procedure BitBtn7Click(Sender: TObject);
     procedure BitBtn8Click(Sender: TObject);
     procedure BitBtn9Click(Sender: TObject);
@@ -113,6 +118,7 @@ type
     procedure edPrecoChange(Sender: TObject);
     procedure edProdutoKeyPress(Sender: TObject; var Key: char);
     procedure edQtdeChange(Sender: TObject);
+    procedure edQtdeKeyPress(Sender: TObject; var Key: char);
     procedure edVendedorKeyPress(Sender: TObject; var Key: char);
     procedure FlowPanel1Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -146,6 +152,7 @@ type
     procedure calculaTotalGeral();
     procedure controlaPedidos(cpCodMov: Integer; cpStatus: Integer; cpTipo: Integer);
     procedure buscaPedidosAbertoCaixa(bpCodMov: Integer);
+    procedure preencherDescItem(descItem: String);
   public
 
   end;
@@ -206,7 +213,7 @@ begin
     edQtde.Text    := FloatToStr(dmPdv.sqLancamentosQUANTIDADE.AsFloat);
     edPreco.Text   := FloatToStr(dmPdv.sqLancamentosPRECO.AsFloat);
     edDesconto.Text:= FloatToStr(dmPdv.sqLancamentosDESCONTO.AsFloat);
-    edProdutoDesc.Text:= dmPdv.sqLancamentosDESCPRODUTO.AsString;
+    preencherDescItem(dmPdv.sqLancamentosDESCPRODUTO.AsString);
   end;
 end;
 
@@ -217,18 +224,6 @@ end;
 
 procedure TfPdv.BitBtn7Click(Sender: TObject);
 begin
-  if ((edProduto.Text = '') and (codDet = 0)) then
-  begin
-    ShowMessage('Produto não informado.');
-    edProduto.SetFocus;
-    Exit;
-  end;
-  if (codProduto = 0) then
-  begin
-    // buscar produto
-
-  end;
-  alterar_item();
 end;
 
 procedure TfPdv.BitBtn1Click(Sender: TObject);
@@ -256,14 +251,30 @@ begin
   edVendedor.Text := IntToStr(codVendedor);
 end;
 
+procedure TfPdv.BitBtn4Click(Sender: TObject);
+begin
+
+end;
+
+procedure TfPdv.BitBtn5Click(Sender: TObject);
+begin
+
+end;
+
 procedure TfPdv.acReceberExecute(Sender: TObject);
 begin
+  if edVendedor.Text = '' then
+  begin
+    ShowMessage('Vendedor não informado;');
+    Exit;
+  end;
+
   fPDV_Rec.vValor  := edTotalGeral.Text;
   fPDV_Rec.vUsuario:= codCaixa;
   fPDV_Rec.vVendedor:= codVendedor;
   fPDV_Rec.vCliente := codCliente;
-  fPDV_Rec.vClienteNome := edCliente.Text;
-  fPDV_Rec.vVendedorNome:= edVendedor.Text;
+  fPDV_Rec.vClienteNome := edClienteNome.Text;
+  fPDV_Rec.vVendedorNome:= edVendedorNome.Text;
   fPDV_Rec.vCaixa_Local := caixa_local;
   fPDV_Rec.vCodMovimento:= codMov;
   fPDV_Rec.ShowModal;
@@ -307,11 +318,12 @@ begin
     dmPdv.sqLancamentos.Open;
     codDet:=dmPdv.sqLancamentosCODDETALHE.AsInteger;
     edProduto.Text := dmPdv.sqLancamentosCODPRO.AsString;
-    edProdutoDesc.Text:= dmPdv.sqLancamentosDESCPRODUTO.AsString;
+    //edProdutoDescX.Text:= dmPdv.sqLancamentosDESCPRODUTO.AsString;
+    preencherDescItem(dmPdv.sqLancamentosDESCPRODUTO.AsString);
     edQtde.Text    := FloatToStr(dmPdv.sqLancamentosQUANTIDADE.AsFloat);
     edPreco.Text   := FloatToStr(dmPdv.sqLancamentosPRECO.AsFloat);
     edDesconto.Text:= FloatToStr(dmPdv.sqLancamentosDESCONTO.AsFloat);
-    edProdutoDesc.Text:= dmPdv.sqLancamentosDESCPRODUTO.AsString;
+    //edProdutoDescX.Text:= dmPdv.sqLancamentosDESCPRODUTO.AsString;
     //controlaPedidos(codMov, 0, 0);
     buscaPedidosAbertoCaixa(codMov);
     calculaTotalGeral();
@@ -481,7 +493,10 @@ begin
       // TODO - preciso definir aqui, qdo e codigo de barra qdo e codigo
       // do produto, se codigo comecar com 'X' e codigo produto ???!!!
       // se o codigo tiver mais q 'X' caracter e codigo de barras ??!!
-      fProdutoProc.busca(edProduto.Text, '','', False);
+      if Length(edProduto.Text) > 7 then
+        fProdutoProc.busca('',edProduto.Text, '', False)
+      else
+        fProdutoProc.busca(edProduto.Text, '','', False);
       if (fProdutoProc.codProduto = 0) then
       begin
         ShowMessage('Produto não Localizado.');
@@ -492,7 +507,8 @@ begin
       preco      := fProdutoProc.precoVenda;
       estoque    := fProdutoProc.estoque;
       proDesc    := fProdutoProc.produto;
-      edProdutoDesc.Text := proDesc;
+      //edProdutoDescX.Text := proDesc;
+      preencherDescItem(proDesc);
       edPreco.Text:= FloatToStr(preco);
       edQtde.Text:='1,00';
       registrar_item();
@@ -503,6 +519,26 @@ end;
 procedure TfPdv.edQtdeChange(Sender: TObject);
 begin
   calculaTotal();
+end;
+
+procedure TfPdv.edQtdeKeyPress(Sender: TObject; var Key: char);
+begin
+  if Key = #13 then
+  begin
+    Key := #0;
+    if ((edProduto.Text = '') and (codDet = 0)) then
+    begin
+      ShowMessage('Produto não informado.');
+      edProduto.SetFocus;
+      Exit;
+    end;
+    if (codProduto = 0) then
+    begin
+      // buscar produto
+
+    end;
+    alterar_item();
+  end;
 end;
 
 procedure TfPdv.edVendedorKeyPress(Sender: TObject; var Key: char);
@@ -543,6 +579,8 @@ begin
   caixa_local := StrToInt(dmPdv.ccusto);
   codCaixa    := StrToInt(dmPdv.varLogado); // usuario
   codCliente  := 1;
+  edClienteNome.Text := 'Consumidor';
+  edCliente.Text     := '1';
   codVendedor := 1;
   num_pedido := 'x';
   FMov := TMovimento.Create;
@@ -585,11 +623,12 @@ begin
   codMov := apCodMov;
   codDet:=dmPdv.sqLancamentosCODDETALHE.AsInteger;
   edProduto.Text := dmPdv.sqLancamentosCODPRO.AsString;
-  edProdutoDesc.Text:= dmPdv.sqLancamentosDESCPRODUTO.AsString;
+  //edProdutoDescX.Text:= dmPdv.sqLancamentosDESCPRODUTO.AsString;
+  preencherDescItem(dmPdv.sqLancamentosDESCPRODUTO.AsString);
   edQtde.Text    := FloatToStr(dmPdv.sqLancamentosQUANTIDADE.AsFloat);
   edPreco.Text   := FloatToStr(dmPdv.sqLancamentosPRECO.AsFloat);
   edDesconto.Text:= FloatToStr(dmPdv.sqLancamentosDESCONTO.AsFloat);
-  edProdutoDesc.Text:= dmPdv.sqLancamentosDESCPRODUTO.AsString;
+  //edProdutoDescX.Text:= dmPdv.sqLancamentosDESCPRODUTO.AsString;
   //controlaPedidos(codMov, 0, 0);
   calculaTotalGeral();
   lblPedido.Caption:=IntToStr(codMov);
@@ -598,8 +637,14 @@ end;
 
 procedure TfPdv.iniciarVenda();
 begin
+  edProdutoDesc.Lines.Clear;
+  edProdutoDesc.Lines.Add('Produto:');
+  edCliente.Text := '1';
+  edClienteNome.Text := 'Consumidor';
+  edVendedor.Text  := '';
+  edVendedorNome.Text := '';
   edTotalGeral.Text := '0,00';
-  edTotal.Text := '0,00';
+  //edTotal.Text := '0,00';
   if (not dsLanc.DataSet.Active) then
     dsLanc.DataSet.Active := True;
   //dsLanc.DataSet.Insert;
@@ -637,8 +682,10 @@ begin
     FMov.MovDetalhe.CodProduto    := codproduto;
     FMov.MovDetalhe.Descricao     := proDesc;
     FMov.MovDetalhe.Qtde          := StrToFloat(edQtde.Text);
+    if (edDesconto.Text <> '') then
+      FMov.MovDetalhe.Desconto := StrToFloat(edDesconto.Text);
     FMov.MovDetalhe.Preco         := StrToFloat(edPreco.Text);
-    edTotal.Text := FloatToStr(FMov.MovDetalhe.Qtde * FMov.MovDetalhe.Preco);
+    //edTotal.Text := FloatToStr(FMov.MovDetalhe.Qtde * FMov.MovDetalhe.Preco);
     //FMov.MovDetalhe.Baixa         := '1';
     codDet := Fmov.MovDetalhe.inserirMovDet();
     dmPdv.sTrans.Commit;
@@ -706,14 +753,20 @@ begin
     tPrc := StrToFloat(StringReplace(sPrc,',','.',[rfReplaceAll]));
   end;
   // TODO - Tratar o Desconto
+  if (sDesc <> '') then
+    tDesc := StrToFloat(sDesc);
   if (tDesc > 0) then
   begin
-    edTotal.Text := FloatToStr((tPrc*tQtde)-tDesc);
-  end
-  else begin
-    edTotal.Text := FloatToStr(tPrc*tQtde);
+    if (cbPercentual.Checked) then
+    begin
+      tDesc := (tDesc / 100)*(tPrc*tQtde);
+      tDesc := (tPrc*tQtde)-tDesc;
+    end
+    else begin
+      tDesc := ((tPrc*tQtde)-tDesc);
+    end;
+    edDesconto.Text:= FormatFloat('#,,,0.00',tDesc);
   end;
-
 end;
 
 procedure TfPdv.calculaTotalGeral();
@@ -931,6 +984,27 @@ begin
     end;
     dmPdv.sqBusca.Next;
   end;
+end;
+
+procedure TfPdv.preencherDescItem(descItem: String);
+var tam_desc: Integer;
+begin
+  edProdutoDesc.Lines.Clear;
+  tam_desc := Length(descItem);
+  edProdutoDesc.Lines.Add(copy(descItem,0,30));
+  if (tam_desc > 30) then
+  begin
+    edProdutoDesc.Lines.Add(copy(descItem,30,60));
+  end;
+  if (tam_desc > 60) then
+  begin
+    edProdutoDesc.Lines.Add(copy(descItem,60,90));
+  end;
+  if (tam_desc > 90) then
+  begin
+    edProdutoDesc.Lines.Add(copy(descItem,90,120));
+  end;
+  edProdutoDesc.SelStart := 1;
 end;
 
 end.

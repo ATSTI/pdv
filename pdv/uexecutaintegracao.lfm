@@ -1,0 +1,26 @@
+object fExecutaIntegracao: TfExecutaIntegracao
+  Left = 244
+  Height = 422
+  Top = 160
+  Width = 790
+  Caption = 'fExecutaIntegracao'
+  ClientHeight = 422
+  ClientWidth = 790
+  LCLVersion = '1.8.4.0'
+  object BitBtn1: TBitBtn
+    Left = 28
+    Height = 38
+    Top = 29
+    Width = 116
+    Caption = 'Importar Produto'
+    OnClick = BitBtn1Click
+    TabOrder = 0
+  end
+  object Memo1: TMemo
+    Left = 33
+    Height = 340
+    Top = 73
+    Width = 720
+    TabOrder = 1
+  end
+end

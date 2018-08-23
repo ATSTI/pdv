@@ -1,0 +1,53 @@
+inherited fClienteBusca: TfClienteBusca
+  Caption = 'Busca Clientes'
+  OnShow = FormShow
+  inherited Panel1: TPanel
+    inherited Edit1: TEdit
+      Height = 29
+    end
+    inherited Label1: TLabel
+      Height = 21
+      Width = 41
+    end
+    inherited Edit2: TEdit
+      Height = 29
+    end
+    inherited chInativo: TCheckBox
+      Height = 21
+      Width = 60
+    end
+  end
+  inherited Panel2: TPanel
+    inherited btnPROC: TImage
+      OnClick = btnPROCClick
+    end
+  end
+  inherited DBGrid1: TDBGrid
+    Columns = <    
+      item
+        PickList.Strings = (        )
+        Title.Caption = 'Title'
+      end    
+      item
+        PickList.Strings = (        )
+        Title.Caption = 'Title'
+        Width = 300
+      end    
+      item
+        PickList.Strings = (        )
+        Title.Caption = 'Title'
+        Visible = False
+      end    
+      item
+        PickList.Strings = (        )
+        Title.Caption = 'Title'
+        Visible = False
+      end>
+    DataSource = dsCliente
+  end
+  object dsCliente: TDataSource[3]
+    DataSet = dmPdv.sqBusca
+    left = 168
+    top = 40
+  end
+end

@@ -169,6 +169,18 @@ begin
   dmPdv.sqBusca.SQL.Clear;
   dmPdv.sqBusca.SQL.Add(sqlProc);
   dmPdv.sqBusca.Active:=True;
+  if ((dmPdv.sqBusca.IsEmpty) and (barCode <> '')) then
+  begin
+    // refaco a busca usando o codpro se tentou pelo codigo de barra
+    sqlProc := 'SELECT * FROM PRODUTOS ';
+    sqlProc := sqlProc + 'WHERE ((USA IS NULL) OR (USA <> ' +
+      QuotedStr('N') + '))';
+    sqlProc := sqlProc + ' AND CODPRO = ' + QuotedStr(barCode);
+    dmPdv.sqBusca.Close;
+    dmPdv.sqBusca.SQL.Clear;
+    dmPdv.sqBusca.SQL.Add(sqlProc);
+    dmPdv.sqBusca.Active:=True;
+  end;
   if (not dmPdv.sqBusca.IsEmpty) then
   begin
     codProduto := dmPdv.sqBusca.FieldByName('CODPRODUTO').AsInteger;
