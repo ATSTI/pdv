@@ -8,7 +8,7 @@ uses
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, runtimetypeinfocontrols, datetimectrls, uPdv, updv_rec, uMovimento,
-  uMovimentoDetalhe, udmpdv, uprodutoproc, uMovimentoProc;
+  uMovimentoDetalhe, udmpdv, uprodutoproc, uMovimentoProc, uExecutaIntegracao;
 
 {$R *.res}
 
@@ -20,6 +20,7 @@ begin
   Application.CreateForm(TfPDV_Rec, fPDV_Rec);
   Application.CreateForm(TfProdutoProc, fProdutoProc);
   Application.CreateForm(TfMovimentoProc, fMovimentoProc);
+  Application.CreateForm(TfExecutaIntegracao, fExecutaIntegracao);
   Application.Run;
 end.
 

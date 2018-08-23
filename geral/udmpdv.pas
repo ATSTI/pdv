@@ -5,7 +5,7 @@ unit udmpdv;
 interface
 
 uses
-  Classes, SysUtils, IBConnection, sqldb, db, FileUtil, IniFiles, Dialogs;
+  Classes, SysUtils, IBConnection, sqldb, db, FileUtil, IniFiles, Dialogs, base64;
 
 type
 
@@ -180,16 +180,25 @@ procedure TdmPdv.DataModuleCreate(Sender: TObject);
 var
   conf: TIniFile;
   path_exe : String;
+  snh: String;
+  vstr: String;
 begin
   //extrac
   varLogado := '1'; // usuario logado
   MICRO := GetEnvironmentVariable('COMPUTERNAME');
   path_exe := ExtractFilePath(ParamStr(0));
   IBCon.Connected:=False;
-  conf := TIniFile.Create(path_exe + 'conf.ini');
+  path_exe := path_exe + 'conf.ini';
+  conf := TIniFile.Create(path_exe);
   try
-    IBCon.DatabaseName := conf.ReadString('DATABASE', 'Name', '');
-    IBCon.HostName := conf.ReadString('DATABASE', 'HostName', '');
+    vstr := conf.ReadString('DATABASE', 'Name', '');
+    IBCon.DatabaseName := vstr;
+    vstr := conf.ReadString('DATABASE', 'HostName', '');
+    IBCon.HostName := vstr;
+    snh:= conf.ReadString('DATABASE', 'Acesso', '');
+    //snh:= EncodeStringBase64(snh); // Ver a senha Encryptada
+    snh:= DecodeStringBase64(snh);
+    IBCon.Password := snh;
   finally
     conf.free;
   end;

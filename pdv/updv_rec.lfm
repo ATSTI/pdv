@@ -1,54 +1,70 @@
 object fPDV_Rec: TfPDV_Rec
-  Left = 361
-  Height = 412
-  Top = 157
-  Width = 678
+  Left = 247
+  Height = 547
+  Top = 92
+  Width = 917
   Caption = 'fPDV_Rec'
-  ClientHeight = 412
-  ClientWidth = 678
+  ClientHeight = 547
+  ClientWidth = 917
+  OnShow = FormShow
   LCLVersion = '1.8.4.0'
   object GroupBox1: TGroupBox
-    Left = -3
-    Height = 456
+    Left = 0
+    Height = 547
     Top = 0
-    Width = 681
+    Width = 917
+    Align = alClient
     Caption = 'Frente De caixa'
-    ClientHeight = 435
-    ClientWidth = 679
+    ClientHeight = 527
+    ClientWidth = 913
     TabOrder = 0
     object Panel2: TPanel
-      Left = 217
-      Height = 136
-      Top = 265
-      Width = 248
-      ClientHeight = 136
-      ClientWidth = 248
+      Left = 0
+      Height = 43
+      Top = 484
+      Width = 913
+      Align = alBottom
+      ClientHeight = 43
+      ClientWidth = 913
       Color = clGray
       ParentColor = False
-      TabOrder = 1
-      object BitBtn22: TBitBtn
-        Left = 17
+      TabOrder = 2
+      object btnDescontoPercent: TBitBtn
+        Left = 16
         Height = 88
-        Top = 15
+        Top = 40
         Width = 103
-        Caption = 'Desconto %'
+        Action = acDescontoPercentual
+        Caption = 'Desconto (%)'
+        OnClick = btnDescontoPercentClick
         TabOrder = 0
       end
-      object BitBtn23: TBitBtn
+      object btnDescontoValor: TBitBtn
         Left = 128
         Height = 88
-        Top = 15
+        Top = 40
         Width = 103
-        Caption = 'Desconto $'
+        Action = acDescontoValor
+        Caption = 'Desconto (R$)'
         TabOrder = 1
+      end
+      object lblStatus: TLabel
+        Left = 46
+        Height = 15
+        Top = 17
+        Width = 9
+        Caption = '...'
+        ParentColor = False
       end
     end
     object Panel4: TPanel
-      Left = 264
+      Left = 0
       Height = 50
       Top = 0
-      Width = 162
-      Caption = 'Pagamento'
+      Width = 913
+      Align = alTop
+      ClientHeight = 50
+      ClientWidth = 913
       Font.CharSet = ANSI_CHARSET
       Font.Height = -21
       Font.Name = '@Malgun Gothic'
@@ -56,235 +72,466 @@ object fPDV_Rec: TfPDV_Rec
       Font.Quality = fqDraft
       Font.Style = [fsBold]
       ParentFont = False
-      TabOrder = 3
-    end
-    object GroupBox3: TGroupBox
-      Left = 240
-      Height = 184
-      Top = 80
-      Width = 200
-      ClientHeight = 182
-      ClientWidth = 198
-      Color = clActiveBorder
-      ParentColor = False
       TabOrder = 4
-      object Edit1: TEdit
-        Left = 8
-        Height = 32
+      object BitBtn24: TBitBtn
+        Left = 688
+        Height = 38
         Top = 0
-        Width = 178
+        Width = 122
+        Action = acFechar
+        OnClick = BitBtn24Click
         TabOrder = 0
       end
-      object BitBtn1: TBitBtn
-        Left = 8
+      object BitBtn25: TBitBtn
+        Left = 616
         Height = 30
-        Top = 32
-        Width = 35
-        Caption = '1'
+        Top = 0
+        Width = 67
+        Caption = 'NFCe'
         TabOrder = 1
       end
-      object BitBtn2: TBitBtn
-        Left = 48
-        Height = 30
-        Top = 32
-        Width = 35
-        Caption = '2'
+      object BitBtn26: TBitBtn
+        Left = 520
+        Height = 33
+        Top = 1
+        Width = 88
+        Caption = 'Imprimir'
         TabOrder = 2
       end
-      object BitBtn3: TBitBtn
-        Left = 88
-        Height = 30
-        Top = 32
-        Width = 35
-        Caption = '3'
+      object edCliente: TMaskEdit
+        Left = 8
+        Height = 40
+        Top = 0
+        Width = 304
+        CharCase = ecNormal
+        Enabled = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -27
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsItalic]
+        MaxLength = 0
+        ParentFont = False
+        TabOrder = 3
+        OnKeyPress = edPagamentoKeyPress
+        SpaceChar = '_'
+      end
+      object edVendedor: TMaskEdit
+        Left = 320
+        Height = 40
+        Top = 0
+        Width = 192
+        CharCase = ecNormal
+        Enabled = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -27
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsItalic]
+        MaxLength = 0
+        ParentFont = False
+        TabOrder = 4
+        OnKeyPress = edPagamentoKeyPress
+        SpaceChar = '_'
+      end
+    end
+    object GroupBox3: TGroupBox
+      Left = 226
+      Height = 434
+      Top = 50
+      Width = 437
+      Align = alClient
+      ClientHeight = 414
+      ClientWidth = 433
+      Color = clActiveBorder
+      ParentColor = False
+      TabOrder = 0
+      object BitBtn1: TBitBtn
+        Left = 16
+        Height = 46
+        Top = 167
+        Width = 80
+        Caption = '1'
+        TabOrder = 2
+      end
+      object BitBtn2: TBitBtn
+        Left = 104
+        Height = 46
+        Top = 167
+        Width = 80
+        Caption = '2'
         TabOrder = 3
       end
-      object BitBtn4: TBitBtn
-        Left = 128
-        Height = 30
-        Top = 32
-        Width = 58
-        Caption = 'Limpar'
+      object BitBtn3: TBitBtn
+        Left = 195
+        Height = 46
+        Top = 167
+        Width = 80
+        Caption = '3'
         TabOrder = 4
       end
-      object BitBtn6: TBitBtn
-        Left = 128
-        Height = 30
-        Top = 64
-        Width = 59
-        Caption = 'Fechar'
+      object BitBtn4: TBitBtn
+        Left = 312
+        Height = 46
+        Top = 167
+        Width = 80
+        Caption = 'Limpar'
         TabOrder = 5
       end
-      object BitBtn12: TBitBtn
-        Left = 88
-        Height = 30
-        Top = 96
-        Width = 35
-        Caption = '9'
+      object BitBtn6: TBitBtn
+        Left = 312
+        Height = 46
+        Top = 219
+        Width = 80
+        Caption = 'Fechar'
         TabOrder = 6
       end
-      object BitBtn7: TBitBtn
-        Left = 8
-        Height = 30
-        Top = 96
-        Width = 35
-        Caption = '7'
+      object BitBtn12: TBitBtn
+        Left = 195
+        Height = 46
+        Top = 274
+        Width = 80
+        Caption = '9'
         TabOrder = 7
       end
-      object BitBtn8: TBitBtn
-        Left = 88
-        Height = 30
-        Top = 64
-        Width = 35
-        Caption = '6'
+      object BitBtn7: TBitBtn
+        Left = 16
+        Height = 46
+        Top = 275
+        Width = 80
+        Caption = '7'
         TabOrder = 8
       end
-      object BitBtn11: TBitBtn
-        Left = 48
-        Height = 30
-        Top = 96
-        Width = 35
-        Caption = '8'
+      object BitBtn8: TBitBtn
+        Left = 195
+        Height = 46
+        Top = 219
+        Width = 80
+        Caption = '6'
         TabOrder = 9
       end
-      object BitBtn10: TBitBtn
-        Left = 8
-        Height = 30
-        Top = 64
-        Width = 35
-        Caption = '4'
+      object BitBtn11: TBitBtn
+        Left = 104
+        Height = 46
+        Top = 275
+        Width = 80
+        Caption = '8'
         TabOrder = 10
       end
-      object BitBtn5: TBitBtn
-        Left = 48
-        Height = 30
-        Top = 64
-        Width = 35
-        Caption = '5'
+      object BitBtn10: TBitBtn
+        Left = 16
+        Height = 46
+        Top = 219
+        Width = 80
+        Caption = '4'
         TabOrder = 11
       end
-      object BitBtn13: TBitBtn
-        Left = 8
-        Height = 30
-        Top = 128
-        Width = 75
-        Caption = '0'
+      object BitBtn5: TBitBtn
+        Left = 104
+        Height = 46
+        Top = 219
+        Width = 80
+        Caption = '5'
         TabOrder = 12
       end
-      object BitBtn14: TBitBtn
-        Left = 128
-        Height = 62
-        Top = 96
-        Width = 58
-        Caption = 'Enter'
+      object BitBtn13: TBitBtn
+        Left = 16
+        Height = 46
+        Top = 331
+        Width = 80
+        Caption = '0'
         TabOrder = 13
       end
-      object BitBtn15: TBitBtn
-        Left = 88
-        Height = 30
-        Top = 128
-        Width = 35
-        Caption = ','
+      object BitBtn14: TBitBtn
+        Left = 312
+        Height = 62
+        Top = 272
+        Width = 80
+        Caption = 'Enter'
         TabOrder = 14
+      end
+      object BitBtn15: TBitBtn
+        Left = 104
+        Height = 46
+        Top = 331
+        Width = 80
+        Caption = ','
+        TabOrder = 15
+      end
+      object edPagamento: TMaskEdit
+        Left = 104
+        Height = 40
+        Top = 112
+        Width = 145
+        Alignment = taRightJustify
+        CharCase = ecNormal
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -27
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsItalic]
+        MaxLength = 0
+        ParentFont = False
+        TabOrder = 16
+        OnKeyPress = edPagamentoKeyPress
+        Text = '0,00'
+        SpaceChar = '_'
+      end
+      object lblForma: TLabel
+        Left = 256
+        Height = 23
+        Top = 112
+        Width = 72
+        Caption = '1-Dinheiro'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -19
+        Font.Name = 'Arial Narrow'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        ParentColor = False
+        ParentFont = False
+      end
+      object edVDesconto: TMaskEdit
+        Left = 104
+        Height = 40
+        Top = 69
+        Width = 145
+        Alignment = taRightJustify
+        CharCase = ecNormal
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -27
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsItalic]
+        MaxLength = 0
+        ParentFont = False
+        TabOrder = 1
+        OnKeyPress = edVDescontoKeyPress
+        SpaceChar = '_'
+      end
+      object btnDsc: TBitBtn
+        Left = 249
+        Height = 40
+        Top = 69
+        Width = 39
+        Caption = 'R$'
+        OnClick = btnDscClick
+        TabOrder = 17
+      end
+      object Label6: TLabel
+        Left = 37
+        Height = 15
+        Top = 69
+        Width = 50
+        Caption = 'Desconto'
+        ParentColor = False
+      end
+      object edValorVendaTotal: TMaskEdit
+        Left = 104
+        Height = 40
+        Top = 23
+        Width = 145
+        Alignment = taRightJustify
+        Anchors = [akTop, akLeft, akRight]
+        CharCase = ecNormal
+        Color = clGradientInactiveCaption
+        Enabled = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -27
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsItalic]
+        MaxLength = 0
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 0
+        OnKeyPress = edPagamentoKeyPress
+        Text = '0,00'
+        SpaceChar = '_'
+      end
+      object Label7: TLabel
+        Left = 32
+        Height = 15
+        Top = 23
+        Width = 55
+        Caption = 'Valor Total'
+        ParentColor = False
+      end
+      object Label8: TLabel
+        Left = 28
+        Height = 15
+        Top = 112
+        Width = 59
+        Caption = 'Valor Pagar'
+        ParentColor = False
       end
     end
     object Panel3: TPanel
-      Left = 464
-      Height = 365
-      Top = 80
-      Width = 218
-      ClientHeight = 365
-      ClientWidth = 218
+      Left = 663
+      Height = 434
+      Top = 50
+      Width = 250
+      Align = alRight
+      ClientHeight = 434
+      ClientWidth = 250
       Color = clGray
       ParentColor = False
-      TabOrder = 2
+      TabOrder = 3
       object GroupBox2: TGroupBox
         Left = 8
-        Height = 129
+        Height = 167
         Top = 8
-        Width = 193
+        Width = 232
         Caption = 'Pagamentos'
-        ClientHeight = 108
-        ClientWidth = 191
+        ClientHeight = 147
+        ClientWidth = 228
         TabOrder = 0
         object DBGrid1: TDBGrid
           Left = 0
-          Height = 108
+          Height = 147
           Top = 0
-          Width = 191
+          Width = 228
           Align = alClient
           Color = clWindow
           Columns = <          
             item
               Title.Caption = 'Forma'
               Width = 100
+              FieldName = 'N_DOC'
             end          
             item
               Title.Caption = 'Valor'
+              FieldName = 'VALOR_PAGO'
             end>
+          DataSource = dsPag
           Scrollbars = ssVertical
           TabOrder = 0
         end
       end
-      object Edit3: TEdit
-        Left = 8
-        Height = 32
-        Top = 152
-        Width = 193
-        Enabled = False
+      object edValorTotal: TMaskEdit
+        Left = 120
+        Height = 23
+        Top = 181
+        Width = 80
+        Alignment = taRightJustify
+        CharCase = ecNormal
+        MaxLength = 0
+        ReadOnly = True
         TabOrder = 1
-        Text = 'Valor Total:                                  0,00'
+        SpaceChar = '_'
       end
-      object Edit4: TEdit
-        Left = 8
-        Height = 32
-        Top = 176
-        Width = 193
-        Enabled = False
+      object Label1: TLabel
+        Left = 21
+        Height = 15
+        Top = 185
+        Width = 55
+        Caption = 'Valor Total'
+        ParentColor = False
+      end
+      object Label2: TLabel
+        Left = 25
+        Height = 15
+        Top = 218
+        Width = 50
+        Caption = 'Desconto'
+        ParentColor = False
+      end
+      object Label3: TLabel
+        Left = 28
+        Height = 15
+        Top = 254
+        Width = 56
+        Caption = 'Total Pago'
+        ParentColor = False
+      end
+      object Label4: TLabel
+        Left = 34
+        Height = 15
+        Top = 290
+        Width = 45
+        Caption = 'Restante'
+        ParentColor = False
+      end
+      object Label5: TLabel
+        Left = 42
+        Height = 15
+        Top = 313
+        Width = 30
+        Caption = 'Troco'
+        ParentColor = False
+      end
+      object edDesconto: TMaskEdit
+        Left = 120
+        Height = 23
+        Top = 213
+        Width = 80
+        Alignment = taRightJustify
+        CharCase = ecNormal
+        MaxLength = 0
+        ReadOnly = True
         TabOrder = 2
-        Text = 'Descontos:                                  0,00'
+        Text = '0,00'
+        SpaceChar = '_'
       end
-      object Edit5: TEdit
-        Left = 8
-        Height = 32
-        Top = 200
-        Width = 193
-        Enabled = False
+      object edValorPago: TMaskEdit
+        Left = 120
+        Height = 23
+        Top = 250
+        Width = 80
+        Alignment = taRightJustify
+        CharCase = ecNormal
+        MaxLength = 0
+        ReadOnly = True
         TabOrder = 3
-        Text = 'Total Pago:                                  0,00'
+        Text = '0,00'
+        SpaceChar = '_'
       end
-      object Edit6: TEdit
-        Left = 8
-        Height = 32
-        Top = 224
-        Width = 193
-        Enabled = False
+      object edRestante: TMaskEdit
+        Left = 120
+        Height = 23
+        Top = 281
+        Width = 80
+        Alignment = taRightJustify
+        CharCase = ecNormal
+        MaxLength = 0
+        ReadOnly = True
         TabOrder = 4
-        Text = 'Restante:                                      0,00 '
+        Text = '0,00'
+        SpaceChar = '_'
       end
-      object Edit7: TEdit
-        Left = 8
-        Height = 32
-        Top = 248
-        Width = 193
-        Enabled = False
+      object edTroco: TMaskEdit
+        Left = 120
+        Height = 23
+        Top = 312
+        Width = 80
+        Alignment = taRightJustify
+        CharCase = ecNormal
+        MaxLength = 0
+        ReadOnly = True
         TabOrder = 5
-        Text = 'Troco:                                           0,00'
+        Text = '0,00'
+        SpaceChar = '_'
       end
     end
     object Panel1: TPanel
-      Left = -2
-      Height = 331
-      Top = 88
+      Left = 0
+      Height = 434
+      Top = 50
       Width = 226
-      ClientHeight = 331
+      Align = alLeft
+      ClientHeight = 434
       ClientWidth = 226
       Color = clGray
       ParentColor = False
-      TabOrder = 0
+      TabOrder = 1
       object Edit2: TEdit
         Left = 24
-        Height = 32
+        Height = 23
         Top = 15
         Width = 184
         Color = clMenuHighlight
@@ -294,47 +541,87 @@ object fPDV_Rec: TfPDV_Rec
       end
       object BitBtn9: TBitBtn
         Left = 24
-        Height = 24
-        Top = 51
+        Height = 46
+        Top = 41
         Width = 184
-        Caption = 'Dinheiro -F1'
+        Caption = 'Dinheiro'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -19
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsItalic]
+        OnClick = BitBtn9Click
+        ParentFont = False
         TabOrder = 1
       end
       object BitBtn17: TBitBtn
         Left = 24
-        Height = 25
-        Top = 126
+        Height = 46
+        Top = 181
         Width = 184
-        Caption = 'Cartão Visa -F4'
+        Action = acPrazo
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -19
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsItalic]
+        OnClick = BitBtn17Click
+        ParentFont = False
         TabOrder = 2
       end
       object BitBtn18: TBitBtn
         Left = 24
-        Height = 24
-        Top = 76
+        Height = 46
+        Top = 88
         Width = 184
-        Caption = 'Cartão Visa Eletron -F2'
+        Action = acCartaoDebito
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -19
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsItalic]
+        OnClick = BitBtn18Click
+        ParentFont = False
         TabOrder = 3
       end
       object BitBtn19: TBitBtn
         Left = 24
-        Height = 24
-        Top = 150
+        Height = 46
+        Top = 228
         Width = 184
-        Caption = 'Cartão American Express -F5'
+        Action = acCheque
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -19
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsItalic]
+        OnClick = BitBtn19Click
+        ParentFont = False
         TabOrder = 4
       end
       object BitBtn20: TBitBtn
         Left = 24
-        Height = 24
-        Top = 101
+        Height = 46
+        Top = 134
         Width = 184
-        Caption = 'Cartão Mastercard -F3'
+        Action = acCartaoCredito
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -19
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsItalic]
+        OnClick = BitBtn20Click
+        ParentFont = False
         TabOrder = 5
       end
       object BitBtn16: TBitBtn
         Left = 264
-        Height = 16
+        Height = 46
         Top = 264
         Width = 184
         Caption = 'BitBtn16'
@@ -342,12 +629,256 @@ object fPDV_Rec: TfPDV_Rec
       end
       object BitBtn21: TBitBtn
         Left = 24
-        Height = 28
-        Top = 175
+        Height = 46
+        Top = 274
         Width = 184
-        Caption = 'Cheque -F6'
+        Action = acOutros
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -19
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsItalic]
+        OnClick = BitBtn21Click
+        ParentFont = False
         TabOrder = 7
       end
+    end
+  end
+  object BitBtn27: TBitBtn
+    Left = 816
+    Height = 38
+    Top = 16
+    Width = 87
+    Action = acFechar
+    OnClick = BitBtn27Click
+    TabOrder = 1
+  end
+  object sqPagamento: TSQLQuery
+    FieldDefs = <    
+      item
+        Name = 'COD_VENDA'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'ID_ENTRADA'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'FORMA_PGTO'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 1
+      end    
+      item
+        Name = 'CAIXA'
+        DataType = ftSmallint
+        Precision = -1
+      end    
+      item
+        Name = 'N_DOC'
+        DataType = ftString
+        Precision = -1
+        Size = 60
+      end    
+      item
+        Name = 'VALOR_PAGO'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'CAIXINHA'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'TROCO'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'DESCONTO'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'STATE'
+        DataType = ftSmallint
+        Precision = -1
+      end>
+    Database = dmPdv.IbCon
+    Transaction = dmPdv.sTrans
+    SQL.Strings = (
+      'SELECT COD_VENDA, ID_ENTRADA, FORMA_PGTO'
+      ', CAIXA , N_DOC, VALOR_PAGO, CAIXINHA,'
+      'TROCO, DESCONTO, STATE'
+      'FROM FORMA_ENTRADA'
+      'WHERE ID_ENTRADA = :PCODMOV'
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'PCODMOV'
+        ParamType = ptInput
+      end>
+    left = 176
+    top = 16
+    object sqPagamentoCOD_VENDA: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_VENDA'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      ReadOnly = False
+      Required = True
+    end
+    object sqPagamentoID_ENTRADA: TLongintField
+      FieldKind = fkData
+      FieldName = 'ID_ENTRADA'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      ReadOnly = False
+      Required = True
+    end
+    object sqPagamentoFORMA_PGTO: TStringField
+      FieldKind = fkData
+      FieldName = 'FORMA_PGTO'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sqPagamentoCAIXA: TSmallintField
+      FieldKind = fkData
+      FieldName = 'CAIXA'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqPagamentoN_DOC: TStringField
+      FieldKind = fkData
+      FieldName = 'N_DOC'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 60
+    end
+    object sqPagamentoVALOR_PAGO: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALOR_PAGO'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      DisplayFormat = ',##0.00'
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object sqPagamentoCAIXINHA: TFloatField
+      FieldKind = fkData
+      FieldName = 'CAIXINHA'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object sqPagamentoTROCO: TFloatField
+      FieldKind = fkData
+      FieldName = 'TROCO'
+      Index = 7
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      DisplayFormat = ',##0.00'
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object sqPagamentoDESCONTO: TFloatField
+      FieldKind = fkData
+      FieldName = 'DESCONTO'
+      Index = 8
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      DisplayFormat = ',##0.00'
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object sqPagamentoSTATE: TSmallintField
+      FieldKind = fkData
+      FieldName = 'STATE'
+      Index = 9
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+  end
+  object dsPag: TDataSource
+    DataSet = sqPagamento
+    left = 232
+    top = 20
+  end
+  object ActionList1: TActionList
+    left = 192
+    top = 424
+    object acDescontoValor: TAction
+      Caption = 'acDescontoValor'
+      OnExecute = acDescontoValorExecute
+      ShortCut = 118
+    end
+    object acDescontoPercentual: TAction
+      Caption = 'acDescontoPercentual'
+      OnExecute = acDescontoPercentualExecute
+    end
+    object acCartaoDebito: TAction
+      Caption = 'Cartão Débito-F2'
+      OnExecute = acCartaoDebitoExecute
+      ShortCut = 113
+    end
+    object acCartaoCredito: TAction
+      Caption = 'Cartão Crédito-F3'
+      OnExecute = acCartaoCreditoExecute
+      ShortCut = 114
+    end
+    object acPrazo: TAction
+      Caption = 'Crédito - F4'
+      OnExecute = acPrazoExecute
+      ShortCut = 115
+    end
+    object acCheque: TAction
+      Caption = 'Cheque - F5'
+      OnExecute = acChequeExecute
+      ShortCut = 116
+    end
+    object acOutros: TAction
+      Caption = 'Outros - F6'
+      OnExecute = acOutrosExecute
+      ShortCut = 117
+    end
+    object acFechar: TAction
+      Caption = 'Fechar - F9'
+      OnExecute = acFecharExecute
+      ShortCut = 120
     end
   end
 end
