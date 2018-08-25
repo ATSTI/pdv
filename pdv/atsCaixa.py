@@ -26,12 +26,14 @@ class AtsCaixa:
             usrq = db.query(sqlp)
             if not len(usrq):
                 insere = 'INSERT INTO USUARIO (CODUSUARIO, NOMEUSUARIO, '
-                insere += 'STATUS, PERFIL) VALUES ('
+                insere += 'STATUS, PERFIL, SENHA, CODBARRA) VALUES ('
                 insere += '%s'
                 insere += ',\'%s\''
                 insere += ', 1'
-                insere += ',\'CAIXA\');'
-                insere = insere %(str(usr.id), str(usr.name))
+                insere += ',\'CAIXA\','
+                insere += ',\'CAIXA\','
+                insere += ',\'%s\');'
+                insere = insere %(str(usr.id), str(usr.name), str(usr.barcode))
                 db.insert(insere)
 
         sessao = sist.env['pos.session']
