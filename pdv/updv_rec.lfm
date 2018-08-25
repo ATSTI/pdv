@@ -26,7 +26,7 @@ object fPDV_Rec: TfPDV_Rec
       Align = alBottom
       ClientHeight = 43
       ClientWidth = 913
-      Color = clGray
+      Color = clGradientInactiveCaption
       ParentColor = False
       TabOrder = 2
       object btnDescontoPercent: TBitBtn
@@ -65,12 +65,14 @@ object fPDV_Rec: TfPDV_Rec
       Align = alTop
       ClientHeight = 50
       ClientWidth = 913
+      Color = clGradientInactiveCaption
       Font.CharSet = ANSI_CHARSET
       Font.Height = -21
       Font.Name = '@Malgun Gothic'
       Font.Pitch = fpVariable
       Font.Quality = fqDraft
       Font.Style = [fsBold]
+      ParentColor = False
       ParentFont = False
       TabOrder = 4
       object BitBtn24: TBitBtn
@@ -111,7 +113,7 @@ object fPDV_Rec: TfPDV_Rec
         SpaceChar = '_'
       end
       object edVendedor: TMaskEdit
-        Left = 320
+        Left = 360
         Height = 40
         Top = 0
         Width = 192
@@ -137,6 +139,15 @@ object fPDV_Rec: TfPDV_Rec
         Caption = 'Sair'
         OnClick = BitBtn27Click
         TabOrder = 4
+      end
+      object BitBtn22: TBitBtn
+        Left = 312
+        Height = 40
+        Top = 0
+        Width = 40
+        Caption = '...'
+        OnClick = BitBtn22Click
+        TabOrder = 5
       end
     end
     object GroupBox3: TGroupBox
@@ -373,6 +384,14 @@ object fPDV_Rec: TfPDV_Rec
         Caption = 'Valor Pagar'
         ParentColor = False
       end
+      object chkPercent: TCheckBox
+        Left = 290
+        Height = 19
+        Top = 73
+        Width = 84
+        Action = acDescontoPercentual
+        TabOrder = 18
+      end
     end
     object Panel3: TPanel
       Left = 663
@@ -382,7 +401,7 @@ object fPDV_Rec: TfPDV_Rec
       Align = alRight
       ClientHeight = 434
       ClientWidth = 250
-      Color = clGray
+      Color = clGradientInactiveCaption
       ParentColor = False
       TabOrder = 3
       object GroupBox2: TGroupBox
@@ -600,7 +619,7 @@ object fPDV_Rec: TfPDV_Rec
       Align = alLeft
       ClientHeight = 434
       ClientWidth = 226
-      Color = clGray
+      Color = clGradientInactiveCaption
       ParentColor = False
       TabOrder = 1
       object Edit2: TEdit
@@ -912,8 +931,9 @@ object fPDV_Rec: TfPDV_Rec
       ShortCut = 118
     end
     object acDescontoPercentual: TAction
-      Caption = 'acDescontoPercentual'
+      Caption = 'Des. % - F12'
       OnExecute = acDescontoPercentualExecute
+      ShortCut = 123
     end
     object acCartaoDebito: TAction
       Caption = 'Cartão Débito-F2'

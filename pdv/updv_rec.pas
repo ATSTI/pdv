@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
 
   ExtCtrls, Buttons, DBGrids, MaskEdit, ActnList, udmpdv, uvenda, uRecebimento,
-  sqldb, db;
+  uClienteBusca, sqldb, db;
 
 type
 
@@ -39,6 +39,7 @@ type
     BitBtn2: TBitBtn;
     BitBtn20: TBitBtn;
     BitBtn21: TBitBtn;
+    BitBtn22: TBitBtn;
     BitBtn27: TBitBtn;
     btnDescontoPercent: TBitBtn;
     btnDescontoValor: TBitBtn;
@@ -52,6 +53,7 @@ type
     BitBtn8: TBitBtn;
     BitBtn9: TBitBtn;
     btnDsc: TBitBtn;
+    chkPercent: TCheckBox;
     dsPag: TDataSource;
     DBGrid1: TDBGrid;
     edValorVendaTotal: TMaskEdit;
@@ -98,6 +100,7 @@ type
     procedure acChequeExecute(Sender: TObject);
     procedure acDescontoPercentualExecute(Sender: TObject);
     procedure acDescontoValorExecute(Sender: TObject);
+    procedure acDescPercentualExecute(Sender: TObject);
     procedure acDinheiroExecute(Sender: TObject);
     procedure acFecharExecute(Sender: TObject);
     procedure acOutrosExecute(Sender: TObject);
@@ -107,6 +110,7 @@ type
     procedure BitBtn19Click(Sender: TObject);
     procedure BitBtn20Click(Sender: TObject);
     procedure BitBtn21Click(Sender: TObject);
+    procedure BitBtn22Click(Sender: TObject);
     procedure BitBtn26Click(Sender: TObject);
     procedure BitBtn27Click(Sender: TObject);
     procedure btnDescontoPercentClick(Sender: TObject);
@@ -131,6 +135,7 @@ type
     procedure registra_valores(v_vlr: Double);
     procedure encerra_venda();
     procedure imprimir();
+    procedure imprimirTxt();
   public
     vStatus : Integer;
     vVendedor: Integer;
@@ -249,7 +254,6 @@ begin
   end;
   if sqPagamento.Active and not sqPagamento.IsEmpty then
   begin
-
     sqPagamento.Edit;
     sqPagamentoDESCONTO.AsFloat:=vDesconto;
     sqPagamento.ApplyUpdates;
@@ -269,13 +273,12 @@ begin
     ShowMessage('Venda já finalizada');
     Exit;
   end;
-
- vTeste := vCodVenda;
+  // vTeste := vCodVenda;
   if vCodVenda = 0 then
   begin
     // insere venda
+    fVnd := TVenda.Create;
     Try
-      fVnd := TVenda.Create;
       dmPdv.sTrans.Active := True;
       fVnd.CodMov := vCodMovimento;
       fVnd.Caixa  := vCaixa_Local;
@@ -316,6 +319,8 @@ begin
   sqPagamentoTROCO.AsFloat       := StrToFloat(edTroco.Text);
   sqPagamento.ApplyUpdates;
   dmPdv.sTrans.Commit;
+  vDesconto := 0;
+  edDesconto.Text:='0,00';
   num_doc := num_doc + 1;
   edPagamento.Text := '0,00';
   calcula_total;
@@ -353,7 +358,6 @@ procedure TfPDV_Rec.imprimir();
 var
  IMPRESSORA:TextFile;
  Texto,Texto1,Texto2,Texto3,Texto4,texto5, texto6, logradouro,cep,fone, clientecupom, doccli : string;//Para recortar parte da descrição do produto,nome
- portaIMP : string;
  produto_cupomf : string;
 begin
   if (not dmPdv.sqEmpresa.Active) then
@@ -386,8 +390,8 @@ begin
   //portaIMP := dmPdv.sqBusca.FieldByName('DADOS').AsString;
   //if (dm.portaImpressora2 <> '') then
   //,  portaIMP := dm.portaImpressora2;
-  portaIMP := 'C:\home\imprime.txt';
-  AssignFile(IMPRESSORA,portaIMP);
+  //portaIMP := 'C:\home\imprime.txt';
+  AssignFile(IMPRESSORA, dmPdv.portaIMP);
   try
     Rewrite(IMPRESSORA);
     Writeln(Impressora, '  VENDA');
@@ -405,8 +409,10 @@ begin
     Writeln(Impressora, texto2);
     Writeln(Impressora, texto4);
     {-------------------Imprimi itens do boleto-----------------}
+    dmPdv.sqLancamentos.Close;
+    dmPdv.sqLancamentos.Params.ParamByName('PMOV').AsInteger := vCodMovimento;
+    dmPdv.sqLancamentos.Open;
 
-    dmPdv.sqLancamentos.First;
     while not dmPdv.sqLancamentos.Eof do
     begin
 
@@ -447,6 +453,97 @@ begin
 
 end;
 
+procedure TfPDV_Rec.imprimirTxt();
+var
+  IMPRESSORA:TextFile;
+  lFile   : TStringList;
+  i      : Integer;
+  logradouro: String;
+  cep: String;
+  fone: String;
+  clientecupom: string;
+  texto3: String;
+  texto6: String;
+  produto_cupomf: String;
+  linhaTxt : String;
+begin
+  if (not dmPdv.sqEmpresa.Active) then
+    dmPdv.sqEmpresa.Open;
+  {----- aqui monto o endereço-----}
+  logradouro := '  ' + dmPdv.sqEmpresaENDERECO.Value +
+     ', ' + dmPdv.sqEmpresaBAIRRO.Value;
+  cep :=  '  ' + dmPdv.sqEmpresaCIDADE.Value + ' - ' + dmPdv.sqEmpresaUF.Value +
+  ' - ' + dmPdv.sqEmpresaCEP.Value;
+  fone := '  (19)' + dmPdv.sqEmpresaFONE.Value + ' / ' + dmPdv.sqEmpresaFONE_1.Value +
+  ' / ' + dmPdv.sqEmpresaFONE_2.Value;
+  {------------------------DADOS DO CLIENTE--------------------------}
+  clientecupom := '  ' + IntToStr(vCliente) + '-' + vClienteNome;
+  dmPdv.sqLancamentos.Close;
+  dmPdv.sqLancamentos.Params.ParamByName('PMOV').AsInteger := vCodMovimento;
+  dmPdv.sqLancamentos.Open;
+  // leio um arquivo txt e imprimo
+  lFile := TStringList.Create;
+  AssignFile(IMPRESSORA, dmPdv.portaIMP);
+  try
+    Rewrite(IMPRESSORA);
+    lFile.LoadFromFile('cupom.txt');
+    for i:=0 to lFile.Count-1 do
+    begin
+      linhaTxt := Copy(lFile[i],0,1);
+      if lFile[i] = 'empresa' then
+        Writeln(Impressora, RemoveAcento(Format('  %-36s',[dmPdv.sqEmpresaRAZAO.Value])))
+      else if lFile[i] = 'logradouro' then
+        Writeln(Impressora, logradouro)
+      else if lFile[i] = 'cep' then
+        Writeln(Impressora, cep)
+      else if lFile[i] = 'fone' then
+        Writeln(Impressora, fone)
+      else if lFile[i] = 'cliente' then
+        Writeln(Impressora, clientecupom)
+      else if lFile[i] = 'doc' then
+        Writeln(Impressora, '  ' + FormatDateTime('dd/mm/yyyy', Now) + '  Pedido :  ' + IntToStr(vCodMovimento))
+      else if lFile[i] = 'itens' then
+      begin
+        while not dmPdv.sqLancamentos.Eof do
+        begin
+          dmPdv.sqLancamentos.RecordCount;
+          texto3 := '';
+          texto6 := '  ';
+          texto3 := texto3 + Format('                %-2s',[dmPdv.sqLancamentosUNIDADEMEDIDA.Value]);
+          texto3 := texto3 + Format('    %6.2n',[dmPdv.sqLancamentosQUANTIDADE.AsFloat]);
+          texto3 := texto3 + Format(' %6.2n',[dmPdv.sqLancamentosPRECO.AsFloat]);
+          texto3 := texto3 + Format('   %6.2n',[dmPdv.sqLancamentosVALTOTAL.value]);
+          produto_cupomf := trim(dmPdv.sqLancamentosDESCPRODUTO.Value);
+          texto6 := texto6 + '  ' + Copy(produto_cupomf, 0, 36);       //descrição do produto
+          Writeln(Impressora, RemoveAcento(texto6));
+          if (length(produto_cupomf)>36) then
+          begin
+            texto6 := '    ' + Copy(produto_cupomf, 37, 72);       //descrição do produto
+            Writeln(Impressora, RemoveAcento(texto6));
+          end;
+          Writeln(Impressora, RemoveAcento(texto3));//NOME DO PRODUTO
+          dmPdv.sqLancamentos.next;
+        end;
+      end
+      else if linhaTxt = 'T' then
+      begin
+        linhaTxt := Copy(lFile[i],2,Length(lFile[i])-1);
+        Writeln(Impressora, linhaTxt + FormatFloat('#,,,0.00',vValorPago));
+      end
+      else if linhaTxt = 'V' then
+      begin
+        linhaTxt := Copy(lFile[i],2,Length(lFile[i])-1);
+        Writeln(Impressora, linhaTxt);
+      end
+      else
+        Writeln(Impressora,lFile[i]);
+    end;
+  finally
+    CloseFile(IMPRESSORA);
+    lFile.Free;
+  end;
+end;
+
 procedure TfPDV_Rec.edPagamentoKeyPress(Sender: TObject; var Key: char);
 begin
   if Key = #13 then
@@ -454,6 +551,14 @@ begin
     Key := #0;
     if ((edPagamento.Text <> '') and (vResto > 0.01))  then
     begin
+      if lblForma.Caption = '4-Faturar' then
+      begin
+        if vCliente = 1 then
+        begin
+          ShowMessage('Informe o Cliente');
+          Exit;
+        end;
+      end;
       registra_valores(StrToFloat(edPagamento.Text));
     end;
   end;
@@ -479,16 +584,15 @@ end;
 procedure TfPDV_Rec.btnDscClick(Sender: TObject);
 var percent : Double;
 begin
-  if btnDsc.Caption = 'R$' then
+  if ((btnDsc.Caption = 'R$') and (chkPercent.Checked=False)) then
   begin
     vDesconto := StrToFloat(edVDesconto.Text);
     edDesconto.Text := FormatFloat('#,,,0.00',vDesconto);
-  end;
-  if btnDsc.Caption = '%' then
-  begin
+  end
+  else begin
     percent := StrToFloat(edVDesconto.Text);
     percent := 1-(percent/100);
-    vDesconto:= vValorPago * percent;;
+    vDesconto:= vValorVenda - (vValorVenda * percent);
     edDesconto.Text := FormatFloat('#,,,0.00',vDesconto);
   end;
   grava_desconto;
@@ -512,10 +616,15 @@ end;
 
 procedure TfPDV_Rec.acDescontoValorExecute(Sender: TObject);
 begin
-  vDesconto := StrToFloat(edVDesconto.Text);
-  edDesconto.Text := FormatFloat('#,,,0.00',vDesconto);
-  grava_desconto;
-  calcula_total;
+  //vDesconto := StrToFloat(edVDesconto.Text);
+  //edDesconto.Text := FormatFloat('#,,,0.00',vDesconto);
+  //grava_desconto;
+  //calcula_total;
+end;
+
+procedure TfPDV_Rec.acDescPercentualExecute(Sender: TObject);
+begin
+  btnDsc.Caption:='%';
 end;
 
 procedure TfPDV_Rec.acDinheiroExecute(Sender: TObject);
@@ -537,7 +646,7 @@ begin
     Exit;
   end;
   encerra_venda();
-  imprimir();
+  imprimirTxt();
   Close;
 end;
 
@@ -549,20 +658,23 @@ end;
 
 procedure TfPDV_Rec.acPrazoExecute(Sender: TObject);
 begin
-  lblForma.Caption:='4-Crédito';
+  lblForma.Caption:='4-Faturar';
   edPagamento.SetFocus;
 end;
 
 procedure TfPDV_Rec.acDescontoPercentualExecute(Sender: TObject);
 var percent: Double;
 begin
+  {
   btnDsc.Caption:='%';
   percent := StrToFloat(edVDesconto.Text);
   percent := 1-(percent/100);
-  vDesconto:= vValorPago * percent;;
+  vDesconto:= vValorTotal * percent;;
   edDesconto.Text := FormatFloat('#,,,0.00',vDesconto);
   grava_desconto;
-  calcula_total;
+  calcula_total;}
+  if (edVDesconto.Text <> '') then
+    btnDsc.Click;
 end;
 
 procedure TfPDV_Rec.acCartaoDebitoExecute(Sender: TObject);
@@ -591,6 +703,13 @@ end;
 procedure TfPDV_Rec.BitBtn21Click(Sender: TObject);
 begin
 
+end;
+
+procedure TfPDV_Rec.BitBtn22Click(Sender: TObject);
+begin
+  fClienteBusca.ShowModal;
+  edCliente.Text := fClienteBusca.cNomeCliente;
+  vCliente := fClienteBusca.cCodCliente;
 end;
 
 procedure TfPDV_Rec.BitBtn26Click(Sender: TObject);
