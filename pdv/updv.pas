@@ -18,6 +18,7 @@ type
     acFechar: TAction;
     acProcurar: TAction;
     acNova: TAction;
+    acExcluirItemPedido: TAction;
     ActionList1: TActionList;
     BitBtn1: TBitBtn;
     BitBtn8: TBitBtn;
@@ -88,6 +89,7 @@ type
     pnInfo: TPanel;
     PopupMenu1: TPopupMenu;
     TIButton2: TTIButton;
+    procedure acExcluirItemPedidoExecute(Sender: TObject);
     procedure acFecharExecute(Sender: TObject);
     procedure acNovaExecute(Sender: TObject);
     procedure acProcurarExecute(Sender: TObject);
@@ -153,6 +155,7 @@ type
     procedure controlaPedidos(cpCodMov: Integer; cpStatus: Integer; cpTipo: Integer);
     procedure buscaPedidosAbertoCaixa(bpCodMov: Integer);
     procedure preencherDescItem(descItem: String);
+    procedure buscaVendedor(codBarraV: String);
   public
 
   end;
@@ -213,6 +216,7 @@ begin
     edQtde.Text    := FloatToStr(dmPdv.sqLancamentosQUANTIDADE.AsFloat);
     edPreco.Text   := FloatToStr(dmPdv.sqLancamentosPRECO.AsFloat);
     edDesconto.Text:= FloatToStr(dmPdv.sqLancamentosDESCONTO.AsFloat);
+    buscaVendedor(IntToStr(dmPdv.sqLancamentosCODVENDEDOR.AsInteger));
     preencherDescItem(dmPdv.sqLancamentosDESCPRODUTO.AsString);
   end;
 end;
@@ -268,7 +272,6 @@ begin
     ShowMessage('Vendedor não informado;');
     Exit;
   end;
-
   fPDV_Rec.vValor  := edTotalGeral.Text;
   fPDV_Rec.vUsuario:= codCaixa;
   fPDV_Rec.vVendedor:= codVendedor;
@@ -282,13 +285,21 @@ begin
   begin
     //controlaPedidos(codMov, 1, 1);
     buscaPedidosAbertoCaixa(codMov);
-    btnNovo.Click;
+    if (qtde_ped = 0) then
+      btnNovo.Click
+    else
+      btnVnd1.Click;
   end;
 end;
 
 procedure TfPdv.acFecharExecute(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TfPdv.acExcluirItemPedidoExecute(Sender: TObject);
+begin
+  //fExcluirItemPedido.ShowModal;
 end;
 
 procedure TfPdv.acNovaExecute(Sender: TObject);
@@ -308,6 +319,7 @@ end;
 
 procedure TfPdv.acProcurarExecute(Sender: TObject);
 begin
+  fMovimentoProc.acBuscar.Execute;
   fMovimentoProc.ShowModal;
   if (fMovimentoProc.codMovimentoProc > 0) then
   begin
@@ -323,6 +335,7 @@ begin
     edQtde.Text    := FloatToStr(dmPdv.sqLancamentosQUANTIDADE.AsFloat);
     edPreco.Text   := FloatToStr(dmPdv.sqLancamentosPRECO.AsFloat);
     edDesconto.Text:= FloatToStr(dmPdv.sqLancamentosDESCONTO.AsFloat);
+    edVendedor.Text:= IntToStr(dmPdv.sqLancamentosCODVENDEDOR.AsInteger);
     //edProdutoDescX.Text:= dmPdv.sqLancamentosDESCPRODUTO.AsString;
     //controlaPedidos(codMov, 0, 0);
     buscaPedidosAbertoCaixa(codMov);
@@ -493,6 +506,11 @@ begin
       // TODO - preciso definir aqui, qdo e codigo de barra qdo e codigo
       // do produto, se codigo comecar com 'X' e codigo produto ???!!!
       // se o codigo tiver mais q 'X' caracter e codigo de barras ??!!
+      if ((Copy(edProduto.Text,0,2)='04') and (Length(edProduto.Text) > 6)) then
+      begin
+        buscaVendedor(edProduto.Text);
+        Exit;
+      end;
       if Length(edProduto.Text) > 7 then
         fProdutoProc.busca('',edProduto.Text, '', False)
       else
@@ -568,7 +586,7 @@ end;
 
 procedure TfPdv.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
-  FMov.Free;
+
 end;
 
 procedure TfPdv.FormShow(Sender: TObject);
@@ -583,7 +601,6 @@ begin
   edCliente.Text     := '1';
   codVendedor := 1;
   num_pedido := 'x';
-  FMov := TMovimento.Create;
   edCaixa.Text := dmPdv.nomeLogado + '-' + dmPdv.nomeCaixa;
   buscaPedidosAbertoCaixa(0);
 end;
@@ -620,6 +637,7 @@ begin
   dmPdv.sqLancamentos.Close;
   dmPdv.sqLancamentos.Params.ParamByName('PMOV').AsInteger:=apCodMov;
   dmPdv.sqLancamentos.Open;
+  edProduto.Enabled := True;
   codMov := apCodMov;
   codDet:=dmPdv.sqLancamentosCODDETALHE.AsInteger;
   edProduto.Text := dmPdv.sqLancamentosCODPRO.AsString;
@@ -628,6 +646,7 @@ begin
   edQtde.Text    := FloatToStr(dmPdv.sqLancamentosQUANTIDADE.AsFloat);
   edPreco.Text   := FloatToStr(dmPdv.sqLancamentosPRECO.AsFloat);
   edDesconto.Text:= FloatToStr(dmPdv.sqLancamentosDESCONTO.AsFloat);
+  buscaVendedor(IntToStr(dmPdv.sqLancamentosCODVENDEDOR.AsInteger));
   //edProdutoDescX.Text:= dmPdv.sqLancamentosDESCPRODUTO.AsString;
   //controlaPedidos(codMov, 0, 0);
   calculaTotalGeral();
@@ -637,6 +656,7 @@ end;
 
 procedure TfPdv.iniciarVenda();
 begin
+  edProduto.Enabled := True;
   edProdutoDesc.Lines.Clear;
   edProdutoDesc.Lines.Add('Produto:');
   edCliente.Text := '1';
@@ -648,6 +668,7 @@ begin
   if (not dsLanc.DataSet.Active) then
     dsLanc.DataSet.Active := True;
   //dsLanc.DataSet.Insert;
+  FMov := TMovimento.Create;
   Try
     dmPdv.sTrans.Active := True;
     FMov.CodMov      := 0;
@@ -668,12 +689,13 @@ begin
     dmPdv.sqLancamentos.Params.ParamByName('PMOV').AsInteger:=codMov;
     dmPdv.sqLancamentos.Open;
   finally
-
+    FMov.Free;
   end;
 end;
 
 procedure TfPdv.registrar_item();
 begin
+  FMov := TMovimento.Create;
   Try
     lblNumItem.Caption := IntToStr(StrToInt(lblNumItem.Caption) + 1);
     dmPdv.sTrans.Active := True;
@@ -699,11 +721,13 @@ begin
     fProdutoProc.codProduto := 0;
     calculaTotalGeral();
   finally
+    FMov.Free;
   end;
 end;
 
 procedure TfPdv.alterar_item();
 begin
+  FMov := TMovimento.Create;
   Try
     dmPdv.sTrans.Active := True;
     FMov.MovDetalhe.CodMov := codMov;
@@ -720,6 +744,7 @@ begin
     codDet := dmPdv.sqLancamentosCODDETALHE.AsInteger;
     calculaTotalGeral();
   finally
+    FMov.Free;
   end;
 end;
 
@@ -932,6 +957,7 @@ end;
 procedure TfPdv.buscaPedidosAbertoCaixa(bpCodMov: Integer);
 var bCodMov: Integer;
 begin
+  qtde_ped := 0;
   //limpa todos pedidos
   btnVnd1.Caption:='';
   btnVnd2.Caption:='';
@@ -1005,6 +1031,30 @@ begin
     edProdutoDesc.Lines.Add(copy(descItem,90,120));
   end;
   edProdutoDesc.SelStart := 1;
+end;
+
+procedure TfPdv.buscaVendedor(codBarraV: String);
+begin
+  dmPdv.sqBusca.Close;
+  dmPdv.sqBusca.SQL.Clear;
+  if (Length(codBarraV) < 7) then
+  begin
+    dmPdv.sqBusca.SQL.Text := 'SELECT CODUSUARIO, NOMEUSUARIO, SENHA ' +
+      ' FROM USUARIO WHERE CODUSUARIO = ' + codBarraV;
+  end
+  else begin
+    dmPdv.sqBusca.SQL.Text := 'SELECT CODUSUARIO, NOMEUSUARIO, SENHA ' +
+      ' FROM USUARIO WHERE CODBARRA = ' + QuotedStr(codBarraV);
+  end;
+  dmPdv.sqBusca.Open;
+  if (dmPdv.sqBusca.IsEmpty) then
+  begin
+    ShowMessage('Sem Cadastro de usuário no sistema');
+    Exit;
+  end;
+  edVendedor.Text := IntToStr(dmPdv.sqBusca.FieldByName('CODUSUARIO').AsInteger);
+  codVendedor := dmPdv.sqBusca.FieldByName('CODUSUARIO').AsInteger;
+  edVendedorNome.Text := dmPdv.sqBusca.FieldByName('NOMEUSUARIO').AsString;
 end;
 
 end.

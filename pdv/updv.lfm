@@ -649,6 +649,7 @@ object fPdv: TfPdv
       Width = 40
       Caption = 'Devol./Troca'
       TabOrder = 4
+      Visible = False
     end
     object btnVnd1: TBitBtn
       Left = 386
@@ -11226,7 +11227,7 @@ object fPdv: TfPdv
     object Label7: TLabel
       Left = 34
       Height = 23
-      Top = 267
+      Top = 279
       Width = 51
       Caption = 'Cliente'
       Font.CharSet = ANSI_CHARSET
@@ -11240,7 +11241,7 @@ object fPdv: TfPdv
     object edCliente: TEdit
       Left = 34
       Height = 31
-      Top = 291
+      Top = 302
       Width = 42
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
@@ -11255,7 +11256,7 @@ object fPdv: TfPdv
     object edVendedor: TEdit
       Left = 34
       Height = 31
-      Top = 342
+      Top = 350
       Width = 43
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
@@ -11269,7 +11270,7 @@ object fPdv: TfPdv
     object BitBtn2: TBitBtn
       Left = 264
       Height = 31
-      Top = 291
+      Top = 302
       Width = 32
       Caption = '...'
       OnClick = BitBtn2Click
@@ -11278,7 +11279,7 @@ object fPdv: TfPdv
     object BitBtn3: TBitBtn
       Left = 264
       Height = 31
-      Top = 342
+      Top = 350
       Width = 33
       Caption = '...'
       OnClick = BitBtn3Click
@@ -11331,7 +11332,7 @@ object fPdv: TfPdv
     object Label14: TLabel
       Left = 37
       Height = 23
-      Top = 318
+      Top = 330
       Width = 68
       Caption = 'Vendedor'
       Font.CharSet = ANSI_CHARSET
@@ -11345,7 +11346,7 @@ object fPdv: TfPdv
     object edVendedorNome: TEdit
       Left = 78
       Height = 31
-      Top = 342
+      Top = 350
       Width = 186
       Color = clGradientInactiveCaption
       Enabled = False
@@ -11360,7 +11361,7 @@ object fPdv: TfPdv
     object edClienteNome: TEdit
       Left = 78
       Height = 31
-      Top = 291
+      Top = 302
       Width = 187
       Color = clGradientInactiveCaption
       Enabled = False
@@ -11401,6 +11402,7 @@ object fPdv: TfPdv
         Height = 35
         Top = 32
         Width = 205
+        Enabled = False
         Font.CharSet = ANSI_CHARSET
         Font.Height = -19
         Font.Name = 'Comic Sans MS'
@@ -11725,10 +11727,10 @@ object fPdv: TfPdv
   end
   object Panel8: TPanel
     Left = 34
-    Height = 64
-    Top = 271
+    Height = 58
+    Top = 269
     Width = 262
-    ClientHeight = 64
+    ClientHeight = 58
     ClientWidth = 262
     Color = clWhite
     ParentColor = False
@@ -11802,7 +11804,6 @@ object fPdv: TfPdv
     left = 704
     top = 152
     object acReceber: TAction
-      Caption = 'Receber - F4'
       OnExecute = acReceberExecute
       ShortCut = 115
     end
@@ -11816,6 +11817,10 @@ object fPdv: TfPdv
     object acNova: TAction
       OnExecute = acNovaExecute
       ShortCut = 113
+    end
+    object acExcluirItemPedido: TAction
+      Caption = 'Exluir Item/Pedido-F12'
+      OnExecute = acExcluirItemPedidoExecute
     end
   end
   object PopupMenu1: TPopupMenu
