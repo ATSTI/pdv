@@ -9,7 +9,6 @@ object fPdv: TfPdv
   ClientHeight = 563
   ClientWidth = 1100
   Color = clBlack
-  OnClose = FormClose
   OnShow = FormShow
   PopupMenu = PopupMenu1
   Position = poWorkAreaCenter
@@ -11565,6 +11564,7 @@ object fPdv: TfPdv
       TitleFont.Name = 'Bitstream Charter'
       TitleFont.Style = [fsBold]
       OnCellClick = DBGrid1CellClick
+      OnDrawColumnCell = DBGrid1DrawColumnCell
     end
     object pnInfo: TPanel
       Left = 35
@@ -11821,6 +11821,7 @@ object fPdv: TfPdv
     object acExcluirItemPedido: TAction
       Caption = 'Exluir Item/Pedido-F12'
       OnExecute = acExcluirItemPedidoExecute
+      ShortCut = 123
     end
   end
   object PopupMenu1: TPopupMenu
@@ -11829,6 +11830,12 @@ object fPdv: TfPdv
     object MenuItem1: TMenuItem
       Action = acReceber
       Caption = 'Receber'
+      object MenuItem2: TMenuItem
+        Caption = 'MenuItem2'
+      end
+    end
+    object MenuItem3: TMenuItem
+      Action = acExcluirItemPedido
     end
   end
 end

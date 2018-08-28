@@ -6,9 +6,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-
-  ExtCtrls, Buttons, DBGrids, MaskEdit, ActnList, udmpdv, uvenda, uRecebimento,
-  uClienteBusca, sqldb, db;
+  ExtCtrls, Buttons, DBGrids, MaskEdit, ActnList, Menus, udmpdv, uvenda,
+  uRecebimento, uClienteBusca, sqldb, db;
 
 type
 
@@ -24,6 +23,7 @@ type
     acOutros: TAction;
     acFechar: TAction;
     acDinheiro: TAction;
+    acExcluirLancamento: TAction;
     ActionList1: TActionList;
     BitBtn1: TBitBtn;
     BitBtn10: TBitBtn;
@@ -80,10 +80,12 @@ type
     edValorPago: TMaskEdit;
     edRestante: TMaskEdit;
     edTroco: TMaskEdit;
+    MenuItem1: TMenuItem;
     Panel1: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
     Panel4: TPanel;
+    PopupMenu1: TPopupMenu;
     sqPagamento: TSQLQuery;
     sqPagamentoCAIXA: TSmallintField;
     sqPagamentoCAIXINHA: TFloatField;
@@ -102,6 +104,7 @@ type
     procedure acDescontoValorExecute(Sender: TObject);
     procedure acDescPercentualExecute(Sender: TObject);
     procedure acDinheiroExecute(Sender: TObject);
+    procedure acExcluirLancamentoExecute(Sender: TObject);
     procedure acFecharExecute(Sender: TObject);
     procedure acOutrosExecute(Sender: TObject);
     procedure acPrazoExecute(Sender: TObject);
@@ -324,7 +327,6 @@ begin
   num_doc := num_doc + 1;
   edPagamento.Text := '0,00';
   calcula_total;
-
 end;
 
 procedure TfPDV_Rec.encerra_venda();
@@ -631,6 +633,18 @@ procedure TfPDV_Rec.acDinheiroExecute(Sender: TObject);
 begin
   lblForma.Caption:='1-Dinheiro';
   edPagamento.SetFocus;
+end;
+
+procedure TfPDV_Rec.acExcluirLancamentoExecute(Sender: TObject);
+begin
+  if sqPagamento.Active then
+  begin
+    sqPagamento.Edit;
+    sqPagamentoSTATE.AsInteger := 2;
+    sqPagamento.ApplyUpdates;
+    dmPdv.sTrans.Commit;
+    calcula_total;
+  end;
 end;
 
 procedure TfPDV_Rec.acFecharExecute(Sender: TObject);

@@ -47,7 +47,7 @@ begin
   end;
   dmPdv.sqBusca.Close;
   dmPdv.sqBusca.SQL.Clear;
-  dmPdv.sqBusca.SQL.Text := 'SELECT CODUSUARIO, NOMEUSUARIO, PERFIL  ' +
+  dmPdv.sqBusca.SQL.Text := 'SELECT CODUSUARIO, NOMEUSUARIO, SENHA, CODBARRA  ' +
       ' FROM USUARIO WHERE NOMEUSUARIO = ' + QuotedStr(edLogin.Text);
   dmPdv.sqBusca.Open;
   if (dmPdv.sqBusca.IsEmpty) then
@@ -55,7 +55,7 @@ begin
     ShowMessage('Sem Cadastro de usuário no sistema');
     Exit;
   end;
-  senha := dmPdv.sqBusca.FieldByName('PERFIL').AsString;
+  senha := dmPdv.sqBusca.FieldByName('SENHA').AsString;
   snh := EncodeStringBase64(edSenha.Text);
   if (snh = senha) then
   begin
@@ -113,7 +113,7 @@ begin
   end;
   dmPdv.sqBusca.Close;
   dmPdv.sqBusca.SQL.Clear;
-  dmPdv.sqBusca.SQL.Text := 'SELECT CODUSUARIO, NOMEUSUARIO, PERFIL  ' +
+  dmPdv.sqBusca.SQL.Text := 'SELECT CODUSUARIO, NOMEUSUARIO, SENHA ' +
       ' FROM USUARIO WHERE NOMEUSUARIO = ' + QuotedStr(edLogin.Text);
   dmPdv.sqBusca.Open;
   if (dmPdv.sqBusca.IsEmpty) then

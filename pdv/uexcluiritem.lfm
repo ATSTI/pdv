@@ -1,0 +1,78 @@
+object fExclusao: TfExclusao
+  Left = 303
+  Height = 309
+  Top = 130
+  Width = 592
+  Caption = 'Exclusão'
+  ClientHeight = 309
+  ClientWidth = 592
+  LCLVersion = '1.8.4.0'
+  object edItemExcluir: TLabeledEdit
+    Left = 128
+    Height = 23
+    Top = 56
+    Width = 192
+    EditLabel.AnchorSideLeft.Control = edItemExcluir
+    EditLabel.AnchorSideRight.Control = edItemExcluir
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = edItemExcluir
+    EditLabel.Left = 128
+    EditLabel.Height = 15
+    EditLabel.Top = 38
+    EditLabel.Width = 192
+    EditLabel.Caption = 'Cód. Item Excluir'
+    EditLabel.ParentColor = False
+    TabOrder = 0
+    OnExit = edItemExcluirExit
+    OnKeyPress = edItemExcluirKeyPress
+  end
+  object edPedidoExcluir: TLabeledEdit
+    Left = 130
+    Height = 23
+    Top = 160
+    Width = 168
+    EditLabel.AnchorSideLeft.Control = edPedidoExcluir
+    EditLabel.AnchorSideRight.Control = edPedidoExcluir
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = edPedidoExcluir
+    EditLabel.Left = 130
+    EditLabel.Height = 15
+    EditLabel.Top = 142
+    EditLabel.Width = 168
+    EditLabel.Caption = 'Número do Pedido a Excluir'
+    EditLabel.ParentColor = False
+    TabOrder = 2
+  end
+  object btnExcluiItem: TBitBtn
+    Left = 339
+    Height = 30
+    Top = 53
+    Width = 75
+    Caption = 'Excluir Item'
+    OnClick = btnExcluiItemClick
+    TabOrder = 1
+  end
+  object btnExcluirPedido: TBitBtn
+    Left = 336
+    Height = 30
+    Top = 153
+    Width = 75
+    Caption = 'Excluir Pedido'
+    OnClick = btnExcluirPedidoClick
+    TabOrder = 3
+  end
+  object lblItem: TLabel
+    Left = 129
+    Height = 26
+    Top = 92
+    Width = 12
+    Caption = '...'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -19
+    Font.Name = 'Comic Sans MS'
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
+    ParentColor = False
+    ParentFont = False
+  end
+end

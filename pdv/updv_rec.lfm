@@ -7,6 +7,7 @@ object fPDV_Rec: TfPDV_Rec
   ClientHeight = 547
   ClientWidth = 917
   OnShow = FormShow
+  PopupMenu = PopupMenu1
   LCLVersion = '1.8.4.0'
   object GroupBox1: TGroupBox
     Left = 0
@@ -160,6 +161,7 @@ object fPDV_Rec: TfPDV_Rec
       ClientWidth = 433
       Color = clActiveBorder
       ParentColor = False
+      PopupMenu = PopupMenu1
       TabOrder = 0
       object BitBtn1: TBitBtn
         Left = 16
@@ -431,6 +433,8 @@ object fPDV_Rec: TfPDV_Rec
               FieldName = 'VALOR_PAGO'
             end>
           DataSource = dsPag
+          Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+          PopupMenu = PopupMenu1
           Scrollbars = ssVertical
           TabOrder = 0
         end
@@ -799,7 +803,8 @@ object fPDV_Rec: TfPDV_Rec
       ', CAIXA , N_DOC, VALOR_PAGO, CAIXINHA,'
       'TROCO, DESCONTO, STATE'
       'FROM FORMA_ENTRADA'
-      'WHERE ID_ENTRADA = :PCODMOV'
+      'WHERE STATE < 2'
+      '  AND ID_ENTRADA = :PCODMOV'
     )
     Params = <    
       item
@@ -969,6 +974,18 @@ object fPDV_Rec: TfPDV_Rec
       Caption = 'Dinheiro-F1'
       OnExecute = acDinheiroExecute
       ShortCut = 112
+    end
+    object acExcluirLancamento: TAction
+      Caption = 'Excluir Baixa'
+      OnExecute = acExcluirLancamentoExecute
+      ShortCut = 123
+    end
+  end
+  object PopupMenu1: TPopupMenu
+    left = 144
+    top = 429
+    object MenuItem1: TMenuItem
+      Action = acExcluirLancamento
     end
   end
 end

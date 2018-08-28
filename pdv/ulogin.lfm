@@ -9,7 +9,7 @@ object fLogin: TfLogin
   Position = poDesktopCenter
   LCLVersion = '1.8.4.0'
   object btnLogin: TBitBtn
-    Left = 352
+    Left = 348
     Height = 28
     Top = 88
     Width = 91

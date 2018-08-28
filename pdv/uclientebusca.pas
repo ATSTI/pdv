@@ -15,6 +15,7 @@ type
   TfClienteBusca = class(TfPadraoBusca)
     dsCliente: TDataSource;
     procedure btnPROCClick(Sender: TObject);
+    procedure DBGrid1CellClick(Column: TColumn);
     procedure FormShow(Sender: TObject);
   private
 
@@ -58,6 +59,12 @@ begin
 
   dmPdv.sqBusca.SQL.Text := sql;
   dmPdv.sqBusca.Open
+end;
+
+procedure TfClienteBusca.DBGrid1CellClick(Column: TColumn);
+begin
+  cNomeCliente := dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString;
+  cCodCliente  := dmPdv.sqBusca.FieldByName('CODCLIENTE').AsInteger;
 end;
 
 procedure TfClienteBusca.FormShow(Sender: TObject);

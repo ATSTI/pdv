@@ -59,9 +59,9 @@ begin
     ShowMessage('Senha nova e Confirma , não são iguais');
     Exit;
   end;
-
+  dmPdv.sqBusca.Close;
   dmPdv.sqBusca.SQL.Clear;
-  dmPdv.sqBusca.SQL.Text := 'SELECT CODUSUARIO, NOMEUSUARIO, PERFIL ' +
+  dmPdv.sqBusca.SQL.Text := 'SELECT CODUSUARIO, NOMEUSUARIO, SENHA ' +
     ' FROM USUARIO WHERE NOMEUSUARIO = ' + QuotedStr(nomeUsuario);
   dmPdv.sqBusca.Open;
   if (dmPdv.sqBusca.IsEmpty) then
@@ -70,13 +70,13 @@ begin
     Exit;
   end;
 
-  senha := dmPdv.sqBusca.Fields.FieldByName('PERFIL').AsString;
+  senha := dmPdv.sqBusca.Fields.FieldByName('SENHA').AsString;
   snh := EncodeStringBase64(edSenhaAtual.Text);
   if ((snh = senha) or (senha = 'CAIXA')) then
   begin
     dmPdv.varLogado := IntToStr(dmPdv.sqBusca.Fields.FieldByName('CODUSUARIO').AsInteger);
     snh := EncodeStringBase64(edSenhaNova.Text);
-    dmPdv.IbCon.ExecuteDirect('UPDATE USUARIO SET PERFIL = ' +
+    dmPdv.IbCon.ExecuteDirect('UPDATE USUARIO SET SENHA = ' +
       QuotedStr(snh) + ' WHERE CODUSUARIO = ' + dmPdv.varLogado);
     dmPdv.sTrans.Commit;
   end

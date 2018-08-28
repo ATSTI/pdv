@@ -43,6 +43,8 @@ type
     produto: String;
     codProd: String;
     precoVenda: Double;
+    precoVendaAtacado: Double;
+    qtdeAtacado: Double;
     estoque: Double;
 
     procedure busca(codigo: String; barCode: String; produtoDesc: String; inativo: Boolean);
@@ -89,6 +91,8 @@ begin
   codProduto:= dmPdv.sqBusca.FieldByName('CODPRODUTO').AsInteger;
   produto   := dmPdv.sqBusca.FieldByName('PRODUTO').AsString;
   codProd   := dmPdv.sqBusca.FieldByName('CODPRO').AsString;
+  precoVendaAtacado := dmPdv.sqBusca.FieldByName('PRECOATACADO').AsFloat;
+  qtdeAtacado:= dmPdv.sqBusca.FieldByName('QTDEATACADO').AsFloat;
   Close;
 end;
 
@@ -109,6 +113,8 @@ begin
   produto   := dmPdv.sqBusca.FieldByName('PRODUTO').AsString;
   precoVenda:= dmPdv.sqBusca.FieldByName('VALOR_PRAZO').AsFloat;
   estoque   := dmPdv.sqBusca.FieldByName('ESTOQUEATUAL').AsFloat;
+  precoVendaAtacado := dmPdv.sqBusca.FieldByName('PRECOATACADO').AsFloat;
+  qtdeAtacado:= dmPdv.sqBusca.FieldByName('QTDEATACADO').AsFloat;
   Close;
 end;
 
@@ -187,6 +193,8 @@ begin
     produto    := dmPdv.sqBusca.FieldByName('PRODUTO').AsString;
     codProd    := dmPdv.sqBusca.FieldByName('CODPRO').AsString;
     precoVenda := dmPdv.sqBusca.FieldByName('VALOR_PRAZO').AsFloat;
+    precoVendaAtacado := dmPdv.sqBusca.FieldByName('PRECOATACADO').AsFloat;
+    qtdeAtacado:= dmPdv.sqBusca.FieldByName('QTDEATACADO').AsFloat;
     estoque    := dmPdv.sqBusca.FieldByName('ESTOQUEATUAL').AsFloat;
   end;
 end;

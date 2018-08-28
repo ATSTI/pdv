@@ -44,6 +44,7 @@ inherited fClienteBusca: TfClienteBusca
         Visible = False
       end>
     DataSource = dsCliente
+    OnCellClick = DBGrid1CellClick
   end
   object dsCliente: TDataSource[3]
     DataSet = dmPdv.sqBusca

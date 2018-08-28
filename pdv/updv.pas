@@ -7,7 +7,8 @@ interface
 uses
   Classes, SysUtils, db, FileUtil, SynEdit, RTTICtrls, Forms, Controls,
   Graphics, Dialogs, ExtCtrls, StdCtrls, Buttons, MaskEdit, DBGrids, ActnList,
-  Menus, dateutils, uMovimento, uVendedorBusca, uClienteBusca, base64;
+  Menus, dateutils, uMovimento, uVendedorBusca, uClienteBusca, uPermissao,
+  base64, Grids;
 
 type
 
@@ -76,6 +77,8 @@ type
     edProdutoDesc: TMemo;
     lblSenha: TLabel;
     MenuItem1: TMenuItem;
+    MenuItem2: TMenuItem;
+    MenuItem3: TMenuItem;
     Panel1: TPanel;
     Panel10: TPanel;
     Panel11: TPanel;
@@ -115,6 +118,8 @@ type
     procedure btnVnd7Click(Sender: TObject);
     procedure btnVnd8Click(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
+    procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure edClienteChange(Sender: TObject);
     procedure edClienteKeyPress(Sender: TObject; var Key: char);
     procedure edPrecoChange(Sender: TObject);
@@ -123,7 +128,6 @@ type
     procedure edQtdeKeyPress(Sender: TObject; var Key: char);
     procedure edVendedorKeyPress(Sender: TObject; var Key: char);
     procedure FlowPanel1Click(Sender: TObject);
-    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormShow(Sender: TObject);
     procedure Image1Click(Sender: TObject);
     procedure Image2Click(Sender: TObject);
@@ -137,6 +141,8 @@ type
     proDesc: String;
     num_pedido: String;
     preco: Double;
+    precoAtacado: Double;
+    qtdeAtacado: Double;
     estoque: Double;
     caixa_local: Integer; // Sessao Caixa
     codCliente: Integer;
@@ -145,6 +151,7 @@ type
     codMov: Integer;
     codDet: Integer;
     qtde_ped: Integer;
+    num_item: Integer;
     procedure abrePedido(apCodMov: Integer);
     procedure iniciarVenda();
     procedure registrar_item();
@@ -218,6 +225,23 @@ begin
     edDesconto.Text:= FloatToStr(dmPdv.sqLancamentosDESCONTO.AsFloat);
     buscaVendedor(IntToStr(dmPdv.sqLancamentosCODVENDEDOR.AsInteger));
     preencherDescItem(dmPdv.sqLancamentosDESCPRODUTO.AsString);
+  end;
+end;
+
+procedure TfPdv.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
+  DataCol: Integer; Column: TColumn; State: TGridDrawState);
+var bmp: TBitmap;
+begin
+  bmp := TBitmap.Create;
+  try
+    bmp.LoadFromFile('atacado.bmp');
+    if  dmPdv.sqLancamentosII.AsFloat > 0 then
+    begin
+      if Column.Title.Caption = 'Preço' then
+        DBGrid1.Canvas.Draw(Rect.Left, Rect.Top, bmp);
+    end;
+  finally
+    bmp.Free;
   end;
 end;
 
@@ -299,7 +323,10 @@ end;
 
 procedure TfPdv.acExcluirItemPedidoExecute(Sender: TObject);
 begin
-  //fExcluirItemPedido.ShowModal;
+  fPermissao.permCodMov:=codMov;
+  fPermissao.ShowModal;
+  buscaPedidosAbertoCaixa(codMov);
+  calculaTotalGeral();
 end;
 
 procedure TfPdv.acNovaExecute(Sender: TObject);
@@ -319,7 +346,6 @@ end;
 
 procedure TfPdv.acProcurarExecute(Sender: TObject);
 begin
-  fMovimentoProc.acBuscar.Execute;
   fMovimentoProc.ShowModal;
   if (fMovimentoProc.codMovimentoProc > 0) then
   begin
@@ -523,6 +549,8 @@ begin
       codproduto := fProdutoProc.codProduto;
       codPro     := fProdutoProc.codProd;
       preco      := fProdutoProc.precoVenda;
+      precoAtacado:=fProdutoProc.precoVendaAtacado;
+      qtdeAtacado:= fProdutoProc.qtdeAtacado;
       estoque    := fProdutoProc.estoque;
       proDesc    := fProdutoProc.produto;
       //edProdutoDescX.Text := proDesc;
@@ -584,11 +612,6 @@ begin
 
 end;
 
-procedure TfPdv.FormClose(Sender: TObject; var CloseAction: TCloseAction);
-begin
-
-end;
-
 procedure TfPdv.FormShow(Sender: TObject);
 begin
   // TODO - carregar caixa logado na varivel abaixo
@@ -639,6 +662,7 @@ begin
   dmPdv.sqLancamentos.Open;
   edProduto.Enabled := True;
   codMov := apCodMov;
+  //lblNumItem.Caption := IntToStr(dmpdv.sqLancamentos.RecordCount);
   codDet:=dmPdv.sqLancamentosCODDETALHE.AsInteger;
   edProduto.Text := dmPdv.sqLancamentosCODPRO.AsString;
   //edProdutoDescX.Text:= dmPdv.sqLancamentosDESCPRODUTO.AsString;
@@ -697,13 +721,14 @@ procedure TfPdv.registrar_item();
 begin
   FMov := TMovimento.Create;
   Try
-    lblNumItem.Caption := IntToStr(StrToInt(lblNumItem.Caption) + 1);
+    //lblNumItem.Caption := IntToStr(StrToInt(lblNumItem.Caption) + 1);
     dmPdv.sTrans.Active := True;
     // TODO - Tratar as variaveis abaixo
-    FMov.MovDetalhe.CodMov        := codMov;
-    FMov.MovDetalhe.CodProduto    := codproduto;
-    FMov.MovDetalhe.Descricao     := proDesc;
-    FMov.MovDetalhe.Qtde          := StrToFloat(edQtde.Text);
+    FMov.MovDetalhe.CodMov     := codMov;
+    FMov.MovDetalhe.CodProduto := codproduto;
+    FMov.MovDetalhe.Descricao  := proDesc;
+    FMov.MovDetalhe.nItem      := num_item;
+    FMov.MovDetalhe.Qtde       := StrToFloat(edQtde.Text);
     if (edDesconto.Text <> '') then
       FMov.MovDetalhe.Desconto := StrToFloat(edDesconto.Text);
     FMov.MovDetalhe.Preco         := StrToFloat(edPreco.Text);
@@ -733,7 +758,17 @@ begin
     FMov.MovDetalhe.CodMov := codMov;
     fMov.MovDetalhe.CodDet := codDet;
     FMov.MovDetalhe.Qtde   := StrToFloat(edQtde.Text);
-    FMov.MovDetalhe.Preco  := StrToFloat(edPreco.Text);
+    if (StrToFloat(edQtde.Text) >= qtdeAtacado) then
+    begin
+      FMov.MovDetalhe.Ii    := preco;
+      FMov.MovDetalhe.Preco := precoAtacado;
+      edPreco.Text := FloatToStr(precoAtacado);
+    end
+    else begin
+      FMov.MovDetalhe.Ii    := 0;
+      FMov.MovDetalhe.Preco := StrToFloat(edPreco.Text);
+    end;
+    FMov.MovDetalhe.Status := '0';
     fMov.MovDetalhe.alterarMovDet();
     dmPdv.sTrans.Commit;
     dmPdv.sqLancamentos.Close;
@@ -797,26 +832,31 @@ end;
 procedure TfPdv.calculaTotalGeral();
 var vTotGeral: Double;
    num_linha: Integer;
-   qtde_itens: Integer;
+   //qtde_itens: Integer;
 begin
   vTotGeral := 0;
-  qtde_itens := 0;
+  num_item := 0;
   num_linha := dmPdv.sqLancamentos.RecNo;
+  if not dmPdv.sqLancamentos.Active then
+    dmPdv.sqLancamentos.Open;
   dmPdv.sqLancamentos.DisableControls;
   //dmPdv.sqLancamentos.Open;
   dmPdv.sqLancamentos.First;
   while not dmPdv.sqLancamentos.EOF do
   begin
     vTotGeral += dmPdv.sqLancamentosVALTOTAL.AsFloat;
-    qtde_itens += 1;
+    num_item := dmPdv.sqLancamentosNITEMPED.AsInteger;
+    num_item += 1;
     dmPdv.sqLancamentos.Next;
   end;
+  if num_item = 0 then
+    num_item := 1;
   if (num_linha > 0) then
   begin
     dmPdv.sqLancamentos.RecNo := num_linha;
     edTotalGeral.Text := FloatToStr(vTotGeral);
-    lblNumItem.Caption:= IntToStr(qtde_itens);
   end;
+  lblNumItem.Caption:= IntToStr(num_item-1);
   dmPdv.sqLancamentos.EnableControls;
 end;
 
