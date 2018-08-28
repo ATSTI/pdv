@@ -39,7 +39,7 @@
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="17">
+    <Units Count="19">
       <Unit0>
         <Filename Value="prjPDV.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -153,9 +153,26 @@
         <Filename Value="updv2.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form1"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uPdv2"/>
       </Unit16>
+      <Unit17>
+        <Filename Value="upermissao.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fPermissao"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uPermissao"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="uexcluiritem.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form2"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uExcluirItem"/>
+      </Unit18>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
