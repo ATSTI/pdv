@@ -25,6 +25,7 @@ object fPermissao: TfPermissao
     EditLabel.ParentColor = False
     PasswordChar = '*'
     TabOrder = 0
+    OnKeyPress = edSenhaKeyPress
   end
   object btnLogin: TBitBtn
     Left = 224

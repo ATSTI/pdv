@@ -6,12 +6,13 @@ object fExclusao: TfExclusao
   Caption = 'Exclusão'
   ClientHeight = 309
   ClientWidth = 592
+  OnShow = FormShow
   LCLVersion = '1.8.4.0'
   object edItemExcluir: TLabeledEdit
     Left = 128
     Height = 23
     Top = 56
-    Width = 192
+    Width = 170
     EditLabel.AnchorSideLeft.Control = edItemExcluir
     EditLabel.AnchorSideRight.Control = edItemExcluir
     EditLabel.AnchorSideRight.Side = asrBottom
@@ -19,7 +20,7 @@ object fExclusao: TfExclusao
     EditLabel.Left = 128
     EditLabel.Height = 15
     EditLabel.Top = 38
-    EditLabel.Width = 192
+    EditLabel.Width = 170
     EditLabel.Caption = 'Cód. Item Excluir'
     EditLabel.ParentColor = False
     TabOrder = 0
@@ -42,21 +43,22 @@ object fExclusao: TfExclusao
     EditLabel.Caption = 'Número do Pedido a Excluir'
     EditLabel.ParentColor = False
     TabOrder = 2
+    OnKeyPress = edPedidoExcluirKeyPress
   end
   object btnExcluiItem: TBitBtn
-    Left = 339
+    Left = 312
     Height = 30
     Top = 53
-    Width = 75
+    Width = 102
     Caption = 'Excluir Item'
     OnClick = btnExcluiItemClick
     TabOrder = 1
   end
   object btnExcluirPedido: TBitBtn
-    Left = 336
+    Left = 312
     Height = 30
     Top = 153
-    Width = 75
+    Width = 102
     Caption = 'Excluir Pedido'
     OnClick = btnExcluirPedidoClick
     TabOrder = 3

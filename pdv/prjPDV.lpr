@@ -9,7 +9,8 @@ uses
   Interfaces, // this includes the LCL widgetset
   Forms, runtimetypeinfocontrols, datetimectrls, uPdv, updv_rec, uMovimento,
   uMovimentoDetalhe, udmpdv, uprodutoproc, uMovimentoProc, uvenda, uRecebimento,
-  uExecutaIntegracao, uLogin, uVendedorBusca, uClienteBusca, uSenhaNova, uPdv2;
+  uExecutaIntegracao, uLogin, uVendedorBusca, uClienteBusca, uSenhaNova, uPdv2,
+  uPermissao, uExcluirItem, uNfce;
 
 {$R *.res}
 
@@ -27,6 +28,9 @@ begin
   Application.CreateForm(TfVendedorBusca, fVendedorBusca);
   Application.CreateForm(TfClienteBusca, fClienteBusca);
   Application.CreateForm(TfSenhaNova, fSenhaNova);
+  Application.CreateForm(TfPermissao, fPermissao);
+  Application.CreateForm(TfExclusao, fExclusao);
+  Application.CreateForm(TfNfce, fNfce);
   Application.Run;
 end.
 

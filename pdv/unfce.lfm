@@ -1,0 +1,285 @@
+object fNfce: TfNfce
+  Left = 423
+  Height = 405
+  Top = 210
+  Width = 655
+  Caption = 'Nota Fiscal Consumidor'
+  ClientHeight = 405
+  ClientWidth = 655
+  OnShow = FormShow
+  LCLVersion = '1.8.4.0'
+  object edCPF: TMaskEdit
+    Left = 120
+    Height = 34
+    Top = 56
+    Width = 184
+    CharCase = ecNormal
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -19
+    Font.Name = 'Comic Sans MS'
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
+    MaxLength = 14
+    ParentFont = False
+    TabOrder = 0
+    EditMask = '999.999.999-99;1;_'
+    Text = '   .   .   -  '
+    SpaceChar = '_'
+  end
+  object btnNFce: TBitBtn
+    Left = 40
+    Height = 70
+    Top = 112
+    Width = 151
+    Caption = 'Nota Fiscal'
+    OnClick = btnNFceClick
+    TabOrder = 1
+  end
+  object Label1: TLabel
+    Left = 121
+    Height = 15
+    Top = 40
+    Width = 24
+    Caption = 'CPF '
+    ParentColor = False
+  end
+  object btnFechar: TBitBtn
+    Left = 400
+    Height = 70
+    Top = 112
+    Width = 91
+    Caption = 'Fechar'
+    TabOrder = 2
+  end
+  object btnNFce1: TBitBtn
+    Left = 216
+    Height = 70
+    Top = 112
+    Width = 151
+    Caption = 'Imprimir'
+    Glyph.Data = {
+      76020000424D7602000000000000760000002800000020000000200000000100
+      0400000000000002000000000000000000001000000000000000000000000000
+      8000008000000080800080000000800080008080000080808000C0C0C0000000
+      FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00888888888888
+      8888888888888888888888888888888888888888888888888888800000000000
+      0000000000000000008880777777777777777777777777777088070000000000
+      000000000000000000080F7777777777777777777777777777080F7777777777
+      777777777777777777080F77F7F7F7F7F7F7F7F7F7F7F77777080F77FFFFFFFF
+      FFFFFFFFFFFFF77777080F7777777777777777777777F77777080F7700000000
+      000000000000F72277080F777777777777777777777777AA77080F7777777777
+      777777777777777777080F7F7F7F7F7F7F7F7F7F7F7F7F7F7F080FFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFF080F77777777777777777777777777770880F700000000
+      0000000000000777708880F87088888888888888880077777088880F808F8F8F
+      8F8F8F8F8F0777770888880880FFFFFFFFFFFFFFFF0777770888888000FFFFFF
+      FFFFFFFFFF0000008888888880FFFFFFFFFFFFFFFF0888888888888880FFFFFF
+      FFFFFFFFFF0888888888888880FFFFFFFFFFFF88880888888888888880FFFFFF
+      FFFFF700070888888888888880FFFFFFFFFFF7FFF08888888888888880FFFFFF
+      FFFFF7FF088888888888888880FFFFFFFFFFF7F0888888888888888880FFFFFF
+      FFFFF70888888888888888888000000000000088888888888888888888888888
+      8888888888888888888888888888888888888888888888888888
+    }
+    TabOrder = 3
+  end
+  object edCertificado: TLabeledEdit
+    Left = 364
+    Height = 23
+    Top = 59
+    Width = 180
+    EditLabel.AnchorSideLeft.Control = edCertificado
+    EditLabel.AnchorSideRight.Control = edCertificado
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = edCertificado
+    EditLabel.Left = 364
+    EditLabel.Height = 15
+    EditLabel.Top = 41
+    EditLabel.Width = 180
+    EditLabel.Caption = 'Certificado'
+    EditLabel.ParentColor = False
+    TabOrder = 4
+  end
+  object BitBtn1: TBitBtn
+    Left = 544
+    Height = 24
+    Top = 59
+    Width = 28
+    Glyph.Data = {
+      AA030000424DAA03000000000000360000002800000011000000110000000100
+      18000000000074030000C40E0000C40E00000000000000000000FEFCFBFFFDFB
+      FCFEF8F8FFF7F9FFF9F6FDF6FBFDFCFFFCFEFFF7FEFFF5FDFFF6FDFFF7FCFFF9
+      FFFEF7FEFEFAFEFEF9FFFBF6FF00F9FAF8FBFBFBF7F9F8FBFEFBF5F6FBFAFAFC
+      FAF7FBFDF4FEFEF8FEFFFFFFFFFFFFFCF8F8FBF9FAFEFBFEFBF7FDFEF9FFFDF8
+      FF00F5FDF7F5FCF9FAFCFEFEFDFFFAF6FDF8F5FDFAF9FEFAF9FAFFFFFF828181
+      AFB3AFFFFFFFFAFCF8FCFDFEFAF9FEFCF8FFFFFBFF00FBFFFFFBFFFFFFFFFFFF
+      FFFFFFFFFFFCFFFFFDFFFFFCFFFA61896112500F1F451AD9D8D9FFFFFFFFFFFF
+      F8FCFDFBFBFEFEFBFF00748174545C53545554605E624E5651546E523573350C
+      680D18961247F3411770143348342D4A30BCCDC0FCFFFEF5F8F9F7F8FE00858D
+      7D93968DD3CFCD6E6C69B5C6B272A36E2C892824B31F22F31B15FF1027B5253E
+      5C3F4A704E95AB97FFFFFFF2F9F6F8FAFF0086A08DD2D9D4EBE4E7EDE6EAF7FE
+      ECBFE3B245A33E53DF4E34DF2F18CA143CD83736A03D05180BC5D1D1FFFFFEF8
+      FAEDF6FEF4006B917B929E99FAF8FB917785857870637B503071293F99391B60
+      1A6AAD6432B22F2BC837002900AFBAB9FFFFFFFEFCEFF8FFEC0090A389E7E8DE
+      F9F3F5F0D8E7F6E7E7ECF7D9EFFEDC9BBF8BB4D8A9FAFFF5C4F5CA319E3664CB
+      521F361FFFFFFFF9FBFFFDFCFB00909076A5A496FBF4F78076856E646A7B756D
+      73715D8C8B74FAF2F9FFFAFFF6FFFD91CA8F6AC74535922175907DFEFFFFFFF7
+      FF00A09981E1E5D6ECF8F6EAFCFFFFFFFFEAE5E9DCCED1FFFFFF957B85D5C5D2
+      FFFFFFC7D7BB64A154309524398C3EAFD1B9FFFDFF00918E7C97A79A8CB0AD63
+      95959ABBBD7C7F8361464BAB868D825F6CAB98A686837C969C8850705C6AB073
+      408E3B598B52FFFFFF00979B92B7D2C977B0A75AA19B09413C95A8A49E9795EB
+      DCDAE7DDDB71716C989C8DDADDD46A7182A0B7B3C0E4BC35692783A580007D8B
+      8499BEB371AC9F6FB8AA7BB4A7DAF0ECFFFFFFFFFFFEFFFFF8F5FFF4FFFFFFB7
+      BEBE35373BB8B6C0FFFFFFC4D9C424521D0087958EA0BBAEA7D1C280AFA2C9F0
+      E2D9EDE7EDF3EEEAEEE2E8F1E6E2F8E7D6ECE5D9E6E27B8070ADA6ABFFFFFFFB
+      FEFFFBFFF8008F968ABFCDBEDDF3E095AB9CD4E6DAADB4B1CBCFCEB5BCBAA9B9
+      B0BCD7C5A0B9AAD6E8D74A5442B0AEA9FFFFFFF4F5F7F0FCF7008B8D7B8A8C79
+      979A858789789593898C888897939B7E81898B97977B91887B947B91A58B636C
+      65CBD0C6FFFFFAF9F8F7FEF6FF00
+    }
+    OnClick = BitBtn1Click
+    TabOrder = 5
+  end
+  object edNFce: TLabeledEdit
+    Left = 16
+    Height = 23
+    Top = 56
+    Width = 80
+    EditLabel.AnchorSideLeft.Control = edNFce
+    EditLabel.AnchorSideRight.Control = edNFce
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = edNFce
+    EditLabel.Left = 16
+    EditLabel.Height = 15
+    EditLabel.Top = 38
+    EditLabel.Width = 80
+    EditLabel.Caption = 'Num. NFe'
+    EditLabel.ParentColor = False
+    Enabled = False
+    TabOrder = 6
+  end
+  object PageControl1: TPageControl
+    Left = 9
+    Height = 209
+    Top = 191
+    Width = 641
+    ActivePage = TabSheet2
+    TabIndex = 1
+    TabOrder = 7
+    object TabSheet1: TTabSheet
+      Caption = 'Retorno'
+      ClientHeight = 181
+      ClientWidth = 633
+      object MemoResp: TMemo
+        Left = 12
+        Height = 168
+        Top = 8
+        Width = 573
+        TabOrder = 0
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'Envio'
+      ClientHeight = 181
+      ClientWidth = 633
+      object MemoDados: TMemo
+        Left = 8
+        Height = 171
+        Top = 6
+        Width = 617
+        TabOrder = 0
+      end
+    end
+  end
+  object ACBrNFe1: TACBrNFe
+    Configuracoes.Geral.SSLLib = libNone
+    Configuracoes.Geral.SSLCryptLib = cryNone
+    Configuracoes.Geral.SSLHttpLib = httpNone
+    Configuracoes.Geral.SSLXmlSignLib = xsNone
+    Configuracoes.Geral.FormatoAlerta = 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.'
+    Configuracoes.Geral.VersaoDF = ve400
+    Configuracoes.Geral.VersaoQRCode = veqr000
+    Configuracoes.Arquivos.OrdenacaoPath = <>
+    Configuracoes.WebServices.UF = 'SP'
+    Configuracoes.WebServices.AguardarConsultaRet = 0
+    Configuracoes.WebServices.QuebradeLinha = '|'
+    left = 306
+    top = 9
+  end
+  object ACBrNFeDANFeESCPOS1: TACBrNFeDANFeESCPOS
+    MostrarPreview = True
+    MostrarStatus = True
+    TipoDANFE = tiSemGeracao
+    NumCopias = 1
+    ImprimeNomeFantasia = False
+    ImprimirDescPorc = False
+    ImprimirTotalLiquido = True
+    MargemInferior = 0.8
+    MargemSuperior = 0.8
+    MargemEsquerda = 0.6
+    MargemDireita = 0.51
+    CasasDecimais.Formato = tdetInteger
+    CasasDecimais._qCom = 2
+    CasasDecimais._vUnCom = 2
+    CasasDecimais._Mask_qCom = ',0.00'
+    CasasDecimais._Mask_vUnCom = ',0.00'
+    ExibirResumoCanhoto = False
+    FormularioContinuo = False
+    TamanhoFonte_DemaisCampos = 8
+    ProdutosPorPagina = 0
+    ImprimirDetalhamentoEspecifico = True
+    NFeCancelada = False
+    ImprimirItens = True
+    vTroco = 0
+    ViaConsumidor = True
+    TamanhoLogoHeight = 0
+    TamanhoLogoWidth = 0
+    RecuoEndereco = 0
+    RecuoEmpresa = 0
+    LogoemCima = False
+    TamanhoFonteEndereco = 0
+    RecuoLogo = 0
+    vTribFed = 0
+    vTribEst = 0
+    vTribMun = 0
+    left = 424
+    top = 9
+  end
+  object ACBrNFeDANFCeFortes1: TACBrNFeDANFCeFortes
+    MostrarPreview = True
+    MostrarStatus = True
+    TipoDANFE = tiSemGeracao
+    NumCopias = 1
+    ImprimeNomeFantasia = False
+    ImprimirDescPorc = False
+    ImprimirTotalLiquido = True
+    MargemInferior = 0.8
+    MargemSuperior = 0.8
+    MargemEsquerda = 0.6
+    MargemDireita = 0.51
+    CasasDecimais.Formato = tdetInteger
+    CasasDecimais._qCom = 2
+    CasasDecimais._vUnCom = 2
+    CasasDecimais._Mask_qCom = ',0.00'
+    CasasDecimais._Mask_vUnCom = ',0.00'
+    ExibirResumoCanhoto = False
+    FormularioContinuo = False
+    TamanhoFonte_DemaisCampos = 8
+    ProdutosPorPagina = 0
+    ImprimirDetalhamentoEspecifico = True
+    NFeCancelada = False
+    ImprimirItens = True
+    vTroco = 0
+    ViaConsumidor = True
+    TamanhoLogoHeight = 0
+    TamanhoLogoWidth = 0
+    RecuoEndereco = 0
+    RecuoEmpresa = 0
+    LogoemCima = False
+    TamanhoFonteEndereco = 0
+    RecuoLogo = 0
+    vTribFed = 0
+    vTribEst = 0
+    vTribMun = 0
+    left = 490
+    top = 11
+  end
+end

@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, Buttons, DBGrids, MaskEdit, ActnList, Menus, udmpdv, uvenda,
-  uRecebimento, uClienteBusca, sqldb, db;
+  uRecebimento, uClienteBusca, uNfce, sqldb, db;
 
 type
 
@@ -24,6 +24,7 @@ type
     acFechar: TAction;
     acDinheiro: TAction;
     acExcluirLancamento: TAction;
+    acCancelaFechamento: TAction;
     ActionList1: TActionList;
     BitBtn1: TBitBtn;
     BitBtn10: TBitBtn;
@@ -81,6 +82,7 @@ type
     edRestante: TMaskEdit;
     edTroco: TMaskEdit;
     MenuItem1: TMenuItem;
+    MenuItem2: TMenuItem;
     Panel1: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
@@ -89,6 +91,7 @@ type
     sqPagamento: TSQLQuery;
     sqPagamentoCAIXA: TSmallintField;
     sqPagamentoCAIXINHA: TFloatField;
+    sqPagamentoCODFORMA: TLongintField;
     sqPagamentoCOD_VENDA: TLongintField;
     sqPagamentoDESCONTO: TFloatField;
     sqPagamentoFORMA_PGTO: TStringField;
@@ -97,6 +100,7 @@ type
     sqPagamentoSTATE: TSmallintField;
     sqPagamentoTROCO: TFloatField;
     sqPagamentoVALOR_PAGO: TFloatField;
+    procedure acCancelaFechamentoExecute(Sender: TObject);
     procedure acCartaoCreditoExecute(Sender: TObject);
     procedure acCartaoDebitoExecute(Sender: TObject);
     procedure acChequeExecute(Sender: TObject);
@@ -114,6 +118,7 @@ type
     procedure BitBtn20Click(Sender: TObject);
     procedure BitBtn21Click(Sender: TObject);
     procedure BitBtn22Click(Sender: TObject);
+    procedure BitBtn25Click(Sender: TObject);
     procedure BitBtn26Click(Sender: TObject);
     procedure BitBtn27Click(Sender: TObject);
     procedure btnDescontoPercentClick(Sender: TObject);
@@ -122,6 +127,7 @@ type
     procedure btnDscClick(Sender: TObject);
     procedure edPagamentoKeyPress(Sender: TObject; var Key: char);
     procedure edVDescontoKeyPress(Sender: TObject; var Key: char);
+    procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
     vCodVenda: Integer;
@@ -130,7 +136,6 @@ type
     vValorPago: Double;
     vValorVenda: Double;
     vResto: Double;
-    vDesconto: Double;
     vTroco: Double;
     function RemoveAcento(Str: string): string;
     procedure calcula_total;
@@ -149,6 +154,7 @@ type
     vVendedorNome: String;
     vCliente: Integer;
     vCodMovimento: Integer;
+    vDesconto : Double;
   end;
 
 var
@@ -171,7 +177,7 @@ begin
   vResto := vValorVenda;
   num_doc := 0;
   vValorTotal := 0;
-  edvDesconto.Text:='';
+  edvDesconto.Text := FormatFloat('#,,,0.00',vDesconto);
   vDesconto:=0;
   lblForma.Caption:='1-Dinheiro';
   vCodVenda := 0;
@@ -239,7 +245,7 @@ begin
   begin
     edPagamento.SetFocus;
   end;
-  if (vStatus = 1) then
+  if ((vStatus = 1) and (vResto < 0.009)) then
   begin
     edValorPago.Color := clSilver;
     edVDesconto.Color := clSilver;
@@ -270,6 +276,7 @@ procedure TfPDV_Rec.registra_valores(v_vlr: Double);
 var
   fVnd : TVenda;
   vTeste: Integer;
+  codForma: Integer;
 begin
   if vStatus = 1 then
   begin
@@ -302,8 +309,17 @@ begin
       fVnd.Free;
     end;
   end;
+  if (dmPdv.sqGenerator.Active) then
+    dmPdv.sqGenerator.Close;
+  dmPdv.sqGenerator.SQL.Clear;
+  dmPdv.sqGenerator.SQL.Text := 'SELECT CAST(GEN_ID(GEN_FORMA, 1) AS INTEGER) ' +
+    'AS CODIGO FROM RDB$DATABASE';
+  dmPdv.sqGenerator.Open;
+  codForma := dmPdv.sqGenerator.Fields[0].AsInteger;
+  dmPdv.sqGenerator.Close;
   sqPagamento.Open;
   sqPagamento.Insert;
+  sqPagamentoCODFORMA.AsInteger  := codForma;
   sqPagamentoCAIXA.AsInteger     := num_doc;
   sqPagamentoCOD_VENDA.AsInteger := vCodVenda;
   sqPagamentoFORMA_PGTO.AsString := Copy(lblForma.Caption,1,1);
@@ -499,7 +515,11 @@ begin
       else if lFile[i] = 'cep' then
         Writeln(Impressora, cep)
       else if lFile[i] = 'fone' then
-        Writeln(Impressora, fone)
+      begin
+        Writeln(Impressora, fone);
+        Writeln(IMPRESSORA);
+        Writeln(impressora, 'Usuario: ' + dmpdv.nomeLogado);
+      end
       else if lFile[i] = 'cliente' then
         Writeln(Impressora, clientecupom)
       else if lFile[i] = 'doc' then
@@ -531,10 +551,12 @@ begin
       begin
         linhaTxt := Copy(lFile[i],2,Length(lFile[i])-1);
         Writeln(Impressora, linhaTxt + FormatFloat('#,,,0.00',vValorPago));
+        Writeln(Impressora);
+        Writeln(Impressora,  'Troco: ' + FormatFloat('#,,,0.00',sqPagamentoTROCO.AsFloat));
       end
       else if linhaTxt = 'V' then
       begin
-        linhaTxt := Copy(lFile[i],2,Length(lFile[i])-1);
+        linhaTxt := 'Pedido: ' + IntToStr(dmPdv.sqLancamentosCODMOVIMENTO.AsInteger);  // Copy(lFile[i],2,Length(lFile[i])-1);
         Writeln(Impressora, linhaTxt);
       end
       else
@@ -576,6 +598,11 @@ begin
       btnDsc.Click;
     end;
   end;
+end;
+
+procedure TfPDV_Rec.FormCreate(Sender: TObject);
+begin
+  vDesconto := 0;
 end;
 
 procedure TfPDV_Rec.BitBtn9Click(Sender: TObject);
@@ -637,29 +664,32 @@ end;
 
 procedure TfPDV_Rec.acExcluirLancamentoExecute(Sender: TObject);
 begin
-  if sqPagamento.Active then
+  if MessageDlg('Confirma:', 'Confirma a exclusão do lançamento: ' +
+    sqPagamentoN_DOC.AsString , mtConfirmation,
+    [mbYes, mbNo, mbIgnore],0) = mrYes then
   begin
-    sqPagamento.Edit;
-    sqPagamentoSTATE.AsInteger := 2;
-    sqPagamento.ApplyUpdates;
-    dmPdv.sTrans.Commit;
-    calcula_total;
+    if sqPagamento.Active then
+    begin
+      sqPagamento.Edit;
+      sqPagamentoSTATE.AsInteger := 2;
+      sqPagamento.ApplyUpdates;
+      dmPdv.sTrans.Commit;
+      calcula_total;
+    end;
   end;
 end;
 
 procedure TfPDV_Rec.acFecharExecute(Sender: TObject);
 begin
-  if vStatus = 1 then
-  begin
-    Close;
-  end;
-
   if (vResto > 0.009) then
   begin
     ShowMessage('Informe o Pagamento.');
     Exit;
   end;
-  encerra_venda();
+  if vStatus = 0 then
+  begin
+    encerra_venda();
+  end;
   imprimirTxt();
   Close;
 end;
@@ -709,6 +739,29 @@ begin
   edPagamento.SetFocus;
 end;
 
+procedure TfPDV_Rec.acCancelaFechamentoExecute(Sender: TObject);
+begin
+  sqPagamento.First;
+  While not sqPagamento.EOF do
+  begin
+    if sqPagamentoSTATE.AsInteger < 2 then
+    begin
+      ShowMessage('Cancele pagamentos ativos, primeiro (F12)');
+      Exit;
+    end;
+    sqPagamento.Next;
+  end;
+  if (edValorPago.Text = '0,00') then
+  begin
+    //dmPdv.IbCon.ExecuteDirect('UPDATE FORMA_ENTRADA SET STATE = 2 ' +
+    //  ' WHERE CODFORMA = ' + IntToStr(sqPagamentoCODFORMA.AsInteger));
+    dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET STATUS = 0 ' +
+      ' WHERE CODMOVIMENTO  = ' + IntToStr(vCodMovimento));
+    dmPdv.sTrans.Commit;
+    vStatus := 0;
+  end;
+end;
+
 procedure TfPDV_Rec.BitBtn20Click(Sender: TObject);
 begin
 
@@ -724,6 +777,15 @@ begin
   fClienteBusca.ShowModal;
   edCliente.Text := fClienteBusca.cNomeCliente;
   vCliente := fClienteBusca.cCodCliente;
+end;
+
+procedure TfPDV_Rec.BitBtn25Click(Sender: TObject);
+begin
+  if vStatus = 0 then
+  begin
+    encerra_venda();
+  end;
+  fNfce.ShowModal;
 end;
 
 procedure TfPDV_Rec.BitBtn26Click(Sender: TObject);

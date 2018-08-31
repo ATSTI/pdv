@@ -1,0 +1,12 @@
+V  CUPOM PEDIDO
+
+empresa
+logradouro
+cep
+fone
+----------------------------------------
+doc
+----------------------------------------
+  Produto       Un.     Qtde   V.Un.  V.Total 
+itens
+T   Total.:                   R$         

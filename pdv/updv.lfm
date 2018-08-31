@@ -11412,13 +11412,13 @@ object fPdv: TfPdv
         ParentFont = False
         TabOrder = 0
       end
-      object BitBtn1: TBitBtn
+      object btnProdutoProc: TBitBtn
         Left = 208
         Height = 34
         Top = 32
         Width = 34
         Caption = '...'
-        OnClick = BitBtn1Click
+        OnClick = btnProdutoProcClick
         TabOrder = 1
       end
       object edQtde: TMaskEdit
@@ -11428,6 +11428,7 @@ object fPdv: TfPdv
         Width = 127
         Alignment = taRightJustify
         CharCase = ecNormal
+        Enabled = False
         Font.CharSet = ANSI_CHARSET
         Font.Height = -19
         Font.Name = 'Comic Sans MS'
@@ -11454,6 +11455,15 @@ object fPdv: TfPdv
         Font.Quality = fqDraft
         ParentColor = False
         ParentFont = False
+      end
+      object BitBtn4: TBitBtn
+        Left = 208
+        Height = 34
+        Top = 69
+        Width = 34
+        Caption = '... F5'
+        OnClick = BitBtn4Click
+        TabOrder = 3
       end
     end
     object Panel7: TPanel
@@ -11487,6 +11497,14 @@ object fPdv: TfPdv
         WordWrap = False
       end
     end
+    object lblMSG: TLabel
+      Left = 10
+      Height = 15
+      Top = 498
+      Width = 9
+      Caption = '...'
+      ParentColor = False
+    end
   end
   object Panel4: TPanel
     Left = 320
@@ -11509,6 +11527,12 @@ object fPdv: TfPdv
       Color = clWindow
       Columns = <      
         item
+          MaxSize = 50
+          Title.Caption = 'N.'
+          Width = 50
+          FieldName = 'NITEMPED'
+        end      
+        item
           MaxSize = 140
           Title.Caption = 'Código'
           Width = 120
@@ -11518,7 +11542,7 @@ object fPdv: TfPdv
           MinSize = 200
           MaxSize = 600
           Title.Caption = 'Descrição'
-          Width = 400
+          Width = 300
           FieldName = 'DESCPRODUTO'
         end      
         item
@@ -11532,7 +11556,7 @@ object fPdv: TfPdv
           MaxSize = 120
           Title.Alignment = taRightJustify
           Title.Caption = 'Quant.'
-          Width = 123
+          Width = 100
           FieldName = 'QUANTIDADE'
         end      
         item
@@ -11540,7 +11564,7 @@ object fPdv: TfPdv
           MaxSize = 120
           Title.Alignment = taRightJustify
           Title.Caption = 'Preço'
-          Width = 123
+          Width = 100
           FieldName = 'PRECO'
           DisplayFormat = ',##0.00'
         end      
@@ -11549,8 +11573,8 @@ object fPdv: TfPdv
           MaxSize = 140
           Title.Alignment = taRightJustify
           Title.Caption = 'Total'
-          Width = 126
-          FieldName = 'VALTOTAL'
+          Width = 100
+          FieldName = 'TOTALITEM'
         end>
       DataSource = dsLanc
       Font.Height = -19
@@ -11568,25 +11592,25 @@ object fPdv: TfPdv
     end
     object pnInfo: TPanel
       Left = 35
-      Height = 210
+      Height = 322
       Top = 102
-      Width = 332
-      ClientHeight = 210
-      ClientWidth = 332
+      Width = 540
+      ClientHeight = 322
+      ClientWidth = 540
       TabOrder = 1
       Visible = False
       object lblSenha: TLabel
-        Left = 40
+        Left = 32
         Height = 15
-        Top = 176
+        Top = 297
         Width = 12
         Caption = '....'
         ParentColor = False
       end
       object BitBtn9: TBitBtn
-        Left = 256
+        Left = 480
         Height = 40
-        Top = 156
+        Top = 272
         Width = 51
         Glyph.Data = {
           76020000424D7602000000000000760000002800000020000000200000000100
@@ -11620,6 +11644,17 @@ object fPdv: TfPdv
         Width = 152
         Caption = 'PDV Versão : 1.0 - 01/08/2018'
         ParentColor = False
+      end
+      object Memo1: TMemo
+        Left = 35
+        Height = 237
+        Top = 51
+        Width = 429
+        Lines.Strings = (
+          'NFCe : Cadastrar em Séries o Cod. Usuário no Campo'
+          'CodSerie, esta série será usada para Gerar as NFCes.'
+        )
+        TabOrder = 1
       end
     end
     object Panel9: TPanel
@@ -11770,20 +11805,12 @@ object fPdv: TfPdv
       ParentColor = False
       ParentFont = False
     end
-    object edDesconto: TEdit
-      Left = 136
-      Height = 15
-      Top = 38
-      Width = 83
-      BorderStyle = bsNone
-      TabOrder = 1
-    end
     object Label16: TLabel
-      Left = 13
+      Left = 32
       Height = 15
-      Top = 39
-      Width = 50
-      Caption = 'Desconto'
+      Top = 34
+      Width = 53
+      Caption = 'Desconto:'
       ParentColor = False
     end
     object cbPercentual: TCheckBox
@@ -11792,7 +11819,27 @@ object fPdv: TfPdv
       Top = 37
       Width = 30
       Caption = '%'
+      TabOrder = 1
+    end
+    object edDesconto: TMaskEdit
+      Left = 104
+      Height = 18
+      Top = 34
+      Width = 112
+      Alignment = taRightJustify
+      BorderStyle = bsNone
+      CharCase = ecNormal
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -13
+      Font.Name = 'Comic Sans MS'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      MaxLength = 0
+      ParentFont = False
       TabOrder = 2
+      OnKeyPress = edDescontoKeyPress
+      Text = '0,00'
+      SpaceChar = '_'
     end
   end
   object dsLanc: TDataSource
@@ -11809,6 +11856,7 @@ object fPdv: TfPdv
     end
     object acFechar: TAction
       OnExecute = acFecharExecute
+      ShortCut = 120
     end
     object acProcurar: TAction
       OnExecute = acProcurarExecute
@@ -11822,6 +11870,11 @@ object fPdv: TfPdv
       Caption = 'Exluir Item/Pedido-F12'
       OnExecute = acExcluirItemPedidoExecute
       ShortCut = 123
+    end
+    object acQuantidade: TAction
+      Caption = 'Alterar Quantidade'
+      OnExecute = acQuantidadeExecute
+      ShortCut = 116
     end
   end
   object PopupMenu1: TPopupMenu

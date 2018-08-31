@@ -6,6 +6,7 @@ object fPDV_Rec: TfPDV_Rec
   Caption = 'fPDV_Rec'
   ClientHeight = 547
   ClientWidth = 917
+  OnCreate = FormCreate
   OnShow = FormShow
   PopupMenu = PopupMenu1
   LCLVersion = '1.8.4.0'
@@ -92,6 +93,7 @@ object fPDV_Rec: TfPDV_Rec
         Top = 0
         Width = 75
         Caption = 'NFCe'
+        OnClick = BitBtn25Click
         TabOrder = 1
       end
       object edCliente: TMaskEdit
@@ -745,6 +747,11 @@ object fPDV_Rec: TfPDV_Rec
   object sqPagamento: TSQLQuery
     FieldDefs = <    
       item
+        Name = 'CODFORMA'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
         Name = 'COD_VENDA'
         DataType = ftInteger
         Precision = -1
@@ -799,7 +806,7 @@ object fPDV_Rec: TfPDV_Rec
     Database = dmPdv.IbCon
     Transaction = dmPdv.sTrans
     SQL.Strings = (
-      'SELECT COD_VENDA, ID_ENTRADA, FORMA_PGTO'
+      'SELECT CODFORMA, COD_VENDA, ID_ENTRADA, FORMA_PGTO'
       ', CAIXA , N_DOC, VALOR_PAGO, CAIXINHA,'
       'TROCO, DESCONTO, STATE'
       'FROM FORMA_ENTRADA'
@@ -921,6 +928,15 @@ object fPDV_Rec: TfPDV_Rec
       ReadOnly = False
       Required = False
     end
+    object sqPagamentoCODFORMA: TLongintField
+      FieldKind = fkData
+      FieldName = 'CODFORMA'
+      Index = 10
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      ReadOnly = False
+      Required = True
+    end
   end
   object dsPag: TDataSource
     DataSet = sqPagamento
@@ -980,12 +996,20 @@ object fPDV_Rec: TfPDV_Rec
       OnExecute = acExcluirLancamentoExecute
       ShortCut = 123
     end
+    object acCancelaFechamento: TAction
+      Caption = 'Cancelar Fechamento'
+      OnExecute = acCancelaFechamentoExecute
+      ShortCut = 122
+    end
   end
   object PopupMenu1: TPopupMenu
     left = 144
     top = 429
     object MenuItem1: TMenuItem
       Action = acExcluirLancamento
+    end
+    object MenuItem2: TMenuItem
+      Action = acCancelaFechamento
     end
   end
 end

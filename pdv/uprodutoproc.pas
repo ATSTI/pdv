@@ -6,15 +6,15 @@ interface
 
 uses
   Classes, SysUtils, db, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  DBGrids, StdCtrls, udmpdv;
+  DBGrids, StdCtrls, Buttons, udmpdv;
 
 type
 
   { TfProdutoProc }
 
   TfProdutoProc = class(TForm)
+    BitBtn1: TBitBtn;
     btnEXC: TImage;
-    btnPROC: TImage;
     btnSALV: TImage;
     chInativo: TCheckBox;
     DBGrid1: TDBGrid;
@@ -24,11 +24,14 @@ type
     Label1: TLabel;
     Panel1: TPanel;
     Panel2: TPanel;
+    procedure BitBtn1Click(Sender: TObject);
     procedure btnEXCClick(Sender: TObject);
     procedure btnPROCClick(Sender: TObject);
     procedure btnSALVClick(Sender: TObject);
     procedure chInativoChange(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure DBGrid1KeyPress(Sender: TObject; var Key: char);
     procedure Edit1Enter(Sender: TObject);
     procedure Edit1KeyPress(Sender: TObject; var Key: char);
     procedure Edit2KeyPress(Sender: TObject; var Key: char);
@@ -68,7 +71,9 @@ procedure TfProdutoProc.Edit1KeyPress(Sender: TObject; var Key: char);
 begin
   if (key = #13) then
   begin
+    Key := #0;
     busca(Edit1.Text, '', Edit2.Text, chInativo.Checked);
+    DBGrid1.SetFocus;
   end;
 
 end;
@@ -77,7 +82,9 @@ procedure TfProdutoProc.Edit2KeyPress(Sender: TObject; var Key: char);
 begin
   if (key = #13) then
   begin
+    Key := #0;
     busca(Edit1.Text, '', Edit2.Text, chInativo.Checked);
+    DBGrid1.SetFocus;
   end;
 end;
 
@@ -88,6 +95,10 @@ end;
 
 procedure TfProdutoProc.DBGrid1CellClick(Column: TColumn);
 begin
+end;
+
+procedure TfProdutoProc.DBGrid1DblClick(Sender: TObject);
+begin
   codProduto:= dmPdv.sqBusca.FieldByName('CODPRODUTO').AsInteger;
   produto   := dmPdv.sqBusca.FieldByName('PRODUTO').AsString;
   codProd   := dmPdv.sqBusca.FieldByName('CODPRO').AsString;
@@ -96,15 +107,34 @@ begin
   Close;
 end;
 
+procedure TfProdutoProc.DBGrid1KeyPress(Sender: TObject; var Key: char);
+begin
+  if (key = #13) then
+  begin
+    Key := #0;
+    codProduto:= dmPdv.sqBusca.FieldByName('CODPRODUTO').AsInteger;
+    produto   := dmPdv.sqBusca.FieldByName('PRODUTO').AsString;
+    codProd   := dmPdv.sqBusca.FieldByName('CODPRO').AsString;
+    precoVendaAtacado := dmPdv.sqBusca.FieldByName('PRECOATACADO').AsFloat;
+    qtdeAtacado:= dmPdv.sqBusca.FieldByName('QTDEATACADO').AsFloat;
+    Close;
+  end;
+end;
+
 procedure TfProdutoProc.btnPROCClick(Sender: TObject);
 begin
-  busca(Edit1.Text, '', Edit2.Text, chInativo.Checked);
+
 end;
 
 procedure TfProdutoProc.btnEXCClick(Sender: TObject);
 begin
   Edit1.Text:='';
   Edit2.Text:='';
+end;
+
+procedure TfProdutoProc.BitBtn1Click(Sender: TObject);
+begin
+  busca(Edit1.Text, '', Edit2.Text, chInativo.Checked);
 end;
 
 procedure TfProdutoProc.btnSALVClick(Sender: TObject);
@@ -142,6 +172,7 @@ begin
   codProd    :='';
   precoVenda :=0;
   estoque    :=0;
+  edit1.SetFocus;
 end;
 
 procedure TfProdutoProc.busca(codigo: String; barCode: String; produtoDesc: String; inativo: Boolean);

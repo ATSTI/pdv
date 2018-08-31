@@ -16,6 +16,7 @@ type
     btnLogin: TBitBtn;
     edSenha: TLabeledEdit;
     procedure btnLoginClick(Sender: TObject);
+    procedure edSenhaKeyPress(Sender: TObject; var Key: char);
   private
 
   public
@@ -54,6 +55,14 @@ begin
   end
   else begin
     ShowMessage('Usuário não tem permissão.');
+  end;
+end;
+
+procedure TfPermissao.edSenhaKeyPress(Sender: TObject; var Key: char);
+begin
+  if Key = #13 then
+  begin
+    Key := #0;
   end;
 end;
 

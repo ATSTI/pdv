@@ -22,6 +22,8 @@ type
     procedure btnExcluirPedidoClick(Sender: TObject);
     procedure edItemExcluirExit(Sender: TObject);
     procedure edItemExcluirKeyPress(Sender: TObject; var Key: char);
+    procedure edPedidoExcluirKeyPress(Sender: TObject; var Key: char);
+    procedure FormShow(Sender: TObject);
   private
 
   public
@@ -131,6 +133,21 @@ begin
       lblItem.Caption := dmPdv.sqBusca.FieldByName('DESCPRODUTO').AsString;
     end;
   end;
+end;
+
+procedure TfExclusao.edPedidoExcluirKeyPress(Sender: TObject; var Key: char);
+begin
+  if Key = #13 then
+  begin
+    Key := #0;
+  end;
+
+end;
+
+procedure TfExclusao.FormShow(Sender: TObject);
+begin
+  edItemExcluir.Text:='';
+  edPedidoExcluir.Text:='';
 end;
 
 end.
