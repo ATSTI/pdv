@@ -799,6 +799,7 @@ begin
     FMov.MovDetalhe.CodProduto := codproduto;
     FMov.MovDetalhe.Descricao  := proDesc;
     FMov.MovDetalhe.nItem      := num_item;
+    FMov.MovDetalhe.Cortesia   := fProdutoProc.tipo_venda;
     FMov.MovDetalhe.Qtde       := StrToFloat(edQtde.Text);
     if (edDesconto.Text <> '') then
       FMov.MovDetalhe.Desconto := StrToFloat(edDesconto.Text);

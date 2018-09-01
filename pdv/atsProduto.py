@@ -14,6 +14,7 @@ class AtsProduto:
         # vendo se a categoria está cadastrada
         #odoo = self.con()
         #import pdb; pdb.set_trace()
+        #import pudb;pu.db
         db = con.Conexao()
         sist = db.sistema()
         
@@ -73,7 +74,8 @@ class AtsProduto:
                     codp = product_id.default_code
                 un = product_id.uom_id.name.encode('ascii', 'ignore')
                 insere = 'INSERT INTO PRODUTOS (CODPRODUTO, UNIDADEMEDIDA, PRODUTO, PRECOMEDIO, CODPRO,\
-                          TIPOPRECOVENDA, ORIGEM, NCM, VALORUNITARIOATUAL, VALOR_PRAZO, TIPO'
+                          TIPOPRECOVENDA, ORIGEM, NCM, VALORUNITARIOATUAL, VALOR_PRAZO, TIPO, RATEIO, \
+                          QTDEATACADO, PRECOATACADO'
                 if fam:
                     insere += ', FAMILIA'
                 if cat:
@@ -90,6 +92,9 @@ class AtsProduto:
                 insere += ',' + str(p_custo)
                 insere += ',' + str(p_venda)
                 insere += ',\'' + str('PROD') + '\''
+                insere += ', \'' + product_id.tipo_venda + '\''
+                insere += ',' + str(product_id.qtde_atacado)
+                insere += ',' + str(product_id.preco_atacado)
                 if fam:
                     insere += ', \'' + str(fam) + '\''
                 if cat:
@@ -105,6 +110,9 @@ class AtsProduto:
                 altera += ', VALOR_PRAZO = ' + str(p_venda)
                 altera += ', NCM = ' +  '\'' + str(ncm) + '\''
                 altera += ', ORIGEM = ' + str(product_id.origin) 
+                altera += ', RATEIO = \'' + str(product_id.tipo_venda) + '\''
+                altera += ', QTDEATACADO = ' + str(product_id.qtde_atacado) 
+                altera += ', PRECOATACADO = ' + str(product_id.preco_atacado) 
                 altera += ' WHERE CODPRODUTO = ' + str(product_id.id)
                 db.insert(altera)
 p = AtsProduto()

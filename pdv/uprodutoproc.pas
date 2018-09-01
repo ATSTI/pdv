@@ -49,7 +49,7 @@ type
     precoVendaAtacado: Double;
     qtdeAtacado: Double;
     estoque: Double;
-
+    tipo_venda: String;
     procedure busca(codigo: String; barCode: String; produtoDesc: String; inativo: Boolean);
   end;
 
@@ -104,6 +104,7 @@ begin
   codProd   := dmPdv.sqBusca.FieldByName('CODPRO').AsString;
   precoVendaAtacado := dmPdv.sqBusca.FieldByName('PRECOATACADO').AsFloat;
   qtdeAtacado:= dmPdv.sqBusca.FieldByName('QTDEATACADO').AsFloat;
+  tipo_venda := dmPdv.sqBusca.FieldByName('RATEIO').AsString;
   Close;
 end;
 
@@ -117,6 +118,7 @@ begin
     codProd   := dmPdv.sqBusca.FieldByName('CODPRO').AsString;
     precoVendaAtacado := dmPdv.sqBusca.FieldByName('PRECOATACADO').AsFloat;
     qtdeAtacado:= dmPdv.sqBusca.FieldByName('QTDEATACADO').AsFloat;
+    tipo_venda := dmPdv.sqBusca.FieldByName('RATEIO').AsString;
     Close;
   end;
 end;
@@ -145,6 +147,7 @@ begin
   estoque   := dmPdv.sqBusca.FieldByName('ESTOQUEATUAL').AsFloat;
   precoVendaAtacado := dmPdv.sqBusca.FieldByName('PRECOATACADO').AsFloat;
   qtdeAtacado:= dmPdv.sqBusca.FieldByName('QTDEATACADO').AsFloat;
+  tipo_venda := dmPdv.sqBusca.FieldByName('RATEIO').AsString;
   Close;
 end;
 
@@ -172,6 +175,7 @@ begin
   codProd    :='';
   precoVenda :=0;
   estoque    :=0;
+  tipo_venda :='1';
   edit1.SetFocus;
 end;
 
@@ -227,6 +231,7 @@ begin
     precoVendaAtacado := dmPdv.sqBusca.FieldByName('PRECOATACADO').AsFloat;
     qtdeAtacado:= dmPdv.sqBusca.FieldByName('QTDEATACADO').AsFloat;
     estoque    := dmPdv.sqBusca.FieldByName('ESTOQUEATUAL').AsFloat;
+    tipo_venda := dmPdv.sqBusca.FieldByName('RATEIO').AsString;
   end;
 end;
 
