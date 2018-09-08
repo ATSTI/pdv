@@ -11647,12 +11647,25 @@ object fPdv: TfPdv
       end
       object Memo1: TMemo
         Left = 35
-        Height = 237
+        Height = 269
         Top = 51
         Width = 429
         Lines.Strings = (
           'NFCe : Cadastrar em Séries o Cod. Usuário no Campo'
           'CodSerie, esta série será usada para Gerar as NFCes.'
+          ''
+          'Impressão Cupom:'
+          'V = Pedido n. ..'
+          'usuario = Usuario X'
+          '                 Vendedor Y'
+          'doc = Data , n. pedido'
+          'empresa = Nome Empresa'
+          'logradouro = Endereco'
+          'cep = Cep'
+          'fone = Fone'
+          'T = Troco'
+          'P = Pagamento'
+          'linha = linha vazia'
         )
         TabOrder = 1
       end

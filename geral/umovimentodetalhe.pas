@@ -21,11 +21,14 @@ type
     function getCodMov     : Integer;
     function getCodigo     : Integer;
     function getCodProduto : Integer;
+    function getIi: Double;
+    function getnItem: Integer;
     function getQtde       : Double;
     function getPreco      : Double;
     function getIcms       : Double;
     function getDesconto   : Double;
     function getBaixa      : String;
+    function getStatus: String;
     function getUn         : String;
     function getDescricao  : String;
     function getAcrescimo: Double;
@@ -41,11 +44,14 @@ type
     procedure setCodMov(const Value: Integer);
     procedure setCodigo(const Value: Integer);
     procedure setCodProduto(const Value: Integer);
+    procedure setIi(AValue: Double);
+    procedure setnItem(AValue: Integer);
     procedure setQtde(const Value: Double);
     procedure setPreco(const Value: Double);
     procedure setIcms(const Value: Double);
     procedure setDesconto(const Value: Double);
     procedure setBaixa(const Value: String);
+    procedure setStatus(AValue: String);
     procedure setUn(const Value: String);
     procedure setDescricao(const Value: String);
     procedure setLote(const Value: String);
@@ -70,6 +76,7 @@ type
     _codMov          : Integer;
     _codigo          : Integer;
     _codProduto      : Integer;
+    _nItem           : Integer;
     _qtde            : Double;
     _preco           : Double;
     _icms            : Double;
@@ -79,7 +86,9 @@ type
     _baixa           : String;
     _un              : String;
     _lote            : String;
+    _Status          : String;
     _Acrescimo       : Double;
+    _II              : Double;
     _Cortesia        : String;
     _Atendente       : Integer;
     _Colaborador     : Integer;
@@ -104,10 +113,13 @@ type
     property Un          : String  read getUn write setUn;
     property Lote        : String  read getLote write setLote;
     property Acrescimo   : Double  read getAcrescimo write setAcrescimo;
+    property Ii          : Double  read getIi write setIi;
     property Cortesia    : String  read getCortesia write setCortesia;
     property Atendente   : Integer read getAtendente write setAtendente;
+    property nItem       : Integer read getnItem write setnItem;
     property Colaborador : Integer read getColaborador write setColaborador;
     property Pagou       : String  read getPagou write setPagou;
+    property Status      : String  read getStatus write setStatus;
     property CodAutorizacao   : Integer read getCodAutorizacao write setCodAutorizacao;
     property FormaRecebimento : String read geFormaRecebimento write setFormaRecebimento;
     property Cfop        : String  read getCfop write setCfop;
@@ -170,6 +182,11 @@ begin
   Result := _baixa;
 end;
 
+function TMovimentoDetalhe.getStatus: String;
+begin
+  Result := _Status;
+end;
+
 function TMovimentoDetalhe.getCfop: String;
 begin
   Result := _Cfop;
@@ -198,6 +215,16 @@ end;
 function TMovimentoDetalhe.getCodProduto: Integer;
 begin
   Result := _codProduto;
+end;
+
+function TMovimentoDetalhe.getIi: Double;
+begin
+  Result := _II;
+end;
+
+function TMovimentoDetalhe.getnItem: Integer;
+begin
+  Result := _nItem;
 end;
 
 function TMovimentoDetalhe.getColaborador: Integer;
@@ -279,8 +306,10 @@ begin
 
   DecimalSeparator := '.';
   str := 'INSERT INTO MOVIMENTODETALHE (CODDETALHE, CODMOVIMENTO, ' +
-    'CODPRODUTO, QUANTIDADE, PRECO, ICMS, QTDE_ALT, UN, BAIXA, DESCPRODUTO, CODIGO , LOTE, ' +
-    ' ACRESCIMO, CORTESIA, ATENDENTE, COLABORADOR, CODAUTORIZACAO, CFOP, DTAVCTO, DTAFAB, FRETE) VALUES (';
+    'CODPRODUTO, QUANTIDADE, PRECO, ICMS, QTDE_ALT, UN, BAIXA, DESCPRODUTO, ' +
+    ' CODIGO , LOTE, ACRESCIMO, CORTESIA, ATENDENTE, COLABORADOR, ' +
+    ' CODAUTORIZACAO, CFOP, DTAVCTO, DTAFAB, FRETE, NITEMPED, STATUS, II)' +
+    ' VALUES (';
   str := str + IntToStr(self.CodDet) + ', ' + IntToStr(self.CodMov) + ', ' + IntToStr(Self.CodProduto);
   str := str + ', ' + FloatToStr(Self.Qtde) + ', ' + FloatToStr(Self.Preco);
   str := str + ', ' + FloatToStr(Self.Icms) + ', ' + FloatToStr(Self.Desconto);
@@ -297,6 +326,9 @@ begin
   str := str + ', ' + QuotedStr(FormatDateTime('mm/dd/yyyy',Self.DtaVcto));
   str := str + ', ' + QuotedStr(FormatDateTime('mm/dd/yyyy',Self.DtaFab));
   str := str + ', ' + FloatToStr(Self.Frete);
+  str := str + ', ' + IntToStr(Self.NItem);
+  str := str + ', ' + QuotedStr('0');
+  str := str + ', ' + FloatToStr(Self.Ii);
   str := str + ')';
   DecimalSeparator := ',';
   if (dmPdv.executaSql(str)) then
@@ -312,6 +344,9 @@ begin
     str := 'UPDATE MOVIMENTODETALHE ';
     str += ' SET QUANTIDADE = ' + FloatToStr(Self.Qtde);
     str += ', PRECO = ' + FloatToStr(Self.Preco);
+    str += ', VALOR_DESCONTO = ' + FloatToStr(Self.Desconto);
+    str += ', STATUS = ' + QuotedStr(Self.Status);
+    str += ', II = ' + FloatToStr(Self.Ii);
     str := str + ' WHERE  CODDETALHE = ' + IntToStr(self.CodDet);
     DecimalSeparator := ',';
     if (dmPdv.executaSql(str)) then
@@ -333,6 +368,11 @@ end;
 procedure TMovimentoDetalhe.setBaixa(const Value: String);
 begin
   _baixa := Trim(Value);
+end;
+
+procedure TMovimentoDetalhe.setStatus(AValue: String);
+begin
+  _Status := AValue;
 end;
 
 procedure TMovimentoDetalhe.setCfop(const Value: String);
@@ -363,6 +403,16 @@ end;
 procedure TMovimentoDetalhe.setCodProduto(const Value: Integer);
 begin
   _codProduto := Value;
+end;
+
+procedure TMovimentoDetalhe.setIi(AValue: Double);
+begin
+  _II := AValue;
+end;
+
+procedure TMovimentoDetalhe.setnItem(AValue: Integer);
+begin
+  _nItem := AValue;
 end;
 
 procedure TMovimentoDetalhe.setColaborador(const Value: Integer);

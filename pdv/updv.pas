@@ -338,7 +338,8 @@ begin
   if edVendedor.Text = '' then
   begin
     ShowMessage('Vendedor não informado;');
-    edVendedor.SetFocus;
+    edProduto.Text := '';
+    edProduto.SetFocus;
     Exit;
   end;
   fPDV_Rec.vValor  := edTotalGeral.Text;
@@ -411,6 +412,7 @@ begin
     //edProdutoDescX.Text:= dmPdv.sqLancamentosDESCPRODUTO.AsString;
     //controlaPedidos(codMov, 0, 0);
     buscaPedidosAbertoCaixa(codMov);
+    buscaVendedor(edVendedor.Text);
     calculaTotalGeral();
   end;
 end;
@@ -645,7 +647,22 @@ begin
 end;
 
 procedure TfPdv.FormShow(Sender: TObject);
+var sqlP: String;
 begin
+  sqlP := 'SELECT CODCAIXA, NOMECAIXA ';
+  sqlP += ' FROM CAIXA_CONTROLE  ';
+  sqlP += ' WHERE CODUSUARIO = ' + dmPdv.varLogado;
+  sqlP += '   AND SITUACAO = ' + QuotedStr('o');
+  if (dmPdv.sqBusca.Active) then
+    dmPdv.sqBusca.Close;
+  dmPdv.sqBusca.SQL.Clear;
+  dmPdv.sqBusca.SQL.Add(sqlP);
+  dmPdv.sqBusca.Active:=True;
+  if (not dmPdv.sqBusca.IsEmpty) then
+  begin
+    dmPdv.ccusto := IntToStr(dmPdv.sqBusca.FieldByName('CODCAIXA').AsInteger);
+    num_pedido := dmPdv.sqBusca.FieldByName('NOMECAIXA').AsString;
+  end;
   // TODO - carregar caixa logado na varivel abaixo
   qtde_ped := 0;
   codDet := 0;
@@ -655,7 +672,7 @@ begin
   edClienteNome.Text := 'Consumidor';
   edCliente.Text     := '1';
   codVendedor := 1;
-  num_pedido := 'x';
+
   edCaixa.Text := dmPdv.nomeLogado + '-' + dmPdv.nomeCaixa;
   buscaPedidosAbertoCaixa(0);
 end;
@@ -767,10 +784,10 @@ begin
     FMov.CodUsuario  := codCaixa;
     FMov.CodVendedor := codVendedor;
     // TODO - Usar o campo Controle para Informar a SESSAO do PDV
-    FMov.Controle    := 'SESSEAO-1';
+    FMov.Controle    := num_pedido;
     FMov.DataMov     := Now;
     codMov := FMov.inserirMovimento(0);
-    num_pedido := IntToStr(codMov);
+    //num_pedido := IntToStr(codMov);
     dmPdv.sTrans.Commit;
     dmPdv.sqLancamentos.Close;
     dmPdv.sqLancamentos.Params.ParamByName('PMOV').AsInteger:=codMov;

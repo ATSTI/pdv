@@ -337,11 +337,6 @@ object dmPdv: TdmPdv
         Precision = -1
       end    
       item
-        Name = 'DATA_SISTEMA'
-        DataType = ftDateTime
-        Precision = -1
-      end    
-      item
         Name = 'CONTROLE'
         DataType = ftString
         Precision = -1
@@ -354,38 +349,10 @@ object dmPdv: TdmPdv
         Size = 100
       end    
       item
-        Name = 'TOTALMOVIMENTO'
-        DataType = ftFloat
-        Precision = -1
-      end    
-      item
-        Name = 'CODORIGEM'
-        DataType = ftInteger
-        Precision = -1
-      end    
-      item
-        Name = 'FORMA_PAG'
-        DataType = ftString
-        Precision = -1
-        Size = 40
-      end    
-      item
-        Name = 'PRAZO_PAGAMENTO'
-        DataType = ftString
-        Precision = -1
-        Size = 30
-      end    
-      item
         Name = 'USUARIOLOGADO'
         DataType = ftString
         Precision = -1
         Size = 30
-      end    
-      item
-        Name = 'TIPO_PEDIDO'
-        DataType = ftFixedChar
-        Precision = -1
-        Size = 1
       end    
       item
         Name = 'DESCONTO'
@@ -445,32 +412,6 @@ object dmPdv: TdmPdv
         Precision = -1
       end    
       item
-        Name = 'COD_COMISSAO'
-        DataType = ftInteger
-        Precision = -1
-      end    
-      item
-        Name = 'PRECOCUSTO'
-        DataType = ftFloat
-        Precision = -1
-      end    
-      item
-        Name = 'VLRESTOQUE'
-        DataType = ftFloat
-        Precision = -1
-      end    
-      item
-        Name = 'QTDEESTOQUE'
-        DataType = ftFloat
-        Precision = -1
-      end    
-      item
-        Name = 'NOTAFISCAL'
-        DataType = ftString
-        Precision = -1
-        Size = 15
-      end    
-      item
         Name = 'DESCPRODUTO'
         DataType = ftString
         Precision = -1
@@ -498,36 +439,10 @@ object dmPdv: TdmPdv
         Precision = -1
       end    
       item
-        Name = 'CODAUTORIZACAO'
-        DataType = ftInteger
-        Precision = -1
-      end    
-      item
         Name = 'STATUS_1'
         DataType = ftFixedChar
         Precision = -1
         Size = 1
-      end    
-      item
-        Name = 'PAGO'
-        DataType = ftFixedChar
-        Precision = -1
-        Size = 3
-      end    
-      item
-        Name = 'PORCENTAGENDESC'
-        DataType = ftFloat
-        Precision = -1
-      end    
-      item
-        Name = 'ICMS_SUBST'
-        DataType = ftFloat
-        Precision = -1
-      end    
-      item
-        Name = 'ICMS_SUBSTD'
-        DataType = ftFloat
-        Precision = -1
       end    
       item
         Name = 'VLR_BASEICMS'
@@ -578,11 +493,6 @@ object dmPdv: TdmPdv
         Size = 300
       end    
       item
-        Name = 'COD_FUNCIONARIO'
-        DataType = ftInteger
-        Precision = -1
-      end    
-      item
         Name = 'VALOR_PIS'
         DataType = ftFloat
         Precision = -1
@@ -596,17 +506,6 @@ object dmPdv: TdmPdv
         Name = 'II'
         DataType = ftFloat
         Precision = -1
-      end    
-      item
-        Name = 'BCII'
-        DataType = ftFloat
-        Precision = -1
-      end    
-      item
-        Name = 'IMPRESSO'
-        DataType = ftFixedChar
-        Precision = -1
-        Size = 3
       end    
       item
         Name = 'CSTIPI'
@@ -637,26 +536,9 @@ object dmPdv: TdmPdv
         Precision = -1
       end    
       item
-        Name = 'PEDIDO'
-        DataType = ftString
-        Precision = -1
-        Size = 20
-      end    
-      item
         Name = 'NITEMPED'
         DataType = ftInteger
         Precision = -1
-      end    
-      item
-        Name = 'COLABORADOR'
-        DataType = ftInteger
-        Precision = -1
-      end    
-      item
-        Name = 'PAGOU'
-        DataType = ftFixedChar
-        Precision = -1
-        Size = 1
       end    
       item
         Name = 'DESCONTO_BC'
@@ -703,115 +585,13 @@ object dmPdv: TdmPdv
         Size = 4
       end    
       item
-        Name = 'VBCUFDEST'
-        DataType = ftFloat
-        Precision = -1
-      end    
-      item
-        Name = 'PFCPUFDEST'
-        DataType = ftFloat
-        Precision = -1
-      end    
-      item
-        Name = 'PICMSUFDEST'
-        DataType = ftFloat
-        Precision = -1
-      end    
-      item
-        Name = 'PICMSINTER'
-        DataType = ftFloat
-        Precision = -1
-      end    
-      item
-        Name = 'PICMSINTERPART'
-        DataType = ftFloat
-        Precision = -1
-      end    
-      item
-        Name = 'VFCPUFDEST'
-        DataType = ftFloat
-        Precision = -1
-      end    
-      item
-        Name = 'VICMSUFDEST'
-        DataType = ftFloat
-        Precision = -1
-      end    
-      item
-        Name = 'VICMSUFREMET'
-        DataType = ftFloat
-        Precision = -1
-      end    
-      item
-        Name = 'CST_IPI_CENQ'
-        DataType = ftFixedChar
-        Precision = -1
-        Size = 3
-      end    
-      item
         Name = 'CEST'
         DataType = ftString
         Precision = -1
         Size = 7
       end    
       item
-        Name = 'CODPRODUTO_1'
-        DataType = ftInteger
-        Precision = -1
-      end    
-      item
-        Name = 'FAMILIA'
-        DataType = ftString
-        Precision = -1
-        Size = 30
-      end    
-      item
-        Name = 'CATEGORIA'
-        DataType = ftString
-        Precision = -1
-        Size = 30
-      end    
-      item
-        Name = 'MARCA'
-        DataType = ftString
-        Precision = -1
-        Size = 30
-      end    
-      item
-        Name = 'UNIDADEMEDIDA'
-        DataType = ftFixedChar
-        Precision = -1
-        Size = 2
-      end    
-      item
         Name = 'ESTOQUEATUAL'
-        DataType = ftFloat
-        Precision = -1
-      end    
-      item
-        Name = 'VALORUNITARIOATUAL'
-        DataType = ftFloat
-        Precision = -1
-      end    
-      item
-        Name = 'PRODUTO'
-        DataType = ftString
-        Precision = -1
-        Size = 300
-      end    
-      item
-        Name = 'PRECOMEDIO'
-        DataType = ftBCD
-        Precision = 9
-        Size = 2
-      end    
-      item
-        Name = 'COD_COMISSAO_1'
-        DataType = ftInteger
-        Precision = -1
-      end    
-      item
-        Name = 'MARGEM_LUCRO'
         DataType = ftFloat
         Precision = -1
       end    
@@ -820,11 +600,6 @@ object dmPdv: TdmPdv
         DataType = ftString
         Precision = -1
         Size = 20
-      end    
-      item
-        Name = 'VALOR_PRAZO'
-        DataType = ftFloat
-        Precision = -1
       end    
       item
         Name = 'TIPO'
@@ -837,21 +612,6 @@ object dmPdv: TdmPdv
         DataType = ftString
         Precision = -1
         Size = 15
-      end    
-      item
-        Name = 'QTDE_PCT'
-        DataType = ftFloat
-        Precision = -1
-      end    
-      item
-        Name = 'PESO_QTDE'
-        DataType = ftFloat
-        Precision = -1
-      end    
-      item
-        Name = 'MARGEM'
-        DataType = ftFloat
-        Precision = -1
       end    
       item
         Name = 'USA'
@@ -872,15 +632,10 @@ object dmPdv: TdmPdv
         Size = 1
       end    
       item
-        Name = 'VALORCOMISSAO'
-        DataType = ftFloat
-        Precision = -1
-      end    
-      item
-        Name = 'IMPRIMIR'
+        Name = 'UNIDADEMEDIDA'
         DataType = ftFixedChar
         Precision = -1
-        Size = 1
+        Size = 2
       end    
       item
         Name = 'ORIGEM_1'
@@ -894,38 +649,10 @@ object dmPdv: TdmPdv
         Size = 8
       end    
       item
-        Name = 'IMPRESSORA_1'
-        DataType = ftString
-        Precision = -1
-        Size = 10
-      end    
-      item
-        Name = 'IMPRESSORA_2'
-        DataType = ftString
-        Precision = -1
-        Size = 10
-      end    
-      item
-        Name = 'IMPRESSORA_3'
-        DataType = ftString
-        Precision = -1
-        Size = 10
-      end    
-      item
-        Name = 'QTD'
-        DataType = ftInteger
-        Precision = -1
-      end    
-      item
         Name = 'OBS_PROD'
         DataType = ftString
         Precision = -1
         Size = 300
-      end    
-      item
-        Name = 'PESO_LIQ'
-        DataType = ftFloat
-        Precision = -1
       end    
       item
         Name = 'CEST_1'
@@ -934,58 +661,45 @@ object dmPdv: TdmPdv
         Size = 7
       end    
       item
-        Name = 'EMBALAGEM'
-        DataType = ftString
+        Name = 'PRECOATACADO'
+        DataType = ftFloat
         Precision = -1
-        Size = 40
+      end    
+      item
+        Name = 'QTDEATACADO'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'TOTALITEM'
+        DataType = ftFloat
+        Precision = -1
       end>
     Database = IbCon
     Transaction = sTrans
     SQL.Strings = (
       'SELECT m.CODMOVIMENTO, m.DATAMOVIMENTO,'
-      '    m.CODCLIENTE, m.CODNATUREZA, m.STATUS,'
-      '    m.CODUSUARIO, m.CODVENDEDOR,'
-      '    m.CODALMOXARIFADO, m.DATA_SISTEMA, m.CONTROLE,'
-      '    m.OBS, m.TOTALMOVIMENTO, m.CODORIGEM,'
-      '    m.FORMA_PAG, m.PRAZO_PAGAMENTO,'
-      '    m.USUARIOLOGADO, m.TIPO_PEDIDO, m.DESCONTO,'
-      '    a.CODDETALHE, a.CONTROLE,'
-      '    a.CODPRODUTO, a.QUANTIDADE, a.PRECO, a.ICMS,'
-      '    a.UN, a.QTDE_ALT, a.BAIXA, a.VALTOTAL,'
-      '    a.COD_COMISSAO, a.PRECOCUSTO, a.VLRESTOQUE,'
-      '    a.QTDEESTOQUE, a.NOTAFISCAL, a.DESCPRODUTO,'
-      '    a.CST, a.VALOR_ICMS, a.VLR_BASE, a.CODIGO,'
-      '    a.CODAUTORIZACAO, a.STATUS, a.PAGO,'
-      '    a.PORCENTAGENDESC, a.ICMS_SUBST,'
-      '    a.ICMS_SUBSTD, a.VLR_BASEICMS, a.PIPI, a.VIPI,'
-      '    a.CFOP, a.CSOSN, a.VALOR_DESCONTO,'
-      '    a.VALOR_SEGURO, a.VALOR_OUTROS, a.OBS OBS_MD,'
-      '    a.COD_FUNCIONARIO, a.VALOR_PIS,'
-      '    a.VALOR_COFINS, a.II, a.BCII, a.IMPRESSO,'
-      '    a.CSTIPI, a.CSTPIS, a.CSTCOFINS, a.PPIS,'
-      '    a.PCOFINS, a.PEDIDO, a.NITEMPED,'
-      '    a.COLABORADOR, a.PAGOU, a.DESCONTO_BC,'
-      '    a.VLRBC_IPI, a.VLRBC_PIS, a.VLRBC_COFINS,'
-      '    a.VLRTOT_TRIB, a.ORIGEM, a.NCM, a.ALIQ_CUPOM,'
-      '    a.VBCUFDEST, a.PFCPUFDEST, a.PICMSUFDEST,'
-      '    a.PICMSINTER, a.PICMSINTERPART, a.VFCPUFDEST,'
-      '    a.VICMSUFDEST, a.VICMSUFREMET, a.CST_IPI_CENQ,'
-      '    a.CEST, p.CODPRODUTO, p.FAMILIA, p.CATEGORIA,'
-      '    p.MARCA, p.UNIDADEMEDIDA, p.ESTOQUEATUAL,'
-      '    p.VALORUNITARIOATUAL, p.PRODUTO, p.PRECOMEDIO,'
-      '    p.COD_COMISSAO, p.MARGEM_LUCRO, p.COD_BARRA,'
-      '    p.VALOR_PRAZO, p.TIPO, p.CODPRO, p.QTDE_PCT,'
-      '    p.PESO_QTDE, p.MARGEM, p.USA, p.LOCALIZACAO,'
-      '    p.TIPOPRECOVENDA, p.VALORCOMISSAO,'
-      '    p.IMPRIMIR, p.ORIGEM, p.NCM,'
-      '    p.IMPRESSORA_1, p.IMPRESSORA_2,'
-      '    p.IMPRESSORA_3, p.QTD, p.OBS OBS_PROD,'
-      '    p.PESO_LIQ, p.CEST, p.EMBALAGEM'
+      '    m.CODCLIENTE, m.CODNATUREZA, m.STATUS, m.CODUSUARIO, m.CODVENDEDOR,'
+      '    m.CODALMOXARIFADO, m.CONTROLE, m.OBS, m.USUARIOLOGADO,'
+      '    m.DESCONTO, a.CODDETALHE, a.CONTROLE, a.CODPRODUTO,'
+      '    a.QUANTIDADE, a.PRECO, a.ICMS, a.UN, a.QTDE_ALT, a.BAIXA, a.VALTOTAL,'
+      '    a.DESCPRODUTO, a.CST, a.VALOR_ICMS, a.VLR_BASE, a.CODIGO,'
+      '    a.STATUS, a.VLR_BASEICMS, a.PIPI, a.VIPI, a.CFOP, a.CSOSN,'
+      '    a.VALOR_DESCONTO, a.VALOR_SEGURO, a.VALOR_OUTROS, a.OBS OBS_MD,'
+      '    a.VALOR_PIS, a.VALOR_COFINS, a.II, a.CSTIPI,'
+      '    a.CSTPIS, a.CSTCOFINS, a.PPIS, a.PCOFINS, a.NITEMPED,'
+      '    a.DESCONTO_BC, a.VLRBC_IPI, a.VLRBC_PIS,'
+      '    a.VLRBC_COFINS, a.VLRTOT_TRIB, a.ORIGEM, a.NCM, a.ALIQ_CUPOM,'
+      '    a.CEST, p.ESTOQUEATUAL, p.COD_BARRA, p.TIPO, p.CODPRO,'
+      '    p.USA, p.LOCALIZACAO,  p.TIPOPRECOVENDA, p.UNIDADEMEDIDA,'
+      '    p.ORIGEM, p.NCM, p.OBS OBS_PROD, p.CEST, p.PRECOATACADO, p.QTDEATACADO,'
+      '    (COALESCE(A.VALTOTAL,0) - COALESCE(A.VALOR_DESCONTO, 0)) AS TOTALITEM'
       'FROM MOVIMENTO m,'
       '  MOVIMENTODETALHE a,'
       '  PRODUTOS P'
       'WHERE M.CODMOVIMENTO = a.CODMOVIMENTO'
       '  AND a.CODPRODUTO = P.CODPRODUTO'
+      '  AND a.STATUS = ''0'''
       '  AND M.CODMOVIMENTO = :PMOV'
     )
     Params = <    
@@ -1068,19 +782,10 @@ object dmPdv: TdmPdv
       ReadOnly = False
       Required = False
     end
-    object sqLancamentosDATA_SISTEMA: TDateTimeField
-      FieldKind = fkData
-      FieldName = 'DATA_SISTEMA'
-      Index = 8
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-    end
     object sqLancamentosCONTROLE: TStringField
       FieldKind = fkData
       FieldName = 'CONTROLE'
-      Index = 9
+      Index = 8
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1090,78 +795,27 @@ object dmPdv: TdmPdv
     object sqLancamentosOBS: TStringField
       FieldKind = fkData
       FieldName = 'OBS'
-      Index = 10
+      Index = 9
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
       Size = 100
     end
-    object sqLancamentosTOTALMOVIMENTO: TFloatField
-      FieldKind = fkData
-      FieldName = 'TOTALMOVIMENTO'
-      Index = 11
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosCODORIGEM: TLongintField
-      FieldKind = fkData
-      FieldName = 'CODORIGEM'
-      Index = 12
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-    end
-    object sqLancamentosFORMA_PAG: TStringField
-      FieldKind = fkData
-      FieldName = 'FORMA_PAG'
-      Index = 13
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 40
-    end
-    object sqLancamentosPRAZO_PAGAMENTO: TStringField
-      FieldKind = fkData
-      FieldName = 'PRAZO_PAGAMENTO'
-      Index = 14
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 30
-    end
     object sqLancamentosUSUARIOLOGADO: TStringField
       FieldKind = fkData
       FieldName = 'USUARIOLOGADO'
-      Index = 15
+      Index = 10
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
       Size = 30
-    end
-    object sqLancamentosTIPO_PEDIDO: TStringField
-      FieldKind = fkData
-      FieldName = 'TIPO_PEDIDO'
-      Index = 16
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 1
     end
     object sqLancamentosDESCONTO: TFloatField
       FieldKind = fkData
       FieldName = 'DESCONTO'
-      Index = 17
+      Index = 11
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1173,25 +827,16 @@ object dmPdv: TdmPdv
     object sqLancamentosCODDETALHE: TLongintField
       FieldKind = fkData
       FieldName = 'CODDETALHE'
-      Index = 18
+      Index = 12
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = True
     end
-    object sqLancamentosCONTROLE_1: TSmallintField
-      FieldKind = fkData
-      FieldName = 'CONTROLE_1'
-      Index = 19
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-    end
     object sqLancamentosCODPRODUTO: TLongintField
       FieldKind = fkData
       FieldName = 'CODPRODUTO'
-      Index = 20
+      Index = 13
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1200,7 +845,7 @@ object dmPdv: TdmPdv
     object sqLancamentosQUANTIDADE: TFloatField
       FieldKind = fkData
       FieldName = 'QUANTIDADE'
-      Index = 21
+      Index = 14
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1213,12 +858,12 @@ object dmPdv: TdmPdv
     object sqLancamentosPRECO: TFloatField
       FieldKind = fkData
       FieldName = 'PRECO'
-      Index = 22
+      Index = 15
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      DisplayFormat = '#,##0.00'
+      DisplayFormat = ',##0.00'
       MaxValue = 0
       MinValue = 0
       Precision = -1
@@ -1226,7 +871,7 @@ object dmPdv: TdmPdv
     object sqLancamentosICMS: TFloatField
       FieldKind = fkData
       FieldName = 'ICMS'
-      Index = 23
+      Index = 16
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1238,7 +883,7 @@ object dmPdv: TdmPdv
     object sqLancamentosUN: TStringField
       FieldKind = fkData
       FieldName = 'UN'
-      Index = 24
+      Index = 17
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1248,7 +893,7 @@ object dmPdv: TdmPdv
     object sqLancamentosQTDE_ALT: TFloatField
       FieldKind = fkData
       FieldName = 'QTDE_ALT'
-      Index = 25
+      Index = 18
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1260,7 +905,7 @@ object dmPdv: TdmPdv
     object sqLancamentosBAIXA: TStringField
       FieldKind = fkData
       FieldName = 'BAIXA'
-      Index = 26
+      Index = 19
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1270,7 +915,7 @@ object dmPdv: TdmPdv
     object sqLancamentosVALTOTAL: TFloatField
       FieldKind = fkData
       FieldName = 'VALTOTAL'
-      Index = 27
+      Index = 20
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1280,65 +925,10 @@ object dmPdv: TdmPdv
       MinValue = 0
       Precision = -1
     end
-    object sqLancamentosCOD_COMISSAO: TLongintField
-      FieldKind = fkData
-      FieldName = 'COD_COMISSAO'
-      Index = 28
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-    end
-    object sqLancamentosPRECOCUSTO: TFloatField
-      FieldKind = fkData
-      FieldName = 'PRECOCUSTO'
-      Index = 29
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosVLRESTOQUE: TFloatField
-      FieldKind = fkData
-      FieldName = 'VLRESTOQUE'
-      Index = 30
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosQTDEESTOQUE: TFloatField
-      FieldKind = fkData
-      FieldName = 'QTDEESTOQUE'
-      Index = 31
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosNOTAFISCAL: TStringField
-      FieldKind = fkData
-      FieldName = 'NOTAFISCAL'
-      Index = 32
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 15
-    end
     object sqLancamentosDESCPRODUTO: TStringField
       FieldKind = fkData
       FieldName = 'DESCPRODUTO'
-      Index = 33
+      Index = 21
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1348,7 +938,7 @@ object dmPdv: TdmPdv
     object sqLancamentosCST: TStringField
       FieldKind = fkData
       FieldName = 'CST'
-      Index = 34
+      Index = 22
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1358,7 +948,7 @@ object dmPdv: TdmPdv
     object sqLancamentosVALOR_ICMS: TFloatField
       FieldKind = fkData
       FieldName = 'VALOR_ICMS'
-      Index = 35
+      Index = 23
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1370,7 +960,7 @@ object dmPdv: TdmPdv
     object sqLancamentosVLR_BASE: TFloatField
       FieldKind = fkData
       FieldName = 'VLR_BASE'
-      Index = 36
+      Index = 24
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1382,16 +972,7 @@ object dmPdv: TdmPdv
     object sqLancamentosCODIGO: TLongintField
       FieldKind = fkData
       FieldName = 'CODIGO'
-      Index = 37
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-    end
-    object sqLancamentosCODAUTORIZACAO: TLongintField
-      FieldKind = fkData
-      FieldName = 'CODAUTORIZACAO'
-      Index = 38
+      Index = 25
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1400,87 +981,17 @@ object dmPdv: TdmPdv
     object sqLancamentosSTATUS_1: TStringField
       FieldKind = fkData
       FieldName = 'STATUS_1'
-      Index = 39
+      Index = 26
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
       Size = 1
     end
-    object sqLancamentosPAGO: TStringField
-      FieldKind = fkData
-      FieldName = 'PAGO'
-      Index = 40
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 3
-    end
-    object sqLancamentosPORCENTAGENDESC: TFloatField
-      FieldKind = fkData
-      FieldName = 'PORCENTAGENDESC'
-      Index = 41
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosICMS_SUBST: TFloatField
-      FieldKind = fkData
-      FieldName = 'ICMS_SUBST'
-      Index = 42
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosICMS_SUBSTD: TFloatField
-      FieldKind = fkData
-      FieldName = 'ICMS_SUBSTD'
-      Index = 43
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosVLR_BASEICMS: TFloatField
-      FieldKind = fkData
-      FieldName = 'VLR_BASEICMS'
-      Index = 44
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosPIPI: TFloatField
-      FieldKind = fkData
-      FieldName = 'PIPI'
-      Index = 45
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
     object sqLancamentosVIPI: TFloatField
       FieldKind = fkData
       FieldName = 'VIPI'
-      Index = 46
+      Index = 27
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1492,7 +1003,7 @@ object dmPdv: TdmPdv
     object sqLancamentosCFOP: TStringField
       FieldKind = fkData
       FieldName = 'CFOP'
-      Index = 47
+      Index = 28
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1502,7 +1013,7 @@ object dmPdv: TdmPdv
     object sqLancamentosCSOSN: TStringField
       FieldKind = fkData
       FieldName = 'CSOSN'
-      Index = 48
+      Index = 29
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1512,7 +1023,7 @@ object dmPdv: TdmPdv
     object sqLancamentosVALOR_DESCONTO: TFloatField
       FieldKind = fkData
       FieldName = 'VALOR_DESCONTO'
-      Index = 49
+      Index = 30
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1524,7 +1035,7 @@ object dmPdv: TdmPdv
     object sqLancamentosVALOR_SEGURO: TFloatField
       FieldKind = fkData
       FieldName = 'VALOR_SEGURO'
-      Index = 50
+      Index = 31
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1536,7 +1047,7 @@ object dmPdv: TdmPdv
     object sqLancamentosVALOR_OUTROS: TFloatField
       FieldKind = fkData
       FieldName = 'VALOR_OUTROS'
-      Index = 51
+      Index = 32
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1548,26 +1059,17 @@ object dmPdv: TdmPdv
     object sqLancamentosOBS_MD: TStringField
       FieldKind = fkData
       FieldName = 'OBS_MD'
-      Index = 52
+      Index = 33
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
       Size = 300
     end
-    object sqLancamentosCOD_FUNCIONARIO: TLongintField
-      FieldKind = fkData
-      FieldName = 'COD_FUNCIONARIO'
-      Index = 53
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-    end
     object sqLancamentosVALOR_PIS: TFloatField
       FieldKind = fkData
       FieldName = 'VALOR_PIS'
-      Index = 54
+      Index = 34
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1579,7 +1081,7 @@ object dmPdv: TdmPdv
     object sqLancamentosVALOR_COFINS: TFloatField
       FieldKind = fkData
       FieldName = 'VALOR_COFINS'
-      Index = 55
+      Index = 35
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1591,7 +1093,7 @@ object dmPdv: TdmPdv
     object sqLancamentosII: TFloatField
       FieldKind = fkData
       FieldName = 'II'
-      Index = 56
+      Index = 36
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1599,33 +1101,11 @@ object dmPdv: TdmPdv
       MaxValue = 0
       MinValue = 0
       Precision = -1
-    end
-    object sqLancamentosBCII: TFloatField
-      FieldKind = fkData
-      FieldName = 'BCII'
-      Index = 57
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosIMPRESSO: TStringField
-      FieldKind = fkData
-      FieldName = 'IMPRESSO'
-      Index = 58
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 3
     end
     object sqLancamentosCSTIPI: TStringField
       FieldKind = fkData
       FieldName = 'CSTIPI'
-      Index = 59
+      Index = 37
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1635,7 +1115,7 @@ object dmPdv: TdmPdv
     object sqLancamentosCSTPIS: TStringField
       FieldKind = fkData
       FieldName = 'CSTPIS'
-      Index = 60
+      Index = 38
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1645,7 +1125,7 @@ object dmPdv: TdmPdv
     object sqLancamentosCSTCOFINS: TStringField
       FieldKind = fkData
       FieldName = 'CSTCOFINS'
-      Index = 61
+      Index = 39
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1655,7 +1135,7 @@ object dmPdv: TdmPdv
     object sqLancamentosPPIS: TFloatField
       FieldKind = fkData
       FieldName = 'PPIS'
-      Index = 62
+      Index = 40
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1667,7 +1147,7 @@ object dmPdv: TdmPdv
     object sqLancamentosPCOFINS: TFloatField
       FieldKind = fkData
       FieldName = 'PCOFINS'
-      Index = 63
+      Index = 41
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1676,105 +1156,29 @@ object dmPdv: TdmPdv
       MinValue = 0
       Precision = -1
     end
-    object sqLancamentosPEDIDO: TStringField
-      FieldKind = fkData
-      FieldName = 'PEDIDO'
-      Index = 64
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-    end
     object sqLancamentosNITEMPED: TLongintField
       FieldKind = fkData
       FieldName = 'NITEMPED'
-      Index = 65
+      Index = 42
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-    end
-    object sqLancamentosCOLABORADOR: TLongintField
-      FieldKind = fkData
-      FieldName = 'COLABORADOR'
-      Index = 66
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-    end
-    object sqLancamentosPAGOU: TStringField
-      FieldKind = fkData
-      FieldName = 'PAGOU'
-      Index = 67
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 1
     end
     object sqLancamentosDESCONTO_BC: TStringField
       FieldKind = fkData
       FieldName = 'DESCONTO_BC'
-      Index = 68
+      Index = 43
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
       Size = 5
     end
-    object sqLancamentosVLRBC_IPI: TFloatField
-      FieldKind = fkData
-      FieldName = 'VLRBC_IPI'
-      Index = 69
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosVLRBC_PIS: TFloatField
-      FieldKind = fkData
-      FieldName = 'VLRBC_PIS'
-      Index = 70
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosVLRBC_COFINS: TFloatField
-      FieldKind = fkData
-      FieldName = 'VLRBC_COFINS'
-      Index = 71
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosVLRTOT_TRIB: TFloatField
-      FieldKind = fkData
-      FieldName = 'VLRTOT_TRIB'
-      Index = 72
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
     object sqLancamentosORIGEM: TStringField
       FieldKind = fkData
       FieldName = 'ORIGEM'
-      Index = 73
+      Index = 44
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1784,182 +1188,27 @@ object dmPdv: TdmPdv
     object sqLancamentosNCM: TStringField
       FieldKind = fkData
       FieldName = 'NCM'
-      Index = 74
+      Index = 45
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
       Size = 8
     end
-    object sqLancamentosALIQ_CUPOM: TStringField
-      FieldKind = fkData
-      FieldName = 'ALIQ_CUPOM'
-      Index = 75
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 4
-    end
-    object sqLancamentosVBCUFDEST: TFloatField
-      FieldKind = fkData
-      FieldName = 'VBCUFDEST'
-      Index = 76
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosPFCPUFDEST: TFloatField
-      FieldKind = fkData
-      FieldName = 'PFCPUFDEST'
-      Index = 77
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosPICMSUFDEST: TFloatField
-      FieldKind = fkData
-      FieldName = 'PICMSUFDEST'
-      Index = 78
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosPICMSINTER: TFloatField
-      FieldKind = fkData
-      FieldName = 'PICMSINTER'
-      Index = 79
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosPICMSINTERPART: TFloatField
-      FieldKind = fkData
-      FieldName = 'PICMSINTERPART'
-      Index = 80
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosVFCPUFDEST: TFloatField
-      FieldKind = fkData
-      FieldName = 'VFCPUFDEST'
-      Index = 81
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosVICMSUFDEST: TFloatField
-      FieldKind = fkData
-      FieldName = 'VICMSUFDEST'
-      Index = 82
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosVICMSUFREMET: TFloatField
-      FieldKind = fkData
-      FieldName = 'VICMSUFREMET'
-      Index = 83
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosCST_IPI_CENQ: TStringField
-      FieldKind = fkData
-      FieldName = 'CST_IPI_CENQ'
-      Index = 84
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 3
-    end
     object sqLancamentosCEST: TStringField
       FieldKind = fkData
       FieldName = 'CEST'
-      Index = 85
+      Index = 46
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
       Size = 7
     end
-    object sqLancamentosCODPRODUTO_1: TLongintField
-      FieldKind = fkData
-      FieldName = 'CODPRODUTO_1'
-      Index = 86
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = True
-    end
-    object sqLancamentosFAMILIA: TStringField
-      FieldKind = fkData
-      FieldName = 'FAMILIA'
-      Index = 87
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 30
-    end
-    object sqLancamentosCATEGORIA: TStringField
-      FieldKind = fkData
-      FieldName = 'CATEGORIA'
-      Index = 88
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 30
-    end
-    object sqLancamentosMARCA: TStringField
-      FieldKind = fkData
-      FieldName = 'MARCA'
-      Index = 89
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 30
-    end
     object sqLancamentosUNIDADEMEDIDA: TStringField
       FieldKind = fkData
       FieldName = 'UNIDADEMEDIDA'
-      Index = 90
+      Index = 47
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -1969,64 +1218,7 @@ object dmPdv: TdmPdv
     object sqLancamentosESTOQUEATUAL: TFloatField
       FieldKind = fkData
       FieldName = 'ESTOQUEATUAL'
-      Index = 91
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosVALORUNITARIOATUAL: TFloatField
-      FieldKind = fkData
-      FieldName = 'VALORUNITARIOATUAL'
-      Index = 92
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosPRODUTO: TStringField
-      FieldKind = fkData
-      FieldName = 'PRODUTO'
-      Index = 93
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = True
-      Size = 300
-    end
-    object sqLancamentosPRECOMEDIO: TBCDField
-      FieldKind = fkData
-      FieldName = 'PRECOMEDIO'
-      Index = 94
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Precision = 9
-      Currency = False
-      MaxValue = 0
-      MinValue = 0
-      Size = 2
-    end
-    object sqLancamentosCOD_COMISSAO_1: TLongintField
-      FieldKind = fkData
-      FieldName = 'COD_COMISSAO_1'
-      Index = 95
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-    end
-    object sqLancamentosMARGEM_LUCRO: TFloatField
-      FieldKind = fkData
-      FieldName = 'MARGEM_LUCRO'
-      Index = 96
+      Index = 48
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -2038,28 +1230,16 @@ object dmPdv: TdmPdv
     object sqLancamentosCOD_BARRA: TStringField
       FieldKind = fkData
       FieldName = 'COD_BARRA'
-      Index = 97
+      Index = 49
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-    end
-    object sqLancamentosVALOR_PRAZO: TFloatField
-      FieldKind = fkData
-      FieldName = 'VALOR_PRAZO'
-      Index = 98
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
     end
     object sqLancamentosTIPO: TStringField
       FieldKind = fkData
       FieldName = 'TIPO'
-      Index = 99
+      Index = 50
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -2069,53 +1249,17 @@ object dmPdv: TdmPdv
     object sqLancamentosCODPRO: TStringField
       FieldKind = fkData
       FieldName = 'CODPRO'
-      Index = 100
+      Index = 51
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
       Size = 15
     end
-    object sqLancamentosQTDE_PCT: TFloatField
-      FieldKind = fkData
-      FieldName = 'QTDE_PCT'
-      Index = 101
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosPESO_QTDE: TFloatField
-      FieldKind = fkData
-      FieldName = 'PESO_QTDE'
-      Index = 102
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
-    object sqLancamentosMARGEM: TFloatField
-      FieldKind = fkData
-      FieldName = 'MARGEM'
-      Index = 103
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      MaxValue = 0
-      MinValue = 0
-      Precision = -1
-    end
     object sqLancamentosUSA: TStringField
       FieldKind = fkData
       FieldName = 'USA'
-      Index = 104
+      Index = 52
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -2125,144 +1269,51 @@ object dmPdv: TdmPdv
     object sqLancamentosLOCALIZACAO: TStringField
       FieldKind = fkData
       FieldName = 'LOCALIZACAO'
-      Index = 105
+      Index = 53
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
       Size = 50
     end
-    object sqLancamentosTIPOPRECOVENDA: TStringField
+    object sqLancamentosPRECOATACADO: TFloatField
       FieldKind = fkData
-      FieldName = 'TIPOPRECOVENDA'
-      Index = 106
+      FieldName = 'PRECOATACADO'
+      Index = 54
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 1
-    end
-    object sqLancamentosVALORCOMISSAO: TFloatField
-      FieldKind = fkData
-      FieldName = 'VALORCOMISSAO'
-      Index = 107
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
+      DisplayFormat = ',##0.00'
       MaxValue = 0
       MinValue = 0
       Precision = -1
     end
-    object sqLancamentosIMPRIMIR: TStringField
+    object sqLancamentosQTDEATACADO: TFloatField
       FieldKind = fkData
-      FieldName = 'IMPRIMIR'
-      Index = 108
+      FieldName = 'QTDEATACADO'
+      Index = 55
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 1
-    end
-    object sqLancamentosORIGEM_1: TLongintField
-      FieldKind = fkData
-      FieldName = 'ORIGEM_1'
-      Index = 109
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-    end
-    object sqLancamentosNCM_1: TStringField
-      FieldKind = fkData
-      FieldName = 'NCM_1'
-      Index = 110
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 8
-    end
-    object sqLancamentosIMPRESSORA_1: TStringField
-      FieldKind = fkData
-      FieldName = 'IMPRESSORA_1'
-      Index = 111
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 10
-    end
-    object sqLancamentosIMPRESSORA_2: TStringField
-      FieldKind = fkData
-      FieldName = 'IMPRESSORA_2'
-      Index = 112
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 10
-    end
-    object sqLancamentosIMPRESSORA_3: TStringField
-      FieldKind = fkData
-      FieldName = 'IMPRESSORA_3'
-      Index = 113
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 10
-    end
-    object sqLancamentosQTD: TLongintField
-      FieldKind = fkData
-      FieldName = 'QTD'
-      Index = 114
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-    end
-    object sqLancamentosOBS_PROD: TStringField
-      FieldKind = fkData
-      FieldName = 'OBS_PROD'
-      Index = 115
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 300
-    end
-    object sqLancamentosPESO_LIQ: TFloatField
-      FieldKind = fkData
-      FieldName = 'PESO_LIQ'
-      Index = 116
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
+      DisplayFormat = ',##0.0'
       MaxValue = 0
       MinValue = 0
       Precision = -1
     end
-    object sqLancamentosCEST_1: TStringField
+    object sqLancamentosTOTALITEM: TFloatField
       FieldKind = fkData
-      FieldName = 'CEST_1'
-      Index = 117
+      FieldName = 'TOTALITEM'
+      Index = 56
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 7
-    end
-    object sqLancamentosEMBALAGEM: TStringField
-      FieldKind = fkData
-      FieldName = 'EMBALAGEM'
-      Index = 118
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 40
+      DisplayFormat = ',##0.00'
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
     end
   end
   object SQLQuery1: TSQLQuery

@@ -484,7 +484,16 @@ var
   texto6: String;
   produto_cupomf: String;
   linhaTxt : String;
+  prazo : String;
 begin
+  sqPagamento.First;
+  prazo := 'N';
+  while not sqPagamento.Eof do
+  begin
+    if sqPagamentoFORMA_PGTO.AsString = '4' then
+      prazo := 'S';
+    sqPagamento.Next;
+  end;
   if (not dmPdv.sqEmpresa.Active) then
     dmPdv.sqEmpresa.Open;
   {----- aqui monto o endereço-----}
@@ -517,8 +526,15 @@ begin
       else if lFile[i] = 'fone' then
       begin
         Writeln(Impressora, fone);
-        Writeln(IMPRESSORA);
+      end
+      else if lFile[i] = 'linha' then
+      begin
+        Writeln(IMPRESSORA, '');
+      end
+      else if lFile[i] = 'usuario' then
+      begin
         Writeln(impressora, 'Usuario: ' + dmpdv.nomeLogado);
+        Writeln(impressora, 'Vendedor: ' + edVendedor.Text);
       end
       else if lFile[i] = 'cliente' then
         Writeln(Impressora, clientecupom)
@@ -547,20 +563,146 @@ begin
           dmPdv.sqLancamentos.next;
         end;
       end
+      else if linhaTxt = 'P' then
+      begin
+        sqPagamento.First;
+        while not sqPagamento.Eof do
+        begin
+          Writeln(Impressora,  sqPagamentoN_DOC.AsString + ': ' + FormatFloat('#,,,0.00',sqPagamentoVALOR_PAGO.AsFloat));
+          sqPagamento.Next;
+        end;
+      end
       else if linhaTxt = 'T' then
       begin
         linhaTxt := Copy(lFile[i],2,Length(lFile[i])-1);
         Writeln(Impressora, linhaTxt + FormatFloat('#,,,0.00',vValorPago));
-        Writeln(Impressora);
-        Writeln(Impressora,  'Troco: ' + FormatFloat('#,,,0.00',sqPagamentoTROCO.AsFloat));
+      end
+      else if linhaTxt = 'Z' then
+      begin
+        linhaTxt := Copy(lFile[i],2,Length(lFile[i])-1);
+        Writeln(Impressora, linhaTxt + FormatFloat('#,,,0.00',sqPagamentoTROCO.AsFloat));
       end
       else if linhaTxt = 'V' then
       begin
         linhaTxt := 'Pedido: ' + IntToStr(dmPdv.sqLancamentosCODMOVIMENTO.AsInteger);  // Copy(lFile[i],2,Length(lFile[i])-1);
         Writeln(Impressora, linhaTxt);
       end
+      else if linhaTxt = 'C' then
+      begin
+        linhaTxt := Copy(lFile[i],2,Length(lFile[i])-1);
+        Writeln(Impressora, linhaTxt);
+      end
+      else if linhaTxt = '1' then
+      begin
+      end
+      else if linhaTxt = '2' then
+      begin
+      end
+      else if linhaTxt = '3' then
+      begin
+      end
+      else if linhaTxt = '4' then
+      begin
+      end
       else
         Writeln(Impressora,lFile[i]);
+    end;
+
+    // CUPOM PRAZO
+    if prazo = 'S' then
+    begin
+      i := 0;
+      for i:=0 to lFile.Count-1 do
+      begin
+        linhaTxt := Copy(lFile[i],0,1);
+        if lFile[i] = 'empresa' then
+          Writeln(Impressora, RemoveAcento(Format('  %-36s',[dmPdv.sqEmpresaRAZAO.Value])))
+        else if lFile[i] = 'logradouro' then
+          Writeln(Impressora, logradouro)
+        else if lFile[i] = 'cep' then
+          Writeln(Impressora, cep)
+        else if lFile[i] = 'fone' then
+        begin
+          Writeln(Impressora, fone);
+        end
+        else if lFile[i] = 'linha' then
+        begin
+          Writeln(IMPRESSORA);
+        end
+        else if lFile[i] = 'usuario' then
+        begin
+          Writeln(impressora, 'Usuario: ' + dmpdv.nomeLogado);
+          Writeln(impressora, 'Vendedor: ' + edVendedor.Text);
+        end
+        else if lFile[i] = 'cliente' then
+          Writeln(Impressora, clientecupom)
+        else if lFile[i] = 'doc' then
+          Writeln(Impressora, '  ' + FormatDateTime('dd/mm/yyyy', Now) + '  Pedido :  ' + IntToStr(vCodMovimento))
+        else if lFile[i] = 'itens' then
+        begin
+          dmPdv.sqLancamentos.First;
+          while not dmPdv.sqLancamentos.Eof do
+          begin
+            dmPdv.sqLancamentos.RecordCount;
+            texto3 := '';
+            texto6 := '  ';
+            texto3 := texto3 + Format('                %-2s',[dmPdv.sqLancamentosUNIDADEMEDIDA.Value]);
+            texto3 := texto3 + Format('    %6.2n',[dmPdv.sqLancamentosQUANTIDADE.AsFloat]);
+            texto3 := texto3 + Format(' %6.2n',[dmPdv.sqLancamentosPRECO.AsFloat]);
+            texto3 := texto3 + Format('   %6.2n',[dmPdv.sqLancamentosVALTOTAL.value]);
+            produto_cupomf := trim(dmPdv.sqLancamentosDESCPRODUTO.Value);
+            texto6 := texto6 + '  ' + Copy(produto_cupomf, 0, 36);       //descrição do produto
+            Writeln(Impressora, RemoveAcento(texto6));
+            if (length(produto_cupomf)>36) then
+            begin
+              texto6 := '    ' + Copy(produto_cupomf, 37, 72);       //descrição do produto
+              Writeln(Impressora, RemoveAcento(texto6));
+            end;
+            Writeln(Impressora, RemoveAcento(texto3));//NOME DO PRODUTO
+            dmPdv.sqLancamentos.next;
+          end;
+        end
+        else if linhaTxt = 'T' then
+        begin
+          linhaTxt := Copy(lFile[i],2,Length(lFile[i])-1);
+          Writeln(Impressora, linhaTxt + FormatFloat('#,,,0.00',vValorPago));
+        end
+        else if linhaTxt = 'V' then
+        begin
+          linhaTxt := 'Pedido: ' + IntToStr(dmPdv.sqLancamentosCODMOVIMENTO.AsInteger);  // Copy(lFile[i],2,Length(lFile[i])-1);
+          Writeln(Impressora, linhaTxt);
+        end
+        else if linhaTxt = 'Z' then
+        begin
+        end
+        else if linhaTxt = '1' then
+        begin
+          linhaTxt := Copy(lFile[i],2,Length(lFile[i])-1);
+          Writeln(Impressora, linhaTxt);
+        end
+        else if linhaTxt = '2' then
+        begin
+          linhaTxt := Copy(lFile[i],2,Length(lFile[i])-1);
+          Writeln(Impressora, linhaTxt);
+        end
+        else if linhaTxt = '3' then
+        begin
+          linhaTxt := Copy(lFile[i],2,Length(lFile[i])-1);
+          Writeln(Impressora, linhaTxt);
+        end
+        else if linhaTxt = '4' then
+        begin
+          linhaTxt := Copy(lFile[i],2,Length(lFile[i])-1);
+          Writeln(Impressora, linhaTxt);
+        end
+        else if linhaTxt = 'C' then
+        begin
+          linhaTxt := Copy(lFile[i],2,Length(lFile[i])-1);
+          Writeln(Impressora, linhaTxt);
+        end
+        else
+          Writeln(Impressora,lFile[i]);
+      end;
     end;
   finally
     CloseFile(IMPRESSORA);
@@ -580,6 +722,7 @@ begin
         if vCliente = 1 then
         begin
           ShowMessage('Informe o Cliente');
+          BitBtn12.Click;
           Exit;
         end;
       end;
@@ -777,6 +920,7 @@ begin
   fClienteBusca.ShowModal;
   edCliente.Text := fClienteBusca.cNomeCliente;
   vCliente := fClienteBusca.cCodCliente;
+  edPagamento.SetFocus;
 end;
 
 procedure TfPDV_Rec.BitBtn25Click(Sender: TObject);

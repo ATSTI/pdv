@@ -3,7 +3,7 @@ object fMovimentoProc: TfMovimentoProc
   Height = 587
   Top = 30
   Width = 940
-  Caption = 'fMovimentoProc'
+  Caption = 'Lista Pedidos'
   ClientHeight = 587
   ClientWidth = 940
   OnCreate = FormCreate
@@ -63,8 +63,8 @@ object fMovimentoProc: TfMovimentoProc
       TimeFormat = tf24
       TimeDisplay = tdHMS
       DateMode = dmComboBox
-      Date = 1.7E308
-      Time = 1.7E308
+      Date = 43313
+      Time = 0
       UseDefaultSeparators = True
       HideDateTimeParts = []
       MonthNames = 'Long'

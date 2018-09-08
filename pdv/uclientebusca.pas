@@ -14,11 +14,14 @@ type
 
   TfClienteBusca = class(TfPadraoBusca)
     dsCliente: TDataSource;
+    Label2: TLabel;
     procedure btnPROCClick(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
+    procedure Edit1KeyPress(Sender: TObject; var Key: char);
+    procedure Edit2KeyPress(Sender: TObject; var Key: char);
     procedure FormShow(Sender: TObject);
   private
-
+    procedure Procurar();
   public
     cCodCliente: Integer;
     cNomeCliente : String;
@@ -35,6 +38,44 @@ implementation
 { TfClienteBusca }
 
 procedure TfClienteBusca.btnPROCClick(Sender: TObject);
+begin
+  Procurar();
+end;
+
+procedure TfClienteBusca.DBGrid1CellClick(Column: TColumn);
+begin
+  cNomeCliente := dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString;
+  cCodCliente  := dmPdv.sqBusca.FieldByName('CODCLIENTE').AsInteger;
+end;
+
+procedure TfClienteBusca.Edit1KeyPress(Sender: TObject; var Key: char);
+begin
+  if (key = #13) then
+  begin
+    Key := #0;
+    if (edit1.Text <> '') then
+      Procurar();
+  end;
+end;
+
+procedure TfClienteBusca.Edit2KeyPress(Sender: TObject; var Key: char);
+begin
+  if (key = #13) then
+  begin
+    Key := #0;
+    if (edit2.Text <> '') then
+      Procurar();
+  end;
+end;
+
+procedure TfClienteBusca.FormShow(Sender: TObject);
+begin
+  DBGrid1.Columns[0].FieldName := 'CODCLIENTE';
+  DBGrid1.Columns[1].FieldName := 'NOMECLIENTE';
+  cNomeCliente:='';
+end;
+
+procedure TfClienteBusca.Procurar();
 var sql: String;
 begin
   DBGrid1.Columns[0].FieldName := 'CODCLIENTE';
@@ -49,29 +90,14 @@ begin
   end;
   if edit2.Text <> '' then
   begin
-    if sql <> '' then
-      sql := sql + ' AND '
-    else
-      sql := sql + ' WHERE ';
-    sql := sql + ' NOMECLIENTE LIKE ' + QuotedStr(Edit2.Text + '%');
+    sql := sql + ' WHERE ';
+    sql := sql + ' NOMECLIENTE LIKE ' + QuotedStr('%' + Edit2.Text + '%');
   end;
   sql := 'SELECT * FROM CLIENTES' + sql;
 
   dmPdv.sqBusca.SQL.Text := sql;
-  dmPdv.sqBusca.Open
-end;
+  dmPdv.sqBusca.Open;
 
-procedure TfClienteBusca.DBGrid1CellClick(Column: TColumn);
-begin
-  cNomeCliente := dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString;
-  cCodCliente  := dmPdv.sqBusca.FieldByName('CODCLIENTE').AsInteger;
-end;
-
-procedure TfClienteBusca.FormShow(Sender: TObject);
-begin
-  DBGrid1.Columns[0].FieldName := 'CODCLIENTE';
-  DBGrid1.Columns[1].FieldName := 'NOMECLIENTE';
-  cNomeCliente:='';
 end;
 
 procedure TfClienteBusca.BuscaCliente;

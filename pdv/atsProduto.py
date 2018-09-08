@@ -40,10 +40,10 @@ class AtsProduto:
                 insere = 'INSERT INTO CATEGORIAPRODUTO (DESCCATEGORIA, COD_CATEGORIA, COD_FAMILIA) VALUES (\
                          \'%s\',%s, %s);' %(grp.name, grp.id, grp.parent_id.id)
                 db.insert(insere)
-
+        # ('write_date', '>=', hj),
         prod_ids = sist.env['product.product'].search([
-           ('write_date', '>=', hj),
-           ('sale_ok', '=', True)])
+           ('id','>',0),('id','<',2000),         
+           ('sale_ok', '=', True)], order='id')
         for product_id in sist.env['product.product'].browse(prod_ids):
             ncm = ''
             if product_id.fiscal_classification_id:
@@ -59,6 +59,7 @@ class AtsProduto:
             sqlp = 'select codproduto from produtos where codproduto = %s' %(product_id.id)
             prods = db.query(sqlp)
             #import pdb; pdb.set_trace()
+            print (str(product_id.id))
             if not len(prods):
                 print ('Incluindo - %s' %(product_id.name))
                 #import pudb;pu.db
@@ -75,7 +76,7 @@ class AtsProduto:
                 un = product_id.uom_id.name.encode('ascii', 'ignore')
                 insere = 'INSERT INTO PRODUTOS (CODPRODUTO, UNIDADEMEDIDA, PRODUTO, PRECOMEDIO, CODPRO,\
                           TIPOPRECOVENDA, ORIGEM, NCM, VALORUNITARIOATUAL, VALOR_PRAZO, TIPO, RATEIO, \
-                          QTDEATACADO, PRECOATACADO'
+                          QTDEATACADO, PRECOATACADO, COD_BARRA'
                 if fam:
                     insere += ', FAMILIA'
                 if cat:
@@ -95,6 +96,8 @@ class AtsProduto:
                 insere += ', \'' + product_id.tipo_venda + '\''
                 insere += ',' + str(product_id.qtde_atacado)
                 insere += ',' + str(product_id.preco_atacado)
+                if product_id.barcode:
+                    insere += ', \'' + product_id.barcode + '\''
                 if fam:
                     insere += ', \'' + str(fam) + '\''
                 if cat:
@@ -113,6 +116,8 @@ class AtsProduto:
                 altera += ', RATEIO = \'' + str(product_id.tipo_venda) + '\''
                 altera += ', QTDEATACADO = ' + str(product_id.qtde_atacado) 
                 altera += ', PRECOATACADO = ' + str(product_id.preco_atacado) 
+                if product_id.barcode:
+                    altera += ', COD_BARRA = \'' + product_id.barcode + '\''
                 altera += ' WHERE CODPRODUTO = ' + str(product_id.id)
                 db.insert(altera)
 p = AtsProduto()

@@ -98,125 +98,63 @@ type
     sqEmpresaWEB: TStringField;
     sqGenerator: TSQLQuery;
     sqLancamentos: TSQLQuery;
-    sqLancamentosALIQ_CUPOM: TStringField;
     sqLancamentosBAIXA: TStringField;
-    sqLancamentosBCII: TFloatField;
-    sqLancamentosCATEGORIA: TStringField;
     sqLancamentosCEST: TStringField;
-    sqLancamentosCEST_1: TStringField;
     sqLancamentosCFOP: TStringField;
     sqLancamentosCODALMOXARIFADO: TLongintField;
-    sqLancamentosCODAUTORIZACAO: TLongintField;
     sqLancamentosCODCLIENTE: TLongintField;
     sqLancamentosCODDETALHE: TLongintField;
     sqLancamentosCODIGO: TLongintField;
     sqLancamentosCODMOVIMENTO: TLongintField;
     sqLancamentosCODNATUREZA: TSmallintField;
-    sqLancamentosCODORIGEM: TLongintField;
     sqLancamentosCODPRO: TStringField;
     sqLancamentosCODPRODUTO: TLongintField;
-    sqLancamentosCODPRODUTO_1: TLongintField;
     sqLancamentosCODUSUARIO: TSmallintField;
     sqLancamentosCODVENDEDOR: TSmallintField;
     sqLancamentosCOD_BARRA: TStringField;
-    sqLancamentosCOD_COMISSAO: TLongintField;
-    sqLancamentosCOD_COMISSAO_1: TLongintField;
-    sqLancamentosCOD_FUNCIONARIO: TLongintField;
-    sqLancamentosCOLABORADOR: TLongintField;
     sqLancamentosCONTROLE: TStringField;
-    sqLancamentosCONTROLE_1: TSmallintField;
     sqLancamentosCSOSN: TStringField;
     sqLancamentosCST: TStringField;
     sqLancamentosCSTCOFINS: TStringField;
     sqLancamentosCSTIPI: TStringField;
     sqLancamentosCSTPIS: TStringField;
-    sqLancamentosCST_IPI_CENQ: TStringField;
     sqLancamentosDATAMOVIMENTO: TDateField;
-    sqLancamentosDATA_SISTEMA: TDateTimeField;
     sqLancamentosDESCONTO: TFloatField;
     sqLancamentosDESCONTO_BC: TStringField;
     sqLancamentosDESCPRODUTO: TStringField;
-    sqLancamentosEMBALAGEM: TStringField;
     sqLancamentosESTOQUEATUAL: TFloatField;
-    sqLancamentosFAMILIA: TStringField;
-    sqLancamentosFORMA_PAG: TStringField;
     sqLancamentosICMS: TFloatField;
-    sqLancamentosICMS_SUBST: TFloatField;
-    sqLancamentosICMS_SUBSTD: TFloatField;
     sqLancamentosII: TFloatField;
-    sqLancamentosIMPRESSO: TStringField;
-    sqLancamentosIMPRESSORA_1: TStringField;
-    sqLancamentosIMPRESSORA_2: TStringField;
-    sqLancamentosIMPRESSORA_3: TStringField;
-    sqLancamentosIMPRIMIR: TStringField;
     sqLancamentosLOCALIZACAO: TStringField;
-    sqLancamentosMARCA: TStringField;
-    sqLancamentosMARGEM: TFloatField;
-    sqLancamentosMARGEM_LUCRO: TFloatField;
     sqLancamentosNCM: TStringField;
-    sqLancamentosNCM_1: TStringField;
     sqLancamentosNITEMPED: TLongintField;
-    sqLancamentosNOTAFISCAL: TStringField;
     sqLancamentosOBS: TStringField;
     sqLancamentosOBS_MD: TStringField;
-    sqLancamentosOBS_PROD: TStringField;
     sqLancamentosORIGEM: TStringField;
-    sqLancamentosORIGEM_1: TLongintField;
-    sqLancamentosPAGO: TStringField;
-    sqLancamentosPAGOU: TStringField;
     sqLancamentosPCOFINS: TFloatField;
-    sqLancamentosPEDIDO: TStringField;
-    sqLancamentosPESO_LIQ: TFloatField;
-    sqLancamentosPESO_QTDE: TFloatField;
-    sqLancamentosPFCPUFDEST: TFloatField;
-    sqLancamentosPICMSINTER: TFloatField;
-    sqLancamentosPICMSINTERPART: TFloatField;
-    sqLancamentosPICMSUFDEST: TFloatField;
-    sqLancamentosPIPI: TFloatField;
-    sqLancamentosPORCENTAGENDESC: TFloatField;
     sqLancamentosPPIS: TFloatField;
-    sqLancamentosPRAZO_PAGAMENTO: TStringField;
     sqLancamentosPRECO: TFloatField;
-    sqLancamentosPRECOCUSTO: TFloatField;
-    sqLancamentosPRECOMEDIO: TBCDField;
-    sqLancamentosPRODUTO: TStringField;
-    sqLancamentosQTD: TLongintField;
-    sqLancamentosQTDEESTOQUE: TFloatField;
+    sqLancamentosPRECOATACADO: TFloatField;
+    sqLancamentosQTDEATACADO: TFloatField;
     sqLancamentosQTDE_ALT: TFloatField;
-    sqLancamentosQTDE_PCT: TFloatField;
     sqLancamentosQUANTIDADE: TFloatField;
     sqLancamentosSTATUS: TSmallintField;
     sqLancamentosSTATUS_1: TStringField;
     sqLancamentosTIPO: TStringField;
-    sqLancamentosTIPOPRECOVENDA: TStringField;
-    sqLancamentosTIPO_PEDIDO: TStringField;
-    sqLancamentosTOTALMOVIMENTO: TFloatField;
+    sqLancamentosTOTALITEM: TFloatField;
     sqLancamentosUN: TStringField;
     sqLancamentosUNIDADEMEDIDA: TStringField;
     sqLancamentosUSA: TStringField;
     sqLancamentosUSUARIOLOGADO: TStringField;
-    sqLancamentosVALORCOMISSAO: TFloatField;
-    sqLancamentosVALORUNITARIOATUAL: TFloatField;
     sqLancamentosVALOR_COFINS: TFloatField;
     sqLancamentosVALOR_DESCONTO: TFloatField;
     sqLancamentosVALOR_ICMS: TFloatField;
     sqLancamentosVALOR_OUTROS: TFloatField;
     sqLancamentosVALOR_PIS: TFloatField;
-    sqLancamentosVALOR_PRAZO: TFloatField;
     sqLancamentosVALOR_SEGURO: TFloatField;
     sqLancamentosVALTOTAL: TFloatField;
-    sqLancamentosVBCUFDEST: TFloatField;
-    sqLancamentosVFCPUFDEST: TFloatField;
-    sqLancamentosVICMSUFDEST: TFloatField;
-    sqLancamentosVICMSUFREMET: TFloatField;
     sqLancamentosVIPI: TFloatField;
-    sqLancamentosVLRBC_COFINS: TFloatField;
-    sqLancamentosVLRBC_IPI: TFloatField;
-    sqLancamentosVLRBC_PIS: TFloatField;
-    sqLancamentosVLRESTOQUE: TFloatField;
-    sqLancamentosVLRTOT_TRIB: TFloatField;
     sqLancamentosVLR_BASE: TFloatField;
-    sqLancamentosVLR_BASEICMS: TFloatField;
     SQLQuery1: TSQLQuery;
     sqEmpresa: TSQLQuery;
     sqParametro: TSQLQuery;
@@ -238,6 +176,7 @@ type
     sTrans: TSQLTransaction;
     procedure DataModuleCreate(Sender: TObject);
   private
+    procedure atualiza_bd();
   public
     ccusto : String;
     ccusto_padrao : String;
@@ -247,6 +186,10 @@ type
     nomeLogado : String;
     nomeCaixa : String;
     MICRO : String;
+    path_exe: String;
+    portaImp: String;
+    id_tk: String;
+    tk: string;
     function executaSql(strSql: String): Boolean;
     procedure gravaLog(DataLog: TDateTime; usuario: String; tipoMovimento: String;
     pc: String; valorAnt: String; valorPos: String; campoChave: String; acao: String);
@@ -264,11 +207,12 @@ implementation
 procedure TdmPdv.DataModuleCreate(Sender: TObject);
 var
   conf: TIniFile;
-  path_exe : String;
   snh: String;
   vstr: String;
 begin
   //extrac
+  id_tk := '';
+  tk := '';
   varLogado := '1'; // usuario logado
   MICRO := GetEnvironmentVariable('COMPUTERNAME');
   path_exe := ExtractFilePath(ParamStr(0));
@@ -281,6 +225,7 @@ begin
     vstr := conf.ReadString('DATABASE', 'HostName', '');
     IBCon.HostName := vstr;
     snh:= conf.ReadString('DATABASE', 'Acesso', '');
+    portaImp := conf.ReadString('IMPRESSORA', 'porta', '');
     //snh:= EncodeStringBase64(snh); // Ver a senha Encryptada
     snh:= DecodeStringBase64(snh);
     IBCon.Password := snh;
@@ -298,12 +243,69 @@ begin
       ccusto:=sqParametroDADOS.AsString;
       ccusto_padrao:=sqParametroD1.AsString;
     end;
+    if (sqParametroPARAMETRO.AsString = 'SERIENFCe') then
+    begin
+      tk := sqParametroDADOS.AsString;
+      id_tk := sqParametroD4.AsString;
+    end;
+
     sqParametro.Next;
   end;
   sqBusca.SQL.Clear;
   sqBusca.SQL.Add('SELECT r.VERSAO FROM ATUALIZA r WHERE r.CODATUALIZA = 5000');
   sqBusca.Active:=True;
   versao_sistema:=sqBusca.FieldByName('VERSAO').AsString;
+  if (versao_sistema <> '1.0') then
+  begin
+    atualiza_bd();
+  end;
+end;
+
+procedure TdmPdv.atualiza_bd();
+begin
+  Try
+    IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD STATE SMALLINT');
+  Except
+  end;
+  Try
+    IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD troco double precision');
+  Except
+  end;
+
+  Try
+    IbCon.ExecuteDirect('ALTER TABLE USUARIO ADD SENHA VARCHAR(50)');
+  Except
+  end;
+  Try
+    IbCon.ExecuteDirect('ALTER TABLE USUARIO ADD CODBARRA VARCHAR(13)');
+  Except
+  end;
+  Try
+    IbCon.ExecuteDirect('ALTER TABLE PRODUTOS ADD PRECOATACADO DOUBLE PRECISION');
+    IbCon.ExecuteDirect('ALTER TABLE PRODUTOS ADD QTDEATACADO DOUBLE PRECISION');
+  Except
+  end;
+  Try
+    IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD CODFORMA INTEGER NOT NULL');
+    IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD PRIMARY KEY (CODFORMA)');
+    IbCon.ExecuteDirect('CREATE SEQUENCE GEN_FORMA');
+  Except
+  end;
+
+  {
+  Try
+    IbCon.ExecuteDirect('ALTER TABLE USUARIO ADD PODE_EXCLUIR CHAR(1)');
+  Except
+  end;
+  Try
+    IbCon.ExecuteDirect('ALTER TABLE USUARIO ADD PODE_DESCONTO CHAR(1)');
+  Except
+  end;}
+
+
+  IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.0') +
+    ' WHERE CODATUALIZA = 5000');
+  sTrans.Commit;
 end;
 
 procedure TdmPdv.gravaLog(DataLog: TDateTime; usuario: String;

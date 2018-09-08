@@ -65,7 +65,7 @@ begin
     dmPdv.sqBusca.SQL.Clear;
     dmPdv.sqBusca.SQL.Text := 'SELECT IDCAIXACONTROLE, CODCAIXA, CODUSUARIO,' +
        'SITUACAO, NOMECAIXA ' +
-       ' FROM CAIXA_CONTROLE WHERE SITUACAO = ' + QuotedStr('A') +
+       ' FROM CAIXA_CONTROLE WHERE SITUACAO = ' + QuotedStr('o') +
        ' AND CODUSUARIO = ' + dmPdv.varLogado;
     dmPdv.sqBusca.Open;
     if (dmPdv.sqBusca.IsEmpty) then

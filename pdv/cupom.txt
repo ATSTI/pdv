@@ -4,9 +4,26 @@ empresa
 logradouro
 cep
 fone
+linha
+usuario
 ----------------------------------------
 doc
 ----------------------------------------
   Produto       Un.     Qtde   V.Un.  V.Total 
 itens
-T   Total.:                   R$         
+linha
+----------------------------------------
+T   Total:                   R$         
+linha
+----------------------------------------
+Z   Troco: R$ 
+linha
+linha
+1 Valor devido pela fatura
+2 pelo prazo de xxxx tempo
+linha
+linha
+3 Assinatura
+linha
+linha
+C chr(27)+chr(109)

@@ -17,7 +17,7 @@ class AtsCaixa:
         hj = datetime.now()
         hj = hj - timedelta(days=100)
         hj = datetime.strftime(hj,'%Y-%m-%d %H:%M:%S')
-
+        import pudb;pu.db
         usuario = sist.env['res.users']
         user_ids = usuario.search([('write_date', '>=', hj)])
         
@@ -38,11 +38,15 @@ class AtsCaixa:
 
         sessao = sist.env['pos.session']
         # ('state','=', 'opened')
-        sessao_ids = sessao.search([('create_date', '>=', hj)], limit=1)
+        sessao_ids = sessao.search([('create_date', '>=', hj),
+            ('state','=', 'opened')])
         for ses in sessao.browse(sessao_ids):
             sqlp = 'SELECT CODCAIXA FROM CAIXA_CONTROLE where CODCAIXA = %s' %(str(ses.id))
             sess = db.query(sqlp)
             if not len(sess):
+                state = 'c' # close
+                if ses.state == 'opened':
+                    state = 'o'
                 insere = 'INSERT INTO CAIXA_CONTROLE (IDCAIXACONTROLE, '
                 insere += 'CODCAIXA, CODUSUARIO, SITUACAO, DATAFECHAMENTO'
                 insere += ',NOMECAIXA) VALUES ('
@@ -53,7 +57,7 @@ class AtsCaixa:
                 insere += ',\'%s\''
                 insere += ',\'%s\');'
                 #import pudb;pu.db
-                insere = insere %(str(ses.id), str(ses.id), str(ses.user_id.id), str('A') \
+                insere = insere %(str(ses.id), str(ses.id), str(ses.user_id.id), str(state) \
                 ,str('01.01.2018'), str(ses.name))
                 db.insert(insere)
             else:

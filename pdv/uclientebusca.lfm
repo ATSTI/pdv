@@ -4,17 +4,39 @@ inherited fClienteBusca: TfClienteBusca
   inherited Panel1: TPanel
     inherited Edit1: TEdit
       Height = 29
+      Width = 128
+      OnKeyPress = Edit1KeyPress
     end
     inherited Label1: TLabel
+      Left = 24
       Height = 21
-      Width = 41
+      Top = 8
+      Width = 54
+      Caption = 'Código'
     end
     inherited Edit2: TEdit
+      Left = 272
       Height = 29
+      Width = 504
+      OnKeyPress = Edit2KeyPress
     end
     inherited chInativo: TCheckBox
       Height = 21
       Width = 60
+    end
+    object Label2: TLabel[4]
+      Left = 224
+      Height = 21
+      Top = 8
+      Width = 45
+      Caption = 'Nome'
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -16
+      Font.Name = '@Malgun Gothic'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      ParentColor = False
+      ParentFont = False
     end
   end
   inherited Panel2: TPanel

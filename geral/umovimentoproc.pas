@@ -107,6 +107,7 @@ begin
   codVendaProc:=0;
   edDataIni.Date:=Now;
   edDataFim.Date:=Now;
+  acBuscar.Execute;
 end;
 
 end.
