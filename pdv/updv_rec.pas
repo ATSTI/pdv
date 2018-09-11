@@ -486,7 +486,8 @@ var
   linhaTxt : String;
   prazo : String;
 begin
-  sqPagamento.First;
+  if (not sqPagamento.Active) then
+     sqPagamento.Open;
   prazo := 'N';
   while not sqPagamento.Eof do
   begin
@@ -504,7 +505,7 @@ begin
   fone := '  (19)' + dmPdv.sqEmpresaFONE.Value + ' / ' + dmPdv.sqEmpresaFONE_1.Value +
   ' / ' + dmPdv.sqEmpresaFONE_2.Value;
   {------------------------DADOS DO CLIENTE--------------------------}
-  clientecupom := '  ' + IntToStr(vCliente) + '-' + vClienteNome;
+  clientecupom := '  ' + IntToStr(vCliente) + '-' + RemoveAcento(vClienteNome);
   dmPdv.sqLancamentos.Close;
   dmPdv.sqLancamentos.Params.ParamByName('PMOV').AsInteger := vCodMovimento;
   dmPdv.sqLancamentos.Open;
@@ -534,7 +535,7 @@ begin
       else if lFile[i] = 'usuario' then
       begin
         Writeln(impressora, 'Usuario: ' + dmpdv.nomeLogado);
-        Writeln(impressora, 'Vendedor: ' + edVendedor.Text);
+        Writeln(impressora, 'Vendedor: ' + RemoveAcento(edVendedor.Text));
       end
       else if lFile[i] = 'cliente' then
         Writeln(Impressora, clientecupom)
@@ -568,7 +569,8 @@ begin
         sqPagamento.First;
         while not sqPagamento.Eof do
         begin
-          Writeln(Impressora,  sqPagamentoN_DOC.AsString + ': ' + FormatFloat('#,,,0.00',sqPagamentoVALOR_PAGO.AsFloat));
+          Writeln(Impressora, 'R$ ' + FormatFloat('#,,,0.00',sqPagamentoVALOR_PAGO.AsFloat) +
+             ' - ' + RemoveAcento(sqPagamentoN_DOC.AsString));
           sqPagamento.Next;
         end;
       end
@@ -632,7 +634,7 @@ begin
         else if lFile[i] = 'usuario' then
         begin
           Writeln(impressora, 'Usuario: ' + dmpdv.nomeLogado);
-          Writeln(impressora, 'Vendedor: ' + edVendedor.Text);
+          Writeln(impressora, 'Vendedor: ' + RemoveAcento(edVendedor.Text));
         end
         else if lFile[i] = 'cliente' then
           Writeln(Impressora, clientecupom)

@@ -4,7 +4,6 @@ object fPdv: TfPdv
   Top = 78
   Width = 1100
   Align = alLeft
-  BorderStyle = bsDialog
   Caption = 'Ponto de Venda - ATS'
   ClientHeight = 563
   ClientWidth = 1100

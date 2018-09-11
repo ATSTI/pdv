@@ -38,6 +38,20 @@ inherited fClienteBusca: TfClienteBusca
       ParentColor = False
       ParentFont = False
     end
+    object chCurso: TCheckBox[5]
+      Left = 88
+      Height = 21
+      Top = 40
+      Width = 100
+      Caption = 'Cliente Curso'
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -13
+      Font.Name = '@Malgun Gothic'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      ParentFont = False
+      TabOrder = 3
+    end
   end
   inherited Panel2: TPanel
     inherited btnPROC: TImage

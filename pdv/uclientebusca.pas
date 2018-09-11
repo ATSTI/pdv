@@ -13,6 +13,7 @@ type
   { TfClienteBusca }
 
   TfClienteBusca = class(TfPadraoBusca)
+    chCurso: TCheckBox;
     dsCliente: TDataSource;
     Label2: TLabel;
     procedure btnPROCClick(Sender: TObject);
@@ -78,22 +79,31 @@ end;
 procedure TfClienteBusca.Procurar();
 var sql: String;
 begin
+  sql := '';
   DBGrid1.Columns[0].FieldName := 'CODCLIENTE';
   DBGrid1.Columns[1].FieldName := 'NOMECLIENTE';
   if (dmPdv.sqBusca.Active) then
     dmPdv.sqBusca.Close;
   dmPdv.sqBusca.SQL.Clear;
 
+  if chCurso.Checked then
+  begin
+    sql := sql + ' WHERE REGIAO = 1';
+  end
+  else begin
+    sql := sql + ' WHERE REGIAO = 0';
+  end;
+
   if edit1.Text <> '' then
   begin
-    sql := sql + ' WHERE CODCLIENTE = ' + Edit1.Text;
+    sql := sql + ' AND CODCLIENTE = ' + Edit1.Text;
   end;
   if edit2.Text <> '' then
   begin
-    sql := sql + ' WHERE ';
-    sql := sql + ' NOMECLIENTE LIKE ' + QuotedStr('%' + Edit2.Text + '%');
+    sql := sql + ' AND NOMECLIENTE LIKE ' + QuotedStr('%' + Edit2.Text + '%');
   end;
-  sql := 'SELECT * FROM CLIENTES' + sql;
+
+  sql := 'SELECT * FROM CLIENTES ' + sql;
 
   dmPdv.sqBusca.SQL.Text := sql;
   dmPdv.sqBusca.Open;

@@ -10,7 +10,7 @@ object fNfce: TfNfce
   LCLVersion = '1.8.4.0'
   object edCPF: TMaskEdit
     Left = 120
-    Height = 34
+    Height = 44
     Top = 56
     Width = 184
     CharCase = ecNormal
@@ -37,9 +37,9 @@ object fNfce: TfNfce
   end
   object Label1: TLabel
     Left = 121
-    Height = 15
+    Height = 21
     Top = 40
-    Width = 24
+    Width = 30
     Caption = 'CPF '
     ParentColor = False
   end
@@ -83,7 +83,7 @@ object fNfce: TfNfce
   end
   object edCertificado: TLabeledEdit
     Left = 364
-    Height = 23
+    Height = 38
     Top = 59
     Width = 180
     EditLabel.AnchorSideLeft.Control = edCertificado
@@ -91,8 +91,8 @@ object fNfce: TfNfce
     EditLabel.AnchorSideRight.Side = asrBottom
     EditLabel.AnchorSideBottom.Control = edCertificado
     EditLabel.Left = 364
-    EditLabel.Height = 15
-    EditLabel.Top = 41
+    EditLabel.Height = 21
+    EditLabel.Top = 35
     EditLabel.Width = 180
     EditLabel.Caption = 'Certificado'
     EditLabel.ParentColor = False
@@ -140,7 +140,7 @@ object fNfce: TfNfce
   end
   object edNFce: TLabeledEdit
     Left = 16
-    Height = 23
+    Height = 38
     Top = 56
     Width = 80
     EditLabel.AnchorSideLeft.Control = edNFce
@@ -148,8 +148,8 @@ object fNfce: TfNfce
     EditLabel.AnchorSideRight.Side = asrBottom
     EditLabel.AnchorSideBottom.Control = edNFce
     EditLabel.Left = 16
-    EditLabel.Height = 15
-    EditLabel.Top = 38
+    EditLabel.Height = 21
+    EditLabel.Top = 32
     EditLabel.Width = 80
     EditLabel.Caption = 'Num. NFe'
     EditLabel.ParentColor = False
@@ -166,8 +166,8 @@ object fNfce: TfNfce
     TabOrder = 7
     object TabSheet1: TTabSheet
       Caption = 'Retorno'
-      ClientHeight = 181
-      ClientWidth = 633
+      ClientHeight = 174
+      ClientWidth = 631
       object MemoResp: TMemo
         Left = 12
         Height = 168
@@ -178,8 +178,8 @@ object fNfce: TfNfce
     end
     object TabSheet2: TTabSheet
       Caption = 'Envio'
-      ClientHeight = 181
-      ClientWidth = 633
+      ClientHeight = 174
+      ClientWidth = 631
       object MemoDados: TMemo
         Left = 8
         Height = 171

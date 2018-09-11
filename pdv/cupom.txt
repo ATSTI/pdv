@@ -1,4 +1,4 @@
-V  CUPOM PEDIDO
+doc
 
 empresa
 logradouro
@@ -6,8 +6,9 @@ cep
 fone
 linha
 usuario
+linha
 ----------------------------------------
-doc
+cliente
 ----------------------------------------
   Produto       Un.     Qtde   V.Un.  V.Total 
 itens
@@ -18,6 +19,7 @@ linha
 ----------------------------------------
 Z   Troco: R$ 
 linha
+P
 linha
 1 Valor devido pela fatura
 2 pelo prazo de xxxx tempo

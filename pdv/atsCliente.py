@@ -46,7 +46,9 @@ class AtsCliente:
                    razao = partner_id.legal_name.encode('ascii', 'ignore')
                else:
                    razao = nome
-                   
+               regiao = '0'
+               if partner_id.curso:
+                   regiao = '1'
                insere = 'insert into clientes (\
                             CODCLIENTE, NOMECLIENTE, RAZAOSOCIAL,\
                             TIPOFIRMA,CNPJ, INSCESTADUAL,\
@@ -58,7 +60,7 @@ class AtsCliente:
                             %s, %s, %s, %s, \'%s\')'\
                             %(str(partner_id.id), str(nome),str(razao), \
                             tipo, partner_id.cnpj_cpf, ie,\
-                            '1', '0', '0.0',\
+                            '1', regiao, '0.0',\
                             'current_date', vendedor, '1', '1', fiscal)
                print(partner_id.name.encode('ascii', 'ignore'))
                db.insert(insere)
@@ -192,7 +194,13 @@ class AtsCliente:
                    inserir += ', Null);'
                print(partner_id.street)
                db.insert(inserir)
-
-
+           else:
+               regiao = '0'
+               if partner_id.curso:
+                   regiao = '1'
+               altera =  'UPDATE CLIENTES SET REGIAO = %s \
+                   WHERE CODCLIENTE = %s' %(regiao, str(partner_id.id))
+               db.insert(altera )
+               
 p = AtsCliente()
 p.clientes()

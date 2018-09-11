@@ -409,6 +409,11 @@ begin
     edPreco.Text   := FormatFloat('#,,,0.00',dmPdv.sqLancamentosPRECO.AsFloat);
     edDesconto.Text:= FormatFloat('#,,,0.00',dmPdv.sqLancamentosDESCONTO.AsFloat);
     edVendedor.Text:= IntToStr(dmPdv.sqLancamentosCODVENDEDOR.AsInteger);
+    edCliente.Text := IntToStr(dmpdv.sqLancamentosCODCLIENTE.AsInteger);
+    fClienteBusca.cCodCliente := StrToInt(edCliente.Text);
+    fClienteBusca.BuscaCliente;
+    edClienteNome.Text := fClienteBusca.cNomeCliente;
+    codCliente := fClienteBusca.cCodCliente;
     //edProdutoDescX.Text:= dmPdv.sqLancamentosDESCPRODUTO.AsString;
     //controlaPedidos(codMov, 0, 0);
     buscaPedidosAbertoCaixa(codMov);
