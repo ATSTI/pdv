@@ -60,7 +60,7 @@ class AtsCliente:
                             tipo, partner_id.cnpj_cpf, ie,\
                             '1', '0', '0.0',\
                             'current_date', vendedor, '1', '1', fiscal)
-               print(partner_id.name)
+               print(partner_id.name.encode('ascii', 'ignore'))
                db.insert(insere)
                fone = 'Null'
                ddd = 'Null'
@@ -84,7 +84,8 @@ class AtsCliente:
                pais = 'Null'
                if partner_id.city_id:
                    cidade = partner_id.city_id.name[:39]
-                   ibge = '%s%s-%s' %(partner_id.city_id.state_id.ibge_code, \
+                   if partner_id.city_id.ibge_code:
+                        ibge = '%s%s-%s' %(partner_id.city_id.state_id.ibge_code, \
                                       partner_id.city_id.ibge_code[:4], \
                                       partner_id.city_id.ibge_code[4:])
                    uf = partner_id.city_id.state_id.code

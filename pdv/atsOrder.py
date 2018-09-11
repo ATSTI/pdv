@@ -65,7 +65,7 @@ class AtsOrder:
                 #ord_id = pos_ord.create(vals)
                 order_line = []
                 sqld = 'SELECT md.CODDETALHE, md.CODPRODUTO, ' \
-                    ' md.QUANTIDADE, md.PRECO, md.VALOR_DESCONTO,' \
+                    ' md.QUANTIDADE, md.PRECO, COALESCE(md.VALOR_DESCONTO,0),' \
                     ' md.BAIXA, md.DESCPRODUTO, md.CORTESIA ' \
                     ' FROM MOVIMENTODETALHE md ' \
                     ' WHERE md.CodMovimento = %s' %(str(mvs[0]))
@@ -96,25 +96,31 @@ class AtsOrder:
                 pag_ids = db.query(sqld)
 
                 pag_line = []
+                import pudb;pu.db
                 for pg in pag_ids:
-                    if pg[1] == '4':
-                        vals['state'] = 'invoiced'
-                    else:
-                        vals['state'] = 'paid'
+                    #if pg[1] == '4':
+                    #    vals['state'] = 'invoiced'
+                    #else:
+                    #    vals['state'] = 'paid'
                     pag = {}
                     jrn = '%s-' %(pg[1])
                     jrn_id = sist.env['account.journal'].search([
                         ('name','like', jrn)])[0]
+                    for stt in session.statement_ids:
+                        if stt.journal_id.id == jrn_id:
+                            pag['statement_id'] = stt.id
+                        
                     company_cxt = sist.env['account.journal'].browse(jrn_id).company_id.id   
                     pag['account_id'] = sist.env['res.partner'].browse(cli).property_account_receivable_id.id
                     pag['date'] = dt_ord
                     pag['amount'] = pg[2]
                     pag['journal_id'] = jrn_id
-                    pag['statement_id'] = session.cash_register_id.id
+                    pag['journal'] = jrn_id
                     pag['partner_id'] = cli
                     pag['name'] = ord_name
                     pag_line.append((0, 0,pag))
                 #order.write({'statement_ids':pag_line})
+                #import pudb;pu.db
                 vals['statement_ids'] = pag_line
                 pos_ord.create(vals)
                     

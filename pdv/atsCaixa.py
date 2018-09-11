@@ -38,8 +38,9 @@ class AtsCaixa:
 
         sessao = sist.env['pos.session']
         # ('state','=', 'opened')
-        sessao_ids = sessao.search([('create_date', '>=', hj),
-            ('state','=', 'opened')])
+        sessao_ids = sessao.search([
+            ('create_date', '>=', hj)
+            ])
         for ses in sessao.browse(sessao_ids):
             sqlp = 'SELECT CODCAIXA FROM CAIXA_CONTROLE where CODCAIXA = %s' %(str(ses.id))
             sess = db.query(sqlp)
@@ -64,6 +65,6 @@ class AtsCaixa:
                 if ses.state != 'opened':
                     altera = 'UPDATE CAIXA_CONTROLE SET SITUACAO = \'F\''
                     altera += ' WHERE IDCAIXACONTROLE = %s' %(str(ses.id))
-                    db.insert(insere)
+                    db.insert(altera)
 p = AtsCaixa()
 p.caixas()
