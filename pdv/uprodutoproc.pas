@@ -181,7 +181,9 @@ end;
 
 procedure TfProdutoProc.busca(codigo: String; barCode: String; produtoDesc: String; inativo: Boolean);
 var sqlProc: String;
+  cod_bs: String;
 begin
+  cod_bs := '';
   sqlProc := 'SELECT * FROM PRODUTOS ';
   sqlProc := sqlProc + 'WHERE ((USA IS NULL) OR (USA <> ' +
     QuotedStr('N') + '))';
@@ -198,7 +200,17 @@ begin
   begin
     // TODO - Colocar aqui o tratamento do codigo de barras do odoo
     // se 21 ... se 23 .....
-    sqlProc := sqlProc + ' AND COD_BARRA = ' + QuotedStr(barCode);
+    cod_bs := Copy(barCode,0,2);
+    if cod_bs = '20' then
+    begin
+      cod_bs := Copy(barCode,0,7);
+      sqlProc := sqlProc + ' AND COD_BARRA LIKE ' + QuotedStr(cod_bs + '%');
+      cod_bs := Copy(barCode,8,5);
+    end
+    else begin
+      cod_bs := '';
+      sqlProc := sqlProc + ' AND COD_BARRA = ' + QuotedStr(barCode);
+    end;
   end;
   if (produtoDesc <> '') then
   begin
@@ -227,7 +239,14 @@ begin
     codProduto := dmPdv.sqBusca.FieldByName('CODPRODUTO').AsInteger;
     produto    := dmPdv.sqBusca.FieldByName('PRODUTO').AsString;
     codProd    := dmPdv.sqBusca.FieldByName('CODPRO').AsString;
-    precoVenda := dmPdv.sqBusca.FieldByName('VALOR_PRAZO').AsFloat;
+    if cod_bs <> '' then
+    begin
+      cod_bs := Copy(cod_bs,0,3) + ',' + Copy(cod_bs,4,4);
+      precoVenda := StrToFloat(cod_bs);
+    end
+    else begin
+      precoVenda := dmPdv.sqBusca.FieldByName('VALOR_PRAZO').AsFloat;
+    end;
     precoVendaAtacado := dmPdv.sqBusca.FieldByName('PRECOATACADO').AsFloat;
     qtdeAtacado:= dmPdv.sqBusca.FieldByName('QTDEATACADO').AsFloat;
     estoque    := dmPdv.sqBusca.FieldByName('ESTOQUEATUAL').AsFloat;

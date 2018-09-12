@@ -295,7 +295,7 @@ begin
     proDesc    := fProdutoProc.produto;
     //edProdutoDescX.Text := proDesc;
     preencherDescItem(proDesc);
-    edPreco.Text:= FloatToStr(preco);
+    edPreco.Text:= FormatFloat('#,,,0.00',preco);
     edQtde.Text:='1,00';
     edProduto.Text := codPro;
     edProduto.SetFocus;
@@ -868,7 +868,7 @@ begin
     begin
       FMov.MovDetalhe.Ii    := preco;
       FMov.MovDetalhe.Preco := precoAtacado;
-      edPreco.Text := FloatToStr(precoAtacado);
+      edPreco.Text := FormatFloat('#,,,0.00',precoAtacado);
     end
     else begin
       FMov.MovDetalhe.Ii    := 0;
@@ -1041,7 +1041,7 @@ begin
     proDesc    := fProdutoProc.produto;
     //edProdutoDescX.Text := proDesc;
     preencherDescItem(proDesc);
-    edPreco.Text:= FloatToStr(preco);
+    edPreco.Text:= FormatFloat('#,,,0.00',preco);
     edQtde.Text:='1,00';
     registrar_item();
   end
