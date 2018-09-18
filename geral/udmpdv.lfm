@@ -7,21 +7,21 @@ object dmPdv: TdmPdv
   Width = 355
   PPI = 96
   object IbCon: TIBConnection
-    Connected = False
+    Connected = True
     LoginPrompt = False
-    DatabaseName = '/home/publico/bd/ats_pdv.fdb'
+    DatabaseName = 'C:\home\bd\ats_pdv.fdb'
     KeepConnection = False
     Password = 'masterkey'
     Transaction = sTrans
     UserName = 'SYSDBA'
     CharSet = 'win1252'
-    HostName = '192.168.6.100'
+    HostName = 'localhost'
     CheckTransactionParams = False
     left = 40
     top = 18
   end
   object sTrans: TSQLTransaction
-    Active = False
+    Active = True
     Database = IbCon
     left = 136
     top = 16
@@ -674,6 +674,11 @@ object dmPdv: TdmPdv
         Name = 'TOTALITEM'
         DataType = ftFloat
         Precision = -1
+      end    
+      item
+        Name = 'ICMS_SUBST'
+        DataType = ftFloat
+        Precision = -1
       end>
     Database = IbCon
     Transaction = sTrans
@@ -693,7 +698,8 @@ object dmPdv: TdmPdv
       '    a.CEST, p.ESTOQUEATUAL, p.COD_BARRA, p.TIPO, p.CODPRO,'
       '    p.USA, p.LOCALIZACAO,  p.TIPOPRECOVENDA, p.UNIDADEMEDIDA,'
       '    p.ORIGEM, p.NCM, p.OBS OBS_PROD, p.CEST, p.PRECOATACADO, p.QTDEATACADO,'
-      '    (COALESCE(A.VALTOTAL,0) - COALESCE(A.VALOR_DESCONTO, 0)) AS TOTALITEM'
+      '    (COALESCE(A.VALTOTAL,0) - COALESCE(A.VALOR_DESCONTO, 0)) AS TOTALITEM ,'
+      '    a.ICMS_SUBST'
       'FROM MOVIMENTO m,'
       '  MOVIMENTODETALHE a,'
       '  PRODUTOS P'
@@ -1311,6 +1317,90 @@ object dmPdv: TdmPdv
       ReadOnly = False
       Required = False
       DisplayFormat = ',##0.00'
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object sqLancamentosVLR_BASEICMS: TFloatField
+      FieldKind = fkData
+      FieldName = 'VLR_BASEICMS'
+      Index = 57
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object sqLancamentosPIPI: TFloatField
+      FieldKind = fkData
+      FieldName = 'PIPI'
+      Index = 58
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object sqLancamentosVLRBC_IPI: TFloatField
+      FieldKind = fkData
+      FieldName = 'VLRBC_IPI'
+      Index = 59
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object sqLancamentosVLRBC_PIS: TFloatField
+      FieldKind = fkData
+      FieldName = 'VLRBC_PIS'
+      Index = 60
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object sqLancamentosVLRBC_COFINS: TFloatField
+      FieldKind = fkData
+      FieldName = 'VLRBC_COFINS'
+      Index = 61
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object sqLancamentosVLRTOT_TRIB: TFloatField
+      FieldKind = fkData
+      FieldName = 'VLRTOT_TRIB'
+      Index = 62
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object sqLancamentosICMS_SUBST: TFloatField
+      FieldKind = fkData
+      FieldName = 'ICMS_SUBST'
+      Index = 63
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
       MaxValue = 0
       MinValue = 0
       Precision = -1

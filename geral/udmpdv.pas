@@ -124,6 +124,7 @@ type
     sqLancamentosDESCPRODUTO: TStringField;
     sqLancamentosESTOQUEATUAL: TFloatField;
     sqLancamentosICMS: TFloatField;
+    sqLancamentosICMS_SUBST: TFloatField;
     sqLancamentosII: TFloatField;
     sqLancamentosLOCALIZACAO: TStringField;
     sqLancamentosNCM: TStringField;
@@ -132,6 +133,7 @@ type
     sqLancamentosOBS_MD: TStringField;
     sqLancamentosORIGEM: TStringField;
     sqLancamentosPCOFINS: TFloatField;
+    sqLancamentosPIPI: TFloatField;
     sqLancamentosPPIS: TFloatField;
     sqLancamentosPRECO: TFloatField;
     sqLancamentosPRECOATACADO: TFloatField;
@@ -154,7 +156,12 @@ type
     sqLancamentosVALOR_SEGURO: TFloatField;
     sqLancamentosVALTOTAL: TFloatField;
     sqLancamentosVIPI: TFloatField;
+    sqLancamentosVLRBC_COFINS: TFloatField;
+    sqLancamentosVLRBC_IPI: TFloatField;
+    sqLancamentosVLRBC_PIS: TFloatField;
+    sqLancamentosVLRTOT_TRIB: TFloatField;
     sqLancamentosVLR_BASE: TFloatField;
+    sqLancamentosVLR_BASEICMS: TFloatField;
     SQLQuery1: TSQLQuery;
     sqEmpresa: TSQLQuery;
     sqParametro: TSQLQuery;
@@ -217,8 +224,8 @@ begin
   MICRO := GetEnvironmentVariable('COMPUTERNAME');
   path_exe := ExtractFilePath(ParamStr(0));
   IBCon.Connected:=False;
-  path_exe := path_exe + 'conf.ini';
-  conf := TIniFile.Create(path_exe);
+  //path_exe := path_exe + 'conf.ini';
+  conf := TIniFile.Create(path_exe + 'conf.ini');
   try
     vstr := conf.ReadString('DATABASE', 'Name', '');
     IBCon.DatabaseName := vstr;

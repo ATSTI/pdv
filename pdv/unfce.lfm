@@ -6,11 +6,13 @@ object fNfce: TfNfce
   Caption = 'Nota Fiscal Consumidor'
   ClientHeight = 405
   ClientWidth = 655
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnShow = FormShow
   LCLVersion = '1.8.4.0'
   object edCPF: TMaskEdit
     Left = 120
-    Height = 44
+    Height = 34
     Top = 56
     Width = 184
     CharCase = ecNormal
@@ -37,9 +39,9 @@ object fNfce: TfNfce
   end
   object Label1: TLabel
     Left = 121
-    Height = 21
+    Height = 13
     Top = 40
-    Width = 30
+    Width = 22
     Caption = 'CPF '
     ParentColor = False
   end
@@ -83,7 +85,7 @@ object fNfce: TfNfce
   end
   object edCertificado: TLabeledEdit
     Left = 364
-    Height = 38
+    Height = 21
     Top = 59
     Width = 180
     EditLabel.AnchorSideLeft.Control = edCertificado
@@ -91,8 +93,8 @@ object fNfce: TfNfce
     EditLabel.AnchorSideRight.Side = asrBottom
     EditLabel.AnchorSideBottom.Control = edCertificado
     EditLabel.Left = 364
-    EditLabel.Height = 21
-    EditLabel.Top = 35
+    EditLabel.Height = 13
+    EditLabel.Top = 43
     EditLabel.Width = 180
     EditLabel.Caption = 'Certificado'
     EditLabel.ParentColor = False
@@ -140,7 +142,7 @@ object fNfce: TfNfce
   end
   object edNFce: TLabeledEdit
     Left = 16
-    Height = 38
+    Height = 21
     Top = 56
     Width = 80
     EditLabel.AnchorSideLeft.Control = edNFce
@@ -148,8 +150,8 @@ object fNfce: TfNfce
     EditLabel.AnchorSideRight.Side = asrBottom
     EditLabel.AnchorSideBottom.Control = edNFce
     EditLabel.Left = 16
-    EditLabel.Height = 21
-    EditLabel.Top = 32
+    EditLabel.Height = 13
+    EditLabel.Top = 40
     EditLabel.Width = 80
     EditLabel.Caption = 'Num. NFe'
     EditLabel.ParentColor = False
@@ -161,13 +163,13 @@ object fNfce: TfNfce
     Height = 209
     Top = 191
     Width = 641
-    ActivePage = TabSheet2
-    TabIndex = 1
+    ActivePage = TabSheet1
+    TabIndex = 0
     TabOrder = 7
     object TabSheet1: TTabSheet
       Caption = 'Retorno'
-      ClientHeight = 174
-      ClientWidth = 631
+      ClientHeight = 183
+      ClientWidth = 633
       object MemoResp: TMemo
         Left = 12
         Height = 168
@@ -178,8 +180,8 @@ object fNfce: TfNfce
     end
     object TabSheet2: TTabSheet
       Caption = 'Envio'
-      ClientHeight = 174
-      ClientWidth = 631
+      ClientHeight = 183
+      ClientWidth = 633
       object MemoDados: TMemo
         Left = 8
         Height = 171
@@ -189,20 +191,14 @@ object fNfce: TfNfce
       end
     end
   end
-  object ACBrNFe1: TACBrNFe
-    Configuracoes.Geral.SSLLib = libNone
-    Configuracoes.Geral.SSLCryptLib = cryNone
-    Configuracoes.Geral.SSLHttpLib = httpNone
-    Configuracoes.Geral.SSLXmlSignLib = xsNone
-    Configuracoes.Geral.FormatoAlerta = 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.'
-    Configuracoes.Geral.VersaoDF = ve400
-    Configuracoes.Geral.VersaoQRCode = veqr000
-    Configuracoes.Arquivos.OrdenacaoPath = <>
-    Configuracoes.WebServices.UF = 'SP'
-    Configuracoes.WebServices.AguardarConsultaRet = 0
-    Configuracoes.WebServices.QuebradeLinha = '|'
-    left = 306
-    top = 9
+  object cbxModeloPosPrinter: TComboBox
+    Left = 496
+    Height = 21
+    Top = 112
+    Width = 145
+    ItemHeight = 13
+    Style = csDropDownList
+    TabOrder = 8
   end
   object ACBrNFeDANFeESCPOS1: TACBrNFeDANFeESCPOS
     MostrarPreview = True
@@ -240,13 +236,12 @@ object fNfce: TfNfce
     vTribFed = 0
     vTribEst = 0
     vTribMun = 0
-    left = 424
-    top = 9
+    left = 328
   end
   object ACBrNFeDANFCeFortes1: TACBrNFeDANFCeFortes
     MostrarPreview = True
     MostrarStatus = True
-    TipoDANFE = tiSemGeracao
+    TipoDANFE = tiNFCe
     NumCopias = 1
     ImprimeNomeFantasia = False
     ImprimirDescPorc = False
@@ -279,7 +274,29 @@ object fNfce: TfNfce
     vTribFed = 0
     vTribEst = 0
     vTribMun = 0
-    left = 490
-    top = 11
+    left = 536
+    top = 8
+  end
+  object ACBrValidador1: TACBrValidador
+    TipoDocto = docGTIN
+    IgnorarChar = './-'
+    left = 90
+    top = 10
+  end
+  object ACBrNFe1: TACBrNFe
+    OnAntesDeAssinar = ACBrNFe1AntesDeAssinar
+    Configuracoes.Geral.SSLLib = libCustom
+    Configuracoes.Geral.SSLCryptLib = cryWinCrypt
+    Configuracoes.Geral.SSLHttpLib = httpNone
+    Configuracoes.Geral.SSLXmlSignLib = xsNone
+    Configuracoes.Geral.FormatoAlerta = 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.'
+    Configuracoes.Geral.VersaoDF = ve400
+    Configuracoes.Geral.VersaoQRCode = veqr200
+    Configuracoes.Arquivos.OrdenacaoPath = <>
+    Configuracoes.WebServices.UF = 'SP'
+    Configuracoes.WebServices.AguardarConsultaRet = 0
+    Configuracoes.WebServices.QuebradeLinha = '|'
+    left = 161
+    top = 15
   end
 end
