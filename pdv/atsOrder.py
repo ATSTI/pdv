@@ -23,9 +23,9 @@ class AtsOrder:
 
         sqld = 'SELECT m.CODMOVIMENTO, m.DATAMOVIMENTO, ' \
                'm.CODCLIENTE, m.STATUS, m.CODUSUARIO, m.CODVENDEDOR, ' \
-               'm.CODALMOXARIFADO ' \
+               'm.CODALMOXARIFADO, DATEADD(3 hour to m.DATA_SISTEMA) ' \
                '  FROM MOVIMENTO m ' \
-               ' WHERE STATUS > 0 ' \
+               ' WHERE STATUS = 1 ' \
                '   AND DataMovimento > \'%s\'' %(hj)
         movs = db.query(sqld)
         #import pudb;pu.db
@@ -45,13 +45,13 @@ class AtsOrder:
                 vals = {}               
                 
                 cli = mvs[2]
-                dt_ord = str(mvs[1])
+                dt_ord = str(mvs[7])
                 vals['name'] = ord_name
                 vals['pos_reference'] = ord_name
                 vals['session_id'] = mvs[6]
                 vals['pos_session_id'] = mvs[6]
                 vals['pricelist_id'] = session.config_id.pricelist_id.id
-                vals['creation_date'] = datetime.strftime(datetime.now(),'%Y-%m-%d %H:%M:%S')
+                vals['creation_date'] = dt_ord #datetime.strftime(datetime.now(),'%Y-%m-%d %H:%M:%S')
                 vals['date_order'] = dt_ord
                 vals['sequence_number'] = mvs[0]
                 
@@ -60,7 +60,10 @@ class AtsOrder:
                 else:
                     vals['partner_id'] = sist.env['res.partner'].search([
                         ('name','ilike','consumidor')],limit=1)[0]
-                vals['user_id'] = mvs[5]
+                userid = mvs[5]
+                if mvs[5] == 2:
+                    userid = 1
+                vals['user_id'] = userid
                 vals['fiscal_position_id'] = session.config_id.default_fiscal_position_id.id
                 #ord_id = pos_ord.create(vals)
                 order_line = []
@@ -68,7 +71,7 @@ class AtsOrder:
                     ' md.QUANTIDADE, md.PRECO, COALESCE(md.VALOR_DESCONTO,0),' \
                     ' md.BAIXA, md.DESCPRODUTO, md.CORTESIA ' \
                     ' FROM MOVIMENTODETALHE md ' \
-                    ' WHERE md.CodMovimento = %s' %(str(mvs[0]))
+                    ' WHERE md.STATUS = 0 AND md.CodMovimento = %s' %(str(mvs[0]))
                 md_ids = db.query(sqld)
                 #order = pos_ord.browse(ord_id)
                 #order.write({'fiscal_position_id' : })
@@ -96,7 +99,7 @@ class AtsOrder:
                 pag_ids = db.query(sqld)
 
                 pag_line = []
-                import pudb;pu.db
+                #import pudb;pu.db
                 for pg in pag_ids:
                     #if pg[1] == '4':
                     #    vals['state'] = 'invoiced'

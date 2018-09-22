@@ -5,19 +5,48 @@ from datetime import datetime
 from datetime import date
 from datetime import timedelta
 import atscon as con
+import re
+import sys
 
+_table = { 
+    "á" : "a", "à" : "a", "â" : "a", "ä" : "a", "ã" : "a", "å" : "a",
+    "é" : "e", "è" : "e", "ê" : "e", "ë" : "e",
+    "í" : "i", "ì" : "i", "î" : "i", "ï" : "i",
+    "ó" : "o", "ò" : "o", "ô" : "o", "ö" : "o", "õ" : "o", "ø" : "o", 
+    "ú" : "u", "ù" : "u", "û" : "u", "ü" : "u",
+    "ñ" : "n", "ç" : "c",
+    "Á" : "A", "À" : "A", "Â" : "A", "Ä" : "A", "Ã" : "A", "Å" : "A",
+    "É" : "E", "È" : "E", "Ê" : "E", "Ë" : "E", 
+    "Í" : "I", "Ì" : "I", "Î" : "I", "Ï" : "I", 
+    "Ó" : "O", "Ò" : "O", "Ô" : "O", "Ö" : "O", "Õ" : "O", "Ø" : "O",
+    "Ú" : "U", "Ù" : "U", "Û" : "U", "Ü" : "U", 
+    "Ñ" : "N", "Ç" : "C",
+    "ß" : "ss", "Þ" : "d" , "æ" : "ae", "º": ".", "ª": ".", "'": ""
+}
 
 class AtsCliente:
+
+    def asciize(self,s):
+        """ 
+        Converts a entire string to a ASCII only string.
+
+        string
+           The string to be converted.
+        """
+        for original, plain in _table.items():
+            s = s.replace(original, plain)
+        return s
+
         
     ######## IMPORTAR CLIENTES
     def clientes(self):
         db = con.Conexao()
         sist = db.sistema()
-        
+        coding = sys.stdout.encoding
         #import pudb;pu.db
         #order = odoo.env['pos.order']
         hj = datetime.now()
-        hj = hj - timedelta(days=220)
+        hj = hj - timedelta(days=1220)
         hj = datetime.strftime(hj,'%Y-%m-%d %H:%M:%S')
 
         cliente = sist.env['res.partner']
@@ -28,6 +57,16 @@ class AtsCliente:
         for partner_id in cliente.browse(cli_ids):
             sqlc = 'select codcliente from clientes where codcliente = %s' %(partner_id.id)
             cli = db.query(sqlc)
+            nome = self.asciize(partner_id.name.encode(coding))
+            if partner_id.legal_name:
+                razao = self.asciize(partner_id.legal_name.encode(coding))
+            else:
+                razao = nome
+            print(partner_id.name.encode('ascii', 'ignore'))
+            try:
+                print(nome.decode())
+            except:
+                nome = partner_id.name.encode('ascii', 'ignore')
             if not len(cli):
                 tipo = '0'
                 if partner_id.is_company:
@@ -41,11 +80,7 @@ class AtsCliente:
                 fiscal = 'J'
                 #if partner_id.property_account_position:
                 #    fiscal = partner_id.property_account_position.note
-                nome = partner_id.name.encode('ascii', 'ignore')
-                if partner_id.legal_name:
-                    razao = partner_id.legal_name.encode('ascii', 'ignore')
-                else:
-                    razao = nome
+                #nome = partner_id.name.encode('ascii', 'ignore')
                 regiao = '0'
                 if partner_id.curso:
                     regiao = '1'
@@ -58,11 +93,11 @@ class AtsCliente:
                             %s, \'%s\',\'%s\',\
                             %s, %s, %s,\
                             %s, %s, %s, %s, \'%s\')'\
-                            %(str(partner_id.id), str(nome),str(razao), \
+                            %(str(partner_id.id), nome.decode(), razao.decode(), \
                             tipo, partner_id.cnpj_cpf, ie,\
                             '1', regiao, '0.0',\
                             'current_date', vendedor, '1', '1', fiscal)
-                print(partner_id.name.encode('ascii', 'ignore'))
+                
                 db.insert(insere)
                 fone = 'Null'
                 ddd = 'Null'
@@ -199,7 +234,8 @@ class AtsCliente:
                 if partner_id.curso:
                     regiao = '1'
                 altera =  'UPDATE CLIENTES SET REGIAO = %s \
-                    WHERE CODCLIENTE = %s' %(regiao, str(partner_id.id))
+                    ,NOMECLIENTE = \'%s\' \
+                    WHERE CODCLIENTE = %s' %(regiao, nome.decode(), str(partner_id.id))
                 db.insert(altera )
                
 p = AtsCliente()

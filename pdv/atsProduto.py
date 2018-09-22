@@ -6,18 +6,49 @@ from datetime import date
 from datetime import timedelta
 import atscon as con
 import re
+import sys
+
+
+_table = { 
+    "á" : "a", "à" : "a", "â" : "a", "ä" : "a", "ã" : "a", "å" : "a",
+    "é" : "e", "è" : "e", "ê" : "e", "ë" : "e",
+    "í" : "i", "ì" : "i", "î" : "i", "ï" : "i",
+    "ó" : "o", "ò" : "o", "ô" : "o", "ö" : "o", "õ" : "o", "ø" : "o", 
+    "ú" : "u", "ù" : "u", "û" : "u", "ü" : "u",
+    "ñ" : "n", "ç" : "c",
+    "Á" : "A", "À" : "A", "Â" : "A", "Ä" : "A", "Ã" : "A", "Å" : "A",
+    "É" : "E", "È" : "E", "Ê" : "E", "Ë" : "E", 
+    "Í" : "I", "Ì" : "I", "Î" : "I", "Ï" : "I", 
+    "Ó" : "O", "Ò" : "O", "Ô" : "O", "Ö" : "O", "Õ" : "O", "Ø" : "O",
+    "Ú" : "U", "Ù" : "U", "Û" : "U", "Ü" : "U", 
+    "Ñ" : "N", "Ç" : "C",
+    "ß" : "ss", "Þ" : "d" , "æ" : "ae", "º": ".", "ª": "."
+}
 
 class AtsProduto:
 
+    def asciize(self,s):
+        """ 
+        Converts a entire string to a ASCII only string.
+
+        string
+           The string to be converted.
+        """
+        for original, plain in _table.items():
+            s = s.replace(original, plain)
+        return s
+
+
+
     ######## IMPORTAR PRODUTOS
-    def produtos(self):
+    def produtos(self, fim):
         # vendo se a categoria está cadastrada
         #odoo = self.con()
         #import pdb; pdb.set_trace()
         #import pudb;pu.db
         db = con.Conexao()
         sist = db.sistema()
-        
+        coding = sys.stdout.encoding        
         #order = odoo.env['pos.order']
         hj = datetime.now()
         hj = hj - timedelta(days=10)
@@ -40,10 +71,11 @@ class AtsProduto:
                 insere = 'INSERT INTO CATEGORIAPRODUTO (DESCCATEGORIA, COD_CATEGORIA, COD_FAMILIA) VALUES (\
                          \'%s\',%s, %s);' %(grp.name, grp.id, grp.parent_id.id)
                 db.insert(insere)
-        # ('write_date', '>=', hj),
+        #fim = 5001
         prod_ids = sist.env['product.product'].search([
-           ('id','>',0),('id','<',2000),         
-           ('sale_ok', '=', True)], order='id')
+           ('write_date', '>=', hj),
+           ('sale_ok', '=', True)])
+		#   ('id','>',fim-200),('id', '<', fim)])
         for product_id in sist.env['product.product'].browse(prod_ids):
             ncm = ''
             if product_id.fiscal_classification_id:
@@ -55,28 +87,32 @@ class AtsProduto:
             p_venda = 0.0
             if product_id.list_price:
                 p_venda = product_id.list_price
-            produto = product_id.name.encode('ascii', 'ignore')				
+            #import pudb;pu.db
+            produto = self.asciize(product_id.name.encode(coding))
+            #produto = product_id.name.encode('ascii', 'ignore')				
             sqlp = 'select codproduto from produtos where codproduto = %s' %(product_id.id)
             prods = db.query(sqlp)
             #import pdb; pdb.set_trace()
-            print (str(product_id.id))
             if not len(prods):
                 print ('Incluindo - %s' %(product_id.name))
+                #print ('XXX - %s' %(produto))
+
                 #import pudb;pu.db
                 
                 cat = ''
                 if product_id.pos_categ_id:
-                    cat = product_id.pos_categ_id.name
+                    cat = self.asciize(product_id.pos_categ_id.name.encode(coding))
+                    print ('CAT - %s' %(cat))
                 fam = ''
                 if product_id.pos_categ_id.parent_id:
-                    fam = product_id.pos_categ_id.parent_id.name
+                    fam = self.asciize(product_id.pos_categ_id.parent_id.name.encode(coding))
                 codp = str(product_id.id)
                 if product_id.default_code:
                     codp = product_id.default_code
                 un = product_id.uom_id.name.encode('ascii', 'ignore')
                 insere = 'INSERT INTO PRODUTOS (CODPRODUTO, UNIDADEMEDIDA, PRODUTO, PRECOMEDIO, CODPRO,\
                           TIPOPRECOVENDA, ORIGEM, NCM, VALORUNITARIOATUAL, VALOR_PRAZO, TIPO, RATEIO, \
-                          QTDEATACADO, PRECOATACADO, COD_BARRA'
+                          QTDEATACADO, PRECOATACADO'
                 if fam:
                     insere += ', FAMILIA'
                 if cat:
@@ -96,29 +132,34 @@ class AtsProduto:
                 insere += ', \'' + product_id.tipo_venda + '\''
                 insere += ',' + str(product_id.qtde_atacado)
                 insere += ',' + str(product_id.preco_atacado)
-                if product_id.barcode:
-                    insere += ', \'' + product_id.barcode + '\''
                 if fam:
-                    insere += ', \'' + str(fam) + '\''
+                    insere += ', \'' + str(fam.decode()) + '\''
                 if cat:
-                    insere += ', \'' + str(cat) + '\''
+                    insere += ', \'' + str(cat.decode()) + '\''
                 insere += ')'
                 print (codp+'-'+product_id.name)
                 # print ' Cadastrando : %s - %s' % (str(row[0]), row[1])
                 db.insert(insere)
             else:
                 print ('Alterando - %s' %(product_id.name))
+                #print ('YYYYYY - %s' %(produto))
                 altera = 'UPDATE PRODUTOS SET PRODUTO = '
-                altera += '\'' + produto.decode() + '\''
+                altera += '\'' + produto + '\''
                 altera += ', VALOR_PRAZO = ' + str(p_venda)
                 altera += ', NCM = ' +  '\'' + str(ncm) + '\''
                 altera += ', ORIGEM = ' + str(product_id.origin) 
                 altera += ', RATEIO = \'' + str(product_id.tipo_venda) + '\''
                 altera += ', QTDEATACADO = ' + str(product_id.qtde_atacado) 
                 altera += ', PRECOATACADO = ' + str(product_id.preco_atacado) 
-                if product_id.barcode:
-                    altera += ', COD_BARRA = \'' + product_id.barcode + '\''
                 altera += ' WHERE CODPRODUTO = ' + str(product_id.id)
                 db.insert(altera)
+        print ('FIM - %s' %(str(fim)))    
 p = AtsProduto()
-p.produtos()
+#x = 14600
+#z = 200
+#while z < x:
+#    if z > 16000:
+#        break 
+#    p.produtos(z+x)
+p.produtos(0)
+#    z += 200
