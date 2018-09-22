@@ -50,6 +50,7 @@ type
     qtdeAtacado: Double;
     estoque: Double;
     tipo_venda: String;
+    num_busca: Integer;
     procedure busca(codigo: String; barCode: String; produtoDesc: String; inativo: Boolean);
   end;
 
@@ -104,6 +105,7 @@ begin
   codProd   := dmPdv.sqBusca.FieldByName('CODPRO').AsString;
   precoVendaAtacado := dmPdv.sqBusca.FieldByName('PRECOATACADO').AsFloat;
   qtdeAtacado:= dmPdv.sqBusca.FieldByName('QTDEATACADO').AsFloat;
+  precoVenda:= dmPdv.sqBusca.FieldByName('VALOR_PRAZO').AsFloat;
   tipo_venda := dmPdv.sqBusca.FieldByName('RATEIO').AsString;
   Close;
 end;
@@ -118,6 +120,7 @@ begin
     codProd   := dmPdv.sqBusca.FieldByName('CODPRO').AsString;
     precoVendaAtacado := dmPdv.sqBusca.FieldByName('PRECOATACADO').AsFloat;
     qtdeAtacado:= dmPdv.sqBusca.FieldByName('QTDEATACADO').AsFloat;
+    precoVenda:= dmPdv.sqBusca.FieldByName('VALOR_PRAZO').AsFloat;
     tipo_venda := dmPdv.sqBusca.FieldByName('RATEIO').AsString;
     Close;
   end;
@@ -143,6 +146,7 @@ procedure TfProdutoProc.btnSALVClick(Sender: TObject);
 begin
   codProduto:= dmPdv.sqBusca.FieldByName('CODPRODUTO').AsInteger;
   produto   := dmPdv.sqBusca.FieldByName('PRODUTO').AsString;
+  codProd   := dmPdv.sqBusca.FieldByName('CODPRO').AsString;
   precoVenda:= dmPdv.sqBusca.FieldByName('VALOR_PRAZO').AsFloat;
   estoque   := dmPdv.sqBusca.FieldByName('ESTOQUEATUAL').AsFloat;
   precoVendaAtacado := dmPdv.sqBusca.FieldByName('PRECOATACADO').AsFloat;
@@ -161,7 +165,8 @@ begin
   DBGrid1.Columns[0].FieldName:='CODPRO';
   DBGrid1.Columns[1].FieldName:='PRODUTO';
   DBGrid1.Columns[2].FieldName:='UNIDADEMEDIDA';
-  DBGrid1.Columns[3].FieldName:='ESTOQUEATUAL';
+  DBGrid1.Columns[3].FieldName:='VALOR_PRAZO';
+  DBGrid1.Columns[3].DisplayFormat:=',##0.00';
 end;
 
 procedure TfProdutoProc.FormKeyPress(Sender: TObject; var Key: char);
@@ -170,13 +175,15 @@ end;
 
 procedure TfProdutoProc.FormShow(Sender: TObject);
 begin
+  num_busca  :=0;
   codProduto :=0;
   produto    :='';
   codProd    :='';
   precoVenda :=0;
   estoque    :=0;
   tipo_venda :='1';
-  edit1.SetFocus;
+  DBGrid1.SetFocus;
+  busca(Edit1.Text, '', Edit2.Text, chInativo.Checked);
 end;
 
 procedure TfProdutoProc.busca(codigo: String; barCode: String; produtoDesc: String; inativo: Boolean);
@@ -224,18 +231,37 @@ begin
   dmPdv.sqBusca.Active:=True;
   if ((dmPdv.sqBusca.IsEmpty) and (barCode <> '')) then
   begin
-    // refaco a busca usando o codpro se tentou pelo codigo de barra
     sqlProc := 'SELECT * FROM PRODUTOS ';
     sqlProc := sqlProc + 'WHERE ((USA IS NULL) OR (USA <> ' +
       QuotedStr('N') + '))';
-    sqlProc := sqlProc + ' AND CODPRO = ' + QuotedStr(barCode);
-    dmPdv.sqBusca.Close;
+
+    if (Length(barCode) > 12) then
+    begin
+      cod_bs := '';
+      sqlProc := sqlProc + ' AND COD_BARRA LIKE ' +
+         QuotedStr(Copy(barCode,0,12) + '%');
+    end;
+    if (dmPdv.sqBusca.Active) then
+      dmPdv.sqBusca.Close;
     dmPdv.sqBusca.SQL.Clear;
     dmPdv.sqBusca.SQL.Add(sqlProc);
     dmPdv.sqBusca.Active:=True;
+    if (dmPdv.sqBusca.IsEmpty) then
+    begin
+      // refaco a busca usando o codpro se tentou pelo codigo de barra
+      sqlProc := 'SELECT * FROM PRODUTOS ';
+      sqlProc := sqlProc + 'WHERE ((USA IS NULL) OR (USA <> ' +
+        QuotedStr('N') + '))';
+      sqlProc := sqlProc + ' AND CODPRO = ' + QuotedStr(barCode);
+      dmPdv.sqBusca.Close;
+      dmPdv.sqBusca.SQL.Clear;
+      dmPdv.sqBusca.SQL.Add(sqlProc);
+      dmPdv.sqBusca.Active:=True;
+    end;
   end;
   if (not dmPdv.sqBusca.IsEmpty) then
   begin
+    num_busca := dmPdv.sqBusca.RecordCount;
     codProduto := dmPdv.sqBusca.FieldByName('CODPRODUTO').AsInteger;
     produto    := dmPdv.sqBusca.FieldByName('PRODUTO').AsString;
     codProd    := dmPdv.sqBusca.FieldByName('CODPRO').AsString;

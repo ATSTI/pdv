@@ -42,6 +42,7 @@ object fExclusao: TfExclusao
     EditLabel.Width = 168
     EditLabel.Caption = 'Número do Pedido a Excluir'
     EditLabel.ParentColor = False
+    Enabled = False
     TabOrder = 2
     OnKeyPress = edPedidoExcluirKeyPress
   end
@@ -60,6 +61,7 @@ object fExclusao: TfExclusao
     Top = 153
     Width = 102
     Caption = 'Excluir Pedido'
+    Enabled = False
     OnClick = btnExcluirPedidoClick
     TabOrder = 3
   end
@@ -76,5 +78,14 @@ object fExclusao: TfExclusao
     Font.Quality = fqDraft
     ParentColor = False
     ParentFont = False
+  end
+  object CheckBox1: TCheckBox
+    Left = 37
+    Height = 19
+    Top = 158
+    Width = 70
+    Caption = 'chPedido'
+    OnChange = CheckBox1Change
+    TabOrder = 4
   end
 end

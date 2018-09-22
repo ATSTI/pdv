@@ -88,10 +88,18 @@ begin
 
   if chCurso.Checked then
   begin
-    sql := sql + ' WHERE REGIAO = 1';
+    sql := ' WHERE STATUS = 1 AND REGIAO = 1';
   end
   else begin
-    sql := sql + ' WHERE REGIAO = 0';
+    sql := ' WHERE STATUS = 1 AND REGIAO = 0';
+  end;
+
+  if ((chCurso.Checked) and (chInativo.Checked)) then
+  begin
+    sql := ' WHERE STATUS = 0 AND REGIAO = 1';
+  end
+  else begin
+    sql := ' WHERE STATUS = 0 AND REGIAO = 0';
   end;
 
   if edit1.Text <> '' then
@@ -100,7 +108,7 @@ begin
   end;
   if edit2.Text <> '' then
   begin
-    sql := sql + ' AND NOMECLIENTE LIKE ' + QuotedStr('%' + Edit2.Text + '%');
+    sql := sql + ' AND UPPER(NOMECLIENTE) LIKE UPPER(' + QuotedStr('%' + Edit2.Text + '%') + ')';
   end;
 
   sql := 'SELECT * FROM CLIENTES ' + sql;

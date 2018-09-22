@@ -1,17 +1,18 @@
 object fLogin: TfLogin
   Left = 256
-  Height = 237
+  Height = 318
   Top = 250
   Width = 538
   Caption = 'Acesso ao Sistema'
-  ClientHeight = 237
+  ClientHeight = 318
   ClientWidth = 538
+  OnShow = FormShow
   Position = poDesktopCenter
   LCLVersion = '1.8.4.0'
   object btnLogin: TBitBtn
     Left = 348
     Height = 28
-    Top = 88
+    Top = 24
     Width = 91
     Caption = 'Entrar'
     OnClick = btnLoginClick
@@ -20,7 +21,7 @@ object fLogin: TfLogin
   object edLogin: TLabeledEdit
     Left = 48
     Height = 23
-    Top = 88
+    Top = 24
     Width = 136
     EditLabel.AnchorSideLeft.Control = edLogin
     EditLabel.AnchorSideRight.Control = edLogin
@@ -28,7 +29,7 @@ object fLogin: TfLogin
     EditLabel.AnchorSideBottom.Control = edLogin
     EditLabel.Left = 48
     EditLabel.Height = 15
-    EditLabel.Top = 70
+    EditLabel.Top = 6
     EditLabel.Width = 136
     EditLabel.Caption = 'Usuário'
     EditLabel.ParentColor = False
@@ -38,7 +39,7 @@ object fLogin: TfLogin
   object edSenha: TLabeledEdit
     Left = 216
     Height = 23
-    Top = 88
+    Top = 24
     Width = 120
     EchoMode = emPassword
     EditLabel.AnchorSideLeft.Control = edSenha
@@ -47,7 +48,7 @@ object fLogin: TfLogin
     EditLabel.AnchorSideBottom.Control = edSenha
     EditLabel.Left = 216
     EditLabel.Height = 15
-    EditLabel.Top = 70
+    EditLabel.Top = 6
     EditLabel.Width = 120
     EditLabel.Caption = 'Senha'
     EditLabel.ParentColor = False
@@ -57,9 +58,9 @@ object fLogin: TfLogin
   end
   object Label1: TLabel
     Cursor = crHandPoint
-    Left = 56
+    Left = 48
     Height = 16
-    Top = 184
+    Top = 48
     Width = 115
     Caption = 'Cadastrar/Alterar Senha'
     DragCursor = crHandPoint
@@ -72,5 +73,23 @@ object fLogin: TfLogin
     ParentColor = False
     ParentFont = False
     OnClick = Label1Click
+  end
+  object Memo1: TMemo
+    Left = 47
+    Height = 240
+    Top = 72
+    Width = 467
+    Enabled = False
+    TabOrder = 3
+  end
+  object BitBtn1: TBitBtn
+    Left = 440
+    Height = 30
+    Top = 22
+    Width = 75
+    Caption = 'BitBtn1'
+    OnClick = BitBtn1Click
+    TabOrder = 4
+    Visible = False
   end
 end

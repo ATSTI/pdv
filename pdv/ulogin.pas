@@ -6,20 +6,24 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Buttons,
-  ExtCtrls, StdCtrls, udmpdv, uSenhaNova, uPdv, base64;
+  ExtCtrls, StdCtrls, udmpdv, uSenhaNova, uPdv, base64, Process;
 
 type
 
   { TfLogin }
 
   TfLogin = class(TForm)
+    BitBtn1: TBitBtn;
     btnLogin: TBitBtn;
     edLogin: TLabeledEdit;
     edSenha: TLabeledEdit;
     Label1: TLabel;
+    Memo1: TMemo;
+    procedure BitBtn1Click(Sender: TObject);
     procedure btnLoginClick(Sender: TObject);
     procedure edLoginKeyPress(Sender: TObject; var Key: char);
     procedure edSenhaKeyPress(Sender: TObject; var Key: char);
+    procedure FormShow(Sender: TObject);
     procedure Label1Click(Sender: TObject);
   private
 
@@ -86,6 +90,10 @@ begin
   end;
 end;
 
+procedure TfLogin.BitBtn1Click(Sender: TObject);
+begin
+end;
+
 procedure TfLogin.edLoginKeyPress(Sender: TObject; var Key: char);
 begin
   if (key = #13) then
@@ -102,6 +110,78 @@ begin
     Key := #0;
     btnLogin.Click;
   end;
+end;
+
+procedure TfLogin.FormShow(Sender: TObject);
+begin
+  {
+end;
+
+var
+  AProcess: TProcess;
+  ASlist: TStringList;
+  script: String;
+  i: integer;
+begin
+  //if dmPdv.path_python = '' then
+  //begin
+  //  ShowMessage('informe no conf.ini :  [PATH] Python=C:\....\python.exe .');
+  //  Exit;
+  //end;
+  AProcess := TProcess.Create(nil);
+  ASList := TStringList.Create;
+  try
+    //AProcess.Executable := 'C:\Users\ats\AppData\Local\Programs\Python\Python37-32\python.exe';
+    AProcess.Executable := dmPdv.path_exe +  'atsProduto.exe';
+    AProcess.Options := AProcess.Options + [poWaitOnExit, poUsePipes];
+    //script:= dmPdv.path_exe +  'atsProduto.py';
+    //AProcess.Parameters.Add(script);
+    AProcess.Execute;
+    ASlist.LoadFromStream(AProcess.Output);
+    Memo1.Lines.Clear;
+    for i := 0 to ASlist.Count - 1 do
+      Memo1.Lines.Add(ASlist[i]);
+    Memo1.Lines.Add('');
+    Memo1.Lines.Add('.... Atualizado Produtos.');
+
+    script:= dmPdv.path_exe +  'atsCliente.py';
+    AProcess.Parameters.Add(script);
+    AProcess.Execute;
+    ASlist.LoadFromStream(AProcess.Output);
+    for i := 0 to ASlist.Count - 1 do
+       Memo1.Lines.Add(ASlist[i]);
+    Memo1.Lines.Add('');
+    Memo1.Lines.Add('.... Atualizado Clientes.');
+
+    script:= dmPdv.path_exe +  'atsCaixa.py';
+    AProcess.Parameters.Add(script);
+    AProcess.Execute;
+    ASlist.LoadFromStream(AProcess.Output);
+    for i := 0 to ASlist.Count - 1 do
+       Memo1.Lines.Add(ASlist[i]);
+    Memo1.Lines.Add('');
+    Memo1.Lines.Add('.... Atualizado Caixas.');
+
+    ASlist.SaveToFile('saida.txt');
+    //ShowMessage('fez');
+    dmPdv.IbCon.Connected:=False;
+    dmPdv.IbCon.Connected:=True;
+    dmPdv.sqBusca.SQL.Text := 'SELECT IDCAIXACONTROLE, CODCAIXA, CODUSUARIO,' +
+       'SITUACAO, NOMECAIXA ' +
+       ' FROM CAIXA_CONTROLE WHERE SITUACAO = ' + QuotedStr('o') +
+       ' AND CODUSUARIO = ' + dmPdv.varLogado;
+    dmPdv.sqBusca.Open;
+    while not dmPdv.sqBusca.EOF do
+    begin
+      Memo1.Lines.Add('');
+      Memo1.Lines.Add('Caixas Disponiveis:');
+      Memo1.Lines.Add(dmPdv.sqBusca.Fields.FieldByName('NOMECAIXA').AsString);
+      dmPdv.sqBusca.Next;
+    end;
+  finally
+    AProcess.Free;
+    ASlist.Free;
+  end;}
 end;
 
 procedure TfLogin.Label1Click(Sender: TObject);

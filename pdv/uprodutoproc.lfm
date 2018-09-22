@@ -252,17 +252,18 @@ object fProdutoProc: TfProdutoProc
     Color = clWindow
     Columns = <    
       item
-        Title.Caption = 'Title'
+        Title.Caption = 'Cód.'
       end    
       item
-        Title.Caption = 'Title'
+        Title.Caption = 'Descrição'
         Width = 300
       end    
       item
-        Title.Caption = 'Title'
+        Title.Caption = 'Unidade'
       end    
       item
-        Title.Caption = 'Title'
+        Title.Alignment = taRightJustify
+        Title.Caption = 'Preço'
       end>
     DataSource = dsProc
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]

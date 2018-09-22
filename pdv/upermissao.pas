@@ -21,6 +21,7 @@ type
 
   public
     permCodMov : Integer;
+    permCodDet : Integer;
   end;
 
 var
@@ -47,6 +48,7 @@ begin
   if (dmPdv.sqBusca.FieldByName('PERFIL').AsString = 'GERENTE') then
   begin
     edSenha.Text:='';
+    fExclusao.excCodDet := permCodDet;
     fExclusao.excCodUser := dmPdv.sqBusca.FieldByName('CODUSUARIO').AsInteger;
     fExclusao.excUser := dmPdv.sqBusca.FieldByName('NOMEUSUARIO').AsString;
     fExclusao.excCodMov  :=permCodMov;
@@ -63,6 +65,7 @@ begin
   if Key = #13 then
   begin
     Key := #0;
+    btnLogin.Click;
   end;
 end;
 

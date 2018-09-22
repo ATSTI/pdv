@@ -15,11 +15,13 @@ type
   TfExclusao = class(TForm)
     btnExcluiItem: TBitBtn;
     btnExcluirPedido: TBitBtn;
+    CheckBox1: TCheckBox;
     edItemExcluir: TLabeledEdit;
     lblItem: TLabel;
     edPedidoExcluir: TLabeledEdit;
     procedure btnExcluiItemClick(Sender: TObject);
     procedure btnExcluirPedidoClick(Sender: TObject);
+    procedure CheckBox1Change(Sender: TObject);
     procedure edItemExcluirExit(Sender: TObject);
     procedure edItemExcluirKeyPress(Sender: TObject; var Key: char);
     procedure edPedidoExcluirKeyPress(Sender: TObject; var Key: char);
@@ -27,6 +29,7 @@ type
   private
 
   public
+    excCodDet :Integer;
     excCodMov :Integer;
     excCodUser: Integer;
     excUser: String;
@@ -53,10 +56,10 @@ begin
     dmPdv.sqBusca.SQL.Text := 'SELECT md.CODDETALHE, md.STATUS ' +
        ' FROM MOVIMENTO m, MOVIMENTODETALHE md ' +
        ' WHERE m.CODMOVIMENTO = md.CODMOVIMENTO ' +
-       '   AND m.CODMOVIMENTO  = ' + IntToStr(excCodMov) +
+       '   AND md.CODDETALHE  = ' + IntToStr(excCodDet) +
        '   AND md.BAIXA IS NULL ' +
-       '   AND md.NITEMPED = ' + edItemExcluir.Text +
        '   AND m.STATUS = 0';
+    //       '   AND md.NITEMPED = ' + edItemExcluir.Text +
     dmPdv.sqBusca.Open;
     if (not dmPdv.sqBusca.IsEmpty) then
     begin
@@ -109,6 +112,19 @@ begin
   end;
 end;
 
+procedure TfExclusao.CheckBox1Change(Sender: TObject);
+begin
+  if CheckBox1.Checked then
+  begin
+    edPedidoExcluir.Enabled:=True;
+    btnExcluirPedido.Enabled:=True;
+  end
+  else begin
+    edPedidoExcluir.Enabled:=False;
+    btnExcluirPedido.Enabled:=False;
+  end;
+end;
+
 procedure TfExclusao.edItemExcluirExit(Sender: TObject);
 begin
 end;
@@ -146,8 +162,27 @@ end;
 
 procedure TfExclusao.FormShow(Sender: TObject);
 begin
+  CheckBox1.Checked:=False;
   edItemExcluir.Text:='';
   edPedidoExcluir.Text:='';
+  dmPdv.sqBusca.Close;
+  dmPdv.sqBusca.SQL.Clear;
+  dmPdv.sqBusca.SQL.Text := 'SELECT md.CODDETALHE, md.STATUS, md.DESCPRODUTO ' +
+     ' , p.CODPRO ' +
+     ' FROM MOVIMENTO m, MOVIMENTODETALHE md, PRODUTOS p ' +
+     ' WHERE m.CODMOVIMENTO = md.CODMOVIMENTO ' +
+     '   AND p.CODPRODUTO = md.CODPRODUTO ' +
+     '   AND md.CODDETALHE  = ' + IntToStr(excCodDet) +
+     '   AND md.BAIXA IS NULL ' +
+     '   AND m.STATUS = 0';
+  //    '   AND md.NITEMPED = ' + edItemExcluir.Text +
+  dmPdv.sqBusca.Open;
+  if not dmPdv.sqBusca.IsEmpty then
+  begin
+    lblItem.Caption := dmPdv.sqBusca.FieldByName('DESCPRODUTO').AsString;
+    edItemExcluir.Text:=dmPdv.sqBusca.FieldByName('CODPRO').AsString;
+    edPedidoExcluir.Text:=IntToStr(excCodMov);
+  end;
 end;
 
 end.
