@@ -130,6 +130,8 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
+    serie_cx: String;
+    num_cx: Integer;
     vCodVenda: Integer;
     num_doc: Integer;
     vValorTotal: Double;
@@ -155,6 +157,7 @@ type
     vCliente: Integer;
     vCodMovimento: Integer;
     vDesconto : Double;
+    function strParaFloat(vlr_st: String): Double;
   end;
 
 var
@@ -173,7 +176,9 @@ begin
   edPagamento.Color := clWhite;
   lblStatus.Caption := 'Fechamento.';
   vStatus := 0;
-  vValorVenda := StrToFloat(vValor);
+
+  //vValor := FormatFloat('#,,,0.00',vValor);
+  vValorVenda := StrParaFloat(vValor);
   vResto := vValorVenda;
   num_doc := 0;
   vValorTotal := 0;
@@ -186,6 +191,7 @@ begin
   edValorTotal.Text:= FormatFloat('#,,,0.00',vValorVenda);
   edValorVendaTotal.Text := vValor;
   calcula_total;
+  edPagamento.SetFocus;
 end;
 
 function TfPDV_Rec.RemoveAcento(Str: string): string;
@@ -286,6 +292,23 @@ begin
   // vTeste := vCodVenda;
   if vCodVenda = 0 then
   begin
+    dmPdv.sqUpdate.Close;
+    dmPdv.sqUpdate.SQL.Clear;
+    dmPdv.sqUpdate.SQL.Text := 'SELECT * FROM SERIES WHERE SERIE = ' +
+      QuotedStr('PDV-'+dmPdv.varLogado);
+    dmPdv.sqUpdate.Open;
+    serie_cx := dmPdv.sqUpdate.FieldByName('SERIE').AsString;
+    num_cx := dmPdv.sqUpdate.FieldByName('ULTIMO_NUMERO').AsInteger+1;
+    dmPdv.sqUpdate.Close;
+    dmPdv.sqUpdate.UpdateSQL.Clear;
+    dmPdv.sqUpdate.UpdateSQL.Text := 'UPDATE SERIES SET ULTIMO_NUMERO = ' +
+      IntToStr(num_cx) + ' WHERE SERIE = ' +
+      QuotedStr('PDV-'+dmPdv.varLogado);
+
+    dmPdv.sqUpdate.Open;
+    dmPdv.sqUpdate.Edit;
+    dmPdv.sqUpdate.Post;
+    dmPdv.sqUpdate.ApplyUpdates;
     // insere venda
     fVnd := TVenda.Create;
     Try
@@ -300,9 +323,9 @@ begin
       fVnd.DataVenda   := Now;
       fVnd.DataVcto    := Now;
       fVnd.Desconto    := 0;
-      fVnd.Valor       := v_vlr;
-      fVnd.NotaFiscal  := vCodMovimento;
-      fVnd.Serie       := 'PDV';
+      fVnd.Valor       := strParaFloat(vValor);
+      fVnd.NotaFiscal  := num_cx;
+      fVnd.Serie       := serie_cx;
       vCodVenda := fVnd.inserirVenda(0);
       dmPdv.sTrans.Commit;
     finally
@@ -326,7 +349,9 @@ begin
   sqPagamentoID_ENTRADA.AsInteger:= vCodMovimento;
   sqPagamentoN_DOC.AsString      := lblForma.Caption;
   sqPagamentoSTATE.AsInteger     := 0;
-  vValorPago := StrToFloat(edPagamento.Text);
+
+
+  vValorPago := StrParaFloat(edPagamento.Text);
   if vValorPago > vResto then
   begin
     edTroco.Text := FloatToStr(vValorPago - vResto);
@@ -335,7 +360,7 @@ begin
   sqPagamentoVALOR_PAGO.AsFloat  := vValorPago;
 
   sqPagamentoDESCONTO.AsFloat    := vDesconto;
-  sqPagamentoTROCO.AsFloat       := StrToFloat(edTroco.Text);
+  sqPagamentoTROCO.AsFloat       := StrParaFloat(edTroco.Text);
   sqPagamento.ApplyUpdates;
   dmPdv.sTrans.Commit;
   vDesconto := 0;
@@ -712,6 +737,20 @@ begin
   end;
 end;
 
+function TfPDV_Rec.strParaFloat(vlr_st: String): Double;
+var tam: Integer;
+  vVlrStr: String;
+begin
+  if (Length(vlr_st) > 6) then
+  begin
+    tam := Length(vlr_st)-7;
+    vVlrStr := copy(vlr_st,0,tam);
+    tam := Length(vVlrStr)+2;
+    vlr_st := vVlrStr + copy(vlr_st,tam,6);
+  end;
+  result := StrToFloat(vlr_st);
+end;
+
 procedure TfPDV_Rec.edPagamentoKeyPress(Sender: TObject; var Key: char);
 begin
   if Key = #13 then
@@ -728,7 +767,7 @@ begin
           Exit;
         end;
       end;
-      registra_valores(StrToFloat(edPagamento.Text));
+      registra_valores(strParaFloat(edPagamento.Text));
     end;
   end;
 end;
@@ -760,11 +799,11 @@ var percent : Double;
 begin
   if ((btnDsc.Caption = 'R$') and (chkPercent.Checked=False)) then
   begin
-    vDesconto := StrToFloat(edVDesconto.Text);
+    vDesconto := strParaFloat(edVDesconto.Text);
     edDesconto.Text := FormatFloat('#,,,0.00',vDesconto);
   end
   else begin
-    percent := StrToFloat(edVDesconto.Text);
+    percent := StrParaFloat(edVDesconto.Text);
     percent := 1-(percent/100);
     vDesconto:= vValorVenda - (vValorVenda * percent);
     edDesconto.Text := FormatFloat('#,,,0.00',vDesconto);
@@ -931,6 +970,12 @@ begin
   begin
     encerra_venda();
   end;
+  fNfce.nfce_valor:=vValorVenda;
+  fNfce.nfce_desconto:=StrParaFloat(edVDesconto.Text);
+  fNfce.nfce_codVenda := vCodVenda;
+  dmPdv.sqLancamentos.Close;
+  dmPdv.sqLancamentos.Params.ParamByName('PMOV').AsInteger := vCodMovimento;
+  dmPdv.sqLancamentos.Open;
   fNfce.ShowModal;
 end;
 

@@ -39,9 +39,9 @@ object fNfce: TfNfce
   end
   object Label1: TLabel
     Left = 121
-    Height = 13
+    Height = 15
     Top = 40
-    Width = 22
+    Width = 24
     Caption = 'CPF '
     ParentColor = False
   end
@@ -51,6 +51,7 @@ object fNfce: TfNfce
     Top = 112
     Width = 91
     Caption = 'Fechar'
+    OnClick = btnFecharClick
     TabOrder = 2
   end
   object btnNFce1: TBitBtn
@@ -81,11 +82,12 @@ object fNfce: TfNfce
       FFFFF70888888888888888888000000000000088888888888888888888888888
       8888888888888888888888888888888888888888888888888888
     }
+    OnClick = btnNFce1Click
     TabOrder = 3
   end
   object edCertificado: TLabeledEdit
     Left = 364
-    Height = 21
+    Height = 23
     Top = 59
     Width = 180
     EditLabel.AnchorSideLeft.Control = edCertificado
@@ -93,8 +95,8 @@ object fNfce: TfNfce
     EditLabel.AnchorSideRight.Side = asrBottom
     EditLabel.AnchorSideBottom.Control = edCertificado
     EditLabel.Left = 364
-    EditLabel.Height = 13
-    EditLabel.Top = 43
+    EditLabel.Height = 15
+    EditLabel.Top = 41
     EditLabel.Width = 180
     EditLabel.Caption = 'Certificado'
     EditLabel.ParentColor = False
@@ -142,7 +144,7 @@ object fNfce: TfNfce
   end
   object edNFce: TLabeledEdit
     Left = 16
-    Height = 21
+    Height = 23
     Top = 56
     Width = 80
     EditLabel.AnchorSideLeft.Control = edNFce
@@ -150,8 +152,8 @@ object fNfce: TfNfce
     EditLabel.AnchorSideRight.Side = asrBottom
     EditLabel.AnchorSideBottom.Control = edNFce
     EditLabel.Left = 16
-    EditLabel.Height = 13
-    EditLabel.Top = 40
+    EditLabel.Height = 15
+    EditLabel.Top = 38
     EditLabel.Width = 80
     EditLabel.Caption = 'Num. NFe'
     EditLabel.ParentColor = False
@@ -168,7 +170,7 @@ object fNfce: TfNfce
     TabOrder = 7
     object TabSheet1: TTabSheet
       Caption = 'Retorno'
-      ClientHeight = 183
+      ClientHeight = 181
       ClientWidth = 633
       object MemoResp: TMemo
         Left = 12
@@ -180,7 +182,7 @@ object fNfce: TfNfce
     end
     object TabSheet2: TTabSheet
       Caption = 'Envio'
-      ClientHeight = 183
+      ClientHeight = 181
       ClientWidth = 633
       object MemoDados: TMemo
         Left = 8
@@ -190,59 +192,167 @@ object fNfce: TfNfce
         TabOrder = 0
       end
     end
-  end
-  object cbxModeloPosPrinter: TComboBox
-    Left = 496
-    Height = 21
-    Top = 112
-    Width = 145
-    ItemHeight = 13
-    Style = csDropDownList
-    TabOrder = 8
+    object TabSheet3: TTabSheet
+      Caption = 'Configurações'
+      ClientHeight = 181
+      ClientWidth = 633
+      object cbSSLLib: TComboBox
+        Left = 83
+        Height = 23
+        Top = 22
+        Width = 172
+        ItemHeight = 15
+        OnChange = cbSSLLibChange
+        TabOrder = 0
+        Text = 'cbSSLLib'
+      end
+      object cbCryptLib: TComboBox
+        Left = 83
+        Height = 23
+        Top = 52
+        Width = 172
+        ItemHeight = 15
+        OnChange = cbCryptLibChange
+        TabOrder = 1
+        Text = 'cbCryptLib'
+      end
+      object cbXmlSignLib: TComboBox
+        Left = 83
+        Height = 23
+        Top = 112
+        Width = 172
+        ItemHeight = 15
+        OnChange = cbXmlSignLibChange
+        TabOrder = 2
+        Text = 'cbXmlSignLib'
+      end
+      object cbHttpLib: TComboBox
+        Left = 83
+        Height = 23
+        Top = 82
+        Width = 172
+        ItemHeight = 15
+        OnChange = cbHttpLibChange
+        TabOrder = 3
+        Text = 'cbHttpLib'
+      end
+      object lblcbSSLLib: TLabel
+        Left = 34
+        Height = 15
+        Top = 24
+        Width = 40
+        Caption = 'SSL Lib.'
+        ParentColor = False
+      end
+      object lblcbCryptLib: TLabel
+        Left = 20
+        Height = 15
+        Top = 48
+        Width = 54
+        Caption = 'Crypt. Lib.'
+        ParentColor = False
+      end
+      object Label2: TLabel
+        Left = 5
+        Height = 15
+        Top = 112
+        Width = 69
+        Caption = 'Xml Sign Lib.'
+        ParentColor = False
+      end
+      object Label3: TLabel
+        Left = 28
+        Height = 15
+        Top = 82
+        Width = 46
+        Caption = 'Http Lib.'
+        ParentColor = False
+      end
+      object edtCaminho: TLabeledEdit
+        Left = 320
+        Height = 23
+        Top = 32
+        Width = 200
+        EditLabel.AnchorSideLeft.Control = edtCaminho
+        EditLabel.AnchorSideRight.Control = edtCaminho
+        EditLabel.AnchorSideRight.Side = asrBottom
+        EditLabel.AnchorSideBottom.Control = edtCaminho
+        EditLabel.Left = 320
+        EditLabel.Height = 15
+        EditLabel.Top = 14
+        EditLabel.Width = 200
+        EditLabel.Caption = 'Certificado (Caminho PFX)'
+        EditLabel.ParentColor = False
+        TabOrder = 4
+      end
+      object edtSenha: TLabeledEdit
+        Left = 320
+        Height = 23
+        Top = 72
+        Width = 200
+        EditLabel.AnchorSideLeft.Control = edtSenha
+        EditLabel.AnchorSideRight.Control = edtSenha
+        EditLabel.AnchorSideRight.Side = asrBottom
+        EditLabel.AnchorSideBottom.Control = edtSenha
+        EditLabel.Left = 320
+        EditLabel.Height = 15
+        EditLabel.Top = 54
+        EditLabel.Width = 200
+        EditLabel.Caption = 'Senha'
+        EditLabel.ParentColor = False
+        TabOrder = 5
+      end
+      object edtNumSerie: TLabeledEdit
+        Left = 320
+        Height = 23
+        Top = 112
+        Width = 200
+        EditLabel.AnchorSideLeft.Control = edtNumSerie
+        EditLabel.AnchorSideRight.Control = edtNumSerie
+        EditLabel.AnchorSideRight.Side = asrBottom
+        EditLabel.AnchorSideBottom.Control = edtNumSerie
+        EditLabel.Left = 320
+        EditLabel.Height = 15
+        EditLabel.Top = 94
+        EditLabel.Width = 200
+        EditLabel.Caption = 'Série'
+        EditLabel.ParentColor = False
+        TabOrder = 6
+      end
+      object BitBtn2: TBitBtn
+        Left = 320
+        Height = 30
+        Top = 150
+        Width = 200
+        Caption = 'Gravar Configurações'
+        OnClick = BitBtn2Click
+        TabOrder = 7
+      end
+      object cbxModeloPosPrinter: TComboBox
+        Left = 83
+        Height = 23
+        Top = 144
+        Width = 172
+        ItemHeight = 15
+        TabOrder = 8
+      end
+      object Label4: TLabel
+        Left = 19
+        Height = 15
+        Top = 144
+        Width = 55
+        Caption = 'Mod. Imp.'
+        ParentColor = False
+      end
+    end
   end
   object ACBrNFeDANFeESCPOS1: TACBrNFeDANFeESCPOS
-    MostrarPreview = True
-    MostrarStatus = True
-    TipoDANFE = tiSemGeracao
-    NumCopias = 1
-    ImprimeNomeFantasia = False
-    ImprimirDescPorc = False
-    ImprimirTotalLiquido = True
-    MargemInferior = 0.8
-    MargemSuperior = 0.8
-    MargemEsquerda = 0.6
-    MargemDireita = 0.51
-    CasasDecimais.Formato = tdetInteger
-    CasasDecimais._qCom = 2
-    CasasDecimais._vUnCom = 2
-    CasasDecimais._Mask_qCom = ',0.00'
-    CasasDecimais._Mask_vUnCom = ',0.00'
-    ExibirResumoCanhoto = False
-    FormularioContinuo = False
-    TamanhoFonte_DemaisCampos = 8
-    ProdutosPorPagina = 0
-    ImprimirDetalhamentoEspecifico = True
-    NFeCancelada = False
-    ImprimirItens = True
-    vTroco = 0
-    ViaConsumidor = True
-    TamanhoLogoHeight = 0
-    TamanhoLogoWidth = 0
-    RecuoEndereco = 0
-    RecuoEmpresa = 0
-    LogoemCima = False
-    TamanhoFonteEndereco = 0
-    RecuoLogo = 0
-    vTribFed = 0
-    vTribEst = 0
-    vTribMun = 0
-    left = 328
-  end
-  object ACBrNFeDANFCeFortes1: TACBrNFeDANFCeFortes
-    MostrarPreview = True
+    ACBrNFe = ACBrNFe1
+    MostrarPreview = False
     MostrarStatus = True
     TipoDANFE = tiNFCe
     NumCopias = 1
+    AgruparNumCopias = False
     ImprimeNomeFantasia = False
     ImprimirDescPorc = False
     ImprimirTotalLiquido = True
@@ -274,8 +384,8 @@ object fNfce: TfNfce
     vTribFed = 0
     vTribEst = 0
     vTribMun = 0
-    left = 536
-    top = 8
+    PosPrinter = ACBrPosPrinter1
+    left = 328
   end
   object ACBrValidador1: TACBrValidador
     TipoDocto = docGTIN
@@ -286,7 +396,7 @@ object fNfce: TfNfce
   object ACBrNFe1: TACBrNFe
     OnAntesDeAssinar = ACBrNFe1AntesDeAssinar
     Configuracoes.Geral.SSLLib = libCustom
-    Configuracoes.Geral.SSLCryptLib = cryWinCrypt
+    Configuracoes.Geral.SSLCryptLib = cryCapicom
     Configuracoes.Geral.SSLHttpLib = httpNone
     Configuracoes.Geral.SSLXmlSignLib = xsNone
     Configuracoes.Geral.FormatoAlerta = 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.'
@@ -294,9 +404,27 @@ object fNfce: TfNfce
     Configuracoes.Geral.VersaoQRCode = veqr200
     Configuracoes.Arquivos.OrdenacaoPath = <>
     Configuracoes.WebServices.UF = 'SP'
+    Configuracoes.WebServices.Ambiente = taProducao
     Configuracoes.WebServices.AguardarConsultaRet = 0
     Configuracoes.WebServices.QuebradeLinha = '|'
+    DANFE = ACBrNFeDANFeESCPOS1
     left = 161
     top = 15
+  end
+  object OpenDialog1: TOpenDialog
+    left = 587
+    top = 91
+  end
+  object ACBrPosPrinter1: TACBrPosPrinter
+    ConfigBarras.MostrarCodigo = False
+    ConfigBarras.LarguraLinha = 0
+    ConfigBarras.Altura = 0
+    ConfigBarras.Margem = 0
+    ConfigQRCode.Tipo = 2
+    ConfigQRCode.LarguraModulo = 4
+    ConfigQRCode.ErrorLevel = 0
+    LinhasEntreCupons = 0
+    left = 525
+    top = 152
   end
 end

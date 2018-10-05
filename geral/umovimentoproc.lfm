@@ -306,8 +306,17 @@ object fMovimentoProc: TfMovimentoProc
         Width = 120
       end    
       item
-        Title.Caption = 'Cód. Venda'
-        Width = 120
+        Title.Caption = 'Vendedor'
+        Width = 140
+      end    
+      item
+        MaxSize = 300
+        Title.Caption = 'Cliente'
+        Width = 180
+      end    
+      item
+        Title.Alignment = taRightJustify
+        Title.Caption = 'Valor'
       end>
     DataSource = dsMovProc
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]

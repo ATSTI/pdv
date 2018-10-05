@@ -57,10 +57,13 @@ end;
 procedure TfMovimentoProc.acBuscarExecute(Sender: TObject);
 var sqlProc: String;
 begin
-  sqlProc := 'SELECT m.CODMOVIMENTO, m.CONTROLE, m.DATAMOVIMENTO, v.CODVENDA ';
+  sqlProc := 'SELECT m.CODMOVIMENTO, m.CONTROLE, m.DATA_SISTEMA as DATAMOVIMENTO, v.CODVENDA ';
+  sqlProc += ' , u.NOMEUSUARIO as  VENDEDOR, c.NOMECLIENTE as CLIENTE, v.VALOR ';
   sqlProc += ' FROM MOVIMENTO m  ';
+  sqlProc += ' INNER JOIN USUARIO u ON m.codVendedor = u.codUsuario';
+  sqlProc += ' INNER JOIN CLIENTES c ON c.CODCLIENTE = m.CODCLIENTE';
   sqlProc += ' LEFT OUTER JOIN VENDA v ON v.CODMOVIMENTO = m.CODMOVIMENTO ';
-  sqlProc += ' WHERE m.DATAMOVIMENTO BETWEEN ';
+  sqlProc += ' WHERE  m.DATAMOVIMENTO BETWEEN ';
   sqlProc += QuotedStr(FormatDateTime( 'mm-dd-yyyy', edDataIni.Date));
   sqlProc += '   AND ';
   sqlProc += QuotedStr(FormatDateTime( 'mm-dd-yyyy', edDataFim.Date));
@@ -98,7 +101,10 @@ begin
   DBGrid1.Columns[0].FieldName:='CODMOVIMENTO';
   DBGrid1.Columns[1].FieldName:='DATAMOVIMENTO';
   DBGrid1.Columns[2].FieldName:='CONTROLE';
-  DBGrid1.Columns[3].FieldName:='CODVENDA';
+  DBGrid1.Columns[3].FieldName:='VENDEDOR';
+  DBGrid1.Columns[4].FieldName:='CLIENTE';
+  DBGrid1.Columns[5].FieldName:='VALOR';
+  DBGrid1.Columns[5].DisplayFormat:=',##0.00';
 end;
 
 procedure TfMovimentoProc.FormShow(Sender: TObject);

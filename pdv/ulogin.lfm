@@ -9,6 +9,43 @@ object fLogin: TfLogin
   OnShow = FormShow
   Position = poDesktopCenter
   LCLVersion = '1.8.4.0'
+  object pnInfo: TPanel
+    Left = 29
+    Height = 306
+    Top = 6
+    Width = 499
+    ClientHeight = 306
+    ClientWidth = 499
+    TabOrder = 5
+    Visible = False
+    object Memo2: TMemo
+      Left = 1
+      Height = 304
+      Top = 1
+      Width = 497
+      Align = alClient
+      Lines.Strings = (
+        'Criar uma série PDV com o código do usuário, ex. :'
+        '   SERIE : PDV-1 (PDV + Cod Usuario)'
+        ''
+        'Criar uma Série para NFCe :'
+        '   CODSERIE : 6 (série 6 usado na NFCe, a série q será usada)'
+        '   SERIE : NFCE-5  ( NFCE + Código do Usuário  (pode ser uma série para cada usuario))'
+        ''
+        ''
+        'Em Parametros SERIENFCe , no campo DADOS colocar o CSC (obtido no '
+        'cadastramento da empresa para emissao da NFCe no site da Receita) e o '
+        'Campo D4 , o idCSC .'
+        ''
+        'Vendedor Padrao : Colocar no conf.ini:'
+        ''
+        '  [Outros]'
+        '  Vendedor=1  (cod. Usuario)'
+      )
+      ScrollBars = ssBoth
+      TabOrder = 0
+    end
+  end
   object btnLogin: TBitBtn
     Left = 348
     Height = 28
@@ -91,5 +128,14 @@ object fLogin: TfLogin
     OnClick = BitBtn1Click
     TabOrder = 4
     Visible = False
+  end
+  object btnInfo: TBitBtn
+    Left = 8
+    Height = 30
+    Top = 272
+    Width = 31
+    Caption = '?'
+    OnClick = btnInfoClick
+    TabOrder = 6
   end
 end

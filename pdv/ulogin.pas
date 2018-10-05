@@ -14,12 +14,16 @@ type
 
   TfLogin = class(TForm)
     BitBtn1: TBitBtn;
+    btnInfo: TBitBtn;
     btnLogin: TBitBtn;
     edLogin: TLabeledEdit;
     edSenha: TLabeledEdit;
     Label1: TLabel;
     Memo1: TMemo;
+    Memo2: TMemo;
+    pnInfo: TPanel;
     procedure BitBtn1Click(Sender: TObject);
+    procedure btnInfoClick(Sender: TObject);
     procedure btnLoginClick(Sender: TObject);
     procedure edLoginKeyPress(Sender: TObject; var Key: char);
     procedure edSenhaKeyPress(Sender: TObject; var Key: char);
@@ -92,6 +96,14 @@ end;
 
 procedure TfLogin.BitBtn1Click(Sender: TObject);
 begin
+end;
+
+procedure TfLogin.btnInfoClick(Sender: TObject);
+begin
+  if pnInfo.Visible = True then
+    pnInfo.Visible:=False
+  else
+    pnInfo.Visible:=True;
 end;
 
 procedure TfLogin.edLoginKeyPress(Sender: TObject; var Key: char);

@@ -194,9 +194,17 @@ type
     nomeCaixa : String;
     MICRO : String;
     path_exe: String;
+    path_python: String;
     portaImp: String;
     id_tk: String;
     tk: string;
+    SSLLib : Integer;
+    CryptLib :Integer;
+    HttpLib :Integer;
+    XmlSignLib :Integer;
+    CaminhoCert:String;
+    SenhaCert :String;
+    NumSerieCert :String;
     function executaSql(strSql: String): Boolean;
     procedure gravaLog(DataLog: TDateTime; usuario: String; tipoMovimento: String;
     pc: String; valorAnt: String; valorPos: String; campoChave: String; acao: String);
@@ -230,12 +238,20 @@ begin
     vstr := conf.ReadString('DATABASE', 'Name', '');
     IBCon.DatabaseName := vstr;
     vstr := conf.ReadString('DATABASE', 'HostName', '');
+    path_python := conf.ReadString('PATH', 'PathPython', '');
     IBCon.HostName := vstr;
     snh:= conf.ReadString('DATABASE', 'Acesso', '');
     portaImp := conf.ReadString('IMPRESSORA', 'porta', '');
     //snh:= EncodeStringBase64(snh); // Ver a senha Encryptada
     snh:= DecodeStringBase64(snh);
     IBCon.Password := snh;
+    SSLLib     := conf.ReadInteger( 'Certificado','SSLLib' ,0) ;
+    CryptLib   := conf.ReadInteger( 'Certificado','CryptLib' , 0) ;
+    HttpLib    := conf.ReadInteger( 'Certificado','HttpLib' , 0) ;
+    XmlSignLib := conf.ReadInteger( 'Certificado','XmlSignLib' , 0) ;
+    CaminhoCert:= conf.ReadString( 'Certificado','Caminho' ,'') ;
+    SenhaCert  := conf.ReadString( 'Certificado','Senha'   ,'') ;
+    NumSerieCert:= conf.ReadString( 'Certificado','NumSerie','');
   finally
     conf.free;
   end;
@@ -262,7 +278,7 @@ begin
   sqBusca.SQL.Add('SELECT r.VERSAO FROM ATUALIZA r WHERE r.CODATUALIZA = 5000');
   sqBusca.Active:=True;
   versao_sistema:=sqBusca.FieldByName('VERSAO').AsString;
-  if (versao_sistema <> '1.0') then
+  if (versao_sistema <> '1.2') then
   begin
     atualiza_bd();
   end;
@@ -295,7 +311,27 @@ begin
   Try
     IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD CODFORMA INTEGER NOT NULL');
     IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD PRIMARY KEY (CODFORMA)');
+  Except
+  end;
+  sTrans.Commit;
+  Try
     IbCon.ExecuteDirect('CREATE SEQUENCE GEN_FORMA');
+  Except
+  end;
+
+  Try
+    IbCon.ExecuteDirect('ALTER TABLE MOVIMENTO ADD DESCONTO DOUBLE PRECISION');
+  Except
+  end;
+  Try
+    IbCon.ExecuteDirect('alter table venda add XMLNFE BLOB SUB_TYPE 0');
+    IbCon.ExecuteDirect('alter table venda add NOMEXML VARCHAR( 60 )');
+    IbCon.ExecuteDirect('alter table venda add PROTOCOLOENV VARCHAR( 20 )');
+    IbCon.ExecuteDirect('alter table venda add NUMRECIBO VARCHAR( 20 )');
+  Except
+  end;
+  Try
+    IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD DESCONTO double precision');
   Except
   end;
 
@@ -310,7 +346,7 @@ begin
   end;}
 
 
-  IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.0') +
+  IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.2') +
     ' WHERE CODATUALIZA = 5000');
   sTrans.Commit;
 end;

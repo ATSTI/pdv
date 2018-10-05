@@ -286,7 +286,7 @@ begin
   begin
     Key := #0;
     edPreco.Text := edPreco1.Text;
-    preco := StrToFloat(edPreco.Text);
+    preco := fPDV_Rec.strParaFloat(edPreco.Text);
     edDesconto1.SetFocus;
   end;
 
@@ -302,7 +302,7 @@ begin
   if Key = #13 then
   begin
     Key := #0;
-    preco := StrToFloat(edPreco.Text);
+    preco := fPDV_Rec.strParaFloat(edPreco.Text);
     alterar_item();
     calculaTotalGeral();
   end;
@@ -913,7 +913,7 @@ begin
   codCliente  := 1;
   edClienteNome.Text := 'Consumidor';
   edCliente.Text     := '1';
-  codVendedor := 1;
+  codVendedor := dmpdv.vendedor_padrao;
 
   edCaixa.Text := dmPdv.nomeLogado + '-' + dmPdv.nomeCaixa;
   buscaPedidosAbertoCaixa(0);
@@ -1013,8 +1013,16 @@ begin
   edCliente.Text := '1';
   codCliente :=1;
   edClienteNome.Text := 'Consumidor';
-  edVendedor.Text  := '';
-  edVendedorNome.Text := '';
+  if (dmPdv.vendedor_padrao > 0) then
+  begin
+    edVendedor.Text := IntToStr(dmPdv.vendedor_padrao);
+    edVendedorNome.Text := 'Vendedor';
+  end
+  else begin
+    edVendedor.Text  := '';
+    edVendedorNome.Text := '';
+  end;
+
   edTotalGeral.Text := '0,00';
   //edTotal.Text := '0,00';
   if (not dsLanc.DataSet.Active) then
@@ -1067,10 +1075,10 @@ begin
     FMov.MovDetalhe.Descricao  := proDesc;
     FMov.MovDetalhe.nItem      := num_item;
     FMov.MovDetalhe.Cortesia   := fProdutoProc.tipo_venda;
-    FMov.MovDetalhe.Qtde       := StrToFloat(edQtde.Text);
+    FMov.MovDetalhe.Qtde       := fPDV_Rec.strParaFloat(edQtde.Text);
     if (edDesconto.Text <> '') then
-      FMov.MovDetalhe.Desconto := StrToFloat(edDesconto.Text);
-    FMov.MovDetalhe.Preco         := StrToFloat(edPreco.Text);
+      FMov.MovDetalhe.Desconto := fPDV_Rec.strParaFloat(edDesconto.Text);
+    FMov.MovDetalhe.Preco         := fPDV_Rec.strParaFloat(edPreco.Text);
     //edTotal.Text := FloatToStr(FMov.MovDetalhe.Qtde * FMov.MovDetalhe.Preco);
     //FMov.MovDetalhe.Baixa         := '1';
     codDet := Fmov.MovDetalhe.inserirMovDet();
@@ -1107,8 +1115,8 @@ begin
     dmPdv.sTrans.Active := True;
     FMov.MovDetalhe.CodMov := codMov;
     fMov.MovDetalhe.CodDet := codDet;
-    FMov.MovDetalhe.Qtde   := StrToFloat(edQtde.Text);
-    qAtac := StrToFloat(edQtde.Text);
+    FMov.MovDetalhe.Qtde   := fPDV_Rec.strParaFloat(edQtde.Text);
+    qAtac := fPDV_Rec.strParaFloat(edQtde.Text);
     if ((qtdeAtacado > 0) and (qAtac >= qtdeAtacado)) then
     begin
       FMov.MovDetalhe.Ii    := preco;
@@ -1117,18 +1125,18 @@ begin
     end
     else begin
       FMov.MovDetalhe.Ii    := 0;
-      FMov.MovDetalhe.Preco := StrToFloat(edPreco.Text);
+      FMov.MovDetalhe.Preco := fPDV_Rec.strParaFloat(edPreco.Text);
     end;
     if (edDesconto.Text <> '0,00') then
     begin
       if cbPercentual.Checked then
       begin
-        calc_desc := StrToFloat(edDesconto.Text);
+        calc_desc := fPDV_Rec.strParaFloat(edDesconto.Text);
         calc_desc := FMov.MovDetalhe.Preco * (calc_desc / 100);
         FMov.MovDetalhe.Desconto := calc_desc;
       end
       else
-        FMov.MovDetalhe.Desconto:=StrToFloat(edDesconto.Text);
+        FMov.MovDetalhe.Desconto:=fPDV_Rec.strParaFloat(edDesconto.Text);
     end;
 
     FMov.MovDetalhe.Status := '0';
@@ -1166,18 +1174,18 @@ begin
   sQtde := edQtde.Text;
   sDesc := edDesconto.Text;
   try
-    tQtde := StrToFloat(sQtde);
+    tQtde := fPDV_Rec.strParaFloat(sQtde);
   except
-    tQtde := StrToFloat(StringReplace(sQtde,',','.',[rfReplaceAll]));;
+    tQtde := fPDV_Rec.strParaFloat(StringReplace(sQtde,',','.',[rfReplaceAll]));;
   end;
   try
-    tPrc := StrToFloat(edPreco.Text);
+    tPrc := fPDV_Rec.strParaFloat(edPreco.Text);
   except
-    tPrc := StrToFloat(StringReplace(sPrc,',','.',[rfReplaceAll]));
+    tPrc := fPDV_Rec.strParaFloat(StringReplace(sPrc,',','.',[rfReplaceAll]));
   end;
   // TODO - Tratar o Desconto
   if (sDesc <> '') then
-    tDesc := StrToFloat(sDesc);
+    tDesc := fPDV_Rec.strParaFloat(sDesc);
   if (tDesc > 0) then
   begin
     if (cbPercentual.Checked) then
@@ -1222,7 +1230,8 @@ begin
   lblNumItem.Caption:= IntToStr(num_item-1);
   dmPdv.sqLancamentos.EnableControls;
   edProduto.Text:='';
-  edProduto.SetFocus;
+  if (edProduto.Enabled = True) then
+    edProduto.SetFocus;
 end;
 
 procedure TfPdv.abreSqLanc();
