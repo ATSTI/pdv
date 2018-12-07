@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, db, FileUtil, SynEdit, RTTICtrls, Forms, Controls,
   Graphics, Dialogs, ExtCtrls, StdCtrls, Buttons, MaskEdit, DBGrids, ActnList,
   Menus, dateutils, uMovimento, uVendedorBusca, uClienteBusca, uPermissao,
-  Grids;
+  Grids,  MTProcs;
 
 type
 
@@ -24,6 +24,7 @@ type
     ActionList1: TActionList;
     BitBtn10: TBitBtn;
     BitBtn11: TBitBtn;
+    BitBtn12: TBitBtn;
     BitBtn5: TBitBtn;
     btnProdutoProc: TBitBtn;
     BitBtn4: TBitBtn;
@@ -51,6 +52,7 @@ type
     dsLanc: TDataSource;
     edCliente: TEdit;
     edDesconto1: TMaskEdit;
+    edProdNao: TEdit;
     edPreco: TMaskEdit;
     edDesconto: TMaskEdit;
     edPreco1: TMaskEdit;
@@ -77,8 +79,10 @@ type
     Label17: TLabel;
     Label18: TLabel;
     Label19: TLabel;
-    lblProdBusca: TLabel;
+    edBuscaDetalhe: TLabeledEdit;
+    Label20: TLabel;
     lblMSG: TLabel;
+    lblProdBusca: TLabel;
     Label6: TLabel;
     Label9: TLabel;
     lblNumItem: TLabel;
@@ -93,12 +97,17 @@ type
     edProdutoDesc: TMemo;
     lblSenha: TLabel;
     Memo1: TMemo;
+    Memo2: TMemo;
+    MemoIntegra: TMemo;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
+    MenuItem4: TMenuItem;
     Panel1: TPanel;
     Panel10: TPanel;
     Panel11: TPanel;
+    pnIntegra: TPanel;
+    pnProdutoNaoLocalizado: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
     pnProdBusca: TPanel;
@@ -120,6 +129,7 @@ type
     procedure acReceberExecute(Sender: TObject);
     procedure BitBtn10Click(Sender: TObject);
     procedure BitBtn11Click(Sender: TObject);
+    procedure BitBtn12Click(Sender: TObject);
     procedure btnProdutoProcClick(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
@@ -149,6 +159,7 @@ type
       );
     procedure DBGrid2KeyPress(Sender: TObject; var Key: char);
     procedure DBGrid2KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure edBuscaDetalheChange(Sender: TObject);
     procedure edClienteChange(Sender: TObject);
     procedure edClienteKeyPress(Sender: TObject; var Key: char);
     procedure edDesconto1Change(Sender: TObject);
@@ -163,6 +174,7 @@ type
     procedure edQtdeKeyPress(Sender: TObject; var Key: char);
     procedure edVendedorKeyPress(Sender: TObject; var Key: char);
     procedure FlowPanel1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Image1Click(Sender: TObject);
     procedure Image2Click(Sender: TObject);
@@ -171,6 +183,8 @@ type
     procedure btnVendaClick(Sender: TObject);
     procedure Panel6Click(Sender: TObject);
     procedure TIGroupBox1Click(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure Timer2Timer(Sender: TObject);
   private
     codproduto: Integer;
     codPro: String;
@@ -202,7 +216,8 @@ type
     procedure buscaPedidosAbertoCaixa(bpCodMov: Integer);
     procedure preencherDescItem(descItem: String);
     procedure buscaVendedor(codBarraV: String);
-
+    procedure executaIntegracao(Index: PtrInt; Data: Pointer; Item: TMultiThreadProcItem);
+    procedure Executa(script: String);
   public
 
   end;
@@ -409,6 +424,11 @@ begin
 
 end;
 
+procedure TfPdv.edBuscaDetalheChange(Sender: TObject);
+begin
+
+end;
+
 procedure TfPdv.btnReceberClick(Sender: TObject);
 begin
 
@@ -485,6 +505,21 @@ begin
     edProduto.SetFocus;
     Exit;
   end;
+  buscaVendedor(edVendedor.Text);
+  if (codVendedor = 0) then
+  begin
+    ShowMessage('Vendedor não informado;');
+    edProduto.Text := '';
+    edProduto.SetFocus;
+    Exit;
+  end;
+  //if (dmPdv.sqLancamentosCODCLIENTE.AsInteger <> codCliente) then
+  //begin
+  dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET CODCLIENTE = ' +
+      IntToStr(codCliente) + ', CODVENDEDOR = ' + IntToStr(codVendedor) +
+      ' WHERE CODMOVIMENTO = ' + IntToStr(codMov) +
+      ' AND STATUS = 0');
+  //end;
   fPDV_Rec.vValor  := edTotalGeral.Text;
   fPDV_Rec.vUsuario:= codCaixa;
   fPDV_Rec.vVendedor:= codVendedor;
@@ -523,6 +558,12 @@ begin
   pnProdBusca.Visible:=False;
 end;
 
+procedure TfPdv.BitBtn12Click(Sender: TObject);
+begin
+  pnProdutoNaoLocalizado.Visible:=False;
+  edProduto.SetFocus;
+end;
+
 procedure TfPdv.acFecharExecute(Sender: TObject);
 begin
   Close;
@@ -555,6 +596,8 @@ end;
 
 procedure TfPdv.acProcurarExecute(Sender: TObject);
 begin
+  //dmPdv.IbCon.Connected:=False;
+  //dmPdv.IbCon.Connected:=True;
   fMovimentoProc.ShowModal;
   if (fMovimentoProc.codMovimentoProc > 0) then
   begin
@@ -570,8 +613,10 @@ begin
     edQtde.Text    := FormatFloat('#,,,0.00',dmPdv.sqLancamentosQUANTIDADE.AsFloat);
     edPreco.Text   := FormatFloat('#,,,0.00',dmPdv.sqLancamentosPRECO.AsFloat);
     edDesconto.Text:= FormatFloat('#,,,0.00',dmPdv.sqLancamentosDESCONTO.AsFloat);
-    edVendedor.Text:= IntToStr(dmPdv.sqLancamentosCODVENDEDOR.AsInteger);
-    edCliente.Text := IntToStr(dmpdv.sqLancamentosCODCLIENTE.AsInteger);
+    codVendedor := dmPdv.sqLancamentosCODVENDEDOR.AsInteger;
+    edVendedor.Text:= IntToStr(codVendedor);
+    codCliente := dmpdv.sqLancamentosCODCLIENTE.AsInteger;
+    edCliente.Text := IntToStr(codCliente);
     fClienteBusca.cCodCliente := StrToInt(edCliente.Text);
     fClienteBusca.BuscaCliente;
     edClienteNome.Text := fClienteBusca.cNomeCliente;
@@ -787,6 +832,8 @@ begin
       if (fProdutoProc.codProduto = 0) then
       begin
         //ShowMessage('Produto não Localizado.');
+        pnProdutoNaoLocalizado.Visible:=True;
+        edProdNao.SetFocus;
         fProdutoProc.Edit2.Text := edProduto.Text;
         //btnProdutoProc.Click;
       end;
@@ -882,6 +929,11 @@ begin
 
 end;
 
+procedure TfPdv.FormCreate(Sender: TObject);
+begin
+  Image1.Picture.LoadFromFile('logo.png');
+end;
+
 procedure TfPdv.FormShow(Sender: TObject);
 var sqlP: String;
 begin
@@ -914,7 +966,7 @@ begin
   edClienteNome.Text := 'Consumidor';
   edCliente.Text     := '1';
   codVendedor := dmpdv.vendedor_padrao;
-
+  edVendedor.Text := IntToStr(dmpdv.vendedor_padrao);
   edCaixa.Text := dmPdv.nomeLogado + '-' + dmPdv.nomeCaixa;
   buscaPedidosAbertoCaixa(0);
 end;
@@ -951,9 +1003,34 @@ begin
 
 end;
 
+procedure TfPdv.Timer1Timer(Sender: TObject);
+begin
+  //lblMSG.Caption:='Integrando pedidos ...';
+  //executa('atsOrder.py');
+end;
+
+procedure TfPdv.Timer2Timer(Sender: TObject);
+begin
+  //lblMSG.Caption:='Integrando produtos ...';
+  //Executa('atsProduto.py');
+  //lblMSG.Caption:='Integrando clientes ...';
+  //Executa('atsCliente.py');
+end;
+
 procedure TfPdv.abrePedido(apCodMov: Integer);
 var  logs:TextFile;
+  vdr: String;
 begin
+  vdr := edVendedor.Text;
+  edVendedor.Text := '0';
+  vdr := edVendedor.Text;
+  codVendedor := 0;
+  if (dmpdv.vendedor_padrao > 0) then
+  begin
+    codVendedor := dmpdv.vendedor_padrao;
+    edVendedor.Text := IntToStr(dmpdv.vendedor_padrao);
+    edVendedorNome.Text := '';
+  end;
   AssignFile(logs, 'log.txt');
   try
     Rewrite(logs);
@@ -1002,54 +1079,61 @@ begin
   finally
     CloseFile(logs);
   end;
+  vdr := edVendedor.Text;
 end;
 
 procedure TfPdv.iniciarVenda();
 begin
-  num_item:=1;
-  edProduto.Enabled := True;
-  edProdutoDesc.Lines.Clear;
-  edProdutoDesc.Lines.Add('Produto:');
-  edCliente.Text := '1';
-  codCliente :=1;
-  edClienteNome.Text := 'Consumidor';
-  if (dmPdv.vendedor_padrao > 0) then
+  if (dmPdv.nomeCaixa <> 'FECHADO') then
   begin
-    edVendedor.Text := IntToStr(dmPdv.vendedor_padrao);
-    edVendedorNome.Text := 'Vendedor';
+    num_item:=1;
+    edProduto.Enabled := True;
+    edProdutoDesc.Lines.Clear;
+    edProdutoDesc.Lines.Add('Produto:');
+    edCliente.Text := '1';
+    codCliente :=1;
+    edClienteNome.Text := 'Consumidor';
+    if (dmPdv.vendedor_padrao > 0) then
+    begin
+      edVendedor.Text := IntToStr(dmPdv.vendedor_padrao);
+      edVendedorNome.Text := 'Vendedor';
+    end
+    else begin
+      edVendedor.Text  := '';
+      edVendedorNome.Text := '';
+    end;
+
+    edTotalGeral.Text := '0,00';
+    //edTotal.Text := '0,00';
+    if (not dsLanc.DataSet.Active) then
+      dsLanc.DataSet.Active := True;
+    //dsLanc.DataSet.Insert;
+    FMov := TMovimento.Create;
+    Try
+      dmPdv.sTrans.Active := True;
+      FMov.CodMov      := 0;
+      // TODO - Tratar as variaveis abaixo
+      FMov.CodCCusto   := caixa_local;
+      FMov.CodCliente  := codCliente;
+      FMov.CodNatureza := 3; // Venda
+      FMov.Status      := 0;
+      FMov.CodUsuario  := codCaixa;
+      FMov.CodVendedor := codVendedor;
+      // TODO - Usar o campo Controle para Informar a SESSAO do PDV
+      FMov.Controle    := num_pedido;
+      FMov.DataMov     := Now;
+      codMov := FMov.inserirMovimento(0);
+      //num_pedido := IntToStr(codMov);
+      dmPdv.sTrans.Commit;
+      dmPdv.sqLancamentos.Close;
+      dmPdv.sqLancamentos.Params.ParamByName('PMOV').AsInteger:=codMov;
+      dmPdv.sqLancamentos.Open;
+    finally
+      FMov.Free;
+    end;
   end
   else begin
-    edVendedor.Text  := '';
-    edVendedorNome.Text := '';
-  end;
-
-  edTotalGeral.Text := '0,00';
-  //edTotal.Text := '0,00';
-  if (not dsLanc.DataSet.Active) then
-    dsLanc.DataSet.Active := True;
-  //dsLanc.DataSet.Insert;
-  FMov := TMovimento.Create;
-  Try
-    dmPdv.sTrans.Active := True;
-    FMov.CodMov      := 0;
-    // TODO - Tratar as variaveis abaixo
-    FMov.CodCCusto   := caixa_local;
-    FMov.CodCliente  := codCliente;
-    FMov.CodNatureza := 3; // Venda
-    FMov.Status      := 0;
-    FMov.CodUsuario  := codCaixa;
-    FMov.CodVendedor := codVendedor;
-    // TODO - Usar o campo Controle para Informar a SESSAO do PDV
-    FMov.Controle    := num_pedido;
-    FMov.DataMov     := Now;
-    codMov := FMov.inserirMovimento(0);
-    //num_pedido := IntToStr(codMov);
-    dmPdv.sTrans.Commit;
-    dmPdv.sqLancamentos.Close;
-    dmPdv.sqLancamentos.Params.ParamByName('PMOV').AsInteger:=codMov;
-    dmPdv.sqLancamentos.Open;
-  finally
-    FMov.Free;
+    ShowMessage('Caixa Fechado.');
   end;
 end;
 
@@ -1064,6 +1148,11 @@ begin
       ShowMessage('Pedido já finalizado.');
       Exit;
     end;
+  end;
+  if (fPDV_Rec.strParaFloat(edQtde.Text) > 1000) then
+  begin
+    ShowMessage('Quantidade parece errada.');
+    Exit;
   end;
   FMov := TMovimento.Create;
   Try
@@ -1502,6 +1591,7 @@ end;
 
 procedure TfPdv.buscaVendedor(codBarraV: String);
 begin
+  codVendedor := 0;
   dmPdv.sqBusca.Close;
   dmPdv.sqBusca.SQL.Clear;
   if (Length(codBarraV) < 7) then
@@ -1516,12 +1606,44 @@ begin
   dmPdv.sqBusca.Open;
   if (dmPdv.sqBusca.IsEmpty) then
   begin
-    ShowMessage('Sem Cadastro de usuário no sistema');
+    ShowMessage('Sem Cadastro do Vendedor no sistema');
     Exit;
   end;
   edVendedor.Text := IntToStr(dmPdv.sqBusca.FieldByName('CODUSUARIO').AsInteger);
   codVendedor := dmPdv.sqBusca.FieldByName('CODUSUARIO').AsInteger;
   edVendedorNome.Text := dmPdv.sqBusca.FieldByName('NOMEUSUARIO').AsString;
+end;
+
+procedure TfPdv.executaIntegracao(Index: PtrInt; Data: Pointer; Item: TMultiThreadProcItem);
+var ultimo_int : integer; // ultima venda enviada odoo
+begin
+  // executar integracao faturas se tiver acontecido venda
+  //sleep(3000);
+  {
+  Memo2.Lines.LoadFromFile(dmpdv.path_exe + '\atsProduto.py');
+  if fMovimentoProc.PythonEngine1.IsHandleValid then
+  begin
+    fMovimentoProc.PythonEngine1.ExecStrings((Memo2.Lines));
+  end
+  else writeln('invalid library handle!', dynlibs.GetLoadErrorStr);
+  lblMSG.Caption:= 'Sucesso.';
+  }
+end;
+
+procedure TfPdv.Executa(script: String);
+var tamanho: Integer;
+begin
+  {
+  MemoIntegra.Lines.LoadFromFile(dmPdv.path_script + '\' + script);
+  if fMovimentoProc.PythonEngine1.IsHandleValid then
+  begin
+    fMovimentoProc.PythonEngine1.ExecStrings((MemoIntegra.Lines));
+    tamanho := Length(MemoIntegra.Text);
+    MemoIntegra.SelStart := tamanho;
+    MemoIntegra.SetFocus;
+  end
+  else writeln('invalid library handle!', dynlibs.GetLoadErrorStr)
+  }
 end;
 
 end.
