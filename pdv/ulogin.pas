@@ -126,6 +126,11 @@ end;
 
 procedure TfLogin.FormShow(Sender: TObject);
 begin
+  if dmPdv.nomeLogado <> '' then
+  begin
+    edLogin.Text := dmPdv.nomeLogado;
+    edSenha.Text := dmPdv.senhaLogin;
+  end;
   {
 end;
 

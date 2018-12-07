@@ -25,6 +25,8 @@ object fLogin: TfLogin
       Width = 497
       Align = alClient
       Lines.Strings = (
+        'logo.png'
+        ''
         'Criar uma série PDV com o código do usuário, ex. :'
         '   SERIE : PDV-1 (PDV + Cod Usuario)'
         ''
@@ -41,6 +43,8 @@ object fLogin: TfLogin
         ''
         '  [Outros]'
         '  Vendedor=1  (cod. Usuario)'
+        '  SenhaLogin=123'
+        '  NomeLogin=adm'
       )
       ScrollBars = ssBoth
       TabOrder = 0
