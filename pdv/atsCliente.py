@@ -43,6 +43,7 @@ class AtsCliente:
         db = con.Conexao()
         sist = db.sistema()
         coding = sys.stdout.encoding
+        #arq = open('C:\home\programas\lazarus\pdv\pdv\log_cliente.log', 'w')
         #import pudb;pu.db
         #order = odoo.env['pos.order']
         hj = datetime.now()
@@ -54,20 +55,36 @@ class AtsCliente:
         cli_ids = cliente.search([('create_date', '>=', hj), ('customer','=', True)])
         #else:
         #    cli_ids = cliente_id
+        print ('Importando Clientes')
         for partner_id in cliente.browse(cli_ids):
+            #log = 'Cliente novos : %s\n' %(partner_id.name)
+			#print (log)
+            #arq.write(log)
             sqlc = 'select codcliente from clientes where codcliente = %s' %(partner_id.id)
             cli = db.query(sqlc)
+            nome = partner_id.name
+            if partner_id.legal_name:
+                razao = partner_id.legal_name
+            else:
+                razao = nome
+
+            """
             nome = self.asciize(partner_id.name.encode(coding))
             if partner_id.legal_name:
                 razao = self.asciize(partner_id.legal_name.encode(coding))
             else:
                 razao = nome
-            print(partner_id.name.encode('ascii', 'ignore'))
+            print(partner_id.name)
             try:
                 print(nome.decode())
             except:
                 nome = partner_id.name.encode('ascii', 'ignore')
+            """
             if not len(cli):
+                log = 'Cadastrando Cliente : %s\n' %(nome)
+                #arq.write(log)
+                print (log)
+
                 tipo = '0'
                 if partner_id.is_company:
                     tipo = '1'
@@ -93,7 +110,7 @@ class AtsCliente:
                             %s, \'%s\',\'%s\',\
                             %s, %s, %s,\
                             %s, %s, %s, %s, \'%s\')'\
-                            %(str(partner_id.id), nome.decode(), razao.decode(), \
+                            %(str(partner_id.id), nome, razao, \
                             tipo, partner_id.cnpj_cpf, ie,\
                             '1', regiao, '0.0',\
                             'current_date', vendedor, '1', '1', fiscal)
@@ -159,19 +176,23 @@ class AtsCliente:
                 inserir += str(partner_id.id)
                 inserir += ',' + str(partner_id.id)
                 if endereco != 'Null':
-                    inserir += ', \'%s\'' %(str(endereco.encode('ascii', 'ignore')))
+                    #inserir += ', \'%s\'' %(str(endereco.encode('ascii', 'ignore')))
+                    inserir += ', \'%s\'' %(endereco)
                 else:
                     inserir += ', Null'
                 if bairro != 'Null':
-                    inserir += ', \'%s\'' % (str(bairro.encode('ascii', 'ignore')))
+                    #inserir += ', \'%s\'' % (str(bairro.encode('ascii', 'ignore')))
+                    inserir += ', \'%s\'' % (bairro)
                 else:
                     inserir += ', Null'
                 if complemento != 'Null':
-                    inserir += ', \'%s\'' % (str(complemento.encode('ascii', 'ignore')))
+                    #inserir += ', \'%s\'' % (str(complemento.encode('ascii', 'ignore')))
+                    inserir += ', \'%s\'' % (complemento)
                 else:
                     inserir += ', Null'
                 if cidade != 'Null':
-                    inserir += ', \'%s\'' % (str(cidade.encode('ascii', 'ignore')))
+                    #inserir += ', \'%s\'' % (str(cidade.encode('ascii', 'ignore')))
+                    inserir += ', \'%s\'' % (cidade)
                 else:
                     inserir += ', Null'
                 if uf != 'Null':
@@ -200,7 +221,8 @@ class AtsCliente:
                     inserir += ', Null'
                 inserir += ', 0' # tipoEnd
                 if obs != 'Null':
-                    inserir += ', \'%s\'' % (str(obs.encode('ascii', 'ignore')))
+                    #inserir += ', \'%s\'' % (str(obs.encode('ascii', 'ignore')))
+                    inserir += ', \'%s\'' % (obs)
                 else:
                     inserir += ', Null'
                 if ddd != 'Null':
@@ -235,8 +257,8 @@ class AtsCliente:
                     regiao = '1'
                 altera =  'UPDATE CLIENTES SET REGIAO = %s \
                     ,NOMECLIENTE = \'%s\' \
-                    WHERE CODCLIENTE = %s' %(regiao, nome.decode(), str(partner_id.id))
+                    WHERE CODCLIENTE = %s' %(regiao, nome, str(partner_id.id))
                 db.insert(altera )
-               
+        arq.close()
 p = AtsCliente()
 p.clientes()

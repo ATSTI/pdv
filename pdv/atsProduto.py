@@ -9,34 +9,39 @@ import re
 import sys
 
 
-_table = { 
-    "á" : "a", "à" : "a", "â" : "a", "ä" : "a", "ã" : "a", "å" : "a",
-    "é" : "e", "è" : "e", "ê" : "e", "ë" : "e",
-    "í" : "i", "ì" : "i", "î" : "i", "ï" : "i",
-    "ó" : "o", "ò" : "o", "ô" : "o", "ö" : "o", "õ" : "o", "ø" : "o", 
-    "ú" : "u", "ù" : "u", "û" : "u", "ü" : "u",
-    "ñ" : "n", "ç" : "c",
-    "Á" : "A", "À" : "A", "Â" : "A", "Ä" : "A", "Ã" : "A", "Å" : "A",
-    "É" : "E", "È" : "E", "Ê" : "E", "Ë" : "E", 
-    "Í" : "I", "Ì" : "I", "Î" : "I", "Ï" : "I", 
-    "Ó" : "O", "Ò" : "O", "Ô" : "O", "Ö" : "O", "Õ" : "O", "Ø" : "O",
-    "Ú" : "U", "Ù" : "U", "Û" : "U", "Ü" : "U", 
-    "Ñ" : "N", "Ç" : "C",
-    "ß" : "ss", "Þ" : "d" , "æ" : "ae", "º": ".", "ª": "."
-}
-
 class AtsProduto:
 
+    #def __init__(self):
+	#    self.produtos(0)
+
     def asciize(self,s):
+        _table = { 
+            "á" : "a", "à" : "a", "â" : "a", "ä" : "a", "ã" : "a", "å" : "a",
+            "é" : "e", "è" : "e", "ê" : "e", "ë" : "e",
+            "í" : "i", "ì" : "i", "î" : "i", "ï" : "i",
+            "ó" : "o", "ò" : "o", "ô" : "o", "ö" : "o", "õ" : "o", "ø" : "o", 
+            "ú" : "u", "ù" : "u", "û" : "u", "ü" : "u",
+            "ñ" : "n", "ç" : "c",
+            "Á" : "A", "À" : "A", "Â" : "A", "Ä" : "A", "Ã" : "A", "Å" : "A",
+            "É" : "E", "È" : "E", "Ê" : "E", "Ë" : "E", 
+            "Í" : "I", "Ì" : "I", "Î" : "I", "Ï" : "I", 
+            "Ó" : "O", "Ò" : "O", "Ô" : "O", "Ö" : "O", "Õ" : "O", "Ø" : "O",
+            "Ú" : "U", "Ù" : "U", "Û" : "U", "Ü" : "U", 
+            "Ñ" : "N", "Ç" : "C",
+            "ß" : "ss", "Þ" : "d" , "æ" : "ae", "º": ".", "ª": "."
+        }
+
         """ 
         Converts a entire string to a ASCII only string.
 
         string
            The string to be converted.
         """
+        #import pdb; pdb.set_trace()
         for original, plain in _table.items():
-            s = s.replace(original, plain)
-        return s
+            x = s.decode()
+            x = x.replace(original, plain)
+        return x
 
 
 
@@ -46,14 +51,15 @@ class AtsProduto:
         #odoo = self.con()
         #import pdb; pdb.set_trace()
         #import pudb;pu.db
+        print ('Importando Produtos')
         db = con.Conexao()
         sist = db.sistema()
         coding = sys.stdout.encoding        
         #order = odoo.env['pos.order']
         hj = datetime.now()
-        hj = hj - timedelta(days=10)
+        hj = hj - timedelta(days=3)
         hj = datetime.strftime(hj,'%Y-%m-%d %H:%M:%S')
-        
+        #arq = open('C:\home\programas\lazarus\pdv\pdv\log_prod.log', 'w')
         grupo = sist.env['pos.category']
         grupo_ids = grupo.search([('create_date', '>=', hj),('parent_id','!=', False)])
         for grp in grupo.browse(grupo_ids):
@@ -75,52 +81,77 @@ class AtsProduto:
         prod_ids = sist.env['product.product'].search([
            ('write_date', '>=', hj),
            ('sale_ok', '=', True)])
+        #arq.write('Importando Produtos\n')
+        print ('Qtde de Produtos %s\n' %(str(len(prod_ids))))
 		#   ('id','>',fim-200),('id', '<', fim)])
         for product_id in sist.env['product.product'].browse(prod_ids):
+            print ('Produto %s\n' %(str(product_id.product_tmpl_id.id)))
             ncm = ''
             if product_id.fiscal_classification_id:
                 ncm = product_id.fiscal_classification_id.code
-                ncm = re.sub('[^0-9]', '', ncm)
+                if ncm:
+                    ncm = re.sub('[^0-9]', '', ncm)
             p_custo = 0.0
             if product_id.standard_price:
                 p_custo = product_id.standard_price
             p_venda = 0.0
             if product_id.list_price:
                 p_venda = product_id.list_price
+            codbarra = ''
+            if product_id.barcode:
+                codbarra = product_id.barcode
             #import pudb;pu.db
-            produto = self.asciize(product_id.name.encode(coding))
+            #try:
+            #    produto = self.asciize(product_id.name.encode(coding))
+            #except:
+            #    produto = product_id.name.encode('ascii', 'ignore')
+            produto = product_id.name
             #produto = product_id.name.encode('ascii', 'ignore')				
             sqlp = 'select codproduto from produtos where codproduto = %s' %(product_id.id)
             prods = db.query(sqlp)
             #import pdb; pdb.set_trace()
             if not len(prods):
                 print ('Incluindo - %s' %(product_id.name))
+                codp = str(product_id.id)
+                if product_id.default_code:
+                    codp = product_id.default_code
+                sqlp = 'select codproduto from produtos where codpro like \'%s\'' %(codp+'%')
+                prodsa = db.query(sqlp)					
+                if len(prodsa):
+                    if product_id.default_code:
+                        codp = product_id.default_code + '(%s)' %(str(len(prodsa)+1))
+                 
+                print ('Incluindo - %s-%s' %(str(product_id.id),product_id.name))
                 #print ('XXX - %s' %(produto))
 
                 #import pudb;pu.db
                 
                 cat = ''
                 if product_id.pos_categ_id:
-                    cat = self.asciize(product_id.pos_categ_id.name.encode(coding))
+                    #cat = self.asciize(product_id.pos_categ_id.name.encode(coding))
+                    cat = product_id.pos_categ_id.name
                     print ('CAT - %s' %(cat))
                 fam = ''
                 if product_id.pos_categ_id.parent_id:
-                    fam = self.asciize(product_id.pos_categ_id.parent_id.name.encode(coding))
+                    #fam = self.asciize(product_id.pos_categ_id.parent_id.name.encode(coding))
+                    fam = product_id.pos_categ_id.parent_id.name
                 codp = str(product_id.id)
                 if product_id.default_code:
                     codp = product_id.default_code
-                un = product_id.uom_id.name.encode('ascii', 'ignore')
+                #un = product_id.uom_id.name.encode('ascii', 'ignore')
+                un = product_id.uom_id.name
                 insere = 'INSERT INTO PRODUTOS (CODPRODUTO, UNIDADEMEDIDA, PRODUTO, PRECOMEDIO, CODPRO,\
-                          TIPOPRECOVENDA, ORIGEM, NCM, VALORUNITARIOATUAL, VALOR_PRAZO, TIPO, RATEIO, \
-                          QTDEATACADO, PRECOATACADO'
+                          TIPOPRECOVENDA, ORIGEM, NCM, VALORUNITARIOATUAL, VALOR_PRAZO, TIPO'
+                if codbarra:
+                    insere += ', COD_BARRA'
                 if fam:
                     insere += ', FAMILIA'
                 if cat:
                     insere += ', CATEGORIA'
                 insere += ') VALUES ('
                 insere += str(product_id.id)
-                insere += ', \'' + un.decode() + '\''
-                insere += ', \'' + produto.decode() + '\''
+                insere += ', \'' + un + '\''
+                insere += ', \'' + produto + '\''
                 insere += ',' + str(p_custo)
                 insere += ', \'' + str(codp) + '\''
                 insere += ',\'F\''
@@ -129,13 +160,15 @@ class AtsProduto:
                 insere += ',' + str(p_custo)
                 insere += ',' + str(p_venda)
                 insere += ',\'' + str('PROD') + '\''
-                insere += ', \'' + product_id.tipo_venda + '\''
-                insere += ',' + str(product_id.qtde_atacado)
-                insere += ',' + str(product_id.preco_atacado)
+                if codbarra:
+                    insere += ', \'' + str(codbarra) + '\''
+                #insere += ', \'' + product_id.tipo_venda + '\''
+                #insere += ',' + str(product_id.qtde_atacado)
+                #insere += ',' + str(product_id.preco_atacado)
                 if fam:
-                    insere += ', \'' + str(fam.decode()) + '\''
+                    insere += ', \'' + str(fam) + '\''
                 if cat:
-                    insere += ', \'' + str(cat.decode()) + '\''
+                    insere += ', \'' + str(cat) + '\''
                 insere += ')'
                 print (codp+'-'+product_id.name)
                 # print ' Cadastrando : %s - %s' % (str(row[0]), row[1])
@@ -151,9 +184,13 @@ class AtsProduto:
                 altera += ', RATEIO = \'' + str(product_id.tipo_venda) + '\''
                 altera += ', QTDEATACADO = ' + str(product_id.qtde_atacado) 
                 altera += ', PRECOATACADO = ' + str(product_id.preco_atacado) 
+                if codbarra:
+                    altera += ', COD_BARRA = \'' + str(codbarra) + '\''
                 altera += ' WHERE CODPRODUTO = ' + str(product_id.id)
                 db.insert(altera)
-        print ('FIM - %s' %(str(fim)))    
+        #arq.close()
+        #print ('FIM - %s' %(str(fim))) 
+        print ('Integracao realizada com sucesso.')		
 p = AtsProduto()
 #x = 14600
 #z = 200
