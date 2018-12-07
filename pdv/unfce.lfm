@@ -3,7 +3,7 @@ object fNfce: TfNfce
   Height = 405
   Top = 210
   Width = 655
-  Caption = 'Nota Fiscal Consumidor'
+  Caption = 'Nota Fiscal Eletronica - Consumidor'
   ClientHeight = 405
   ClientWidth = 655
   OnCreate = FormCreate
@@ -50,7 +50,7 @@ object fNfce: TfNfce
     Height = 70
     Top = 112
     Width = 91
-    Caption = 'Fechar'
+    Action = acFechar
     OnClick = btnFecharClick
     TabOrder = 2
   end
@@ -426,5 +426,18 @@ object fNfce: TfNfce
     LinhasEntreCupons = 0
     left = 525
     top = 152
+  end
+  object ACBrEnterTab1: TACBrEnterTab
+    EnterAsTab = True
+    left = 480
+  end
+  object ActionList1: TActionList
+    left = 504
+    top = 88
+    object acFechar: TAction
+      Caption = 'Fechar-F9'
+      OnExecute = acFecharExecute
+      ShortCut = 120
+    end
   end
 end

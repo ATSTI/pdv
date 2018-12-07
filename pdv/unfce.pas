@@ -6,20 +6,23 @@ interface
 
 uses
   Classes, typinfo, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
-  MaskEdit, Buttons, StdCtrls, ExtCtrls, ComCtrls, udmpdv, uCertificadoLer,
-  ACBrNFe, ACBrNFeDANFeESCPOS, ACBrDANFCeFortesFr, pcnConversao,
-  pcnConversaoNFe, ACBrDFeSSL, ACBrPosPrinter, ACBrIntegrador, ACBrValidador,
-  ACBrUtil, StrUtils, IniFiles;
+  MaskEdit, Buttons, StdCtrls, ExtCtrls, ComCtrls, Menus, ActnList, udmpdv,
+  uCertificadoLer, ACBrNFe, ACBrNFeDANFeESCPOS, ACBrDANFCeFortesFr,
+  pcnConversao, pcnConversaoNFe, ACBrDFeSSL, ACBrPosPrinter, ACBrIntegrador,
+  ACBrValidador, ACBrEnterTab, ACBrUtil, StrUtils, IniFiles, math;
 
 type
 
   { TfNfce }
 
   TfNfce = class(TForm)
+    ACBrEnterTab1: TACBrEnterTab;
     ACBrNFe1: TACBrNFe;
     ACBrNFeDANFeESCPOS1: TACBrNFeDANFeESCPOS;
     ACBrPosPrinter1: TACBrPosPrinter;
     ACBrValidador1: TACBrValidador;
+    acFechar: TAction;
+    ActionList1: TActionList;
     BitBtn1: TBitBtn;
     BitBtn2: TBitBtn;
     btnFechar: TBitBtn;
@@ -51,6 +54,7 @@ type
     TabSheet3: TTabSheet;
     procedure ACBrNFe1AntesDeAssinar(var ConteudoXML: String; const docElement,
       infElement, SignatureNode, SelectionNamespaces, IdSignature: String);
+    procedure acFecharExecute(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
@@ -96,6 +100,7 @@ var
  str: String;
  ambiente: String;
 begin
+  ACBrNFe1.NotasFiscais.Clear;
   if (notaEmitida = 'S') then
   begin
     ShowMessage('Nota Fiscal já emitida.');
@@ -135,6 +140,23 @@ begin
     begin
       edCPF.SetFocus;
       Exit;
+    end;
+  end;
+  if (edCPF.Text <> '   .   .   -  ') then
+  begin
+    ACBrValidador1.PermiteVazio:=True;
+    ACBrValidador1.TipoDocto:= docCPF;
+    ACBrValidador1.IgnorarChar:='./-';
+    ACBrValidador1.Documento:=edCPF.Text;
+    if not ACBrValidador1.Validar then
+    begin
+      edCPF.Font.Color:=clRed;
+      ShowMessage('CPF Inválido');
+      edCPF.SetFocus;
+      Exit;
+    end
+    else begin
+      edCPF.Font.Color := clBlack;
     end;
   end;
   if (edCertificado.Text = '') then
@@ -370,6 +392,7 @@ begin
   ACBrPosPrinter1.Modelo:= TACBrPosPrinterModelo(cbxModeloPosPrinter.ItemIndex);
   notaEmitida := 'N';
   edNFce.text := '';
+  edCPF.Text := '';
   dmPdv.sqBusca.Close;
   dmPdv.sqBusca.SQL.Clear;
   dmPdv.sqBusca.SQL.Text:='SELECT NOTAFISCAL , NOMEXML FROM VENDA ' +
@@ -385,6 +408,8 @@ begin
       edNFce.text := IntToStr(dmPdv.sqBusca.Fields[0].AsInteger);
     end;
   end;
+  if (not dmPdv.sqLancamentos.Active) then
+    exit;
   dmPdv.sqLancamentos.First;
   msg_ncm:='';
   msg_origem:='';
@@ -508,8 +533,11 @@ begin
       Ide.tpAmb := taHomologacao;
       ACBrNFe1.Configuracoes.WebServices.Ambiente:=taHomologacao;
     end;
+    if (dmpdv.sqEmpresaUF.AsString = 'SP') then
+      Ide.cUF       := 35; // SP
+    if (dmpdv.sqEmpresaUF.AsString = 'BA') then
+      Ide.cUF       := 29;
 
-    Ide.cUF       := 35; // SP
     Ide.cMunFG    := StrToInt(RemoveChar(dmPdv.sqEmpresaCD_IBGE.AsString));
     Ide.finNFe    := fnNormal;
     Ide.tpImp     := tiNFCe;
@@ -580,7 +608,7 @@ begin
         else
           tPag := fpOutro;
 
-        vPag := dmPdv.sqBusca.FieldByName('VALOR_PAGO').AsFloat;
+        vPag := RoundTo(dmPdv.sqBusca.FieldByName('VALOR_PAGO').AsFloat, -2);
       end;
       dmPdv.sqBusca.Next;
     end;
@@ -613,16 +641,16 @@ begin
       Total.ICMSTot.vICMS   := 0;
       Total.ICMSTot.vBCST   := 0;
       Total.ICMSTot.vST     := 0;
-      Total.ICMSTot.vProd   := nfce_valor; //sqlBuscaNota.fieldByName('VALOR').AsFloat; // totalNFCe;
+      Total.ICMSTot.vProd   := RoundTo(nfce_valor,-2); //sqlBuscaNota.fieldByName('VALOR').AsFloat; // totalNFCe;
       Total.ICMSTot.vFrete  := 0;
       Total.ICMSTot.vSeg    := 0;
-      Total.ICMSTot.vDesc   := nfce_desconto;
+      Total.ICMSTot.vDesc   := RoundTo(nfce_desconto, -2);
       Total.ICMSTot.vII     := 0;
       Total.ICMSTot.vIPI    := 0;
       Total.ICMSTot.vPIS    := 0;
       Total.ICMSTot.vCOFINS := 0;
       Total.ICMSTot.vOutro  := 0;
-      Total.ICMSTot.vNF     := nfce_valor - nfce_desconto; //totalNFCe;
+      Total.ICMSTot.vNF     := RoundTo((nfce_valor - nfce_desconto),-2); //totalNFCe;
 
       Total.ISSQNtot.vServ   := 0;
       Total.ISSQNTot.vBC     := 0;
@@ -680,7 +708,11 @@ procedure TfNfce.pegaItens();
 var contaItens :integer;
   desc, BC, BCST : variant;
   totalNFCe: Double;
+  cod_barra: String;
+  desconto_rateio: double;
+  ncm_str: String;
 begin
+  desconto_rateio := 0;
   totalNFCe := 0;
   ACBrNFe1.NotasFiscais.Items[0].nfe.Det.Clear;
   with ACBrNFe1.NotasFiscais.Items[0].NFe do
@@ -711,19 +743,24 @@ begin
         Prod.qTrib    := dmPdv.sqLancamentosQUANTIDADE.AsFloat;
         Prod.vUnTrib  := dmPdv.sqLancamentosPRECO.AsFloat;
 
-        Prod.NCM      := dmPdv.sqLancamentosNCM.AsString;
+        ncm_str := dmPdv.sqLancamentosNCM.AsString;
+        ncm_str  := StringReplace(ncm_str,'.','',[rfReplaceAll]);
+        if Length(ncm_str) < 8then
+           ncm_str := '00000000';
+        Prod.NCM      := ncm_str;
         Prod.EXTIPI   := '';
 
         // TODO instalar VALIDADDOR
-        if (EAN13Valido(dmPdv.sqLancamentosCOD_BARRA.AsString)) then
-        begin
-          Prod.cEAN := dmPdv.sqLancamentosCOD_BARRA.AsString;
-          Prod.cEANTrib := dmPdv.sqLancamentosCOD_BARRA.AsString;;
-        end
-        else begin
-          Prod.cEAN := 'SEM GTIN';
-          Prod.cEANTrib := 'SEM GTIN';
-        end;
+        cod_barra := dmPdv.sqLancamentosCOD_BARRA.AsString;
+        ACBrValidador1.Documento := cod_barra;
+        ACBrValidador1.TipoDocto := docGTIN;
+        if not ACBrValidador1.Validar then
+          cod_barra := 'SEM GTIN';
+        ACBrValidador1.TipoDocto := docPrefixoGTIN;
+        if not ACBrValidador1.Validar then
+          cod_barra := 'SEM GTIN';
+        Prod.cEAN := cod_barra;
+        Prod.cEANTrib := cod_barra;
         desc := StrLen(PChar(MidStr(dmPdv.sqLancamentosDESCPRODUTO.AsString, 100, 200)));
         if ( desc > 0) then
           infAdProd     := MidStr(dmPdv.sqLancamentosDESCPRODUTO.AsString, 100, 200)  +
@@ -734,6 +771,13 @@ begin
         Prod.vProd    := dmPdv.sqLancamentosTOTALITEM.AsFloat;
         Prod.vFrete   := 0 ; //dmPdv.sqLancamentosFRETE.AsCurrency;
         Prod.vDesc    := dmPdv.sqLancamentosVALOR_DESCONTO.AsCurrency;
+        if nfce_desconto > 0 then
+        begin
+          desconto_rateio := nfce_desconto/nfce_valor;
+          desconto_rateio := dmPdv.sqLancamentosTOTALITEM.AsFloat * desconto_rateio;
+          Prod.vDesc      := RoundTo(desconto_rateio, -2);
+        end;
+
         Prod.vOutro   := dmPdv.sqLancamentosVALOR_OUTROS.AsCurrency;
         Prod.vSeg     := dmPdv.sqLancamentosVALOR_SEGURO.AsCurrency;
 
@@ -1052,6 +1096,11 @@ procedure TfNfce.ACBrNFe1AntesDeAssinar(var ConteudoXML: String;
   IdSignature: String);
 begin
 
+end;
+
+procedure TfNfce.acFecharExecute(Sender: TObject);
+begin
+  Close;
 end;
 
 end.
