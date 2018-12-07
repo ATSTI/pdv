@@ -15,6 +15,7 @@ uses
 {$R *.res}
 
 begin
+  Application.Title:='ATS-PDV';
   RequireDerivedFormResource:=True;
   Application.Initialize;
   Application.CreateForm(Tdmpdv, dmpdv);
@@ -29,8 +30,8 @@ begin
   Application.CreateForm(TfClienteBusca, fClienteBusca);
   Application.CreateForm(TfSenhaNova, fSenhaNova);
   Application.CreateForm(TfPermissao, fPermissao);
-  Application.CreateForm(TfExclusao, fExclusao);
   Application.CreateForm(TfNfce, fNfce);
+  Application.CreateForm(TfExclusao, fExclusao);
   Application.Run;
 end.
 
