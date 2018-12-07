@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, db, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  DBGrids, StdCtrls, Buttons, udmpdv;
+  DBGrids, StdCtrls, Buttons, udmpdv, strutils;
 
 type
 
@@ -189,7 +189,14 @@ end;
 procedure TfProdutoProc.busca(codigo: String; barCode: String; produtoDesc: String; inativo: Boolean);
 var sqlProc: String;
   cod_bs: String;
+  //busca_str: String;
+  busca_wrd: String;
+  j: integer;
+  i: integer;
 begin
+  dmPdv.IbCon.Connected:=False;
+  dmPdv.IbCon.Connected:=True;
+  codProduto := 0;
   cod_bs := '';
   sqlProc := 'SELECT * FROM PRODUTOS ';
   sqlProc := sqlProc + 'WHERE ((USA IS NULL) OR (USA <> ' +
@@ -221,8 +228,18 @@ begin
   end;
   if (produtoDesc <> '') then
   begin
-    sqlProc := sqlProc + ' AND UPPER(PRODUTO) LIKE UPPER(' +
-      QuotedStr('%' + produtoDesc + '%') + ')';
+    i := 0;
+    j := WordCount(produtoDesc, [' ']);
+    //busca_str := '';
+    While i < j do
+    begin
+      i += 1;
+      busca_wrd := ExtractWord(i, produtoDesc, [' ']);
+      //busca_str := busca_str + '%' + busca_wrd;
+      sqlProc := sqlProc + ' AND UPPER(PRODUTO) LIKE UPPER(' +
+        QuotedStr('%' + busca_wrd + '%') + ')';
+    end;
+    //busca_str := busca_str + '%';
   end;
   if (dmPdv.sqBusca.Active) then
     dmPdv.sqBusca.Close;
