@@ -71,6 +71,8 @@ end;
 
 procedure TfClienteBusca.FormShow(Sender: TObject);
 begin
+  dmPdv.IbCon.Connected:=False;
+  dmPdv.IbCon.Connected:=True;
   DBGrid1.Columns[0].FieldName := 'CODCLIENTE';
   DBGrid1.Columns[1].FieldName := 'NOMECLIENTE';
   cNomeCliente:='';
@@ -97,9 +99,6 @@ begin
   if ((chCurso.Checked) and (chInativo.Checked)) then
   begin
     sql := ' WHERE STATUS = 0 AND REGIAO = 1';
-  end
-  else begin
-    sql := ' WHERE STATUS = 0 AND REGIAO = 0';
   end;
 
   if edit1.Text <> '' then
