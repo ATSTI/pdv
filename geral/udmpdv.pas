@@ -164,6 +164,7 @@ type
     sqLancamentosVLR_BASEICMS: TFloatField;
     SQLQuery1: TSQLQuery;
     sqEmpresa: TSQLQuery;
+    sqUpdate: TSQLQuery;
     sqParametro: TSQLQuery;
     sqParametroCONFIGURADO: TStringField;
     sqParametroD1: TStringField;
@@ -185,19 +186,25 @@ type
   private
     procedure atualiza_bd();
   public
-    NFE_Teste: String;
     ccusto : String;
-    ModeloImp: Integer;
     ccusto_padrao : String;
     versao_sistema: String;
     usaCentroCusto: String;
+    tipo_buscaProd: String;
+    tamanhoDescProd: Integer;
+    tamanhoCodProd: Integer;
     varLogado : String;
     nomeLogado : String;
+    senhaLogin : String;
     nomeCaixa : String;
     MICRO : String;
     path_exe: String;
     path_python: String;
+    path_script: String;
+    path_xml: String;
     portaImp: String;
+    NFE_Teste: String;
+    ModeloImp: Integer;
     id_tk: String;
     tk: string;
     SSLLib : Integer;
@@ -207,6 +214,7 @@ type
     CaminhoCert:String;
     SenhaCert :String;
     NumSerieCert :String;
+    vendedor_padrao: Integer;
     function executaSql(strSql: String): Boolean;
     procedure gravaLog(DataLog: TDateTime; usuario: String; tipoMovimento: String;
     pc: String; valorAnt: String; valorPos: String; campoChave: String; acao: String);
@@ -228,14 +236,19 @@ var
   vstr: String;
 begin
   //extrac
-  NFE_Teste := 'N';
-  ModeloImp := 0;
   id_tk := '';
   tk := '';
-  varLogado := '1'; // usuario logado
+  NFE_Teste := 'N';
+  varLogado := ''; // usuario logado
+  nomeLogado:= '';
+  senhaLogin := '';
+  tipo_buscaProd := 'NORMAL';
   MICRO := GetEnvironmentVariable('COMPUTERNAME');
   path_exe := ExtractFilePath(ParamStr(0));
+  path_xml := path_exe;
+
   IBCon.Connected:=False;
+  //IBCon.CharSet:='WIN1252';
   //path_exe := path_exe + 'conf.ini';
   conf := TIniFile.Create(path_exe + 'conf.ini');
   try
@@ -243,9 +256,12 @@ begin
     IBCon.DatabaseName := vstr;
     vstr := conf.ReadString('DATABASE', 'HostName', '');
     path_python := conf.ReadString('PATH', 'PathPython', '');
+    path_script := conf.ReadString('PATH', 'PathScript', '');
+    path_xml := conf.ReadString('PATH', 'PathXML', path_exe);
     IBCon.HostName := vstr;
     snh:= conf.ReadString('DATABASE', 'Acesso', '');
     portaImp := conf.ReadString('IMPRESSORA', 'porta', '');
+    ModeloImp := conf.ReadInteger('IMPRESSORA', 'Modelo', 0);
     //snh:= EncodeStringBase64(snh); // Ver a senha Encryptada
     snh:= DecodeStringBase64(snh);
     IBCon.Password := snh;
@@ -256,6 +272,13 @@ begin
     CaminhoCert:= conf.ReadString( 'Certificado','Caminho' ,'') ;
     SenhaCert  := conf.ReadString( 'Certificado','Senha'   ,'') ;
     NumSerieCert:= conf.ReadString( 'Certificado','NumSerie','');
+    NFE_Teste:= conf.ReadString( 'Certificado','NFE_Teste','N');
+    vendedor_padrao := conf.ReadInteger( 'Outros','Vendedor',0);
+    senhaLogin := conf.ReadString( 'Outros','SenhaLogin','');
+    nomeLogado := conf.ReadString( 'Outros','NomeLogin','');
+    tipo_buscaProd := conf.ReadString( 'Outros','BuscaProduto','NORMAL');
+    tamanhoDescProd := conf.ReadInteger( 'Outros','TamanhoDescProd',400);
+    tamanhoCodProd := conf.ReadInteger( 'Outros','TamanhoCodProd',140);
   finally
     conf.free;
   end;

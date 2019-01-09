@@ -536,7 +536,7 @@ begin
         Self.CodVendedor   := dmPdv.sqBusca.FieldByName('CODVENDEDOR').AsInteger;
         Self.CodUsuario    := dmPdv.sqBusca.FieldByName('CODUSUARIO').AsInteger;
         Self.NParcela      := dmPdv.sqBusca.FieldByName('PARCELAS').AsInteger;
-        //Self.Valor         := dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat;
+        Self.Valor         := dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat;
         //VlrEnt             := dmPdv.sqBusca.FieldByName('ENTRADA').AsFloat;
         Self.ValorRec      := 0;//dmPdv.sqBusca.FieldByName('ENTRADA').AsFloat;
         Self.DtEmissao     := dmPdv.sqBusca.FieldByName('EMISSAO').AsDateTime;
@@ -567,8 +567,14 @@ begin
     MessageDlg('Parcela não pode ser 1, se o valor de Entrada e menor que o Valor Total.', mtWarning, [mbOK], 0);
     exit;
   end;
+  if (VlrEnt = Self.Valor) then
+  begin
+    Self.Status := '7-';
 
-  Self.Status   := '5-';
+  end
+  else begin
+    Self.Status   := '5-';
+  end;
   if ( Self.FormaRec = '') then
     Self.FormaRec := '0';
   if (CodRecR <> 1) then
@@ -699,7 +705,13 @@ begin
         strG := strG + FloattoStr(VlrParc) + ', '; // Valor_Resto
 
     strG := strG + FloattoStr(Self.Valor) + ', ';  // Valortitulo
-    strG := strG + '0, ';  // ValorRecebido
+    if (self.ValorRec > 0) then
+    begin
+      strG := strG + FloattoStr(Self.ValorRec) + ', ';
+    end
+    else begin
+      strG := strG + '0, ';  // ValorRecebido
+    end;
     strG := strG + IntToStr(Self.NParcela) + ', ';
     strG := strG + '0, ';  // Desconto
     strG := strG + '0, ';  // Juros
