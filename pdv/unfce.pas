@@ -25,49 +25,62 @@ type
     ActionList1: TActionList;
     BitBtn1: TBitBtn;
     BitBtn2: TBitBtn;
+    BitBtn3: TBitBtn;
+    BitBtn4: TBitBtn;
     btnFechar: TBitBtn;
     btnNFce: TBitBtn;
     btnNFce1: TBitBtn;
-    cbSSLLib: TComboBox;
+    btnNFce2: TBitBtn;
     cbCryptLib: TComboBox;
-    cbXmlSignLib: TComboBox;
     cbHttpLib: TComboBox;
+    cbSSLLib: TComboBox;
+    cbXmlSignLib: TComboBox;
     cbxModeloPosPrinter: TComboBox;
+    edtCaminho: TLabeledEdit;
+    edtNumSerie: TLabeledEdit;
+    edtSenha: TLabeledEdit;
     Label1: TLabel;
     edCPF: TMaskEdit;
     edCertificado: TLabeledEdit;
     edNFce: TLabeledEdit;
     Label2: TLabel;
     Label3: TLabel;
-    edtCaminho: TLabeledEdit;
-    edtSenha: TLabeledEdit;
-    edtNumSerie: TLabeledEdit;
     Label4: TLabel;
-    lblcbSSLLib: TLabel;
     lblcbCryptLib: TLabel;
+    lblcbSSLLib: TLabel;
+    lblProtocolo: TLabel;
     MemoDados: TMemo;
     MemoResp: TMemo;
     OpenDialog1: TOpenDialog;
     PageControl1: TPageControl;
+    PageControl2: TPageControl;
+    RadioGroup1: TRadioGroup;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
     TabSheet3: TTabSheet;
+    TabSheet4: TTabSheet;
+    TabSheet5: TTabSheet;
     procedure ACBrNFe1AntesDeAssinar(var ConteudoXML: String; const docElement,
       infElement, SignatureNode, SelectionNamespaces, IdSignature: String);
     procedure acFecharExecute(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
+    procedure BitBtn3Click(Sender: TObject);
+    procedure BitBtn4Click(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure btnNFce1Click(Sender: TObject);
+    procedure btnNFce2Click(Sender: TObject);
     procedure btnNFceClick(Sender: TObject);
     procedure cbCryptLibChange(Sender: TObject);
     procedure cbHttpLibChange(Sender: TObject);
     procedure cbSSLLibChange(Sender: TObject);
     procedure cbXmlSignLibChange(Sender: TObject);
+    procedure edCPFKeyPress(Sender: TObject; var Key: char);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
+    total_tributos: Double;
     serie_nfce: Integer;
     num_nfce: Integer;
     notaEmitida: String;
@@ -77,6 +90,7 @@ type
     procedure pegaTributos(codMov: Integer; codProd: Integer);
     procedure pegaItens();
     procedure AtualizaSSLLibsCombo;
+    procedure GravarDadosNF(protocolo: String; recibo: String);
   public
     nfce_valor: Double;
     nfce_desconto: Double;
@@ -133,15 +147,7 @@ begin
     exit;
   end;
 
-  if (edCPF.Text = '   .   .   -  ') then
-  begin
-    if MessageDlg('DESEJA CPF NA NOTA ?', mtConfirmation,
-      [mbYes, mbNo, mbIgnore],0) = mrYes then
-    begin
-      edCPF.SetFocus;
-      Exit;
-    end;
-  end;
+
   if (edCPF.Text <> '   .   .   -  ') then
   begin
     ACBrValidador1.PermiteVazio:=True;
@@ -205,17 +211,21 @@ begin
   // TODO
   //if ACBrNFe1.NotasFiscais.Add.NFe.ide.tpAmb = taHomologacao then
   //  ambiente := 'homolog';
+  AcbrNfe1.Configuracoes.Arquivos.PathSalvar := dmpdv.path_xml + '\NFce\';
+  AcbrNfe1.Configuracoes.Arquivos.PathEvento := dmpdv.path_xml + '\Eventos\';
 
   GerarNFCe(vAux);
   //if ACBrNFe1.NotasFiscais.Add.NFe.ide.tpAmb = taHomologacao then
   //  ambiente := 'homolog';
 
-  AcbrNfe1.Configuracoes.Arquivos.PathSalvar := dmpdv.path_exe + '\NFce\';
-
   //edtCaminho.Text := ACBrNFe1.SSL.CertCNPJ;
   //ACBrNFe1.NotasFiscais.GravarXML(AcbrNfe1.Configuracoes.Arquivos.PathSalvar);
   ACBrNFe1.NotasFiscais.Assinar;
   //ACBrNFe1.NotasFiscais.GravarXML(AcbrNfe1.Configuracoes.Arquivos.PathSalvar);
+
+  // Gravando a nota aqui pois se der erro no validar ja gravei
+  GravarDadosNF('', '');
+
   ACBrNFe1.NotasFiscais.Validar;
   //LoadXML(ACBrNFe1.NotasFiscais.Items[0].XML,  mRecebido);
 
@@ -250,34 +260,12 @@ begin
   //LoadXML(ACBrNFe1.NotasFiscais.Items[0].XML,  mRecebido);
   //ACBrNFe1.NotasFiscais.Imprimir;
 
-  try
-    str := 'UPDATE SERIES SET ULTIMO_NUMERO = ' + IntToSTR(num_nfce) +
-      ' WHERE SERIE = ' + QuotedStr('NFCE-'+dmPdv.varLogado);
-    dmPdv.IbCon.ExecuteDirect(str);
-    str := 'UPDATE VENDA SET ';
-    str := str + ' XMLNFE = ' + quotedStr(ACBrNFe1.NotasFiscais.Items[0].XML);
-    str := str + ', NOMEXML = ' + QuotedStr(copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID,
-      (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
-    str := str + ', NOTAFISCAL = ' + IntToStr(num_nfce);
-    str := str + ', SERIE = ' + QuotedStr('NFCE-'+dmPdv.varLogado);
-    if (Protocolo <> '') then
-      str := str + ', PROTOCOLOENV = ' + quotedStr(Protocolo);
-    if (Recibo <> '') then
-      str := str + ', NUMRECIBO = ' + QuotedStr(Recibo);
-    str := str + ' WHERE CODVENDA = ' + IntToStr(nfce_codVenda);
-    dmPdv.IbCon.ExecuteDirect(str);
-    dmPdv.sTrans.Commit;
-  except
-    on E : Exception do
-    begin
-      ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-      dmPdv.sTrans.Rollback; //on failure, undo the changes}
-    end;
-  end;
+  GravarDadosNF(protocolo, recibo);
   MemoDados.Lines.Add('');
   MemoDados.Lines.Add('Nota Fiscal Consumidor, gerada com sucesso.');
   MemoDados.Lines.Add('');
   ACBrNFe1.NotasFiscais.Clear;
+  Close;
 end;
 
 procedure TfNfce.cbCryptLibChange(Sender: TObject);
@@ -317,6 +305,15 @@ begin
       ACBrNFe1.Configuracoes.Geral.SSLXmlSignLib := TSSLXmlSignLib(cbXmlSignLib.ItemIndex);
   finally
     AtualizaSSLLibsCombo;
+  end;
+end;
+
+procedure TfNfce.edCPFKeyPress(Sender: TObject; var Key: char);
+begin
+  if Key = #13 then
+  begin
+    Key := #0;
+    BitBtn3.SetFocus;
   end;
 end;
 
@@ -395,17 +392,21 @@ begin
   edCPF.Text := '';
   dmPdv.sqBusca.Close;
   dmPdv.sqBusca.SQL.Clear;
-  dmPdv.sqBusca.SQL.Text:='SELECT NOTAFISCAL , NOMEXML FROM VENDA ' +
+  dmPdv.sqBusca.SQL.Text:='SELECT NOTAFISCAL , NOMEXML, PROTOCOLOENV FROM VENDA ' +
     'WHERE CODVENDA = ' + IntToStr(nfce_codVenda);
   dmPdv.sqBusca.Open;
   if (not dmpdv.sqBusca.IsEmpty) then
   begin
     t := dmPdv.sqBusca.Fields[1].AsString;
-    if dmPdv.sqBusca.Fields[1].AsString <> '' then
+    edNFce.text := IntToStr(dmPdv.sqBusca.Fields[0].AsInteger);
+    if dmPdv.sqBusca.Fields[2].AsString <> '' then
     begin
       notaEmitida := 'S';
       t := IntToStr(dmPdv.sqBusca.Fields[0].AsInteger);
-      edNFce.text := IntToStr(dmPdv.sqBusca.Fields[0].AsInteger);
+    end;
+    if dmPdv.sqBusca.Fields[2].AsString <> '' then
+    begin
+      lblProtocolo.Caption:=dmPdv.sqBusca.Fields[2].AsString;
     end;
   end;
   if (not dmPdv.sqLancamentos.Active) then
@@ -477,6 +478,7 @@ begin
     num_nfce := dmPdv.sqBusca.FieldByName('ULTIMO_NUMERO').AsInteger+1;
     edNFce.Text:=IntToStr(num_nfce);
   end;
+  BitBtn3.SetFocus;
 end;
 
 function TfNfce.RemoveChar(const Texto: String): String;
@@ -502,7 +504,6 @@ var
  vlr : Double;
 begin
   // gerar nfce
-
   if (dmPdv.sqEmpresa.Active) then
     dmPdv.sqEmpresa.Close;
   ////dmPdv.sqEmpresa.Params[0].AsInteger := dm.CCustoPadrao; //Buscar de parametro
@@ -524,6 +525,12 @@ begin
     Ide.tpNF      := tnSaida;
     Ide.tpEmis    := teNormal;
     ////Ide.tpEmis    := TpcnTipoEmissao(cbFormaEmissao.ItemIndex); ;
+    if(dmPdv.sqEmpresaTIPO.IsNull) then
+    begin
+     ShowMessage('O Campo TIPO na tabela EMPRESA precisa ser 1 par ' +
+       'NFCe Producaoo ou 2 para NFCe Homolocacao');
+     exit;
+    end;
     if(dmPdv.sqEmpresaTIPO.AsInteger = 1 ) then
     begin
       Ide.tpAmb := taProducao;
@@ -532,6 +539,11 @@ begin
     else begin
       Ide.tpAmb := taHomologacao;
       ACBrNFe1.Configuracoes.WebServices.Ambiente:=taHomologacao;
+    end;
+    if (dmpdv.sqEmpresaUF.IsNull) then
+    begin
+      ShowMessage('Informar o UF no cadastro da Empresa');
+      Exit;
     end;
     if (dmpdv.sqEmpresaUF.AsString = 'SP') then
       Ide.cUF       := 35; // SP
@@ -602,9 +614,15 @@ begin
         if (dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString = '1') then
           tPag := fpDinheiro
         else if (dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString = '3') then
-          tPag := fpCartaoCredito
+        begin
+          tPag := fpCartaoCredito;
+          tpIntegra := tiPagNaoIntegrado;
+        end
         else if dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString = '2' then
-          tPag := fpCartaoDebito
+        begin
+          tPag := fpCartaoDebito;
+          tpIntegra := tiPagNaoIntegrado;
+        end
         else
           tPag := fpOutro;
 
@@ -618,6 +636,7 @@ begin
     pegaTributos(dmPdv.sqLancamentosCODMOVIMENTO.AsInteger, 0);
     if (not dmPdv.sqBusca.IsEmpty)  then
     begin
+      Total.ICMSTot.vTotTrib:= total_tributos;
       vlr :=  dmPdv.sqBusca.FieldByName('TRIB_EST').AsFloat;
       vlr :=  dmPdv.sqBusca.FieldByName('TRIB_FED').AsFloat;
       tributos := 'Trib aprox R$:' +
@@ -702,6 +721,7 @@ begin
   dmPdv.sqBusca.SQL.Clear;
   dmPdv.sqBusca.SQL.Text := pegaTribSql;
   dmPdv.sqBusca.Open;
+  //total_tributos := ;
 end;
 
 procedure TfNfce.pegaItens();
@@ -724,7 +744,7 @@ begin
     //Adicionando Produtos
     contaItens := 0;
     dmPdv.sqLancamentos.First;
-
+    total_tributos := 0;
     while not dmPdv.sqLancamentos.Eof do
     begin
       totalNFCe := totalNFCe + dmPdv.sqLancamentosTOTALITEM.AsFloat;
@@ -784,7 +804,8 @@ begin
         with Imposto do
         begin
           // lei da transparencia nos impostos
-          vTotTrib := dmPdv.sqLancamentosVLRTOT_TRIB.AsFloat;
+          vTotTrib := RoundTo(dmPdv.sqLancamentosVLRTOT_TRIB.AsFloat,-2);
+          total_tributos:= total_tributos + RoundTo(dmPdv.sqLancamentosVLRTOT_TRIB.AsFloat,-2);
           // ***********************  ICMS ********************************
           with ICMS do
           begin
@@ -1002,6 +1023,36 @@ begin
   cbXmlSignLib.ItemIndex := Integer( ACBrNFe1.Configuracoes.Geral.SSLXmlSignLib );
 end;
 
+procedure TfNfce.GravarDadosNF(protocolo: String; recibo: String);
+var str: String;
+begin
+  try
+    str := 'UPDATE SERIES SET ULTIMO_NUMERO = ' + IntToSTR(num_nfce) +
+      ' WHERE SERIE = ' + QuotedStr('NFCE-'+dmPdv.varLogado);
+    dmPdv.IbCon.ExecuteDirect(str);
+    str := 'UPDATE VENDA SET ';
+    str := str + ' XMLNFE = ' + quotedStr(ACBrNFe1.NotasFiscais.Items[0].XML);
+    str := str + ', NOMEXML = ' + QuotedStr(copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID,
+      (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
+    str := str + ', NOTAFISCAL = ' + IntToStr(num_nfce);
+    str := str + ', SERIE = ' + QuotedStr('NFCE-'+dmPdv.varLogado);
+    if (Protocolo <> '') then
+      str := str + ', PROTOCOLOENV = ' + quotedStr(Protocolo);
+    if (Recibo <> '') then
+      str := str + ', NUMRECIBO = ' + QuotedStr(Recibo);
+    str := str + ' WHERE CODVENDA = ' + IntToStr(nfce_codVenda);
+    dmPdv.IbCon.ExecuteDirect(str);
+    dmPdv.sTrans.Commit;
+  except
+    on E : Exception do
+    begin
+      ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
+      dmPdv.sTrans.Rollback; //on failure, undo the changes}
+    end;
+  end;
+
+end;
+
 procedure TfNfce.BitBtn1Click(Sender: TObject);
 var
   I: Integer;
@@ -1064,6 +1115,25 @@ begin
   end;
 end;
 
+procedure TfNfce.BitBtn3Click(Sender: TObject);
+begin
+  if (edCPF.Text = '   .   .   -  ') then
+  begin
+    //if MessageDlg('DESEJA CPF NA NOTA ?', mtConfirmation,
+    //  [mbYes, mbNo, mbIgnore],0) = mrYes then
+    begin
+      edCPF.SetFocus;
+      Exit;
+    end;
+  end;
+  btnNFce.Click;
+end;
+
+procedure TfNfce.BitBtn4Click(Sender: TObject);
+begin
+  btnNFce.Click;
+end;
+
 procedure TfNfce.btnFecharClick(Sender: TObject);
 begin
   Close;
@@ -1088,6 +1158,48 @@ begin
 
   if ACBrNFe1.NotasFiscais.Count > 0 then
      ACBrNFe1.NotasFiscais.Imprimir;
+
+end;
+
+procedure TfNfce.btnNFce2Click(Sender: TObject);
+var
+   vChave : String;
+  vAux, vNumLote, vSincrono : String;
+ Sincrono : boolean;
+ Protocolo, Recibo: String;
+ str: String;
+ ambiente: String;
+begin
+  //if not(InputQuery('WebServices Consultar', 'Chave da NF-e:', vChave)) then
+  //  exit;
+
+  //ACBrNFe1.NotasFiscais.Clear;
+  //ACBrNFe1.WebServices.Consulta.NFeChave := vChave;
+  //ACBrNFe1.WebServices.Consulta.Executar;
+
+  //MemoResp.Lines.Text := ACBrNFe1.WebServices.Consulta.RetWS;
+  //memoRespWS.Lines.Text := ACBrNFe1.WebServices.Consulta.RetornoWS;
+  //LoadXML(MemoResp, WBResposta);
+  OpenDialog1.Title := 'Selecione a NFE';
+  OpenDialog1.DefaultExt := '*-nfe.XML';
+  OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
+  if OpenDialog1.Execute then
+  begin
+    ACBrNFe1.NotasFiscais.Clear;
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+    ACBrNFe1.Consultar;
+
+    if ACBrNFe1.WebServices.Consulta.Protocolo <> '' then
+    begin
+      ShowMessage(ACBrNFe1.WebServices.Consulta.Protocolo);
+      Protocolo := ACBrNFe1.WebServices.Consulta.Protocolo;
+      Recibo := 'recibo';//ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe. .WebServices.Consulta.Recibo;
+    end;
+    //MemoResp.Lines.Text := ACBrNFe1.WebServices.Consulta.RetWS;
+    //memoRespWS.Lines.Text := ACBrNFe1.WebServices.Consulta.RetornoWS;
+    //LoadXML(MemoResp, WBResposta);
+  end;
 
 end;
 

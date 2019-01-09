@@ -328,6 +328,7 @@ begin
       fVnd.DataVenda   := Now;
       fVnd.DataVcto    := Now;
       fVnd.Desconto    := 0;
+      fVnd.NParcela   := 1;
       fVnd.Valor       := strParaFloat(vValor);
       fVnd.NotaFiscal  := num_cx;
       fVnd.Serie       := serie_cx;
@@ -376,9 +377,11 @@ begin
 end;
 
 procedure TfPDV_Rec.encerra_venda();
-//var vRec : TRecebimento;
+var vRec : TRecebimento;
+   vlr_entrada: Double;
+   str_up: String;
 begin
-
+  vlr_entrada := 0;
   dmPdv.IbCon.ExecuteDirect('UPDATE FORMA_ENTRADA SET STATE = 1 ' +
     ' WHERE STATE = 0 AND ID_ENTRADA = ' +
     IntToStr(vCodMovimento));
@@ -386,11 +389,44 @@ begin
     ' , CODCLIENTE = ' + IntToStr(vCliente) +
     ' WHERE CODMOVIMENTO  = ' +
     IntToStr(vCodMovimento));
-  dmPdv.sTrans.Commit;
+
   vStatus := 1;
-  {
-  vRec := TRecebimento.Create(Nil);
+
+  dmPdv.sqBusca.Close;
+  dmPdv.sqBusca.SQL.Clear;
+  dmPdv.sqBusca.SQL.Text := 'SELECT CODFORMA, COD_VENDA, ID_ENTRADA, FORMA_PGTO' +
+    ' , CAIXA , N_DOC, VALOR_PAGO, CAIXINHA, TROCO, DESCONTO, STATE' +
+    ' FROM FORMA_ENTRADA WHERE STATE < 2 AND ID_ENTRADA = ' +
+    InttoStr(vCodMovimento);
+  dmPdv.sqBusca.Open;
+
+  while not dmPdv.sqBusca.EOF do
+  begin
+    if (dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString <> '4') then
+    begin
+      vlr_entrada += dmPdv.sqBusca.FieldByName('VALOR_PAGO').AsFloat;
+    end;
+    dmPdv.sqBusca.Next;
+  end;
+  if (vlr_entrada > 0) then
+  begin
+    DecimalSeparator:='.';
+    str_up := 'UPDATE VENDA SET ENTRADA = ' +
+      FloatToStr(vlr_entrada) +
+      ' WHERE CODVENDA  = ' +
+      IntToStr(vCodVenda);
+    DecimalSeparator:=',';
+    dmPdv.IbCon.ExecuteDirect(str_up);
+  end;
+  dmPdv.sTrans.Commit;
+
+  vRec := TRecebimento.Create();
   try
+    vRec.geraTitulo(0,vCodVenda);
+  finally
+    vRec.Free;
+  end;
+  {try
     vRec.CodVendedor:= vVendedor;
     vRec.CodCliente := vCliente;
     vRec.Caixa      := vCaixa_Local;
@@ -648,7 +684,7 @@ begin
       else if linhaTxt = 'C' then
       begin
         linhaTxt := Copy(lFile[i],2,Length(lFile[i])-1);
-        Writeln(Impressora, linhaTxt);
+        Writeln(Impressora, chr(27)+chr(109));
       end
       else if linhaTxt = '1' then
       begin
@@ -767,7 +803,7 @@ begin
         else if linhaTxt = 'C' then
         begin
           linhaTxt := Copy(lFile[i],2,Length(lFile[i])-1);
-          Writeln(Impressora, linhaTxt);
+          Writeln(Impressora, chr(27)+chr(109));
         end
         else
           Writeln(Impressora,lFile[i]);

@@ -185,7 +185,9 @@ type
   private
     procedure atualiza_bd();
   public
+    NFE_Teste: String;
     ccusto : String;
+    ModeloImp: Integer;
     ccusto_padrao : String;
     versao_sistema: String;
     usaCentroCusto: String;
@@ -226,6 +228,8 @@ var
   vstr: String;
 begin
   //extrac
+  NFE_Teste := 'N';
+  ModeloImp := 0;
   id_tk := '';
   tk := '';
   varLogado := '1'; // usuario logado

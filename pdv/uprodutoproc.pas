@@ -14,6 +14,7 @@ type
 
   TfProdutoProc = class(TForm)
     BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
     btnEXC: TImage;
     btnSALV: TImage;
     chInativo: TCheckBox;
@@ -25,6 +26,7 @@ type
     Panel1: TPanel;
     Panel2: TPanel;
     procedure BitBtn1Click(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
     procedure btnEXCClick(Sender: TObject);
     procedure btnPROCClick(Sender: TObject);
     procedure btnSALVClick(Sender: TObject);
@@ -42,6 +44,7 @@ type
   private
 
   public
+    num_pedidos : Integer;
     codProduto: Integer;
     produto: String;
     codProd: String;
@@ -142,6 +145,14 @@ begin
   busca(Edit1.Text, '', Edit2.Text, chInativo.Checked);
 end;
 
+procedure TfProdutoProc.BitBtn2Click(Sender: TObject);
+begin
+  dmPdv.IbCon.Connected:=False;
+  dmPdv.IbCon.Connected:=True;
+  num_pedidos := 0;
+  busca(Edit1.Text, '', Edit2.Text, chInativo.Checked);
+end;
+
 procedure TfProdutoProc.btnSALVClick(Sender: TObject);
 begin
   codProduto:= dmPdv.sqBusca.FieldByName('CODPRODUTO').AsInteger;
@@ -162,6 +173,7 @@ end;
 
 procedure TfProdutoProc.FormCreate(Sender: TObject);
 begin
+  num_pedidos:=0;
   DBGrid1.Columns[0].FieldName:='CODPRO';
   DBGrid1.Columns[1].FieldName:='PRODUTO';
   DBGrid1.Columns[2].FieldName:='UNIDADEMEDIDA';
@@ -189,13 +201,30 @@ end;
 procedure TfProdutoProc.busca(codigo: String; barCode: String; produtoDesc: String; inativo: Boolean);
 var sqlProc: String;
   cod_bs: String;
-  //busca_str: String;
+  sqlP: String;
   busca_wrd: String;
   j: integer;
   i: integer;
 begin
-  dmPdv.IbCon.Connected:=False;
-  dmPdv.IbCon.Connected:=True;
+  if (num_pedidos = 5) then
+  begin
+    dmPdv.IbCon.Connected:=False;
+    dmPdv.IbCon.Connected:=True;
+    sqlP := 'SELECT CODCAIXA, NOMECAIXA ';
+    sqlP += ' FROM CAIXA_CONTROLE  ';
+    sqlP += ' WHERE CODUSUARIO = ' + dmPdv.varLogado;
+    sqlP += '   AND SITUACAO = ' + QuotedStr('o');
+    if (dmPdv.sqBusca.Active) then
+      dmPdv.sqBusca.Close;
+    dmPdv.sqBusca.SQL.Clear;
+    dmPdv.sqBusca.SQL.Add(sqlP);
+    dmPdv.sqBusca.Active:=True;
+    if (dmPdv.sqBusca.IsEmpty) then
+    begin
+      dmPdv.nomeCaixa := 'FECHADO';
+    end;
+    num_pedidos := 0;
+  end;
   codProduto := 0;
   cod_bs := '';
   sqlProc := 'SELECT * FROM PRODUTOS ';
@@ -208,7 +237,11 @@ begin
   end;
   if (codigo <> '') then
   begin
-    sqlProc := sqlProc + ' AND CODPRO = ' + QuotedStr(codigo);
+    sqlProc := sqlProc + ' AND UPPER(CODPRO) LIKE UPPER(' +
+      QuotedStr(codigo + '%') + ')';
+    sqlProc := sqlProc + ' OR UPPER(CAST(PRODUTO AS VARCHAR(300) ' +
+      ' character set UTF8)) LIKE UPPER(' +
+      QuotedStr('%' + codigo + '%') + ')';
   end;
   if (barCode <> '') then
   begin
@@ -236,7 +269,8 @@ begin
       i += 1;
       busca_wrd := ExtractWord(i, produtoDesc, [' ']);
       //busca_str := busca_str + '%' + busca_wrd;
-      sqlProc := sqlProc + ' AND UPPER(PRODUTO) LIKE UPPER(' +
+      sqlProc := sqlProc + ' AND UPPER(CAST(PRODUTO AS VARCHAR(300) ' +
+        ' character set UTF8)) LIKE UPPER(' +
         QuotedStr('%' + busca_wrd + '%') + ')';
     end;
     //busca_str := busca_str + '%';

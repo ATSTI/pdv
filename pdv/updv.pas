@@ -21,10 +21,13 @@ type
     acNova: TAction;
     acExcluirItemPedido: TAction;
     acQuantidade: TAction;
+    acConsultaItem: TAction;
     ActionList1: TActionList;
     BitBtn10: TBitBtn;
     BitBtn11: TBitBtn;
     BitBtn12: TBitBtn;
+    BitBtn2: TBitBtn;
+    BitBtn3: TBitBtn;
     BitBtn5: TBitBtn;
     btnProdutoProc: TBitBtn;
     BitBtn4: TBitBtn;
@@ -37,8 +40,6 @@ type
     btnVnd4: TBitBtn;
     btnVnd5: TBitBtn;
     btnVnd6: TBitBtn;
-    BitBtn2: TBitBtn;
-    BitBtn3: TBitBtn;
     btnNovo: TBitBtn;
     btnVendas: TBitBtn;
     btnReceber: TBitBtn;
@@ -50,27 +51,28 @@ type
     DBGrid1: TDBGrid;
     DBGrid2: TDBGrid;
     dsLanc: TDataSource;
+    edCaixa: TEdit;
     edCliente: TEdit;
+    edClienteNome: TEdit;
     edDesconto1: TMaskEdit;
     edProdNao: TEdit;
     edPreco: TMaskEdit;
     edDesconto: TMaskEdit;
     edPreco1: TMaskEdit;
     edProduto: TEdit;
+    edQtde: TMaskEdit;
     edQtde1: TMaskEdit;
     edTotalGeral: TMaskEdit;
-    edVendedorNome: TEdit;
-    edVendedor: TEdit;
-    edCaixa: TEdit;
     edProdutoDescX: TEdit;
-    edClienteNome: TEdit;
+    edVendedor: TEdit;
+    edVendedorNome: TEdit;
     Image1: TImage;
+    Image2: TImage;
     Image3: TImage;
     Image4: TImage;
     Image5: TImage;
     Label1: TLabel;
     Label10: TLabel;
-    Label11: TLabel;
     Label12: TLabel;
     Label13: TLabel;
     Label14: TLabel;
@@ -81,6 +83,8 @@ type
     Label19: TLabel;
     edBuscaDetalhe: TLabeledEdit;
     Label20: TLabel;
+    Label21: TLabel;
+    Label7: TLabel;
     lblMSG: TLabel;
     lblProdBusca: TLabel;
     Label6: TLabel;
@@ -91,13 +95,9 @@ type
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
-    Label7: TLabel;
-    Label8: TLabel;
-    edQtde: TMaskEdit;
     edProdutoDesc: TMemo;
     lblSenha: TLabel;
     Memo1: TMemo;
-    Memo2: TMemo;
     MemoIntegra: TMemo;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
@@ -106,6 +106,9 @@ type
     Panel1: TPanel;
     Panel10: TPanel;
     Panel11: TPanel;
+    Panel12: TPanel;
+    pnLogo: TPanel;
+    pnQtde: TPanel;
     pnIntegra: TPanel;
     pnProdutoNaoLocalizado: TPanel;
     Panel2: TPanel;
@@ -115,12 +118,13 @@ type
     Panel4: TPanel;
     Panel5: TPanel;
     Panel6: TPanel;
-    Panel7: TPanel;
-    Panel8: TPanel;
+    pnProdutoDescricao: TPanel;
+    pnPreco: TPanel;
     Panel9: TPanel;
     pnInfo: TPanel;
     PopupMenu1: TPopupMenu;
     TIButton2: TTIButton;
+    procedure acConsultaItemExecute(Sender: TObject);
     procedure acExcluirItemPedidoExecute(Sender: TObject);
     procedure acFecharExecute(Sender: TObject);
     procedure acNovaExecute(Sender: TObject);
@@ -130,6 +134,7 @@ type
     procedure BitBtn10Click(Sender: TObject);
     procedure BitBtn11Click(Sender: TObject);
     procedure BitBtn12Click(Sender: TObject);
+    procedure btnProdutoProc1Click(Sender: TObject);
     procedure btnProdutoProcClick(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
@@ -186,6 +191,8 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
   private
+    consultaItem: String;
+    ultimo_pedido: Integer;
     codproduto: Integer;
     codPro: String;
     proDesc: String;
@@ -381,16 +388,19 @@ begin
   if (Key = 39) then
   begin
     //Key := #0;
-    fProdutoProc.codProduto := dmPdv.sqBusca.FieldByName('CODPRODUTO').AsInteger;
-    fProdutoProc.produto    := dmPdv.sqBusca.FieldByName('PRODUTO').AsString;
-    fProdutoProc.codProd    := dmPdv.sqBusca.FieldByName('CODPRO').AsString;
-    fProdutoProc.precoVenda := dmPdv.sqBusca.FieldByName('VALOR_PRAZO').AsFloat;
-    fProdutoProc.precoVendaAtacado := dmPdv.sqBusca.FieldByName('PRECOATACADO').AsFloat;
-    fProdutoProc.qtdeAtacado:= dmPdv.sqBusca.FieldByName('QTDEATACADO').AsFloat;
-    fProdutoProc.estoque    := dmPdv.sqBusca.FieldByName('ESTOQUEATUAL').AsFloat;
-    fProdutoProc.tipo_venda := dmPdv.sqBusca.FieldByName('RATEIO').AsString;
-    pnProdBusca.Visible := False;
-    adicionaProduto();
+    if (consultaItem = 'NAO') then
+    begin
+      fProdutoProc.codProduto := dmPdv.sqBusca.FieldByName('CODPRODUTO').AsInteger;
+      fProdutoProc.produto    := dmPdv.sqBusca.FieldByName('PRODUTO').AsString;
+      fProdutoProc.codProd    := dmPdv.sqBusca.FieldByName('CODPRO').AsString;
+      fProdutoProc.precoVenda := dmPdv.sqBusca.FieldByName('VALOR_PRAZO').AsFloat;
+      fProdutoProc.precoVendaAtacado := dmPdv.sqBusca.FieldByName('PRECOATACADO').AsFloat;
+      fProdutoProc.qtdeAtacado:= dmPdv.sqBusca.FieldByName('QTDEATACADO').AsFloat;
+      fProdutoProc.estoque    := dmPdv.sqBusca.FieldByName('ESTOQUEATUAL').AsFloat;
+      fProdutoProc.tipo_venda := dmPdv.sqBusca.FieldByName('RATEIO').AsString;
+      pnProdBusca.Visible := False;
+      adicionaProduto();
+    end;
   end;
 
 end;
@@ -410,16 +420,19 @@ begin
   if (Key = 37) then
   begin
     //Key := #0;
-    fProdutoProc.codProduto := dmPdv.sqBusca.FieldByName('CODPRODUTO').AsInteger;
-    fProdutoProc.produto    := dmPdv.sqBusca.FieldByName('PRODUTO').AsString;
-    fProdutoProc.codProd    := dmPdv.sqBusca.FieldByName('CODPRO').AsString;
-    fProdutoProc.precoVenda := dmPdv.sqBusca.FieldByName('VALOR_PRAZO').AsFloat;
-    fProdutoProc.precoVendaAtacado := dmPdv.sqBusca.FieldByName('PRECOATACADO').AsFloat;
-    fProdutoProc.qtdeAtacado:= dmPdv.sqBusca.FieldByName('QTDEATACADO').AsFloat;
-    fProdutoProc.estoque    := dmPdv.sqBusca.FieldByName('ESTOQUEATUAL').AsFloat;
-    fProdutoProc.tipo_venda := dmPdv.sqBusca.FieldByName('RATEIO').AsString;
-    pnProdBusca.Visible := False;
-    adicionaProduto();
+    if (consultaItem = 'NAO') then
+    begin
+      fProdutoProc.codProduto := dmPdv.sqBusca.FieldByName('CODPRODUTO').AsInteger;
+      fProdutoProc.produto    := dmPdv.sqBusca.FieldByName('PRODUTO').AsString;
+      fProdutoProc.codProd    := dmPdv.sqBusca.FieldByName('CODPRO').AsString;
+      fProdutoProc.precoVenda := dmPdv.sqBusca.FieldByName('VALOR_PRAZO').AsFloat;
+      fProdutoProc.precoVendaAtacado := dmPdv.sqBusca.FieldByName('PRECOATACADO').AsFloat;
+      fProdutoProc.qtdeAtacado:= dmPdv.sqBusca.FieldByName('QTDEATACADO').AsFloat;
+      fProdutoProc.estoque    := dmPdv.sqBusca.FieldByName('ESTOQUEATUAL').AsFloat;
+      fProdutoProc.tipo_venda := dmPdv.sqBusca.FieldByName('RATEIO').AsString;
+      pnProdBusca.Visible := False;
+      adicionaProduto();
+    end;
   end;
 
 end;
@@ -564,6 +577,11 @@ begin
   edProduto.SetFocus;
 end;
 
+procedure TfPdv.btnProdutoProc1Click(Sender: TObject);
+begin
+
+end;
+
 procedure TfPdv.acFecharExecute(Sender: TObject);
 begin
   Close;
@@ -577,6 +595,23 @@ begin
   buscaPedidosAbertoCaixa(codMov);
   abrePedido(codMov);
   calculaTotalGeral();
+end;
+
+procedure TfPdv.acConsultaItemExecute(Sender: TObject);
+begin
+  if (edProduto.Color = clYellow) then
+  begin
+    edProduto.Color := $00E1E1E1;
+    consultaItem := 'NAO';
+    pnProdBusca.Visible:=False;
+    abrePedido(ultimo_pedido);
+  end
+  else begin
+    edProduto.Color := clYellow;
+    consultaItem := 'SIM';
+    pnProdBusca.Visible:=True;
+  end;
+  edProduto.SetFocus;
 end;
 
 procedure TfPdv.acNovaExecute(Sender: TObject);
@@ -816,19 +851,25 @@ begin
       // se o codigo tiver mais q 'X' caracter e codigo de barras ??!!
 
       // digitou letras entao busca pela descricao
-      if not TryStrToInt(Copy(edProduto.Text,0,1),i) then
+      if (dmpdv.tipo_buscaProd = 'CODPRO') then
       begin
-        fProdutoProc.busca('', '',edProduto.Text, False);
-      end
-      else if ((Copy(edProduto.Text,0,2)='04') and (Length(edProduto.Text) > 6)) then
-      begin
-        buscaVendedor(edProduto.Text);
-        Exit;
-      end
-      else if Length(edProduto.Text) > 7 then
-        fProdutoProc.busca('',edProduto.Text, '', False)
-      else
         fProdutoProc.busca(edProduto.Text, '','', False);
+      end
+      else begin
+        if not TryStrToInt(Copy(edProduto.Text,0,1),i) then
+        begin
+          fProdutoProc.busca('', '',edProduto.Text, False);
+        end
+        else if ((Copy(edProduto.Text,0,2)='04') and (Length(edProduto.Text) > 6)) then
+        begin
+          buscaVendedor(edProduto.Text);
+          Exit;
+        end
+        else if Length(edProduto.Text) > 7 then
+          fProdutoProc.busca('',edProduto.Text, '', False)
+        else
+          fProdutoProc.busca(edProduto.Text, '','', False);
+      end;
       if (fProdutoProc.codProduto = 0) then
       begin
         //ShowMessage('Produto não Localizado.');
@@ -848,7 +889,8 @@ begin
     //pnProdBusca.Visible:=False;
     if fProdutoProc.num_busca = 1 then
     begin
-      adicionaProduto();
+      if (consultaItem = 'NAO') then
+        adicionaProduto();
     end;
     if fProdutoProc.num_busca = 0 then
     begin
@@ -931,12 +973,16 @@ end;
 
 procedure TfPdv.FormCreate(Sender: TObject);
 begin
+  DBGrid1.Columns[2].Width := dmPdv.tamanhoDescProd;
+  DBGrid1.Columns[1].Width := dmPdv.tamanhoCodProd;
   Image1.Picture.LoadFromFile('logo.png');
 end;
 
 procedure TfPdv.FormShow(Sender: TObject);
 var sqlP: String;
 begin
+  ultimo_pedido := 0;
+  consultaItem := 'NAO';
   DBGrid2.Columns[0].FieldName:='CODPRO';
   DBGrid2.Columns[1].FieldName:='PRODUTO';
   DBGrid2.Columns[2].FieldName:='UNIDADEMEDIDA';
@@ -1021,6 +1067,8 @@ procedure TfPdv.abrePedido(apCodMov: Integer);
 var  logs:TextFile;
   vdr: String;
 begin
+  fProdutoProc.num_pedidos := fProdutoProc.num_pedidos + 1;
+  ultimo_pedido := apCodMov;
   vdr := edVendedor.Text;
   edVendedor.Text := '0';
   vdr := edVendedor.Text;

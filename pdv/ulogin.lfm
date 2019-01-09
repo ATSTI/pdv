@@ -45,6 +45,11 @@ object fLogin: TfLogin
         '  Vendedor=1  (cod. Usuario)'
         '  SenhaLogin=123'
         '  NomeLogin=adm'
+        ''
+        'Fazer a Busca pelo Código Produto (CODPRO)'
+        '''Outros'',''BuscaProduto'',''NORMAL'''
+        'Para'
+        '''Outros'',''BuscaProduto'',''CODPRO'''
       )
       ScrollBars = ssBoth
       TabOrder = 0
