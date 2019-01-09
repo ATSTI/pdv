@@ -1,11 +1,11 @@
 object fMovimentoProc: TfMovimentoProc
   Left = 205
-  Height = 587
+  Height = 560
   Top = 30
-  Width = 940
+  Width = 1044
   Caption = 'Lista Pedidos'
-  ClientHeight = 587
-  ClientWidth = 940
+  ClientHeight = 560
+  ClientWidth = 1044
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poScreenCenter
@@ -14,13 +14,13 @@ object fMovimentoProc: TfMovimentoProc
     Left = 0
     Height = 64
     Top = 0
-    Width = 940
+    Width = 1044
     Align = alTop
     ClientHeight = 64
-    ClientWidth = 940
+    ClientWidth = 1044
     Color = clSilver
     Font.CharSet = ANSI_CHARSET
-    Font.Height = -37
+    Font.Height = -16
     Font.Name = '@Malgun Gothic'
     Font.Pitch = fpVariable
     Font.Quality = fqDraft
@@ -30,7 +30,7 @@ object fMovimentoProc: TfMovimentoProc
     object Label1: TLabel
       Left = 16
       Height = 21
-      Top = 11
+      Top = 4
       Width = 58
       Caption = 'Período'
       Font.CharSet = ANSI_CHARSET
@@ -44,7 +44,7 @@ object fMovimentoProc: TfMovimentoProc
     object edDataIni: TDateTimePicker
       Left = 88
       Height = 26
-      Top = 8
+      Top = 4
       Width = 105
       CenturyFrom = 1941
       MaxDate = 44196
@@ -70,9 +70,9 @@ object fMovimentoProc: TfMovimentoProc
       MonthNames = 'Long'
     end
     object edDataFim: TDateTimePicker
-      Left = 232
+      Left = 88
       Height = 26
-      Top = 8
+      Top = 35
       Width = 105
       CenturyFrom = 1941
       MaxDate = 44196
@@ -97,14 +97,101 @@ object fMovimentoProc: TfMovimentoProc
       HideDateTimeParts = []
       MonthNames = 'Long'
     end
+    object edPedido: TLabeledEdit
+      Left = 400
+      Height = 29
+      Top = 4
+      Width = 120
+      EditLabel.AnchorSideTop.Control = edPedido
+      EditLabel.AnchorSideTop.Side = asrCenter
+      EditLabel.AnchorSideRight.Control = edPedido
+      EditLabel.AnchorSideBottom.Control = edPedido
+      EditLabel.AnchorSideBottom.Side = asrBottom
+      EditLabel.Left = 345
+      EditLabel.Height = 21
+      EditLabel.Top = 8
+      EditLabel.Width = 52
+      EditLabel.Caption = 'Pedido'
+      EditLabel.ParentColor = False
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -16
+      Font.Name = '@Malgun Gothic'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      LabelPosition = lpLeft
+      ParentFont = False
+      TabOrder = 2
+      OnKeyPress = edPedidoKeyPress
+    end
+    object rgStatus: TRadioGroup
+      Left = 568
+      Height = 45
+      Top = 0
+      Width = 394
+      AutoFill = True
+      Caption = 'Situação'
+      ChildSizing.LeftRightSpacing = 6
+      ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+      ChildSizing.EnlargeVertical = crsHomogenousChildResize
+      ChildSizing.ShrinkHorizontal = crsScaleChilds
+      ChildSizing.ShrinkVertical = crsScaleChilds
+      ChildSizing.Layout = cclLeftToRightThenTopToBottom
+      ChildSizing.ControlsPerLine = 4
+      ClientHeight = 19
+      ClientWidth = 390
+      Columns = 4
+      ItemIndex = 0
+      Items.Strings = (
+        'Todos'
+        'Finalizados'
+        'Cancelados'
+        'NFCe'
+      )
+      TabOrder = 3
+    end
+    object edValorBusca: TMaskEdit
+      Left = 208
+      Height = 29
+      Top = 35
+      Width = 120
+      Alignment = taRightJustify
+      CharCase = ecNormal
+      MaxLength = 0
+      TabOrder = 4
+      Text = '0,00'
+      SpaceChar = '_'
+    end
+    object Label4: TLabel
+      Left = 68
+      Height = 21
+      Top = 35
+      Width = 6
+      Caption = '/'
+      ParentColor = False
+    end
+    object cbValorBusca: TComboBox
+      Left = 208
+      Height = 29
+      Top = 4
+      Width = 120
+      ItemHeight = 21
+      ItemIndex = 0
+      Items.Strings = (
+        'Maior que'
+        'Menor que'
+        'Igual'
+      )
+      TabOrder = 5
+      Text = 'Maior que'
+    end
   end
   object Panel2: TPanel
-    Left = 864
-    Height = 523
+    Left = 968
+    Height = 462
     Top = 64
     Width = 76
     Align = alRight
-    ClientHeight = 523
+    ClientHeight = 462
     ClientWidth = 76
     Color = clSilver
     ParentColor = False
@@ -288,22 +375,29 @@ object fMovimentoProc: TfMovimentoProc
   end
   object DBGrid1: TDBGrid
     Left = 0
-    Height = 523
+    Height = 462
     Top = 64
-    Width = 864
+    Width = 968
     Align = alClient
     Color = clWindow
     Columns = <    
       item
+        MaxSize = 100
         Title.Caption = 'Código'
       end    
       item
+        MaxSize = 100
         Title.Caption = 'Data'
         Width = 120
       end    
       item
+        MaxSize = 100
         Title.Caption = 'Núm. Venda'
         Width = 120
+      end    
+      item
+        MaxSize = 70
+        Title.Caption = 'Série'
       end    
       item
         Title.Caption = 'Vendedor'
@@ -315,6 +409,7 @@ object fMovimentoProc: TfMovimentoProc
         Width = 180
       end    
       item
+        MaxSize = 100
         Title.Alignment = taRightJustify
         Title.Caption = 'Valor'
       end>
@@ -322,6 +417,112 @@ object fMovimentoProc: TfMovimentoProc
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
     TabOrder = 2
     OnCellClick = DBGrid1CellClick
+  end
+  object Panel3: TPanel
+    Left = 0
+    Height = 34
+    Top = 526
+    Width = 1044
+    Align = alBottom
+    ClientHeight = 34
+    ClientWidth = 1044
+    TabOrder = 3
+    object edValorTotal: TMaskEdit
+      Left = 784
+      Height = 29
+      Top = 3
+      Width = 131
+      Alignment = taRightJustify
+      CharCase = ecNormal
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -16
+      Font.Name = 'Arial Unicode MS'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      MaxLength = 0
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 0
+      Text = '0,00'
+      SpaceChar = '_'
+    end
+    object edQtdeLancamento: TMaskEdit
+      Left = 480
+      Height = 29
+      Top = 3
+      Width = 80
+      Alignment = taRightJustify
+      CharCase = ecNormal
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -16
+      Font.Name = 'Arial Unicode MS'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      MaxLength = 0
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 1
+      Text = '0'
+      SpaceChar = '_'
+    end
+    object Label2: TLabel
+      Left = 293
+      Height = 21
+      Top = 3
+      Width = 182
+      Caption = 'Quantidade Lançamentos'
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -16
+      Font.Name = 'Arial Unicode MS'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      ParentColor = False
+      ParentFont = False
+    end
+    object Label3: TLabel
+      Left = 688
+      Height = 21
+      Top = 3
+      Width = 76
+      Caption = 'Valor Total'
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -16
+      Font.Name = 'Arial Unicode MS'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      ParentColor = False
+      ParentFont = False
+    end
+    object BitBtn1: TBitBtn
+      Left = 23
+      Height = 27
+      Top = 2
+      Width = 141
+      Caption = 'Fechar Caixa'
+      OnClick = BitBtn1Click
+      TabOrder = 2
+    end
+  end
+  object pnMemo: TPanel
+    Left = 121
+    Height = 424
+    Top = 88
+    Width = 696
+    ClientHeight = 424
+    ClientWidth = 696
+    TabOrder = 4
+    Visible = False
+    object Memo1: TMemo
+      Left = 1
+      Height = 422
+      Top = 1
+      Width = 694
+      Align = alClient
+      Lines.Strings = (
+        'Memo1'
+      )
+      TabOrder = 0
+    end
   end
   object dsMovProc: TDataSource
     DataSet = dmPdv.sqBusca
