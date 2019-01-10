@@ -1009,9 +1009,9 @@ begin
   codDet := 0;
   caixa_local := StrToInt(dmPdv.ccusto);
   codCaixa    := StrToInt(dmPdv.varLogado); // usuario
-  codCliente  := 1;
+  codCliente  := dmPdv.clientePadrao;
   edClienteNome.Text := 'Consumidor';
-  edCliente.Text     := '1';
+  edCliente.Text     := IntToStr(dmpdv.clientePadrao);
   codVendedor := dmpdv.vendedor_padrao;
   edVendedor.Text := IntToStr(dmpdv.vendedor_padrao);
   edCaixa.Text := dmPdv.nomeLogado + '-' + dmPdv.nomeCaixa;
@@ -1142,8 +1142,8 @@ begin
     edProduto.Enabled := True;
     edProdutoDesc.Lines.Clear;
     edProdutoDesc.Lines.Add('Produto:');
-    edCliente.Text := '1';
-    codCliente :=1;
+    edCliente.Text := IntToStr(dmpdv.clientePadrao);
+    codCliente := dmpdv.clientePadrao;
     edClienteNome.Text := 'Consumidor';
     if (dmPdv.vendedor_padrao > 0) then
     begin
