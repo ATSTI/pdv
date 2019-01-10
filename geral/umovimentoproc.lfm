@@ -379,39 +379,44 @@ object fMovimentoProc: TfMovimentoProc
     Top = 64
     Width = 968
     Align = alClient
+    AutoFillColumns = True
     Color = clWindow
     Columns = <    
       item
-        MaxSize = 100
+        MaxSize = 140
         Title.Caption = 'Código'
+        Width = 109
       end    
       item
-        MaxSize = 100
+        MaxSize = 120
         Title.Caption = 'Data'
-        Width = 120
+        Width = 109
       end    
       item
         MaxSize = 100
         Title.Caption = 'Núm. Venda'
-        Width = 120
+        Width = 109
       end    
       item
         MaxSize = 70
         Title.Caption = 'Série'
+        Width = 109
       end    
       item
         Title.Caption = 'Vendedor'
-        Width = 140
+        Width = 109
       end    
       item
         MaxSize = 300
+        SizePriority = 0
         Title.Caption = 'Cliente'
-        Width = 180
+        Width = 280
       end    
       item
-        MaxSize = 100
+        MaxSize = 120
         Title.Alignment = taRightJustify
         Title.Caption = 'Valor'
+        Width = 110
       end>
     DataSource = dsMovProc
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
