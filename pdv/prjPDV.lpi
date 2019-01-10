@@ -25,45 +25,48 @@
         <FormatVersion Value="1"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="12">
+    <RequiredPackages Count="13">
       <Item1>
-        <PackageName Value="MultiThreadProcsLaz"/>
+        <PackageName Value="lhelpcontrolpkg"/>
       </Item1>
       <Item2>
-        <PackageName Value="P4DLaz"/>
+        <PackageName Value="MultiThreadProcsLaz"/>
       </Item2>
       <Item3>
-        <PackageName Value="ACBrSerial"/>
+        <PackageName Value="P4DLaz"/>
       </Item3>
       <Item4>
-        <PackageName Value="ACBrDiversos"/>
+        <PackageName Value="ACBrSerial"/>
       </Item4>
       <Item5>
-        <PackageName Value="ACBr_NFCe_DanfeRL"/>
+        <PackageName Value="ACBrDiversos"/>
       </Item5>
       <Item6>
-        <PackageName Value="ACBr_NFe_DanfeESCPOS"/>
+        <PackageName Value="ACBr_NFCe_DanfeRL"/>
       </Item6>
       <Item7>
-        <PackageName Value="ACBr_NFe"/>
+        <PackageName Value="ACBr_NFe_DanfeESCPOS"/>
       </Item7>
       <Item8>
-        <PackageName Value="DateTimeCtrls"/>
+        <PackageName Value="ACBr_NFe"/>
       </Item8>
       <Item9>
-        <PackageName Value="FCL"/>
+        <PackageName Value="DateTimeCtrls"/>
       </Item9>
       <Item10>
-        <PackageName Value="RunTimeTypeInfoControls"/>
+        <PackageName Value="FCL"/>
       </Item10>
       <Item11>
-        <PackageName Value="SynEdit"/>
+        <PackageName Value="RunTimeTypeInfoControls"/>
       </Item11>
       <Item12>
-        <PackageName Value="LCL"/>
+        <PackageName Value="SynEdit"/>
       </Item12>
+      <Item13>
+        <PackageName Value="LCL"/>
+      </Item13>
     </RequiredPackages>
-    <Units Count="21">
+    <Units Count="20">
       <Unit0>
         <Filename Value="prjPDV.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -174,45 +177,37 @@
         <UnitName Value="uSenhaNova"/>
       </Unit15>
       <Unit16>
-        <Filename Value="updv2.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="Form1"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="uPdv2"/>
-      </Unit16>
-      <Unit17>
         <Filename Value="upermissao.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fPermissao"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uPermissao"/>
-      </Unit17>
-      <Unit18>
+      </Unit16>
+      <Unit17>
         <Filename Value="uexcluiritem.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fExclusao"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uExcluirItem"/>
-      </Unit18>
-      <Unit19>
+      </Unit17>
+      <Unit18>
         <Filename Value="unfce.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fNfce"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uNfce"/>
-      </Unit19>
-      <Unit20>
+      </Unit18>
+      <Unit19>
         <Filename Value="..\geral\ucertificadoler.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frSelecionarCertificado"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCertificadoLer"/>
-      </Unit20>
+      </Unit19>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
