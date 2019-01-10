@@ -841,6 +841,26 @@ object fPDV_Rec: TfPDV_Rec
         ParentFont = False
         TabOrder = 7
       end
+      object MemoImp: TMemo
+        Left = 18
+        Height = 81
+        Top = 326
+        Width = 190
+        Lines.Strings = (
+          'MemoImp'
+        )
+        ReadOnly = True
+        TabOrder = 8
+      end
+      object cbxModeloPosPrinter: TComboBox
+        Left = 19
+        Height = 23
+        Top = 408
+        Width = 189
+        ItemHeight = 15
+        Style = csDropDownList
+        TabOrder = 9
+      end
     end
   end
   object sqPagamento: TSQLQuery
@@ -1126,5 +1146,17 @@ object fPDV_Rec: TfPDV_Rec
     object MenuItem4: TMenuItem
       Caption = 'MenuItem4'
     end
+  end
+  object ACBrPosPrinter1: TACBrPosPrinter
+    ConfigBarras.MostrarCodigo = False
+    ConfigBarras.LarguraLinha = 0
+    ConfigBarras.Altura = 0
+    ConfigBarras.Margem = 0
+    ConfigQRCode.Tipo = 2
+    ConfigQRCode.LarguraModulo = 4
+    ConfigQRCode.ErrorLevel = 0
+    LinhasEntreCupons = 0
+    left = 564
+    top = 122
   end
 end

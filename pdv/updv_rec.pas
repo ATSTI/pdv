@@ -6,14 +6,15 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ExtCtrls, Buttons, DBGrids, MaskEdit, ActnList, Menus, udmpdv, uvenda,
-  uRecebimento, uClienteBusca, uNfce, sqldb, db, math;
+  ExtCtrls, Buttons, DBGrids, MaskEdit, ActnList, Menus, ACBrPosPrinter, udmpdv,
+  uvenda, uRecebimento, uClienteBusca, uNfce, sqldb, db, math, StrUtils, IniFiles, typinfo;
 
 type
 
   { TfPDV_Rec }
 
   TfPDV_Rec = class(TForm)
+    ACBrPosPrinter1: TACBrPosPrinter;
     acDescontoValor: TAction;
     acDescontoPercentual: TAction;
     acCartaoDebito: TAction;
@@ -57,6 +58,7 @@ type
     BitBtn9: TBitBtn;
     btnDsc: TBitBtn;
     chkPercent: TCheckBox;
+    cbxModeloPosPrinter: TComboBox;
     dsPag: TDataSource;
     DBGrid1: TDBGrid;
     edValorVendaTotal: TMaskEdit;
@@ -83,6 +85,7 @@ type
     edValorPago: TMaskEdit;
     edRestante: TMaskEdit;
     edTroco: TMaskEdit;
+    MemoImp: TMemo;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
@@ -150,6 +153,7 @@ type
     procedure encerra_venda();
     procedure imprimir();
     procedure imprimirTxt();
+    procedure imprimiAcbr();
   public
     vStatus : Integer;
     vVendedor: Integer;
@@ -175,6 +179,7 @@ implementation
 
 procedure TfPDV_Rec.FormShow(Sender: TObject);
 begin
+  MemoImp.Clear;
   edValorPago.Color := clWhite;
   edVDesconto.Color := clWhite;
   edPagamento.Color := clWhite;
@@ -590,7 +595,14 @@ begin
   dmPdv.sqLancamentos.Open;
   // leio um arquivo txt e imprimo
   lFile := TStringList.Create;
-  AssignFile(IMPRESSORA, dmPdv.portaIMP);
+  if (dmPdv.CupomImp = 'Texto') then
+  begin
+    AssignFile(IMPRESSORA, dmPdv.portaIMP);
+  end
+  else begin
+    AssignFile(IMPRESSORA, 'C:\home\t.txt');
+  end;
+
   try
     Rewrite(IMPRESSORA);
     lFile.LoadFromFile('cupom.txt');
@@ -813,6 +825,47 @@ begin
     CloseFile(IMPRESSORA);
     lFile.Free;
   end;
+
+end;
+
+procedure TfPDV_Rec.imprimiAcbr();
+var arquivo: TStringList;
+begin
+  arquivo := TStringList.Create();
+  try
+    arquivo.LoadFromFile('C:\home\t.txt');
+    MemoImp.Clear;
+    MemoImp.Text := arquivo.Text;
+  finally
+    arquivo.free;
+  end;
+  ACBrPosPrinter1.Desativar;
+  ACBrPosPrinter1.LinhasBuffer := 0;
+  ACBrPosPrinter1.LinhasEntreCupons := 0;
+  ACBrPosPrinter1.EspacoEntreLinhas := 0;
+  ACBrPosPrinter1.ColunasFonteNormal := 48;
+  ACBrPosPrinter1.Porta  := dmPdv.portaImp;
+  //ACBrPosPrinter1.ControlePorta := cbControlePorta.Checked;
+  ACBrPosPrinter1.CortaPapel := True;
+  //ACBrPosPrinter1.TraduzirTags := cbTraduzirTags.Checked;
+  //ACBrPosPrinter1.IgnorarTags := cbIgnorarTags.Checked;
+  // ACBrPosPrinter1.PaginaDeCodigo := TACBrPosPaginaCodigo( cbxPagCodigo.ItemIndex );
+  // ACBrPosPrinter1.ConfigBarras.MostrarCodigo := cbHRI.Checked;
+  // ACBrPosPrinter1.ConfigBarras.LarguraLinha := seBarrasLargura.Value;
+  // ACBrPosPrinter1.ConfigBarras.Altura := seBarrasAltura.Value;
+  // ACBrPosPrinter1.ConfigQRCode.Tipo := seQRCodeTipo.Value;
+  // ACBrPosPrinter1.ConfigQRCode.LarguraModulo := seQRCodeLarguraModulo.Value;
+  // ACBrPosPrinter1.ConfigQRCode.ErrorLevel := seQRCodeErrorLevel.Value;
+  // ACBrPosPrinter1.ConfigLogo.KeyCode1 := seLogoKC1.Value;
+  // ACBrPosPrinter1.ConfigLogo.KeyCode2 := seLogoKC2.Value;
+  // ACBrPosPrinter1.ConfigLogo.FatorX := seLogoFatorX.Value;
+  // ACBrPosPrinter1.ConfigLogo.FatorY := seLogoFatorY.Value;
+  ACBrPosPrinter1.Modelo := TACBrPosPrinterModelo(cbxModeloPosPrinter.ItemIndex);
+  ACBrPosPrinter1.Ativar ;
+
+  ACBrPosPrinter1.Buffer.Text := MemoImp.Lines.Text;
+  ACBrPosPrinter1.Imprimir;
+
 end;
 
 function TfPDV_Rec.strParaFloat(vlr_st: String): Double;
@@ -863,8 +916,13 @@ begin
 end;
 
 procedure TfPDV_Rec.FormCreate(Sender: TObject);
+var N: TACBrPosPrinterModelo;
 begin
   vDesconto := 0;
+  cbxModeloPosPrinter.Items.Clear ;
+  For N := Low(TACBrPosPrinterModelo) to High(TACBrPosPrinterModelo) do
+     cbxModeloPosPrinter.Items.Add(GetEnumName(TypeInfo(TACBrPosPrinterModelo), integer(N) ));
+  cbxModeloPosPrinter.ItemIndex := dmPdv.ModeloImp;
 end;
 
 procedure TfPDV_Rec.BitBtn9Click(Sender: TObject);
@@ -956,7 +1014,14 @@ begin
   begin
     encerra_venda();
   end;
-  imprimirTxt();
+  if (dmPdv.CupomImp = 'Texto') then
+  begin
+    imprimirTxt();
+  end
+  else begin
+    imprimirTxt();
+    imprimiAcbr();
+  end;
   Close;
 end;
 
