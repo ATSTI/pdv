@@ -192,6 +192,7 @@ type
     usaCentroCusto: String;
     tipo_buscaProd: String;
     tamanhoDescProd: Integer;
+    clientePadrao: Integer;
     tamanhoCodProd: Integer;
     varLogado : String;
     nomeLogado : String;
@@ -205,6 +206,7 @@ type
     portaImp: String;
     NFE_Teste: String;
     ModeloImp: Integer;
+    CupomImp : String;
     id_tk: String;
     tk: string;
     SSLLib : Integer;
@@ -242,6 +244,7 @@ begin
   varLogado := ''; // usuario logado
   nomeLogado:= '';
   senhaLogin := '';
+  clientePadrao := 1;
   tipo_buscaProd := 'NORMAL';
   MICRO := GetEnvironmentVariable('COMPUTERNAME');
   path_exe := ExtractFilePath(ParamStr(0));
@@ -262,6 +265,7 @@ begin
     snh:= conf.ReadString('DATABASE', 'Acesso', '');
     portaImp := conf.ReadString('IMPRESSORA', 'porta', '');
     ModeloImp := conf.ReadInteger('IMPRESSORA', 'Modelo', 0);
+    CupomImp := conf.ReadString('IMPRESSORA', 'Cupom', 'Texto');
     //snh:= EncodeStringBase64(snh); // Ver a senha Encryptada
     snh:= DecodeStringBase64(snh);
     IBCon.Password := snh;
@@ -298,7 +302,14 @@ begin
       tk := sqParametroDADOS.AsString;
       id_tk := sqParametroD4.AsString;
     end;
-
+    if (sqParametroPARAMETRO.AsString = 'CONSUMIDOR') then
+    begin
+      try
+        clientePadrao := StrToInt(sqParametroDADOS.AsString);
+      Except
+        ShowMessage('Parametro Consumidor campo DADOS precisa ser número');
+      end;
+    end;
     sqParametro.Next;
   end;
   sqBusca.SQL.Clear;
