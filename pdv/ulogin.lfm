@@ -46,10 +46,19 @@ object fLogin: TfLogin
         '  SenhaLogin=123'
         '  NomeLogin=adm'
         ''
+        ' [IMPRESSORA]'
+        '  Cupom=Texto ou ACBR'
+        ''
         'Fazer a Busca pelo Código Produto (CODPRO)'
         '''Outros'',''BuscaProduto'',''NORMAL'''
         'Para'
         '''Outros'',''BuscaProduto'',''CODPRO'''
+        ''
+        'Tamanho GRID :'
+        ''
+        '[OUTROS]'
+        '  TamanhoDescProd=480'
+        '  TamanhoCodProd=160'
       )
       ScrollBars = ssBoth
       TabOrder = 0
@@ -146,5 +155,11 @@ object fLogin: TfLogin
     Caption = '?'
     OnClick = btnInfoClick
     TabOrder = 6
+  end
+  object LHelpConnector1: TLHelpConnector
+    LHelpPath = 'c:\home\help.chm'
+    AutoRegister = True
+    left = 15
+    top = 40
   end
 end

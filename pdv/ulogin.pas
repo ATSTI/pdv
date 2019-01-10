@@ -5,8 +5,8 @@ unit uLogin;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Buttons,
-  ExtCtrls, StdCtrls, udmpdv, uSenhaNova, uPdv, base64, Process;
+  Classes, SysUtils, FileUtil, LazHelpCHM, Forms, Controls, Graphics, Dialogs,
+  Buttons, ExtCtrls, StdCtrls, udmpdv, uSenhaNova, uPdv, base64, Process;
 
 type
 
@@ -19,6 +19,7 @@ type
     edLogin: TLabeledEdit;
     edSenha: TLabeledEdit;
     Label1: TLabel;
+    LHelpConnector1: TLHelpConnector;
     Memo1: TMemo;
     Memo2: TMemo;
     pnInfo: TPanel;
