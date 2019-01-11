@@ -384,6 +384,7 @@ procedure TfNfce.FormShow(Sender: TObject);
 var msg_ncm: String;
  msg_origem: String;
  t: string;
+ serie : String;
 begin
   ACBrPosPrinter1.Porta := dmPdv.portaImp;
   ACBrPosPrinter1.Modelo:= TACBrPosPrinterModelo(cbxModeloPosPrinter.ItemIndex);
@@ -392,14 +393,18 @@ begin
   edCPF.Text := '';
   dmPdv.sqBusca.Close;
   dmPdv.sqBusca.SQL.Clear;
-  dmPdv.sqBusca.SQL.Text:='SELECT NOTAFISCAL , NOMEXML, PROTOCOLOENV FROM VENDA ' +
+  dmPdv.sqBusca.SQL.Text:='SELECT NOTAFISCAL , NOMEXML, PROTOCOLOENV, SERIE FROM VENDA ' +
     'WHERE CODVENDA = ' + IntToStr(nfce_codVenda);
   dmPdv.sqBusca.Open;
   if (not dmpdv.sqBusca.IsEmpty) then
   begin
     t := dmPdv.sqBusca.Fields[1].AsString;
-    edNFce.text := IntToStr(dmPdv.sqBusca.Fields[0].AsInteger);
-    if dmPdv.sqBusca.Fields[2].AsString <> '' then
+    serie := copy(dmPdv.sqBusca.Fields[3].AsString,0,4);
+    if (serie = 'NFCE') then
+    begin
+      edNFce.text := IntToStr(dmPdv.sqBusca.Fields[0].AsInteger);
+    end;
+    if (dmPdv.sqBusca.Fields[2].AsString <> '') then
     begin
       notaEmitida := 'S';
       t := IntToStr(dmPdv.sqBusca.Fields[0].AsInteger);
@@ -455,7 +460,7 @@ begin
 
 
   end;
-  if (edNFce.Text = '') then
+  if ((edNFce.Text = '') or (edNFce.Text = '0')) then
   begin
     // usando no CODSERIE o CODUSUARIO .. pra pegar a SERIE por USUARIO
     dmPdv.sqBusca.Close;
