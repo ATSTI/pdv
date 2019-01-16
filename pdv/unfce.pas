@@ -27,6 +27,7 @@ type
     BitBtn2: TBitBtn;
     BitBtn3: TBitBtn;
     BitBtn4: TBitBtn;
+    BitBtn5: TBitBtn;
     btnFechar: TBitBtn;
     btnNFce: TBitBtn;
     btnNFce1: TBitBtn;
@@ -39,7 +40,6 @@ type
     edtCaminho: TLabeledEdit;
     edtNumSerie: TLabeledEdit;
     edtSenha: TLabeledEdit;
-    Label1: TLabel;
     edCPF: TMaskEdit;
     edCertificado: TLabeledEdit;
     edNFce: TLabeledEdit;
@@ -55,6 +55,7 @@ type
     PageControl1: TPageControl;
     PageControl2: TPageControl;
     RadioGroup1: TRadioGroup;
+    RadioGroup2: TRadioGroup;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
     TabSheet3: TTabSheet;
@@ -67,6 +68,7 @@ type
     procedure BitBtn2Click(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
     procedure BitBtn4Click(Sender: TObject);
+    procedure BitBtn5Click(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure btnNFce1Click(Sender: TObject);
     procedure btnNFce2Click(Sender: TObject);
@@ -79,6 +81,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure RadioGroup2Click(Sender: TObject);
   private
     total_tributos: Double;
     serie_nfce: Integer;
@@ -486,6 +489,19 @@ begin
   BitBtn3.SetFocus;
 end;
 
+procedure TfNfce.RadioGroup2Click(Sender: TObject);
+begin
+  if RadioGroup2.ItemIndex = 0 then
+  begin
+    edCPF.EditMask := '999.999.999-99;1;_'
+  end;
+  if RadioGroup2.ItemIndex = 1 then
+  begin
+    edCPF.EditMask := '99.999.999/9999-99;1;_'
+  end;
+
+end;
+
 function TfNfce.RemoveChar(const Texto: String): String;
 var
   I: integer;
@@ -590,10 +606,17 @@ begin
     //  2: Emit.CRT := crtRegimeNormal;
     //end;
 
-    if (edCPF.Text <> '   .   .   -  ') then
+    if ((edCPF.Text <> '   .   .   -  ') and  (Length(edCPF.Text) = 14)) then
     begin
       Dest.CNPJCPF := RemoveChar(edCPF.Text);
       Dest.indIEDest := inNaoContribuinte;
+      Dest.EnderDest.UF:='SP';
+      Dest.EnderDest.cPais := 1058;
+    end;
+    if ((edCPF.Text <> '  .   .   /   -  ') and  (Length(edCPF.Text) > 14)) then
+    begin
+      Dest.CNPJCPF := RemoveChar(edCPF.Text);
+      Dest.indIEDest := inContribuinte;
       Dest.EnderDest.UF:='SP';
       Dest.EnderDest.cPais := 1058;
     end;
@@ -1137,6 +1160,30 @@ end;
 procedure TfNfce.BitBtn4Click(Sender: TObject);
 begin
   btnNFce.Click;
+end;
+
+procedure TfNfce.BitBtn5Click(Sender: TObject);
+begin
+     // usando no CODSERIE o CODUSUARIO .. pra pegar a SERIE por USUARIO
+    dmPdv.sqBusca.Close;
+    dmPdv.sqBusca.SQL.Clear;
+    dmPdv.sqBusca.SQL.Text := 'SELECT * FROM SERIES WHERE SERIE = ' +
+      QuotedStr('NFCE-'+dmPdv.varLogado);
+    dmPdv.sqBusca.Open;
+
+    if dmPdv.sqBusca.IsEmpty then
+    begin
+      ShowMessage('Série não cadastrada para o Usuario deste Caixa.');
+      Exit;
+    end;
+    Try
+      serie_nfce := StrToInt(Trim(dmPdv.sqBusca.FieldByName('CODSERIE').AsString));
+    except
+      ShowMessage('O campo CODSERIE na serie NFCE tem que ser númerico.');
+      exit;
+    end;
+    num_nfce := dmPdv.sqBusca.FieldByName('ULTIMO_NUMERO').AsInteger+1;
+    edNFce.Text:=IntToStr(num_nfce)
 end;
 
 procedure TfNfce.btnFecharClick(Sender: TObject);

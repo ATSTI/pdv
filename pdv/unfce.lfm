@@ -13,7 +13,7 @@ object fNfce: TfNfce
   object edCPF: TMaskEdit
     Left = 120
     Height = 34
-    Top = 21
+    Top = 28
     Width = 184
     CharCase = ecNormal
     Font.CharSet = ANSI_CHARSET
@@ -29,26 +29,18 @@ object fNfce: TfNfce
     Text = '   .   .   -  '
     SpaceChar = '_'
   end
-  object Label1: TLabel
-    Left = 121
-    Height = 15
-    Top = 5
-    Width = 24
-    Caption = 'CPF '
-    ParentColor = False
-  end
   object edCertificado: TLabeledEdit
-    Left = 364
+    Left = 362
     Height = 23
-    Top = 24
+    Top = 28
     Width = 180
     EditLabel.AnchorSideLeft.Control = edCertificado
     EditLabel.AnchorSideRight.Control = edCertificado
     EditLabel.AnchorSideRight.Side = asrBottom
     EditLabel.AnchorSideBottom.Control = edCertificado
-    EditLabel.Left = 364
+    EditLabel.Left = 362
     EditLabel.Height = 15
-    EditLabel.Top = 6
+    EditLabel.Top = 10
     EditLabel.Width = 180
     EditLabel.Caption = 'Certificado'
     EditLabel.ParentColor = False
@@ -57,7 +49,7 @@ object fNfce: TfNfce
   object BitBtn1: TBitBtn
     Left = 544
     Height = 24
-    Top = 24
+    Top = 28
     Width = 28
     Glyph.Data = {
       AA030000424DAA03000000000000360000002800000011000000110000000100
@@ -97,16 +89,16 @@ object fNfce: TfNfce
   object edNFce: TLabeledEdit
     Left = 16
     Height = 23
-    Top = 21
-    Width = 80
+    Top = 28
+    Width = 72
     EditLabel.AnchorSideLeft.Control = edNFce
     EditLabel.AnchorSideRight.Control = edNFce
     EditLabel.AnchorSideRight.Side = asrBottom
     EditLabel.AnchorSideBottom.Control = edNFce
     EditLabel.Left = 16
     EditLabel.Height = 15
-    EditLabel.Top = 3
-    EditLabel.Width = 80
+    EditLabel.Top = 10
+    EditLabel.Width = 72
     EditLabel.Caption = 'Num. NFe'
     EditLabel.ParentColor = False
     Enabled = False
@@ -152,15 +144,15 @@ object fNfce: TfNfce
   end
   object PageControl2: TPageControl
     Left = 9
-    Height = 317
-    Top = 64
+    Height = 309
+    Top = 72
     Width = 646
     ActivePage = TabSheet4
     TabIndex = 0
     TabOrder = 5
     object TabSheet4: TTabSheet
       Caption = 'NFCe'
-      ClientHeight = 289
+      ClientHeight = 281
       ClientWidth = 638
       object BitBtn3: TBitBtn
         Cursor = crHandPoint
@@ -3176,6 +3168,42 @@ object fNfce: TfNfce
       end
     end
   end
+  object RadioGroup2: TRadioGroup
+    Left = 121
+    Height = 40
+    Top = -14
+    Width = 234
+    AutoFill = True
+    ChildSizing.LeftRightSpacing = 6
+    ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+    ChildSizing.EnlargeVertical = crsHomogenousChildResize
+    ChildSizing.ShrinkHorizontal = crsScaleChilds
+    ChildSizing.ShrinkVertical = crsScaleChilds
+    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+    ChildSizing.ControlsPerLine = 2
+    ClientHeight = 20
+    ClientWidth = 230
+    Columns = 2
+    ItemIndex = 0
+    Items.Strings = (
+      'CPF'
+      'CNPJ'
+    )
+    OnClick = RadioGroup2Click
+    TabOrder = 6
+  end
+  object BitBtn5: TBitBtn
+    Left = 88
+    Height = 24
+    Hint = 'Ajustar Número NFCe'
+    Top = 28
+    Width = 28
+    Caption = '...'
+    OnClick = BitBtn5Click
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 7
+  end
   object ACBrNFeDANFeESCPOS1: TACBrNFeDANFeESCPOS
     ACBrNFe = ACBrNFe1
     MostrarPreview = False
@@ -3221,8 +3249,8 @@ object fNfce: TfNfce
   object ACBrValidador1: TACBrValidador
     TipoDocto = docGTIN
     IgnorarChar = './-'
-    left = 90
-    top = 65530
+    left = 184
+    top = 112
   end
   object ACBrNFe1: TACBrNFe
     OnAntesDeAssinar = ACBrNFe1AntesDeAssinar
