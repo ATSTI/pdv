@@ -150,8 +150,7 @@ begin
     exit;
   end;
 
-
-  if (edCPF.Text <> '   .   .   -  ') then
+  if ((edCPF.Text <> '   .   .   -  ') and  (Length(edCPF.Text) = 14)) then
   begin
     ACBrValidador1.PermiteVazio:=True;
     ACBrValidador1.TipoDocto:= docCPF;
@@ -168,6 +167,24 @@ begin
       edCPF.Font.Color := clBlack;
     end;
   end;
+  if ((edCPF.Text <> '  .   .   /   -  ') and  (Length(edCPF.Text) > 14)) then
+  begin
+    ACBrValidador1.PermiteVazio:=True;
+    ACBrValidador1.TipoDocto:= docCNPJ;
+    ACBrValidador1.IgnorarChar:='./-';
+    ACBrValidador1.Documento:=edCPF.Text;
+    if not ACBrValidador1.Validar then
+    begin
+      edCPF.Font.Color:=clRed;
+      ShowMessage('CNPJ Inválido');
+      edCPF.SetFocus;
+      Exit;
+    end
+    else begin
+      edCPF.Font.Color := clBlack;
+    end;
+  end;
+
   if (edCertificado.Text = '') then
   begin
     MessageDlg('Informe o certificado.',mtError,[mbok],0);
@@ -389,6 +406,8 @@ var msg_ncm: String;
  t: string;
  serie : String;
 begin
+  ACBrNFeDANFeESCPOS1.ACBrNFe := ACBrNFe1;
+  ACBrNFeDANFeESCPOS1.PosPrinter := ACBrPosPrinter1;
   ACBrPosPrinter1.Porta := dmPdv.portaImp;
   ACBrPosPrinter1.Modelo:= TACBrPosPrinterModelo(cbxModeloPosPrinter.ItemIndex);
   notaEmitida := 'N';
@@ -616,7 +635,7 @@ begin
     if ((edCPF.Text <> '  .   .   /   -  ') and  (Length(edCPF.Text) > 14)) then
     begin
       Dest.CNPJCPF := RemoveChar(edCPF.Text);
-      Dest.indIEDest := inContribuinte;
+      Dest.indIEDest := inNaoContribuinte;
       Dest.EnderDest.UF:='SP';
       Dest.EnderDest.cPais := 1058;
     end;

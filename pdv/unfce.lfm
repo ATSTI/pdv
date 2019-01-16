@@ -14,7 +14,7 @@ object fNfce: TfNfce
     Left = 120
     Height = 34
     Top = 28
-    Width = 184
+    Width = 224
     CharCase = ecNormal
     Font.CharSet = ANSI_CHARSET
     Font.Height = -19
@@ -2820,7 +2820,7 @@ object fNfce: TfNfce
     end
     object TabSheet5: TTabSheet
       Caption = 'Geral'
-      ClientHeight = 289
+      ClientHeight = 281
       ClientWidth = 638
       object btnNFce: TBitBtn
         Left = 8
