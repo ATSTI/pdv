@@ -10,7 +10,7 @@ uses
   Forms, runtimetypeinfocontrols, datetimectrls, lhelpcontrolpkg, uPdv,
   updv_rec, uMovimento, uMovimentoDetalhe, udmpdv, uprodutoproc, uMovimentoProc,
   uvenda, uRecebimento, uExecutaIntegracao, uLogin, uVendedorBusca,
-  uClienteBusca, uSenhaNova, uPermissao, uExcluirItem, uNfce;
+  uClienteBusca, uSenhaNova, uPermissao, uExcluirItem, uNfce, uabrircaixa;
 
 {$R *.res}
 
@@ -31,6 +31,7 @@ begin
   Application.CreateForm(TfPermissao, fPermissao);
   Application.CreateForm(TfNfce, fNfce);
   Application.CreateForm(TfExclusao, fExclusao);
+  Application.CreateForm(TfAbrirCaixa, fAbrirCaixa);
   Application.Run;
 end.
 
