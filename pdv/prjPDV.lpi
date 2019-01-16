@@ -25,7 +25,7 @@
         <FormatVersion Value="1"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="13">
+    <RequiredPackages Count="12">
       <Item1>
         <PackageName Value="lhelpcontrolpkg"/>
       </Item1>
@@ -33,40 +33,37 @@
         <PackageName Value="MultiThreadProcsLaz"/>
       </Item2>
       <Item3>
-        <PackageName Value="P4DLaz"/>
+        <PackageName Value="ACBrSerial"/>
       </Item3>
       <Item4>
-        <PackageName Value="ACBrSerial"/>
+        <PackageName Value="ACBrDiversos"/>
       </Item4>
       <Item5>
-        <PackageName Value="ACBrDiversos"/>
+        <PackageName Value="ACBr_NFCe_DanfeRL"/>
       </Item5>
       <Item6>
-        <PackageName Value="ACBr_NFCe_DanfeRL"/>
+        <PackageName Value="ACBr_NFe_DanfeESCPOS"/>
       </Item6>
       <Item7>
-        <PackageName Value="ACBr_NFe_DanfeESCPOS"/>
+        <PackageName Value="ACBr_NFe"/>
       </Item7>
       <Item8>
-        <PackageName Value="ACBr_NFe"/>
+        <PackageName Value="DateTimeCtrls"/>
       </Item8>
       <Item9>
-        <PackageName Value="DateTimeCtrls"/>
+        <PackageName Value="FCL"/>
       </Item9>
       <Item10>
-        <PackageName Value="FCL"/>
+        <PackageName Value="RunTimeTypeInfoControls"/>
       </Item10>
       <Item11>
-        <PackageName Value="RunTimeTypeInfoControls"/>
+        <PackageName Value="SynEdit"/>
       </Item11>
       <Item12>
-        <PackageName Value="SynEdit"/>
-      </Item12>
-      <Item13>
         <PackageName Value="LCL"/>
-      </Item13>
+      </Item12>
     </RequiredPackages>
-    <Units Count="20">
+    <Units Count="21">
       <Unit0>
         <Filename Value="prjPDV.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -208,6 +205,13 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCertificadoLer"/>
       </Unit19>
+      <Unit20>
+        <Filename Value="uabrircaixa.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fAbrirCaixa"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit20>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

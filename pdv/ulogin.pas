@@ -6,14 +6,15 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LazHelpCHM, Forms, Controls, Graphics, Dialogs,
-  Buttons, ExtCtrls, StdCtrls, udmpdv, uSenhaNova, uPdv, base64, Process;
+  Buttons, ExtCtrls, StdCtrls, udmpdv, uSenhaNova, uPdv, uabrircaixa, base64,
+  Process;
 
 type
 
   { TfLogin }
 
   TfLogin = class(TForm)
-    BitBtn1: TBitBtn;
+    btnAbrirCaixa: TBitBtn;
     btnInfo: TBitBtn;
     btnLogin: TBitBtn;
     edLogin: TLabeledEdit;
@@ -23,7 +24,7 @@ type
     Memo1: TMemo;
     Memo2: TMemo;
     pnInfo: TPanel;
-    procedure BitBtn1Click(Sender: TObject);
+    procedure btnAbrirCaixaClick(Sender: TObject);
     procedure btnInfoClick(Sender: TObject);
     procedure btnLoginClick(Sender: TObject);
     procedure edLoginKeyPress(Sender: TObject; var Key: char);
@@ -86,6 +87,7 @@ begin
       // Sessao_id
       dmPdv.nomeCaixa := dmPdv.sqBusca.Fields.FieldByName('NOMECAIXA').AsString;
       dmPdv.ccusto := IntToStr(dmPdv.sqBusca.Fields.FieldByName('CODCAIXA').AsInteger);
+      dmPdv.idcaixa := IntToStr(dmPdv.sqBusca.Fields.FieldByName('IDCAIXACONTROLE').AsInteger);
     end;
     fPdv.ShowModal;
     Close;
@@ -95,8 +97,21 @@ begin
   end;
 end;
 
-procedure TfLogin.BitBtn1Click(Sender: TObject);
+procedure TfLogin.btnAbrirCaixaClick(Sender: TObject);
 begin
+  dmPdv.sqBusca.Close;
+  dmPdv.sqBusca.SQL.Clear;
+  dmPdv.sqBusca.SQL.Text := 'SELECT CODUSUARIO, NOMEUSUARIO, SENHA, CODBARRA  ' +
+      ' FROM USUARIO WHERE NOMEUSUARIO = ' + QuotedStr(edLogin.Text);
+  dmPdv.sqBusca.Open;
+  if (dmPdv.sqBusca.IsEmpty) then
+  begin
+    ShowMessage('Sem Cadastro de usuário no sistema');
+    Exit;
+  end;
+  dmPdv.varLogado := IntToStr(dmPdv.sqBusca.Fields.FieldByName('CODUSUARIO').AsInteger);
+  fAbrirCaixa.AbrirFechar:= 'Abrir';
+  fAbrirCaixa.ShowModal;
 end;
 
 procedure TfLogin.btnInfoClick(Sender: TObject);
@@ -132,74 +147,28 @@ begin
     edLogin.Text := dmPdv.nomeLogado;
     edSenha.Text := dmPdv.senhaLogin;
   end;
-  {
-end;
-
-var
-  AProcess: TProcess;
-  ASlist: TStringList;
-  script: String;
-  i: integer;
-begin
-  //if dmPdv.path_python = '' then
-  //begin
-  //  ShowMessage('informe no conf.ini :  [PATH] Python=C:\....\python.exe .');
-  //  Exit;
-  //end;
-  AProcess := TProcess.Create(nil);
-  ASList := TStringList.Create;
-  try
-    //AProcess.Executable := 'C:\Users\ats\AppData\Local\Programs\Python\Python37-32\python.exe';
-    AProcess.Executable := dmPdv.path_exe +  'atsProduto.exe';
-    AProcess.Options := AProcess.Options + [poWaitOnExit, poUsePipes];
-    //script:= dmPdv.path_exe +  'atsProduto.py';
-    //AProcess.Parameters.Add(script);
-    AProcess.Execute;
-    ASlist.LoadFromStream(AProcess.Output);
-    Memo1.Lines.Clear;
-    for i := 0 to ASlist.Count - 1 do
-      Memo1.Lines.Add(ASlist[i]);
-    Memo1.Lines.Add('');
-    Memo1.Lines.Add('.... Atualizado Produtos.');
-
-    script:= dmPdv.path_exe +  'atsCliente.py';
-    AProcess.Parameters.Add(script);
-    AProcess.Execute;
-    ASlist.LoadFromStream(AProcess.Output);
-    for i := 0 to ASlist.Count - 1 do
-       Memo1.Lines.Add(ASlist[i]);
-    Memo1.Lines.Add('');
-    Memo1.Lines.Add('.... Atualizado Clientes.');
-
-    script:= dmPdv.path_exe +  'atsCaixa.py';
-    AProcess.Parameters.Add(script);
-    AProcess.Execute;
-    ASlist.LoadFromStream(AProcess.Output);
-    for i := 0 to ASlist.Count - 1 do
-       Memo1.Lines.Add(ASlist[i]);
-    Memo1.Lines.Add('');
-    Memo1.Lines.Add('.... Atualizado Caixas.');
-
-    ASlist.SaveToFile('saida.txt');
-    //ShowMessage('fez');
-    dmPdv.IbCon.Connected:=False;
-    dmPdv.IbCon.Connected:=True;
+  dmPdv.sqBusca.Close;
+  dmPdv.sqBusca.SQL.Clear;
+  dmPdv.sqBusca.SQL.Text := 'SELECT CODUSUARIO, NOMEUSUARIO, SENHA, CODBARRA  ' +
+      ' FROM USUARIO WHERE NOMEUSUARIO = ' + QuotedStr(edLogin.Text);
+  dmPdv.sqBusca.Open;
+  if (dmPdv.sqBusca.IsEmpty) then
+  begin
+    Exit;
+  end;
+  dmPdv.varLogado := IntToStr(dmPdv.sqBusca.Fields.FieldByName('CODUSUARIO').AsInteger);
+  dmPdv.sqBusca.Close;
+    dmPdv.sqBusca.SQL.Clear;
     dmPdv.sqBusca.SQL.Text := 'SELECT IDCAIXACONTROLE, CODCAIXA, CODUSUARIO,' +
        'SITUACAO, NOMECAIXA ' +
        ' FROM CAIXA_CONTROLE WHERE SITUACAO = ' + QuotedStr('o') +
        ' AND CODUSUARIO = ' + dmPdv.varLogado;
     dmPdv.sqBusca.Open;
-    while not dmPdv.sqBusca.EOF do
+    if (dmPdv.sqBusca.IsEmpty) then
     begin
-      Memo1.Lines.Add('');
-      Memo1.Lines.Add('Caixas Disponiveis:');
-      Memo1.Lines.Add(dmPdv.sqBusca.Fields.FieldByName('NOMECAIXA').AsString);
-      dmPdv.sqBusca.Next;
+      btnAbrirCaixa.visible:=true;
     end;
-  finally
-    AProcess.Free;
-    ASlist.Free;
-  end;}
+
 end;
 
 procedure TfLogin.Label1Click(Sender: TObject);

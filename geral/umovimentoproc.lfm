@@ -1,7 +1,7 @@
 object fMovimentoProc: TfMovimentoProc
   Left = 205
   Height = 560
-  Top = 30
+  Top = 42
   Width = 1044
   Caption = 'Lista Pedidos'
   ClientHeight = 560
@@ -434,7 +434,7 @@ object fMovimentoProc: TfMovimentoProc
     TabOrder = 3
     object edValorTotal: TMaskEdit
       Left = 784
-      Height = 29
+      Height = 26
       Top = 3
       Width = 131
       Alignment = taRightJustify
@@ -453,7 +453,7 @@ object fMovimentoProc: TfMovimentoProc
     end
     object edQtdeLancamento: TMaskEdit
       Left = 480
-      Height = 29
+      Height = 26
       Top = 3
       Width = 80
       Alignment = taRightJustify
@@ -472,9 +472,9 @@ object fMovimentoProc: TfMovimentoProc
     end
     object Label2: TLabel
       Left = 293
-      Height = 21
+      Height = 18
       Top = 3
-      Width = 182
+      Width = 179
       Caption = 'Quantidade Lançamentos'
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
@@ -486,9 +486,9 @@ object fMovimentoProc: TfMovimentoProc
     end
     object Label3: TLabel
       Left = 688
-      Height = 21
+      Height = 18
       Top = 3
-      Width = 76
+      Width = 72
       Caption = 'Valor Total'
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
@@ -506,6 +506,15 @@ object fMovimentoProc: TfMovimentoProc
       Caption = 'Fechar Caixa'
       OnClick = BitBtn1Click
       TabOrder = 2
+    end
+    object btnFecharCaixa: TBitBtn
+      Left = 168
+      Height = 25
+      Top = 3
+      Width = 116
+      Caption = 'Fechar Caixa'
+      OnClick = btnFecharCaixaClick
+      TabOrder = 3
     end
   end
   object pnMemo: TPanel

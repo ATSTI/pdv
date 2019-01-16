@@ -186,6 +186,7 @@ type
   private
     procedure atualiza_bd();
   public
+    idcaixa : string;
     ccusto : String;
     ccusto_padrao : String;
     versao_sistema: String;

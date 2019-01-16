@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, db, FileUtil, DateTimePicker, Forms, Controls, Graphics,
   Dialogs, ExtCtrls, StdCtrls, DBGrids, ActnList, MaskEdit, Buttons,
-   udmpdv;
+   udmpdv, uabrircaixa;
 
 type
 
@@ -18,6 +18,7 @@ type
     acFechar: TAction;
     ActionList1: TActionList;
     BitBtn1: TBitBtn;
+    btnFecharCaixa: TBitBtn;
     btnEXC: TImage;
     btnPROC: TImage;
     btnSALV: TImage;
@@ -43,6 +44,7 @@ type
     procedure acBuscarExecute(Sender: TObject);
     procedure acFecharExecute(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
+    procedure btnFecharCaixaClick(Sender: TObject);
     procedure btnPROCClick(Sender: TObject);
     procedure btnSALVClick(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
@@ -188,6 +190,12 @@ begin
   //finally
   //  pnMemo.Visible:=False;
   //end;
+end;
+
+procedure TfMovimentoProc.btnFecharCaixaClick(Sender: TObject);
+begin
+  fAbrirCaixa.AbrirFechar:= 'Fechar';
+  fAbrirCaixa.ShowModal;
 end;
 
 procedure TfMovimentoProc.btnSALVClick(Sender: TObject);
