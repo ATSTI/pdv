@@ -1,11 +1,11 @@
 object fLogin: TfLogin
-  Left = 256
-  Height = 318
-  Top = 250
-  Width = 538
+  Left = 316
+  Height = 361
+  Top = 159
+  Width = 550
   Caption = 'Acesso ao Sistema'
-  ClientHeight = 318
-  ClientWidth = 538
+  ClientHeight = 361
+  ClientWidth = 550
   OnShow = FormShow
   Position = poDesktopCenter
   LCLVersion = '1.8.4.0'
@@ -116,7 +116,7 @@ object fLogin: TfLogin
     Left = 48
     Height = 16
     Top = 48
-    Width = 115
+    Width = 139
     Caption = 'Cadastrar/Alterar Senha'
     DragCursor = crHandPoint
     Font.CharSet = ANSI_CHARSET
@@ -137,13 +137,13 @@ object fLogin: TfLogin
     Enabled = False
     TabOrder = 3
   end
-  object BitBtn1: TBitBtn
+  object btnAbrirCaixa: TBitBtn
     Left = 440
     Height = 30
     Top = 22
     Width = 75
-    Caption = 'BitBtn1'
-    OnClick = BitBtn1Click
+    Caption = 'Abrir Caixa'
+    OnClick = btnAbrirCaixaClick
     TabOrder = 4
     Visible = False
   end
