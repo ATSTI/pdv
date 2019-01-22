@@ -192,6 +192,7 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
   private
+    statusPedido: Integer;
     consultaItem: String;
     ultimo_pedido: Integer;
     codproduto: Integer;
@@ -642,6 +643,7 @@ begin
     dmPdv.sqLancamentos.Close;
     dmPdv.sqLancamentos.Params.ParamByName('PMOV').AsInteger:=codMov;
     dmPdv.sqLancamentos.Open;
+    statusPedido := dmPdv.sqLancamentosSTATUS.AsInteger;
     codDet:=dmPdv.sqLancamentosCODDETALHE.AsInteger;
     edProduto.Text := dmPdv.sqLancamentosCODPRO.AsString;
     //edProdutoDescX.Text:= dmPdv.sqLancamentosDESCPRODUTO.AsString;
@@ -650,8 +652,14 @@ begin
     edPreco.Text   := FormatFloat('#,,,0.00',dmPdv.sqLancamentosPRECO.AsFloat);
     edDesconto.Text:= FormatFloat('#,,,0.00',dmPdv.sqLancamentosDESCONTO.AsFloat);
     codVendedor := dmPdv.sqLancamentosCODVENDEDOR.AsInteger;
+    if codVendedor = 0 then
+       codVendedor := dmPdv.vendedor_padrao;
     edVendedor.Text:= IntToStr(codVendedor);
     codCliente := dmpdv.sqLancamentosCODCLIENTE.AsInteger;
+    if (codCliente = 0) then
+    begin
+      codCliente := dmPdv.clientePadrao;
+    end;
     edCliente.Text := IntToStr(codCliente);
     fClienteBusca.cCodCliente := StrToInt(edCliente.Text);
     fClienteBusca.BuscaCliente;
@@ -844,6 +852,11 @@ begin
   if Key = #13 then
   begin
     Key := #0;
+    if (statusPedido > 0) then
+    begin
+      ShowMessage('Pedido ja finalizado.');
+      Exit;
+    end;
     if (edProduto.Text <> '') then
     begin
       fProdutoProc.num_busca:=0;
@@ -1068,6 +1081,7 @@ procedure TfPdv.abrePedido(apCodMov: Integer);
 var  logs:TextFile;
   vdr: String;
 begin
+  statusPedido:=0;
   edProdutoDesc.Lines.Clear;
   edQtde.Text:='0';
   edPreco.Text:='0';
@@ -1117,6 +1131,9 @@ begin
     edPreco.Text   := FormatFloat('#,,,0.00',dmPdv.sqLancamentosPRECO.AsFloat);
     edDesconto.Text:= FormatFloat('#,,,0.00',dmPdv.sqLancamentosDESCONTO.AsFloat);
     buscaVendedor(IntToStr(dmPdv.sqLancamentosCODVENDEDOR.AsInteger));
+    codCliente := dmpdv.sqLancamentosCODCLIENTE.AsInteger;
+    edCliente.Text := IntToStr(codCliente);
+    edClienteNome.Text := fClienteBusca.cNomeCliente;
     //edProdutoDescX.Text:= dmPdv.sqLancamentosDESCPRODUTO.AsString;
     //controlaPedidos(codMov, 0, 0);
   end;
@@ -1138,6 +1155,7 @@ procedure TfPdv.iniciarVenda();
 begin
   if (dmPdv.nomeCaixa <> 'FECHADO') then
   begin
+    statusPedido:=0;
     num_item:=1;
     edProduto.Enabled := True;
     edProdutoDesc.Lines.Clear;
