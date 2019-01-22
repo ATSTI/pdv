@@ -71,8 +71,8 @@ end;
 
 procedure TfClienteBusca.FormShow(Sender: TObject);
 begin
-  dmPdv.IbCon.Connected:=False;
-  dmPdv.IbCon.Connected:=True;
+  //dmPdv.IbCon.Connected:=False;
+  //dmPdv.IbCon.Connected:=True;
   DBGrid1.Columns[0].FieldName := 'CODCLIENTE';
   DBGrid1.Columns[1].FieldName := 'NOMECLIENTE';
   cNomeCliente:='';
