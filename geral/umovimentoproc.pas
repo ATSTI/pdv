@@ -80,7 +80,7 @@ var sqlProc: String;
 begin
   sqlProc := 'SELECT m.CODMOVIMENTO, m.CONTROLE, m.DATA_SISTEMA as DATAMOVIMENTO, v.CODVENDA ';
   sqlProc += ' , u.NOMEUSUARIO as  VENDEDOR, c.NOMECLIENTE as CLIENTE ';
-  sqlProc += ' ,COALESCE(v.VALOR, 0) AS VALOR, v.SERIE, m.STATUS ';
+  sqlProc += ' ,COALESCE(CASE WHEN v.ENTRADA > 0 THEN v.ENTRADA ELSE v.VALOR END, 0) AS VALOR, v.SERIE, m.STATUS ';
   sqlProc += ' FROM MOVIMENTO m  ';
   sqlProc += ' INNER JOIN CLIENTES c ON c.CODCLIENTE = m.CODCLIENTE';
   sqlProc += ' LEFT OUTER JOIN USUARIO u ON m.codVendedor = u.codUsuario';
@@ -137,6 +137,8 @@ begin
     codVendaProc     := dmPdv.sqBusca.FieldByName('CODVENDA').AsInteger;
   end;
   dmPdv.sqBusca.First;
+  codMovimentoProc := dmPdv.sqBusca.FieldByName('CODMOVIMENTO').AsInteger;
+  codVendaProc     := dmPdv.sqBusca.FieldByName('CODVENDA').AsInteger
 end;
 
 procedure TfMovimentoProc.acFecharExecute(Sender: TObject);
