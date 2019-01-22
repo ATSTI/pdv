@@ -61,6 +61,7 @@ type
     cbxModeloPosPrinter: TComboBox;
     dsPag: TDataSource;
     DBGrid1: TDBGrid;
+    edParcela: TEdit;
     edValorVendaTotal: TMaskEdit;
     edVDesconto: TMaskEdit;
     edVendedor: TMaskEdit;
@@ -78,6 +79,7 @@ type
     Label6: TLabel;
     Label7: TLabel;
     Label8: TLabel;
+    lblParcela: TLabel;
     lblStatus: TLabel;
     lblForma: TLabel;
     edValorTotal: TMaskEdit;
@@ -121,6 +123,7 @@ type
     procedure acOutrosExecute(Sender: TObject);
     procedure acPrazoExecute(Sender: TObject);
     procedure acVoltarVendaExecute(Sender: TObject);
+    procedure BitBtn12Click(Sender: TObject);
     procedure BitBtn17Click(Sender: TObject);
     procedure BitBtn18Click(Sender: TObject);
     procedure BitBtn19Click(Sender: TObject);
@@ -133,6 +136,7 @@ type
     procedure BitBtn9Click(Sender: TObject);
     procedure btnDscClick(Sender: TObject);
     procedure edPagamentoKeyPress(Sender: TObject; var Key: char);
+    procedure edParcelaKeyPress(Sender: TObject; var Key: char);
     procedure edVDescontoKeyPress(Sender: TObject; var Key: char);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -180,6 +184,9 @@ implementation
 procedure TfPDV_Rec.FormShow(Sender: TObject);
 begin
   MemoImp.Clear;
+  lblParcela.Visible:= False;
+  edParcela.Visible := False;
+  edParcela.Text := '1';
   edValorPago.Color := clWhite;
   edVDesconto.Color := clWhite;
   edPagamento.Color := clWhite;
@@ -384,9 +391,12 @@ end;
 procedure TfPDV_Rec.encerra_venda();
 var vRec : TRecebimento;
    vlr_entrada: Double;
+   vlr_desc: Double;
    str_up: String;
+   forma_pagto: String;
 begin
   vlr_entrada := 0;
+  vlr_desc := 0;
   dmPdv.IbCon.ExecuteDirect('UPDATE FORMA_ENTRADA SET STATE = 1 ' +
     ' WHERE STATE = 0 AND ID_ENTRADA = ' +
     IntToStr(vCodMovimento));
@@ -396,7 +406,6 @@ begin
     IntToStr(vCodMovimento));
 
   vStatus := 1;
-
   dmPdv.sqBusca.Close;
   dmPdv.sqBusca.SQL.Clear;
   dmPdv.sqBusca.SQL.Text := 'SELECT CODFORMA, COD_VENDA, ID_ENTRADA, FORMA_PGTO' +
@@ -404,12 +413,14 @@ begin
     ' FROM FORMA_ENTRADA WHERE STATE < 2 AND ID_ENTRADA = ' +
     InttoStr(vCodMovimento);
   dmPdv.sqBusca.Open;
-
+  forma_pagto := '1';
   while not dmPdv.sqBusca.EOF do
   begin
-    if (dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString <> '4') then
+    forma_pagto := Trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString);
+    if (forma_pagto <> '4') then
     begin
       vlr_entrada += dmPdv.sqBusca.FieldByName('VALOR_PAGO').AsFloat;
+      vlr_desc += dmPdv.sqBusca.FieldByName('DESCONTO').AsFloat;
     end;
     dmPdv.sqBusca.Next;
   end;
@@ -418,18 +429,32 @@ begin
     DecimalSeparator:='.';
     str_up := 'UPDATE VENDA SET ENTRADA = ' +
       FloatToStr(vlr_entrada) +
+      ' , DESCONTO = ' + FloatToStr(vlr_desc) +
       ' WHERE CODVENDA  = ' +
       IntToStr(vCodVenda);
     DecimalSeparator:=',';
     dmPdv.IbCon.ExecuteDirect(str_up);
   end;
-  dmPdv.sTrans.Commit;
+  if (edParcela.Text <> '1') then
+  begin
+    str_up := 'UPDATE VENDA SET N_PARCELA = ' + edParcela.Text +
+      ' WHERE CODVENDA  = ' +
+      IntToStr(vCodVenda);
+    dmPdv.IbCon.ExecuteDirect(str_up);
+  end;
 
   vRec := TRecebimento.Create();
   try
     vRec.geraTitulo(0,vCodVenda);
   finally
     vRec.Free;
+  end;
+
+  try
+    dmPdv.sTrans.Commit;
+  except
+    dmpdv.sTrans.Rollback;
+    ShowMessage('Erro para finalizar a venda.');
   end;
   {try
     vRec.CodVendedor:= vVendedor;
@@ -574,7 +599,7 @@ begin
   begin
     totalR += sqPagamentoVALOR_PAGO.AsFloat;
     totalD += sqPagamentoDESCONTO.AsFloat;
-    if sqPagamentoFORMA_PGTO.AsString = '4' then
+    if Trim(sqPagamentoFORMA_PGTO.AsString) = '4' then
       prazo := 'S';
     sqPagamento.Next;
   end;
@@ -887,11 +912,37 @@ begin
   if Key = #13 then
   begin
     Key := #0;
+    if lblForma.Caption = '4-Faturar' then
+    begin
+      edParcela.SetFocus;
+      exit;
+    end;
     if ((edPagamento.Text <> '') and (vResto > 0.01))  then
     begin
       if lblForma.Caption = '4-Faturar' then
       begin
-        if vCliente = 1 then
+        if vCliente = dmPdv.clientePadrao then
+        begin
+          ShowMessage('Informe o Cliente');
+          BitBtn12.Click;
+          Exit;
+        end;
+      end;
+      registra_valores(strParaFloat(edPagamento.Text));
+    end;
+  end;
+end;
+
+procedure TfPDV_Rec.edParcelaKeyPress(Sender: TObject; var Key: char);
+begin
+  if Key = #13 then
+  begin
+    Key := #0;
+    if ((edPagamento.Text <> '') and (vResto > 0.01))  then
+    begin
+      if lblForma.Caption = '4-Faturar' then
+      begin
+        if vCliente = dmPdv.clientePadrao then
         begin
           ShowMessage('Informe o Cliente');
           BitBtn12.Click;
@@ -1075,12 +1126,19 @@ end;
 procedure TfPDV_Rec.acPrazoExecute(Sender: TObject);
 begin
   lblForma.Caption:='4-Faturar';
+  lblParcela.Visible:=True;
+  edParcela.Visible:=True;
   edPagamento.SetFocus;
 end;
 
 procedure TfPDV_Rec.acVoltarVendaExecute(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TfPDV_Rec.BitBtn12Click(Sender: TObject);
+begin
+
 end;
 
 procedure TfPDV_Rec.acDescontoPercentualExecute(Sender: TObject);

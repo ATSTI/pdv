@@ -308,6 +308,7 @@ object fPDV_Rec: TfPDV_Rec
         Top = 274
         Width = 80
         Caption = '9'
+        OnClick = BitBtn12Click
         TabOrder = 7
       end
       object BitBtn7: TBitBtn
@@ -494,6 +495,25 @@ object fPDV_Rec: TfPDV_Rec
         Width = 84
         Action = acDescontoPercentual
         TabOrder = 18
+      end
+      object edParcela: TEdit
+        Left = 378
+        Height = 23
+        Top = 119
+        Width = 48
+        OnKeyPress = edParcelaKeyPress
+        TabOrder = 19
+        Text = '1'
+        Visible = False
+      end
+      object lblParcela: TLabel
+        Left = 379
+        Height = 15
+        Top = 102
+        Width = 38
+        Caption = 'Parcela'
+        ParentColor = False
+        Visible = False
       end
     end
     object Panel3: TPanel
