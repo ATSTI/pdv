@@ -452,7 +452,7 @@ begin
         VlrEnt             := dmPdv.sqBusca.FieldByName('ENTRADA').AsFloat;
         Self.ValorRec      := dmPdv.sqBusca.FieldByName('ENTRADA').AsFloat;
         vlrSt              := dmPdv.sqBusca.FieldByName('VALOR_ST').AsFloat;
-        //Self.Desconto      := sqlBuscaR.FieldByName('DESCONTO').AsFloat;
+        Self.Desconto      := dmPdv.sqBusca.FieldByName('DESCONTO').AsFloat;
         Self.DtEmissao     := dmPdv.sqBusca.FieldByName('DATAVENDA').AsDateTime;
         Self.DtVcto        := dmPdv.sqBusca.FieldByName('DATAVENCIMENTO').AsDateTime;
         Self.Prazo         := dmPdv.sqBusca.FieldByName('PRAZO').AsString;
@@ -469,6 +469,7 @@ begin
     Finally
 
     end;
+    difV := Self.ValorRec;
     // Busca o PARAMETRO Cadastro para ver como sera carregado o valor da ST nos titulos
     // vou deixar carregando 100 % na primeira parcela
     if (vlrSt > 0) then
@@ -557,17 +558,20 @@ begin
     end;
 
   end;
+  // so pra ver o valor
+  difV := Self.ValorRec;
 
-  difV := 0;
+  difV := Self.Valor;
+  //difV := 0;
   if (Self.ValorRec > 0) then
-    difV := Self.Valor - Self.ValorRec;
+    difV := Self.Valor - Self.ValorRec - Self.Desconto;
   if (Self.ValorRec > 0) then
   if ((Self.NParcela = 1) and (difV > 0.009)) then
   begin
     MessageDlg('Parcela não pode ser 1, se o valor de Entrada e menor que o Valor Total.', mtWarning, [mbOK], 0);
     exit;
   end;
-  if (VlrEnt = Self.Valor) then
+  if (difV < 0.009) then
   begin
     Self.Status := '7-';
 
