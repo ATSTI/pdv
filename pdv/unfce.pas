@@ -658,14 +658,14 @@ begin
       with pag.Add do
       begin
         tPag := fpCreditoLoja;
-        if (dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString = '1') then
+        if (trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString) = '1') then
           tPag := fpDinheiro
-        else if (dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString = '3') then
+        else if (trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString) = '3') then
         begin
           tPag := fpCartaoCredito;
           tpIntegra := tiPagNaoIntegrado;
         end
-        else if dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString = '2' then
+        else if trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString) = '2' then
         begin
           tPag := fpCartaoDebito;
           tpIntegra := tiPagNaoIntegrado;
