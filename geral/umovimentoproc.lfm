@@ -1,10 +1,10 @@
 object fMovimentoProc: TfMovimentoProc
-  Left = 205
-  Height = 560
-  Top = 42
+  Left = 306
+  Height = 554
+  Top = 96
   Width = 1044
   Caption = 'Lista Pedidos'
-  ClientHeight = 560
+  ClientHeight = 554
   ClientWidth = 1044
   OnCreate = FormCreate
   OnShow = FormShow
@@ -187,11 +187,11 @@ object fMovimentoProc: TfMovimentoProc
   end
   object Panel2: TPanel
     Left = 968
-    Height = 462
+    Height = 456
     Top = 64
     Width = 76
     Align = alRight
-    ClientHeight = 462
+    ClientHeight = 456
     ClientWidth = 76
     Color = clSilver
     ParentColor = False
@@ -375,7 +375,7 @@ object fMovimentoProc: TfMovimentoProc
   end
   object DBGrid1: TDBGrid
     Left = 0
-    Height = 462
+    Height = 456
     Top = 64
     Width = 968
     Align = alClient
@@ -426,7 +426,7 @@ object fMovimentoProc: TfMovimentoProc
   object Panel3: TPanel
     Left = 0
     Height = 34
-    Top = 526
+    Top = 520
     Width = 1044
     Align = alBottom
     ClientHeight = 34
@@ -508,14 +508,30 @@ object fMovimentoProc: TfMovimentoProc
       TabOrder = 2
     end
     object btnFecharCaixa: TBitBtn
+<<<<<<< HEAD
       Left = 168
       Height = 26
       Top = 3
       Width = 118
+=======
+      Left = 23
+      Height = 25
+      Top = 2
+      Width = 116
+>>>>>>> c3a679689f2865008c20d743b98c4f55559d0024
       Caption = 'Fechar Caixa'
       OnClick = btnFecharCaixaClick
       TabOrder = 3
       Visible = False
+    end
+    object btnSangria: TBitBtn
+      Left = 173
+      Height = 24
+      Top = 4
+      Width = 111
+      Caption = 'Sangria'
+      OnClick = btnSangriaClick
+      TabOrder = 4
     end
   end
   object pnMemo: TPanel
