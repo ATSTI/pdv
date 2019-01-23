@@ -508,17 +508,10 @@ object fMovimentoProc: TfMovimentoProc
       TabOrder = 2
     end
     object btnFecharCaixa: TBitBtn
-<<<<<<< HEAD
       Left = 168
       Height = 26
       Top = 3
       Width = 118
-=======
-      Left = 23
-      Height = 25
-      Top = 2
-      Width = 116
->>>>>>> c3a679689f2865008c20d743b98c4f55559d0024
       Caption = 'Fechar Caixa'
       OnClick = btnFecharCaixaClick
       TabOrder = 3
