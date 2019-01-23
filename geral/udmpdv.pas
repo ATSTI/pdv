@@ -186,6 +186,7 @@ type
   private
     procedure atualiza_bd();
   public
+    usosistema : string;
     idcaixa : string;
     ccusto : String;
     ccusto_padrao : String;
@@ -284,6 +285,7 @@ begin
     tipo_buscaProd := conf.ReadString( 'Outros','BuscaProduto','NORMAL');
     tamanhoDescProd := conf.ReadInteger( 'Outros','TamanhoDescProd',400);
     tamanhoCodProd := conf.ReadInteger( 'Outros','TamanhoCodProd',140);
+    usoSistema := conf.ReadString( 'Outros','TipoUso','ATS');
   finally
     conf.free;
   end;

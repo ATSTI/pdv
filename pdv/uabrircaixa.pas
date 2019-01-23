@@ -13,6 +13,7 @@ type
   { TfAbrirCaixa }
 
   TfAbrirCaixa = class(TForm)
+    btnSair: TBitBtn;
     btnAbrefecha: TBitBtn;
     dtData: TDateTimePicker;
     Label1: TLabel;
@@ -27,17 +28,18 @@ type
     Label7: TLabel;
     Label8: TLabel;
     Label9: TLabel;
-    MaskEdit1: TMaskEdit;
-    MaskEdit2: TMaskEdit;
-    MaskEdit3: TMaskEdit;
-    MaskEdit4: TMaskEdit;
-    MaskEdit5: TMaskEdit;
-    MaskEdit6: TMaskEdit;
-    MaskEdit7: TMaskEdit;
-    MaskEdit8: TMaskEdit;
-    MaskEdit9: TMaskEdit;
+    edCcred: TMaskEdit;
+    edCdeb: TMaskEdit;
+    edCheque: TMaskEdit;
+    edFaturado: TMaskEdit;
+    edSangrias: TMaskEdit;
+    edDinheiro: TMaskEdit;
+    edTCaixa: TMaskEdit;
+    edTBruto: TMaskEdit;
+    edTLiquido: TMaskEdit;
     Panel1: TPanel;
     procedure btnAbrefechaClick(Sender: TObject);
+    procedure btnSairClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
     procedure AbrirCaixa();
@@ -70,19 +72,131 @@ begin
   end;
 end;
 
-procedure TfAbrirCaixa.FormShow(Sender: TObject);
+procedure TfAbrirCaixa.btnSairClick(Sender: TObject);
 begin
+  close;
+end;
+
+procedure TfAbrirCaixa.FormShow(Sender: TObject);
+var
+  sqlp : String;
+  total : Double;
+  totalliquido : Double;
+  totalcaixa : Double;
+begin
+  total :=0;
+  totalliquido :=0;
+  totalcaixa :=0;
   if (AbrirFechar = 'Abrir') then
   begin
+    fAbrirCaixa.Caption:= 'Abrir Caixa';
     btnAbrefecha.Caption := 'Abrir';
     Label1.Caption:= 'Abrir Caixa';
   end
   else begin
     btnAbrefecha.Caption := 'Fechar';
     Label1.Caption:= 'Fechar Caixa';
-
+    fAbrirCaixa.Caption:= 'Fechar Caixa';
+  end;
+  sqlP := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
+  sqlP += ' where CAIXA = ' + dmpdv.idcaixa;
+  sqlP += ' and STATE = 1 and FORMA_PGTO = 1';//Dinheiro
+  sqlP += ' and cod_venda > 1  ';//1 para Sangria, >1 para Outros
+  if (dmPdv.sqBusca.Active) then
+    dmPdv.sqBusca.Close;
+  dmPdv.sqBusca.SQL.Clear;
+  dmPdv.sqBusca.SQL.Add(sqlP);
+  dmPdv.sqBusca.Active:=True;
+  if (not dmPdv.sqBusca.IsEmpty) then
+  begin
+    total := dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    totalliquido := dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    totalcaixa := dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    edDinheiro.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
   end;
 
+   sqlP := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
+  sqlP += ' where CAIXA = ' + dmpdv.idcaixa;
+  sqlP += ' and STATE = 1 and FORMA_PGTO = 2';//Cartão Débito
+  sqlP += ' and cod_venda > 1  ';//1 para Sangria, >1 para Outros
+  if (dmPdv.sqBusca.Active) then
+    dmPdv.sqBusca.Close;
+  dmPdv.sqBusca.SQL.Clear;
+  dmPdv.sqBusca.SQL.Add(sqlP);
+  dmPdv.sqBusca.Active:=True;
+  if (not dmPdv.sqBusca.IsEmpty) then
+  begin
+    total += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    totalliquido += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    edCdeb.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
+  end;
+
+     sqlP := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
+  sqlP += ' where CAIXA = ' + dmpdv.idcaixa;
+  sqlP += ' and STATE = 1 and FORMA_PGTO = 3';//Cartão Crédito
+  sqlP += ' and cod_venda > 1  ';//1 para Sangria, >1 para Outros
+  if (dmPdv.sqBusca.Active) then
+    dmPdv.sqBusca.Close;
+  dmPdv.sqBusca.SQL.Clear;
+  dmPdv.sqBusca.SQL.Add(sqlP);
+  dmPdv.sqBusca.Active:=True;
+  if (not dmPdv.sqBusca.IsEmpty) then
+  begin
+    total += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    totalliquido += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    edCcred.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
+  end;
+
+       sqlP := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
+  sqlP += ' where CAIXA = ' + dmpdv.idcaixa;
+  sqlP += ' and STATE = 1 and FORMA_PGTO = 4';//Faturado
+  sqlP += ' and cod_venda > 1  ';//1 para Sangria, >1 para Outros
+  if (dmPdv.sqBusca.Active) then
+    dmPdv.sqBusca.Close;
+  dmPdv.sqBusca.SQL.Clear;
+  dmPdv.sqBusca.SQL.Add(sqlP);
+  dmPdv.sqBusca.Active:=True;
+  if (not dmPdv.sqBusca.IsEmpty) then
+  begin
+    total += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    totalliquido += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    edFaturado.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
+  end;
+
+     sqlP := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
+  sqlP += ' where CAIXA = ' + dmpdv.idcaixa;
+  sqlP += ' and STATE = 1 and FORMA_PGTO = 5';//Cheque
+  sqlP += ' and cod_venda > 1  ';//1 para Sangria, >1 para Outros
+  if (dmPdv.sqBusca.Active) then
+    dmPdv.sqBusca.Close;
+  dmPdv.sqBusca.SQL.Clear;
+  dmPdv.sqBusca.SQL.Add(sqlP);
+  dmPdv.sqBusca.Active:=True;
+  if (not dmPdv.sqBusca.IsEmpty) then
+  begin
+    total += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    totalliquido += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    edCheque.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
+  end;
+
+     sqlP := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
+  sqlP += ' where CAIXA = ' + dmpdv.idcaixa;
+  sqlP += ' and STATE = 1 and FORMA_PGTO = 1';//Sangrias
+  sqlP += ' and cod_venda = 1  ';//1 para Sangria, >1 para Outros
+  if (dmPdv.sqBusca.Active) then
+    dmPdv.sqBusca.Close;
+  dmPdv.sqBusca.SQL.Clear;
+  dmPdv.sqBusca.SQL.Add(sqlP);
+  dmPdv.sqBusca.Active:=True;
+  if (not dmPdv.sqBusca.IsEmpty) then
+  begin
+    totalliquido -= dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    totalcaixa -= dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    edSangrias.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
+  end;
+  edTCaixa.Text:= format('%6.2n',[totalcaixa]);
+  edTBruto.Text:= format('%6.2n',[total]);
+  edTLiquido.Text:= format('%6.2n',[totalliquido]);
 end;
 
 procedure TfAbrirCaixa.AbrirCaixa();

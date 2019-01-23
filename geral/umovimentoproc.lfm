@@ -1,7 +1,7 @@
 object fMovimentoProc: TfMovimentoProc
-  Left = 306
+  Left = 179
   Height = 554
-  Top = 96
+  Top = 135
   Width = 1044
   Caption = 'Lista Pedidos'
   ClientHeight = 554
@@ -434,7 +434,7 @@ object fMovimentoProc: TfMovimentoProc
     TabOrder = 3
     object edValorTotal: TMaskEdit
       Left = 784
-      Height = 29
+      Height = 26
       Top = 3
       Width = 131
       Alignment = taRightJustify
@@ -453,7 +453,7 @@ object fMovimentoProc: TfMovimentoProc
     end
     object edQtdeLancamento: TMaskEdit
       Left = 480
-      Height = 29
+      Height = 26
       Top = 3
       Width = 80
       Alignment = taRightJustify
@@ -472,9 +472,9 @@ object fMovimentoProc: TfMovimentoProc
     end
     object Label2: TLabel
       Left = 293
-      Height = 21
+      Height = 18
       Top = 3
-      Width = 182
+      Width = 179
       Caption = 'Quantidade Lançamentos'
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
@@ -486,9 +486,9 @@ object fMovimentoProc: TfMovimentoProc
     end
     object Label3: TLabel
       Left = 688
-      Height = 21
+      Height = 18
       Top = 3
-      Width = 76
+      Width = 72
       Caption = 'Valor Total'
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
@@ -498,20 +498,21 @@ object fMovimentoProc: TfMovimentoProc
       ParentColor = False
       ParentFont = False
     end
-    object BitBtn1: TBitBtn
+    object btnFecharCaixaOdoo: TBitBtn
       Left = 23
       Height = 27
       Top = 2
       Width = 141
-      Caption = 'Fechar Caixa Odoo'
-      OnClick = BitBtn1Click
+      Caption = 'Fechar Caixa'
+      OnClick = btnFecharCaixaOdooClick
       TabOrder = 2
+      Visible = False
     end
     object btnFecharCaixa: TBitBtn
-      Left = 168
-      Height = 26
+      Left = 40
+      Height = 25
       Top = 3
-      Width = 118
+      Width = 116
       Caption = 'Fechar Caixa'
       OnClick = btnFecharCaixaClick
       TabOrder = 3
@@ -519,9 +520,9 @@ object fMovimentoProc: TfMovimentoProc
     end
     object btnSangria: TBitBtn
       Left = 173
-      Height = 24
+      Height = 25
       Top = 4
-      Width = 111
+      Width = 116
       Caption = 'Sangria'
       OnClick = btnSangriaClick
       TabOrder = 4
