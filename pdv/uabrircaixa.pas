@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, DateTimePicker, Forms, Controls, Graphics,
-  Dialogs, StdCtrls, MaskEdit, Buttons, udmpdv;
+  Dialogs, StdCtrls, MaskEdit, Buttons, ExtCtrls, udmpdv;
 
 type
 
@@ -17,6 +17,26 @@ type
     dtData: TDateTimePicker;
     Label1: TLabel;
     edValor: TMaskEdit;
+    Label10: TLabel;
+    Label11: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    MaskEdit1: TMaskEdit;
+    MaskEdit2: TMaskEdit;
+    MaskEdit3: TMaskEdit;
+    MaskEdit4: TMaskEdit;
+    MaskEdit5: TMaskEdit;
+    MaskEdit6: TMaskEdit;
+    MaskEdit7: TMaskEdit;
+    MaskEdit8: TMaskEdit;
+    MaskEdit9: TMaskEdit;
+    Panel1: TPanel;
     procedure btnAbrefechaClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
