@@ -18,6 +18,7 @@ type
     acFechar: TAction;
     ActionList1: TActionList;
     BitBtn1: TBitBtn;
+    btnSangria: TBitBtn;
     btnFecharCaixa: TBitBtn;
     btnEXC: TImage;
     btnPROC: TImage;
@@ -47,6 +48,7 @@ type
     procedure btnFecharCaixaClick(Sender: TObject);
     procedure btnPROCClick(Sender: TObject);
     procedure btnSALVClick(Sender: TObject);
+    procedure btnSangriaClick(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
     procedure edPedidoKeyPress(Sender: TObject; var Key: char);
     procedure FormCreate(Sender: TObject);
@@ -203,6 +205,12 @@ begin
   //codMovimentoProc := dmPdv.sqBusca.FieldByName('CODMOVIMENTO').AsInteger;
   //codVendaProc     := dmPdv.sqBusca.FieldByName('CODVENDA').AsInteger;
   Close;
+end;
+
+procedure TfMovimentoProc.btnSangriaClick(Sender: TObject);
+begin
+  fSangria.Sangria:= 'Sangria';
+  fSangria.ShowModal;
 end;
 
 procedure TfMovimentoProc.DBGrid1CellClick(Column: TColumn);
