@@ -227,6 +227,7 @@ type
     procedure buscaVendedor(codBarraV: String);
     procedure executaIntegracao(Index: PtrInt; Data: Pointer; Item: TMultiThreadProcItem);
     procedure Executa(script: String);
+    procedure buscaPedidoComanda(codComanda: String);
   public
 
   end;
@@ -618,11 +619,11 @@ end;
 
 procedure TfPdv.acNovaExecute(Sender: TObject);
 begin
-  if qtde_ped = 8 then
-  begin
-    ShowMessage('Já existe 8 pedidos abertos, nao pode abrir mais.');
-    Exit;
-  end;
+  //if qtde_ped = 8 then
+  //begin
+  //  ShowMessage('Já existe 8 pedidos abertos, nao pode abrir mais.');
+  //  Exit;
+  //end;
   iniciarVenda();
   buscaPedidosAbertoCaixa(codMov);
   //controlaPedidos(codMov, 0, 0);
@@ -859,6 +860,13 @@ begin
     end;
     if (edProduto.Text <> '') then
     begin
+      if ((dmpdv.usaComanda > 0) and
+        (Length(edProduto.Text) = dmPdv.usaComanda)) then
+      begin
+        buscaPedidoComanda(edProduto.Text);
+        abrePedido(codMov);
+        exit;
+      end;
       fProdutoProc.num_busca:=0;
       // TODO - preciso definir aqui, qdo e codigo de barra qdo e codigo
       // do produto, se codigo comecar com 'X' e codigo produto ???!!!
@@ -1133,7 +1141,7 @@ begin
     buscaVendedor(IntToStr(dmPdv.sqLancamentosCODVENDEDOR.AsInteger));
     codCliente := dmpdv.sqLancamentosCODCLIENTE.AsInteger;
     edCliente.Text := IntToStr(codCliente);
-    edClienteNome.Text := fClienteBusca.cNomeCliente;
+    edClienteNome.Text := dmpdv.sqLancamentosNOMECLIENTE.AsString;
     //edProdutoDescX.Text:= dmPdv.sqLancamentosDESCPRODUTO.AsString;
     //controlaPedidos(codMov, 0, 0);
   end;
@@ -1160,9 +1168,12 @@ begin
     edProduto.Enabled := True;
     edProdutoDesc.Lines.Clear;
     edProdutoDesc.Lines.Add('Produto:');
-    edCliente.Text := IntToStr(dmpdv.clientePadrao);
-    codCliente := dmpdv.clientePadrao;
-    edClienteNome.Text := 'Consumidor';
+    if (dmPdv.usaComanda = 0) then
+    begin
+      edCliente.Text := IntToStr(dmpdv.clientePadrao);
+      codCliente := dmpdv.clientePadrao;
+      edClienteNome.Text := 'Consumidor';
+    end;
     if (dmPdv.vendedor_padrao > 0) then
     begin
       edVendedor.Text := IntToStr(dmPdv.vendedor_padrao);
@@ -1603,8 +1614,17 @@ begin
   btnVnd8.Font.Color := clBlack;
   dmPdv.sqBusca.Close;
   dmPdv.sqBusca.SQL.Clear;
-  dmPdv.sqBusca.SQL.Text := 'SELECT CODMOVIMENTO FROM MOVIMENTO ' +
-    ' WHERE STATUS = 0 AND CODALMOXARIFADO = ' + dmPdv.ccusto;
+  //if (dmPdv.usaComanda > 0) then
+  //begin
+  //  dmPdv.sqBusca.SQL.Text := 'SELECT CODMOVIMENTO FROM MOVIMENTO ' +
+  //    ' WHERE STATUS = 0 AND CODALMOXARIFADO = ' + dmPdv.ccusto +
+  //    '   AND CODCLIENTE = ' + edProduto.Text;
+  //end
+  begin
+    dmPdv.sqBusca.SQL.Text := 'SELECT CODMOVIMENTO FROM MOVIMENTO ' +
+      ' WHERE STATUS = 0 AND CODALMOXARIFADO = ' + dmPdv.ccusto +
+      ' ORDER BY CODMOVIMENTO DESC';
+  end;
   dmPdv.sqBusca.Open;
   while not dmpdv.sqBusca.EOF do
   begin
@@ -1714,6 +1734,35 @@ begin
   end
   else writeln('invalid library handle!', dynlibs.GetLoadErrorStr)
   }
+end;
+
+procedure TfPdv.buscaPedidoComanda(codComanda: String);
+begin
+  // verifico se ja existe um pedido pra esta comanda
+  // se nao cria
+  dmPdv.sqBusca.Close;
+  dmPdv.sqBusca.SQL.Clear;
+  dmPdv.sqBusca.SQL.Text := 'SELECT CODMOVIMENTO FROM MOVIMENTO ' +
+    ' WHERE STATUS = 0 AND CODALMOXARIFADO = ' + dmPdv.ccusto +
+    '   AND CODCLIENTE = ' + edProduto.Text;
+  dmPdv.sqBusca.Open;
+  if not dmpdv.sqBusca.IsEmpty then
+  begin
+    //numeroComanda := dmPdv.sqBusca.FieldByName('CODMOVIMENTO').AsInteger;
+    CodMov:= dmPdv.sqBusca.FieldByName('CODMOVIMENTO').AsInteger;
+  end
+  else begin
+    // se existe abrir
+    codCliente := StrToInt(codComanda);
+    edCliente.Text := codComanda;
+    edClienteNome.Text :=  'Comanda ' + codComanda;
+    btnNovo.Click;
+    //dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET ' +
+    //  ' CODCLIENTE = ' + IntToStr(codCliente) +
+    //  ' WHERE CODMOVIMENTO = ' + IntToStr(codMov) +
+    //  '   AND STATUS = 0');
+
+  end;
 end;
 
 end.

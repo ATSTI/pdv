@@ -295,7 +295,391 @@ object dmPdv: TdmPdv
     end
   end
   object sqLancamentos: TSQLQuery
-    FieldDefs = <>
+    FieldDefs = <    
+      item
+        Name = 'CODMOVIMENTO'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'DATAMOVIMENTO'
+        DataType = ftDate
+        Precision = -1
+      end    
+      item
+        Name = 'CODCLIENTE'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'CODNATUREZA'
+        DataType = ftSmallint
+        Precision = -1
+      end    
+      item
+        Name = 'STATUS'
+        DataType = ftSmallint
+        Precision = -1
+      end    
+      item
+        Name = 'CODUSUARIO'
+        DataType = ftSmallint
+        Precision = -1
+      end    
+      item
+        Name = 'CODVENDEDOR'
+        DataType = ftSmallint
+        Precision = -1
+      end    
+      item
+        Name = 'CODALMOXARIFADO'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'CONTROLE'
+        DataType = ftString
+        Precision = -1
+        Size = 120
+      end    
+      item
+        Name = 'OBS'
+        DataType = ftString
+        Precision = -1
+        Size = 400
+      end    
+      item
+        Name = 'USUARIOLOGADO'
+        DataType = ftString
+        Precision = -1
+        Size = 120
+      end    
+      item
+        Name = 'DESCONTO'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'CODDETALHE'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'CONTROLE_1'
+        DataType = ftSmallint
+        Precision = -1
+      end    
+      item
+        Name = 'CODPRODUTO'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'QUANTIDADE'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'PRECO'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'ICMS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'UN'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'QTDE_ALT'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'BAIXA'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 4
+      end    
+      item
+        Name = 'VALTOTAL'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'DESCPRODUTO'
+        DataType = ftString
+        Precision = -1
+        Size = 1200
+      end    
+      item
+        Name = 'CST'
+        DataType = ftString
+        Precision = -1
+        Size = 20
+      end    
+      item
+        Name = 'VALOR_ICMS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VLR_BASE'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'CODIGO'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'STATUS_1'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 4
+      end    
+      item
+        Name = 'VLR_BASEICMS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'PIPI'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VIPI'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'CFOP'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 16
+      end    
+      item
+        Name = 'CSOSN'
+        DataType = ftString
+        Precision = -1
+        Size = 12
+      end    
+      item
+        Name = 'VALOR_DESCONTO'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALOR_SEGURO'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALOR_OUTROS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'OBS_MD'
+        DataType = ftString
+        Precision = -1
+        Size = 1200
+      end    
+      item
+        Name = 'VALOR_PIS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALOR_COFINS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'II'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'CSTIPI'
+        DataType = ftString
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'CSTPIS'
+        DataType = ftString
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'CSTCOFINS'
+        DataType = ftString
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'PPIS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'PCOFINS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'NITEMPED'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'DESCONTO_BC'
+        DataType = ftString
+        Precision = -1
+        Size = 20
+      end    
+      item
+        Name = 'VLRBC_IPI'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VLRBC_PIS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VLRBC_COFINS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VLRTOT_TRIB'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'ORIGEM'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'NCM'
+        DataType = ftString
+        Precision = -1
+        Size = 32
+      end    
+      item
+        Name = 'ALIQ_CUPOM'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 16
+      end    
+      item
+        Name = 'CEST'
+        DataType = ftString
+        Precision = -1
+        Size = 28
+      end    
+      item
+        Name = 'ESTOQUEATUAL'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'COD_BARRA'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'TIPO'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'CODPRO'
+        DataType = ftString
+        Precision = -1
+        Size = 60
+      end    
+      item
+        Name = 'USA'
+        DataType = ftString
+        Precision = -1
+        Size = 12
+      end    
+      item
+        Name = 'LOCALIZACAO'
+        DataType = ftString
+        Precision = -1
+        Size = 200
+      end    
+      item
+        Name = 'TIPOPRECOVENDA'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 4
+      end    
+      item
+        Name = 'UNIDADEMEDIDA'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'ORIGEM_1'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'OBS_PROD'
+        DataType = ftString
+        Precision = -1
+        Size = 1200
+      end    
+      item
+        Name = 'CEST_1'
+        DataType = ftString
+        Precision = -1
+        Size = 28
+      end    
+      item
+        Name = 'PRECOATACADO'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'QTDEATACADO'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'TOTALITEM'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'ICMS_SUBST'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'NOMECLIENTE'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end>
     Database = IbCon
     Transaction = sTrans
     SQL.Strings = (
@@ -315,13 +699,12 @@ object dmPdv: TdmPdv
       '    p.USA, p.LOCALIZACAO,  p.TIPOPRECOVENDA, p.UNIDADEMEDIDA,'
       '    p.ORIGEM, p.OBS OBS_PROD, p.CEST, p.PRECOATACADO, p.QTDEATACADO,'
       '    (COALESCE(A.VALTOTAL,0) - COALESCE(A.VALOR_DESCONTO, 0)) AS TOTALITEM ,'
-      '    a.ICMS_SUBST'
-      'FROM MOVIMENTO m,'
-      '  MOVIMENTODETALHE a,'
-      '  PRODUTOS P'
-      'WHERE M.CODMOVIMENTO = a.CODMOVIMENTO'
-      '  AND a.CODPRODUTO = P.CODPRODUTO'
-      '  AND a.STATUS = ''0'''
+      '    a.ICMS_SUBST, c.NOMECLIENTE'
+      'FROM MOVIMENTO m'
+      '  INNER JOIN CLIENTES c ON  c.CODCLIENTE = m.CODCLIENTE'
+      '  LEFT OUTER JOIN MOVIMENTODETALHE a ON M.CODMOVIMENTO = a.CODMOVIMENTO'
+      '  LEFT OUTER JOIN PRODUTOS P ON a.CODPRODUTO = P.CODPRODUTO'
+      'WHERE ((a.STATUS = ''0'') or (a.STATUS is null))'
       '  AND M.CODMOVIMENTO = :PMOV'
     )
     Params = <    
@@ -1020,6 +1403,74 @@ object dmPdv: TdmPdv
       MaxValue = 0
       MinValue = 0
       Precision = -1
+    end
+    object sqLancamentosCONTROLE_1: TSmallintField
+      FieldKind = fkData
+      FieldName = 'CONTROLE_1'
+      Index = 64
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqLancamentosALIQ_CUPOM: TStringField
+      FieldKind = fkData
+      FieldName = 'ALIQ_CUPOM'
+      Index = 65
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 16
+    end
+    object sqLancamentosTIPOPRECOVENDA: TStringField
+      FieldKind = fkData
+      FieldName = 'TIPOPRECOVENDA'
+      Index = 66
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 4
+    end
+    object sqLancamentosORIGEM_1: TLongintField
+      FieldKind = fkData
+      FieldName = 'ORIGEM_1'
+      Index = 67
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqLancamentosOBS_PROD: TStringField
+      FieldKind = fkData
+      FieldName = 'OBS_PROD'
+      Index = 68
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 1200
+    end
+    object sqLancamentosCEST_1: TStringField
+      FieldKind = fkData
+      FieldName = 'CEST_1'
+      Index = 69
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 28
+    end
+    object sqLancamentosNOMECLIENTE: TStringField
+      FieldKind = fkData
+      FieldName = 'NOMECLIENTE'
+      Index = 70
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+      Size = 240
     end
   end
   object SQLQuery1: TSQLQuery

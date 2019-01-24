@@ -883,7 +883,7 @@ object fPdv: TfPdv
         TabOrder = 0
       end
       object Label14: TLabel
-        Left = 12
+        Left = 3
         Height = 15
         Top = 54
         Width = 48
@@ -898,10 +898,10 @@ object fPdv: TfPdv
         ParentFont = False
       end
       object edVendedor: TEdit
-        Left = 11
+        Left = 3
         Height = 31
         Top = 71
-        Width = 41
+        Width = 61
         Color = 14803425
         Font.CharSet = ANSI_CHARSET
         Font.Color = clWindowFrame
@@ -914,10 +914,10 @@ object fPdv: TfPdv
         TabOrder = 1
       end
       object edVendedorNome: TEdit
-        Left = 53
+        Left = 65
         Height = 31
         Top = 71
-        Width = 206
+        Width = 194
         Color = 14803425
         Font.CharSet = ANSI_CHARSET
         Font.Color = clWindowFrame
@@ -939,9 +939,9 @@ object fPdv: TfPdv
         TabOrder = 3
       end
       object Label7: TLabel
-        Left = 12
+        Left = 3
         Height = 15
-        Top = 0
+        Top = 3
         Width = 36
         Caption = 'Cliente'
         Font.CharSet = ANSI_CHARSET
@@ -954,10 +954,10 @@ object fPdv: TfPdv
         ParentFont = False
       end
       object edCliente: TEdit
-        Left = 11
+        Left = 3
         Height = 31
         Top = 20
-        Width = 41
+        Width = 61
         Color = 14803425
         Font.CharSet = ANSI_CHARSET
         Font.Color = clWindowFrame
@@ -971,10 +971,10 @@ object fPdv: TfPdv
         TabOrder = 4
       end
       object edClienteNome: TEdit
-        Left = 53
+        Left = 65
         Height = 31
         Top = 20
-        Width = 206
+        Width = 194
         Color = 14803425
         Font.CharSet = ANSI_CHARSET
         Font.Color = clWindowFrame

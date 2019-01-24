@@ -88,8 +88,8 @@ begin
   sqlProc += ' LEFT OUTER JOIN USUARIO u ON m.codVendedor = u.codUsuario';
   sqlProc += ' LEFT OUTER JOIN VENDA v ON v.CODMOVIMENTO = m.CODMOVIMENTO ';
   Case rgStatus.ItemIndex of
-    0 : sqlProc += ' WHERE m.STATUS > -1 ';
-    1 : sqlProc += ' WHERE m.STATUS > 0 ';
+    0 : sqlProc += ' WHERE m.STATUS IN (0,1) ';
+    1 : sqlProc += ' WHERE m.STATUS = 1 ';
     2 : sqlProc += ' WHERE m.STATUS = 2 ';
     3 : sqlProc += ' WHERE m.STATUS = 1 AND v.SERIE LIKE ' + QuotedStr('NFCE%');
   end;

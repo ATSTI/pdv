@@ -98,8 +98,10 @@ type
     sqEmpresaWEB: TStringField;
     sqGenerator: TSQLQuery;
     sqLancamentos: TSQLQuery;
+    sqLancamentosALIQ_CUPOM: TStringField;
     sqLancamentosBAIXA: TStringField;
     sqLancamentosCEST: TStringField;
+    sqLancamentosCEST_1: TStringField;
     sqLancamentosCFOP: TStringField;
     sqLancamentosCODALMOXARIFADO: TLongintField;
     sqLancamentosCODCLIENTE: TLongintField;
@@ -113,6 +115,7 @@ type
     sqLancamentosCODVENDEDOR: TSmallintField;
     sqLancamentosCOD_BARRA: TStringField;
     sqLancamentosCONTROLE: TStringField;
+    sqLancamentosCONTROLE_1: TSmallintField;
     sqLancamentosCSOSN: TStringField;
     sqLancamentosCST: TStringField;
     sqLancamentosCSTCOFINS: TStringField;
@@ -129,9 +132,12 @@ type
     sqLancamentosLOCALIZACAO: TStringField;
     sqLancamentosNCM: TStringField;
     sqLancamentosNITEMPED: TLongintField;
+    sqLancamentosNOMECLIENTE: TStringField;
     sqLancamentosOBS: TStringField;
     sqLancamentosOBS_MD: TStringField;
+    sqLancamentosOBS_PROD: TStringField;
     sqLancamentosORIGEM: TStringField;
+    sqLancamentosORIGEM_1: TLongintField;
     sqLancamentosPCOFINS: TFloatField;
     sqLancamentosPIPI: TFloatField;
     sqLancamentosPPIS: TFloatField;
@@ -143,6 +149,7 @@ type
     sqLancamentosSTATUS: TSmallintField;
     sqLancamentosSTATUS_1: TStringField;
     sqLancamentosTIPO: TStringField;
+    sqLancamentosTIPOPRECOVENDA: TStringField;
     sqLancamentosTOTALITEM: TFloatField;
     sqLancamentosUN: TStringField;
     sqLancamentosUNIDADEMEDIDA: TStringField;
@@ -187,6 +194,7 @@ type
     procedure atualiza_bd();
   public
     usosistema : string;
+    usaComanda : Integer;
     idcaixa : string;
     ccusto : String;
     ccusto_padrao : String;
@@ -286,6 +294,7 @@ begin
     tamanhoDescProd := conf.ReadInteger( 'Outros','TamanhoDescProd',400);
     tamanhoCodProd := conf.ReadInteger( 'Outros','TamanhoCodProd',140);
     usoSistema := conf.ReadString( 'Outros','TipoUso','ATS');
+    usaComanda := conf.ReadInteger( 'Outros','UsaComanda',0);
   finally
     conf.free;
   end;
