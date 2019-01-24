@@ -87,6 +87,8 @@ type
     serie_nfce: Integer;
     num_nfce: Integer;
     notaEmitida: String;
+    vBC : Double;
+    vICMS: Double;
     function RemoveChar(Const Texto:String):String;
     procedure GerarNFCe(Num: String);
     procedure prepararImpressao();
@@ -620,9 +622,12 @@ begin
 
 
     //case rgRegime.ItemIndex of
-    Emit.CRT := crtSimplesNacional;// (1-crtSimplesNacional, 2-crtSimplesExcessoReceita, 3-crtRegimeNormal)
-    //  1: Emit.CRT := crtSimplesExcessoReceita;
-    //  2: Emit.CRT := crtRegimeNormal;
+    if (dmPdv.sqEmpresaCRT.AsInteger = 0) then
+      Emit.CRT := crtSimplesNacional;// (1-crtSimplesNacional, 2-crtSimplesExcessoReceita, 3-crtRegimeNormal)
+    if (dmPdv.sqEmpresaCRT.AsInteger = 1) then
+      Emit.CRT := crtSimplesExcessoReceita;
+    if (dmPdv.sqEmpresaCRT.AsInteger = 2) then
+      Emit.CRT := crtRegimeNormal;
     //end;
 
     if ((edCPF.Text <> '   .   .   -  ') and  (Length(edCPF.Text) = 14)) then
@@ -701,10 +706,8 @@ begin
       ACBrNFeDANFeESCPOS1.vTribEst := dmPdv.sqBusca.FieldByName('TRIB_EST').AsFloat;
       ACBrNFeDANFeESCPOS1.vTribMun := dmPdv.sqBusca.FieldByName('TRIB_MUN').AsFloat;
     end;
-
-
-      Total.ICMSTot.vBC     := 0;
-      Total.ICMSTot.vICMS   := 0;
+      Total.ICMSTot.vBC     := vBC;
+      Total.ICMSTot.vICMS   := vICMS;
       Total.ICMSTot.vBCST   := 0;
       Total.ICMSTot.vST     := 0;
       Total.ICMSTot.vProd   := RoundTo(nfce_valor,-2); //sqlBuscaNota.fieldByName('VALOR').AsFloat; // totalNFCe;
@@ -792,10 +795,14 @@ begin
     contaItens := 0;
     dmPdv.sqLancamentos.First;
     total_tributos := 0;
+    vICMS := 0;
+    vBC := 0;
     while not dmPdv.sqLancamentos.Eof do
     begin
       totalNFCe := totalNFCe + dmPdv.sqLancamentosTOTALITEM.AsFloat;
       contaItens := contaItens + 1;
+      vBC += dmPdv.sqLancamentosVLR_BASEICMS.AsVariant;
+      vICMS += dmPdv.sqLancamentosVALOR_ICMS.AsVariant;
       with Det.Add do
       begin
         Prod.nItem    := contaItens; // Número sequencial, para cada item deve ser incrementado
@@ -918,8 +925,8 @@ begin
               if ((Trim(dmPdv.sqLancamentosCSOSN.AsString) = '') or (Trim(dmPdv.sqLancamentosCSOSN.AsString) = '0')) then
                 MessageDlg('CST do ICMS em branco no item ' + dmPdv.sqLancamentosDESCPRODUTO.AsString, mtWarning, [mbOK], 0);
               Exit;
-            end
-            else
+            end;
+            if( dmPdv.sqEmpresaCRT.AsInteger = 2) then
             begin
               if ((dmPdv.sqLancamentosCST.AsString = '000') or (dmPdv.sqLancamentosCST.AsString = '100') or (dmPdv.sqLancamentosCST.AsString = '200') or (dmPdv.sqLancamentosCST.AsString = '00')) then
                 CST := cst00
@@ -1074,9 +1081,13 @@ procedure TfNfce.GravarDadosNF(protocolo: String; recibo: String);
 var str: String;
 begin
   try
-    str := 'UPDATE SERIES SET ULTIMO_NUMERO = ' + IntToSTR(num_nfce) +
-      ' WHERE SERIE = ' + QuotedStr('NFCE-'+dmPdv.varLogado);
-    dmPdv.IbCon.ExecuteDirect(str);
+    if (num_nfce > 0) then
+    begin
+      str := 'UPDATE SERIES SET ULTIMO_NUMERO = ' + IntToSTR(num_nfce) +
+        ' WHERE SERIE = ' + QuotedStr('NFCE-'+dmPdv.varLogado);
+      dmPdv.IbCon.ExecuteDirect(str);
+    end;
+
     str := 'UPDATE VENDA SET ';
     str := str + ' XMLNFE = ' + quotedStr(ACBrNFe1.NotasFiscais.Items[0].XML);
     str := str + ', NOMEXML = ' + QuotedStr(copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID,
