@@ -33,16 +33,16 @@ type
     BitBtn8: TBitBtn;
     BitBtn9: TBitBtn;
     btnInfo: TBitBtn;
+    btnNovo: TBitBtn;
     btnProdutoProc: TBitBtn;
+    btnReceber: TBitBtn;
+    btnVendas: TBitBtn;
     btnVnd1: TBitBtn;
     btnVnd2: TBitBtn;
     btnVnd3: TBitBtn;
     btnVnd4: TBitBtn;
     btnVnd5: TBitBtn;
     btnVnd6: TBitBtn;
-    btnNovo: TBitBtn;
-    btnVendas: TBitBtn;
-    btnReceber: TBitBtn;
     btnVnd7: TBitBtn;
     btnVnd8: TBitBtn;
     cbPercentual: TCheckBox;
@@ -83,6 +83,7 @@ type
     Label18: TLabel;
     Label19: TLabel;
     edBuscaDetalhe: TLabeledEdit;
+    Label2: TLabel;
     Label20: TLabel;
     Label21: TLabel;
     Label6: TLabel;
@@ -92,7 +93,6 @@ type
     Label9: TLabel;
     lblNumItem: TLabel;
     lblPedido: TLabel;
-    Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
@@ -109,6 +109,8 @@ type
     Panel12: TPanel;
     Panel6: TPanel;
     Panel7: TPanel;
+    pnBotoesSistema: TPanel;
+    pnComanda: TPanel;
     pnLogo: TPanel;
     pnIntegra: TPanel;
     pnPreco: TPanel;
@@ -192,6 +194,7 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
   private
+    e_comanda: String;
     statusPedido: Integer;
     consultaItem: String;
     ultimo_pedido: Integer;
@@ -546,7 +549,8 @@ begin
   fPDV_Rec.vCodMovimento:= codMov;
   //fPDV_Rec.vDesconto := vTotDesc;
   fPDV_Rec.ShowModal;
-  if fPDV_Rec.vStatus = 1 then
+  if ((fPDV_Rec.vStatus = 1) and
+    (dmPdv.usaComanda = 0)) then
   begin
     //controlaPedidos(codMov, 1, 1);
     buscaPedidosAbertoCaixa(codMov);
@@ -555,6 +559,8 @@ begin
     else
       btnVnd1.Click;
   end;
+  if (dmPdv.usaComanda > 0) then
+     pnComanda.Caption := '';
 end;
 
 procedure TfPdv.BitBtn10Click(Sender: TObject);
@@ -636,6 +642,8 @@ procedure TfPdv.acProcurarExecute(Sender: TObject);
 begin
   //dmPdv.IbCon.Connected:=False;
   //dmPdv.IbCon.Connected:=True;
+  if (dmPdv.usaComanda > 0) then
+     pnComanda.Caption := '';
   fMovimentoProc.ShowModal;
   if (fMovimentoProc.codMovimentoProc > 0) then
   begin
@@ -666,6 +674,8 @@ begin
     fClienteBusca.BuscaCliente;
     edClienteNome.Text := fClienteBusca.cNomeCliente;
     codCliente := fClienteBusca.cCodCliente;
+    if (dmPdv.usaComanda > 0) then
+      pnComanda.Caption := edClienteNome.Text;
     //edProdutoDescX.Text:= dmPdv.sqLancamentosDESCPRODUTO.AsString;
     //controlaPedidos(codMov, 0, 0);
     buscaPedidosAbertoCaixa(codMov);
@@ -849,6 +859,7 @@ end;
 
 procedure TfPdv.edProdutoKeyPress(Sender: TObject; var Key: char);
 var i: Integer;
+  str_bsc: String;
 begin
   if Key = #13 then
   begin
@@ -860,12 +871,19 @@ begin
     end;
     if (edProduto.Text <> '') then
     begin
+      str_bsc := Copy(edProduto.Text,0,1);
       if ((dmpdv.usaComanda > 0) and
-        (Length(edProduto.Text) = dmPdv.usaComanda)) then
+        (str_bsc = '0')) then
       begin
+        str_bsc := edProduto.Text;
         buscaPedidoComanda(edProduto.Text);
-        abrePedido(codMov);
-        exit;
+        if ((codMov > 0) and (e_comanda = 'S')) then
+        begin
+          abrePedido(codMov);
+          pnComanda.Caption := 'Comanda ' + str_bsc;
+          e_comanda:='N';
+          exit;
+        end;
       end;
       fProdutoProc.num_busca:=0;
       // TODO - preciso definir aqui, qdo e codigo de barra qdo e codigo
@@ -1037,6 +1055,11 @@ begin
   edVendedor.Text := IntToStr(dmpdv.vendedor_padrao);
   edCaixa.Text := dmPdv.nomeLogado + '-' + dmPdv.nomeCaixa;
   buscaPedidosAbertoCaixa(0);
+  if (dmPdv.usaComanda > 0) then
+  begin
+    abrePedido(StrToInt(btnVnd1.Caption));
+    pnComanda.Visible:=True;
+  end;
 end;
 
 procedure TfPdv.Image1Click(Sender: TObject);
@@ -1748,20 +1771,26 @@ begin
   dmPdv.sqBusca.Open;
   if not dmpdv.sqBusca.IsEmpty then
   begin
+    e_comanda:='S';
     //numeroComanda := dmPdv.sqBusca.FieldByName('CODMOVIMENTO').AsInteger;
     CodMov:= dmPdv.sqBusca.FieldByName('CODMOVIMENTO').AsInteger;
   end
   else begin
-    // se existe abrir
-    codCliente := StrToInt(codComanda);
-    edCliente.Text := codComanda;
-    edClienteNome.Text :=  'Comanda ' + codComanda;
-    btnNovo.Click;
-    //dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET ' +
-    //  ' CODCLIENTE = ' + IntToStr(codCliente) +
-    //  ' WHERE CODMOVIMENTO = ' + IntToStr(codMov) +
-    //  '   AND STATUS = 0');
-
+    fClienteBusca.cCodCliente := StrToInt(codComanda);
+    fClienteBusca.BuscaCliente;
+    if fClienteBusca.cNomeCliente = '' then
+    begin
+      e_comanda:='N';
+      exit;
+    end
+    else begin
+      e_comanda:='S';
+      codCliente := StrToInt(codComanda);
+      edCliente.Text := codComanda;
+      edClienteNome.Text :=  'Comanda ' + codComanda;
+      pnComanda.Caption := 'Comanda ' + codComanda;
+      btnNovo.Click;
+    end;
   end;
 end;
 
