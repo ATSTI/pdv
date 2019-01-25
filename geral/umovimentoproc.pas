@@ -82,7 +82,10 @@ var sqlProc: String;
 begin
   sqlProc := 'SELECT m.CODMOVIMENTO, m.CONTROLE, m.DATA_SISTEMA as DATAMOVIMENTO, v.CODVENDA ';
   sqlProc += ' , u.NOMEUSUARIO as  VENDEDOR, c.NOMECLIENTE as CLIENTE ';
-  sqlProc += ' ,COALESCE(v.VALOR, 0) AS VALOR, v.SERIE, m.STATUS ';
+  sqlProc += ' ,CASE WHEN COALESCE(v.VALOR, 0) > 0 THEN v.VALOR ELSE ';
+  sqlProc += ' (SELECT SUM(VALTOTAL) FROM MOVIMENTODETALHE MD WHERE MD.CODMOVIMENTO ';
+  sqlProc += ' = m.CODMOVIMENTO) END ';
+  sqlProc += ' AS VALOR, v.SERIE, m.STATUS ';
   sqlProc += ' FROM MOVIMENTO m  ';
   sqlProc += ' INNER JOIN CLIENTES c ON c.CODCLIENTE = m.CODCLIENTE';
   sqlProc += ' LEFT OUTER JOIN USUARIO u ON m.codVendedor = u.codUsuario';
@@ -135,10 +138,10 @@ begin
   edQtdeLancamento.Text:= FormatFloat('#,,,0',qtde);
   if (not dmPdv.sqBusca.IsEmpty) then
   begin
+    dmPdv.sqBusca.First;
     codMovimentoProc := dmPdv.sqBusca.FieldByName('CODMOVIMENTO').AsInteger;
     codVendaProc     := dmPdv.sqBusca.FieldByName('CODVENDA').AsInteger;
   end;
-  dmPdv.sqBusca.First;
 end;
 
 procedure TfMovimentoProc.acFecharExecute(Sender: TObject);
@@ -203,8 +206,6 @@ end;
 
 procedure TfMovimentoProc.btnSALVClick(Sender: TObject);
 begin
-  //codMovimentoProc := dmPdv.sqBusca.FieldByName('CODMOVIMENTO').AsInteger;
-  //codVendaProc     := dmPdv.sqBusca.FieldByName('CODVENDA').AsInteger;
   Close;
 end;
 
