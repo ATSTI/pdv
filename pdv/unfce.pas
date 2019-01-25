@@ -378,6 +378,7 @@ begin
   edtCaminho.Text := dmPdv.CaminhoCert;
   edtSenha.Text   := dmPdv.SenhaCert;
   edtNumSerie.Text:= dmPdv.NumSerieCert;
+
   { coloquei no botão NFCE
   ACBrNFe1.Configuracoes.Certificados.ArquivoPFX  := dmPdv.CaminhoCert;
   ACBrNFe1.Configuracoes.Certificados.Senha       := dmPdv.SenhaCert;
@@ -412,6 +413,7 @@ begin
   ACBrNFeDANFeESCPOS1.PosPrinter := ACBrPosPrinter1;
   ACBrPosPrinter1.Porta := dmPdv.portaImp;
   ACBrPosPrinter1.Modelo:= TACBrPosPrinterModelo(cbxModeloPosPrinter.ItemIndex);
+  ACBrPosPrinter1.LinhasEntreCupons := dmPdv.espacoEntreLinhas;
   notaEmitida := 'N';
   edNFce.text := '';
   edCPF.Text := '';

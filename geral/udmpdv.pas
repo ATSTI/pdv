@@ -214,6 +214,7 @@ type
     path_script: String;
     path_xml: String;
     portaImp: String;
+    espacoEntreLinhas: Integer;
     NFE_Teste: String;
     ModeloImp: Integer;
     CupomImp : String;
@@ -276,6 +277,7 @@ begin
     portaImp := conf.ReadString('IMPRESSORA', 'porta', '');
     ModeloImp := conf.ReadInteger('IMPRESSORA', 'Modelo', 0);
     CupomImp := conf.ReadString('IMPRESSORA', 'Cupom', 'Texto');
+    espacoEntreLinhas := conf.ReadInteger('IMPRESSORA', 'EspacoEntreLinhas', 10);
     //snh:= EncodeStringBase64(snh); // Ver a senha Encryptada
     snh:= DecodeStringBase64(snh);
     IBCon.Password := snh;
