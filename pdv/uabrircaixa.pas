@@ -87,6 +87,7 @@ begin
   total :=0;
   totalliquido :=0;
   totalcaixa :=0;
+  dtData.Date:=Now;
   if (AbrirFechar = 'Abrir') then
   begin
     fAbrirCaixa.Caption:= 'Abrir Caixa';
@@ -239,20 +240,28 @@ var str:string;
   codCaixa:integer;
   vlrCaixa:double;
 begin
-
   str := 'update CAIXA_CONTROLE set SITUACAO = ';
   str := str + QuotedStr('F');
   str := str + ', DATAFECHAMENTO = ' + QuotedStr(FormatDateTime('dd/mm/yyyy', now));
   vlrCaixa := StrToFloat(edValor.Text);
   DecimalSeparator:='.';
-  str := str + ', VALORFECHA = ' + FloatToStr(vlrCaixa);
+  if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
+  begin
+    str := str + ', VALORFECHA = 1';
+  end
+  else begin
+    str := str + ', VALORFECHA = ' + FloatToStr(vlrCaixa);
+  end;
   str := str + ' where IDCAIXACONTROLE = ' + dmpdv.idcaixa;
   DecimalSeparator:=',';
   dmPdv.IbCon.ExecuteDirect(str);
+  dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET STATUS = 2' +
+      ' WHERE CODORIGEM = ' + dmPdv.idcaixa +
+      '   AND CODALMOXARIFADO = ' + dmPdv.ccusto +
+      '   AND STATUS = 0');
   dmPdv.sTrans.Commit;
+  dmPdv.nomeCaixa := 'FECHADO';
   ShowMessage('Caixa fechado com sucesso!');
-
-
 end;
 
 end.

@@ -185,7 +185,7 @@ object fAbrirCaixa: TfAbrirCaixa
     Width = 107
     CenturyFrom = 1941
     MaxDate = 2958465
-    MinDate = -53780
+    MinDate = 43374
     Font.CharSet = ANSI_CHARSET
     Font.Height = -17
     Font.Name = 'Arial'
@@ -200,8 +200,8 @@ object fAbrirCaixa: TfAbrirCaixa
     TimeFormat = tf24
     TimeDisplay = tdHMS
     DateMode = dmComboBox
-    Date = 43481
-    Time = 0.387536527778138
+    Date = 1.7E308
+    Time = 1.7E308
     UseDefaultSeparators = True
     HideDateTimeParts = []
     MonthNames = 'Long'
