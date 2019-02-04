@@ -22,6 +22,8 @@ type
   public
     permCodMov : Integer;
     permCodDet : Integer;
+    itemExcP: String;
+    itemExcC: String;
   end;
 
 var
@@ -52,6 +54,8 @@ begin
     fExclusao.excCodUser := dmPdv.sqBusca.FieldByName('CODUSUARIO').AsInteger;
     fExclusao.excUser := dmPdv.sqBusca.FieldByName('NOMEUSUARIO').AsString;
     fExclusao.excCodMov  :=permCodMov;
+    fExclusao.ItemExc := itemExcP;
+    fExclusao.ItemExcC:= itemExcC;
     fExclusao.ShowModal;
     Close;
   end
