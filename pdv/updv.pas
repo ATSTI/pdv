@@ -262,11 +262,6 @@ begin
   if Key = #13 then
   begin
     Key := #0;
-    if (statusPedido > 0) then
-    begin
-      ShowMessage('Pedido ja finalizado.');
-      Exit;
-    end;
     if (edCliente.Text <> '') then
     begin
       fClienteBusca.cCodCliente := StrToInt(edCliente.Text);
@@ -464,11 +459,6 @@ end;
 
 procedure TfPdv.btnProdutoProcClick(Sender: TObject);
 begin
-  if (statusPedido > 0) then
-  begin
-    ShowMessage('Pedido ja finalizado.');
-    Exit;
-  end;
   fProdutoProc.ShowModal;
   if fProdutoProc.codProduto > 0 then
   begin
@@ -492,11 +482,6 @@ end;
 
 procedure TfPdv.BitBtn2Click(Sender: TObject);
 begin
-  if (statusPedido > 0) then
-  begin
-    ShowMessage('Pedido ja finalizado.');
-    Exit;
-  end;
   if (edCliente.Text <> '') then
     fClienteBusca.cCodCliente:=StrToInt(edCliente.Text);
   fClienteBusca.ShowModal;
@@ -507,11 +492,6 @@ end;
 
 procedure TfPdv.BitBtn3Click(Sender: TObject);
 begin
-  if (statusPedido > 0) then
-  begin
-    ShowMessage('Pedido ja finalizado.');
-    Exit;
-  end;
   if (edVendedor.Text <> '') then
     fVendedorBusca.uCodVendedor:=StrToInt(edVendedor.Text);
   fVendedorBusca.ShowModal;
@@ -620,8 +600,6 @@ procedure TfPdv.acExcluirItemPedidoExecute(Sender: TObject);
 begin
   fPermissao.permCodMov:=codMov;
   fPermissao.permCodDet:=dmPdv.sqLancamentosCODDETALHE.AsInteger;
-  fPermissao.itemExcP := dmPdv.sqLancamentosDESCPRODUTO.AsString;
-  fPermissao.itemExcC := dmPdv.sqLancamentosCODPRO.AsString;
   fPermissao.ShowModal;
   buscaPedidosAbertoCaixa(codMov);
   abrePedido(codMov);
@@ -708,11 +686,6 @@ end;
 
 procedure TfPdv.acQuantidadeExecute(Sender: TObject);
 begin
-  if (statusPedido > 0) then
-  begin
-    ShowMessage('Pedido ja finalizado.');
-    Exit;
-  end;
   pnAltera.Visible:=True;
   edQtde1.Enabled:= True;
   edQtde.Enabled:= True;
@@ -1018,11 +991,6 @@ begin
   if Key = #13 then
   begin
     Key := #0;
-    if (statusPedido > 0) then
-    begin
-      ShowMessage('Pedido ja finalizado.');
-      Exit;
-    end;
     if (edVendedor.Text <> '') then
     begin
       fVendedorBusca.uCodVendedor := StrToInt(edVendedor.Text);
@@ -1220,9 +1188,6 @@ begin
   begin
     statusPedido:=0;
     num_item:=1;
-    codVendedor := 0;
-    edPreco.Text := '0,00';
-    lblNumItem.Caption := '0';
     edProduto.Enabled := True;
     edProdutoDesc.Lines.Clear;
     edProdutoDesc.Lines.Add('Produto:');
@@ -1254,7 +1219,6 @@ begin
       // TODO - Tratar as variaveis abaixo
       FMov.CodCCusto   := caixa_local;
       FMov.CodCliente  := codCliente;
-      FMov.CodOrigem   := StrToInt(dmPdv.idcaixa);
       FMov.CodNatureza := 3; // Venda
       FMov.Status      := 0;
       FMov.CodUsuario  := codCaixa;
@@ -1740,10 +1704,6 @@ end;
 
 procedure TfPdv.buscaVendedor(codBarraV: String);
 begin
-  if (codBarraV = '0') then
-  begin
-    Exit;
-  end;
   codVendedor := 0;
   dmPdv.sqBusca.Close;
   dmPdv.sqBusca.SQL.Clear;

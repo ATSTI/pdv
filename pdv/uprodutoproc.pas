@@ -13,10 +13,10 @@ type
   { TfProdutoProc }
 
   TfProdutoProc = class(TForm)
-    BitBtn1: TBitBtn;
     BitBtn2: TBitBtn;
-    btnEXC: TImage;
-    btnSALV: TImage;
+    btnSair: TBitBtn;
+    btnConfirma: TBitBtn;
+    btnProcurar: TBitBtn;
     chInativo: TCheckBox;
     DBGrid1: TDBGrid;
     dsProc: TDataSource;
@@ -24,11 +24,13 @@ type
     Edit2: TEdit;
     Label1: TLabel;
     Panel1: TPanel;
-    Panel2: TPanel;
     procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
+    procedure btnConfirmaClick(Sender: TObject);
     procedure btnEXCClick(Sender: TObject);
     procedure btnPROCClick(Sender: TObject);
+    procedure btnProcurarClick(Sender: TObject);
+    procedure btnSairClick(Sender: TObject);
     procedure btnSALVClick(Sender: TObject);
     procedure chInativoChange(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
@@ -134,6 +136,16 @@ begin
 
 end;
 
+procedure TfProdutoProc.btnProcurarClick(Sender: TObject);
+begin
+  busca(Edit1.Text, '', Edit2.Text, chInativo.Checked);
+end;
+
+procedure TfProdutoProc.btnSairClick(Sender: TObject);
+begin
+  close;
+end;
+
 procedure TfProdutoProc.btnEXCClick(Sender: TObject);
 begin
   Edit1.Text:='';
@@ -151,6 +163,19 @@ begin
   dmPdv.IbCon.Connected:=True;
   num_pedidos := 0;
   busca(Edit1.Text, '', Edit2.Text, chInativo.Checked);
+end;
+
+procedure TfProdutoProc.btnConfirmaClick(Sender: TObject);
+begin
+  codProduto:= dmPdv.sqBusca.FieldByName('CODPRODUTO').AsInteger;
+  produto   := dmPdv.sqBusca.FieldByName('PRODUTO').AsString;
+  codProd   := dmPdv.sqBusca.FieldByName('CODPRO').AsString;
+  precoVenda:= dmPdv.sqBusca.FieldByName('VALOR_PRAZO').AsFloat;
+  estoque   := dmPdv.sqBusca.FieldByName('ESTOQUEATUAL').AsFloat;
+  precoVendaAtacado := dmPdv.sqBusca.FieldByName('PRECOATACADO').AsFloat;
+  qtdeAtacado:= dmPdv.sqBusca.FieldByName('QTDEATACADO').AsFloat;
+  tipo_venda := dmPdv.sqBusca.FieldByName('RATEIO').AsString;
+  Close;
 end;
 
 procedure TfProdutoProc.btnSALVClick(Sender: TObject);
