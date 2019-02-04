@@ -98,18 +98,18 @@ object fMovimentoProc: TfMovimentoProc
       MonthNames = 'Long'
     end
     object edPedido: TLabeledEdit
-      Left = 400
+      Left = 392
       Height = 29
-      Top = 4
+      Top = 1
       Width = 120
       EditLabel.AnchorSideTop.Control = edPedido
       EditLabel.AnchorSideTop.Side = asrCenter
       EditLabel.AnchorSideRight.Control = edPedido
       EditLabel.AnchorSideBottom.Control = edPedido
       EditLabel.AnchorSideBottom.Side = asrBottom
-      EditLabel.Left = 345
+      EditLabel.Left = 337
       EditLabel.Height = 21
-      EditLabel.Top = 8
+      EditLabel.Top = 5
       EditLabel.Width = 52
       EditLabel.Caption = 'Pedido'
       EditLabel.ParentColor = False
@@ -124,7 +124,7 @@ object fMovimentoProc: TfMovimentoProc
       OnKeyPress = edPedidoKeyPress
     end
     object rgStatus: TRadioGroup
-      Left = 568
+      Left = 642
       Height = 45
       Top = 0
       Width = 394
@@ -183,6 +183,62 @@ object fMovimentoProc: TfMovimentoProc
       )
       TabOrder = 5
       Text = 'Maior que'
+    end
+    object Label14: TLabel
+      Left = 336
+      Height = 15
+      Top = 35
+      Width = 48
+      Caption = 'Vendedor'
+      Font.CharSet = ANSI_CHARSET
+      Font.Color = clWindowFrame
+      Font.Height = -11
+      Font.Name = 'Comic Sans MS'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      ParentColor = False
+      ParentFont = False
+    end
+    object edVendedor: TEdit
+      Left = 392
+      Height = 31
+      Top = 32
+      Width = 40
+      Color = clWhite
+      Font.CharSet = ANSI_CHARSET
+      Font.Color = clWindowFrame
+      Font.Height = -16
+      Font.Name = 'Comic Sans MS'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      ParentFont = False
+      TabOrder = 6
+    end
+    object edVendedorNome: TEdit
+      Left = 432
+      Height = 31
+      Top = 32
+      Width = 170
+      Color = 14803425
+      Font.CharSet = ANSI_CHARSET
+      Font.Color = clWindowFrame
+      Font.Height = -16
+      Font.Name = 'Comic Sans MS'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      OnChange = edVendedorNomeChange
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 7
+    end
+    object BitBtn3: TBitBtn
+      Left = 600
+      Height = 31
+      Top = 32
+      Width = 28
+      Caption = '...'
+      OnClick = BitBtn3Click
+      TabOrder = 8
     end
   end
   object Panel2: TPanel
