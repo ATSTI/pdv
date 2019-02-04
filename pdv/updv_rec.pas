@@ -403,7 +403,7 @@ begin
   dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET STATUS = 1 ' +
     ' , CODCLIENTE = ' + IntToStr(vCliente) +
     ' WHERE CODMOVIMENTO  = ' +
-    IntToStr(vCodMovimento));
+    IntToStr(vCodMovimento) + ' AND STATUS = 0');
 
   vStatus := 1;
   dmPdv.sqBusca.Close;
@@ -711,7 +711,7 @@ begin
         linhaTxt := Copy(lFile[i],2,Length(lFile[i])-1);
         Writeln(Impressora, linhaTxt +
            FormatFloat('#,,,0.00',totalR + sqPagamentoTROCO.AsFloat) +
-           ' - Devolvido : ' + FormatFloat('#,,,0.00',sqPagamentoTROCO.AsFloat));
+           ' - Troco : ' + FormatFloat('#,,,0.00',sqPagamentoTROCO.AsFloat));
       end
       else if linhaTxt = 'V' then
       begin
@@ -1035,6 +1035,11 @@ end;
 
 procedure TfPDV_Rec.acExcluirLancamentoExecute(Sender: TObject);
 begin
+  if (vStatus = 1) then
+  begin
+    ShowMessage('Não pode excluir pedido já finalizado.');
+    exit;
+  end;
   if MessageDlg('Confirma:', 'Confirma a exclusão do lançamento: ' +
     sqPagamentoN_DOC.AsString , mtConfirmation,
     [mbYes, mbNo, mbIgnore],0) = mrYes then
@@ -1176,6 +1181,8 @@ end;
 
 procedure TfPDV_Rec.acCancelaFechamentoExecute(Sender: TObject);
 begin
+  ShowMessage('Não pode excluir pedido já finalizado.');
+  exit;
   sqPagamento.First;
   While not sqPagamento.EOF do
   begin
@@ -1207,6 +1214,11 @@ end;
 
 procedure TfPDV_Rec.BitBtn22Click(Sender: TObject);
 begin
+  if (vStatus = 1) then
+  begin
+    ShowMessage('Venda já finalizada');
+    Exit;
+  end;
   fClienteBusca.ShowModal;
   edCliente.Text := fClienteBusca.cNomeCliente;
   vClienteNome   := fClienteBusca.cNomeCliente;
