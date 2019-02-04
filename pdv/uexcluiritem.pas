@@ -25,6 +25,7 @@ type
     procedure edItemExcluirExit(Sender: TObject);
     procedure edItemExcluirKeyPress(Sender: TObject; var Key: char);
     procedure edPedidoExcluirKeyPress(Sender: TObject; var Key: char);
+    procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
 
@@ -33,6 +34,8 @@ type
     excCodMov :Integer;
     excCodUser: Integer;
     excUser: String;
+    ItemExc : String;
+    ItemExcC : String;
   end;
 
 var
@@ -57,8 +60,9 @@ begin
        ' FROM MOVIMENTO m, MOVIMENTODETALHE md ' +
        ' WHERE m.CODMOVIMENTO = md.CODMOVIMENTO ' +
        '   AND md.CODDETALHE  = ' + IntToStr(excCodDet) +
-       '   AND md.BAIXA IS NULL ' +
        '   AND m.STATUS = 0';
+    // comentei a linha abaixo nao estava excluindo
+    //    '   AND md.BAIXA IS NULL ' +
     //       '   AND md.NITEMPED = ' + edItemExcluir.Text +
     dmPdv.sqBusca.Open;
     if (not dmPdv.sqBusca.IsEmpty) then
@@ -127,6 +131,21 @@ end;
 
 procedure TfExclusao.edItemExcluirExit(Sender: TObject);
 begin
+  {
+  dmPdv.sqBusca.Close;
+  dmPdv.sqBusca.SQL.Clear;
+  dmPdv.sqBusca.SQL.Text := 'SELECT md.CODDETALHE, md.STATUS, md.DESCPRODUTO ' +
+     ' FROM MOVIMENTO m, MOVIMENTODETALHE md ' +
+     ' WHERE m.CODMOVIMENTO = md.CODMOVIMENTO ' +
+     '   AND m.CODMOVIMENTO  = ' + IntToStr(excCodMov) +
+     '   AND md.BAIXA IS NULL ' +
+     '   AND md.NITEMPED = ' + edItemExcluir.Text +
+     '   AND m.STATUS = 0';
+  dmPdv.sqBusca.Open;
+  if not dmPdv.sqBusca.IsEmpty then
+  begin
+    lblItem.Caption := dmPdv.sqBusca.FieldByName('DESCPRODUTO').AsString;
+  end; }
 end;
 
 procedure TfExclusao.edItemExcluirKeyPress(Sender: TObject; var Key: char);
@@ -140,9 +159,13 @@ begin
        ' FROM MOVIMENTO m, MOVIMENTODETALHE md ' +
        ' WHERE m.CODMOVIMENTO = md.CODMOVIMENTO ' +
        '   AND m.CODMOVIMENTO  = ' + IntToStr(excCodMov) +
-       '   AND md.BAIXA IS NULL ' +
-       '   AND md.NITEMPED = ' + edItemExcluir.Text +
        '   AND m.STATUS = 0';
+    // '   AND md.BAIXA IS NULL ' +
+    if (edItemExcluir.Text <> '') then
+    begin
+      dmPdv.sqBusca.SQL.Text := dmPdv.sqBusca.SQL.Text + '   AND md.NITEMPED = ' +
+          edItemExcluir.Text;
+    end;
     dmPdv.sqBusca.Open;
     if not dmPdv.sqBusca.IsEmpty then
     begin
@@ -160,10 +183,15 @@ begin
 
 end;
 
+procedure TfExclusao.FormCreate(Sender: TObject);
+begin
+end;
+
 procedure TfExclusao.FormShow(Sender: TObject);
 begin
   CheckBox1.Checked:=False;
-  edItemExcluir.Text:='';
+  edItemExcluir.Text := ItemExcC;
+  lblItem.Caption := ItemExc;
   edPedidoExcluir.Text:='';
   dmPdv.sqBusca.Close;
   dmPdv.sqBusca.SQL.Clear;

@@ -6,6 +6,7 @@ object fExclusao: TfExclusao
   Caption = 'Exclusão'
   ClientHeight = 309
   ClientWidth = 592
+  OnCreate = FormCreate
   OnShow = FormShow
   LCLVersion = '1.8.4.0'
   object edItemExcluir: TLabeledEdit
