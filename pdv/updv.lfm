@@ -1,7 +1,7 @@
 object fPdv: TfPdv
-  Left = 344
+  Left = 172
   Height = 607
-  Top = 62
+  Top = 30
   Width = 1100
   Align = alLeft
   Caption = 'Ponto de Venda - ATS'
