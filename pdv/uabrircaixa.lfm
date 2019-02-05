@@ -185,7 +185,7 @@ object fAbrirCaixa: TfAbrirCaixa
     Width = 107
     CenturyFrom = 1941
     MaxDate = 2958465
-    MinDate = -53780
+    MinDate = 36892
     Font.CharSet = ANSI_CHARSET
     Font.Height = -17
     Font.Name = 'Arial'
