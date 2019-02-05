@@ -359,13 +359,15 @@ object fPDV_Rec: TfPDV_Rec
         Caption = '0'
         TabOrder = 13
       end
-      object BitBtn14: TBitBtn
-        Left = 312
+      object btnCadeira: TBitBtn
+        Left = 320
         Height = 62
-        Top = 272
+        Top = 344
         Width = 80
-        Caption = 'Enter'
+        Caption = 'Cadeiras'
+        OnClick = btnCadeiraClick
         TabOrder = 14
+        Visible = False
       end
       object BitBtn15: TBitBtn
         Left = 104

@@ -7,7 +7,8 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, Buttons, DBGrids, MaskEdit, ActnList, Menus, ACBrPosPrinter, udmpdv,
-  uvenda, uRecebimento, uClienteBusca, uNfce, sqldb, db, math, StrUtils, IniFiles, typinfo;
+  uvenda, uRecebimento, uClienteBusca, uNfce, sqldb, db, math, StrUtils, IniFiles,
+  uCadeira, typinfo;
 
 type
 
@@ -34,7 +35,7 @@ type
     BitBtn11: TBitBtn;
     BitBtn12: TBitBtn;
     BitBtn13: TBitBtn;
-    BitBtn14: TBitBtn;
+    btnCadeira: TBitBtn;
     BitBtn15: TBitBtn;
     BitBtn16: TBitBtn;
     BitBtn17: TBitBtn;
@@ -131,6 +132,7 @@ type
     procedure BitBtn21Click(Sender: TObject);
     procedure BitBtn22Click(Sender: TObject);
     procedure BitBtn26Click(Sender: TObject);
+    procedure btnCadeiraClick(Sender: TObject);
     procedure btnDescontoPercentClick(Sender: TObject);
     procedure BitBtn24Click(Sender: TObject);
     procedure BitBtn9Click(Sender: TObject);
@@ -974,6 +976,10 @@ begin
   For N := Low(TACBrPosPrinterModelo) to High(TACBrPosPrinterModelo) do
      cbxModeloPosPrinter.Items.Add(GetEnumName(TypeInfo(TACBrPosPrinterModelo), integer(N) ));
   cbxModeloPosPrinter.ItemIndex := dmPdv.ModeloImp;
+  if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
+  begin
+    btnCadeira.Visible := True;
+  end;
 end;
 
 procedure TfPDV_Rec.BitBtn9Click(Sender: TObject);
@@ -1230,6 +1236,11 @@ end;
 
 procedure TfPDV_Rec.BitBtn26Click(Sender: TObject);
 begin
+end;
+
+procedure TfPDV_Rec.btnCadeiraClick(Sender: TObject);
+begin
+  fCadeira.ShowModal;
 end;
 
 
