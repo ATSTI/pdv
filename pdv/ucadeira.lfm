@@ -1,0 +1,9 @@
+object fCadeira: TfCadeira
+  Left = 358
+  Height = 426
+  Top = 210
+  Width = 694
+  Caption = 'fCadeira'
+  OnCreate = FormCreate
+  LCLVersion = '1.8.4.0'
+end
