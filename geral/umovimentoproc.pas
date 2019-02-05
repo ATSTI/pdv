@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, db, FileUtil, DateTimePicker, Forms, Controls, Graphics,
   Dialogs, ExtCtrls, StdCtrls, DBGrids, ActnList, MaskEdit, Buttons,
-   udmpdv, uabrircaixa, usangria;
+   udmpdv, uabrircaixa, usangria, uVendedorBusca;
 
 type
 
@@ -17,9 +17,9 @@ type
     acBuscar: TAction;
     acFechar: TAction;
     ActionList1: TActionList;
+    BitBtn3: TBitBtn;
     btnSair: TBitBtn;
     btnConfirma: TBitBtn;
-    btnFecharCaixaOdoo: TBitBtn;
     btnProcurar: TBitBtn;
     btnSangria: TBitBtn;
     btnFecharCaixa: TBitBtn;
@@ -29,6 +29,8 @@ type
     edDataFim: TDateTimePicker;
     DBGrid1: TDBGrid;
     edValorBusca: TMaskEdit;
+    edVendedor: TEdit;
+    edVendedorNome: TEdit;
     Label1: TLabel;
     edPedido: TLabeledEdit;
     Label2: TLabel;
@@ -37,6 +39,7 @@ type
     edQtdeLancamento: TMaskEdit;
     Label4: TLabel;
     Label5: TLabel;
+    Label6: TLabel;
     Memo1: TMemo;
     Panel1: TPanel;
     Panel3: TPanel;
@@ -44,6 +47,7 @@ type
     rgStatus: TRadioGroup;
     procedure acBuscarExecute(Sender: TObject);
     procedure acFecharExecute(Sender: TObject);
+    procedure BitBtn3Click(Sender: TObject);
     procedure btnConfirmaClick(Sender: TObject);
     procedure btnFecharCaixaOdooClick(Sender: TObject);
     procedure btnFecharCaixaClick(Sender: TObject);
@@ -130,6 +134,10 @@ begin
       2 : sqlProc += ' AND v.VALOR = ' + vlrBusca;
     end;
   end;
+  if (edVendedor.Text <> '') then
+  begin
+    sqlProc += ' AND m.CODVENDEDOR = ' + edVendedor.Text;
+  end;
   if (edPedido.Text <> '') then
   begin
     sqlProc += ' AND m.CODMOVIMENTO = ' + edPedido.Text;
@@ -161,6 +169,15 @@ end;
 procedure TfMovimentoProc.acFecharExecute(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TfMovimentoProc.BitBtn3Click(Sender: TObject);
+begin
+  if (edVendedor.Text <> '') then
+    fVendedorBusca.uCodVendedor:=StrToInt(edVendedor.Text);
+  fVendedorBusca.ShowModal;
+  edVendedorNome.Text := fVendedorBusca.uNomeVendedor;
+  edVendedor.Text := IntToStr(fVendedorBusca.uCodVendedor);
 end;
 
 procedure TfMovimentoProc.btnConfirmaClick(Sender: TObject);
@@ -217,7 +234,29 @@ begin
 end;
 
 procedure TfMovimentoProc.btnFecharCaixaClick(Sender: TObject);
+var nao_fechado: String;
+  pedido: String;
+  tamanho: Integer;
 begin
+  rgStatus.ItemIndex := 0;
+  acBuscar.Execute;
+  dmPdv.sqBusca.First;
+  nao_fechado := '';
+  while not dmPdv.sqBusca.EOF do
+  begin
+    pedido := IntToStr(dmPdv.sqBusca.FieldByName('CODMOVIMENTO').AsInteger);
+    if ((dmPdv.sqBusca.FieldByName('STATUS').AsInteger = 0) and
+      (dmPdv.sqBusca.FieldByName('VALOR').AsFloat > 0)) then
+    begin
+      nao_fechado += pedido + ', ';
+    end;
+    dmPdv.sqBusca.Next;
+  end;
+  if (nao_fechado <> '') then
+  begin
+    ShowMessage('Existe pedidos nao Encerrados : ' + nao_fechado);
+    Exit;
+  end;
   fAbrirCaixa.AbrirFechar:= 'Fechar';
   fAbrirCaixa.ShowModal;
   acBuscar.Execute;
@@ -254,14 +293,6 @@ end;
 
 procedure TfMovimentoProc.FormCreate(Sender: TObject);
 begin
-  if (dmpdv.usosistema = 'ATS') then
-  begin
-    btnFecharCaixa.visible := true;
-  end
-  else begin
-    btnFecharCaixaOdoo.visible := true;
-
-  end;
   DBGrid1.Columns[0].FieldName:='CODMOVIMENTO';
   DBGrid1.Columns[1].FieldName:='DATAMOVIMENTO';
   DBGrid1.Columns[2].FieldName:='CONTROLE';
