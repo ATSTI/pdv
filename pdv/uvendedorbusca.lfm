@@ -1,25 +1,9 @@
 inherited fVendedorBusca: TfVendedorBusca
   Caption = 'Busca Vendedor'
   OnShow = FormShow
-  inherited Panel1: TPanel
-    inherited Edit1: TEdit
-      Height = 29
-    end
-    inherited Label1: TLabel
-      Height = 21
-      Width = 41
-    end
-    inherited Edit2: TEdit
-      Height = 29
-    end
-    inherited chInativo: TCheckBox
-      Height = 21
-      Width = 60
-    end
-  end
   inherited Panel2: TPanel
-    inherited btnPROC: TImage
-      OnClick = btnPROCClick
+    inherited btnProcurar: TBitBtn
+      OnClick = btnProcurarClick
     end
   end
   inherited DBGrid1: TDBGrid
@@ -44,7 +28,6 @@ inherited fVendedorBusca: TfVendedorBusca
         Visible = False
       end>
     DataSource = dsVendedor
-    Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
     OnCellClick = DBGrid1CellClick
   end
   object dsVendedor: TDataSource[3]

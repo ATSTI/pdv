@@ -1,31 +1,30 @@
 inherited fClienteBusca: TfClienteBusca
+  Left = 410
+  Top = 117
+  Width = 696
   Caption = 'Busca Clientes'
+  ClientWidth = 696
   OnShow = FormShow
   inherited Panel1: TPanel
+    Width = 696
+    ClientWidth = 696
     inherited Edit1: TEdit
-      Height = 29
-      Width = 128
+      Width = 112
       OnKeyPress = Edit1KeyPress
     end
     inherited Label1: TLabel
       Left = 24
-      Height = 21
       Top = 8
       Width = 54
       Caption = 'Código'
     end
     inherited Edit2: TEdit
-      Left = 272
-      Height = 29
-      Width = 504
+      Left = 264
+      Width = 416
       OnKeyPress = Edit2KeyPress
     end
-    inherited chInativo: TCheckBox
-      Height = 21
-      Width = 60
-    end
     object Label2: TLabel[4]
-      Left = 224
+      Left = 208
       Height = 21
       Top = 8
       Width = 45
@@ -54,20 +53,40 @@ inherited fClienteBusca: TfClienteBusca
     end
   end
   inherited Panel2: TPanel
-    inherited btnPROC: TImage
-      OnClick = btnPROCClick
+    Left = 637
+    Width = 59
+    ClientWidth = 59
+    inherited btnProcurar: TBitBtn
+      Left = 4
+      OnClick = btnProcurarClick
+      TabOrder = 1
+    end
+    inherited btnGravar: TBitBtn
+      Left = 4
+      TabOrder = 0
+    end
+    inherited btnExcluir: TBitBtn
+      Left = 4
+    end
+    inherited btnSair1: TBitBtn
+      Left = 4
     end
   end
   inherited DBGrid1: TDBGrid
+    Width = 637
     Columns = <    
       item
         PickList.Strings = (        )
         Title.Caption = 'Title'
+        Width = 100
+        FieldName = 'Código'
       end    
       item
+        MaxSize = 500
         PickList.Strings = (        )
         Title.Caption = 'Title'
-        Width = 300
+        Width = 500
+        FieldName = 'Cliente'
       end    
       item
         PickList.Strings = (        )
@@ -80,11 +99,12 @@ inherited fClienteBusca: TfClienteBusca
         Visible = False
       end>
     DataSource = dsCliente
+    Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
     OnCellClick = DBGrid1CellClick
   end
   object dsCliente: TDataSource[3]
     DataSet = dmPdv.sqBusca
-    left = 168
-    top = 40
+    left = 760
+    top = 352
   end
 end

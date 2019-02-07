@@ -1,7 +1,7 @@
 object fPdv: TfPdv
-  Left = 172
+  Left = 328
   Height = 607
-  Top = 30
+  Top = 45
   Width = 1100
   Align = alLeft
   Caption = 'Ponto de Venda - ATS'
@@ -701,9 +701,9 @@ object fPdv: TfPdv
       end
       object Label12: TLabel
         Left = 19
-        Height = 15
+        Height = 14
         Top = 29
-        Width = 44
+        Width = 50
         Caption = 'Incluir-F2'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clWindowFrame
@@ -717,9 +717,9 @@ object fPdv: TfPdv
       end
       object Label2: TLabel
         Left = 87
-        Height = 15
+        Height = 14
         Top = 29
-        Width = 45
+        Width = 53
         Caption = 'Vendas-F8'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clWindowFrame
@@ -732,9 +732,9 @@ object fPdv: TfPdv
       end
       object Label1: TLabel
         Left = 150
-        Height = 15
+        Height = 14
         Top = 29
-        Width = 51
+        Width = 62
         Caption = 'Receber-F4'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clWindowFrame
@@ -11907,7 +11907,7 @@ object fPdv: TfPdv
         Left = 35
         Height = 15
         Top = 23
-        Width = 152
+        Width = 153
         Caption = 'PDV Versão : 1.0 - 01/08/2018'
         Font.Color = clWhite
         ParentColor = False
@@ -12054,161 +12054,6 @@ object fPdv: TfPdv
         Font.Color = clWhite
         ParentColor = False
         ParentFont = False
-      end
-    end
-    object pnAltera: TPanel
-      Left = 80
-      Height = 247
-      Top = 76
-      Width = 413
-      BorderStyle = bsSingle
-      ClientHeight = 243
-      ClientWidth = 409
-      Color = 9453095
-      ParentColor = False
-      TabOrder = 3
-      Visible = False
-      object edQtde1: TMaskEdit
-        Left = 163
-        Height = 35
-        Top = 48
-        Width = 127
-        Alignment = taRightJustify
-        CharCase = ecNormal
-        Color = clWhite
-        Enabled = False
-        Font.CharSet = ANSI_CHARSET
-        Font.Color = clBlack
-        Font.Height = -19
-        Font.Name = 'Comic Sans MS'
-        Font.Pitch = fpVariable
-        Font.Quality = fqDraft
-        Font.Style = [fsBold]
-        MaxLength = 0
-        ParentFont = False
-        TabOrder = 0
-        OnKeyPress = edQtde1KeyPress
-        Text = '1'
-        SpaceChar = '_'
-      end
-      object Label17: TLabel
-        Left = 88
-        Height = 26
-        Top = 53
-        Width = 56
-        Caption = 'Qtde.:'
-        Font.CharSet = ANSI_CHARSET
-        Font.Color = clWhite
-        Font.Height = -19
-        Font.Name = 'Comic Sans MS'
-        Font.Pitch = fpVariable
-        Font.Quality = fqDraft
-        ParentColor = False
-        ParentFont = False
-      end
-      object Label18: TLabel
-        Left = 80
-        Height = 23
-        Top = 100
-        Width = 85
-        Caption = 'Valor Unit.:'
-        Font.CharSet = ANSI_CHARSET
-        Font.Color = clWhite
-        Font.Height = -16
-        Font.Name = 'Comic Sans MS'
-        Font.Pitch = fpVariable
-        Font.Quality = fqDraft
-        ParentColor = False
-        ParentFont = False
-      end
-      object edPreco1: TMaskEdit
-        Left = 177
-        Height = 35
-        Top = 93
-        Width = 112
-        Alignment = taRightJustify
-        CharCase = ecNormal
-        Font.CharSet = ANSI_CHARSET
-        Font.Height = -19
-        Font.Name = 'Comic Sans MS'
-        Font.Pitch = fpVariable
-        Font.Quality = fqDraft
-        Font.Style = [fsBold]
-        MaxLength = 0
-        ParentFont = False
-        TabOrder = 1
-        OnChange = edPrecoChange
-        OnKeyPress = edPreco1KeyPress
-        Text = '0,00'
-        SpaceChar = '_'
-      end
-      object Label19: TLabel
-        Left = 104
-        Height = 15
-        Top = 140
-        Width = 53
-        Caption = 'Desconto:'
-        Font.Color = clWhite
-        ParentColor = False
-        ParentFont = False
-      end
-      object edDesconto1: TMaskEdit
-        Left = 176
-        Height = 31
-        Top = 136
-        Width = 112
-        Alignment = taRightJustify
-        CharCase = ecNormal
-        Font.CharSet = ANSI_CHARSET
-        Font.Height = -16
-        Font.Name = 'Comic Sans MS'
-        Font.Pitch = fpVariable
-        Font.Quality = fqDraft
-        MaxLength = 0
-        ParentFont = False
-        TabOrder = 2
-        OnChange = edDesconto1Change
-        OnKeyPress = edDesconto1KeyPress
-        Text = '0,00'
-        SpaceChar = '_'
-      end
-      object cbPercentual1: TCheckBox
-        Left = 293
-        Height = 19
-        Top = 140
-        Width = 30
-        Caption = '%'
-        TabOrder = 3
-      end
-      object BitBtn10: TBitBtn
-        Left = 240
-        Height = 37
-        Top = 184
-        Width = 42
-        Glyph.Data = {
-          76020000424D7602000000000000760000002800000020000000200000000100
-          0400000000000002000000000000000000001000000000000000000000000000
-          8000008000000080800080000000800080008080000080808000C0C0C0000000
-          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00888887788877
-          88877888000887788888888788877888778887780EE088877888888877888778
-          887788870EE607888778877888778887788877880EE660778887888778887788
-          877888770EE666007788878887788877888778880EE666600077800000000000
-          008887780EE666660000888888888888807788870EE666660778888888888888
-          800077880EE666660778888888888887800000000EE666660778888888888807
-          707777770EE666660778888888888800707777770EE666660778888888888806
-          007777770EE666660778888888888806607777770EE60066077888888777770E
-          660777770EE07066077888887777770EE66077770EE0F066077888800000000E
-          EE6607770EE60066077888066666666EEEE660770EE666660778880EEEEEEEEE
-          EEEE66070EE666660778880EEFFFFFFFFFFEE6070EE666660778880EEEEEEEEE
-          EFEE60770EE66666077888800000000EFEE607770EE66666077888888888880E
-          EE6077770EE66666077888888888880EE60777770EE66666077888888888880E
-          607777770EE6666607788888888888060077777770EE66660778888888888800
-          80777777770EE6660778888888888888807777777770EE660778888888888888
-          8077777777770EE6077888888888888880777777777770EE0788888888888888
-          8000000000000000088888888888888888888888888888888888
-        }
-        OnClick = BitBtn10Click
-        TabOrder = 4
       end
     end
     object pnProdBusca: TPanel
@@ -12416,7 +12261,7 @@ object fPdv: TfPdv
         Left = 72
         Height = 22
         Top = 72
-        Width = 281
+        Width = 276
         Caption = 'PRODUTO NÃO LOCALIZADO '
         Font.CharSet = ANSI_CHARSET
         Font.Height = -19
@@ -12435,6 +12280,161 @@ object fPdv: TfPdv
         Color = clRed
         ReadOnly = True
         TabOrder = 1
+      end
+    end
+    object pnAltera: TPanel
+      Left = 80
+      Height = 247
+      Top = 76
+      Width = 413
+      BorderStyle = bsSingle
+      ClientHeight = 243
+      ClientWidth = 409
+      Color = 9453095
+      ParentColor = False
+      TabOrder = 3
+      Visible = False
+      object edQtde1: TMaskEdit
+        Left = 163
+        Height = 35
+        Top = 48
+        Width = 127
+        Alignment = taRightJustify
+        CharCase = ecNormal
+        Color = clWhite
+        Enabled = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -19
+        Font.Name = 'Comic Sans MS'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        MaxLength = 0
+        ParentFont = False
+        TabOrder = 0
+        OnKeyPress = edQtde1KeyPress
+        Text = '1'
+        SpaceChar = '_'
+      end
+      object Label17: TLabel
+        Left = 88
+        Height = 26
+        Top = 53
+        Width = 56
+        Caption = 'Qtde.:'
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clWhite
+        Font.Height = -19
+        Font.Name = 'Comic Sans MS'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        ParentColor = False
+        ParentFont = False
+      end
+      object Label18: TLabel
+        Left = 80
+        Height = 23
+        Top = 100
+        Width = 85
+        Caption = 'Valor Unit.:'
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clWhite
+        Font.Height = -16
+        Font.Name = 'Comic Sans MS'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        ParentColor = False
+        ParentFont = False
+      end
+      object edPreco1: TMaskEdit
+        Left = 177
+        Height = 35
+        Top = 93
+        Width = 112
+        Alignment = taRightJustify
+        CharCase = ecNormal
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -19
+        Font.Name = 'Comic Sans MS'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        MaxLength = 0
+        ParentFont = False
+        TabOrder = 1
+        OnChange = edPrecoChange
+        OnKeyPress = edPreco1KeyPress
+        Text = '0,00'
+        SpaceChar = '_'
+      end
+      object Label19: TLabel
+        Left = 104
+        Height = 15
+        Top = 140
+        Width = 53
+        Caption = 'Desconto:'
+        Font.Color = clWhite
+        ParentColor = False
+        ParentFont = False
+      end
+      object edDesconto1: TMaskEdit
+        Left = 176
+        Height = 31
+        Top = 136
+        Width = 112
+        Alignment = taRightJustify
+        CharCase = ecNormal
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -16
+        Font.Name = 'Comic Sans MS'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        MaxLength = 0
+        ParentFont = False
+        TabOrder = 2
+        OnChange = edDesconto1Change
+        OnKeyPress = edDesconto1KeyPress
+        Text = '0,00'
+        SpaceChar = '_'
+      end
+      object cbPercentual1: TCheckBox
+        Left = 293
+        Height = 19
+        Top = 140
+        Width = 30
+        Caption = '%'
+        TabOrder = 3
+      end
+      object BitBtn10: TBitBtn
+        Left = 240
+        Height = 37
+        Top = 184
+        Width = 42
+        Glyph.Data = {
+          76020000424D7602000000000000760000002800000020000000200000000100
+          0400000000000002000000000000000000001000000000000000000000000000
+          8000008000000080800080000000800080008080000080808000C0C0C0000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00888887788877
+          88877888000887788888888788877888778887780EE088877888888877888778
+          887788870EE607888778877888778887788877880EE660778887888778887788
+          877888770EE666007788878887788877888778880EE666600077800000000000
+          008887780EE666660000888888888888807788870EE666660778888888888888
+          800077880EE666660778888888888887800000000EE666660778888888888807
+          707777770EE666660778888888888800707777770EE666660778888888888806
+          007777770EE666660778888888888806607777770EE60066077888888777770E
+          660777770EE07066077888887777770EE66077770EE0F066077888800000000E
+          EE6607770EE60066077888066666666EEEE660770EE666660778880EEEEEEEEE
+          EEEE66070EE666660778880EEFFFFFFFFFFEE6070EE666660778880EEEEEEEEE
+          EFEE60770EE66666077888800000000EFEE607770EE66666077888888888880E
+          EE6077770EE66666077888888888880EE60777770EE66666077888888888880E
+          607777770EE6666607788888888888060077777770EE66660778888888888800
+          80777777770EE6660778888888888888807777777770EE660778888888888888
+          8077777777770EE6077888888888888880777777777770EE0788888888888888
+          8000000000000000088888888888888888888888888888888888
+        }
+        OnClick = BitBtn10Click
+        TabOrder = 4
       end
     end
   end

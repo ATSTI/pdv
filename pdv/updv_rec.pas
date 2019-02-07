@@ -30,71 +30,57 @@ type
     acNfce: TAction;
     acVoltarVenda: TAction;
     ActionListFechamento: TActionList;
-    BitBtn1: TBitBtn;
-    BitBtn10: TBitBtn;
-    BitBtn11: TBitBtn;
-    BitBtn12: TBitBtn;
-    BitBtn13: TBitBtn;
-    btnCadeira: TBitBtn;
-    BitBtn15: TBitBtn;
+    btnCupom: TBitBtn;
     BitBtn16: TBitBtn;
     BitBtn17: TBitBtn;
     BitBtn18: TBitBtn;
     BitBtn19: TBitBtn;
-    BitBtn2: TBitBtn;
     BitBtn20: TBitBtn;
-    BitBtn21: TBitBtn;
     BitBtn22: TBitBtn;
-    BitBtn27: TBitBtn;
-    btnDescontoPercent: TBitBtn;
-    btnDescontoValor: TBitBtn;
     BitBtn24: TBitBtn;
     BitBtn25: TBitBtn;
-    BitBtn3: TBitBtn;
-    BitBtn4: TBitBtn;
-    BitBtn5: TBitBtn;
-    BitBtn6: TBitBtn;
-    BitBtn7: TBitBtn;
-    BitBtn8: TBitBtn;
+    BitBtn27: TBitBtn;
+    btnCadeira: TBitBtn;
     BitBtn9: TBitBtn;
     btnDsc: TBitBtn;
     chkPercent: TCheckBox;
     cbxModeloPosPrinter: TComboBox;
-    dsPag: TDataSource;
     DBGrid1: TDBGrid;
+    dsPag: TDataSource;
+    edCupom: TEdit;
     edParcela: TEdit;
+    edRestante: TMaskEdit;
+    edTroco: TMaskEdit;
+    edValorTotal: TMaskEdit;
+    edDesconto: TMaskEdit;
     edValorVendaTotal: TMaskEdit;
     edVDesconto: TMaskEdit;
     edVendedor: TMaskEdit;
-    Edit2: TEdit;
     edCliente: TMaskEdit;
     GroupBox1: TGroupBox;
     GroupBox2: TGroupBox;
     GroupBox3: TGroupBox;
     edPagamento: TMaskEdit;
     Label1: TLabel;
+    Label10: TLabel;
     Label2: TLabel;
-    Label3: TLabel;
+    lblCupom: TLabel;
+    lblStatus: TLabel;
     Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
     Label7: TLabel;
     Label8: TLabel;
-    lblParcela: TLabel;
-    lblStatus: TLabel;
+    Label9: TLabel;
     lblForma: TLabel;
-    edValorTotal: TMaskEdit;
-    edDesconto: TMaskEdit;
+    lblParcela: TLabel;
     edValorPago: TMaskEdit;
-    edRestante: TMaskEdit;
-    edTroco: TMaskEdit;
     MemoImp: TMemo;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
     Panel1: TPanel;
-    Panel2: TPanel;
     Panel3: TPanel;
     Panel4: TPanel;
     PopupMenu1: TPopupMenu;
@@ -133,15 +119,22 @@ type
     procedure BitBtn22Click(Sender: TObject);
     procedure BitBtn26Click(Sender: TObject);
     procedure btnCadeiraClick(Sender: TObject);
+    procedure btnCupomClick(Sender: TObject);
     procedure btnDescontoPercentClick(Sender: TObject);
     procedure BitBtn24Click(Sender: TObject);
     procedure BitBtn9Click(Sender: TObject);
     procedure btnDscClick(Sender: TObject);
     procedure edPagamentoKeyPress(Sender: TObject; var Key: char);
+    procedure edPagoChange(Sender: TObject);
+    procedure edParcelaChange(Sender: TObject);
     procedure edParcelaKeyPress(Sender: TObject; var Key: char);
+    procedure edRestanteChange(Sender: TObject);
+    procedure edTrocoChange(Sender: TObject);
     procedure edVDescontoKeyPress(Sender: TObject; var Key: char);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure GroupBox2Click(Sender: TObject);
+    procedure lblParcelaClick(Sender: TObject);
   private
     serie_cx: String;
     num_cx: Integer;
@@ -189,9 +182,9 @@ begin
   lblParcela.Visible:= False;
   edParcela.Visible := False;
   edParcela.Text := '1';
-  edValorPago.Color := clWhite;
   edVDesconto.Color := clWhite;
   edPagamento.Color := clWhite;
+  edValorPago.Color := clWhite;
   lblStatus.Caption := 'Fechamento.';
   vStatus := 0;
 
@@ -211,6 +204,16 @@ begin
   calcula_total;
   edVDesconto.SetFocus;
   edPagamento.SetFocus;
+end;
+
+procedure TfPDV_Rec.GroupBox2Click(Sender: TObject);
+begin
+
+end;
+
+procedure TfPDV_Rec.lblParcelaClick(Sender: TObject);
+begin
+
 end;
 
 function TfPDV_Rec.RemoveAcento(Str: string): string;
@@ -926,13 +929,23 @@ begin
         if vCliente = dmPdv.clientePadrao then
         begin
           ShowMessage('Informe o Cliente');
-          BitBtn12.Click;
+
           Exit;
         end;
       end;
       registra_valores(strParaFloat(edPagamento.Text));
     end;
   end;
+end;
+
+procedure TfPDV_Rec.edPagoChange(Sender: TObject);
+begin
+
+end;
+
+procedure TfPDV_Rec.edParcelaChange(Sender: TObject);
+begin
+
 end;
 
 procedure TfPDV_Rec.edParcelaKeyPress(Sender: TObject; var Key: char);
@@ -947,13 +960,22 @@ begin
         if vCliente = dmPdv.clientePadrao then
         begin
           ShowMessage('Informe o Cliente');
-          BitBtn12.Click;
           Exit;
         end;
       end;
       registra_valores(strParaFloat(edPagamento.Text));
     end;
   end;
+end;
+
+procedure TfPDV_Rec.edRestanteChange(Sender: TObject);
+begin
+
+end;
+
+procedure TfPDV_Rec.edTrocoChange(Sender: TObject);
+begin
+
 end;
 
 procedure TfPDV_Rec.edVDescontoKeyPress(Sender: TObject; var Key: char);
@@ -1241,6 +1263,12 @@ end;
 procedure TfPDV_Rec.btnCadeiraClick(Sender: TObject);
 begin
   fCadeira.ShowModal;
+end;
+
+procedure TfPDV_Rec.btnCupomClick(Sender: TObject);
+begin
+  edCupom.Visible:=true;
+  lblCupom.Visible:=true;
 end;
 
 

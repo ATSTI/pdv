@@ -14,7 +14,7 @@ type
 
   TfVendedorBusca = class(TfPadraoBusca)
     dsVendedor: TDataSource;
-    procedure btnPROCClick(Sender: TObject);
+    procedure btnProcurarClick(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
     procedure FormShow(Sender: TObject);
   private
@@ -34,7 +34,9 @@ implementation
 
 { TfVendedorBusca }
 
-procedure TfVendedorBusca.btnPROCClick(Sender: TObject);
+
+
+procedure TfVendedorBusca.btnProcurarClick(Sender: TObject);
 var sql: String;
 begin
   if (dmPdv.sqBusca.Active) then
@@ -56,6 +58,7 @@ begin
   sql := 'SELECT * FROM USUARIO' + sql;
   dmPdv.sqBusca.SQL.Text := sql;
   dmPdv.sqBusca.Open;
+
 end;
 
 procedure TfVendedorBusca.DBGrid1CellClick(Column: TColumn);
@@ -68,6 +71,8 @@ procedure TfVendedorBusca.FormShow(Sender: TObject);
 begin
   DBGrid1.Columns[0].FieldName := 'CODUSUARIO';
   DBGrid1.Columns[1].FieldName := 'NOMEUSUARIO';
+  DBGrid1.Columns[1].Title.Caption:='Vendedor';
+  DBGrid1.Columns[0].Title.Caption:='Código';
   uNomeVendedor:='';
 end;
 

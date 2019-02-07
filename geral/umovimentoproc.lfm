@@ -705,7 +705,7 @@ object fMovimentoProc: TfMovimentoProc
     TabOrder = 2
     object edValorTotal: TMaskEdit
       Left = 912
-      Height = 29
+      Height = 26
       Top = 2
       Width = 80
       Alignment = taRightJustify
@@ -724,7 +724,7 @@ object fMovimentoProc: TfMovimentoProc
     end
     object edQtdeLancamento: TMaskEdit
       Left = 696
-      Height = 29
+      Height = 26
       Top = 2
       Width = 80
       Alignment = taRightJustify

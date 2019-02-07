@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  StdCtrls, DBGrids, uPadraoBusca, db, udmpdv;
+  StdCtrls, DBGrids, Buttons, uPadraoBusca, db, udmpdv;
 
 type
 
@@ -16,7 +16,7 @@ type
     chCurso: TCheckBox;
     dsCliente: TDataSource;
     Label2: TLabel;
-    procedure btnPROCClick(Sender: TObject);
+    procedure btnProcurarClick(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
     procedure Edit1KeyPress(Sender: TObject; var Key: char);
     procedure Edit2KeyPress(Sender: TObject; var Key: char);
@@ -38,10 +38,13 @@ implementation
 
 { TfClienteBusca }
 
-procedure TfClienteBusca.btnPROCClick(Sender: TObject);
+
+
+procedure TfClienteBusca.btnProcurarClick(Sender: TObject);
 begin
-  Procurar();
+    Procurar();
 end;
+
 
 procedure TfClienteBusca.DBGrid1CellClick(Column: TColumn);
 begin
@@ -75,6 +78,8 @@ begin
   //dmPdv.IbCon.Connected:=True;
   DBGrid1.Columns[0].FieldName := 'CODCLIENTE';
   DBGrid1.Columns[1].FieldName := 'NOMECLIENTE';
+  DBGrid1.Columns[0].Title.Caption:='Código';
+  DBGrid1.Columns[1].Title.Caption:='Cliente';
   cNomeCliente:='';
 end;
 
@@ -82,8 +87,6 @@ procedure TfClienteBusca.Procurar();
 var sql: String;
 begin
   sql := '';
-  DBGrid1.Columns[0].FieldName := 'CODCLIENTE';
-  DBGrid1.Columns[1].FieldName := 'NOMECLIENTE';
   if (dmPdv.sqBusca.Active) then
     dmPdv.sqBusca.Close;
   dmPdv.sqBusca.SQL.Clear;
