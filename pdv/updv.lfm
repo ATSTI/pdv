@@ -12,7 +12,7 @@ object fPdv: TfPdv
   OnShow = FormShow
   PopupMenu = PopupMenu1
   Position = poWorkAreaCenter
-  LCLVersion = '1.8.4.0'
+  LCLVersion = '2.0.0.4'
   WindowState = wsMaximized
   object Panel1: TPanel
     Left = 0
@@ -103,7 +103,7 @@ object fPdv: TfPdv
       Left = 272
       Height = 22
       Top = 56
-      Width = 120
+      Width = 131
       Caption = 'Finalizar venda'
       Font.CharSet = ANSI_CHARSET
       Font.Color = clWhite
@@ -120,7 +120,7 @@ object fPdv: TfPdv
       Left = 400
       Height = 22
       Top = 57
-      Width = 123
+      Width = 134
       Caption = 'Cancelar Venda'
       Font.CharSet = ANSI_CHARSET
       Font.Color = clWhite
@@ -742,15 +742,34 @@ object fPdv: TfPdv
         ShowHint = True
         TabOrder = 3
       end
-      object TIButton2: TTIButton
+      object btnInfo: TBitBtn
         Left = 176
         Height = 45
-        Hint = 'Devolução / Troca'
         Top = 0
         Width = 52
-        Caption = 'Devol / Troca'
-        ParentShowHint = False
-        ShowHint = True
+        Glyph.Data = {
+          76020000424D7602000000000000760000002800000020000000200000000100
+          0400000000000002000000000000000000001000000000000000000000000000
+          80000080000000808000800000008000800080800000C0C0C000808080000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF008880FFFFFFFF
+          FFFFF0080FFFFFFFFFFFF8880FFFFFFFFFFFF08780FFFFFFFFFFFF8880FFFFFF
+          FFFF0877880FFFFFFFFFFFF8800FFFFFFFF087788880FFFFFFFFFFFF0080FFFF
+          FF08778FF8880FFFFFFFFFFF08780FFFF08778FFFF8880FFFFFFFFF0877880FF
+          08778FFFFFF8880FFFFFFF08778888000778FFFFFFFF8880FFFFF08778FF8880
+          078FFF00FFFFF8800FFF08778FFFF88808FFFF0F0FFFFF0080FF8778FFFFFF88
+          80FF0F0FFFFFFF08780F778FF0FFFFF8880FF00FFFFFF087788078FF0FFFFFFF
+          8800FFFFFFFF087788888FF0F0F0FFFFF0080FFFFFF08778FF880FF0FF0FFFFF
+          F08780FFFF08778FFFF880FF00FFFFFF0877880FF08778FFFFFF800FFFFFFFF0
+          8778888000778FF0FFFF0080FFFFFF08778FF8880078FFF0FFFF08780FFFF087
+          78FFFF88808FF00000FF877880FF08778FFFFFF8880FFFF0FFFF778888000778
+          FFF0FFFF8880FFF0FFFF78FF8880078FF0FF0FFFF8800FFFFFFF8FFFF88808FF
+          0F0F0FFFFF0080FFFFFFFFFFFF8880FF0FF0FFFFFF08780FFFF0FFFFFFF8880F
+          F0FFFFFFF0877880FF08F00FFFFF8800FFFFFFFF0877888800070F0FFFFFF008
+          0FFFFFF08778FF888007FF000FFFF08780FFFF08778FFFF88800FFFF0FFF0877
+          880FF08778FF0FFF8880FFF0FFF08778888000778FF0F0FFF888FFF0FF08778F
+          F8880078FF0FF0FFFF88FFFFF08778FFFF88808FF0FFF0FFFFF8
+        }
+        OnClick = btnInfoClick
         TabOrder = 4
       end
     end
@@ -12175,7 +12194,7 @@ object fPdv: TfPdv
         Left = 35
         Height = 15
         Top = 23
-        Width = 153
+        Width = 152
         Caption = 'PDV Versão : 1.0 - 01/08/2018'
         Font.Color = clWhite
         ParentColor = False
@@ -12403,14 +12422,7 @@ object fPdv: TfPdv
         Height = 23
         Top = 12
         Width = 344
-        EditLabel.AnchorSideTop.Control = edBuscaDetalhe
-        EditLabel.AnchorSideTop.Side = asrCenter
-        EditLabel.AnchorSideRight.Control = edBuscaDetalhe
-        EditLabel.AnchorSideBottom.Control = edBuscaDetalhe
-        EditLabel.AnchorSideBottom.Side = asrBottom
-        EditLabel.Left = 50
         EditLabel.Height = 15
-        EditLabel.Top = 16
         EditLabel.Width = 51
         EditLabel.Caption = 'Descrição'
         EditLabel.ParentColor = False
@@ -12531,16 +12543,84 @@ object fPdv: TfPdv
         end
       end
     end
-  end
-  object btnInfo: TBitBtn
-    Left = 88
-    Height = 37
-    Top = 568
-    Width = 40
-    Caption = '?'
-    OnClick = btnInfoClick
-    TabOrder = 3
-    Visible = False
+    object pnTroca: TPanel
+      Left = 155
+      Height = 262
+      Top = 117
+      Width = 470
+      ClientHeight = 262
+      ClientWidth = 470
+      TabOrder = 6
+      Visible = False
+      object Label1: TLabel
+        Left = 160
+        Height = 15
+        Top = 40
+        Width = 119
+        Caption = 'TROCA / DEVOLUÇÃO'
+        ParentColor = False
+      end
+      object edMotivo: TEdit
+        Left = 112
+        Height = 23
+        Top = 88
+        Width = 228
+        TabOrder = 0
+      end
+      object Label2: TLabel
+        Left = 57
+        Height = 15
+        Top = 86
+        Width = 38
+        Caption = 'Motivo'
+        ParentColor = False
+      end
+      object BitBtn13: TBitBtn
+        Left = 288
+        Height = 45
+        Hint = 'Sair - F9'
+        Top = 168
+        Width = 52
+        Glyph.Data = {
+          76020000424D7602000000000000760000002800000020000000200000000100
+          0400000000000002000000000000000000001000000000000000000000000000
+          8000008000000080800080000000800080008080000080808000C0C0C0000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00888887788877
+          88877888000887788888888788877888778887780EE088877888888877888778
+          887788870EE607888778877888778887788877880EE660778887888778887788
+          877888770EE666007788878887788877888778880EE666600077800000000000
+          008887780EE666660000888888888888807788870EE666660778888888888888
+          800077880EE666660778888888888887800000000EE666660778888888888807
+          707777770EE666660778888888888800707777770EE666660778888888888806
+          007777770EE666660778888888888806607777770EE60066077888888777770E
+          660777770EE07066077888887777770EE66077770EE0F066077888800000000E
+          EE6607770EE60066077888066666666EEEE660770EE666660778880EEEEEEEEE
+          EEEE66070EE666660778880EEFFFFFFFFFFEE6070EE666660778880EEEEEEEEE
+          EFEE60770EE66666077888800000000EFEE607770EE66666077888888888880E
+          EE6077770EE66666077888888888880EE60777770EE66666077888888888880E
+          607777770EE6666607788888888888060077777770EE66660778888888888800
+          80777777770EE6660778888888888888807777777770EE660778888888888888
+          8077777777770EE6077888888888888880777777777770EE0788888888888888
+          8000000000000000088888888888888888888888888888888888
+        }
+        OnClick = BitBtn13Click
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 1
+      end
+      object TIButton2: TTIButton
+        Left = 128
+        Height = 45
+        Hint = 'Devolução / Troca'
+        Top = 168
+        Width = 156
+        Caption = 'Devolução / Troca'
+        OnClick = TIButton2Click
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 2
+      end
+    end
   end
   object dsLanc: TDataSource
     DataSet = dmPdv.sqLancamentos
@@ -12595,6 +12675,14 @@ object fPdv: TfPdv
     object MenuItem3: TMenuItem
       Action = acExcluirItemPedido
       Caption = 'Exluir Item/Pedido'
+    end
+    object MenuItem5: TMenuItem
+      Caption = 'Troca/Devolução'
+      OnClick = MenuItem5Click
+    end
+    object MenuItem6: TMenuItem
+      Caption = 'Informações'
+      OnClick = MenuItem6Click
     end
     object MenuItem4: TMenuItem
       Action = acFechar

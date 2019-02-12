@@ -7,8 +7,8 @@ interface
 uses
   Classes, SysUtils, db, FileUtil, SynEdit, RTTICtrls, Forms, Controls,
   Graphics, Dialogs, ExtCtrls, StdCtrls, Buttons, MaskEdit, DBGrids, ActnList,
-  Menus, dateutils, uMovimento, uVendedorBusca, uClienteBusca, uPermissao,
-  Grids,  MTProcs;
+  Menus, dateutils, uMovimento, uCompraCls, uUtil, uVendedorBusca,
+  uClienteBusca, uPermissao, Grids, MTProcs, strutils;
 
 type
 
@@ -26,6 +26,7 @@ type
     BitBtn10: TBitBtn;
     BitBtn11: TBitBtn;
     BitBtn12: TBitBtn;
+    BitBtn13: TBitBtn;
     BitBtn2: TBitBtn;
     BitBtn3: TBitBtn;
     BitBtn4: TBitBtn;
@@ -56,6 +57,7 @@ type
     edClienteNome: TEdit;
     edDesconto: TMaskEdit;
     edDesconto1: TMaskEdit;
+    edMotivo: TEdit;
     edPreco: TMaskEdit;
     edProdNao: TEdit;
     edPreco1: TMaskEdit;
@@ -72,6 +74,7 @@ type
     Image3: TImage;
     Image4: TImage;
     Image5: TImage;
+    Label1: TLabel;
     Label10: TLabel;
     Label11: TLabel;
     Label13: TLabel;
@@ -82,6 +85,7 @@ type
     Label18: TLabel;
     Label19: TLabel;
     edBuscaDetalhe: TLabeledEdit;
+    Label2: TLabel;
     Label20: TLabel;
     Label21: TLabel;
     Label6: TLabel;
@@ -101,6 +105,8 @@ type
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
+    MenuItem5: TMenuItem;
+    MenuItem6: TMenuItem;
     Panel1: TPanel;
     Panel10: TPanel;
     Panel11: TPanel;
@@ -123,6 +129,7 @@ type
     Panel9: TPanel;
     pnInfo: TPanel;
     pnQtde: TPanel;
+    pnTroca: TPanel;
     PopupMenu1: TPopupMenu;
     TIButton2: TTIButton;
     procedure acConsultaItemExecute(Sender: TObject);
@@ -135,6 +142,7 @@ type
     procedure BitBtn10Click(Sender: TObject);
     procedure BitBtn11Click(Sender: TObject);
     procedure BitBtn12Click(Sender: TObject);
+    procedure BitBtn13Click(Sender: TObject);
     procedure btnProdutoProc1Click(Sender: TObject);
     procedure btnProdutoProcClick(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
@@ -185,13 +193,17 @@ type
     procedure Image1Click(Sender: TObject);
     procedure Image2Click(Sender: TObject);
     procedure Image3Click(Sender: TObject);
+    procedure MenuItem5Click(Sender: TObject);
+    procedure MenuItem6Click(Sender: TObject);
     procedure Panel2Click(Sender: TObject);
     procedure btnVendaClick(Sender: TObject);
     procedure Panel6Click(Sender: TObject);
+    procedure TIButton2Click(Sender: TObject);
     procedure TIGroupBox1Click(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
   private
+    ch_cp: String;
     e_comanda: String;
     statusPedido: Integer;
     consultaItem: String;
@@ -205,6 +217,7 @@ type
     qtdeAtacado: Double;
     estoque: Double;
     vTotDesc: Double;
+    vTotGeral: Double;
     caixa_local: Integer; // Sessao Caixa
     codCliente: Integer;
     codCaixa: Integer; // cod Usuario
@@ -229,6 +242,8 @@ type
     procedure executaIntegracao(Index: PtrInt; Data: Pointer; Item: TMultiThreadProcItem);
     procedure Executa(script: String);
     procedure buscaPedidoComanda(codComanda: String);
+    procedure trocaDevolucao;
+    procedure imprimirCupomTroca;
   public
 
   end;
@@ -325,7 +340,8 @@ end;
 
 procedure TfPdv.edPrecoChange(Sender: TObject);
 begin
-  calculaTotal();
+  if (edPreco.Text <> '0,00') then
+    calculaTotal();
 end;
 
 procedure TfPdv.edPrecoKeyPress(Sender: TObject; var Key: char);
@@ -604,6 +620,11 @@ begin
   edProduto.SetFocus;
 end;
 
+procedure TfPdv.BitBtn13Click(Sender: TObject);
+begin
+  pnTroca.Visible := False;
+end;
+
 procedure TfPdv.btnProdutoProc1Click(Sender: TObject);
 begin
 
@@ -732,8 +753,7 @@ end;
 
 procedure TfPdv.btnInfoClick(Sender: TObject);
 begin
-  pnInfo.Visible:=True;
-  fExecutaIntegracao.ShowModal;
+  PopupMenu1.PopUp;
 end;
 
 procedure TfPdv.btnNovoClick(Sender: TObject);
@@ -1104,6 +1124,17 @@ begin
   iniciarVenda();
 end;
 
+procedure TfPdv.MenuItem5Click(Sender: TObject);
+begin
+  pnTroca.Visible:=True;
+end;
+
+procedure TfPdv.MenuItem6Click(Sender: TObject);
+begin
+  pnInfo.Visible:=True;
+  //fExecutaIntegracao.ShowModal;
+end;
+
 procedure TfPdv.btnVendaClick(Sender: TObject);
 begin
 
@@ -1112,6 +1143,19 @@ end;
 procedure TfPdv.Panel6Click(Sender: TObject);
 begin
 
+end;
+
+procedure TfPdv.TIButton2Click(Sender: TObject);
+begin
+  if (edMotivo.Text = '') then
+  begin
+    ShowMessage('Informe o Motivo');
+    exit;
+  end;
+  trocaDevolucao;
+  imprimirCupomTroca;
+  btnNovo.Click;
+  pnTroca.Visible := False;
 end;
 
 procedure TfPdv.TIGroupBox1Click(Sender: TObject);
@@ -1423,7 +1467,7 @@ begin
 end;
 
 procedure TfPdv.calculaTotalGeral();
-var vTotGeral: Double;
+var
    num_linha: Integer;
    //qtde_itens: Integer;
 begin
@@ -1825,6 +1869,205 @@ begin
       btnNovo.Click;
     end;
   end;
+end;
+
+procedure TfPdv.trocaDevolucao;
+var
+   fCpr : TCompraCls;
+   num_cp: Integer;
+begin
+  num_cp := dmPdv.busca_serie('I');
+  // colocr status = 9
+  // codnatureza = 2 - entrada
+
+  // chave cupom
+  ch_cp := FormatDateTime('ddmmyyMMss', Now);
+  ch_cp := Copy(ch_cp,7,4);
+
+  dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET STATUS = 9 ' +
+    ' , CODNATUREZA = 2 ' +
+    ' , HIST_MOV = ' + QuotedStr(edMotivo.Text) +
+    ' , NFE = ' + QuotedStr(ch_cp) +
+    ' WHERE CODMOVIMENTO  = ' + IntToStr(codMov));
+
+  // criar uma compra pra finalizar esta entrada no estoque
+  fCpr := TCompraCls.Create;
+  Try
+    dmPdv.sTrans.Active := True;
+    fCpr.CodMov := codMov;
+    fCpr.Caixa  := caixa_local;
+    fCpr.CodCCusto   := caixa_local;
+    fCpr.CodFornecedor  := 0;
+    fCpr.CodUsuario  := codVendedor;
+    fCpr.CodComprador := codVendedor;
+    fCpr.DataCompra   := Now;
+    fCpr.DataVcto    := Now;
+    fCpr.Desconto    := 0;
+    fCpr.NParcela    := 1;
+    fCpr.NDoc        := ch_cp;
+    fCpr.Valor       := vTotGeral;
+    fCpr.NotaFiscal  := num_cp;
+    fCpr.Serie       := 'I';
+    fCpr.inserirCompra(0);
+  finally
+    fCpr.Free;
+  end;
+  dmPdv.sTrans.Commit;
+  imprimirCupomTroca;
+end;
+
+procedure TfPdv.imprimirCupomTroca;
+var
+  IMPRESSORA:TextFile;
+  lFile   : TStringList;
+  i      : Integer;
+  logradouro: String;
+  cep: String;
+  fone: String;
+  clientecupom: string;
+  texto3: String;
+  texto6: String;
+  produto_cupomf: String;
+  linhaTxt : String;
+  barcode : String;
+  prazo : String;
+  totalP: Double;
+  totalD: Double;
+  totalR: Double;
+  pos_mx : Integer;
+  tamanho : Integer;
+  texto : String;
+begin
+  prazo := 'N';
+  totalP := 0;
+  totalD := 0;
+  totalR := 0;
+  if (not dmPdv.sqEmpresa.Active) then
+    dmPdv.sqEmpresa.Open;
+  {----- aqui monto o endereço-----}
+  logradouro := '  ' + dmPdv.sqEmpresaENDERECO.Value +
+     ', ' + dmPdv.sqEmpresaBAIRRO.Value;
+  cep :=  '  ' + dmPdv.sqEmpresaCIDADE.Value + ' - ' + dmPdv.sqEmpresaUF.Value +
+  ' - ' + dmPdv.sqEmpresaCEP.Value;
+  fone := '  (19)' + dmPdv.sqEmpresaFONE.Value + ' / ' + dmPdv.sqEmpresaFONE_1.Value +
+  ' / ' + dmPdv.sqEmpresaFONE_2.Value;
+  {------------------------DADOS DO CLIENTE--------------------------}
+  clientecupom := '  ' + IntToStr(codCliente) + '-' + uutil.RemoveAcento(edClienteNome.Text);
+  dmPdv.sqLancamentos.Close;
+  dmPdv.sqLancamentos.Params.ParamByName('PMOV').AsInteger := CodMov;
+  dmPdv.sqLancamentos.Open;
+  // leio um arquivo txt e imprimo
+  lFile := TStringList.Create;
+  AssignFile(IMPRESSORA, 't.txt');
+
+  try
+    Rewrite(IMPRESSORA);
+    lFile.LoadFromFile('cupomTroca.txt');
+    for i:=0 to lFile.Count-1 do
+    begin
+      tamanho := Length(lFile[i]);
+      linhaTxt := Copy(lFile[i],0,1);
+      if lFile[i] = 'empresa' then
+        Writeln(Impressora, uutil.RemoveAcento(Format('  %-36s',[dmPdv.sqEmpresaRAZAO.Value])))
+      else if lFile[i] = 'logradouro' then
+        Writeln(Impressora, logradouro)
+      else if lFile[i] = 'cep' then
+        Writeln(Impressora, cep)
+      else if lFile[i] = 'fone' then
+      begin
+        Writeln(Impressora, fone);
+      end
+      else if lFile[i] = 'linha' then
+      begin
+        Writeln(IMPRESSORA, '');
+      end
+      else if lFile[i] = 'usuario' then
+      begin
+        Writeln(impressora, 'Usuario: ' + dmpdv.nomeLogado);
+        Writeln(impressora, 'Vendedor: ' + uutil.RemoveAcento(edVendedor.Text));
+      end
+      else if lFile[i] = 'cliente' then
+        Writeln(Impressora, clientecupom)
+      else if Copy(lFile[i],0,3) = 'doc' then
+      begin
+        pos_mx := pos('<', lFile[i]);
+        if (pos_mx > 1) then
+        begin
+          Writeln(Impressora, '  ' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now) + '    COD: ' + IntToStr(CodMov));
+          texto := lFile[i];
+          texto := Copy(texto,pos_mx, tamanho-pos_mx+1);
+          //texto := stringReplace('texto' , 'F',  'T' ,[rfReplaceAll, rfIgnoreCase]);
+          texto := ReplaceStr(texto,'texto','VALE DE TROCA/DEVOLUCAO');
+          Writeln(Impressora, texto);
+        end
+        else begin
+          Writeln(Impressora, '  ' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now) + '    COD: ' + IntToStr(CodMov));
+          Writeln(Impressora, 'VALE DE TROCA/DEVOLUCAO');
+        end;
+      end
+      else if lFile[i] = 'itens' then
+      begin
+        while not dmPdv.sqLancamentos.Eof do
+        begin
+          dmPdv.sqLancamentos.RecordCount;
+          texto3 := '';
+          texto6 := '  ';
+          texto3 := texto3 + Format('            %-2s',[dmPdv.sqLancamentosUNIDADEMEDIDA.Value]);
+          texto3 := texto3 + Format('    %6.2n',[dmPdv.sqLancamentosQUANTIDADE.AsFloat]);
+          texto3 := texto3 + Format(' %6.2n',[dmPdv.sqLancamentosPRECO.AsFloat]);
+          texto3 := texto3 + Format('   %6.2n',[dmPdv.sqLancamentosVALTOTAL.value]);
+          produto_cupomf := trim(dmPdv.sqLancamentosDESCPRODUTO.Value);
+          texto6 := texto6 + '  ' + Copy(produto_cupomf, 0, 36);       //descrição do produto
+          Writeln(Impressora, uutil.RemoveAcento(texto6));
+          if (length(produto_cupomf)>36) then
+          begin
+            texto6 := '    ' + Copy(produto_cupomf, 37, 72);       //descrição do produto
+            Writeln(Impressora, uutil.RemoveAcento(texto6));
+          end;
+          Writeln(Impressora, uutil.RemoveAcento(texto3));//NOME DO PRODUTO
+          dmPdv.sqLancamentos.next;
+        end;
+      end
+      else if linhaTxt = 'T' then
+      begin
+        linhaTxt := Copy(lFile[i],2,Length(lFile[i])-1);
+        Writeln(Impressora, linhaTxt + FormatFloat('#,,,0.00', totalR));
+      end
+      else if linhaTxt = 'C' then
+      begin
+        linhaTxt := Copy(lFile[i],2,Length(lFile[i])-1);
+        Writeln(Impressora, chr(27)+chr(109));
+      end
+      else if linhaTxt = 'm' then
+      begin
+        Writeln(Impressora, 'Motivo : ');
+        Writeln(Impressora, uutil.RemoveAcento(edMotivo.Text));//Motivo
+      end
+      else if linhaTxt = 'b' then
+      begin
+        barcode := IntToStr(codMov);
+        barcode := '3' + ch_cp + AddChar('0', barcode, 7);
+        barcode := barcode + uutil.EAN13(barcode);
+        Writeln(Impressora, '<code128>' + barcode + '</code128>');//Motivo
+      end
+      else if linhaTxt = '2' then
+      begin
+      end
+      else if linhaTxt = '3' then
+      begin
+      end
+      else if linhaTxt = '4' then
+      begin
+      end
+      else
+        Writeln(Impressora,lFile[i]);
+    end;
+
+  finally
+    CloseFile(IMPRESSORA);
+    lFile.Free;
+  end;
+
 end;
 
 end.
