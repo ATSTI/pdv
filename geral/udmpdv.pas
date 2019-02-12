@@ -231,6 +231,8 @@ type
     function executaSql(strSql: String): Boolean;
     procedure gravaLog(DataLog: TDateTime; usuario: String; tipoMovimento: String;
     pc: String; valorAnt: String; valorPos: String; campoChave: String; acao: String);
+    function busca_generator(generator: String): integer;
+    function busca_serie(Serie: String): integer;
   end;
 
 var
@@ -432,6 +434,40 @@ begin
         E.Message,mtError,[mbOK],0);
     end;
   end;
+end;
+
+function TdmPdv.busca_generator(generator: String): integer;
+begin
+  if (dmPdv.sqGenerator.Active) then
+    dmPdv.sqGenerator.Close;
+  dmPdv.sqGenerator.SQL.Clear;
+  dmPdv.sqGenerator.SQL.Text := 'SELECT CAST(GEN_ID(' + generator +
+     ', 1) AS INTEGER) AS CODIGO FROM RDB$DATABASE';
+  dmPdv.sqGenerator.Open;
+  Result := dmPdv.sqGenerator.Fields[0].AsInteger;
+  dmPdv.sqGenerator.Close
+end;
+
+function TdmPdv.busca_serie(Serie: String): integer;
+var num_cp: Integer;
+begin
+  dmPdv.sqUpdate.Close;
+  dmPdv.sqUpdate.SQL.Clear;
+  dmPdv.sqUpdate.SQL.Text := 'SELECT * FROM SERIES WHERE SERIE = ' +
+    QuotedStr(Serie);
+  dmPdv.sqUpdate.Open;
+  num_cp := dmPdv.sqUpdate.FieldByName('ULTIMO_NUMERO').AsInteger+1;
+  dmPdv.sqUpdate.Close;
+  dmPdv.sqUpdate.UpdateSQL.Clear;
+  dmPdv.sqUpdate.UpdateSQL.Text := 'UPDATE SERIES SET ULTIMO_NUMERO = ' +
+    IntToStr(num_cp) + ' WHERE SERIE = ' +
+    QuotedStr(Serie);
+  dmPdv.sqUpdate.Open;
+  dmPdv.sqUpdate.Edit;
+  dmPdv.sqUpdate.Post;
+  dmPdv.sqUpdate.ApplyUpdates;
+  Result := num_cp;
+
 end;
 
 function TdmPdv.executaSql(strSql: String): Boolean;
