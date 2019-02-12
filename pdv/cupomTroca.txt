@@ -1,0 +1,31 @@
+empresa
+logradouro
+cep
+fone
+linha
+usuario
+linha
+----------------------------------------
+----------------------------------------
+doc <n>texto</n>
+linha
+ Para efetuar a troca da mercadoria e
+ necessario apresentar este cupom.
+linha
+ Prazo máximo para a troca e de 30 dias
+ da data deste documento
+----------------------------------------
+----------------------------------------
+cliente
+----------------------------------------
+  Produto       Un.     Qtde   V.Un.  V.Total 
+itens
+linha
+----------------------------------------
+T   Total:                   R$         
+linha
+m
+linha
+barcode
+linha
+linha
