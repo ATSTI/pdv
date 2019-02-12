@@ -72,9 +72,8 @@ type
     Image3: TImage;
     Image4: TImage;
     Image5: TImage;
-    Label1: TLabel;
     Label10: TLabel;
-    Label12: TLabel;
+    Label11: TLabel;
     Label13: TLabel;
     Label14: TLabel;
     Label15: TLabel;
@@ -83,16 +82,15 @@ type
     Label18: TLabel;
     Label19: TLabel;
     edBuscaDetalhe: TLabeledEdit;
-    Label2: TLabel;
     Label20: TLabel;
     Label21: TLabel;
     Label6: TLabel;
     Label7: TLabel;
     lblMSG: TLabel;
+    lblPedido: TLabel;
     lblProdBusca: TLabel;
     Label9: TLabel;
     lblNumItem: TLabel;
-    lblPedido: TLabel;
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
@@ -107,6 +105,7 @@ type
     Panel10: TPanel;
     Panel11: TPanel;
     Panel12: TPanel;
+    Panel5: TPanel;
     Panel6: TPanel;
     Panel7: TPanel;
     pnBotoesSistema: TPanel;
@@ -120,7 +119,6 @@ type
     pnProdBusca: TPanel;
     pnAltera: TPanel;
     Panel4: TPanel;
-    Panel5: TPanel;
     pnProdutoDescricao: TPanel;
     Panel9: TPanel;
     pnInfo: TPanel;

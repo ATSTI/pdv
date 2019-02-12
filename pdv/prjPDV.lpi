@@ -222,7 +222,10 @@
       <Unit22>
         <Filename Value="ucadeira.pas"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="fCadeira"/>
         <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uCadeira"/>
       </Unit22>
     </Units>
   </ProjectOptions>

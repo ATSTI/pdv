@@ -301,7 +301,7 @@ begin
   DBGrid1.Columns[5].FieldName:='CLIENTE';
   DBGrid1.Columns[6].FieldName:='VALOR';
   DBGrid1.Columns[6].DisplayFormat:=',##0.00';
-end;
+  end;
 
 procedure TfMovimentoProc.FormShow(Sender: TObject);
 begin

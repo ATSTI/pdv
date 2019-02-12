@@ -6,16 +6,17 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  StdCtrls, DBGrids;
+  StdCtrls, DBGrids, Buttons;
 
 type
 
   { TfPadraoBusca }
 
   TfPadraoBusca = class(TForm)
-    btnEXC: TImage;
-    btnPROC: TImage;
-    btnSALV: TImage;
+    btnExcluir: TBitBtn;
+    btnGravar: TBitBtn;
+    btnProcurar: TBitBtn;
+    btnSair1: TBitBtn;
     chInativo: TCheckBox;
     DBGrid1: TDBGrid;
     Edit1: TEdit;
@@ -23,8 +24,9 @@ type
     Label1: TLabel;
     Panel1: TPanel;
     Panel2: TPanel;
-    procedure btnEXCClick(Sender: TObject);
-    procedure btnSALV1Click(Sender: TObject);
+    procedure btnExcluirClick(Sender: TObject);
+    procedure btnSair1Click(Sender: TObject);
+
   private
 
   public
@@ -40,13 +42,12 @@ implementation
 
 { TfPadraoBusca }
 
-
-procedure TfPadraoBusca.btnSALV1Click(Sender: TObject);
+procedure TfPadraoBusca.btnSair1Click(Sender: TObject);
 begin
   Close;
 end;
 
-procedure TfPadraoBusca.btnEXCClick(Sender: TObject);
+procedure TfPadraoBusca.btnExcluirClick(Sender: TObject);
 var
   n : integer;
 begin
@@ -61,6 +62,7 @@ begin
       TComboBox(components[n]).ItemIndex := -1;
     end;
   end;
+
 
 end;
 
