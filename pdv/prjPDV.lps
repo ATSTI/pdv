@@ -21,11 +21,12 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uPdv"/>
-        <TopLine Value="460"/>
-        <CursorPos X="92" Y="466"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="601"/>
+        <CursorPos X="3" Y="603"/>
         <UsageCount Value="206"/>
         <Bookmarks Count="1">
-          <Item0 X="19" Y="1115" ID="4"/>
+          <Item0 X="19" Y="1113" ID="4"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -187,7 +188,6 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uClienteBusca"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="13"/>
         <TopLine Value="83"/>
         <CursorPos X="45" Y="91"/>
@@ -296,7 +296,7 @@
         <UnitName Value="uCadeira"/>
         <EditorIndex Value="5"/>
         <CursorPos X="18" Y="17"/>
-        <UsageCount Value="82"/>
+        <UsageCount Value="83"/>
         <Loaded Value="True"/>
       </Unit22>
       <Unit23>
@@ -359,123 +359,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="..\upadraobusca.pas"/>
-        <Caret Line="4" Column="60"/>
+        <Caret Line="50" Column="3" TopLine="48"/>
       </Position1>
       <Position2>
-        <Filename Value="uclientebusca.pas"/>
-        <Caret Line="58" Column="5" TopLine="25"/>
+        <Filename Value="..\upadraobusca.pas"/>
+        <Caret Line="51" Column="3" TopLine="49"/>
       </Position2>
       <Position3>
-        <Filename Value="uclientebusca.pas"/>
-        <Caret Line="57" Column="5" TopLine="24"/>
+        <Filename Value="..\upadraobusca.pas"/>
+        <Caret Line="87" Column="40" TopLine="68"/>
       </Position3>
       <Position4>
-        <Filename Value="..\upadraobusca.pas"/>
-        <Caret Line="4" Column="60"/>
+        <Filename Value="uclientebusca.pas"/>
+        <Caret Line="57" Column="5" TopLine="24"/>
       </Position4>
       <Position5>
-        <Filename Value="..\upadraobusca.pas"/>
-        <Caret Line="69" Column="10" TopLine="41"/>
+        <Filename Value="uclientebusca.pas"/>
+        <Caret Line="52" Column="3" TopLine="50"/>
       </Position5>
       <Position6>
-        <Filename Value="..\upadraobusca.pas"/>
-        <Caret Line="87" Column="10" TopLine="57"/>
+        <Filename Value="uclientebusca.pas"/>
+        <Caret Line="62" Column="3" TopLine="60"/>
       </Position6>
       <Position7>
-        <Filename Value="..\upadraobusca.pas"/>
-        <Caret Line="86" Column="10" TopLine="56"/>
+        <Filename Value="uclientebusca.pas"/>
+        <Caret Line="47" Column="3" TopLine="45"/>
       </Position7>
       <Position8>
-        <Filename Value="..\upadraobusca.pas"/>
-        <Caret Line="92" Column="10" TopLine="59"/>
+        <Filename Value="uclientebusca.pas"/>
+        <Caret Line="48" Column="90"/>
       </Position8>
       <Position9>
-        <Filename Value="..\upadraobusca.pas"/>
-        <Caret Line="75" Column="3" TopLine="65"/>
+        <Filename Value="uclientebusca.pas"/>
+        <Caret Line="43" Column="26" TopLine="21"/>
       </Position9>
       <Position10>
-        <Filename Value="..\upadraobusca.pas"/>
-        <Caret Line="74" Column="3" TopLine="64"/>
+        <Filename Value="uclientebusca.pas"/>
+        <Caret Line="19" Column="15" TopLine="2"/>
       </Position10>
       <Position11>
-        <Filename Value="..\upadraobusca.pas"/>
-        <Caret Line="80" Column="3" TopLine="70"/>
+        <Filename Value="uclientebusca.pas"/>
+        <Caret Line="43" Column="26" TopLine="15"/>
       </Position11>
       <Position12>
-        <Filename Value="..\upadraobusca.pas"/>
-        <Caret Line="57" Column="3" TopLine="55"/>
+        <Filename Value="uclientebusca.pas"/>
+        <Caret Line="19" Column="15" TopLine="13"/>
       </Position12>
       <Position13>
         <Filename Value="..\upadraobusca.pas"/>
-        <Caret Line="56" Column="3" TopLine="54"/>
+        <Caret Line="59" Column="57"/>
       </Position13>
       <Position14>
         <Filename Value="..\upadraobusca.pas"/>
-        <Caret Line="51" Column="3" TopLine="49"/>
+        <Caret Line="54" Column="3" TopLine="37"/>
       </Position14>
       <Position15>
         <Filename Value="..\upadraobusca.pas"/>
-        <Caret Line="50" Column="3" TopLine="48"/>
+        <Caret Line="18" Column="5"/>
       </Position15>
       <Position16>
-        <Filename Value="..\upadraobusca.pas"/>
-        <Caret Line="51" Column="3" TopLine="49"/>
-      </Position16>
-      <Position17>
-        <Filename Value="..\upadraobusca.pas"/>
-        <Caret Line="87" Column="40" TopLine="68"/>
-      </Position17>
-      <Position18>
-        <Filename Value="uclientebusca.pas"/>
-        <Caret Line="57" Column="5" TopLine="24"/>
-      </Position18>
-      <Position19>
-        <Filename Value="uclientebusca.pas"/>
-        <Caret Line="52" Column="3" TopLine="50"/>
-      </Position19>
-      <Position20>
-        <Filename Value="uclientebusca.pas"/>
-        <Caret Line="62" Column="3" TopLine="60"/>
-      </Position20>
-      <Position21>
-        <Filename Value="uclientebusca.pas"/>
-        <Caret Line="47" Column="3" TopLine="45"/>
-      </Position21>
-      <Position22>
-        <Filename Value="uclientebusca.pas"/>
-        <Caret Line="48" Column="90"/>
-      </Position22>
-      <Position23>
-        <Filename Value="uclientebusca.pas"/>
-        <Caret Line="43" Column="26" TopLine="21"/>
-      </Position23>
-      <Position24>
-        <Filename Value="uclientebusca.pas"/>
-        <Caret Line="19" Column="15" TopLine="2"/>
-      </Position24>
-      <Position25>
-        <Filename Value="uclientebusca.pas"/>
-        <Caret Line="43" Column="26" TopLine="15"/>
-      </Position25>
-      <Position26>
-        <Filename Value="uclientebusca.pas"/>
-        <Caret Line="19" Column="15" TopLine="13"/>
-      </Position26>
-      <Position27>
-        <Filename Value="..\upadraobusca.pas"/>
-        <Caret Line="59" Column="57"/>
-      </Position27>
-      <Position28>
-        <Filename Value="..\upadraobusca.pas"/>
-        <Caret Line="54" Column="3" TopLine="37"/>
-      </Position28>
-      <Position29>
-        <Filename Value="..\upadraobusca.pas"/>
-        <Caret Line="18" Column="5"/>
-      </Position29>
-      <Position30>
         <Filename Value="uvendedorbusca.pas"/>
         <Caret Line="73" Column="49" TopLine="40"/>
+      </Position16>
+      <Position17>
+        <Filename Value="updv.pas"/>
+        <Caret Line="466" Column="92" TopLine="460"/>
+      </Position17>
+      <Position18>
+        <Filename Value="updv.pas"/>
+        <Caret Line="465" Column="92" TopLine="459"/>
+      </Position18>
+      <Position19>
+        <Filename Value="updv.pas"/>
+        <Caret Line="464" Column="92" TopLine="458"/>
+      </Position19>
+      <Position20>
+        <Filename Value="updv.pas"/>
+        <Caret Line="463" Column="92" TopLine="457"/>
+      </Position20>
+      <Position21>
+        <Filename Value="updv.pas"/>
+        <Caret Line="462" Column="92" TopLine="456"/>
+      </Position21>
+      <Position22>
+        <Filename Value="updv.pas"/>
+        <Caret Line="463" Column="92" TopLine="457"/>
+      </Position22>
+      <Position23>
+        <Filename Value="updv.pas"/>
+        <Caret Line="462" Column="92" TopLine="456"/>
+      </Position23>
+      <Position24>
+        <Filename Value="updv.pas"/>
+        <Caret Line="463" Column="92" TopLine="457"/>
+      </Position24>
+      <Position25>
+        <Filename Value="updv.pas"/>
+        <Caret Line="462" Column="92" TopLine="456"/>
+      </Position25>
+      <Position26>
+        <Filename Value="updv.pas"/>
+        <Caret Line="461" Column="92" TopLine="455"/>
+      </Position26>
+      <Position27>
+        <Filename Value="updv.pas"/>
+        <Caret Line="463" Column="92" TopLine="457"/>
+      </Position27>
+      <Position28>
+        <Filename Value="updv.pas"/>
+        <Caret Line="464" Column="92" TopLine="458"/>
+      </Position28>
+      <Position29>
+        <Filename Value="updv.pas"/>
+        <Caret Line="463" Column="92" TopLine="457"/>
+      </Position29>
+      <Position30>
+        <Filename Value="updv.pas"/>
+        <Caret Line="464" Column="92" TopLine="458"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>
