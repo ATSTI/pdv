@@ -30,11 +30,11 @@ type
     acNfce: TAction;
     acVoltarVenda: TAction;
     ActionListFechamento: TActionList;
+    BitBtn19: TBitBtn;
     btnCupom: TBitBtn;
     BitBtn16: TBitBtn;
     BitBtn17: TBitBtn;
     BitBtn18: TBitBtn;
-    BitBtn19: TBitBtn;
     BitBtn20: TBitBtn;
     BitBtn22: TBitBtn;
     BitBtn24: TBitBtn;
@@ -61,6 +61,7 @@ type
     GroupBox2: TGroupBox;
     GroupBox3: TGroupBox;
     edPagamento: TMaskEdit;
+    imgTroca: TImage;
     Label1: TLabel;
     Label10: TLabel;
     Label2: TLabel;
@@ -124,6 +125,8 @@ type
     procedure BitBtn24Click(Sender: TObject);
     procedure BitBtn9Click(Sender: TObject);
     procedure btnDscClick(Sender: TObject);
+    procedure edCupomChange(Sender: TObject);
+    procedure edCupomKeyPress(Sender: TObject; var Key: char);
     procedure edPagamentoKeyPress(Sender: TObject; var Key: char);
     procedure edPagoChange(Sender: TObject);
     procedure edParcelaChange(Sender: TObject);
@@ -153,6 +156,9 @@ type
     procedure imprimir();
     procedure imprimirTxt();
     procedure imprimiAcbr();
+    procedure insereRecebimento(parc_rec: Integer; vlr_rec: Double;
+      vlr_tot_rec: Double; via_rec: Integer; n_doc_rec: String; forma_rec: String;
+      vlr_via_rec: Double);
   public
     vStatus : Integer;
     vVendedor: Integer;
@@ -178,13 +184,17 @@ implementation
 
 procedure TfPDV_Rec.FormShow(Sender: TObject);
 begin
+  num_cx := 0;
   MemoImp.Clear;
+  imgTroca.Visible:=False;
+  lblCupom.Visible:=False;
+  edCupom.Visible:=False;
   lblParcela.Visible:= False;
   edParcela.Visible := False;
   edParcela.Text := '1';
   edVDesconto.Color := clWhite;
   edPagamento.Color := clWhite;
-  edValorPago.Color := clWhite;
+  //edValorPago.Color := clWhite;
   lblStatus.Caption := 'Fechamento.';
   vStatus := 0;
 
@@ -366,7 +376,7 @@ begin
   sqPagamento.Open;
   sqPagamento.Insert;
   sqPagamentoCODFORMA.AsInteger  := codForma;
-  sqPagamentoCAIXA.AsInteger     := num_doc;
+  sqPagamentoCAIXA.AsInteger     := StrToInt(dmPdv.idcaixa);
   sqPagamentoCOD_VENDA.AsInteger := vCodVenda;
   sqPagamentoFORMA_PGTO.AsString := Copy(lblForma.Caption,1,1);
   sqPagamentoID_ENTRADA.AsInteger:= vCodMovimento;
@@ -396,12 +406,26 @@ end;
 procedure TfPDV_Rec.encerra_venda();
 var vRec : TRecebimento;
    vlr_entrada: Double;
+   vlr_troca: Double;
+   vlr_prazo: Double;
    vlr_desc: Double;
+   vlr_total_resto : Double;
+   vlr_prim_via : Double;
+   vlr_parc : Double;
    str_up: String;
+   n_doc: String;
+   n_prc: Integer;
    forma_pagto: String;
+   tot_lanc: integer;
+   num_lanc: Integer;
+   i: Integer;
 begin
   vlr_entrada := 0;
   vlr_desc := 0;
+  vlr_troca := 0;
+  vlr_prazo := 0;
+  tot_lanc := 0;
+  num_lanc := 0;
   dmPdv.IbCon.ExecuteDirect('UPDATE FORMA_ENTRADA SET STATE = 1 ' +
     ' WHERE STATE = 0 AND ID_ENTRADA = ' +
     IntToStr(vCodMovimento));
@@ -411,69 +435,107 @@ begin
     IntToStr(vCodMovimento) + ' AND STATUS = 0');
 
   vStatus := 1;
-  dmPdv.sqBusca.Close;
-  dmPdv.sqBusca.SQL.Clear;
-  dmPdv.sqBusca.SQL.Text := 'SELECT CODFORMA, COD_VENDA, ID_ENTRADA, FORMA_PGTO' +
+
+  dmPdv.busca_sql('SELECT CODFORMA, COD_VENDA, ID_ENTRADA, FORMA_PGTO' +
     ' , CAIXA , N_DOC, VALOR_PAGO, CAIXINHA, TROCO, DESCONTO, STATE' +
     ' FROM FORMA_ENTRADA WHERE STATE < 2 AND ID_ENTRADA = ' +
-    InttoStr(vCodMovimento);
-  dmPdv.sqBusca.Open;
+    InttoStr(vCodMovimento) + ' ORDER BY FORMA_PGTO');
   forma_pagto := '1';
   while not dmPdv.sqBusca.EOF do
   begin
+    tot_lanc += 1;
     forma_pagto := Trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString);
-    if (forma_pagto <> '4') then
+    vlr_entrada += dmPdv.sqBusca.FieldByName('VALOR_PAGO').AsFloat;
+    vlr_desc += dmPdv.sqBusca.FieldByName('DESCONTO').AsFloat;
+    if (forma_pagto = '4') then
     begin
-      vlr_entrada += dmPdv.sqBusca.FieldByName('VALOR_PAGO').AsFloat;
-      vlr_desc += dmPdv.sqBusca.FieldByName('DESCONTO').AsFloat;
+      vlr_prazo += dmPdv.sqBusca.FieldByName('VALOR_PAGO').AsFloat;
+    end;
+    if (forma_pagto = '9') then
+    begin
+      vlr_troca += dmPdv.sqBusca.FieldByName('VALOR_PAGO').AsFloat;
     end;
     dmPdv.sqBusca.Next;
   end;
-  if (vlr_entrada > 0) then
-  begin
-    DecimalSeparator:='.';
-    str_up := 'UPDATE VENDA SET ENTRADA = ' +
-      FloatToStr(vlr_entrada) +
-      ' , DESCONTO = ' + FloatToStr(vlr_desc) +
-      ' WHERE CODVENDA  = ' +
-      IntToStr(vCodVenda);
-    DecimalSeparator:=',';
-    dmPdv.IbCon.ExecuteDirect(str_up);
-  end;
+  vlr_prim_via := vlr_entrada;
+  n_prc := 1;
   if (edParcela.Text <> '1') then
   begin
-    str_up := 'UPDATE VENDA SET N_PARCELA = ' + edParcela.Text +
-      ' WHERE CODVENDA  = ' +
-      IntToStr(vCodVenda);
-    dmPdv.IbCon.ExecuteDirect(str_up);
+    n_prc := StrToInt(edParcela.Text);
+  end;
+  //if (vlr_entrada > 0) then
+  //begin
+  //  n_prc := n_prc + 1;
+  //end;
+  DecimalSeparator:='.';
+  str_up := 'UPDATE VENDA SET ENTRADA = ' +
+    FloatToStr(vlr_entrada) +
+    ' , DESCONTO = ' + FloatToStr(vlr_desc) +
+    ' , CAIXA = ' + IntToStr(dmPdv.contaCaixa) +
+    ' , N_PARCELA = ' + IntToStr(n_prc) +
+    ' WHERE CODVENDA  = ' +
+    IntToStr(vCodVenda);
+  DecimalSeparator:=',';
+  dmPdv.IbCon.ExecuteDirect(str_up);
+
+  dmPdv.sqBusca.First;
+  while not dmPdv.sqBusca.EOF do
+  begin
+    num_lanc += 1;
+    forma_pagto := Trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString);
+    n_doc := IntToStr(dmPdv.sqBusca.FieldByName('CODFORMA').AsInteger);
+    if (forma_pagto <> '4') then
+    begin
+      insereRecebimento(0,
+        dmPdv.sqBusca.FieldByName('VALOR_PAGO').AsFloat-dmPdv.sqBusca.FieldByName('DESCONTO').AsFloat,
+        vlr_entrada,
+        num_lanc,
+        n_doc, forma_pagto, vlr_prim_via);
+      vlr_prim_via := 0;
+    end;
+    if (forma_pagto = '4') then
+    begin
+      vlr_parc := roundTo((vlr_prazo / n_prc),-2);
+      vlr_total_resto := vlr_prazo;
+      for i := 1 to n_prc do
+      begin
+        if (i = n_prc) then
+        begin
+          vlr_parc := vlr_total_resto;
+        end
+        else begin
+          vlr_total_resto -= vlr_parc;
+        end;
+        insereRecebimento(i,
+          vlr_parc,
+          vlr_entrada,
+          num_lanc,
+          n_doc, forma_pagto,vlr_prim_via);
+        vlr_prim_via := 0;
+        num_lanc += 1;
+      end;
+    end;
+
+    dmPdv.sqBusca.Next;
   end;
 
+
+
+  {
   vRec := TRecebimento.Create();
   try
     vRec.geraTitulo(0,vCodVenda);
   finally
     vRec.Free;
   end;
-
+    }
   try
     dmPdv.sTrans.Commit;
   except
     dmpdv.sTrans.Rollback;
     ShowMessage('Erro para finalizar a venda.');
   end;
-  {try
-    vRec.CodVendedor:= vVendedor;
-    vRec.CodCliente := vCliente;
-    vRec.Caixa      := vCaixa_Local;
-    vRec.CodCCusto  := vCaixa_Local;
-    vRec.CodOrigem  := vCodVenda;
-    vRec.CodVenda   := vCodVenda;
-    vRec.CodUsuario := vUsuario;
-    vRec.Valor      := vValorVenda;
-    vRec.ValorRec   := vValorVenda;
-  finally
-    vRec.Free;
-  end;}
+
 end;
 
 procedure TfPDV_Rec.imprimir();
@@ -630,7 +692,7 @@ begin
     AssignFile(IMPRESSORA, dmPdv.portaIMP);
   end
   else begin
-    AssignFile(IMPRESSORA, 'C:\home\t.txt');
+    AssignFile(IMPRESSORA, dmPdv.path_imp);
   end;
 
   try
@@ -863,7 +925,7 @@ var arquivo: TStringList;
 begin
   arquivo := TStringList.Create();
   try
-    arquivo.LoadFromFile('C:\home\t.txt');
+    arquivo.LoadFromFile(dmPdv.path_imp);
     MemoImp.Clear;
     MemoImp.Text := arquivo.Text;
   finally
@@ -898,6 +960,103 @@ begin
 
 end;
 
+procedure TfPDV_Rec.insereRecebimento(parc_rec: Integer; vlr_rec: Double;
+  vlr_tot_rec: Double; via_rec: Integer; n_doc_rec: String; forma_rec: String;
+  vlr_via_rec: Double);
+var strG: String;
+  status: String;
+  vencimento: TDate;
+  vlr : Double;
+begin
+  if (forma_rec = '1') then
+    forma_rec := '1'
+  else if (forma_rec = '2') then
+    forma_rec := '7'
+  else if (forma_rec = '3') then
+    forma_rec := '6'
+  else if (forma_rec = '5') then
+    forma_rec := '2'
+  else if (forma_rec = '9') then
+    forma_rec := 'G' // Vale
+  else
+    forma_rec := '0';
+  // TODO tratar prazo , parcelas
+  if (parc_rec > 0) then // ja pago
+  begin
+    status := '5-';
+    vlr := 0;
+  end;
+  if (parc_rec = 0) then // ja pago
+  begin
+    status := '7-';
+    vlr := vlr_rec;
+    parc_rec := 1;
+  end;
+  if (num_cx = 0) then
+  begin
+    dmPdv.busca_sql('SELECT NOTAFISCAL, SERIE FROM VENDA WHERE CODVENDA = ' +
+     InttoStr(vCodVenda));
+    if not dmPdv.sqBusca.IsEmpty then
+    begin
+      num_cx:=dmPdv.sqBusca.FieldByName('NOTAFISCAL').AsInteger;
+      serie_cx:=dmPdv.sqBusca.FieldByName('SERIE').AsString;
+    end;
+  end;
+
+  DecimalSeparator:='.';
+  strG := IntToStr(dmPdv.busca_generator('COD_AREC')) + ', ';
+  strG := strG + QuotedStr(IntToStr(num_cx)+'-'+serie_cx) + ', ';
+  strG := strG + QuotedStr(FormatDateTime('mm/dd/yyyy', Now)) + ', ';
+  strG := strG + IntToStr(vCliente) + ', ';
+  strG := strG + QuotedStr(FormatDateTime('mm/dd/yyyy', IncMonth(Now,parc_rec))) + ', ';
+  //strG := strG + QuotedStr(FormatDateTime('mm/dd/yyyy', (IncDay(Self.DtEmissao, StrToInt(Self.dataVenc.Strings[i-1]))))) + ', ';
+  //strG := strG + QuotedStr(FormatDateTime('mm/dd/yyyy', Now)) + ', ';
+  strG := strG + QuotedStr(status) + ', ';
+  strG := strG + IntToStr(via_rec) + ', ';
+  strG := strG + QuotedStr(forma_rec) + ', ';
+  strG := strG + FloattoStr(vlr_via_rec) + ', '; // Valor_prim_via
+  strG := strG + FloattoStr(vlr_rec) + ', '; // Valor_Resto
+  strG := strG + FloattoStr(vlr_tot_rec) + ', ';  // Valortitulo
+  strG := strG + FloattoStr(vlr) + ', ';    // valorRecebido
+  strG := strG + IntToStr(parc_rec) + ', ';
+  strG := strG + '0, ';  // Desconto
+  if (status = '7-') then
+  begin
+    strG := strG + QuotedStr(FormatDateTime('mm/dd/yyyy', Now)) + ', ';  // DataBaixa
+  end
+  else begin
+    strG := strG + ' Null, ';
+  end;
+  strG := strG + InttoStr(vCodVenda) + ', ';
+  strG := strG + InttoStr(vCaixa_Local) + ', ';
+  strG := strG + InttoStr(vVendedor) + ', ';
+  strG := strG + InttoStr(vUsuario) + ', ';
+  strG := strG + QuotedStr(FormatDateTime('mm/dd/yyyy hh:MM', Now)) + ', ';  // DataSistema
+
+  strG := strG + '0, ';  // Juros
+  strG := strG + '0, ';  // FUNRURAL
+  strG := strG + '0, ';  // Perda
+  strG := strG + '0, ';  // Troca
+  strG := strG + QuotedStr(n_doc_rec) + ', '; // N.Doc.
+  strG := strG + '0, ';  // Outro_Credito
+  strG := strG + IntToStr(dmPdv.contaCaixa) + ', '; // Caixa
+  strG := strG + IntToStr(1) + ', '; // Situacao
+  strG := strG + IntToStr(1) + ', '; // CodOrigem
+  strG := strG + '0)'; //
+  DecimalSeparator:=',';
+  strG := ' INSERT INTO RECEBIMENTO ' +
+        ' (CODRECEBIMENTO, TITULO,          EMISSAO,         CODCLIENTE,      ' +
+        ' DATAVENCIMENTO,  STATUS,          VIA,             FORMARECEBIMENTO,' +
+        ' VALOR_PRIM_VIA,  VALOR_RESTO,     VALORTITULO,     ' +
+        ' VALORRECEBIDO,   PARCELAS,        DESCONTO,        DATABAIXA,       ' +
+        ' CODVENDA ,       CODALMOXARifADO, CODVENDEDOR,     CODUSUARIO,      ' +
+        ' DATASISTEMA,             JUROS,           ' +
+        ' FUNRURAL,        PERDA,           TROCA,           N_DOCUMENTO,     ' +
+        ' OUTRO_CREDITO,   CAIXA,           SITUACAO,        CODORIGEM, CONTADEBITO   ' +
+        ') VALUES(' + strG;
+  dmPdv.executaSql(strG);
+end;
+
 function TfPDV_Rec.strParaFloat(vlr_st: String): Double;
 var tam: Integer;
   vVlrStr: String;
@@ -922,6 +1081,15 @@ begin
       edParcela.SetFocus;
       exit;
     end;
+    if lblForma.Caption = '9-Devol./Troca' then
+    begin
+      if (imgTroca.Visible = False) then
+      begin
+        ShowMessage('Cupom nao informado.');
+        exit;
+      end;
+    end;
+
     if ((edPagamento.Text <> '') and (vResto > 0.01))  then
     begin
       if lblForma.Caption = '4-Faturar' then
@@ -929,11 +1097,18 @@ begin
         if vCliente = dmPdv.clientePadrao then
         begin
           ShowMessage('Informe o Cliente');
-
           Exit;
         end;
       end;
       registra_valores(strParaFloat(edPagamento.Text));
+    end;
+    if lblForma.Caption = '9-Devol./Troca' then
+    begin
+      edCupom.Text:='';
+      edCupom.Visible:=False;
+      lblCupom.Visible:=False;
+      imgTroca.Visible:=False;
+      lblForma.Caption:='1-Dinheiro';
     end;
   end;
 end;
@@ -1027,6 +1202,52 @@ begin
   calcula_total;
 end;
 
+procedure TfPDV_Rec.edCupomChange(Sender: TObject);
+begin
+
+end;
+
+procedure TfPDV_Rec.edCupomKeyPress(Sender: TObject; var Key: char);
+var
+  cupom_ch: String;
+  cupom_mv: String;
+  cod_compra: Integer;
+begin
+  if Key = #13 then
+  begin
+    Key := #0;
+    if (edCupom.Text <> '') then
+    begin
+      // ver se o cupom existe
+      cupom_ch := Copy(edCupom.Text,2,4);
+      cupom_mv := Copy(edCupom.Text,6,7);
+      dmPdv.busca_sql('SELECT CODCOMPRA, VALOR FROM COMPRA ' +
+        ' WHERE CODMOVIMENTO = ' + cupom_mv +
+        ' AND N_DOCUMENTO = ' + QuotedStr(cupom_ch) +
+        ' AND STATUS = 0 AND N_BOLETO IS NULL');
+      if (dmPdv.sqBusca.IsEmpty) then
+      begin
+        ShowMessage('Cupom ja baixado ou invalido.');
+        edCupom.Text := '';
+        exit;
+      end;
+      cod_compra := dmPdv.sqBusca.FieldByName('CODCOMPRA').AsInteger;
+      // se existir lancar ele como credito
+
+      edPagamento.Text := FormatFloat('#,,,0.00', dmPdv.sqBusca.FieldByName('VALOR').AsFloat);
+      //registra_valores(strParaFloat(edPagamento.Text));
+      // colocar o cupom como ja baixado
+      dmPdv.IbCon.ExecuteDirect('UPDATE COMPRA SET STATUS = 9, N_BOLETO = ' +
+        IntToStr(vCodMovimento) + ' WHERE CODCOMPRA = ' + IntToStr(cod_compra));
+      dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET STATUS = 99 ' +
+        ' WHERE CODMOVIMENTO = ' + cupom_mv);
+      imgTroca.Visible:=True;
+      edPagamento.SetFocus;
+    end;
+  end;
+
+end;
+
 procedure TfPDV_Rec.BitBtn18Click(Sender: TObject);
 begin
 
@@ -1104,7 +1325,8 @@ begin
   end
   else begin
     imprimirTxt();
-    imprimiAcbr();
+    if (dmPdv.path_imp = 'imp.txt') then
+      imprimiAcbr();
   end;
   Close;
 end;
@@ -1269,6 +1491,8 @@ procedure TfPDV_Rec.btnCupomClick(Sender: TObject);
 begin
   edCupom.Visible:=true;
   lblCupom.Visible:=true;
+  lblForma.Caption := '9-Devol./Troca';
+  edCupom.SetFocus;
 end;
 
 
