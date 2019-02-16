@@ -113,6 +113,7 @@ begin
     1 : sqlProc += ' WHERE m.STATUS = 1 ';
     2 : sqlProc += ' WHERE m.STATUS = 2 ';
     3 : sqlProc += ' WHERE m.STATUS = 1 AND v.SERIE LIKE ' + QuotedStr('NFCE%');
+    4 : sqlProc += ' WHERE m.STATUS = 9 ';
   end;
   // sqlProc += ' AND m.CODALMOXARIFADO = ' + dmPdv.ccusto;  tem q ser usuario
   // pois o  CCUSTO muda com o caixa todo dia

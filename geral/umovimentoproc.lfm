@@ -9,7 +9,7 @@ object fMovimentoProc: TfMovimentoProc
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '1.8.4.0'
+  LCLVersion = '2.0.0.4'
   object Panel1: TPanel
     Left = 0
     Height = 72
@@ -32,7 +32,7 @@ object fMovimentoProc: TfMovimentoProc
       Height = 21
       Top = 4
       Width = 62
-      Caption = 'Período:'
+      Caption = 'Periodo:'
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
       Font.Name = '@Malgun Gothic'
@@ -102,14 +102,7 @@ object fMovimentoProc: TfMovimentoProc
       Height = 29
       Top = 4
       Width = 80
-      EditLabel.AnchorSideTop.Control = edPedido
-      EditLabel.AnchorSideTop.Side = asrCenter
-      EditLabel.AnchorSideRight.Control = edPedido
-      EditLabel.AnchorSideBottom.Control = edPedido
-      EditLabel.AnchorSideBottom.Side = asrBottom
-      EditLabel.Left = 369
       EditLabel.Height = 21
-      EditLabel.Top = 8
       EditLabel.Width = 52
       EditLabel.Caption = 'Pedido'
       EditLabel.ParentColor = False
@@ -129,7 +122,7 @@ object fMovimentoProc: TfMovimentoProc
       Top = -2
       Width = 234
       AutoFill = True
-      Caption = 'Situação'
+      Caption = 'Situacao'
       ChildSizing.LeftRightSpacing = 6
       ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
       ChildSizing.EnlargeVertical = crsHomogenousChildResize
@@ -137,16 +130,24 @@ object fMovimentoProc: TfMovimentoProc
       ChildSizing.ShrinkVertical = crsScaleChilds
       ChildSizing.Layout = cclLeftToRightThenTopToBottom
       ChildSizing.ControlsPerLine = 2
-      ClientHeight = 45
+      ClientHeight = 53
       ClientWidth = 230
       Columns = 2
+      Font.CharSet = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = '@Malgun Gothic'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
       ItemIndex = 0
       Items.Strings = (
         'Todos'
         'Finalizados'
         'Cancelados'
         'NFCe'
+        'Troca/Dev.'
       )
+      ParentFont = False
       TabOrder = 3
     end
     object edValorBusca: TMaskEdit
@@ -166,7 +167,7 @@ object fMovimentoProc: TfMovimentoProc
       Height = 21
       Top = 4
       Width = 23
-      Caption = 'até'
+      Caption = 'ate'
       ParentColor = False
     end
     object cbValorBusca: TComboBox
@@ -705,7 +706,7 @@ object fMovimentoProc: TfMovimentoProc
     TabOrder = 2
     object edValorTotal: TMaskEdit
       Left = 912
-      Height = 26
+      Height = 29
       Top = 2
       Width = 80
       Alignment = taRightJustify
@@ -724,7 +725,7 @@ object fMovimentoProc: TfMovimentoProc
     end
     object edQtdeLancamento: TMaskEdit
       Left = 696
-      Height = 26
+      Height = 29
       Top = 2
       Width = 80
       Alignment = taRightJustify
