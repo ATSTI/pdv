@@ -20,6 +20,7 @@ type
     edLogin: TLabeledEdit;
     edSenha: TLabeledEdit;
     Label1: TLabel;
+    Label2: TLabel;
     LHelpConnector1: TLHelpConnector;
     Memo1: TMemo;
     Memo2: TMemo;
