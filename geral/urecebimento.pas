@@ -634,7 +634,7 @@ begin
         vDataVenc := IncDay(Self.DtEmissao, StrToInt(Self.dataVenc.Strings[i-1]));
       end
       else
-          vDataVenc := IncMonth(Self.DtVcto, (i-1));
+          vDataVenc := IncMonth(Self.DtVcto, (i));
 
     //TRATA VENCIMENTOS NOS FINS DE SEMANA
     Try
@@ -674,13 +674,22 @@ begin
     strG := strG + IntToStr(Self.CodCliente) + ', ';
     //strG := strG + QuotedStr(FormatDateTime('mm/dd/yyyy', (IncDay(Self.DtEmissao, StrToInt(Self.dataVenc.Strings[i-1]))))) + ', ';
     strG := strG + QuotedStr(FormatDateTime('mm/dd/yyyy', vDataVenc)) + ', ';
-
-    strG := strG + QuotedStr(Self.Status) + ', ';
+    if (Self.ValorRec > 0) then
+    begin
+      strG := strG + QuotedStr('7-') + ', ';
+    end
+    else
+      strG := strG + QuotedStr(Self.Status) + ', ';
     if (CodRecR > 0) then
       strG := strG + IntToStr(Self.Via) + ', '
     else
       strG := strG + IntToStr(i) + ', ';
-    strG := strG + QuotedStr(Self.FormaRec) + ', ';
+    if (Self.ValorRec > 0) then
+    begin
+      //if (
+      strG := strG + QuotedStr(Self.FormaRec) + ', ';
+    end else
+      strG := strG + QuotedStr(Self.FormaRec) + ', ';
     strG := strG + InttoStr(Self.CodVenda) + ', ';
     strG := strG + InttoStr(Self.CodCCusto) + ', ';
     strG := strG + InttoStr(Self.CodVendedor) + ', ';
@@ -712,6 +721,7 @@ begin
     if (self.ValorRec > 0) then
     begin
       strG := strG + FloattoStr(Self.ValorRec) + ', ';
+      self.ValorRec := 0;
     end
     else begin
       strG := strG + '0, ';  // ValorRecebido
