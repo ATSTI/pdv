@@ -8,13 +8,14 @@ uses
   Classes, SysUtils, db, FileUtil, SynEdit, RTTICtrls, Forms, Controls,
   Graphics, Dialogs, ExtCtrls, StdCtrls, Buttons, MaskEdit, DBGrids, ActnList,
   Menus, dateutils, uMovimento, uCompraCls, uUtil, uVendedorBusca,
-  uClienteBusca, uPermissao, Grids, MTProcs, strutils;
+  uClienteBusca, uPermissao, Grids, ACBrPosPrinter, MTProcs, strutils;
 
 type
 
   { TfPdv }
 
   TfPdv = class(TForm)
+    ACBrPosPrinter1: TACBrPosPrinter;
     acReceber: TAction;
     acFechar: TAction;
     acProcurar: TAction;
@@ -47,7 +48,6 @@ type
     btnVnd7: TBitBtn;
     btnVnd8: TBitBtn;
     cbPercentual: TCheckBox;
-    cbPercentual1: TCheckBox;
     dsProdProc: TDataSource;
     DBGrid1: TDBGrid;
     DBGrid2: TDBGrid;
@@ -56,7 +56,6 @@ type
     edCliente: TEdit;
     edClienteNome: TEdit;
     edDesconto: TMaskEdit;
-    edDesconto1: TMaskEdit;
     edMotivo: TEdit;
     edPreco: TMaskEdit;
     edProdNao: TEdit;
@@ -100,6 +99,7 @@ type
     Label5: TLabel;
     lblSenha: TLabel;
     Memo1: TMemo;
+    memoImp: TMemo;
     MemoIntegra: TMemo;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
@@ -164,6 +164,7 @@ type
     procedure btnVnd6Click(Sender: TObject);
     procedure btnVnd7Click(Sender: TObject);
     procedure btnVnd8Click(Sender: TObject);
+    procedure cbPercentualClick(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -176,8 +177,7 @@ type
     procedure edBuscaDetalheChange(Sender: TObject);
     procedure edClienteChange(Sender: TObject);
     procedure edClienteKeyPress(Sender: TObject; var Key: char);
-    procedure edDesconto1Change(Sender: TObject);
-    procedure edDesconto1KeyPress(Sender: TObject; var Key: char);
+    procedure edDescontoChange(Sender: TObject);
     procedure edDescontoKeyPress(Sender: TObject; var Key: char);
     procedure edPreco1KeyPress(Sender: TObject; var Key: char);
     procedure edPrecoChange(Sender: TObject);
@@ -195,9 +195,11 @@ type
     procedure Image3Click(Sender: TObject);
     procedure MenuItem5Click(Sender: TObject);
     procedure MenuItem6Click(Sender: TObject);
+    procedure Panel1Click(Sender: TObject);
     procedure Panel2Click(Sender: TObject);
     procedure btnVendaClick(Sender: TObject);
     procedure Panel6Click(Sender: TObject);
+    procedure pnComandaClick(Sender: TObject);
     procedure TIButton2Click(Sender: TObject);
     procedure TIGroupBox1Click(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
@@ -244,6 +246,7 @@ type
     procedure buscaPedidoComanda(codComanda: String);
     procedure trocaDevolucao;
     procedure imprimirCupomTroca;
+    procedure imprimirAcbr;
   public
 
   end;
@@ -295,23 +298,8 @@ begin
   end;
 end;
 
-procedure TfPdv.edDesconto1Change(Sender: TObject);
+procedure TfPdv.edDescontoChange(Sender: TObject);
 begin
-
-end;
-
-procedure TfPdv.edDesconto1KeyPress(Sender: TObject; var Key: char);
-begin
-  if Key = #13 then
-  begin
-    Key := #0;
-    // desconto
-    edDesconto.Text:=edDesconto1.Text;
-    alterar_item();
-    calculaTotalGeral();
-    edProduto.SetFocus;
-    pnAltera.Visible:=False;
-  end;
 
 end;
 
@@ -321,10 +309,15 @@ begin
   begin
     Key := #0;
     // desconto
+    //edDesconto.Text:=edDesconto.Text;
     alterar_item();
     calculaTotalGeral();
+    edProduto.SetFocus;
+    pnAltera.Visible:=False;
   end;
+
 end;
+
 
 procedure TfPdv.edPreco1KeyPress(Sender: TObject; var Key: char);
 begin
@@ -333,7 +326,7 @@ begin
     Key := #0;
     edPreco.Text := edPreco1.Text;
     preco := fPDV_Rec.strParaFloat(edPreco.Text);
-    edDesconto1.SetFocus;
+    edDesconto.SetFocus;
   end;
 
 end;
@@ -594,14 +587,18 @@ begin
       btnVnd1.Click;
   end;
   if (dmPdv.usaComanda > 0) then
+  begin
      pnComanda.Caption := '';
+     abrePedido(0);
+     statusPedido:=9;
+  end;
 end;
 
 procedure TfPdv.BitBtn10Click(Sender: TObject);
 begin
   edQtde.Text:=edQtde1.Text;
   edPreco.Text:=edPreco1.Text;
-  edDesconto.Text:=edDesconto1.Text;
+  edDesconto.Text:=edDesconto.Text;
   alterar_item();
   calculaTotalGeral();
   edProduto.SetFocus;
@@ -737,7 +734,7 @@ begin
   edQtde.Enabled:= True;
   edQtde1.Text:=edQtde.Text;
   edPreco1.Text:=edPreco.Text;
-  edDesconto1.Text:=edDesconto.Text;
+  edDesconto.Text:=edDesconto.Text;
   edQtde1.SetFocus;
 end;
 
@@ -902,6 +899,11 @@ begin
   end;
 end;
 
+procedure TfPdv.cbPercentualClick(Sender: TObject);
+begin
+  edDesconto.SetFocus;
+end;
+
 procedure TfPdv.edProdutoKeyPress(Sender: TObject; var Key: char);
 var i: Integer;
   str_bsc: String;
@@ -909,7 +911,8 @@ begin
   if Key = #13 then
   begin
     Key := #0;
-    if (statusPedido > 0) then
+
+    if ((statusPedido > 0) and (dmPdv.usaComanda = 0)) then
     begin
       ShowMessage('Pedido ja finalizado.');
       Exit;
@@ -917,17 +920,26 @@ begin
     if (edProduto.Text <> '') then
     begin
       str_bsc := Copy(edProduto.Text,0,1);
-      if ((dmpdv.usaComanda > 0) and
-        (str_bsc = '0')) then
+      if (dmpdv.usaComanda > 0) then
       begin
-        str_bsc := edProduto.Text;
-        buscaPedidoComanda(edProduto.Text);
-        if ((codMov > 0) and (e_comanda = 'S')) then
+        if (str_bsc = '0') then
         begin
-          abrePedido(codMov);
-          pnComanda.Caption := 'Comanda ' + str_bsc;
-          e_comanda:='N';
-          exit;
+          str_bsc := edProduto.Text;
+          buscaPedidoComanda(edProduto.Text);
+          if ((codMov > 0) and (e_comanda = 'S')) then
+          begin
+            abrePedido(codMov);
+            pnComanda.Caption := 'Comanda ' + str_bsc;
+            e_comanda:='N';
+            exit;
+          end;
+        end
+        else begin
+          if ((statusPedido > 0) and (dmPdv.usaComanda > 0)) then
+          begin
+            ShowMessage('Informe a comanda.');
+            Exit;
+          end;
         end;
       end;
       fProdutoProc.num_busca:=0;
@@ -1102,7 +1114,8 @@ begin
   buscaPedidosAbertoCaixa(0);
   if (dmPdv.usaComanda > 0) then
   begin
-    abrePedido(StrToInt(btnVnd1.Caption));
+    if (btnVnd1.Caption <> '') then
+      abrePedido(StrToInt(btnVnd1.Caption));
     pnComanda.Visible:=True;
   end;
 end;
@@ -1126,6 +1139,12 @@ end;
 
 procedure TfPdv.MenuItem5Click(Sender: TObject);
 begin
+  if (statusPedido > 0) then
+  begin
+    ShowMessage('Pedido ja finalizado.');
+    Exit;
+  end;
+
   pnTroca.Visible:=True;
 end;
 
@@ -1133,6 +1152,11 @@ procedure TfPdv.MenuItem6Click(Sender: TObject);
 begin
   pnInfo.Visible:=True;
   //fExecutaIntegracao.ShowModal;
+end;
+
+procedure TfPdv.Panel1Click(Sender: TObject);
+begin
+
 end;
 
 procedure TfPdv.btnVendaClick(Sender: TObject);
@@ -1145,6 +1169,11 @@ begin
 
 end;
 
+procedure TfPdv.pnComandaClick(Sender: TObject);
+begin
+
+end;
+
 procedure TfPdv.TIButton2Click(Sender: TObject);
 begin
   if (edMotivo.Text = '') then
@@ -1153,7 +1182,6 @@ begin
     exit;
   end;
   trocaDevolucao;
-  imprimirCupomTroca;
   btnNovo.Click;
   pnTroca.Visible := False;
 end;
@@ -1398,7 +1426,7 @@ begin
       if cbPercentual.Checked then
       begin
         calc_desc := fPDV_Rec.strParaFloat(edDesconto.Text);
-        calc_desc := FMov.MovDetalhe.Preco * (calc_desc / 100);
+        calc_desc := (FMov.MovDetalhe.Preco*FMov.MovDetalhe.Qtde) * (calc_desc / 100);
         FMov.MovDetalhe.Desconto := calc_desc;
       end
       else
@@ -1549,7 +1577,7 @@ begin
     edQtde.Text:='1,00';
     edQtde1.Text:='1,00';
     edDesconto.Text:='0,00';
-    edDesconto1.Text:='0,00';
+    edDesconto.Text:='0,00';
     registrar_item();
 end;
 
@@ -1810,10 +1838,10 @@ begin
   // executar integracao faturas se tiver acontecido venda
   //sleep(3000);
   {
-  Memo2.Lines.LoadFromFile(dmpdv.path_exe + '\atsProduto.py');
+  memoImp.Lines.LoadFromFile(dmpdv.path_exe + '\atsProduto.py');
   if fMovimentoProc.PythonEngine1.IsHandleValid then
   begin
-    fMovimentoProc.PythonEngine1.ExecStrings((Memo2.Lines));
+    fMovimentoProc.PythonEngine1.ExecStrings((memoImp.Lines));
   end
   else writeln('invalid library handle!', dynlibs.GetLoadErrorStr);
   lblMSG.Caption:= 'Sucesso.';
@@ -1876,16 +1904,21 @@ var
    fCpr : TCompraCls;
    num_cp: Integer;
 begin
+  if (statusPedido > 0) then
+  begin
+    ShowMessage('Pedido ja finalizado.');
+    Exit;
+  end;
   num_cp := dmPdv.busca_serie('I');
   // colocr status = 9
-  // codnatureza = 2 - entrada
+  // codnatureza = 1 - entrada
 
   // chave cupom
   ch_cp := FormatDateTime('ddmmyyMMss', Now);
   ch_cp := Copy(ch_cp,7,4);
 
   dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET STATUS = 9 ' +
-    ' , CODNATUREZA = 2 ' +
+    ' , CODNATUREZA = 1 ' +
     ' , HIST_MOV = ' + QuotedStr(edMotivo.Text) +
     ' , NFE = ' + QuotedStr(ch_cp) +
     ' WHERE CODMOVIMENTO  = ' + IntToStr(codMov));
@@ -1914,6 +1947,8 @@ begin
   end;
   dmPdv.sTrans.Commit;
   imprimirCupomTroca;
+  imprimirAcbr;
+  edMotivo.Text:='';
 end;
 
 procedure TfPdv.imprimirCupomTroca;
@@ -1958,7 +1993,7 @@ begin
   dmPdv.sqLancamentos.Open;
   // leio um arquivo txt e imprimo
   lFile := TStringList.Create;
-  AssignFile(IMPRESSORA, 't.txt');
+  AssignFile(IMPRESSORA, 'troca.txt');
 
   try
     Rewrite(IMPRESSORA);
@@ -2016,6 +2051,7 @@ begin
           texto3 := texto3 + Format('    %6.2n',[dmPdv.sqLancamentosQUANTIDADE.AsFloat]);
           texto3 := texto3 + Format(' %6.2n',[dmPdv.sqLancamentosPRECO.AsFloat]);
           texto3 := texto3 + Format('   %6.2n',[dmPdv.sqLancamentosVALTOTAL.value]);
+          totalR := totalR + dmPdv.sqLancamentosVALTOTAL.value;
           produto_cupomf := trim(dmPdv.sqLancamentosDESCPRODUTO.Value);
           texto6 := texto6 + '  ' + Copy(produto_cupomf, 0, 36);       //descrição do produto
           Writeln(Impressora, uutil.RemoveAcento(texto6));
@@ -2068,6 +2104,33 @@ begin
     lFile.Free;
   end;
 
+end;
+
+procedure TfPdv.imprimirAcbr;
+var arquivo: TStringList;
+begin
+  arquivo := TStringList.Create();
+  try
+    arquivo.LoadFromFile('cupom.txt');
+    MemoImp.Clear;
+    MemoImp.Text := arquivo.Text;
+  finally
+    arquivo.free;
+  end;
+  ACBrPosPrinter1.Desativar;
+  ACBrPosPrinter1.LinhasBuffer := 0;
+  ACBrPosPrinter1.LinhasEntreCupons := 0;
+  ACBrPosPrinter1.EspacoEntreLinhas := 0;
+  ACBrPosPrinter1.ColunasFonteNormal := 48;
+  ACBrPosPrinter1.Porta  := dmPdv.portaImp;
+
+  ACBrPosPrinter1.CortaPapel := True;
+
+  ACBrPosPrinter1.Modelo := TACBrPosPrinterModelo(dmPdv.ModeloImp);
+  ACBrPosPrinter1.Ativar ;
+
+  ACBrPosPrinter1.Buffer.Text := MemoImp.Lines.Text;
+  ACBrPosPrinter1.Imprimir;
 end;
 
 end.

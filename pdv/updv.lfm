@@ -26,6 +26,7 @@ object fPdv: TfPdv
     ParentColor = False
     PopupMenu = PopupMenu1
     TabOrder = 0
+    OnClick = Panel1Click
     object Image4: TImage
       Left = 302
       Height = 42
@@ -787,6 +788,7 @@ object fPdv: TfPdv
       ParentFont = False
       TabOrder = 8
       Visible = False
+      OnClick = pnComandaClick
     end
   end
   object Panel2: TPanel
@@ -11695,6 +11697,7 @@ object fPdv: TfPdv
           ParentFont = False
           ReadOnly = True
           TabOrder = 0
+          OnChange = edQtdeChange
           OnKeyPress = edQtdeKeyPress
           Text = '1'
           SpaceChar = '_'
@@ -11760,33 +11763,6 @@ object fPdv: TfPdv
           ParentColor = False
           ParentFont = False
         end
-        object cbPercentual: TCheckBox
-          Left = 221
-          Height = 19
-          Top = 41
-          Width = 30
-          Caption = '%'
-          TabOrder = 1
-        end
-        object edDesconto: TMaskEdit
-          Left = 184
-          Height = 31
-          Top = 8
-          Width = 112
-          Alignment = taRightJustify
-          CharCase = ecNormal
-          Font.CharSet = ANSI_CHARSET
-          Font.Height = -16
-          Font.Name = 'Comic Sans MS'
-          Font.Pitch = fpVariable
-          Font.Quality = fqDraft
-          MaxLength = 0
-          ParentFont = False
-          TabOrder = 2
-          OnKeyPress = edDescontoKeyPress
-          Text = '0,00'
-          SpaceChar = '_'
-        end
         object BitBtn5: TBitBtn
           Left = 117
           Height = 31
@@ -11797,7 +11773,7 @@ object fPdv: TfPdv
           OnClick = BitBtn4Click
           ParentShowHint = False
           ShowHint = True
-          TabOrder = 3
+          TabOrder = 1
         end
       end
       object edProdutoDesc: TMemo
@@ -11835,6 +11811,320 @@ object fPdv: TfPdv
     Color = clNone
     ParentColor = False
     TabOrder = 2
+    object DBGrid1: TDBGrid
+      Left = 1
+      Height = 540
+      Top = 1
+      Width = 802
+      Align = alClient
+      AlternateColor = cl3DLight
+      Color = clWindow
+      Columns = <      
+        item
+          MaxSize = 50
+          Title.Caption = 'N.'
+          Width = 50
+          FieldName = 'NITEMPED'
+        end      
+        item
+          MaxSize = 140
+          Title.Caption = 'Código'
+          Width = 160
+          FieldName = 'CODPRO'
+        end      
+        item
+          MinSize = 200
+          MaxSize = 600
+          Title.Caption = 'Descrição'
+          Width = 400
+          FieldName = 'DESCPRODUTO'
+        end      
+        item
+          MaxSize = 60
+          Title.Caption = 'Un.'
+          Width = 60
+          FieldName = 'UNIDADEMEDIDA'
+        end      
+        item
+          Alignment = taRightJustify
+          MaxSize = 120
+          Title.Alignment = taRightJustify
+          Title.Caption = 'Quant.'
+          Width = 80
+          FieldName = 'QUANTIDADE'
+        end      
+        item
+          Alignment = taRightJustify
+          MaxSize = 120
+          Title.Alignment = taRightJustify
+          Title.Caption = 'Preço'
+          Width = 80
+          FieldName = 'PRECO'
+          DisplayFormat = ',##0.00'
+        end      
+        item
+          Alignment = taRightJustify
+          MaxSize = 140
+          Title.Alignment = taRightJustify
+          Title.Caption = 'Total'
+          Width = 100
+          FieldName = 'TOTALITEM'
+        end>
+      DataSource = dsLanc
+      Font.Height = -19
+      Font.Name = 'Bitstream Charter'
+      Font.Style = [fsBold]
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+      ParentFont = False
+      Scrollbars = ssVertical
+      TabOrder = 0
+      TitleFont.Height = -19
+      TitleFont.Name = 'Bitstream Charter'
+      TitleFont.Style = [fsBold]
+      OnCellClick = DBGrid1CellClick
+      OnDrawColumnCell = DBGrid1DrawColumnCell
+    end
+    object pnInfo: TPanel
+      Left = 35
+      Height = 322
+      Top = 102
+      Width = 540
+      ClientHeight = 322
+      ClientWidth = 540
+      Color = 9453095
+      ParentColor = False
+      TabOrder = 1
+      Visible = False
+      object lblSenha: TLabel
+        Left = 32
+        Height = 15
+        Top = 297
+        Width = 12
+        Caption = '....'
+        Font.Color = clWhite
+        ParentColor = False
+        ParentFont = False
+      end
+      object BitBtn9: TBitBtn
+        Left = 480
+        Height = 40
+        Top = 272
+        Width = 51
+        Glyph.Data = {
+          76020000424D7602000000000000760000002800000020000000200000000100
+          0400000000000002000000000000000000001000000000000000000000000000
+          8000008000000080800080000000800080008080000080808000C0C0C0000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00888887788877
+          88877888000887788888888788877888778887780EE088877888888877888778
+          887788870EE607888778877888778887788877880EE660778887888778887788
+          877888770EE666007788878887788877888778880EE666600077800000000000
+          008887780EE666660000888888888888807788870EE666660778888888888888
+          800077880EE666660778888888888887800000000EE666660778888888888807
+          707777770EE666660778888888888800707777770EE666660778888888888806
+          007777770EE666660778888888888806607777770EE60066077888888777770E
+          660777770EE07066077888887777770EE66077770EE0F066077888800000000E
+          EE6607770EE60066077888066666666EEEE660770EE666660778880EEEEEEEEE
+          EEEE66070EE666660778880EEFFFFFFFFFFEE6070EE666660778880EEEEEEEEE
+          EFEE60770EE66666077888800000000EFEE607770EE66666077888888888880E
+          EE6077770EE66666077888888888880EE60777770EE66666077888888888880E
+          607777770EE6666607788888888888060077777770EE66660778888888888800
+          80777777770EE6660778888888888888807777777770EE660778888888888888
+          8077777777770EE6077888888888888880777777777770EE0788888888888888
+          8000000000000000088888888888888888888888888888888888
+        }
+        OnClick = BitBtn9Click
+        TabOrder = 0
+      end
+      object Label13: TLabel
+        Left = 35
+        Height = 15
+        Top = 23
+        Width = 152
+        Caption = 'PDV Versão : 1.0 - 01/08/2018'
+        Font.Color = clWhite
+        ParentColor = False
+        ParentFont = False
+      end
+      object Memo1: TMemo
+        Left = 35
+        Height = 269
+        Top = 51
+        Width = 429
+        Lines.Strings = (
+          'NFCe : Cadastrar em Séries o Cod. Usuário no Campo'
+          'CodSerie, esta série será usada para Gerar as NFCes.'
+          ''
+          'Impressão Cupom:'
+          'V = Pedido n. ..'
+          'usuario = Usuario X'
+          '                 Vendedor Y'
+          'doc = Data , n. pedido'
+          'empresa = Nome Empresa'
+          'logradouro = Endereco'
+          'cep = Cep'
+          'fone = Fone'
+          'T = Troco'
+          'P = Pagamento'
+          'linha = linha vazia'
+        )
+        TabOrder = 1
+      end
+    end
+    object pnProdBusca: TPanel
+      Left = -1
+      Height = 542
+      Top = 2
+      Width = 793
+      ClientHeight = 542
+      ClientWidth = 793
+      TabOrder = 4
+      Visible = False
+      object edBuscaDetalhe: TLabeledEdit
+        Left = 104
+        Height = 23
+        Top = 12
+        Width = 344
+        EditLabel.Height = 15
+        EditLabel.Width = 51
+        EditLabel.Caption = 'Descrição'
+        EditLabel.ParentColor = False
+        LabelPosition = lpLeft
+        TabOrder = 2
+        OnChange = edBuscaDetalheChange
+      end
+      object pnIntegra: TPanel
+        Left = 11
+        Height = 410
+        Top = 19
+        Width = 718
+        ClientHeight = 410
+        ClientWidth = 718
+        TabOrder = 3
+        object MemoIntegra: TMemo
+          Left = 1
+          Height = 408
+          Top = 1
+          Width = 716
+          Align = alClient
+          Lines.Strings = (
+            'MemoIntegra'
+          )
+          TabOrder = 0
+        end
+      end
+      object DBGrid2: TDBGrid
+        Left = 1
+        Height = 490
+        Top = 1
+        Width = 791
+        Align = alClient
+        Color = clSkyBlue
+        Columns = <        
+          item
+            MaxSize = 120
+            Title.Caption = 'Cód.'
+            Width = 140
+          end        
+          item
+            MaxSize = 300
+            Title.Caption = 'Descrição'
+            Width = 468
+          end        
+          item
+            MaxSize = 60
+            Title.Caption = 'Un.'
+            Width = 50
+          end        
+          item
+            MaxSize = 80
+            Title.Alignment = taRightJustify
+            Title.Caption = 'Preço'
+            Width = 100
+          end>
+        DataSource = dsProdProc
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -16
+        Font.Name = 'Arial'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+        ParentFont = False
+        TabOrder = 0
+        TitleFont.CharSet = ANSI_CHARSET
+        TitleFont.Color = clBlack
+        TitleFont.Height = -16
+        TitleFont.Name = 'Arial'
+        TitleFont.Pitch = fpVariable
+        TitleFont.Quality = fqDraft
+        TitleFont.Style = [fsBold]
+        OnCellClick = DBGrid2CellClick
+        OnEnter = DBGrid2Enter
+        OnKeyDown = DBGrid2KeyDown
+        OnKeyPress = DBGrid2KeyPress
+        OnKeyUp = DBGrid2KeyUp
+      end
+      object Panel3: TPanel
+        Left = 1
+        Height = 50
+        Top = 491
+        Width = 791
+        Align = alBottom
+        BidiMode = bdRightToLeft
+        ClientHeight = 50
+        ClientWidth = 791
+        Color = clWhite
+        ParentBidiMode = False
+        ParentColor = False
+        TabOrder = 1
+        object BitBtn11: TBitBtn
+          Left = 646
+          Height = 37
+          Top = 4
+          Width = 42
+          Glyph.Data = {
+            76020000424D7602000000000000760000002800000020000000200000000100
+            0400000000000002000000000000000000001000000000000000000000000000
+            8000008000000080800080000000800080008080000080808000C0C0C0000000
+            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00888887788877
+            88877888000887788888888788877888778887780EE088877888888877888778
+            887788870EE607888778877888778887788877880EE660778887888778887788
+            877888770EE666007788878887788877888778880EE666600077800000000000
+            008887780EE666660000888888888888807788870EE666660778888888888888
+            800077880EE666660778888888888887800000000EE666660778888888888807
+            707777770EE666660778888888888800707777770EE666660778888888888806
+            007777770EE666660778888888888806607777770EE60066077888888777770E
+            660777770EE07066077888887777770EE66077770EE0F066077888800000000E
+            EE6607770EE60066077888066666666EEEE660770EE666660778880EEEEEEEEE
+            EEEE66070EE666660778880EEFFFFFFFFFFEE6070EE666660778880EEEEEEEEE
+            EFEE60770EE66666077888800000000EFEE607770EE66666077888888888880E
+            EE6077770EE66666077888888888880EE60777770EE66666077888888888880E
+            607777770EE6666607788888888888060077777770EE66660778888888888800
+            80777777770EE6660778888888888888807777777770EE660778888888888888
+            8077777777770EE6077888888888888880777777777770EE0788888888888888
+            8000000000000000088888888888888888888888888888888888
+          }
+          OnClick = BitBtn11Click
+          TabOrder = 0
+        end
+        object lblProdBusca: TLabel
+          Left = 24
+          Height = 26
+          Top = 4
+          Width = 74
+          Caption = 'Produto:'
+          Font.CharSet = ANSI_CHARSET
+          Font.Color = clWhite
+          Font.Height = -19
+          Font.Name = 'Comic Sans MS'
+          Font.Pitch = fpVariable
+          Font.Quality = fqDraft
+          ParentColor = False
+          ParentFont = False
+        end
+      end
+    end
     object pnProdutoNaoLocalizado: TPanel
       Left = 136
       Height = 162
@@ -12006,7 +12296,7 @@ object fPdv: TfPdv
         ParentColor = False
         ParentFont = False
       end
-      object edDesconto1: TMaskEdit
+      object edDesconto: TMaskEdit
         Left = 176
         Height = 35
         Top = 136
@@ -12022,17 +12312,18 @@ object fPdv: TfPdv
         MaxLength = 0
         ParentFont = False
         TabOrder = 2
-        OnChange = edDesconto1Change
-        OnKeyPress = edDesconto1KeyPress
+        OnChange = edDescontoChange
+        OnKeyPress = edDescontoKeyPress
         Text = '0,00'
         SpaceChar = '_'
       end
-      object cbPercentual1: TCheckBox
+      object cbPercentual: TCheckBox
         Left = 293
         Height = 19
         Top = 140
         Width = 30
         Caption = '%'
+        OnClick = cbPercentualClick
         TabOrder = 3
       end
       object BitBtn10: TBitBtn
@@ -12064,165 +12355,6 @@ object fPdv: TfPdv
         }
         OnClick = BitBtn10Click
         TabOrder = 4
-      end
-    end
-    object DBGrid1: TDBGrid
-      Left = 1
-      Height = 540
-      Top = 1
-      Width = 802
-      Align = alClient
-      AlternateColor = cl3DLight
-      Color = clWindow
-      Columns = <      
-        item
-          MaxSize = 50
-          Title.Caption = 'N.'
-          Width = 50
-          FieldName = 'NITEMPED'
-        end      
-        item
-          MaxSize = 140
-          Title.Caption = 'Código'
-          Width = 160
-          FieldName = 'CODPRO'
-        end      
-        item
-          MinSize = 200
-          MaxSize = 600
-          Title.Caption = 'Descrição'
-          Width = 400
-          FieldName = 'DESCPRODUTO'
-        end      
-        item
-          MaxSize = 60
-          Title.Caption = 'Un.'
-          Width = 60
-          FieldName = 'UNIDADEMEDIDA'
-        end      
-        item
-          Alignment = taRightJustify
-          MaxSize = 120
-          Title.Alignment = taRightJustify
-          Title.Caption = 'Quant.'
-          Width = 80
-          FieldName = 'QUANTIDADE'
-        end      
-        item
-          Alignment = taRightJustify
-          MaxSize = 120
-          Title.Alignment = taRightJustify
-          Title.Caption = 'Preço'
-          Width = 80
-          FieldName = 'PRECO'
-          DisplayFormat = ',##0.00'
-        end      
-        item
-          Alignment = taRightJustify
-          MaxSize = 140
-          Title.Alignment = taRightJustify
-          Title.Caption = 'Total'
-          Width = 100
-          FieldName = 'TOTALITEM'
-        end>
-      DataSource = dsLanc
-      Font.Height = -19
-      Font.Name = 'Bitstream Charter'
-      Font.Style = [fsBold]
-      Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
-      ParentFont = False
-      Scrollbars = ssVertical
-      TabOrder = 0
-      TitleFont.Height = -19
-      TitleFont.Name = 'Bitstream Charter'
-      TitleFont.Style = [fsBold]
-      OnCellClick = DBGrid1CellClick
-      OnDrawColumnCell = DBGrid1DrawColumnCell
-    end
-    object pnInfo: TPanel
-      Left = 35
-      Height = 322
-      Top = 102
-      Width = 540
-      ClientHeight = 322
-      ClientWidth = 540
-      Color = 9453095
-      ParentColor = False
-      TabOrder = 1
-      Visible = False
-      object lblSenha: TLabel
-        Left = 32
-        Height = 15
-        Top = 297
-        Width = 12
-        Caption = '....'
-        Font.Color = clWhite
-        ParentColor = False
-        ParentFont = False
-      end
-      object BitBtn9: TBitBtn
-        Left = 480
-        Height = 40
-        Top = 272
-        Width = 51
-        Glyph.Data = {
-          76020000424D7602000000000000760000002800000020000000200000000100
-          0400000000000002000000000000000000001000000000000000000000000000
-          8000008000000080800080000000800080008080000080808000C0C0C0000000
-          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00888887788877
-          88877888000887788888888788877888778887780EE088877888888877888778
-          887788870EE607888778877888778887788877880EE660778887888778887788
-          877888770EE666007788878887788877888778880EE666600077800000000000
-          008887780EE666660000888888888888807788870EE666660778888888888888
-          800077880EE666660778888888888887800000000EE666660778888888888807
-          707777770EE666660778888888888800707777770EE666660778888888888806
-          007777770EE666660778888888888806607777770EE60066077888888777770E
-          660777770EE07066077888887777770EE66077770EE0F066077888800000000E
-          EE6607770EE60066077888066666666EEEE660770EE666660778880EEEEEEEEE
-          EEEE66070EE666660778880EEFFFFFFFFFFEE6070EE666660778880EEEEEEEEE
-          EFEE60770EE66666077888800000000EFEE607770EE66666077888888888880E
-          EE6077770EE66666077888888888880EE60777770EE66666077888888888880E
-          607777770EE6666607788888888888060077777770EE66660778888888888800
-          80777777770EE6660778888888888888807777777770EE660778888888888888
-          8077777777770EE6077888888888888880777777777770EE0788888888888888
-          8000000000000000088888888888888888888888888888888888
-        }
-        OnClick = BitBtn9Click
-        TabOrder = 0
-      end
-      object Label13: TLabel
-        Left = 35
-        Height = 15
-        Top = 23
-        Width = 152
-        Caption = 'PDV Versão : 1.0 - 01/08/2018'
-        Font.Color = clWhite
-        ParentColor = False
-        ParentFont = False
-      end
-      object Memo1: TMemo
-        Left = 35
-        Height = 269
-        Top = 51
-        Width = 429
-        Lines.Strings = (
-          'NFCe : Cadastrar em Séries o Cod. Usuário no Campo'
-          'CodSerie, esta série será usada para Gerar as NFCes.'
-          ''
-          'Impressão Cupom:'
-          'V = Pedido n. ..'
-          'usuario = Usuario X'
-          '                 Vendedor Y'
-          'doc = Data , n. pedido'
-          'empresa = Nome Empresa'
-          'logradouro = Endereco'
-          'cep = Cep'
-          'fone = Fone'
-          'T = Troco'
-          'P = Pagamento'
-          'linha = linha vazia'
-        )
-        TabOrder = 1
       end
     end
     object Panel9: TPanel
@@ -12388,161 +12520,6 @@ object fPdv: TfPdv
         end
       end
     end
-    object pnProdBusca: TPanel
-      Left = -1
-      Height = 542
-      Top = 2
-      Width = 793
-      ClientHeight = 542
-      ClientWidth = 793
-      TabOrder = 4
-      Visible = False
-      object pnIntegra: TPanel
-        Left = 11
-        Height = 410
-        Top = 19
-        Width = 718
-        ClientHeight = 410
-        ClientWidth = 718
-        TabOrder = 3
-        object MemoIntegra: TMemo
-          Left = 1
-          Height = 408
-          Top = 1
-          Width = 716
-          Align = alClient
-          Lines.Strings = (
-            'MemoIntegra'
-          )
-          TabOrder = 0
-        end
-      end
-      object edBuscaDetalhe: TLabeledEdit
-        Left = 104
-        Height = 23
-        Top = 12
-        Width = 344
-        EditLabel.Height = 15
-        EditLabel.Width = 51
-        EditLabel.Caption = 'Descrição'
-        EditLabel.ParentColor = False
-        LabelPosition = lpLeft
-        TabOrder = 2
-        OnChange = edBuscaDetalheChange
-      end
-      object DBGrid2: TDBGrid
-        Left = 1
-        Height = 490
-        Top = 1
-        Width = 791
-        Align = alClient
-        Color = clSkyBlue
-        Columns = <        
-          item
-            MaxSize = 120
-            Title.Caption = 'Cód.'
-            Width = 140
-          end        
-          item
-            MaxSize = 300
-            Title.Caption = 'Descrição'
-            Width = 468
-          end        
-          item
-            MaxSize = 60
-            Title.Caption = 'Un.'
-            Width = 50
-          end        
-          item
-            MaxSize = 80
-            Title.Alignment = taRightJustify
-            Title.Caption = 'Preço'
-            Width = 100
-          end>
-        DataSource = dsProdProc
-        Font.CharSet = ANSI_CHARSET
-        Font.Color = clBlack
-        Font.Height = -16
-        Font.Name = 'Arial'
-        Font.Pitch = fpVariable
-        Font.Quality = fqDraft
-        Font.Style = [fsBold]
-        Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
-        ParentFont = False
-        TabOrder = 0
-        TitleFont.CharSet = ANSI_CHARSET
-        TitleFont.Color = clBlack
-        TitleFont.Height = -16
-        TitleFont.Name = 'Arial'
-        TitleFont.Pitch = fpVariable
-        TitleFont.Quality = fqDraft
-        TitleFont.Style = [fsBold]
-        OnCellClick = DBGrid2CellClick
-        OnEnter = DBGrid2Enter
-        OnKeyDown = DBGrid2KeyDown
-        OnKeyPress = DBGrid2KeyPress
-        OnKeyUp = DBGrid2KeyUp
-      end
-      object Panel3: TPanel
-        Left = 1
-        Height = 50
-        Top = 491
-        Width = 791
-        Align = alBottom
-        BidiMode = bdRightToLeft
-        ClientHeight = 50
-        ClientWidth = 791
-        Color = clWhite
-        ParentBidiMode = False
-        ParentColor = False
-        TabOrder = 1
-        object BitBtn11: TBitBtn
-          Left = 646
-          Height = 37
-          Top = 4
-          Width = 42
-          Glyph.Data = {
-            76020000424D7602000000000000760000002800000020000000200000000100
-            0400000000000002000000000000000000001000000000000000000000000000
-            8000008000000080800080000000800080008080000080808000C0C0C0000000
-            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00888887788877
-            88877888000887788888888788877888778887780EE088877888888877888778
-            887788870EE607888778877888778887788877880EE660778887888778887788
-            877888770EE666007788878887788877888778880EE666600077800000000000
-            008887780EE666660000888888888888807788870EE666660778888888888888
-            800077880EE666660778888888888887800000000EE666660778888888888807
-            707777770EE666660778888888888800707777770EE666660778888888888806
-            007777770EE666660778888888888806607777770EE60066077888888777770E
-            660777770EE07066077888887777770EE66077770EE0F066077888800000000E
-            EE6607770EE60066077888066666666EEEE660770EE666660778880EEEEEEEEE
-            EEEE66070EE666660778880EEFFFFFFFFFFEE6070EE666660778880EEEEEEEEE
-            EFEE60770EE66666077888800000000EFEE607770EE66666077888888888880E
-            EE6077770EE66666077888888888880EE60777770EE66666077888888888880E
-            607777770EE6666607788888888888060077777770EE66660778888888888800
-            80777777770EE6660778888888888888807777777770EE660778888888888888
-            8077777777770EE6077888888888888880777777777770EE0788888888888888
-            8000000000000000088888888888888888888888888888888888
-          }
-          OnClick = BitBtn11Click
-          TabOrder = 0
-        end
-        object lblProdBusca: TLabel
-          Left = 24
-          Height = 26
-          Top = 4
-          Width = 74
-          Caption = 'Produto:'
-          Font.CharSet = ANSI_CHARSET
-          Font.Color = clWhite
-          Font.Height = -19
-          Font.Name = 'Comic Sans MS'
-          Font.Pitch = fpVariable
-          Font.Quality = fqDraft
-          ParentColor = False
-          ParentFont = False
-        end
-      end
-    end
     object pnTroca: TPanel
       Left = 155
       Height = 262
@@ -12550,10 +12527,23 @@ object fPdv: TfPdv
       Width = 470
       ClientHeight = 262
       ClientWidth = 470
+      Color = clActiveBorder
+      ParentColor = False
       TabOrder = 6
       Visible = False
+      object memoImp: TMemo
+        Left = 8
+        Height = 90
+        Top = 123
+        Width = 150
+        Lines.Strings = (
+          'memoImp'
+        )
+        TabOrder = 3
+        Visible = False
+      end
       object Label1: TLabel
-        Left = 160
+        Left = 184
         Height = 15
         Top = 40
         Width = 119
@@ -12564,7 +12554,7 @@ object fPdv: TfPdv
         Left = 112
         Height = 23
         Top = 88
-        Width = 228
+        Width = 312
         TabOrder = 0
       end
       object Label2: TLabel
@@ -12576,10 +12566,10 @@ object fPdv: TfPdv
         ParentColor = False
       end
       object BitBtn13: TBitBtn
-        Left = 288
+        Left = 368
         Height = 45
         Hint = 'Sair - F9'
-        Top = 168
+        Top = 144
         Width = 52
         Glyph.Data = {
           76020000424D7602000000000000760000002800000020000000200000000100
@@ -12609,10 +12599,10 @@ object fPdv: TfPdv
         TabOrder = 1
       end
       object TIButton2: TTIButton
-        Left = 128
+        Left = 200
         Height = 45
         Hint = 'Devolução / Troca'
-        Top = 168
+        Top = 144
         Width = 156
         Caption = 'Devolução / Troca'
         OnClick = TIButton2Click
@@ -12693,5 +12683,17 @@ object fPdv: TfPdv
     DataSet = dmPdv.sqBusca
     left = 190
     top = 55
+  end
+  object ACBrPosPrinter1: TACBrPosPrinter
+    ConfigBarras.MostrarCodigo = False
+    ConfigBarras.LarguraLinha = 0
+    ConfigBarras.Altura = 0
+    ConfigBarras.Margem = 0
+    ConfigQRCode.Tipo = 2
+    ConfigQRCode.LarguraModulo = 4
+    ConfigQRCode.ErrorLevel = 0
+    LinhasEntreCupons = 0
+    left = 607
+    top = 15
   end
 end
