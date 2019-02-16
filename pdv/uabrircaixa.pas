@@ -242,7 +242,7 @@ begin
 
   str := 'update CAIXA_CONTROLE set SITUACAO = ';
   str := str + QuotedStr('F');
-  str := str + ', DATAFECHAMENTO = ' + QuotedStr(FormatDateTime('dd/mm/yyyy', now));
+  str := str + ', DATAFECHAMENTO = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', now));
   vlrCaixa := StrToFloat(edValor.Text);
   DecimalSeparator:='.';
   if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
