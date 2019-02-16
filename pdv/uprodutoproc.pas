@@ -18,11 +18,15 @@ type
     btnConfirma: TBitBtn;
     btnProcurar: TBitBtn;
     chInativo: TCheckBox;
+    cbSubGrupo: TComboBox;
+    cbGrupo: TComboBox;
     DBGrid1: TDBGrid;
     dsProc: TDataSource;
     Edit1: TEdit;
     Edit2: TEdit;
     Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
     Panel1: TPanel;
     procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
@@ -32,16 +36,18 @@ type
     procedure btnProcurarClick(Sender: TObject);
     procedure btnSairClick(Sender: TObject);
     procedure btnSALVClick(Sender: TObject);
+    procedure cbGrupoChange(Sender: TObject);
+    procedure cbSubGrupoChange(Sender: TObject);
     procedure chInativoChange(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
     procedure DBGrid1DblClick(Sender: TObject);
     procedure DBGrid1KeyPress(Sender: TObject; var Key: char);
+    procedure Edit1Change(Sender: TObject);
     procedure Edit1Enter(Sender: TObject);
     procedure Edit1KeyPress(Sender: TObject; var Key: char);
     procedure Edit2KeyPress(Sender: TObject; var Key: char);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
-    procedure FormKeyPress(Sender: TObject; var Key: char);
     procedure FormShow(Sender: TObject);
   private
 
@@ -97,6 +103,8 @@ end;
 procedure TfProdutoProc.FormClose(Sender: TObject; var CloseAction: TCloseAction
   );
 begin
+  cbGrupo.Text    := '';
+  cbSubGrupo.Text := '';
 end;
 
 procedure TfProdutoProc.DBGrid1CellClick(Column: TColumn);
@@ -129,6 +137,11 @@ begin
     tipo_venda := dmPdv.sqBusca.FieldByName('RATEIO').AsString;
     Close;
   end;
+end;
+
+procedure TfProdutoProc.Edit1Change(Sender: TObject);
+begin
+
 end;
 
 procedure TfProdutoProc.btnPROCClick(Sender: TObject);
@@ -191,6 +204,26 @@ begin
   Close;
 end;
 
+procedure TfProdutoProc.cbGrupoChange(Sender: TObject);
+begin
+  cbSubGrupo.Items.Clear;
+  dmPdv.busca_sql('SELECT COD_FAMILIA FROM FAMILIAPRODUTOS WHERE DESCFAMILIA = ' +
+    QuotedStr(cbGrupo.Text));
+  dmPdv.busca_sql('SELECT DESCCATEGORIA, COD_FAMILIA FROM CATEGORIAPRODUTO ' +
+    ' WHERE COD_FAMILIA = ' + IntToStr(dmPdv.sqBusca.FieldByName('COD_FAMILIA').AsInteger));
+  While not dmPdv.sqBusca.EOF do
+  begin
+    cbSubGrupo.Items.Add(dmPdv.sqBusca.FieldByName('DESCCATEGORIA').AsString);
+    dmPdv.sqBusca.Next;
+  end;
+  btnProcurar.Click;
+end;
+
+procedure TfProdutoProc.cbSubGrupoChange(Sender: TObject);
+begin
+  btnProcurar.Click;
+end;
+
 procedure TfProdutoProc.chInativoChange(Sender: TObject);
 begin
 
@@ -206,9 +239,6 @@ begin
   DBGrid1.Columns[3].DisplayFormat:=',##0.00';
 end;
 
-procedure TfProdutoProc.FormKeyPress(Sender: TObject; var Key: char);
-begin
-end;
 
 procedure TfProdutoProc.FormShow(Sender: TObject);
 begin
@@ -221,6 +251,20 @@ begin
   tipo_venda :='1';
   DBGrid1.SetFocus;
   busca(Edit1.Text, '', Edit2.Text, chInativo.Checked);
+  cbSubGrupo.Items.Clear;
+  cbGrupo.Items.Clear;
+  dmPdv.busca_sql('SELECT DESCFAMILIA, COD_FAMILIA FROM FAMILIAPRODUTOS');
+  While not dmPdv.sqBusca.EOF do
+  begin
+    cbGrupo.Items.Add(dmPdv.sqBusca.FieldByName('DESCFAMILIA').AsString);
+    dmPdv.sqBusca.Next;
+  end;
+  dmPdv.busca_sql('SELECT DESCCATEGORIA, COD_FAMILIA FROM CATEGORIAPRODUTO');
+  While not dmPdv.sqBusca.EOF do
+  begin
+    cbSubGrupo.Items.Add(dmPdv.sqBusca.FieldByName('DESCCATEGORIA').AsString);
+    dmPdv.sqBusca.Next;
+  end;
 end;
 
 procedure TfProdutoProc.busca(codigo: String; barCode: String; produtoDesc: String; inativo: Boolean);
@@ -260,6 +304,15 @@ begin
     sqlProc := 'SELECT * FROM PRODUTOS WHERE USA = ' +
       QuotedStr('N');
   end;
+  if (cbGrupo.Text <> '') then
+  begin
+    sqlProc := sqlProc + ' AND FAMILIA = ' + QuotedStr(cbGrupo.Text);
+  end;
+  if (cbSubGrupo.Text <> '') then
+  begin
+    sqlProc := sqlProc + ' AND CATEGORIA = ' + QuotedStr(cbSubGrupo.Text);
+  end;
+
   if (codigo <> '') then
   begin
     sqlProc := sqlProc + ' AND UPPER(CODPRO) LIKE UPPER(' +

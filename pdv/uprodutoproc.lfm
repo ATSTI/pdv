@@ -8,9 +8,8 @@ object fProdutoProc: TfProdutoProc
   ClientWidth = 877
   OnClose = FormClose
   OnCreate = FormCreate
-  OnKeyPress = FormKeyPress
   OnShow = FormShow
-  LCLVersion = '1.8.4.0'
+  LCLVersion = '2.0.0.4'
   object Panel1: TPanel
     Left = 0
     Height = 64
@@ -31,13 +30,14 @@ object fProdutoProc: TfProdutoProc
     object Edit1: TEdit
       Left = 88
       Height = 29
-      Top = 8
+      Top = 2
       Width = 144
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
       Font.Name = '@Malgun Gothic'
       Font.Pitch = fpVariable
       Font.Quality = fqDraft
+      OnChange = Edit1Change
       OnEnter = Edit1Enter
       OnKeyPress = Edit1KeyPress
       ParentFont = False
@@ -46,7 +46,7 @@ object fProdutoProc: TfProdutoProc
     object Label1: TLabel
       Left = 16
       Height = 21
-      Top = 11
+      Top = 2
       Width = 60
       Caption = 'Produto'
       Font.CharSet = ANSI_CHARSET
@@ -58,10 +58,10 @@ object fProdutoProc: TfProdutoProc
       ParentFont = False
     end
     object Edit2: TEdit
-      Left = 256
+      Left = 243
       Height = 29
-      Top = 8
-      Width = 408
+      Top = 2
+      Width = 429
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
       Font.Name = '@Malgun Gothic'
@@ -72,9 +72,9 @@ object fProdutoProc: TfProdutoProc
       TabOrder = 1
     end
     object chInativo: TCheckBox
-      Left = 16
+      Left = 680
       Height = 21
-      Top = 40
+      Top = 46
       Width = 60
       Caption = 'Inativo'
       Font.CharSet = ANSI_CHARSET
@@ -84,7 +84,7 @@ object fProdutoProc: TfProdutoProc
       Font.Quality = fqDraft
       OnChange = chInativoChange
       ParentFont = False
-      TabOrder = 2
+      TabOrder = 4
     end
     object btnProcurar: TBitBtn
       Left = 680
@@ -227,7 +227,7 @@ object fProdutoProc: TfProdutoProc
       OnClick = btnProcurarClick
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 3
+      TabOrder = 5
     end
     object btnConfirma: TBitBtn
       Left = 728
@@ -370,7 +370,7 @@ object fProdutoProc: TfProdutoProc
       OnClick = btnConfirmaClick
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 4
+      TabOrder = 6
     end
     object BitBtn2: TBitBtn
       Left = 776
@@ -673,7 +673,7 @@ object fProdutoProc: TfProdutoProc
       OnClick = BitBtn2Click
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 5
+      TabOrder = 7
     end
     object btnSair: TBitBtn
       Left = 824
@@ -784,7 +784,67 @@ object fProdutoProc: TfProdutoProc
       OnClick = btnSairClick
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 6
+      TabOrder = 8
+    end
+    object cbSubGrupo: TComboBox
+      Left = 412
+      Height = 29
+      Top = 32
+      Width = 260
+      Font.CharSet = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -16
+      Font.Name = '@Malgun Gothic'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      ItemHeight = 21
+      OnChange = cbSubGrupoChange
+      ParentFont = False
+      TabOrder = 3
+    end
+    object cbGrupo: TComboBox
+      Left = 88
+      Height = 29
+      Top = 32
+      Width = 232
+      Font.CharSet = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -16
+      Font.Name = '@Malgun Gothic'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      ItemHeight = 21
+      OnChange = cbGrupoChange
+      ParentFont = False
+      TabOrder = 2
+    end
+    object Label2: TLabel
+      Left = 324
+      Height = 21
+      Top = 32
+      Width = 80
+      Caption = 'Sub-grupo'
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -16
+      Font.Name = '@Malgun Gothic'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      ParentColor = False
+      ParentFont = False
+    end
+    object Label3: TLabel
+      Left = 30
+      Height = 21
+      Top = 31
+      Width = 46
+      Caption = 'Grupo'
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -16
+      Font.Name = '@Malgun Gothic'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      ParentColor = False
+      ParentFont = False
     end
   end
   object DBGrid1: TDBGrid
