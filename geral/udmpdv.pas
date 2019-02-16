@@ -195,6 +195,8 @@ type
   public
     usosistema : string;
     usaComanda : Integer;
+    contaCaixa : Integer;
+    caixaBanco : String;
     idcaixa : string;
     ccusto : String;
     ccusto_padrao : String;
@@ -213,6 +215,7 @@ type
     path_python: String;
     path_script: String;
     path_xml: String;
+    path_imp: String;
     portaImp: String;
     espacoEntreLinhas: Integer;
     NFE_Teste: String;
@@ -233,6 +236,7 @@ type
     pc: String; valorAnt: String; valorPos: String; campoChave: String; acao: String);
     function busca_generator(generator: String): integer;
     function busca_serie(Serie: String): integer;
+    procedure busca_sql(sql_txt: String);
   end;
 
 var
@@ -251,6 +255,8 @@ var
   vstr: String;
 begin
   //extrac
+  contaCaixa := 0;
+  caixaBanco := '1.1.1.01';
   id_tk := '';
   tk := '';
   NFE_Teste := 'N';
@@ -274,6 +280,7 @@ begin
     path_python := conf.ReadString('PATH', 'PathPython', '');
     path_script := conf.ReadString('PATH', 'PathScript', '');
     path_xml := conf.ReadString('PATH', 'PathXML', path_exe);
+    path_imp := conf.ReadString('PATH', 'PathIMP', 'imp.txt');
     IBCon.HostName := vstr;
     snh:= conf.ReadString('DATABASE', 'Acesso', '');
     portaImp := conf.ReadString('IMPRESSORA', 'porta', '');
@@ -326,8 +333,19 @@ begin
         ShowMessage('Parametro Consumidor campo DADOS precisa ser número');
       end;
     end;
+    if (sqParametroPARAMETRO.AsString = 'CAIXA_BANCO') then
+    begin
+      caixaBanco := sqParametroDADOS.AsString;
+      busca_sql('SELECT CODIGO FROM PLANO WHERE CONTAPAI = ' +
+        QuotedStr(caixaBanco) + ' AND CONSOLIDA = ' + QuotedStr('S'));
+      if not sqBusca.IsEmpty then
+      begin
+        contaCaixa := sqBusca.FieldByName('CODIGO').AsInteger;
+      end;
+    end;
     sqParametro.Next;
   end;
+  sqBusca.Active := False;
   sqBusca.SQL.Clear;
   sqBusca.SQL.Add('SELECT r.VERSAO FROM ATUALIZA r WHERE r.CODATUALIZA = 5000');
   sqBusca.Active:=True;
@@ -468,6 +486,15 @@ begin
   dmPdv.sqUpdate.ApplyUpdates;
   Result := num_cp;
 
+end;
+
+procedure TdmPdv.busca_sql(sql_txt: String);
+begin
+  if sqBusca.Active then
+    sqBusca.Close;
+  sqBusca.SQL.Clear;
+  sqBusca.SQL.Add(sql_txt);
+  sqBusca.Open;
 end;
 
 function TdmPdv.executaSql(strSql: String): Boolean;
