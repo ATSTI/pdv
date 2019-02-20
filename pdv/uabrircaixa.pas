@@ -98,6 +98,21 @@ begin
     Label1.Caption:= 'Fechar Caixa';
     fAbrirCaixa.Caption:= 'Fechar Caixa';
   end;
+  if (dmPdv.idCaixa = '0') then
+  begin
+    ShowMessage('Sem Caixa Aberto');
+    Exit;
+  end;
+  sqlP := 'select COALESCE(VALORABRE,0) as Valor from CAIXA_CONTROLE';
+  sqlP += ' where IDCAIXACONTROLE = ' + dmpdv.idcaixa;
+  dmPdv.busca_sql(sqlP);
+  if (not dmPdv.sqBusca.IsEmpty) then
+  begin
+    total := dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    totalcaixa := dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    totalliquido := dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    edDinheiro.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
+  end;
   sqlP := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
   sqlP += ' where CAIXA = ' + dmpdv.idcaixa;
   sqlP += ' and STATE = 1 and FORMA_PGTO = 1';//Dinheiro
@@ -109,10 +124,10 @@ begin
   dmPdv.sqBusca.Active:=True;
   if (not dmPdv.sqBusca.IsEmpty) then
   begin
-    total := dmPdv.sqBusca.FieldByName('Valor').AsFloat;
-    totalliquido := dmPdv.sqBusca.FieldByName('Valor').AsFloat;
-    totalcaixa := dmPdv.sqBusca.FieldByName('Valor').AsFloat;
-    edDinheiro.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
+    total += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    totalliquido += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    totalcaixa += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    edDinheiro.Text:= format('%6.2n',[totalcaixa]);
   end;
 
    sqlP := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';

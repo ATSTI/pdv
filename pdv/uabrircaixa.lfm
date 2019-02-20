@@ -226,7 +226,7 @@ object fAbrirCaixa: TfAbrirCaixa
       Enabled = False
       MaxLength = 0
       TabOrder = 0
-      Text = 'edCcred'
+      Text = '0,00'
       SpaceChar = '_'
     end
     object Label2: TLabel
@@ -357,7 +357,7 @@ object fAbrirCaixa: TfAbrirCaixa
       Enabled = False
       MaxLength = 0
       TabOrder = 2
-      Text = 'edCheque'
+      Text = '0,00'
       SpaceChar = '_'
     end
     object edFaturado: TMaskEdit
@@ -370,7 +370,7 @@ object fAbrirCaixa: TfAbrirCaixa
       Enabled = False
       MaxLength = 0
       TabOrder = 3
-      Text = 'edFaturado'
+      Text = '0,00'
       SpaceChar = '_'
     end
     object edSangrias: TMaskEdit
@@ -383,7 +383,7 @@ object fAbrirCaixa: TfAbrirCaixa
       Enabled = False
       MaxLength = 0
       TabOrder = 4
-      Text = 'edSangrias'
+      Text = '0,00'
       SpaceChar = '_'
     end
     object edDinheiro: TMaskEdit
@@ -396,7 +396,7 @@ object fAbrirCaixa: TfAbrirCaixa
       Enabled = False
       MaxLength = 0
       TabOrder = 5
-      Text = 'edDinheiro'
+      Text = '0,00'
       SpaceChar = '_'
     end
     object Label9: TLabel
@@ -454,7 +454,7 @@ object fAbrirCaixa: TfAbrirCaixa
       Enabled = False
       MaxLength = 0
       TabOrder = 6
-      Text = 'edTCaixa'
+      Text = '0,00'
       SpaceChar = '_'
     end
     object edTBruto: TMaskEdit
@@ -467,7 +467,7 @@ object fAbrirCaixa: TfAbrirCaixa
       Enabled = False
       MaxLength = 0
       TabOrder = 7
-      Text = 'edTBruto'
+      Text = '0,00'
       SpaceChar = '_'
     end
     object edTLiquido: TMaskEdit
@@ -480,7 +480,7 @@ object fAbrirCaixa: TfAbrirCaixa
       Enabled = False
       MaxLength = 0
       TabOrder = 8
-      Text = 'edTLiquido'
+      Text = '0,00'
       SpaceChar = '_'
     end
   end
