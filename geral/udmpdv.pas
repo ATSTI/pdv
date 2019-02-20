@@ -5,7 +5,8 @@ unit udmpdv;
 interface
 
 uses
-  Classes, SysUtils, IBConnection, sqldb, db, FileUtil, IniFiles, Dialogs, base64;
+  Classes, SysUtils, IBConnection, sqldb, pqconnection, db, FileUtil, IniFiles,
+  Dialogs, base64;
 
 type
 
@@ -13,6 +14,7 @@ type
 
   TdmPdv = class(TDataModule)
     IbCon: TIBConnection;
+    PGCon: TPQConnection;
     sqBusca: TSQLQuery;
     sqEmpresaANOLETIVO: TLongintField;
     sqEmpresaBAIRRO: TStringField;
@@ -171,6 +173,7 @@ type
     sqLancamentosVLR_BASEICMS: TFloatField;
     SQLQuery1: TSQLQuery;
     sqEmpresa: TSQLQuery;
+    sqPGBusca: TSQLQuery;
     sqUpdate: TSQLQuery;
     sqParametro: TSQLQuery;
     sqParametroCONFIGURADO: TStringField;
@@ -196,6 +199,7 @@ type
     usosistema : string;
     usaComanda : Integer;
     contaCaixa : Integer;
+    margemCodBarra: Integer;
     caixaBanco : String;
     idcaixa : string;
     ccusto : String;
@@ -270,6 +274,7 @@ begin
   path_xml := path_exe;
 
   IBCon.Connected:=False;
+  PGCon.Connected:=False;
   //IBCon.CharSet:='WIN1252';
   //path_exe := path_exe + 'conf.ini';
   conf := TIniFile.Create(path_exe + 'conf.ini');
@@ -282,11 +287,23 @@ begin
     path_xml := conf.ReadString('PATH', 'PathXML', path_exe);
     path_imp := conf.ReadString('PATH', 'PathIMP', 'imp.txt');
     IBCon.HostName := vstr;
+    vstr := conf.ReadString('DATABASEPG', 'HostName', '');
+    if (vstr <> '') then
+    begin
+      PGCon.HostName:=vstr;
+      vstr := conf.ReadString('DATABASEPG', 'Name', '');
+      PGCon.DatabaseName:=vstr;
+      vstr := conf.ReadString('DATABASEPG', 'UserName', '');
+      PGCon.UserName:= 'odoo';
+      PGCon.Password:= 'a2t00s7';
+    end;
+    //PgCon.Connected:=True;
     snh:= conf.ReadString('DATABASE', 'Acesso', '');
     portaImp := conf.ReadString('IMPRESSORA', 'porta', '');
     ModeloImp := conf.ReadInteger('IMPRESSORA', 'Modelo', 0);
     CupomImp := conf.ReadString('IMPRESSORA', 'Cupom', 'Texto');
     espacoEntreLinhas := conf.ReadInteger('IMPRESSORA', 'EspacoEntreLinhas', 10);
+    margemCodBarra := conf.ReadInteger('IMPRESSORA', 'MargemCodBarra', 50);
     //snh:= EncodeStringBase64(snh); // Ver a senha Encryptada
     snh:= DecodeStringBase64(snh);
     IBCon.Password := snh;

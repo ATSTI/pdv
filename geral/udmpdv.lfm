@@ -1,10 +1,10 @@
 object dmPdv: TdmPdv
   OnCreate = DataModuleCreate
   OldCreateOrder = False
-  Height = 279
+  Height = 433
   HorizontalOffset = 686
   VerticalOffset = 210
-  Width = 355
+  Width = 473
   PPI = 96
   object IbCon: TIBConnection
     Connected = False
@@ -2755,5 +2755,18 @@ object dmPdv: TdmPdv
     Params = <>
     left = 248
     top = 178
+  end
+  object PGCon: TPQConnection
+    Connected = False
+    LoginPrompt = False
+    KeepConnection = False
+    left = 40
+    top = 290
+  end
+  object sqPGBusca: TSQLQuery
+    FieldDefs = <>
+    Params = <>
+    left = 128
+    top = 288
   end
 end
