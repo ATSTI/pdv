@@ -1993,7 +1993,8 @@ begin
   dmPdv.sqLancamentos.Open;
   // leio um arquivo txt e imprimo
   lFile := TStringList.Create;
-  AssignFile(IMPRESSORA, 'troca.txt');
+
+  AssignFile(IMPRESSORA, dmpdv.path_imp);
 
   try
     Rewrite(IMPRESSORA);
@@ -2085,6 +2086,7 @@ begin
         barcode := '3' + ch_cp + AddChar('0', barcode, 7);
         barcode := barcode + uutil.EAN13(barcode);
         Writeln(Impressora, '<code128>' + barcode + '</code128>');//Motivo
+        //Writeln(Impressora, barcode)
       end
       else if linhaTxt = '2' then
       begin
@@ -2111,7 +2113,7 @@ var arquivo: TStringList;
 begin
   arquivo := TStringList.Create();
   try
-    arquivo.LoadFromFile('cupom.txt');
+    arquivo.LoadFromFile(dmpdv.path_imp);
     MemoImp.Clear;
     MemoImp.Text := arquivo.Text;
   finally
@@ -2123,6 +2125,8 @@ begin
   ACBrPosPrinter1.EspacoEntreLinhas := 0;
   ACBrPosPrinter1.ColunasFonteNormal := 48;
   ACBrPosPrinter1.Porta  := dmPdv.portaImp;
+  ACBrPosPrinter1.ConfigBarras.MostrarCodigo := True;
+  ACBrPosPrinter1.ConfigBarras.Margem:= dmPdv.margemCodBarra;
 
   ACBrPosPrinter1.CortaPapel := True;
 

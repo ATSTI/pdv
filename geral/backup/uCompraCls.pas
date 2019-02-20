@@ -326,35 +326,36 @@ begin
     _codCompra := dmPdv.busca_generator('GEN_COD_COMPRA');
   end;
   DecimalSeparator := '.';
-  str := 'INSERT INTO COMPRA (CODCOMPRA, CODMOVIMENTO, CODFORNECEDOR, DATACOMPRA, DATAVENCIMENTO, ';
-  str := str + 'BANCO, CODCOMPRADOR, STATUS, CODUSUARIO, DATASISTEMA, VALOR, ';
-  str := str + 'NOTAFISCAL, SERIE, DESCONTO, CODCCUSTO, N_PARCELA, FORMAPAGAMENTO, ';
-  str := str + 'N_DOCUMENTO, CAIXA, MULTA_JUROS, APAGAR, VALOR_PAGAR, ENTRADA, ';
-  str := str + 'VALOR_ICMS, VALOR_FRETE, VALOR_SEGURO, OUTRAS_DESP, ';
-  str := str + 'VALOR_IPI, PRAZO) VALUES (';
-  str := str + IntToStr(Self.CodCompra)    + ', ' + IntToStr(Self.CodMov)       + ', ';
-  str := str + IntToStr(Self.CodFornecedor)  + ', ';
-  str := str + QuotedStr(FormatDateTime('mm/dd/yyyy',Self.DataCompra))          + ', ';
-  str := str + QuotedStr(FormatDateTime('mm/dd/yyyy',Self.DataVcto))           + ', ';
-  str := str + '0, ';  // Banco
-  str := str + IntToStr(Self.CodComprador) + ' ,' + IntToStr(Self.Status)       + ', ';
-  str := str + IntToStr(Self.CodUsuario)  + ' ,';
-  str := str + QuotedStr(FormatDateTime('mm/dd/yyyy', Today))                  + ', ';
-  str := str + FloatToStr(Self.Valor)     + ', ';
-  str := str + IntToStr(Self.NotaFiscal)  + ', ' + QuotedStr(Self.Serie)       + ', ';
-  str := str + FloatToStr(Self.Desconto)  + ', ';
-  str := str + IntToStr(Self.CodCCusto)   + ', ' + IntToStr(Self.NParcela)     + ', ';
-  str := str + QuotedStr(Self.FormaRec)   + ', ' + QuotedStr(Self.NDoc)        + ', ';
-  str := str + IntToStr(Self.Caixa)       + ', ' + FloatToStr(Self.MultaJuros) + ', ';
-  str := str + FloatToStr(Self.Apagar)    + ', ' + FloatToStr(Self.ValorPagar) + ', ';
-  str := str + FloatToStr(Self.Entrada)   + ', ';
-  str := str + FloatToStr(Self.Icms)      + ', ';
-  str := str + FloatToStr(Self.Frete)     + ', ' + FloatToStr(Self.Seguro)     + ', ';
-  str := str + FloatToStr(Self.OutrosVlr) + ', ' + FloatToStr(Self.Ipi)        + ', ';
-  str := str + QuotedStr(Self.Prazo)      + ')';
-
-  DecimalSeparator := '.';
-
+  Try
+    str := 'INSERT INTO COMPRA (CODCOMPRA, CODMOVIMENTO, CODFORNECEDOR, DATACOMPRA, DATAVENCIMENTO, ';
+    str := str + 'BANCO, CODCOMPRADOR, STATUS, CODUSUARIO, DATASISTEMA, VALOR, ';
+    str := str + 'NOTAFISCAL, SERIE, DESCONTO, CODCCUSTO, N_PARCELA, FORMAPAGAMENTO, ';
+    str := str + 'N_DOCUMENTO, CAIXA, MULTA_JUROS, APAGAR, VALOR_PAGAR, ENTRADA, ';
+    str := str + 'VALOR_ICMS, VALOR_FRETE, VALOR_SEGURO, OUTRAS_DESP, ';
+    str := str + 'VALOR_IPI, PRAZO) VALUES (';
+    str := str + IntToStr(Self.CodCompra)    + ', ' + IntToStr(Self.CodMov)       + ', ';
+    str := str + IntToStr(Self.CodFornecedor)  + ', ';
+    str := str + QuotedStr(FormatDateTime('mm/dd/yyyy',Self.DataCompra))          + ', ';
+    str := str + QuotedStr(FormatDateTime('mm/dd/yyyy',Self.DataVcto))           + ', ';
+    str := str + '0, ';  // Banco
+    str := str + IntToStr(Self.CodComprador) + ' ,' + IntToStr(Self.Status)       + ', ';
+    str := str + IntToStr(Self.CodUsuario)  + ' ,';
+    str := str + QuotedStr(FormatDateTime('mm/dd/yyyy', Today))                  + ', ';
+    str := str + FloatToStr(Self.Valor)     + ', ';
+    str := str + IntToStr(Self.NotaFiscal)  + ', ' + QuotedStr(Self.Serie)       + ', ';
+    str := str + FloatToStr(Self.Desconto)  + ', ';
+    str := str + IntToStr(Self.CodCCusto)   + ', ' + IntToStr(Self.NParcela)     + ', ';
+    str := str + QuotedStr(Self.FormaRec)   + ', ' + QuotedStr(Self.NDoc)        + ', ';
+    str := str + IntToStr(Self.Caixa)       + ', ' + FloatToStr(Self.MultaJuros) + ', ';
+    str := str + FloatToStr(Self.Apagar)    + ', ' + FloatToStr(Self.ValorPagar) + ', ';
+    str := str + FloatToStr(Self.Entrada)   + ', ';
+    str := str + FloatToStr(Self.Icms)      + ', ';
+    str := str + FloatToStr(Self.Frete)     + ', ' + FloatToStr(Self.Seguro)     + ', ';
+    str := str + FloatToStr(Self.OutrosVlr) + ', ' + FloatToStr(Self.Ipi)        + ', ';
+    str := str + QuotedStr(Self.Prazo)      + ')';
+  finally
+     DecimalSeparator := ',';
+  end;
   if (dmPdv.executaSql(str)) then
     Result := Self.CodCompra
   else

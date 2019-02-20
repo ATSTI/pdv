@@ -6,15 +6,14 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LazHelpCHM, Forms, Controls, Graphics, Dialogs,
-  Buttons, ExtCtrls, StdCtrls, udmpdv, uSenhaNova, uPdv, uabrircaixa, base64,
-  Process;
+  Buttons, ExtCtrls, StdCtrls, udmpdv, uSenhaNova, uPdv, uabrircaixa,
+  uAbrirCaixa2, base64, Process;
 
 type
 
   { TfLogin }
 
   TfLogin = class(TForm)
-    btnAbrirCaixa: TBitBtn;
     btnInfo: TBitBtn;
     btnLogin: TBitBtn;
     edLogin: TLabeledEdit;
@@ -50,7 +49,9 @@ implementation
 procedure TfLogin.btnLoginClick(Sender: TObject);
 var senha: String;
   snh: String;
+  situacao: String;
 begin
+  dmPdv.idcaixa:='0';
   if (edLogin.Text = '') then
   begin
     ShowMessage('Informe o nome do usuario');
@@ -74,15 +75,17 @@ begin
     dmPdv.nomeLogado := dmPdv.sqBusca.Fields.FieldByName('NOMEUSUARIO').AsString;
     dmPdv.sqBusca.Close;
     dmPdv.sqBusca.SQL.Clear;
-    dmPdv.sqBusca.SQL.Text := 'SELECT IDCAIXACONTROLE, CODCAIXA, CODUSUARIO,' +
+    dmPdv.sqBusca.SQL.Text := 'SELECT FIRST 1 IDCAIXACONTROLE, CODCAIXA, CODUSUARIO,' +
        'SITUACAO, NOMECAIXA ' +
-       ' FROM CAIXA_CONTROLE WHERE SITUACAO = ' + QuotedStr('o') +
-       ' AND CODUSUARIO = ' + dmPdv.varLogado;
+       ' FROM CAIXA_CONTROLE WHERE CODUSUARIO = ' + dmPdv.varLogado +
+       ' ORDER BY IDCAIXACONTROLE DESC';
+    //   ' FROM CAIXA_CONTROLE WHERE SITUACAO = ' + QuotedStr('o') +
     dmPdv.sqBusca.Open;
-    if (dmPdv.sqBusca.IsEmpty) then
+    situacao := dmPdv.sqBusca.Fields.FieldByName('SITUACAO').AsString;
+    if (Trim(situacao) <> 'o') then
     begin
       ShowMessage('Sem Caixa Aberto para este usuário');
-      Exit;
+      dmPdv.nomeCaixa := 'FECHADO';
     end
     else begin
       // Sessao_id
@@ -100,19 +103,7 @@ end;
 
 procedure TfLogin.btnAbrirCaixaClick(Sender: TObject);
 begin
-  dmPdv.sqBusca.Close;
-  dmPdv.sqBusca.SQL.Clear;
-  dmPdv.sqBusca.SQL.Text := 'SELECT CODUSUARIO, NOMEUSUARIO, SENHA, CODBARRA  ' +
-      ' FROM USUARIO WHERE NOMEUSUARIO = ' + QuotedStr(edLogin.Text);
-  dmPdv.sqBusca.Open;
-  if (dmPdv.sqBusca.IsEmpty) then
-  begin
-    ShowMessage('Sem Cadastro de usuário no sistema');
-    Exit;
-  end;
-  dmPdv.varLogado := IntToStr(dmPdv.sqBusca.Fields.FieldByName('CODUSUARIO').AsInteger);
-  fAbrirCaixa.AbrirFechar:= 'Abrir';
-  fAbrirCaixa.ShowModal;
+
 end;
 
 procedure TfLogin.btnInfoClick(Sender: TObject);
@@ -157,6 +148,7 @@ begin
   begin
     Exit;
   end;
+
   dmPdv.varLogado := IntToStr(dmPdv.sqBusca.Fields.FieldByName('CODUSUARIO').AsInteger);
   dmPdv.sqBusca.Close;
     dmPdv.sqBusca.SQL.Clear;
@@ -165,10 +157,6 @@ begin
        ' FROM CAIXA_CONTROLE WHERE SITUACAO = ' + QuotedStr('o') +
        ' AND CODUSUARIO = ' + dmPdv.varLogado;
     dmPdv.sqBusca.Open;
-    if (dmPdv.sqBusca.IsEmpty) then
-    begin
-      btnAbrirCaixa.visible:=true;
-    end;
 
 end;
 

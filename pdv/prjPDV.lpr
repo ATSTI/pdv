@@ -11,7 +11,7 @@ uses
   updv_rec, uMovimento, uMovimentoDetalhe, udmpdv, uprodutoproc, uMovimentoProc,
   uvenda, uRecebimento, uExecutaIntegracao, uLogin, uVendedorBusca,
   uClienteBusca, uSenhaNova, uPermissao, uExcluirItem, uNfce, uabrircaixa,
-  uCadeira, usangria;
+  uCadeira, usangria, uAbrirCaixa2;
 
 {$R *.res}
 
@@ -35,6 +35,7 @@ begin
   Application.CreateForm(TfAbrirCaixa, fAbrirCaixa);
   Application.CreateForm(TfSangria, fSangria);
   Application.CreateForm(TfCadeira, fCadeira);
+  Application.CreateForm(TfAbreCaixa, fAbreCaixa);
   Application.Run;
 end.
 

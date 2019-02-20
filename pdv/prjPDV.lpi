@@ -64,7 +64,7 @@
         <PackageName Value="LCL"/>
       </Item12>
     </RequiredPackages>
-    <Units Count="25">
+    <Units Count="26">
       <Unit0>
         <Filename Value="prjPDV.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -237,6 +237,14 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uUtil"/>
       </Unit24>
+      <Unit25>
+        <Filename Value="uabrircaixa2.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fAbreCaixa"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uAbrirCaixa2"/>
+      </Unit25>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

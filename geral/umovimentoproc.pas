@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, db, FileUtil, DateTimePicker, Forms, Controls, Graphics,
   Dialogs, ExtCtrls, StdCtrls, DBGrids, ActnList, MaskEdit, Buttons,
-   udmpdv, uabrircaixa, usangria, uVendedorBusca;
+   udmpdv, uabrircaixa, usangria, uVendedorBusca, uAbrirCaixa2;
 
 type
 
@@ -239,28 +239,34 @@ var nao_fechado: String;
   pedido: String;
   tamanho: Integer;
 begin
-  rgStatus.ItemIndex := 0;
-  acBuscar.Execute;
-  dmPdv.sqBusca.First;
-  nao_fechado := '';
-  while not dmPdv.sqBusca.EOF do
+  if (btnFecharCaixa.Caption = 'Abrir Caixa') then
   begin
-    pedido := IntToStr(dmPdv.sqBusca.FieldByName('CODMOVIMENTO').AsInteger);
-    if ((dmPdv.sqBusca.FieldByName('STATUS').AsInteger = 0) and
-      (dmPdv.sqBusca.FieldByName('VALOR').AsFloat > 0)) then
+    fAbreCaixa.ShowModal;
+    btnFecharCaixa.Caption:= 'Fechar Caixa';
+  end
+  else begin
+    rgStatus.ItemIndex := 0;
+    acBuscar.Execute;
+    dmPdv.sqBusca.First;
+    nao_fechado := '';
+    while not dmPdv.sqBusca.EOF do
     begin
-      nao_fechado += pedido + ', ';
+      pedido := IntToStr(dmPdv.sqBusca.FieldByName('CODMOVIMENTO').AsInteger);
+      if ((dmPdv.sqBusca.FieldByName('STATUS').AsInteger = 0) and
+        (dmPdv.sqBusca.FieldByName('VALOR').AsFloat > 0)) then
+      begin
+        nao_fechado += pedido + ', ';
+      end;
+      dmPdv.sqBusca.Next;
     end;
-    dmPdv.sqBusca.Next;
+    if (nao_fechado <> '') then
+    begin
+      ShowMessage('Existe pedidos nao Encerrados : ' + nao_fechado);
+    end;
+    fAbrirCaixa.AbrirFechar:= 'Fechar';
+    fAbrirCaixa.ShowModal;
+    acBuscar.Execute;
   end;
-  if (nao_fechado <> '') then
-  begin
-    ShowMessage('Existe pedidos nao Encerrados : ' + nao_fechado);
-    Exit;
-  end;
-  fAbrirCaixa.AbrirFechar:= 'Fechar';
-  fAbrirCaixa.ShowModal;
-  acBuscar.Execute;
 end;
 
 procedure TfMovimentoProc.btnSALVClick(Sender: TObject);
@@ -310,6 +316,10 @@ begin
   codVendaProc:=0;
   edDataIni.Date:=Now;
   edDataFim.Date:=Now;
+  if ((dmPdv.nomeCaixa = 'FECHADO')  and (UpperCase(dmPdv.usoSistema) <> 'ODOO'))then
+  begin
+    btnFecharCaixa.Caption:= 'Abrir Caixa';
+  end;
   acBuscar.Execute;
 end;
 
