@@ -7,7 +7,7 @@ object dmPdv: TdmPdv
   Width = 473
   PPI = 96
   object IbCon: TIBConnection
-    Connected = False
+    Connected = True
     LoginPrompt = False
     DatabaseName = 'C:\home\bd\ats_pdv.fdb'
     KeepConnection = False
@@ -21,7 +21,7 @@ object dmPdv: TdmPdv
     top = 18
   end
   object sTrans: TSQLTransaction
-    Active = False
+    Active = True
     Database = IbCon
     left = 136
     top = 16
@@ -679,6 +679,12 @@ object dmPdv: TdmPdv
         DataType = ftString
         Precision = -1
         Size = 240
+      end    
+      item
+        Name = 'RATEIO'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 4
       end>
     Database = IbCon
     Transaction = sTrans
@@ -699,7 +705,7 @@ object dmPdv: TdmPdv
       '    p.USA, p.LOCALIZACAO,  p.TIPOPRECOVENDA, p.UNIDADEMEDIDA,'
       '    p.ORIGEM, p.OBS OBS_PROD, p.CEST, p.PRECOATACADO, p.QTDEATACADO,'
       '    (COALESCE(A.VALTOTAL,0) - COALESCE(A.VALOR_DESCONTO, 0)) AS TOTALITEM ,'
-      '    a.ICMS_SUBST, c.NOMECLIENTE'
+      '    a.ICMS_SUBST, c.NOMECLIENTE, p.RATEIO'
       'FROM MOVIMENTO m'
       '  INNER JOIN CLIENTES c ON  c.CODCLIENTE = m.CODCLIENTE'
       '  LEFT OUTER JOIN MOVIMENTODETALHE a ON M.CODMOVIMENTO = a.CODMOVIMENTO'
@@ -1471,6 +1477,16 @@ object dmPdv: TdmPdv
       ReadOnly = False
       Required = True
       Size = 240
+    end
+    object sqLancamentosRATEIO: TStringField
+      FieldKind = fkData
+      FieldName = 'RATEIO'
+      Index = 71
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 4
     end
   end
   object SQLQuery1: TSQLQuery
@@ -2755,18 +2771,5 @@ object dmPdv: TdmPdv
     Params = <>
     left = 248
     top = 178
-  end
-  object PGCon: TPQConnection
-    Connected = False
-    LoginPrompt = False
-    KeepConnection = False
-    left = 40
-    top = 290
-  end
-  object sqPGBusca: TSQLQuery
-    FieldDefs = <>
-    Params = <>
-    left = 128
-    top = 288
   end
 end

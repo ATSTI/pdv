@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, IBConnection, sqldb, pqconnection, db, FileUtil, IniFiles,
-  Dialogs, base64;
+  Dialogs,  base64;
 
 type
 
@@ -14,7 +14,6 @@ type
 
   TdmPdv = class(TDataModule)
     IbCon: TIBConnection;
-    PGCon: TPQConnection;
     sqBusca: TSQLQuery;
     sqEmpresaANOLETIVO: TLongintField;
     sqEmpresaBAIRRO: TStringField;
@@ -148,6 +147,7 @@ type
     sqLancamentosQTDEATACADO: TFloatField;
     sqLancamentosQTDE_ALT: TFloatField;
     sqLancamentosQUANTIDADE: TFloatField;
+    sqLancamentosRATEIO: TStringField;
     sqLancamentosSTATUS: TSmallintField;
     sqLancamentosSTATUS_1: TStringField;
     sqLancamentosTIPO: TStringField;
@@ -173,7 +173,6 @@ type
     sqLancamentosVLR_BASEICMS: TFloatField;
     SQLQuery1: TSQLQuery;
     sqEmpresa: TSQLQuery;
-    sqPGBusca: TSQLQuery;
     sqUpdate: TSQLQuery;
     sqParametro: TSQLQuery;
     sqParametroCONFIGURADO: TStringField;
@@ -198,6 +197,7 @@ type
   public
     usosistema : string;
     usaComanda : Integer;
+    usaCurso : Integer;
     contaCaixa : Integer;
     margemCodBarra: Integer;
     caixaBanco : String;
@@ -274,7 +274,7 @@ begin
   path_xml := path_exe;
 
   IBCon.Connected:=False;
-  PGCon.Connected:=False;
+
   //IBCon.CharSet:='WIN1252';
   //path_exe := path_exe + 'conf.ini';
   conf := TIniFile.Create(path_exe + 'conf.ini');
@@ -287,17 +287,16 @@ begin
     path_xml := conf.ReadString('PATH', 'PathXML', path_exe);
     path_imp := conf.ReadString('PATH', 'PathIMP', 'imp.txt');
     IBCon.HostName := vstr;
-    vstr := conf.ReadString('DATABASEPG', 'HostName', '');
+    {vstr := conf.ReadString('DATABASEPG', 'HostName', '');
     if (vstr <> '') then
     begin
-      PGCon.HostName:=vstr;
+      PGCon.HostName := vstr;
       vstr := conf.ReadString('DATABASEPG', 'Name', '');
-      PGCon.DatabaseName:=vstr;
+      PGCon.Database := vstr;
       vstr := conf.ReadString('DATABASEPG', 'UserName', '');
-      PGCon.UserName:= 'odoo';
-      PGCon.Password:= 'a2t00s7';
-    end;
-    //PgCon.Connected:=True;
+      PGCon.User := 'odoo';
+      PGCon.Password := 'a2t00s7';
+    end;}
     snh:= conf.ReadString('DATABASE', 'Acesso', '');
     portaImp := conf.ReadString('IMPRESSORA', 'porta', '');
     ModeloImp := conf.ReadInteger('IMPRESSORA', 'Modelo', 0);
@@ -323,6 +322,12 @@ begin
     tamanhoCodProd := conf.ReadInteger( 'Outros','TamanhoCodProd',140);
     usoSistema := conf.ReadString( 'Outros','TipoUso','ATS');
     usaComanda := conf.ReadInteger( 'Outros','UsaComanda',0);
+    usaCurso := conf.ReadInteger( 'Outros','UsaCurso',0);
+    //if (UpperCase(usosistema) = 'ODOO') then
+    //begin
+    //  PgCon.LibraryLocation:='C:\home\sisadmin\libpq.dll';
+    //  PGCon.Connected:=True;
+    //end;
   finally
     conf.free;
   end;
