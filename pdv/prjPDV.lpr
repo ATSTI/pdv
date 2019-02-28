@@ -7,11 +7,11 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, runtimetypeinfocontrols, datetimectrls, lhelpcontrolpkg, uPdv,
-  updv_rec, uMovimento, uMovimentoDetalhe, udmpdv, uprodutoproc, uMovimentoProc,
-  uvenda, uRecebimento, uExecutaIntegracao, uLogin, uVendedorBusca,
-  uClienteBusca, uSenhaNova, uPermissao, uExcluirItem, uNfce, uabrircaixa,
-  uCadeira, usangria, uAbrirCaixa2;
+  Forms, zcomponent, runtimetypeinfocontrols, datetimectrls, lhelpcontrolpkg,
+  uPdv, updv_rec, uMovimento, uMovimentoDetalhe, udmpdv, uprodutoproc,
+  uMovimentoProc, uvenda, uRecebimento, uExecutaIntegracao, uLogin,
+  uVendedorBusca, uClienteBusca, uSenhaNova, uPermissao, uExcluirItem, uNfce,
+  uabrircaixa, uCadeira, usangria, uAbrirCaixa2, uCursoBusca, uAlunoBusca;
 
 {$R *.res}
 
@@ -36,6 +36,8 @@ begin
   Application.CreateForm(TfSangria, fSangria);
   Application.CreateForm(TfCadeira, fCadeira);
   Application.CreateForm(TfAbreCaixa, fAbreCaixa);
+  Application.CreateForm(TfCursoBusca, fCursoBusca);
+  Application.CreateForm(TfAlunoBusca, fAlunoBusca);
   Application.Run;
 end.
 
