@@ -1,0 +1,17 @@
+inherited fCursoBusca: TfCursoBusca
+  Caption = 'CURSOS'
+  OnCreate = FormCreate
+  inherited Panel2: TPanel
+    inherited btnProcurar: TBitBtn
+      OnClick = btnProcurarClick
+    end
+  end
+  inherited DBGrid1: TDBGrid
+    OnCellClick = DBGrid1CellClick
+  end
+  object dsCurso: TDataSource[3]
+    DataSet = dmPdv.sqBusca
+    left = 186
+    top = 43
+  end
+end

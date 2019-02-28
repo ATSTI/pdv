@@ -1,0 +1,19 @@
+inherited fAlunoBusca: TfAlunoBusca
+  Caption = 'Alunos'
+  OnCreate = FormCreate
+  OnShow = FormShow
+  inherited Panel2: TPanel
+    inherited btnProcurar: TBitBtn
+      OnClick = btnProcurarClick
+    end
+  end
+  inherited DBGrid1: TDBGrid
+    DataSource = DataSource1
+    OnCellClick = DBGrid1CellClick
+  end
+  object DataSource1: TDataSource[3]
+    DataSet = dmPdv.sqBusca
+    left = 122
+    top = 37
+  end
+end
