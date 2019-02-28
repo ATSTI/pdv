@@ -183,6 +183,7 @@ implementation
 { TfPDV_Rec }
 
 procedure TfPDV_Rec.FormShow(Sender: TObject);
+var vr_curso: string;
 begin
   num_cx := 0;
   MemoImp.Clear;
@@ -214,6 +215,37 @@ begin
   calcula_total;
   edVDesconto.SetFocus;
   edPagamento.SetFocus;
+
+  if (dmPdv.usaCurso > 0) then
+  begin
+    //verifica se algum item vendido e do tipo curso
+    dmPdv.sqLancamentos.Close;
+    dmPdv.sqLancamentos.Params.ParamByName('PMOV').AsInteger := vCodMovimento;
+    dmPdv.sqLancamentos.Open;
+    while not dmPdv.sqLancamentos.Eof do
+    begin
+      vr_curso := dmPdv.sqLancamentosRATEIO.AsString;
+      if (Trim(vr_curso) = '5') then
+      begin
+        btnCadeira.Visible := True;
+      end;
+      dmPdv.sqLancamentos.Next;
+    end;
+    if (btnCadeira.Visible = True) then
+    begin
+      fCadeira.listaCurso := TStringList.Create;
+      dmPdv.sqLancamentos.First;
+      while not dmPdv.sqLancamentos.Eof do
+      begin
+        vr_curso := dmPdv.sqLancamentosRATEIO.AsString;
+        if (Trim(vr_curso) = '5') then
+        begin
+          fCadeira.listaCurso.Add(IntToStr(dmPdv.sqLancamentosCODPRODUTO.AsInteger));
+        end;
+        dmPdv.sqLancamentos.Next;
+      end;
+    end;
+  end;
 end;
 
 procedure TfPDV_Rec.GroupBox2Click(Sender: TObject);
@@ -1173,10 +1205,6 @@ begin
   For N := Low(TACBrPosPrinterModelo) to High(TACBrPosPrinterModelo) do
      cbxModeloPosPrinter.Items.Add(GetEnumName(TypeInfo(TACBrPosPrinterModelo), integer(N) ));
   cbxModeloPosPrinter.ItemIndex := dmPdv.ModeloImp;
-  if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
-  begin
-    btnCadeira.Visible := True;
-  end;
 end;
 
 procedure TfPDV_Rec.BitBtn9Click(Sender: TObject);
@@ -1484,7 +1512,12 @@ end;
 
 procedure TfPDV_Rec.btnCadeiraClick(Sender: TObject);
 begin
+  // tenho q levar para o fCadeira o código do Curso
+  // vou pegar ele do produto
+  // se tiver mais de um curso ???
   fCadeira.ShowModal;
+  fCadeira.listaCurso.Free;
+  btnCadeira.Visible:=False;
 end;
 
 procedure TfPDV_Rec.btnCupomClick(Sender: TObject);
