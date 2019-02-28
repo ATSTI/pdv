@@ -59,6 +59,14 @@ object fLogin: TfLogin
         '[OUTROS]'
         '  TamanhoDescProd=480'
         '  TamanhoCodProd=160'
+        ''
+        '[CADEIRA]'
+        '  Altura=28'
+        '  Largura=100'
+        '  PosicaoHorizontal=150'
+        '  PosicaoVertical=80'
+        '  TotalCadeira=60'
+        ''
       )
       ScrollBars = ssBoth
       TabOrder = 0
@@ -139,7 +147,7 @@ object fLogin: TfLogin
     Height = 15
     Top = 330
     Width = 118
-    Caption = 'ATS Ti Sistemas , v. 3.2'
+    Caption = 'ATS Ti Sistemas , v. 4.0'
     ParentColor = False
   end
   object LHelpConnector1: TLHelpConnector
