@@ -1530,7 +1530,7 @@ object fCadeira: TfCadeira
     Stretch = True
   end
   object BitBtn1: TBitBtn
-    Left = 722
+    Left = 728
     Height = 40
     Top = 16
     Width = 83
@@ -1590,7 +1590,7 @@ object fCadeira: TfCadeira
   end
   object BitBtn2: TBitBtn
     Left = 16
-    Height = 30
+    Height = 40
     Top = 16
     Width = 97
     Caption = 'Buscar Curso'
@@ -1599,7 +1599,7 @@ object fCadeira: TfCadeira
   end
   object BitBtn3: TBitBtn
     Left = 17
-    Height = 30
+    Height = 40
     Top = 59
     Width = 96
     Caption = 'Buscar Aluno'
@@ -1655,7 +1655,7 @@ object fCadeira: TfCadeira
   object BitBtn5: TBitBtn
     Left = 17
     Height = 30
-    Top = 96
+    Top = 101
     Width = 96
     Caption = 'Trocar Cadeira'
     OnClick = BitBtn5Click
@@ -1727,6 +1727,50 @@ object fCadeira: TfCadeira
       Caption = 'Cancelar'
       OnClick = btnCancelarTrocaClick
       TabOrder = 3
+    end
+  end
+  object BitBtn6: TBitBtn
+    Left = 728
+    Height = 40
+    Top = 59
+    Width = 83
+    Caption = 'Re-Imprimir'
+    Color = clHighlight
+    OnClick = BitBtn6Click
+    TabOrder = 6
+  end
+  object pnReImprimir: TPanel
+    Left = 360
+    Height = 260
+    Top = 208
+    Width = 235
+    ClientHeight = 260
+    ClientWidth = 235
+    TabOrder = 7
+    Visible = False
+    object BitBtn7: TBitBtn
+      Left = 83
+      Height = 30
+      Top = 160
+      Width = 75
+      Caption = 'Imprimir'
+      OnClick = BitBtn7Click
+      TabOrder = 0
+    end
+    object Label4: TLabel
+      Left = 83
+      Height = 15
+      Top = 88
+      Width = 40
+      Caption = 'Cadeira'
+      ParentColor = False
+    end
+    object edReimprimir: TEdit
+      Left = 83
+      Height = 23
+      Top = 120
+      Width = 80
+      TabOrder = 1
     end
   end
   object ds: TDataSource

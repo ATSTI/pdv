@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ExtCtrls, Buttons, DBGrids, udmpdv, uAlunoBusca, uCursoBusca, db, IniFiles;
+  ExtCtrls, Buttons, DBGrids, udmpdv, uUtil, uAlunoBusca, uCursoBusca, db,
+  IniFiles;
 
 type
 
@@ -18,20 +19,25 @@ type
     BitBtn3: TBitBtn;
     BitBtn4: TBitBtn;
     BitBtn5: TBitBtn;
+    BitBtn6: TBitBtn;
+    BitBtn7: TBitBtn;
     btnConfirmaTroca: TBitBtn;
     btnCancelarTroca: TBitBtn;
     ds: TDataSource;
     DBGrid1: TDBGrid;
     edCadeiraAtual: TEdit;
     edCadeiraNova: TEdit;
+    edReimprimir: TEdit;
     Image1: TImage;
     Label1: TLabel;
     Label3: TLabel;
+    Label4: TLabel;
     lblAlunoTroca: TLabel;
     lblAluno: TLabel;
     lblCurso: TLabel;
     Label2: TLabel;
     lblCadeira: TLabel;
+    pnReImprimir: TPanel;
     pnTrocaCadeira: TPanel;
     pnCursos: TPanel;
     procedure BitBtn1Click(Sender: TObject);
@@ -39,6 +45,8 @@ type
     procedure BitBtn3Click(Sender: TObject);
     procedure BitBtn4Click(Sender: TObject);
     procedure BitBtn5Click(Sender: TObject);
+    procedure BitBtn6Click(Sender: TObject);
+    procedure BitBtn7Click(Sender: TObject);
     procedure btnCancelarTrocaClick(Sender: TObject);
     procedure btnConfirmaTrocaClick(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
@@ -51,6 +59,7 @@ type
     //codCurso: Integer;
     codAluno: Integer;
     procedure atualizaCadeiras;
+    procedure imprimirComprovante;
   public
     listaCurso: TStringList;
     cadCodCurso: Integer;
@@ -187,6 +196,113 @@ begin
   end;
 end;
 
+procedure TfCadeira.imprimirComprovante;
+var
+  IMPRESSORA:TextFile;
+  lFile   : TStringList;
+  i      : Integer;
+  logradouro: String;
+  cep: String;
+  fone: String;
+  clientecupom: string;
+  texto3: String;
+  texto6: String;
+  produto_cupomf: String;
+  linhaTxt : String;
+  prazo : String;
+  totalP: Double;
+  totalD: Double;
+  totalR: Double;
+  alu_cdr: String;
+begin
+  if (not dmPdv.sqEmpresa.Active) then
+    dmPdv.sqEmpresa.Open;
+  {----- aqui monto o endereço-----}
+  logradouro := '  ' + dmPdv.sqEmpresaENDERECO.Value +
+     ', ' + dmPdv.sqEmpresaBAIRRO.Value;
+  cep :=  '  ' + dmPdv.sqEmpresaCIDADE.Value + ' - ' + dmPdv.sqEmpresaUF.Value +
+  ' - ' + dmPdv.sqEmpresaCEP.Value;
+  fone := '  (19)' + dmPdv.sqEmpresaFONE.Value + ' / ' + dmPdv.sqEmpresaFONE_1.Value +
+  ' / ' + dmPdv.sqEmpresaFONE_2.Value;
+  {------------------------DADOS DO CLIENTE--------------------------}
+
+  // leio um arquivo txt e imprimo
+  lFile := TStringList.Create;
+  if (dmPdv.CupomImp = 'Texto') then
+  begin
+    AssignFile(IMPRESSORA, dmPdv.portaIMP);
+  end
+  else begin
+    AssignFile(IMPRESSORA, dmPdv.path_imp);
+  end;
+
+  try
+    Rewrite(IMPRESSORA);
+    lFile.LoadFromFile('cupomCurso.txt');
+    for i:=0 to lFile.Count-1 do
+    begin
+      linhaTxt := Copy(lFile[i],0,1);
+      if lFile[i] = 'empresa' then
+        Writeln(Impressora, uUtil.RemoveAcento(Copy(dmPdv.sqEmpresaRAZAO.Value,0,36)))
+      else if lFile[i] = 'logradouro' then
+        Writeln(Impressora, logradouro)
+      else if lFile[i] = 'cep' then
+        Writeln(Impressora, cep)
+      else if lFile[i] = 'fone' then
+      begin
+        Writeln(Impressora, fone);
+      end
+      else if lFile[i] = 'linha' then
+      begin
+        Writeln(IMPRESSORA, '');
+      end
+      else if lFile[i] = 'usuario' then
+      begin
+        Writeln(impressora, 'Usuario: ' + dmpdv.nomeLogado);
+        //Writeln(impressora, 'Vendedor: ' + RemoveAcento(edVendedor.Text));
+      end
+      else if lFile[i] = 'CURSO' then
+      begin
+        if (Length(lblCurso.Caption) > 40) then
+        begin
+          Writeln(Impressora, Copy(lblCurso.Caption,0,40));
+          Writeln(Impressora, Copy(lblCurso.Caption,41,40));
+        end
+        else begin
+          Writeln(Impressora, lblCurso.Caption);
+        end;
+      end
+      else if lFile[i] = 'ALUNO' then
+        Writeln(Impressora, lblAluno.Caption)
+      else if lFile[i] = 'CADEIRA' then
+        Writeln(Impressora, 'Cadeira: ' + lblAluno.Caption)
+      else if lFile[i] = 'DATA' then
+        Writeln(Impressora, ' Data: ' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now))
+      else if linhaTxt = '1' then
+      begin
+      end
+      else if linhaTxt = '2' then
+      begin
+      end
+      else if linhaTxt = '3' then
+      begin
+      end
+      else if linhaTxt = '4' then
+      begin
+      end
+      else
+        Writeln(Impressora,lFile[i]);
+      end;
+    end;
+  finally
+    CloseFile(IMPRESSORA);
+    lFile.Free;
+  end;
+
+
+
+end;
+
 procedure TfCadeira.BitBtn1Click(Sender: TObject);
 var str_cad: String;
 begin
@@ -224,12 +340,14 @@ begin
   // aqui vou fazer um UPDATE na AGENDAMENTO apenas;
   str_cad := 'UPDATE AGENDAMENTO SET STATUS = ' + QuotedStr(lblCadeira.Caption) +
     ' ,DATA  = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now)) +
+    ' ,HORA  = ' + QuotedStr(FormatDateTime('hh:MM:ss', Now)) +
     ' ,CODUSUARIO = ' +  dmPdv.varLogado +
     ' WHERE CODVENDA = ' + IntToStr(cadCodCurso) +
     '   AND CODCLIENTE = ' + IntToStr(codAluno);
   dmPdv.IbCon.ExecuteDirect(str_cad);
   dmPdv.sTrans.Commit;
   ShowMessage('Cadeira GRAVADA com sucesso.');
+  imprimirComprovante;
   atualizaCadeiras;
 end;
 
@@ -257,6 +375,35 @@ end;
 procedure TfCadeira.BitBtn5Click(Sender: TObject);
 begin
   pnTrocaCadeira.Visible:=True;
+end;
+
+procedure TfCadeira.BitBtn6Click(Sender: TObject);
+begin
+  pnReImprimir.Visible:=True;
+end;
+
+procedure TfCadeira.BitBtn7Click(Sender: TObject);
+var alu_cdr: String;
+begin
+  if ((edReimprimir.Text = '0') or (edReimprimir.Text = '')) then
+  begin
+    ShowMessage('Informe um número de Cadeira Válida.');
+    pnReImprimir.Visible:=False;
+    exit;
+  end;
+  alu_cdr := 'SELECT CODCLIENTE, ASSUNTO AS NOME_ALUNO, STATUS AS CADEIRA ' +
+    ' FROM AGENDAMENTO WHERE STATUS = ' + QuotedStr(edReimprimir.Text);
+  dmPdv.busca_sql(alu_cdr);
+  if (dmPdv.sqBusca.IsEmpty) then
+  begin
+    ShowMessage('Cadeira não marcada.');
+    pnReImprimir.Visible:=False;
+    exit;
+  end;
+  lblCadeira.Caption:=edReimprimir.Text;
+  lblAluno.Caption:=dmPdv.sqBusca.FieldByName('NOME_ALUNO').AsString;
+  imprimirComprovante;
+  pnReImprimir.Visible:=False;
 end;
 
 procedure TfCadeira.btnCancelarTrocaClick(Sender: TObject);

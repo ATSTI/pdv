@@ -588,7 +588,7 @@ begin
   {------------------------DADOS DO CLIENTE--------------------------}
   clientecupom := '  ' + IntToStr(vCliente) + '-' + vClienteNome;
   Texto  := '----------------------------------------' ;
-  Texto1 := '  ' + FormatDateTime('dd/mm/yyyy', Now) + '  Pedido :  ' +
+  Texto1 := '  ' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now) + '  Pedido :  ' +
     IntToStr(vCodMovimento);
   Texto2 := '----------------------------------------' ;
   Texto4 := '  Produto       UN     Qtde   V.Un.  V.Total ' ;
