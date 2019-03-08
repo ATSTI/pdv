@@ -1542,7 +1542,7 @@ object fCadeira: TfCadeira
   object lblCurso: TLabel
     Left = 144
     Height = 25
-    Top = 48
+    Top = 36
     Width = 558
     Alignment = taCenter
     AutoSize = False
@@ -1772,6 +1772,23 @@ object fCadeira: TfCadeira
       Width = 80
       TabOrder = 1
     end
+  end
+  object lblCurso1: TLabel
+    Left = 144
+    Height = 25
+    Top = 66
+    Width = 558
+    Alignment = taCenter
+    AutoSize = False
+    Font.CharSet = ANSI_CHARSET
+    Font.Color = clWhite
+    Font.Height = -21
+    Font.Name = 'Book Antiqua'
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
+    Font.Style = [fsBold, fsItalic]
+    ParentColor = False
+    ParentFont = False
   end
   object ds: TDataSource
     DataSet = dmPdv.sqBusca

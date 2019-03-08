@@ -37,6 +37,7 @@ type
     lblCurso: TLabel;
     Label2: TLabel;
     lblCadeira: TLabel;
+    lblCurso1: TLabel;
     pnReImprimir: TPanel;
     pnTrocaCadeira: TPanel;
     pnCursos: TPanel;
@@ -154,7 +155,14 @@ begin
     end
     else begin
       cadCodCurso := dmPdv.sqBusca.FieldByName('CODCURSO').AsInteger;
-      lblCurso.Caption := dmPdv.sqBusca.FieldByName('DESCRICAO').AsString;
+      if (Length(dmPdv.sqBusca.FieldByName('DESCRICAO').AsString) > 50) then
+      begin
+        lblCurso.Caption := Copy(dmPdv.sqBusca.FieldByName('DESCRICAO').AsString,0,50);
+        lblCurso1.Caption := Copy(dmPdv.sqBusca.FieldByName('DESCRICAO').AsString,51,50);
+      end
+      else begin
+        lblCurso.Caption := dmPdv.sqBusca.FieldByName('DESCRICAO').AsString;
+      end;
     end;
   end;
   atualizaCadeiras;
@@ -290,7 +298,7 @@ begin
       else if linhaTxt = '4' then
       begin
       end
-      else
+      else begin
         Writeln(Impressora,lFile[i]);
       end;
     end;

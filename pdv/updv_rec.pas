@@ -322,6 +322,10 @@ begin
     edPagamento.Color := clSilver;
     lblStatus.Caption := 'Venda Finalizada';
   end;
+  if ((btnCadeira.Visible = True) and (vStatus = 0)) then
+  begin
+     btnCadeira.Enabled := False;
+  end;
 end;
 
 procedure TfPDV_Rec.grava_desconto;
@@ -1356,7 +1360,13 @@ begin
     if (dmPdv.path_imp = 'imp.txt') then
       imprimiAcbr();
   end;
-  Close;
+  if (btnCadeira.Visible = True) then
+  begin
+    btnCadeira.Enabled := True;
+  end
+  else begin
+    Close;
+  end;
 end;
 
 procedure TfPDV_Rec.acNfceExecute(Sender: TObject);
@@ -1396,7 +1406,13 @@ begin
   dmPdv.sqLancamentos.Params.ParamByName('PMOV').AsInteger := vCodMovimento;
   dmPdv.sqLancamentos.Open;
   fNfce.ShowModal;
-  close;
+  if (btnCadeira.Visible = True) then
+  begin
+    btnCadeira.Enabled := True;
+  end
+  else begin
+    Close;
+  end;
 
 end;
 
