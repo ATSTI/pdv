@@ -551,20 +551,8 @@ begin
         num_lanc += 1;
       end;
     end;
-
     dmPdv.sqBusca.Next;
   end;
-
-
-
-  {
-  vRec := TRecebimento.Create();
-  try
-    vRec.geraTitulo(0,vCodVenda);
-  finally
-    vRec.Free;
-  end;
-    }
   try
     dmPdv.sTrans.Commit;
   except
@@ -759,7 +747,7 @@ begin
       else if lFile[i] = 'cliente' then
         Writeln(Impressora, clientecupom)
       else if lFile[i] = 'doc' then
-        Writeln(Impressora, '  ' + FormatDateTime('dd/mm/yyyy', Now) + '  Pedido :  ' + IntToStr(vCodMovimento))
+        Writeln(Impressora, '  ' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now) + ' Pedido :' + IntToStr(vCodMovimento))
       else if lFile[i] = 'itens' then
       begin
         while not dmPdv.sqLancamentos.Eof do
@@ -772,11 +760,11 @@ begin
           texto3 := texto3 + Format(' %6.2n',[dmPdv.sqLancamentosPRECO.AsFloat]);
           texto3 := texto3 + Format('   %6.2n',[dmPdv.sqLancamentosVALTOTAL.value]);
           produto_cupomf := trim(dmPdv.sqLancamentosDESCPRODUTO.Value);
-          texto6 := texto6 + '  ' + Copy(produto_cupomf, 0, 36);       //descrição do produto
+          texto6 := texto6 + '  ' + Copy(produto_cupomf, 0, dmPdv.tamanhoLinha);       //descrição do produto
           Writeln(Impressora, RemoveAcento(texto6));
-          if (length(produto_cupomf)>36) then
+          if (length(produto_cupomf)>dmPdv.tamanhoLinha) then
           begin
-            texto6 := '    ' + Copy(produto_cupomf, 37, 72);       //descrição do produto
+            texto6 := '    ' + Copy(produto_cupomf, dmPdv.tamanhoLinha+1, dmPdv.tamanhoLinha*2);       //descrição do produto
             Writeln(Impressora, RemoveAcento(texto6));
           end;
           Writeln(Impressora, RemoveAcento(texto3));//NOME DO PRODUTO
@@ -871,7 +859,7 @@ begin
         else if lFile[i] = 'cliente' then
           Writeln(Impressora, clientecupom)
         else if lFile[i] = 'doc' then
-          Writeln(Impressora, '  ' + FormatDateTime('dd/mm/yyyy', Now) + '  Pedido :  ' + IntToStr(vCodMovimento))
+          Writeln(Impressora, '  ' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now) + ' Pedido : ' + IntToStr(vCodMovimento))
         else if lFile[i] = 'itens' then
         begin
           dmPdv.sqLancamentos.First;
@@ -885,11 +873,11 @@ begin
             texto3 := texto3 + Format(' %6.2n',[dmPdv.sqLancamentosPRECO.AsFloat]);
             texto3 := texto3 + Format('   %6.2n',[dmPdv.sqLancamentosVALTOTAL.value]);
             produto_cupomf := trim(dmPdv.sqLancamentosDESCPRODUTO.Value);
-            texto6 := texto6 + '  ' + Copy(produto_cupomf, 0, 36);       //descrição do produto
+            texto6 := texto6 + '  ' + Copy(produto_cupomf, 0, dmPdv.tamanhoLinha);       //descrição do produto
             Writeln(Impressora, RemoveAcento(texto6));
-            if (length(produto_cupomf)>36) then
+            if (length(produto_cupomf)>dmPdv.tamanhoLinha) then
             begin
-              texto6 := '    ' + Copy(produto_cupomf, 37, 72);       //descrição do produto
+              texto6 := '    ' + Copy(produto_cupomf, dmPdv.tamanhoLinha+1, dmPdv.tamanhoLinha*2);       //descrição do produto
               Writeln(Impressora, RemoveAcento(texto6));
             end;
             Writeln(Impressora, RemoveAcento(texto3));//NOME DO PRODUTO
