@@ -6,6 +6,7 @@ object fSangria: TfSangria
   Caption = 'Sangria'
   ClientHeight = 206
   ClientWidth = 483
+  OnShow = FormShow
   LCLVersion = '2.0.0.4'
   object btnGravar: TBitBtn
     Left = 264
@@ -153,7 +154,7 @@ object fSangria: TfSangria
     Layout = blGlyphRight
     OnClick = btnGravarClick
     ParentFont = False
-    TabOrder = 0
+    TabOrder = 2
   end
   object edMotivo: TMaskEdit
     Left = 120
@@ -173,7 +174,7 @@ object fSangria: TfSangria
     Alignment = taRightJustify
     CharCase = ecNormal
     MaxLength = 0
-    TabOrder = 2
+    TabOrder = 0
     Text = '0,00'
     SpaceChar = '_'
   end

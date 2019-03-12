@@ -33,6 +33,7 @@ type
     sqPagamentoVALOR_PAGO: TFloatField;
     procedure btnFecharClick(Sender: TObject);
     procedure btnGravarClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
 
   public
@@ -51,6 +52,8 @@ implementation
 
 
 procedure TfSangria.btnGravarClick(Sender: TObject);
+var
+  IMPRESSORA:TextFile;
 begin
   if (edValor.Text = '') then
   begin
@@ -64,7 +67,52 @@ begin
   end;
   Sangria();
   ShowMessage('Gravado com Sucesso!');
+
+  if (dmPdv.CupomImp = 'Texto') then
+  begin
+    AssignFile(IMPRESSORA, dmPdv.portaIMP);
+  end
+  else begin
+    AssignFile(IMPRESSORA, dmPdv.path_imp);
+  end;
+
+  try
+    Rewrite(IMPRESSORA);
+    //lFile.LoadFromFile('caixa.txt');
+    Writeln(IMPRESSORA, '');
+    Writeln(Impressora, 'SANGRIA CAIXA');
+    Writeln(IMPRESSORA, FormatDateTime('dd/mm/yyyy hh:MM:ss', Now));
+    Writeln(IMPRESSORA, '');
+    Writeln(Impressora, 'CAIXA : ' + dmPdv.nomeCaixa);
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, 'Valor       - ' + edValor.Text);
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, 'Motivo :');
+    if (Length(edMotivo.Text) > dmPdv.tamanhoLinha) then
+    begin
+      Writeln(IMPRESSORA, Copy(edMotivo.Text,0,dmPdv.tamanhoLinha));
+      Writeln(IMPRESSORA, Copy(edMotivo.Text,dmPdv.tamanhoLinha+1,dmPdv.tamanhoLinha));
+    end
+    else begin
+        Writeln(IMPRESSORA, edMotivo.Text);
+    end;
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, 'Assinatura :');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '------------------------------');
+    Writeln(IMPRESSORA, '');
+  finally
+    CloseFile(IMPRESSORA);
+  end;
+
   close;
+end;
+
+procedure TfSangria.FormShow(Sender: TObject);
+begin
+  edMotivo.Text := '';
+  edValor.Text := '0,00';
 end;
 
 procedure TfSangria.btnFecharClick(Sender: TObject);
