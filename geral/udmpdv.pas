@@ -200,6 +200,7 @@ type
     usaCurso : Integer;
     contaCaixa : Integer;
     margemCodBarra: Integer;
+    tamanhoLinha: Integer;
     caixaBanco : String;
     idcaixa : string;
     ccusto : String;
@@ -274,7 +275,7 @@ begin
   path_xml := path_exe;
 
   IBCon.Connected:=False;
-
+  sTrans.Params.Text := 'isc_tpb_read_committed';
   //IBCon.CharSet:='WIN1252';
   //path_exe := path_exe + 'conf.ini';
   conf := TIniFile.Create(path_exe + 'conf.ini');
@@ -303,6 +304,7 @@ begin
     CupomImp := conf.ReadString('IMPRESSORA', 'Cupom', 'Texto');
     espacoEntreLinhas := conf.ReadInteger('IMPRESSORA', 'EspacoEntreLinhas', 10);
     margemCodBarra := conf.ReadInteger('IMPRESSORA', 'MargemCodBarra', 50);
+    tamanhoLinha := conf.ReadInteger('IMPRESSORA', 'TamanhoLinha', 36);
     //snh:= EncodeStringBase64(snh); // Ver a senha Encryptada
     snh:= DecodeStringBase64(snh);
     IBCon.Password := snh;
