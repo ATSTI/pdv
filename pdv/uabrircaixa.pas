@@ -13,6 +13,7 @@ type
   { TfAbrirCaixa }
 
   TfAbrirCaixa = class(TForm)
+    BitBtn24: TBitBtn;
     btnSair: TBitBtn;
     btnAbrefecha: TBitBtn;
     dtData: TDateTimePicker;
@@ -38,6 +39,7 @@ type
     edTBruto: TMaskEdit;
     edTLiquido: TMaskEdit;
     Panel1: TPanel;
+    procedure BitBtn24Click(Sender: TObject);
     procedure btnAbrefechaClick(Sender: TObject);
     procedure btnSairClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -68,6 +70,47 @@ begin
   end
   else begin
     FecharCaixa();
+  end;
+end;
+
+procedure TfAbrirCaixa.BitBtn24Click(Sender: TObject);
+var
+  IMPRESSORA:TextFile;
+begin
+  // leio um arquivo txt e imprimo
+  //lFile := TStringList.Create;
+  if (dmPdv.CupomImp = 'Texto') then
+  begin
+    AssignFile(IMPRESSORA, dmPdv.portaIMP);
+  end
+  else begin
+    AssignFile(IMPRESSORA, dmPdv.path_imp);
+  end;
+
+  try
+    Rewrite(IMPRESSORA);
+    //lFile.LoadFromFile('caixa.txt');
+    Writeln(IMPRESSORA, '');
+    Writeln(Impressora, 'RESUMO CAIXA');
+    Writeln(IMPRESSORA, '');
+    Writeln(Impressora, 'CAIXA : ' + dmPdv.nomeCaixa);
+    Writeln(IMPRESSORA, FormatDateTime('dd/mm/yyyy hh:MM:ss', Now));
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, 'Dinheiro       - ' + edDinheiro.Text);
+    Writeln(IMPRESSORA, 'Cartao Credito - ' + edCcred.Text);
+    Writeln(IMPRESSORA, 'Cartao Debito  - ' + edCdeb.Text);
+    Writeln(IMPRESSORA, 'Cheque         - ' + edCheque.Text);
+    if (edFaturado.Text <> '0,00') then
+      Writeln(IMPRESSORA, 'Faturado       - ' + edFaturado.Text);
+    Writeln(IMPRESSORA, 'Sangria        - ' + edSangrias.Text);
+    Writeln(IMPRESSORA, '---------------------------');
+    Writeln(IMPRESSORA, 'Total Caixa    - ' + edTCaixa.Text);
+    Writeln(IMPRESSORA, 'Total Bruto    - ' + edTBruto.Text);
+    Writeln(IMPRESSORA, 'Total Liquido  - ' + edTLiquido.Text);
+    Writeln(IMPRESSORA, '---------------------------');
+    Writeln(IMPRESSORA, '');
+  finally
+    CloseFile(IMPRESSORA);
   end;
 end;
 
