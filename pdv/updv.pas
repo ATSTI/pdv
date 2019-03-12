@@ -926,6 +926,11 @@ begin
         begin
           str_bsc := edProduto.Text;
           buscaPedidoComanda(edProduto.Text);
+          if (e_comanda = 'V') then // comanda vazia , sai
+          begin
+            edProduto.Text:='';
+            exit;
+          end;
           if ((codMov > 0) and (e_comanda = 'S')) then
           begin
             abrePedido(codMov);
@@ -1866,6 +1871,10 @@ end;
 
 procedure TfPdv.buscaPedidoComanda(codComanda: String);
 begin
+  // coloquei pra fechar a conexao e abrir novamente, pois
+  // qdo recebia no caixa nao atualizava no terminal
+  //dmPdv.IbCon.Connected:=False;
+  //dmPdv.IbCon.Connected:=False;
   // verifico se ja existe um pedido pra esta comanda
   // se nao cria
   dmPdv.sqBusca.Close;
@@ -1889,12 +1898,17 @@ begin
       exit;
     end
     else begin
-      e_comanda:='S';
-      codCliente := StrToInt(codComanda);
-      edCliente.Text := codComanda;
-      edClienteNome.Text :=  'Comanda ' + codComanda;
-      pnComanda.Caption := 'Comanda ' + codComanda;
-      btnNovo.Click;
+      e_comanda:='V';
+      if MessageDlg('COMANDA VAZIA', 'Incluir ?', mtConfirmation,
+        [mbYes, mbNo],0) = mrYes then
+      begin
+        e_comanda:='S';
+        codCliente := StrToInt(codComanda);
+        edCliente.Text := codComanda;
+        edClienteNome.Text :=  'Comanda ' + codComanda;
+        pnComanda.Caption := 'Comanda ' + codComanda;
+        btnNovo.Click;
+      end;
     end;
   end;
 end;
