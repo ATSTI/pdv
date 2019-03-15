@@ -8,7 +8,8 @@ uses
   Classes, SysUtils, db, FileUtil, SynEdit, RTTICtrls, Forms, Controls,
   Graphics, Dialogs, ExtCtrls, StdCtrls, Buttons, MaskEdit, DBGrids, ActnList,
   Menus, dateutils, uMovimento, uCompraCls, uUtil, uVendedorBusca,
-  uClienteBusca, uPermissao, Grids, ACBrPosPrinter, MTProcs, strutils;
+  uClienteBusca, uPermissao, uComandaJuntar, Grids, ACBrPosPrinter, MTProcs,
+  strutils;
 
 type
 
@@ -23,6 +24,7 @@ type
     acExcluirItemPedido: TAction;
     acQuantidade: TAction;
     acConsultaItem: TAction;
+    acComandaJuntar: TAction;
     ActionList1: TActionList;
     BitBtn10: TBitBtn;
     BitBtn11: TBitBtn;
@@ -107,6 +109,7 @@ type
     MenuItem4: TMenuItem;
     MenuItem5: TMenuItem;
     MenuItem6: TMenuItem;
+    MenuItem7: TMenuItem;
     Panel1: TPanel;
     Panel10: TPanel;
     Panel11: TPanel;
@@ -132,6 +135,7 @@ type
     pnTroca: TPanel;
     PopupMenu1: TPopupMenu;
     TIButton2: TTIButton;
+    procedure acComandaJuntarExecute(Sender: TObject);
     procedure acConsultaItemExecute(Sender: TObject);
     procedure acExcluirItemPedidoExecute(Sender: TObject);
     procedure acFecharExecute(Sender: TObject);
@@ -659,6 +663,11 @@ begin
     pnProdBusca.Visible:=True;
   end;
   edProduto.SetFocus;
+end;
+
+procedure TfPdv.acComandaJuntarExecute(Sender: TObject);
+begin
+  fComandaJuntar.ShowModal;
 end;
 
 procedure TfPdv.acNovaExecute(Sender: TObject);

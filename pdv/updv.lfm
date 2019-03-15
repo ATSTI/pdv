@@ -12651,6 +12651,11 @@ object fPdv: TfPdv
       OnExecute = acConsultaItemExecute
       ShortCut = 112
     end
+    object acComandaJuntar: TAction
+      Caption = 'Juntar Comandas'
+      OnExecute = acComandaJuntarExecute
+      ShortCut = 114
+    end
   end
   object PopupMenu1: TPopupMenu
     left = 776
@@ -12669,6 +12674,9 @@ object fPdv: TfPdv
     object MenuItem5: TMenuItem
       Caption = 'Troca/Devolução'
       OnClick = MenuItem5Click
+    end
+    object MenuItem7: TMenuItem
+      Action = acComandaJuntar
     end
     object MenuItem6: TMenuItem
       Caption = 'Informações'

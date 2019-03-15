@@ -2772,4 +2772,12 @@ object dmPdv: TdmPdv
     left = 248
     top = 178
   end
+  object sqBusca1: TSQLQuery
+    FieldDefs = <>
+    Database = IbCon
+    Transaction = sTrans
+    Params = <>
+    left = 328
+    top = 18
+  end
 end

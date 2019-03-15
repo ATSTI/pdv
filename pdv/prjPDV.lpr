@@ -11,7 +11,8 @@ uses
   uPdv, updv_rec, uMovimento, uMovimentoDetalhe, udmpdv, uprodutoproc,
   uMovimentoProc, uvenda, uRecebimento, uExecutaIntegracao, uLogin,
   uVendedorBusca, uClienteBusca, uSenhaNova, uPermissao, uExcluirItem, uNfce,
-  uabrircaixa, uCadeira, usangria, uAbrirCaixa2, uCursoBusca, uAlunoBusca;
+  uabrircaixa, uCadeira, usangria, uAbrirCaixa2, uCursoBusca, uAlunoBusca,
+  uComandaJuntar;
 
 {$R *.res}
 
@@ -38,6 +39,7 @@ begin
   Application.CreateForm(TfAbreCaixa, fAbreCaixa);
   Application.CreateForm(TfCursoBusca, fCursoBusca);
   Application.CreateForm(TfAlunoBusca, fAlunoBusca);
+  Application.CreateForm(TfComandaJuntar, fComandaJuntar);
   Application.Run;
 end.
 

@@ -15,6 +15,7 @@ type
   TdmPdv = class(TDataModule)
     IbCon: TIBConnection;
     sqBusca: TSQLQuery;
+    sqBusca1: TSQLQuery;
     sqEmpresaANOLETIVO: TLongintField;
     sqEmpresaBAIRRO: TStringField;
     sqEmpresaBASECALCULOCREDITO: TSmallintField;
