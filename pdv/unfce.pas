@@ -9,7 +9,8 @@ uses
   MaskEdit, Buttons, StdCtrls, ExtCtrls, ComCtrls, Menus, ActnList, udmpdv,
   uCertificadoLer, ACBrNFe, ACBrNFeDANFeESCPOS, ACBrDANFCeFortesFr,
   pcnConversao, pcnConversaoNFe, ACBrDFeSSL, ACBrPosPrinter, ACBrIntegrador,
-  ACBrValidador, ACBrEnterTab, ACBrUtil, StrUtils, IniFiles, math;
+  ACBrValidador, ACBrEnterTab, ACBrUtil, ACBrSAT, StrUtils, IniFiles, math,
+  ACBrSATClass, ACBrSATExtratoESCPOS, dateutils;
 
 type
 
@@ -17,9 +18,12 @@ type
 
   TfNfce = class(TForm)
     ACBrEnterTab1: TACBrEnterTab;
+    ACBrIntegrador1: TACBrIntegrador;
     ACBrNFe1: TACBrNFe;
     ACBrNFeDANFeESCPOS1: TACBrNFeDANFeESCPOS;
     ACBrPosPrinter1: TACBrPosPrinter;
+    ACBrSAT1: TACBrSAT;
+    ACBrSATExtratoESCPOS1: TACBrSATExtratoESCPOS;
     ACBrValidador1: TACBrValidador;
     acFechar: TAction;
     ActionList1: TActionList;
@@ -56,6 +60,7 @@ type
     PageControl2: TPageControl;
     RadioGroup1: TRadioGroup;
     RadioGroup2: TRadioGroup;
+    StatusBar1: TStatusBar;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
     TabSheet3: TTabSheet;
@@ -63,6 +68,8 @@ type
     TabSheet5: TTabSheet;
     procedure ACBrNFe1AntesDeAssinar(var ConteudoXML: String; const docElement,
       infElement, SignatureNode, SelectionNamespaces, IdSignature: String);
+    procedure ACBrSAT1GetcodigoDeAtivacao(var Chave: AnsiString);
+    procedure ACBrSAT1GetsignAC(var Chave: AnsiString);
     procedure acFecharExecute(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
@@ -89,13 +96,19 @@ type
     notaEmitida: String;
     vBC : Double;
     vICMS: Double;
+    sat_ativacao: String;
+    sat_assinatura: String;
     function RemoveChar(Const Texto:String):String;
+    function validaCpfCnpj():Boolean;
     procedure GerarNFCe(Num: String);
     procedure prepararImpressao();
     procedure pegaTributos(codMov: Integer; codProd: Integer);
     procedure pegaItens();
     procedure AtualizaSSLLibsCombo;
     procedure GravarDadosNF(protocolo: String; recibo: String);
+    procedure gerarSat();
+    procedure gerarLog(const ALogLine: String; var Tratado: Boolean);
+    procedure TrataErros(Sender: TObject; E: Exception);
   public
     nfce_valor: Double;
     nfce_desconto: Double;
@@ -119,6 +132,11 @@ var
  str: String;
  ambiente: String;
 begin
+  if (dmPdv.NfceSat = 'SAT') then
+  begin
+    gerarSat();
+    exit;
+  end;
   ACBrNFe1.NotasFiscais.Clear;
   if (notaEmitida = 'S') then
   begin
@@ -152,40 +170,8 @@ begin
     exit;
   end;
 
-  if ((edCPF.Text <> '   .   .   -  ') and  (Length(edCPF.Text) = 14)) then
-  begin
-    ACBrValidador1.PermiteVazio:=True;
-    ACBrValidador1.TipoDocto:= docCPF;
-    ACBrValidador1.IgnorarChar:='./-';
-    ACBrValidador1.Documento:=edCPF.Text;
-    if not ACBrValidador1.Validar then
-    begin
-      edCPF.Font.Color:=clRed;
-      ShowMessage('CPF Inválido');
-      edCPF.SetFocus;
-      Exit;
-    end
-    else begin
-      edCPF.Font.Color := clBlack;
-    end;
-  end;
-  if ((edCPF.Text <> '  .   .   /   -  ') and  (Length(edCPF.Text) > 14)) then
-  begin
-    ACBrValidador1.PermiteVazio:=True;
-    ACBrValidador1.TipoDocto:= docCNPJ;
-    ACBrValidador1.IgnorarChar:='./-';
-    ACBrValidador1.Documento:=edCPF.Text;
-    if not ACBrValidador1.Validar then
-    begin
-      edCPF.Font.Color:=clRed;
-      ShowMessage('CNPJ Inválido');
-      edCPF.SetFocus;
-      Exit;
-    end
-    else begin
-      edCPF.Font.Color := clBlack;
-    end;
-  end;
+  if (validaCpfCnpj() = False) then
+    exit;
 
   if (edCertificado.Text = '') then
   begin
@@ -395,6 +381,7 @@ begin
     SSLXmlSignLib:= TSSLXmlSignLib(cbXmlSignLib.ItemIndex);
   end;
   }
+  Application.OnException := @TrataErros ;
 end;
 
 procedure TfNfce.FormDestroy(Sender: TObject);
@@ -414,6 +401,10 @@ begin
   ACBrPosPrinter1.Porta := dmPdv.portaImp;
   ACBrPosPrinter1.Modelo:= TACBrPosPrinterModelo(cbxModeloPosPrinter.ItemIndex);
   ACBrPosPrinter1.LinhasEntreCupons := dmPdv.espacoEntreLinhas;
+  if (cbxModeloPosPrinter.ItemIndex = 4) then
+  begin
+    ACBrPosPrinter1.ConfigQRCode.LarguraModulo:=3;
+  end;
   notaEmitida := 'N';
   edNFce.text := '';
   edCPF.Text := '';
@@ -540,6 +531,45 @@ begin
   end;
   result := S;
 
+end;
+
+function TfNfce.validaCpfCnpj(): Boolean;
+begin
+  if ((edCPF.Text <> '   .   .   -  ') and  (Length(edCPF.Text) = 14)) then
+  begin
+    ACBrValidador1.PermiteVazio:=True;
+    ACBrValidador1.TipoDocto:= docCPF;
+    ACBrValidador1.IgnorarChar:='./-';
+    ACBrValidador1.Documento:=edCPF.Text;
+    if not ACBrValidador1.Validar then
+    begin
+      edCPF.Font.Color:=clRed;
+      ShowMessage('CPF Inválido');
+      edCPF.SetFocus;
+      result := False;
+    end
+    else begin
+      edCPF.Font.Color := clBlack;
+    end;
+  end;
+  if ((edCPF.Text <> '  .   .   /   -  ') and  (Length(edCPF.Text) > 14)) then
+  begin
+    ACBrValidador1.PermiteVazio:=True;
+    ACBrValidador1.TipoDocto:= docCNPJ;
+    ACBrValidador1.IgnorarChar:='./-';
+    ACBrValidador1.Documento:=edCPF.Text;
+    if not ACBrValidador1.Validar then
+    begin
+      edCPF.Font.Color:=clRed;
+      ShowMessage('CNPJ Inválido');
+      edCPF.SetFocus;
+      result := False;
+    end
+    else begin
+      edCPF.Font.Color := clBlack;
+    end;
+  end;
+  result := True;
 end;
 
 procedure TfNfce.GerarNFCe(Num: String);
@@ -1113,6 +1143,374 @@ begin
 
 end;
 
+procedure TfNfce.gerarSat();
+Var
+  ArqINI: String ;
+  INI : TIniFile ;
+  total_trib: Double;
+  desconto_rateio: Double;
+  TotalItem: Double;
+  TotalGeral: Double;
+  Erro: String;
+  tini, tfim: TDateTime;
+  arquivosat : String;
+  chave_sat: String;
+  nItem: Integer;
+  contaItens : Integer;
+  cod_barra : String;
+  ncm_str: String;
+  desc: String;
+begin
+  // CARREGANDO TODOS OS DADOS DO ARQUIVO INI,
+  // PARA GRAVAR ELE USA O PARAMETRO SAT
+  ArqINI := 'prjAtsAdmin.ini';
+  ACBrSAT1.Extrato := ACBrSATExtratoESCPOS1;
+  INI := TIniFile.Create(ArqINI);
+  try
+    sat_ativacao := INI.ReadString('SAT','CodigoAtivacao','123456');
+    //sat_assinatura := INI.ReadString('SwH','Assinatura',cAssinatura);
+    with ACBrSAT1 do
+    begin
+      // rede
+      with Rede do
+      begin
+        //tipoInter   := TTipoInterface( INI.ReadInteger('Rede','tipoInter',0) );
+        SSID        := INI.ReadString('Rede','SSID','');
+        //seg         := TSegSemFio( INI.ReadInteger('Rede','seg',0) ) ;
+        codigo      := INI.ReadString('Rede','codigo','') ;
+        //tipoLan     := TTipoLan( INI.ReadInteger('Rede','tipoLan',0) ) ;
+        lanIP       := INI.ReadString('Rede','lanIP','') ;
+        lanMask     := INI.ReadString('Rede','lanMask','') ;
+        lanGW       := INI.ReadString('Rede','lanGW','') ;
+        lanDNS1     := INI.ReadString('Rede','lanDNS1','') ;
+        lanDNS2     := INI.ReadString('Rede','lanDNS2','') ;
+        usuario     := INI.ReadString('Rede','usuario','') ;
+        senha       := INI.ReadString('Rede','senha','') ;
+      end;
+      Modelo  := TACBrSATModelo( INI.ReadInteger('SAT','Modelo',0) );
+      ArqLOG  := INI.ReadString('SAT','ArqLog','ACBrSAT.log');
+      NomeDLL := INI.ReadString('SAT','NomeDLL','C:\SAT\SAT.DLL');
+
+      Config.ide_numeroCaixa := INI.ReadInteger('SAT','NumeroCaixa',1);
+      Config.ide_tpAmb       := TpcnTipoAmbiente( INI.ReadInteger('SAT','Ambiente',1) );
+      Config.ide_CNPJ        := INI.ReadString('SwH','CNPJ','11111111111111');
+      Config.emit_CNPJ       := INI.ReadString('Emit','CNPJ','');
+      Config.emit_IE         := INI.ReadString('Emit','IE','');
+      Config.emit_IM         := INI.ReadString('Emit','IM','');
+      Config.emit_cRegTrib      := TpcnRegTrib( INI.ReadInteger('Emit','RegTributario',0) ) ;
+      Config.emit_cRegTribISSQN := TpcnRegTribISSQN( INI.ReadInteger('Emit','RegTribISSQN',0) ) ;
+      Config.emit_indRatISSQN   := TpcnindRatISSQN( INI.ReadInteger('Emit','IndRatISSQN',0) ) ;
+      Config.infCFe_versaoDadosEnt := INI.ReadFloat('SAT','versaoDadosEnt', cversaoDadosEnt);
+
+      CFe.IdentarXML := INI.ReadBool('SAT','FormatarXML', True);
+      CFeCanc.IdentarXML := INI.ReadBool('SAT','FormatarXML', True);
+      CFe.RetirarAcentos := INI.ReadBool('SAT','RetirarAcentos', True);
+      CFeCanc.RetirarAcentos := INI.ReadBool('SAT','RetirarAcentos', True);
+      ConfigArquivos.SalvarCFe := INI.ReadBool('SAT','SalvarCFe', True);
+      ConfigArquivos.SalvarCFeCanc := INI.ReadBool('SAT','SalvarCFeCanc', True);
+      ConfigArquivos.SalvarEnvio :=  INI.ReadBool('SAT','SalvarEnvio', True);
+      ConfigArquivos.SepararPorMes := INI.ReadBool('SAT','SepararPorMES', True);
+
+      Config.XmlSignLib := TSSLXmlSignLib( INI.ReadInteger('SAT','XMLLib',0) );
+
+      Config.ArqSchema := INI.ReadString('SAT','SchemaVendaSAT','');
+    end;
+    ACBrPosPrinter1.Modelo := TACBrPosPrinterModelo( INI.ReadInteger(
+      'PosPrinter', 'Modelo', 0));
+    ACBrPosPrinter1.PaginaDeCodigo := TACBrPosPaginaCodigo( INI.ReadInteger(
+      'PosPrinter','PaginaDeCodigo', 0));
+    ACBrPosPrinter1.Porta := INI.ReadString('PosPrinter','Porta', 'LPT1');
+    //ACBrPosPrinter1.ColunasFonteNormal := INI.ReadInteger(
+    //  'PosPrinter','Colunas',ACBrPosPrinter1.ColunasFonteNormal);
+    ACBrPosPrinter1.LinhasEntreCupons := INI.ReadInteger(
+      'PosPrinter','LinhasEntreCupons', 10);
+    ACBrPosPrinter1.EspacoEntreLinhas := INI.ReadInteger(
+      'PosPrinter','EspacoLinhas', 10);
+    ACBrSATExtratoESCPOS1.ImprimeQRCode := True;
+    ACBrSATExtratoESCPOS1.ImprimeEmUmaLinha := INI.ReadBool(
+      'EscPos','ImprimirItemUmaLinha', False);
+    if (INI.ReadBool('EscPos','ImprimirChaveUmaLinha',True)) then
+      ACBrSATExtratoESCPOS1.ImprimeChaveEmUmaLinha := rSim
+    else
+      ACBrSATExtratoESCPOS1.ImprimeChaveEmUmaLinha := rAuto;
+
+  finally
+     INI.Free ;
+  end ;
+
+  ACBrSAT1.Inicializado := not ACBrSAT1.Inicializado ;
+
+  ACBrSAT1.AtivarSAT( 1, ACBrSAT1.Config.emit_CNPJ, StrToInt('35') );
+
+  if (validaCpfCnpj() = False) then
+    exit;
+
+  // Montando uma Venda //
+  with ACBrSAT1.CFe do
+  begin
+    ide.numeroCaixa := dmPdv.contaCaixa;
+    ide.cNF := Random(num_nfce);
+
+    if ((edCPF.Text <> '   .   .   -  ') and  (Length(edCPF.Text) = 14)) then
+    begin
+      Dest.CNPJCPF := RemoveChar(edCPF.Text);
+    end;
+    if ((edCPF.Text <> '  .   .   /   -  ') and  (Length(edCPF.Text) > 14)) then
+    begin
+      Dest.CNPJCPF := RemoveChar(edCPF.Text);
+    end;
+
+    contaItens := 0;
+    dmPdv.sqLancamentos.First;
+    total_tributos := 0;
+    vICMS := 0;
+    vBC := 0;
+    total_trib := 0;
+    while not dmPdv.sqLancamentos.Eof do
+    begin
+    with Det.Add do
+    begin
+      contaItens += 1;
+      nItem := contaItens;
+      Prod.cProd := dmPdv.sqLancamentosCODPRO.AsString;
+      cod_barra := dmPdv.sqLancamentosCOD_BARRA.AsString;
+      ACBrValidador1.Documento := cod_barra;
+      ACBrValidador1.TipoDocto := docGTIN;
+      if not ACBrValidador1.Validar then
+        cod_barra := 'SEM GTIN';
+      ACBrValidador1.TipoDocto := docPrefixoGTIN;
+      if not ACBrValidador1.Validar then
+        cod_barra := 'SEM GTIN';
+
+      Prod.cEAN := cod_barra;
+      Prod.xProd := LeftStr(dmPdv.sqLancamentosDESCPRODUTO.AsString, 99);
+      desc := Copy(dmPdv.sqLancamentosDESCPRODUTO.AsString, 100, 200);
+      if ( Length(desc) > 0) then
+        infAdProd     := MidStr(dmPdv.sqLancamentosDESCPRODUTO.AsString, 100, 200)  +
+                         dmPdv.sqLancamentosOBS.AsString
+      else
+        infAdProd     := dmPdv.sqLancamentosOBS.AsString;
+
+      ncm_str := dmPdv.sqLancamentosNCM.AsString;
+      ncm_str  := StringReplace(ncm_str,'.','',[rfReplaceAll]);
+      if Length(ncm_str) < 8then
+         ncm_str := '00000000';
+      Prod.NCM      := ncm_str;
+
+      Prod.CFOP := dmPdv.sqLancamentosCFOP.AsString;
+      Prod.uCom := dmPdv.sqLancamentosUNIDADEMEDIDA.AsString;
+      Prod.qCom := dmPdv.sqLancamentosQUANTIDADE.AsFloat;
+      Prod.vUnCom := dmPdv.sqLancamentosPRECO.AsFloat;
+      Prod.indRegra := irTruncamento;
+      Prod.vDesc    := dmPdv.sqLancamentosVALOR_DESCONTO.AsCurrency;
+      if nfce_desconto > 0 then
+      begin
+        desconto_rateio := nfce_desconto/nfce_valor;
+        desconto_rateio := dmPdv.sqLancamentosTOTALITEM.AsFloat * desconto_rateio;
+        Prod.vDesc      := RoundTo(desconto_rateio, -2);
+      end;
+
+      //with Prod.obsFiscoDet.Add do
+      //begin
+      //  xCampoDet := 'campo';
+      //  xTextoDet := 'texto';
+      //end;
+      with Imposto do
+      begin
+        TotalItem := RoundABNT((Prod.qCom * Prod.vUnCom) + Prod.vOutro - Prod.vDesc, -2);
+        TotalGeral := TotalGeral + TotalItem;
+        vItem12741 := RoundTo(dmPdv.sqLancamentosVLRTOT_TRIB.AsFloat,-2);
+        total_trib += RoundTo(dmPdv.sqLancamentosVLRTOT_TRIB.AsFloat,-2);
+        if (dmPdv.sqLancamentosORIGEM.IsNull) then
+        begin
+          MessageDlg('Origem do Produto(CADASTRO PRODUTO) não informado, Cod. Prod: ' +
+                    dmPdv.sqLancamentosCODPRO.AsString, mtError, [mbOK], 0);
+        end;
+        ICMS.orig := oeNacional;
+        if (dmPdv.sqLancamentosORIGEM.AsString = '1') then
+          ICMS.orig := oeEstrangeiraImportacaoDireta;
+        if (dmPdv.sqLancamentosORIGEM.AsString = '2') then
+          ICMS.orig := oeEstrangeiraAdquiridaBrasil;
+        if (dmPdv.sqLancamentosORIGEM.AsString = '3') then
+          ICMS.orig := oeNacionalConteudoImportacaoSuperior40;
+        if (dmPdv.sqLancamentosORIGEM.AsString = '4') then
+          ICMS.orig := oeNacionalProcessosBasicos;
+        if (dmPdv.sqLancamentosORIGEM.AsString = '5') then
+          ICMS.orig := oeNacionalConteudoImportacaoInferiorIgual40;
+        if (dmPdv.sqLancamentosORIGEM.AsString = '6') then
+          ICMS.orig := oeEstrangeiraImportacaoDiretaSemSimilar;
+        if (dmPdv.sqLancamentosORIGEM.AsString = '7') then
+          ICMS.orig := oeEstrangeiraAdquiridaBrasilSemSimilar;
+
+        if( dmPdv.sqEmpresaCRT.AsInteger = 0) then
+        begin
+          if ((dmPdv.sqLancamentosCSOSN.AsString = null) or ( dmPdv.sqLancamentosCSOSN.AsString = '')) then
+          begin
+            ICMS.CSOSN := csosnVazio;
+          end
+          else if (dmPdv.sqLancamentosCSOSN.AsString = '101') then
+          begin
+            ICMS.CSOSN := csosn101;
+          end;
+        end
+        else if ( dmPdv.sqLancamentosCSOSN.AsString = '102') then
+          ICMS.CSOSN := csosn102
+        else if ( dmPdv.sqLancamentosCSOSN.AsString = '103') then
+          ICMS.CSOSN := csosn103
+        else if ( dmPdv.sqLancamentosCSOSN.AsString = '201') then
+        begin
+          ICMS.CSOSN := csosn201;
+        end
+        else if ( dmPdv.sqLancamentosCSOSN.AsString = '202') then
+          ICMS.CSOSN := csosn202
+        else if ( dmPdv.sqLancamentosCSOSN.AsString = '203') then
+          ICMS.CSOSN := csosn203
+        else if ( dmPdv.sqLancamentosCSOSN.AsString = '300') then
+          ICMS.CSOSN := csosn300
+        else if ( dmPdv.sqLancamentosCSOSN.AsString = '400') then
+          ICMS.CSOSN := csosn400
+        else if ( dmPdv.sqLancamentosCSOSN.AsString = '500') then
+          ICMS.CSOSN := csosn500
+        else if ( dmPdv.sqLancamentosCSOSN.AsString = '900') then
+          ICMS.CSOSN := csosn900;
+        ICMS.pICMS := 0;
+        ICMS.vICMS := 0;
+        //ICMS.vBC := 0;
+      end; // CRT = 0
+
+
+      Imposto.PIS.CST := pis49;
+      Imposto.PIS.vBC := 0;
+      Imposto.PIS.pPIS := 0;
+
+      Imposto.COFINS.CST := cof49;
+      Imposto.COFINS.vBC := 0;
+      Imposto.COFINS.pCOFINS := 0;
+    end;
+    dmPdv.sqLancamentos.Next;
+    end;
+    Total.DescAcrEntr.vDescSubtot := nfce_desconto;
+    Total.vCFeLei12741 :=  total_trib;
+
+    dmPdv.sqBusca.Close;
+    dmPdv.sqBusca.SQL.Clear;
+    dmPdv.sqBusca.SQL.Text := 'SELECT CODFORMA, COD_VENDA, ID_ENTRADA, FORMA_PGTO' +
+      ' , CAIXA , N_DOC, VALOR_PAGO, CAIXINHA, TROCO, DESCONTO, STATE' +
+      ' FROM FORMA_ENTRADA WHERE STATE < 2 AND ID_ENTRADA = ' +
+      InttoStr(dmPdv.sqLancamentosCODMOVIMENTO.AsInteger);
+    dmPdv.sqBusca.Open;
+
+    while not dmPdv.sqBusca.EOF do
+    begin
+      with Pagto.Add do
+      begin
+        cMP := mpCreditoLoja;
+        if (trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString) = '1') then
+          cMP := mpDinheiro
+        else if (trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString) = '3') then
+        begin
+          cMP := mpCartaodeCredito;
+          //tpIntegra := tiPagNaoIntegrado;
+        end
+        else if trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString) = '2' then
+        begin
+          cMP := mpCartaodeDebito;
+        end
+        else
+          cMP := mpOutros;
+        vMP := RoundTo(dmPdv.sqBusca.FieldByName('VALOR_PAGO').AsFloat, -2);
+      end;
+      dmPdv.sqBusca.Next;
+    end;
+
+
+    //InfAdic.infCpl := ''+ '';
+
+   { InfAdic.infCpl := '</linha_simples>;'+
+                        '</ce><e><n>SENHA XXX</n></e>;'+
+                        '</linha_simples>';}
+  end;
+  memoDados.Lines.Text := ACBrSAT1.CFe.GerarXML( True );    // True = Gera apenas as TAGs da aplicação
+  if ACBrSAT1.ValidarDadosVenda( MemoDados.Text, Erro ) then
+    memoResp.Lines.Add('XML Recebido do SAT, validado com sucesso')
+  else
+  begin
+    memoResp.Lines.Add('Erro na Validação do XML Recebido do SAT.');
+    memoResp.Lines.Add(Erro);
+  end;
+
+  tini := now;
+  ACBrSAT1.EnviarDadosVenda( MemoDados.Text );
+  tfim := now;
+  memoResp.Lines.Add('------------------------------------------------') ;
+  memoResp.Lines.Add('Iniciado em: '+DateTimeToStr(tini)) ;
+  memoResp.Lines.Add('Finalizado em: '+DateTimeToStr(tFim)) ;
+  memoResp.Lines.Add('') ;
+  memoResp.Lines.Add('Tempo de Envio e Recebimento: '+ FormatFloat('##0.00',SecondSpan(tini,tfim))+' segundos' ) ;
+  memoResp.Lines.Add('------------------------------------------------') ;
+
+  if ACBrSAT1.Resposta.codigoDeRetorno = 6000 then
+  begin
+    MemoDados.Lines.Text := ACBrSAT1.CFe.AsXMLString;
+    begin
+      try
+        dmPdv.IbCon.ExecuteDirect('ALTER TRIGGER ALTERA_CONTABIL INACTIVE');
+        dmPdv.IbCon.ExecuteDirect('ALTER TRIGGER ALTERA_REC INACTIVE');
+        dmPdv.sTrans.Commit;
+      except
+        ///dm.sqlsisAdimin.Rollback(TD); //on failure, undo the changes}
+      end;
+    end;
+    try
+      arquivosat := AcbrSat1.CFe.NomeArquivo;
+      chave_sat := Copy(ACBrSAT1.cfe.infCFe.ID,23,29);
+      dmPdv.IbCon.ExecuteDirect('UPDATE VENDA SET STATUS1 = ' +
+        QuotedStr('E') + ', OBS = ' + QuotedStr(arquivosat) +
+        ' ,N_DOCUMENTO = ' + QuotedStr(IntToStr(ACBrSAT1.CFe.ide.nCFe)) +
+        ' ,N_BOLETO = ' + QuotedStr(chave_sat) +
+        ' WHERE CODVENDA = ' + IntToStr(nfce_codVenda));
+      dmPdv.sTrans.Commit;
+    except
+      on E : Exception do
+      begin
+        ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
+        //dm.sqlsisAdimin.Rollback(TD); //on failure, undo the changes}
+      end;
+    end;
+    ACBrSAT1.CFe.SaveToFile(arquivosat);
+    MemoResp.Lines.add('Cupom gerado com SUCESSO.');
+    MemoResp.Lines.Add(arquivosat);
+    begin
+      try
+        dmPdv.IbCon.ExecuteDirect('ALTER TRIGGER ALTERA_CONTABIL ACTIVE');
+        dmPdv.IbCon.ExecuteDirect('ALTER TRIGGER ALTERA_REC ACTIVE');
+        dmPdv.sTrans.Commit;
+      except
+        //dm.sqlsisAdimin.Rollback(TD); //on failure, undo the changes}
+      end;
+    end;
+    MessageDlg('Cupom criado com sucesso.', mtInformation, [mbOK], 0);
+  end;
+  MemoResp.Lines.Add('Venda Gerada');
+
+end;
+
+procedure TfNfce.gerarLog(const ALogLine: String; var Tratado: Boolean);
+begin
+  MemoResp.Lines.Add(ALogLine);
+  StatusBar1.Panels[0].Text := IntToStr( ACBrSAT1.Resposta.numeroSessao );
+  StatusBar1.Panels[1].Text := IntToStr( ACBrSAT1.Resposta.codigoDeRetorno );
+  Tratado := False;
+end;
+
+procedure TfNfce.TrataErros(Sender: TObject; E: Exception);
+var
+  Erro : String ;
+begin
+  Erro := Trim(E.Message) ;
+  ACBrSAT1.DoLog( E.ClassName+' - '+Erro);
+end;
+
 procedure TfNfce.BitBtn1Click(Sender: TObject);
 var
   I: Integer;
@@ -1292,6 +1690,16 @@ procedure TfNfce.ACBrNFe1AntesDeAssinar(var ConteudoXML: String;
   IdSignature: String);
 begin
 
+end;
+
+procedure TfNfce.ACBrSAT1GetcodigoDeAtivacao(var Chave: AnsiString);
+begin
+  Chave := AnsiString( sat_ativacao );
+end;
+
+procedure TfNfce.ACBrSAT1GetsignAC(var Chave: AnsiString);
+begin
+  Chave := AnsiString( sat_assinatura );
 end;
 
 procedure TfNfce.acFecharExecute(Sender: TObject);

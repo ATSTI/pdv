@@ -1,11 +1,11 @@
 object fNfce: TfNfce
   Left = 423
-  Height = 405
+  Height = 427
   Top = 210
-  Width = 655
+  Width = 671
   Caption = 'Nota Fiscal Eletronica - Consumidor'
-  ClientHeight = 405
-  ClientWidth = 655
+  ClientHeight = 427
+  ClientWidth = 671
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
@@ -132,7 +132,7 @@ object fNfce: TfNfce
   end
   object PageControl2: TPageControl
     Left = 9
-    Height = 309
+    Height = 328
     Top = 72
     Width = 646
     ActivePage = TabSheet4
@@ -140,7 +140,7 @@ object fNfce: TfNfce
     TabOrder = 5
     object TabSheet4: TTabSheet
       Caption = 'NFCe'
-      ClientHeight = 281
+      ClientHeight = 300
       ClientWidth = 638
       object BitBtn3: TBitBtn
         Cursor = crHandPoint
@@ -2808,7 +2808,7 @@ object fNfce: TfNfce
     end
     object TabSheet5: TTabSheet
       Caption = 'Geral'
-      ClientHeight = 281
+      ClientHeight = 300
       ClientWidth = 638
       object btnNFce: TBitBtn
         Left = 8
@@ -2970,7 +2970,7 @@ object fNfce: TfNfce
       end
       object PageControl1: TPageControl
         Left = 8
-        Height = 209
+        Height = 214
         Top = 88
         Width = 641
         ActivePage = TabSheet1
@@ -2978,19 +2978,19 @@ object fNfce: TfNfce
         TabOrder = 4
         object TabSheet1: TTabSheet
           Caption = 'Retorno'
-          ClientHeight = 181
+          ClientHeight = 186
           ClientWidth = 633
           object MemoResp: TMemo
             Left = 0
-            Height = 168
-            Top = 24
+            Height = 177
+            Top = 7
             Width = 573
             TabOrder = 0
           end
         end
         object TabSheet2: TTabSheet
           Caption = 'Envio'
-          ClientHeight = 181
+          ClientHeight = 186
           ClientWidth = 633
           object MemoDados: TMemo
             Left = 8
@@ -3174,6 +3174,20 @@ object fNfce: TfNfce
     ShowHint = True
     TabOrder = 7
   end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Height = 23
+    Top = 404
+    Width = 671
+    Panels = <    
+      item
+        Width = 350
+      end    
+      item
+        Width = 50
+      end>
+    SimplePanel = False
+  end
   object ACBrValidador1: TACBrValidador
     TipoDocto = docGTIN
     IgnorarChar = './-'
@@ -3242,5 +3256,51 @@ object fNfce: TfNfce
     CasasDecimais.MaskvUnCom = ',0.00'
     left = 325
     top = 45
+  end
+  object ACBrSAT1: TACBrSAT
+    Integrador = ACBrIntegrador1
+    Extrato = ACBrSATExtratoESCPOS1
+    Config.infCFe_versaoDadosEnt = 0.07
+    Config.ide_numeroCaixa = 0
+    Config.ide_tpAmb = taHomologacao
+    Config.emit_cRegTrib = RTSimplesNacional
+    Config.emit_cRegTribISSQN = RTISSMicroempresaMunicipal
+    Config.emit_indRatISSQN = irSim
+    Config.EhUTF8 = False
+    Config.PaginaDeCodigo = 0
+    Config.XmlSignLib = xsNone
+    ConfigArquivos.PrefixoArqCFe = 'AD'
+    ConfigArquivos.PrefixoArqCFeCanc = 'ADC'
+    Rede.tipoInter = infETHE
+    Rede.seg = segNONE
+    Rede.tipoLan = lanDHCP
+    Rede.proxy = 0
+    Rede.proxy_porta = 0
+    OnGetcodigoDeAtivacao = ACBrSAT1GetcodigoDeAtivacao
+    OnGetsignAC = ACBrSAT1GetsignAC
+    left = 595
+    top = 16
+  end
+  object ACBrSATExtratoESCPOS1: TACBrSATExtratoESCPOS
+    Sistema = 'Projeto ACBr - www.projetoacbr.com.br'
+    MargemInferior = 0.8
+    MargemSuperior = 0.8
+    MargemEsquerda = 0.6
+    MargemDireita = 0.51
+    CasasDecimais.Formato = tdetInteger
+    CasasDecimais.qCom = 2
+    CasasDecimais.vUnCom = 2
+    CasasDecimais.MaskqCom = ',0.00'
+    CasasDecimais.MaskvUnCom = ',0.00'
+    ACBrSAT = ACBrSAT1
+    MsgAppQRCode = 'Consulte o QR Code pelo aplicativo  "De olho na nota", disponível na AppStore (Apple) e PlayStore (Android)'
+    left = 595
+    top = 216
+  end
+  object ACBrIntegrador1: TACBrIntegrador
+    PastaInput = 'C:\Integrador\Input\'
+    PastaOutput = 'C:\Integrador\Output\'
+    left = 608
+    top = 271
   end
 end

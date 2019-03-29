@@ -10,7 +10,7 @@ object dmPdv: TdmPdv
     Connected = False
     LoginPrompt = False
     DatabaseName = 'C:\home\bd\ats_pdv.fdb'
-    KeepConnection = False
+    KeepConnection = True
     Password = 'masterkey'
     Transaction = sTrans
     UserName = 'SYSDBA'

@@ -193,6 +193,7 @@ type
     sqParametroVALOR: TFloatField;
     sTrans: TSQLTransaction;
     procedure DataModuleCreate(Sender: TObject);
+    procedure IbConAfterDisconnect(Sender: TObject);
   private
     procedure atualiza_bd();
   public
@@ -223,6 +224,7 @@ type
     path_xml: String;
     path_imp: String;
     portaImp: String;
+    NfceSat: String;
     espacoEntreLinhas: Integer;
     NFE_Teste: String;
     ModeloImp: Integer;
@@ -326,6 +328,7 @@ begin
     usoSistema := conf.ReadString( 'Outros','TipoUso','ATS');
     usaComanda := conf.ReadInteger( 'Outros','UsaComanda',0);
     usaCurso := conf.ReadInteger( 'Outros','UsaCurso',0);
+    NfceSat := conf.ReadString( 'Outros','NfceSat','NFCE');
     //if (UpperCase(usosistema) = 'ODOO') then
     //begin
     //  PgCon.LibraryLocation:='C:\home\sisadmin\libpq.dll';
@@ -379,6 +382,11 @@ begin
   begin
     atualiza_bd();
   end;
+end;
+
+procedure TdmPdv.IbConAfterDisconnect(Sender: TObject);
+begin
+
 end;
 
 procedure TdmPdv.atualiza_bd();
