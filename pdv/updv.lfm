@@ -12682,6 +12682,10 @@ object fPdv: TfPdv
       Caption = 'Informações'
       OnClick = MenuItem6Click
     end
+    object MenuItem8: TMenuItem
+      Caption = 'Receber Conta'
+      OnClick = MenuItem8Click
+    end
     object MenuItem4: TMenuItem
       Action = acFechar
       Caption = 'Fechar'

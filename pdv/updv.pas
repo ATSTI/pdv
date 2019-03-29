@@ -8,8 +8,8 @@ uses
   Classes, SysUtils, db, FileUtil, SynEdit, RTTICtrls, Forms, Controls,
   Graphics, Dialogs, ExtCtrls, StdCtrls, Buttons, MaskEdit, DBGrids, ActnList,
   Menus, dateutils, uMovimento, uCompraCls, uUtil, uVendedorBusca,
-  uClienteBusca, uPermissao, uComandaJuntar, Grids, ACBrPosPrinter, MTProcs,
-  strutils;
+  uClienteBusca, uPermissao, uComandaJuntar, uReceber, Grids, ACBrPosPrinter,
+  MTProcs, strutils;
 
 type
 
@@ -110,6 +110,7 @@ type
     MenuItem5: TMenuItem;
     MenuItem6: TMenuItem;
     MenuItem7: TMenuItem;
+    MenuItem8: TMenuItem;
     Panel1: TPanel;
     Panel10: TPanel;
     Panel11: TPanel;
@@ -199,6 +200,7 @@ type
     procedure Image3Click(Sender: TObject);
     procedure MenuItem5Click(Sender: TObject);
     procedure MenuItem6Click(Sender: TObject);
+    procedure MenuItem8Click(Sender: TObject);
     procedure Panel1Click(Sender: TObject);
     procedure Panel2Click(Sender: TObject);
     procedure btnVendaClick(Sender: TObject);
@@ -677,18 +679,26 @@ begin
   //  ShowMessage('Já existe 8 pedidos abertos, nao pode abrir mais.');
   //  Exit;
   //end;
-  iniciarVenda();
-  buscaPedidosAbertoCaixa(codMov);
-  //controlaPedidos(codMov, 0, 0);
-  lblPedido.Caption:=IntToStr(codMov);
-  edProduto.Text:='';
-  edProduto.SetFocus;
+  if (dmPdv.usaComanda = 0) then
+  begin
+    iniciarVenda();
+    buscaPedidosAbertoCaixa(codMov);
+    //controlaPedidos(codMov, 0, 0);
+    lblPedido.Caption:=IntToStr(codMov);
+    edProduto.Text:='';
+    edProduto.SetFocus;
+  end
+  else begin
+    edProduto.Enabled:= True;
+    edProduto.Text:='';
+    edProduto.SetFocus;
+  end;
 end;
 
 procedure TfPdv.acProcurarExecute(Sender: TObject);
 begin
-  //dmPdv.IbCon.Connected:=False;
-  //dmPdv.IbCon.Connected:=True;
+  if (dmPdv.IbCon.Connected = False) then
+    dmPdv.IbCon.Connected := True;
   if (dmPdv.usaComanda > 0) then
      pnComanda.Caption := '';
   fMovimentoProc.ShowModal;
@@ -917,10 +927,11 @@ procedure TfPdv.edProdutoKeyPress(Sender: TObject; var Key: char);
 var i: Integer;
   str_bsc: String;
 begin
+  if (dmPdv.IbCon.Connected = False) then
+    dmPdv.IbCon.Connected := True;
   if Key = #13 then
   begin
     Key := #0;
-
     if ((statusPedido > 0) and (dmPdv.usaComanda = 0)) then
     begin
       ShowMessage('Pedido ja finalizado.');
@@ -943,7 +954,7 @@ begin
           if ((codMov > 0) and (e_comanda = 'S')) then
           begin
             abrePedido(codMov);
-            pnComanda.Caption := 'Comanda ' + str_bsc;
+            pnComanda.Caption := edClienteNome.Text;//'Comanda ' + str_bsc;
             e_comanda:='N';
             exit;
           end;
@@ -951,7 +962,7 @@ begin
         else begin
           if ((statusPedido > 0) and (dmPdv.usaComanda > 0)) then
           begin
-            ShowMessage('Informe a comanda.');
+            ShowMessage('Informe a comanda/mesa.');
             Exit;
           end;
         end;
@@ -1168,6 +1179,11 @@ begin
   //fExecutaIntegracao.ShowModal;
 end;
 
+procedure TfPdv.MenuItem8Click(Sender: TObject);
+begin
+  fRecebimento.ShowModal;
+end;
+
 procedure TfPdv.Panel1Click(Sender: TObject);
 begin
 
@@ -1295,6 +1311,8 @@ end;
 
 procedure TfPdv.iniciarVenda();
 begin
+  if (dmPdv.IbCon.Connected = False) then
+    dmPdv.IbCon.Connected := True;
   if (dmPdv.nomeCaixa <> 'FECHADO') then
   begin
     statusPedido:=0;
@@ -1332,6 +1350,8 @@ begin
       FMov.CodMov      := 0;
       // TODO - Tratar as variaveis abaixo
       FMov.CodCCusto   := caixa_local;
+      if (codCliente = 0) then
+        codCliente := dmpdv.clientePadrao;
       FMov.CodCliente  := codCliente;
       FMov.CodOrigem   := StrToInt(dmPdv.idcaixa);
       FMov.CodNatureza := 3; // Venda
@@ -1732,6 +1752,8 @@ end;
 procedure TfPdv.buscaPedidosAbertoCaixa(bpCodMov: Integer);
 var bCodMov: Integer;
 begin
+  if (dmPdv.IbCon.Connected = False) then
+    dmPdv.IbCon.Connected := True;
   qtde_ped := 0;
   //limpa todos pedidos
   btnVnd1.Caption:='';
@@ -1908,7 +1930,7 @@ begin
     end
     else begin
       e_comanda:='V';
-      if MessageDlg('COMANDA VAZIA', 'Incluir ?', mtConfirmation,
+      if MessageDlg('COMANDA/MESA VAZIA', 'Incluir ?', mtConfirmation,
         [mbYes, mbNo],0) = mrYes then
       begin
         e_comanda:='S';
@@ -1916,7 +1938,13 @@ begin
         edCliente.Text := codComanda;
         edClienteNome.Text :=  'Comanda ' + codComanda;
         pnComanda.Caption := 'Comanda ' + codComanda;
-        btnNovo.Click;
+        //btnNovo.Click;
+        iniciarVenda();
+        buscaPedidosAbertoCaixa(codMov);
+        //controlaPedidos(codMov, 0, 0);
+        lblPedido.Caption:=IntToStr(codMov);
+        edProduto.Text:='';
+        edProduto.SetFocus;
       end;
     end;
   end;
@@ -2016,9 +2044,7 @@ begin
   dmPdv.sqLancamentos.Open;
   // leio um arquivo txt e imprimo
   lFile := TStringList.Create;
-
   AssignFile(IMPRESSORA, dmpdv.path_imp);
-
   try
     Rewrite(IMPRESSORA);
     lFile.LoadFromFile('cupomTroca.txt');
@@ -2123,7 +2149,6 @@ begin
       else
         Writeln(Impressora,lFile[i]);
     end;
-
   finally
     CloseFile(IMPRESSORA);
     lFile.Free;
