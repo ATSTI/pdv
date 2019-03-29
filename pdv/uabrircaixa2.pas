@@ -63,6 +63,7 @@ begin
   dmPdv.IbCon.ExecuteDirect(str);
   dmPdv.sTrans.Commit;
   dmPdv.idcaixa := IntToStr(codCaixa);
+  dmPdv.nomeCaixa := FormatDateTime('dd/mm/yyyy', dtData.Date);
   ShowMessage('Caixa aberto com sucesso!');
 end;
 
