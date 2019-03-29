@@ -205,6 +205,7 @@ object fAbrirCaixa: TfAbrirCaixa
     UseDefaultSeparators = True
     HideDateTimeParts = []
     MonthNames = 'Long'
+    OnChange = dtDataChange
   end
   object Panel1: TPanel
     Left = 0
