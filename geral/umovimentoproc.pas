@@ -100,7 +100,7 @@ var sqlProc: String;
 begin
   sqlProc := 'SELECT m.CODMOVIMENTO, m.CONTROLE, m.DATA_SISTEMA as DATAMOVIMENTO, v.CODVENDA ';
   sqlProc += ' , u.NOMEUSUARIO as  VENDEDOR, c.NOMECLIENTE as CLIENTE ';
-  sqlProc += ' ,CASE WHEN COALESCE(v.VALOR, 0) > 0 THEN v.VALOR ELSE ';
+  sqlProc += ' ,CASE WHEN COALESCE(v.VALOR, 0) > 0 THEN (v.VALOR-v.DESCONTO) ELSE ';
   sqlProc += ' (SELECT SUM(VALTOTAL) FROM MOVIMENTODETALHE MD WHERE MD.CODMOVIMENTO ';
   sqlProc += ' = m.CODMOVIMENTO) END ';
   sqlProc += ' AS VALOR, v.SERIE, m.STATUS ';
@@ -117,6 +117,7 @@ begin
   end;
   // sqlProc += ' AND m.CODALMOXARIFADO = ' + dmPdv.ccusto;  tem q ser usuario
   // pois o  CCUSTO muda com o caixa todo dia
+  sqlProc += ' AND m.CODCLIENTE > 0 ';
   sqlProc += ' AND m.CODUSUARIO = ' + dmPdv.varLogado;
   if (edPedido.Text = '') then
   begin
