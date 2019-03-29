@@ -375,8 +375,13 @@ begin
 
     dmPdv.sqUpdate.Open;
     dmPdv.sqUpdate.Edit;
-    dmPdv.sqUpdate.Post;
-    dmPdv.sqUpdate.ApplyUpdates;
+    try
+      dmPdv.sqUpdate.Post;
+      dmPdv.sqUpdate.ApplyUpdates;
+    except
+      ShowMessage('Série não cadastrada para este usuário.');
+      Exit;
+    end;
     // insere venda
     fVnd := TVenda.Create;
     Try
@@ -522,8 +527,9 @@ begin
     n_doc := IntToStr(dmPdv.sqBusca.FieldByName('CODFORMA').AsInteger);
     if (forma_pagto <> '4') then
     begin
+      //-dmPdv.sqBusca.FieldByName('DESCONTO').AsFloat  tirei isto estava indo desconto dobrado
       insereRecebimento(0,
-        dmPdv.sqBusca.FieldByName('VALOR_PAGO').AsFloat-dmPdv.sqBusca.FieldByName('DESCONTO').AsFloat,
+        dmPdv.sqBusca.FieldByName('VALOR_PAGO').AsFloat,
         vlr_entrada,
         num_lanc,
         n_doc, forma_pagto, vlr_prim_via);
