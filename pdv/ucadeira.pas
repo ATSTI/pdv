@@ -6,14 +6,15 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ExtCtrls, Buttons, DBGrids, udmpdv, uUtil, uAlunoBusca, uCursoBusca, db,
-  IniFiles;
+  ExtCtrls, Buttons, DBGrids, ACBrPosPrinter, udmpdv, uUtil, uAlunoBusca,
+  uCursoBusca, db, IniFiles;
 
 type
 
   { TfCadeira }
 
   TfCadeira = class(TForm)
+    ACBrPosPrinter1: TACBrPosPrinter;
     BitBtn1: TBitBtn;
     BitBtn2: TBitBtn;
     BitBtn3: TBitBtn;
@@ -38,6 +39,7 @@ type
     Label2: TLabel;
     lblCadeira: TLabel;
     lblCurso1: TLabel;
+    Memo1: TMemo;
     pnReImprimir: TPanel;
     pnTrocaCadeira: TPanel;
     pnCursos: TPanel;
@@ -208,6 +210,7 @@ procedure TfCadeira.imprimirComprovante;
 var
   IMPRESSORA:TextFile;
   lFile   : TStringList;
+  arquivo: TStringList;
   i      : Integer;
   logradouro: String;
   cep: String;
@@ -283,7 +286,7 @@ begin
       else if lFile[i] = 'ALUNO' then
         Writeln(Impressora, lblAluno.Caption)
       else if lFile[i] = 'CADEIRA' then
-        Writeln(Impressora, 'Cadeira: ' + lblAluno.Caption)
+        Writeln(Impressora, 'Cadeira: ' + lblCadeira.Caption)
       else if lFile[i] = 'DATA' then
         Writeln(Impressora, ' Data: ' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now))
       else if linhaTxt = '1' then
@@ -306,8 +309,28 @@ begin
     CloseFile(IMPRESSORA);
     lFile.Free;
   end;
+  arquivo := TStringList.Create();
+  try
+    arquivo.LoadFromFile(dmPdv.path_imp);
+    Memo1.Clear;
+    Memo1.Text := arquivo.Text;
+  finally
+    arquivo.free;
+  end;
+  ACBrPosPrinter1.Desativar;
+  ACBrPosPrinter1.LinhasBuffer := 0;
+  ACBrPosPrinter1.LinhasEntreCupons := dmPdv.espacoEntreLinhas;
+  ACBrPosPrinter1.EspacoEntreLinhas := 0;
+  ACBrPosPrinter1.ColunasFonteNormal := 48;
+  ACBrPosPrinter1.Porta  := dmPdv.portaImp;
 
+  ACBrPosPrinter1.CortaPapel := True;
 
+  ACBrPosPrinter1.Modelo := TACBrPosPrinterModelo(dmPdv.ModeloImp);
+  ACBrPosPrinter1.Ativar ;
+
+  ACBrPosPrinter1.Buffer.Text := Memo1.Lines.Text;
+  ACBrPosPrinter1.Imprimir;
 
 end;
 
@@ -400,7 +423,8 @@ begin
     exit;
   end;
   alu_cdr := 'SELECT CODCLIENTE, ASSUNTO AS NOME_ALUNO, STATUS AS CADEIRA ' +
-    ' FROM AGENDAMENTO WHERE STATUS = ' + QuotedStr(edReimprimir.Text);
+    ' FROM AGENDAMENTO WHERE STATUS = ' + QuotedStr(edReimprimir.Text) +
+    ' AND CODVENDA = ' + IntToStr(cadCodCurso);
   dmPdv.busca_sql(alu_cdr);
   if (dmPdv.sqBusca.IsEmpty) then
   begin

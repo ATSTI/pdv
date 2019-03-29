@@ -1790,9 +1790,32 @@ object fCadeira: TfCadeira
     ParentColor = False
     ParentFont = False
   end
+  object Memo1: TMemo
+    Left = 33
+    Height = 90
+    Top = 196
+    Width = 150
+    Lines.Strings = (
+      'Memo1'
+    )
+    TabOrder = 8
+    Visible = False
+  end
   object ds: TDataSource
     DataSet = dmPdv.sqBusca
     left = 201
     top = 154
+  end
+  object ACBrPosPrinter1: TACBrPosPrinter
+    ConfigBarras.MostrarCodigo = False
+    ConfigBarras.LarguraLinha = 0
+    ConfigBarras.Altura = 0
+    ConfigBarras.Margem = 0
+    ConfigQRCode.Tipo = 2
+    ConfigQRCode.LarguraModulo = 4
+    ConfigQRCode.ErrorLevel = 0
+    LinhasEntreCupons = 0
+    left = 72
+    top = 336
   end
 end
