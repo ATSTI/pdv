@@ -81,6 +81,10 @@ begin
   DBGrid1.Columns[0].Title.Caption:='Código';
   DBGrid1.Columns[1].Title.Caption:='Cliente';
   cNomeCliente:='';
+  if (dmPdv.usaCurso = 0) then
+  begin
+    chCurso.Visible := False;
+  end;
 end;
 
 procedure TfClienteBusca.Procurar();
@@ -117,7 +121,8 @@ begin
 
   dmPdv.sqBusca.SQL.Text := sql;
   dmPdv.sqBusca.Open;
-
+  cNomeCliente := dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString;
+  cCodCliente  := dmPdv.sqBusca.FieldByName('CODCLIENTE').AsInteger;
 end;
 
 procedure TfClienteBusca.BuscaCliente;

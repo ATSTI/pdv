@@ -15,7 +15,7 @@ inherited fClienteBusca: TfClienteBusca
     inherited Label1: TLabel
       Left = 24
       Top = 8
-      Width = 54
+      Width = 57
       Caption = 'Código'
     end
     inherited Edit2: TEdit
@@ -43,12 +43,14 @@ inherited fClienteBusca: TfClienteBusca
       Top = 40
       Width = 100
       Caption = 'Cliente Curso'
+      Checked = True
       Font.CharSet = ANSI_CHARSET
       Font.Height = -13
       Font.Name = '@Malgun Gothic'
       Font.Pitch = fpVariable
       Font.Quality = fqDraft
       ParentFont = False
+      State = cbChecked
       TabOrder = 3
     end
   end
