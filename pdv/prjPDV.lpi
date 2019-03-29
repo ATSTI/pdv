@@ -26,48 +26,57 @@
         <Mode0 Name="default"/>
       </Modes>
     </RunParams>
-    <RequiredPackages Count="13">
+    <RequiredPackages Count="16">
       <Item1>
-        <PackageName Value="zcomponent"/>
+        <PackageName Value="ACBr_Integrador"/>
       </Item1>
       <Item2>
-        <PackageName Value="lhelpcontrolpkg"/>
+        <PackageName Value="ACBr_SAT_Extrato_ESCPOS"/>
       </Item2>
       <Item3>
-        <PackageName Value="MultiThreadProcsLaz"/>
+        <PackageName Value="ACBr_SAT"/>
       </Item3>
       <Item4>
-        <PackageName Value="ACBrSerial"/>
+        <PackageName Value="zcomponent"/>
       </Item4>
       <Item5>
-        <PackageName Value="ACBrDiversos"/>
+        <PackageName Value="lhelpcontrolpkg"/>
       </Item5>
       <Item6>
-        <PackageName Value="ACBr_NFCe_DanfeRL"/>
+        <PackageName Value="MultiThreadProcsLaz"/>
       </Item6>
       <Item7>
-        <PackageName Value="ACBr_NFe_DanfeESCPOS"/>
+        <PackageName Value="ACBrSerial"/>
       </Item7>
       <Item8>
-        <PackageName Value="ACBr_NFe"/>
+        <PackageName Value="ACBrDiversos"/>
       </Item8>
       <Item9>
-        <PackageName Value="DateTimeCtrls"/>
+        <PackageName Value="ACBr_NFCe_DanfeRL"/>
       </Item9>
       <Item10>
-        <PackageName Value="FCL"/>
+        <PackageName Value="ACBr_NFe_DanfeESCPOS"/>
       </Item10>
       <Item11>
-        <PackageName Value="RunTimeTypeInfoControls"/>
+        <PackageName Value="ACBr_NFe"/>
       </Item11>
       <Item12>
-        <PackageName Value="SynEdit"/>
+        <PackageName Value="DateTimeCtrls"/>
       </Item12>
       <Item13>
-        <PackageName Value="LCL"/>
+        <PackageName Value="FCL"/>
       </Item13>
+      <Item14>
+        <PackageName Value="RunTimeTypeInfoControls"/>
+      </Item14>
+      <Item15>
+        <PackageName Value="SynEdit"/>
+      </Item15>
+      <Item16>
+        <PackageName Value="LCL"/>
+      </Item16>
     </RequiredPackages>
-    <Units Count="29">
+    <Units Count="30">
       <Unit0>
         <Filename Value="prjPDV.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -268,9 +277,17 @@
         <Filename Value="ucomandajuntar.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fComandaJuntar"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uComandaJuntar"/>
       </Unit28>
+      <Unit29>
+        <Filename Value="ureceber.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fRecebimento"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uReceber"/>
+      </Unit29>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
