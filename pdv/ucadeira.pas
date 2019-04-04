@@ -134,6 +134,10 @@ begin
       fileira += 1;
     end;
   end;
+  DBGrid1.Columns[0].FieldName := 'CODCURSO';
+  DBGrid1.Columns[1].FieldName := 'DESCRICAO';
+  DBGrid1.Columns[0].Title.Caption:='Código';
+  DBGrid1.Columns[1].Title.Caption:='Curso';
 end;
 
 procedure TfCadeira.FormShow(Sender: TObject);
@@ -147,13 +151,11 @@ begin
     c_str := 'SELECT CODDADOS AS CODCURSO, DESCRICAO FROM DADOS_COMBOS' +
       ' WHERE CODIGOS = ' + QuotedStr(listaCurso[i]);
     dmPdv.busca_sql(c_str);
+    // nao vai entrar aqui, pois, vai ser sempre 1
+    // o busca curso funciona entao vou deixar assim
     if (dmPdv.sqBusca.RecordCount > 1) then
     begin
       pnCursos.Visible:=True;
-      DBGrid1.Columns[0].FieldName := 'CODCURSO';
-      DBGrid1.Columns[1].FieldName := 'DESCRICAO';
-      DBGrid1.Columns[0].Title.Caption:='Código';
-      DBGrid1.Columns[1].Title.Caption:='Curso';
     end
     else begin
       cadCodCurso := dmPdv.sqBusca.FieldByName('CODCURSO').AsInteger;
@@ -383,9 +385,13 @@ begin
 end;
 
 procedure TfCadeira.BitBtn2Click(Sender: TObject);
+var
+  c_str: String;
 begin
-  // nao preciso disto, os cursos vão vir da VENDA, dos itens vendidos
-  // mostrar o que tem na DADOS_COMBOS
+  cadCodCurso:= 0;
+  c_str := 'SELECT CODDADOS AS CODCURSO, DESCRICAO FROM DADOS_COMBOS' +
+    ' WHERE CODIGOS IN (' + listaCurso.CommaText + ')';
+  dmPdv.busca_sql(c_str);
   pnCursos.Visible:=True;
 end;
 
@@ -469,8 +475,16 @@ end;
 procedure TfCadeira.DBGrid1CellClick(Column: TColumn);
 begin
   cadCodCurso := dmPdv.sqBusca.FieldByName('CODCURSO').AsInteger;
-  lblCurso.Caption := dmPdv.sqBusca.FieldByName('DESCRICAO').AsString;
+  if (Length(dmPdv.sqBusca.FieldByName('DESCRICAO').AsString) > 50) then
+  begin
+    lblCurso.Caption := Copy(dmPdv.sqBusca.FieldByName('DESCRICAO').AsString,0,50);
+    lblCurso1.Caption := Copy(dmPdv.sqBusca.FieldByName('DESCRICAO').AsString,51,50);
+  end
+  else begin
+    lblCurso.Caption := dmPdv.sqBusca.FieldByName('DESCRICAO').AsString;
+  end;
   pnCursos.Visible:=False;
+  atualizaCadeiras;
 end;
 
 procedure TfCadeira.edCadeiraAtualExit(Sender: TObject);

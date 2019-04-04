@@ -1564,7 +1564,7 @@ object fCadeira: TfCadeira
     Width = 7
     Caption = '.'
     Font.CharSet = ANSI_CHARSET
-    Font.Color = clBlack
+    Font.Color = clRed
     Font.Height = -27
     Font.Name = 'Segoe UI'
     Font.Pitch = fpVariable
@@ -1622,7 +1622,14 @@ object fCadeira: TfCadeira
       Top = 24
       Width = 412
       Color = clWindow
-      Columns = <>
+      Columns = <      
+        item
+          Title.Caption = 'Title'
+        end      
+        item
+          Title.Caption = 'Title'
+        end>
+      DataSource = ds
       Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
       TabOrder = 0
       OnCellClick = DBGrid1CellClick
@@ -1639,13 +1646,13 @@ object fCadeira: TfCadeira
   end
   object lblAluno: TLabel
     Left = 17
-    Height = 25
+    Height = 37
     Top = 136
-    Width = 4
+    Width = 6
     Caption = '.'
     Font.CharSet = ANSI_CHARSET
-    Font.Color = clBlack
-    Font.Height = -19
+    Font.Color = clRed
+    Font.Height = -27
     Font.Name = 'Segoe UI'
     Font.Pitch = fpVariable
     Font.Quality = fqDraft
