@@ -285,6 +285,7 @@
         <Filename Value="ureceber.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fRecebimento"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uReceber"/>
       </Unit29>
