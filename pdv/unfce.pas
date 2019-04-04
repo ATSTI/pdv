@@ -1160,9 +1160,15 @@ Var
   cod_barra : String;
   ncm_str: String;
   desc: String;
+  vr: String;
 begin
   // CARREGANDO TODOS OS DADOS DO ARQUIVO INI,
   // PARA GRAVAR ELE USA O PARAMETRO SAT
+
+  MemoDados.Lines.Clear;
+
+
+  ACBrSAT1.CFe.Clear;
   ArqINI := 'prjAtsAdmin.ini';
   ACBrSAT1.Extrato := ACBrSATExtratoESCPOS1;
   INI := TIniFile.Create(ArqINI);
@@ -1171,6 +1177,8 @@ begin
     //sat_assinatura := INI.ReadString('SwH','Assinatura',cAssinatura);
     with ACBrSAT1 do
     begin
+      ArqLOG  := INI.ReadString('SAT','ArqLog','ACBrSAT.log');
+      NomeDLL := INI.ReadString('SAT','NomeDLL','C:\SAT\SAT.DLL');
       // rede
       with Rede do
       begin
@@ -1187,10 +1195,14 @@ begin
         usuario     := INI.ReadString('Rede','usuario','') ;
         senha       := INI.ReadString('Rede','senha','') ;
       end;
-      Modelo  := TACBrSATModelo( INI.ReadInteger('SAT','Modelo',0) );
-      ArqLOG  := INI.ReadString('SAT','ArqLog','ACBrSAT.log');
-      NomeDLL := INI.ReadString('SAT','NomeDLL','C:\SAT\SAT.DLL');
+      //satNenhum, satDinamico_cdecl, satDinamico_stdcall, mfe_Integrador_XML
+      //Modelo  := TACBrSATModelo( INI.ReadInteger('SAT','Modelo',1) );
 
+      try
+        Modelo := TACBrSATModelo( INI.ReadInteger('SAT','Modelo',1) ) ;
+      except
+        raise ;
+      end;
       Config.ide_numeroCaixa := INI.ReadInteger('SAT','NumeroCaixa',1);
       Config.ide_tpAmb       := TpcnTipoAmbiente( INI.ReadInteger('SAT','Ambiente',1) );
       Config.ide_CNPJ        := INI.ReadString('SwH','CNPJ','11111111111111');
@@ -1237,9 +1249,14 @@ begin
   finally
      INI.Free ;
   end ;
-
-  ACBrSAT1.Inicializado := not ACBrSAT1.Inicializado ;
-
+  ACBrSAT1.Inicializado := True ;
+  if ACBrSAT1.Inicializado then
+    StatusBar1.Panels[1].Text := 'SAT Inicializado.'
+  else
+    StatusBar1.Panels[1].Text := 'Sat não inicializado.' ;
+  ACBrSAT1.InicializaCFe();
+  desc := ACBrSAT1.Config.ide_CNPJ;
+  desc := ACBrSAT1.Config.emit_CNPJ;
   ACBrSAT1.AtivarSAT( 1, ACBrSAT1.Config.emit_CNPJ, StrToInt('35') );
 
   if (validaCpfCnpj() = False) then
@@ -1273,16 +1290,16 @@ begin
       contaItens += 1;
       nItem := contaItens;
       Prod.cProd := dmPdv.sqLancamentosCODPRO.AsString;
-      cod_barra := dmPdv.sqLancamentosCOD_BARRA.AsString;
-      ACBrValidador1.Documento := cod_barra;
-      ACBrValidador1.TipoDocto := docGTIN;
-      if not ACBrValidador1.Validar then
-        cod_barra := 'SEM GTIN';
-      ACBrValidador1.TipoDocto := docPrefixoGTIN;
-      if not ACBrValidador1.Validar then
-        cod_barra := 'SEM GTIN';
+      //cod_barra := dmPdv.sqLancamentosCOD_BARRA.AsString;
+      //ACBrValidador1.Documento := cod_barra;
+      //ACBrValidador1.TipoDocto := docGTIN;
+      //if not ACBrValidador1.Validar then
+      //  cod_barra := 'SEM GTIN';
+      //ACBrValidador1.TipoDocto := docPrefixoGTIN;
+      //if not ACBrValidador1.Validar then
+      //  cod_barra := 'SEM GTIN';
 
-      Prod.cEAN := cod_barra;
+      //Prod.cEAN := cod_barra;
       Prod.xProd := LeftStr(dmPdv.sqLancamentosDESCPRODUTO.AsString, 99);
       desc := Copy(dmPdv.sqLancamentosDESCPRODUTO.AsString, 100, 200);
       if ( Length(desc) > 0) then
@@ -1327,65 +1344,98 @@ begin
                     dmPdv.sqLancamentosCODPRO.AsString, mtError, [mbOK], 0);
         end;
         ICMS.orig := oeNacional;
-        if (dmPdv.sqLancamentosORIGEM.AsString = '1') then
+        vr := Trim(dmPdv.sqLancamentosORIGEM.AsString);
+        if (vr = '1') then
           ICMS.orig := oeEstrangeiraImportacaoDireta;
-        if (dmPdv.sqLancamentosORIGEM.AsString = '2') then
+        if (vr = '2') then
           ICMS.orig := oeEstrangeiraAdquiridaBrasil;
-        if (dmPdv.sqLancamentosORIGEM.AsString = '3') then
+        if (vr = '3') then
           ICMS.orig := oeNacionalConteudoImportacaoSuperior40;
-        if (dmPdv.sqLancamentosORIGEM.AsString = '4') then
+        if (vr = '4') then
           ICMS.orig := oeNacionalProcessosBasicos;
-        if (dmPdv.sqLancamentosORIGEM.AsString = '5') then
+        if (vr = '5') then
           ICMS.orig := oeNacionalConteudoImportacaoInferiorIgual40;
-        if (dmPdv.sqLancamentosORIGEM.AsString = '6') then
+        if (vr = '6') then
           ICMS.orig := oeEstrangeiraImportacaoDiretaSemSimilar;
-        if (dmPdv.sqLancamentosORIGEM.AsString = '7') then
+        if (vr = '7') then
           ICMS.orig := oeEstrangeiraAdquiridaBrasilSemSimilar;
 
+        vr := Trim(dmPdv.sqLancamentosCSOSN.AsString);
         if( dmPdv.sqEmpresaCRT.AsInteger = 0) then
         begin
-          if ((dmPdv.sqLancamentosCSOSN.AsString = null) or ( dmPdv.sqLancamentosCSOSN.AsString = '')) then
+          if ((dmPdv.sqLancamentosCSOSN.AsString = null) or ( vr = '')) then
           begin
             ICMS.CSOSN := csosnVazio;
           end
-          else if (dmPdv.sqLancamentosCSOSN.AsString = '101') then
+          else if (vr = '101') then
           begin
             ICMS.CSOSN := csosn101;
           end;
         end
-        else if ( dmPdv.sqLancamentosCSOSN.AsString = '102') then
+        else if ( vr = '102') then
           ICMS.CSOSN := csosn102
-        else if ( dmPdv.sqLancamentosCSOSN.AsString = '103') then
+        else if ( vr = '103') then
           ICMS.CSOSN := csosn103
-        else if ( dmPdv.sqLancamentosCSOSN.AsString = '201') then
+        else if ( vr = '201') then
         begin
           ICMS.CSOSN := csosn201;
         end
-        else if ( dmPdv.sqLancamentosCSOSN.AsString = '202') then
+        else if ( vr = '202') then
           ICMS.CSOSN := csosn202
-        else if ( dmPdv.sqLancamentosCSOSN.AsString = '203') then
+        else if ( vr = '203') then
           ICMS.CSOSN := csosn203
-        else if ( dmPdv.sqLancamentosCSOSN.AsString = '300') then
+        else if ( vr = '300') then
           ICMS.CSOSN := csosn300
-        else if ( dmPdv.sqLancamentosCSOSN.AsString = '400') then
+        else if ( vr = '400') then
           ICMS.CSOSN := csosn400
-        else if ( dmPdv.sqLancamentosCSOSN.AsString = '500') then
+        else if ( vr = '500') then
           ICMS.CSOSN := csosn500
-        else if ( dmPdv.sqLancamentosCSOSN.AsString = '900') then
+        else if ( vr = '900') then
           ICMS.CSOSN := csosn900;
         ICMS.pICMS := 0;
         ICMS.vICMS := 0;
+        vr := Trim(dmPdv.sqLancamentosCST.AsString);
+        if (vr  = '000') then
+        begin
+           Imposto.ICMS.CST := cst00;
+           ICMS.pICMS := dmPdv.sqLancamentosICMS.AsFloat;
+           ICMS.vICMS := dmPdv.sqLancamentosVALOR_ICMS.AsFloat;
+        end;
+        if ( vr = '060') then
+        begin
+           Imposto.ICMS.CST := cst60;
+           ICMS.pICMS := dmPdv.sqLancamentosICMS.AsFloat;
+           ICMS.vICMS := dmPdv.sqLancamentosVALOR_ICMS.AsFloat;
+        end;
+
         //ICMS.vBC := 0;
       end; // CRT = 0
+      vr := dmPdv.sqLancamentosCSTPIS.AsString;
+      if (vr = '49') then
+      begin
+        Imposto.PIS.CST := pis49;
+        Imposto.PIS.vBC := 0;
+        Imposto.PIS.pPIS := 0;
+      end;
+      if (Trim(dmPdv.sqLancamentosCSTPIS.AsString) = '01') then
+      begin
+        Imposto.PIS.CST := pis01;
+        Imposto.PIS.vPIS := dmPdv.sqLancamentosVALOR_PIS.AsFloat;
+        Imposto.PIS.pPIS := dmPdv.sqLancamentosPPIS.AsFloat;
+      end;
+      if (Trim(dmPdv.sqLancamentosCSTCOFINS.AsString) = '49') then
+      begin
+        Imposto.COFINS.CST := cof49;
+        Imposto.COFINS.vCOFINS := 0;
+        Imposto.COFINS.pCOFINS := 0;
+      end;
+      if (Trim(dmPdv.sqLancamentosCSTCOFINS.AsString) = '01') then
+      begin
+        Imposto.COFINS.CST := cof01;
+        Imposto.COFINS.vCOFINS := dmPdv.sqLancamentosVALOR_COFINS.AsFloat;
+        Imposto.COFINS.pCOFINS := dmPdv.sqLancamentosPCOFINS.AsFloat;
+      end;
 
-
-      Imposto.PIS.CST := pis49;
-      Imposto.PIS.vBC := 0;
-      Imposto.PIS.pPIS := 0;
-
-      Imposto.COFINS.CST := cof49;
-      Imposto.COFINS.vBC := 0;
-      Imposto.COFINS.pCOFINS := 0;
     end;
     dmPdv.sqLancamentos.Next;
     end;
@@ -1431,13 +1481,9 @@ begin
                         '</linha_simples>';}
   end;
   memoDados.Lines.Text := ACBrSAT1.CFe.GerarXML( True );    // True = Gera apenas as TAGs da aplicação
-  if ACBrSAT1.ValidarDadosVenda( MemoDados.Text, Erro ) then
-    memoResp.Lines.Add('XML Recebido do SAT, validado com sucesso')
-  else
-  begin
-    memoResp.Lines.Add('Erro na Validação do XML Recebido do SAT.');
-    memoResp.Lines.Add(Erro);
-  end;
+  //if ACBrSAT1.ValidarDadosVenda( MemoDados.Text, Erro ) then
+  //ACBrSAT1.EnviarDadosVenda(MemoDados.Text);
+  //ShowMessage('XML Recebido do SAT, validado com sucesso');
 
   tini := now;
   ACBrSAT1.EnviarDadosVenda( MemoDados.Text );
@@ -1451,7 +1497,7 @@ begin
 
   if ACBrSAT1.Resposta.codigoDeRetorno = 6000 then
   begin
-    MemoDados.Lines.Text := ACBrSAT1.CFe.AsXMLString;
+    MemoResp.Lines.Text := ACBrSAT1.CFe.AsXMLString;
     begin
       try
         dmPdv.IbCon.ExecuteDirect('ALTER TRIGGER ALTERA_CONTABIL INACTIVE');
@@ -1492,7 +1538,7 @@ begin
     MessageDlg('Cupom criado com sucesso.', mtInformation, [mbOK], 0);
   end;
   MemoResp.Lines.Add('Venda Gerada');
-
+  ACBrSAT1.Inicializado := False ;
 end;
 
 procedure TfNfce.gerarLog(const ALogLine: String; var Tratado: Boolean);
