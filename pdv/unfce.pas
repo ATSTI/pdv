@@ -7,10 +7,10 @@ interface
 uses
   Classes, typinfo, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
   MaskEdit, Buttons, StdCtrls, ExtCtrls, ComCtrls, Menus, ActnList, udmpdv,
-  uCertificadoLer, ACBrNFe, ACBrNFeDANFeESCPOS, ACBrDANFCeFortesFr,
+  uCertificadoLer, ufrmStatus, ACBrNFe, ACBrNFeDANFeESCPOS, ACBrDANFCeFortesFr,
   pcnConversao, pcnConversaoNFe, ACBrDFeSSL, ACBrPosPrinter, ACBrIntegrador,
   ACBrValidador, ACBrEnterTab, ACBrUtil, ACBrSAT, StrUtils, IniFiles, math,
-  ACBrSATClass, ACBrSATExtratoESCPOS, dateutils;
+  ACBrSATClass, ACBrSATExtratoESCPOS, dateutils, ACBrBase, ACBrDFe;
 
 type
 
@@ -36,28 +36,45 @@ type
     btnNFce: TBitBtn;
     btnNFce1: TBitBtn;
     btnNFce2: TBitBtn;
+    btnNFce3: TBitBtn;
+    btnNFce4: TBitBtn;
+    btnNFce5: TBitBtn;
     cbCryptLib: TComboBox;
     cbHttpLib: TComboBox;
     cbSSLLib: TComboBox;
     cbXmlSignLib: TComboBox;
     cbxModeloPosPrinter: TComboBox;
+    edAno: TEdit;
+    edModelo: TEdit;
+    edJustificativa: TEdit;
+    edSerie: TEdit;
+    edNumIni: TEdit;
+    edNumFim: TEdit;
     edtCaminho: TLabeledEdit;
     edtNumSerie: TLabeledEdit;
     edtSenha: TLabeledEdit;
     edCPF: TMaskEdit;
     edCertificado: TLabeledEdit;
     edNFce: TLabeledEdit;
+    Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
     lblcbCryptLib: TLabel;
     lblcbSSLLib: TLabel;
     lblProtocolo: TLabel;
+    memoLog: TMemo;
     MemoDados: TMemo;
     MemoResp: TMemo;
     OpenDialog1: TOpenDialog;
     PageControl1: TPageControl;
     PageControl2: TPageControl;
+    Panel1: TPanel;
     RadioGroup1: TRadioGroup;
     RadioGroup2: TRadioGroup;
     StatusBar1: TStatusBar;
@@ -68,6 +85,11 @@ type
     TabSheet5: TTabSheet;
     procedure ACBrNFe1AntesDeAssinar(var ConteudoXML: String; const docElement,
       infElement, SignatureNode, SelectionNamespaces, IdSignature: String);
+    procedure ACBrNFe1GerarLog(const ALogLine: String; var Tratado: Boolean);
+    procedure ACBrNFe1StatusChange(Sender: TObject);
+    procedure ACBrNFe1TransmitError(const HttpError, InternalError: Integer;
+      const URL, DadosEnviados, SoapAction: String; var Retentar: Boolean;
+      var Tratado: Boolean);
     procedure ACBrSAT1GetcodigoDeAtivacao(var Chave: AnsiString);
     procedure ACBrSAT1GetsignAC(var Chave: AnsiString);
     procedure acFecharExecute(Sender: TObject);
@@ -79,6 +101,9 @@ type
     procedure btnFecharClick(Sender: TObject);
     procedure btnNFce1Click(Sender: TObject);
     procedure btnNFce2Click(Sender: TObject);
+    procedure btnNFce3Click(Sender: TObject);
+    procedure btnNFce4Click(Sender: TObject);
+    procedure btnNFce5Click(Sender: TObject);
     procedure btnNFceClick(Sender: TObject);
     procedure cbCryptLibChange(Sender: TObject);
     procedure cbHttpLibChange(Sender: TObject);
@@ -98,6 +123,7 @@ type
     vICMS: Double;
     sat_ativacao: String;
     sat_assinatura: String;
+    nomeXml : String;
     function RemoveChar(Const Texto:String):String;
     function validaCpfCnpj():Boolean;
     procedure GerarNFCe(Num: String);
@@ -109,6 +135,7 @@ type
     procedure gerarSat();
     procedure gerarLog(const ALogLine: String; var Tratado: Boolean);
     procedure TrataErros(Sender: TObject; E: Exception);
+    procedure carregaAcbr;
   public
     nfce_valor: Double;
     nfce_desconto: Double;
@@ -143,23 +170,7 @@ begin
     ShowMessage('Nota Fiscal já emitida.');
     Exit;
   end;
-  ACBrNFe1.SSL.DescarregarCertificado;
-  ACBrNFe1.Configuracoes.Certificados.ArquivoPFX  := dmPdv.CaminhoCert;
-  ACBrNFe1.Configuracoes.Certificados.Senha       := dmPdv.SenhaCert;
-  edtNumSerie.Text := dmPdv.NumSerieCert;
-  edCertificado.Text := edtNumSerie.Text;
-  ACBrNFe1.Configuracoes.Certificados.NumeroSerie := edCertificado.Text;
-
-  //edtPathSchemas.Text  := Ini.ReadString( 'Geral','PathSchemas'  ,PathWithDelim(ExtractFilePath(Application.ExeName))+'Schemas\') ;
-  ACBrNFe1.SSL.CarregarCertificado;
-
-  with ACBrNFe1.Configuracoes.Geral do
-  begin
-    SSLLib       := TSSLLib(cbSSLLib.ItemIndex);
-    SSLCryptLib  := TSSLCryptLib(cbCryptLib.ItemIndex);
-    SSLHttpLib   := TSSLHttpLib(cbHttpLib.ItemIndex);
-    SSLXmlSignLib:= TSSLXmlSignLib(cbXmlSignLib.ItemIndex);
-  end;
+  carregaAcbr;
 
   if (dmPdv.tk = '') then
   begin
@@ -336,6 +347,13 @@ var  N: TACBrPosPrinterModelo;
 begin
   //ACBrNFeDANFeESCPOS1 := TACBrNFeDANFeESCPOS.Create(nil);
   //ACBrNFeDANFCeFortes1 := TACBrNFeDANFCeFortes.Create(nil);
+  {if (not DirectoryExists(dmPdv.path_exe + '\input')) then
+  begin
+    CreateDir(dmPdv.path_exe + '\input');
+    CreateDir(dmPdv.path_exe + '\output');
+  end;
+  ACBrIntegrador1.PastaInput := dmPdv.path_exe + '\input';
+  ACBrIntegrador1.PastaOutput := dmPdv.path_exe + '\output';}
   cbxModeloPosPrinter.Items.Clear ;
   For N := Low(TACBrPosPrinterModelo) to High(TACBrPosPrinterModelo) do
      cbxModeloPosPrinter.Items.Add(GetEnumName(TypeInfo(TACBrPosPrinterModelo), integer(N) ));
@@ -396,6 +414,7 @@ var msg_ncm: String;
  t: string;
  serie : String;
 begin
+  //ACBrNFe1.Integrador := ACBrIntegrador1;
   ACBrNFeDANFeESCPOS1.ACBrNFe := ACBrNFe1;
   ACBrNFeDANFeESCPOS1.PosPrinter := ACBrPosPrinter1;
   ACBrPosPrinter1.Porta := dmPdv.portaImp;
@@ -417,6 +436,7 @@ begin
   begin
     t := dmPdv.sqBusca.Fields[1].AsString;
     serie := copy(dmPdv.sqBusca.Fields[3].AsString,0,4);
+    nomeXml := dmPdv.sqBusca.Fields[2].AsString;
     if (serie = 'NFCE') then
     begin
       edNFce.text := IntToStr(dmPdv.sqBusca.Fields[0].AsInteger);
@@ -1167,14 +1187,13 @@ begin
 
   MemoDados.Lines.Clear;
 
-
   ACBrSAT1.CFe.Clear;
   ArqINI := 'prjAtsAdmin.ini';
   ACBrSAT1.Extrato := ACBrSATExtratoESCPOS1;
   INI := TIniFile.Create(ArqINI);
   try
     sat_ativacao := INI.ReadString('SAT','CodigoAtivacao','123456');
-    //sat_assinatura := INI.ReadString('SwH','Assinatura',cAssinatura);
+    sat_assinatura := INI.ReadString('SwH','Assinatura','ATS SOLUCOES E COMERCIO LTDA');
     with ACBrSAT1 do
     begin
       ArqLOG  := INI.ReadString('SAT','ArqLog','ACBrSAT.log');
@@ -1257,7 +1276,7 @@ begin
   ACBrSAT1.InicializaCFe();
   desc := ACBrSAT1.Config.ide_CNPJ;
   desc := ACBrSAT1.Config.emit_CNPJ;
-  ACBrSAT1.AtivarSAT( 1, ACBrSAT1.Config.emit_CNPJ, StrToInt('35') );
+  //ACBrSAT1.AtivarSAT( 1, ACBrSAT1.Config.emit_CNPJ, StrToInt('35') );
 
   if (validaCpfCnpj() = False) then
     exit;
@@ -1265,9 +1284,9 @@ begin
   // Montando uma Venda //
   with ACBrSAT1.CFe do
   begin
-    ide.numeroCaixa := dmPdv.contaCaixa;
-    ide.cNF := Random(num_nfce);
-
+    //ide.numeroCaixa := dmPdv.contaCaixa;
+    //ide.cNF := Random(num_nfce);
+    //ide.nserieSAT := ;
     if ((edCPF.Text <> '   .   .   -  ') and  (Length(edCPF.Text) = 14)) then
     begin
       Dest.CNPJCPF := RemoveChar(edCPF.Text);
@@ -1318,7 +1337,7 @@ begin
       Prod.uCom := dmPdv.sqLancamentosUNIDADEMEDIDA.AsString;
       Prod.qCom := dmPdv.sqLancamentosQUANTIDADE.AsFloat;
       Prod.vUnCom := dmPdv.sqLancamentosPRECO.AsFloat;
-      Prod.indRegra := irTruncamento;
+      Prod.indRegra := irArredondamento;
       Prod.vDesc    := dmPdv.sqLancamentosVALOR_DESCONTO.AsCurrency;
       if nfce_desconto > 0 then
       begin
@@ -1326,12 +1345,7 @@ begin
         desconto_rateio := dmPdv.sqLancamentosTOTALITEM.AsFloat * desconto_rateio;
         Prod.vDesc      := RoundTo(desconto_rateio, -2);
       end;
-
-      //with Prod.obsFiscoDet.Add do
-      //begin
-      //  xCampoDet := 'campo';
-      //  xTextoDet := 'texto';
-      //end;
+      Prod.vProd := (Prod.qCom*Prod.vUnCom)-Prod.vDesc;
       with Imposto do
       begin
         TotalItem := RoundABNT((Prod.qCom * Prod.vUnCom) + Prod.vOutro - Prod.vDesc, -2);
@@ -1509,6 +1523,8 @@ begin
     end;
     try
       arquivosat := AcbrSat1.CFe.NomeArquivo;
+      if (not DirectoryExists(arquivosat)) then
+        CreateDir(arquivosat);
       chave_sat := Copy(ACBrSAT1.cfe.infCFe.ID,23,29);
       dmPdv.IbCon.ExecuteDirect('UPDATE VENDA SET STATUS1 = ' +
         QuotedStr('E') + ', OBS = ' + QuotedStr(arquivosat) +
@@ -1555,6 +1571,36 @@ var
 begin
   Erro := Trim(E.Message) ;
   ACBrSAT1.DoLog( E.ClassName+' - '+Erro);
+end;
+
+procedure TfNfce.carregaAcbr;
+begin
+  if (dmPdv.sqEmpresa.Active) then
+   dmPdv.sqEmpresa.Close;
+  ////dmPdv.sqEmpresa.Params[0].AsInteger := dm.CCustoPadrao; //Buscar de parametro
+  dmPdv.sqEmpresa.Open;
+  ACBrNFe1.SSL.DescarregarCertificado;
+  ACBrNFe1.Configuracoes.Certificados.ArquivoPFX  := dmPdv.CaminhoCert;
+  ACBrNFe1.Configuracoes.Certificados.Senha       := dmPdv.SenhaCert;
+  edtNumSerie.Text := dmPdv.NumSerieCert;
+  edCertificado.Text := edtNumSerie.Text;
+  ACBrNFe1.Configuracoes.Certificados.NumeroSerie := edCertificado.Text;
+  ACBrNFe1.Configuracoes.WebServices.UF := 'SP';
+  ACBrNFe1.Configuracoes.Geral.ModeloDF := moNFCe;
+  ACBrNFe1.Configuracoes.Geral.VersaoDF := ve400;
+  //ACBrNFe1.Configuracoes.WebServices.UFCodigo := 35;
+  ACBrNFe1.Configuracoes.WebServices.Ambiente := taProducao;
+
+  //edtPathSchemas.Text  := Ini.ReadString( 'Geral','PathSchemas'  ,PathWithDelim(ExtractFilePath(Application.ExeName))+'Schemas\') ;
+  ACBrNFe1.SSL.CarregarCertificado;
+
+  with ACBrNFe1.Configuracoes.Geral do
+  begin
+    SSLLib       := TSSLLib(cbSSLLib.ItemIndex);
+    SSLCryptLib  := TSSLCryptLib(cbCryptLib.ItemIndex);
+    SSLHttpLib   := TSSLHttpLib(cbHttpLib.ItemIndex);
+    SSLXmlSignLib:= TSSLXmlSignLib(cbXmlSignLib.ItemIndex);
+  end;
 end;
 
 procedure TfNfce.BitBtn1Click(Sender: TObject);
@@ -1691,44 +1737,85 @@ end;
 
 procedure TfNfce.btnNFce2Click(Sender: TObject);
 var
-   vChave : String;
-  vAux, vNumLote, vSincrono : String;
+ vChave : String;
+ vAux, vNumLote, vSincrono : String;
  Sincrono : boolean;
  Protocolo, Recibo: String;
  str: String;
  ambiente: String;
 begin
+  carregaAcbr;
   //if not(InputQuery('WebServices Consultar', 'Chave da NF-e:', vChave)) then
   //  exit;
-
-  //ACBrNFe1.NotasFiscais.Clear;
-  //ACBrNFe1.WebServices.Consulta.NFeChave := vChave;
-  //ACBrNFe1.WebServices.Consulta.Executar;
-
-  //MemoResp.Lines.Text := ACBrNFe1.WebServices.Consulta.RetWS;
-  //memoRespWS.Lines.Text := ACBrNFe1.WebServices.Consulta.RetornoWS;
-  //LoadXML(MemoResp, WBResposta);
-  OpenDialog1.Title := 'Selecione a NFE';
-  OpenDialog1.DefaultExt := '*-nfe.XML';
-  OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
-  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
-  if OpenDialog1.Execute then
+  if (nomeXml <> '') then
   begin
+    MemoResp.Lines.Clear;
+    MemoDados.Lines.Clear;
     ACBrNFe1.NotasFiscais.Clear;
-    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
-    ACBrNFe1.Consultar;
-
-    if ACBrNFe1.WebServices.Consulta.Protocolo <> '' then
+    ACBrNFe1.WebServices.Consulta.NFeChave := nomeXml;
+  end
+  else begin
+    OpenDialog1.Title := 'Selecione a NFE';
+    OpenDialog1.DefaultExt := '*-nfe.XML';
+    OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+    OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
+    if OpenDialog1.Execute then
     begin
-      ShowMessage(ACBrNFe1.WebServices.Consulta.Protocolo);
-      Protocolo := ACBrNFe1.WebServices.Consulta.Protocolo;
-      Recibo := 'recibo';//ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe. .WebServices.Consulta.Recibo;
+      ACBrNFe1.NotasFiscais.Clear;
+      ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
     end;
-    //MemoResp.Lines.Text := ACBrNFe1.WebServices.Consulta.RetWS;
-    //memoRespWS.Lines.Text := ACBrNFe1.WebServices.Consulta.RetornoWS;
-    //LoadXML(MemoResp, WBResposta);
   end;
+  ACBrNFe1.WebServices.Consulta.Executar;
+  MemoResp.Lines.Text := ACBrNFe1.WebServices.Consulta.RetWS;
+  memoDados.Lines.Text := ACBrNFe1.WebServices.Consulta.RetornoWS;
+  if ACBrNFe1.WebServices.Consulta.Protocolo <> '' then
+  begin
+    ShowMessage(ACBrNFe1.WebServices.Consulta.Protocolo);
+    Protocolo := ACBrNFe1.WebServices.Consulta.Protocolo;
+    Recibo := 'recibo';//ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe. .WebServices.Consulta.Recibo;
+  end;
+  if ACBrNFe1.NotasFiscais.Count > 0 then
+    ACBrNFe1.NotasFiscais.Imprimir;
+end;
 
+procedure TfNfce.btnNFce3Click(Sender: TObject);
+begin
+  edSerie.Text := IntToStr(serie_nfce);
+  Panel1.Visible:= True;
+end;
+
+procedure TfNfce.btnNFce4Click(Sender: TObject);
+begin
+  carregaAcbr;
+  MemoDados.Lines.Clear;
+  MemoResp.Lines.Clear;
+  ACBrNFe1.WebServices.Inutiliza(RemoveChar(dmPdv.sqEmpresaCNPJ_CPF.AsString),
+    EdJustificativa.Text, StrToInt(edAno.Text), StrToInt(edModelo.Text), StrToInt(edSerie.Text),
+    StrToInt(edNumIni.Text), StrToInt(edNumFim.Text));
+  MemoResp.Lines.Text :=  ACBrNFe1.WebServices.Inutilizacao.RetWS;
+  memoDados.Lines.Text :=  ACBrNFe1.WebServices.Inutilizacao.RetornoWS;
+
+  MemoDados.Lines.Add('');
+  MemoDados.Lines.Add('Inutilização');
+  MemoDados.Lines.Add('tpAmb: '    +TpAmbToStr(ACBrNFe1.WebServices.Inutilizacao.tpAmb));
+  MemoDados.Lines.Add('verAplic: ' +ACBrNFe1.WebServices.Inutilizacao.verAplic);
+  MemoDados.Lines.Add('cStat: '    +IntToStr(ACBrNFe1.WebServices.Inutilizacao.cStat));
+  MemoDados.Lines.Add('xMotivo: '  +ACBrNFe1.WebServices.Inutilizacao.xMotivo);
+  MemoDados.Lines.Add('cUF: '      +IntToStr(ACBrNFe1.WebServices.Inutilizacao.cUF));
+  MemoDados.Lines.Add('Ano: '      +IntToStr(ACBrNFe1.WebServices.Inutilizacao.Ano));
+  MemoDados.Lines.Add('CNPJ: '      +ACBrNFe1.WebServices.Inutilizacao.CNPJ);
+  MemoDados.Lines.Add('Modelo: '      +IntToStr(ACBrNFe1.WebServices.Inutilizacao.Modelo));
+  MemoDados.Lines.Add('Serie: '      +IntToStr(ACBrNFe1.WebServices.Inutilizacao.Serie));
+  MemoDados.Lines.Add('NumeroInicial: '      +IntToStr(ACBrNFe1.WebServices.Inutilizacao.NumeroInicial));
+  MemoDados.Lines.Add('NumeroInicial: '      +IntToStr(ACBrNFe1.WebServices.Inutilizacao.NumeroFinal));
+  MemoDados.Lines.Add('dhRecbto: ' +DateTimeToStr(ACBrNFe1.WebServices.Inutilizacao.dhRecbto));
+  MemoDados.Lines.Add('Protocolo: '      +ACBrNFe1.WebServices.Inutilizacao.Protocolo);
+  ShowMessage('Númeração inutilizada com sucesso.');
+end;
+
+procedure TfNfce.btnNFce5Click(Sender: TObject);
+begin
+  Panel1.Visible := False;
 end;
 
 procedure TfNfce.ACBrNFe1AntesDeAssinar(var ConteudoXML: String;
@@ -1736,6 +1823,122 @@ procedure TfNfce.ACBrNFe1AntesDeAssinar(var ConteudoXML: String;
   IdSignature: String);
 begin
 
+end;
+
+procedure TfNfce.ACBrNFe1GerarLog(const ALogLine: String; var Tratado: Boolean);
+begin
+  memoLog.Lines.Add(ALogLine);
+end;
+
+procedure TfNfce.ACBrNFe1StatusChange(Sender: TObject);
+begin
+  case ACBrNFe1.Status of
+    stIdle :
+    begin
+      if ( frmStatus <> nil ) then
+        frmStatus.Hide;
+    end;
+    stNFeStatusServico :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Verificando Status do servico...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
+    stNFeRecepcao :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Enviando dados da NFe...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
+    stNfeRetRecepcao :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Recebendo dados da NFe...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
+    stNfeConsulta :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Consultando NFe...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
+    stNfeCancelamento :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Enviando cancelamento de NFe...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
+    stNfeInutilizacao :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Enviando pedido de Inutilização...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
+    stNFeRecibo :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Consultando Recibo de Lote...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
+    stNFeCadastro :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Consultando Cadastro...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
+    stNFeEmail :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Enviando Email...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
+    stNFeCCe :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Enviando Carta de Correção...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
+    stNFeEvento :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Enviando Evento...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
+  end;
+  Application.ProcessMessages;
+
+end;
+
+procedure TfNfce.ACBrNFe1TransmitError(const HttpError, InternalError: Integer;
+  const URL, DadosEnviados, SoapAction: String; var Retentar: Boolean;
+  var Tratado: Boolean);
+begin
+  ShowMessage('HTTPError: '+IntToStr(HttpError) + sLineBreak +
+              'InternalError: '+IntToStr(InternalError)  );
+
+  //TryAgain := False;
 end;
 
 procedure TfNfce.ACBrSAT1GetcodigoDeAtivacao(var Chave: AnsiString);

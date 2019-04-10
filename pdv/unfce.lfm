@@ -146,7 +146,7 @@ object fNfce: TfNfce
         Cursor = crHandPoint
         Left = 152
         Height = 125
-        Top = 86
+        Top = 8
         Width = 152
         Caption = 'com CPF ?'
         Font.CharSet = ANSI_CHARSET
@@ -1488,7 +1488,7 @@ object fNfce: TfNfce
         Cursor = crHandPoint
         Left = 312
         Height = 125
-        Top = 86
+        Top = 8
         Width = 152
         Caption = 'sem CPF'
         Font.CharSet = ANSI_CHARSET
@@ -2805,6 +2805,15 @@ object fNfce: TfNfce
         ParentFont = False
         TabOrder = 1
       end
+      object memoLog: TMemo
+        Left = 3
+        Height = 157
+        Top = 136
+        Width = 613
+        ReadOnly = True
+        ScrollBars = ssAutoBoth
+        TabOrder = 2
+      end
     end
     object TabSheet5: TTabSheet
       Caption = 'Geral'
@@ -2812,7 +2821,7 @@ object fNfce: TfNfce
       ClientWidth = 638
       object btnNFce: TBitBtn
         Left = 8
-        Height = 70
+        Height = 44
         Top = 8
         Width = 151
         Caption = 'Nota Fiscal'
@@ -2821,7 +2830,7 @@ object fNfce: TfNfce
       end
       object btnNFce1: TBitBtn
         Left = 164
-        Height = 70
+        Height = 44
         Top = 8
         Width = 151
         Caption = 'Imprimir'
@@ -2851,8 +2860,8 @@ object fNfce: TfNfce
         TabOrder = 1
       end
       object btnNFce2: TBitBtn
-        Left = 318
-        Height = 70
+        Left = 320
+        Height = 44
         Top = 8
         Width = 151
         Caption = 'Consultar NFCe'
@@ -2961,7 +2970,7 @@ object fNfce: TfNfce
       end
       object btnFechar: TBitBtn
         Left = 475
-        Height = 70
+        Height = 44
         Top = 8
         Width = 91
         Action = acFechar
@@ -2970,15 +2979,15 @@ object fNfce: TfNfce
       end
       object PageControl1: TPageControl
         Left = 8
-        Height = 214
-        Top = 88
+        Height = 195
+        Top = 104
         Width = 641
         ActivePage = TabSheet1
         TabIndex = 0
         TabOrder = 4
         object TabSheet1: TTabSheet
           Caption = 'Retorno'
-          ClientHeight = 186
+          ClientHeight = 167
           ClientWidth = 633
           object MemoResp: TMemo
             Left = 0
@@ -2990,7 +2999,7 @@ object fNfce: TfNfce
         end
         object TabSheet2: TTabSheet
           Caption = 'Envio'
-          ClientHeight = 186
+          ClientHeight = 167
           ClientWidth = 633
           object MemoDados: TMemo
             Left = 8
@@ -3136,6 +3145,136 @@ object fNfce: TfNfce
           end
         end
       end
+      object btnNFce3: TBitBtn
+        Left = 8
+        Height = 44
+        Top = 56
+        Width = 151
+        Caption = 'Inutilizar Numeração'
+        OnClick = btnNFce3Click
+        TabOrder = 5
+      end
+      object Panel1: TPanel
+        Left = 164
+        Height = 251
+        Top = 40
+        Width = 456
+        ClientHeight = 251
+        ClientWidth = 456
+        TabOrder = 6
+        Visible = False
+        object edAno: TEdit
+          Left = 153
+          Height = 23
+          Top = 15
+          Width = 80
+          TabOrder = 0
+          Text = '2019'
+        end
+        object edModelo: TEdit
+          Left = 153
+          Height = 23
+          Top = 46
+          Width = 80
+          TabOrder = 1
+          Text = '65'
+        end
+        object edSerie: TEdit
+          Left = 153
+          Height = 23
+          Top = 77
+          Width = 80
+          TabOrder = 2
+          Text = '1'
+        end
+        object edNumIni: TEdit
+          Left = 153
+          Height = 23
+          Top = 108
+          Width = 80
+          TabOrder = 3
+        end
+        object edNumFim: TEdit
+          Left = 153
+          Height = 23
+          Top = 138
+          Width = 80
+          TabOrder = 4
+        end
+        object Label1: TLabel
+          Left = 120
+          Height = 15
+          Top = 15
+          Width = 22
+          Caption = 'Ano'
+          ParentColor = False
+        end
+        object Label5: TLabel
+          Left = 101
+          Height = 15
+          Top = 46
+          Width = 41
+          Caption = 'Modelo'
+          ParentColor = False
+        end
+        object Label6: TLabel
+          Left = 117
+          Height = 15
+          Top = 77
+          Width = 25
+          Caption = 'Serie'
+          ParentColor = False
+        end
+        object btnNFce4: TBitBtn
+          Left = 224
+          Height = 36
+          Top = 208
+          Width = 80
+          Caption = 'Enviar'
+          OnClick = btnNFce4Click
+          TabOrder = 5
+        end
+        object btnNFce5: TBitBtn
+          Left = 304
+          Height = 36
+          Top = 208
+          Width = 72
+          Caption = 'Fechar'
+          OnClick = btnNFce5Click
+          TabOrder = 6
+        end
+        object Label7: TLabel
+          Left = 96
+          Height = 15
+          Top = 108
+          Width = 46
+          Caption = 'Num. Ini'
+          ParentColor = False
+        end
+        object Label8: TLabel
+          Left = 89
+          Height = 15
+          Top = 138
+          Width = 53
+          Caption = 'Num. Fim'
+          ParentColor = False
+        end
+        object edJustificativa: TEdit
+          Left = 153
+          Height = 23
+          Top = 166
+          Width = 279
+          TabOrder = 7
+        end
+        object Label9: TLabel
+          Left = 81
+          Height = 15
+          Top = 166
+          Width = 61
+          Caption = 'Justificativa'
+          ParentColor = False
+        end
+      end
     end
   end
   object RadioGroup2: TRadioGroup
@@ -3195,12 +3334,16 @@ object fNfce: TfNfce
     top = 112
   end
   object ACBrNFe1: TACBrNFe
+    OnTransmitError = ACBrNFe1TransmitError
+    OnStatusChange = ACBrNFe1StatusChange
+    OnGerarLog = ACBrNFe1GerarLog
     OnAntesDeAssinar = ACBrNFe1AntesDeAssinar
     Configuracoes.Geral.SSLLib = libCustom
     Configuracoes.Geral.SSLCryptLib = cryCapicom
     Configuracoes.Geral.SSLHttpLib = httpNone
     Configuracoes.Geral.SSLXmlSignLib = xsNone
     Configuracoes.Geral.FormatoAlerta = 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.'
+    Configuracoes.Geral.ModeloDF = moNFCe
     Configuracoes.Geral.VersaoDF = ve400
     Configuracoes.Geral.VersaoQRCode = veqr200
     Configuracoes.Arquivos.OrdenacaoPath = <>
@@ -3210,8 +3353,8 @@ object fNfce: TfNfce
     Configuracoes.WebServices.Ambiente = taProducao
     Configuracoes.WebServices.AguardarConsultaRet = 0
     Configuracoes.WebServices.QuebradeLinha = '|'
-    left = 161
-    top = 65535
+    left = 48
+    top = 112
   end
   object OpenDialog1: TOpenDialog
     left = 587
