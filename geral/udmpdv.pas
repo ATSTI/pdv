@@ -210,6 +210,7 @@ type
     versao_sistema: String;
     usaCentroCusto: String;
     tipo_buscaProd: String;
+    tipo_CodBarra: String;
     tamanhoDescProd: Integer;
     clientePadrao: Integer;
     tamanhoCodProd: Integer;
@@ -273,6 +274,7 @@ begin
   senhaLogin := '';
   clientePadrao := 1;
   tipo_buscaProd := 'NORMAL';
+  tipo_CodBarra := 'PRECO';
   MICRO := GetEnvironmentVariable('COMPUTERNAME');
   path_exe := ExtractFilePath(ParamStr(0));
   path_xml := path_exe;
@@ -323,6 +325,7 @@ begin
     senhaLogin := conf.ReadString( 'Outros','SenhaLogin','');
     nomeLogado := conf.ReadString( 'Outros','NomeLogin','');
     tipo_buscaProd := conf.ReadString( 'Outros','BuscaProduto','NORMAL');
+    tipo_CodBarra := conf.ReadString( 'Outros','TipoCodBarra','PRECO');
     tamanhoDescProd := conf.ReadInteger( 'Outros','TamanhoDescProd',400);
     tamanhoCodProd := conf.ReadInteger( 'Outros','TamanhoCodProd',140);
     usoSistema := conf.ReadString( 'Outros','TipoUso','ATS');

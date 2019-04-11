@@ -57,6 +57,7 @@ type
     produto: String;
     codProd: String;
     precoVenda: Double;
+    quantidadeVenda: Double;
     precoVendaAtacado: Double;
     qtdeAtacado: Double;
     estoque: Double;
@@ -275,6 +276,7 @@ var sqlProc: String;
   j: integer;
   i: integer;
 begin
+  quantidadeVenda := 1;
   if (num_pedidos = 5) then
   begin
     dmPdv.IbCon.Connected:=False;
@@ -396,8 +398,21 @@ begin
     codProd    := dmPdv.sqBusca.FieldByName('CODPRO').AsString;
     if cod_bs <> '' then
     begin
-      cod_bs := Copy(cod_bs,0,3) + ',' + Copy(cod_bs,4,4);
-      precoVenda := StrToFloat(cod_bs);
+      if (dmPdv.tipo_CodBarra = 'PESO') then
+      begin
+        cod_bs := cod_bs
+      end
+      else begin
+        cod_bs := Copy(cod_bs,0,3) + ',' + Copy(cod_bs,4,4);
+      end;
+      quantidadeVenda := 1;
+      if (dmPdv.tipo_CodBarra = 'PESO') then
+      begin
+        precoVenda := dmPdv.sqBusca.FieldByName('VALOR_PRAZO').AsFloat;
+        quantidadeVenda := StrToFloat(cod_bs)/1000;
+      end
+      else
+        precoVenda := StrToFloat(cod_bs);
     end
     else begin
       precoVenda := dmPdv.sqBusca.FieldByName('VALOR_PRAZO').AsFloat;
