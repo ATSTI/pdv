@@ -83,6 +83,7 @@ begin
   cNomeCliente:='';
   if (dmPdv.usaCurso = 0) then
   begin
+    chCurso.Checked := False;
     chCurso.Visible := False;
   end;
 end;

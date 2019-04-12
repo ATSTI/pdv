@@ -1782,7 +1782,8 @@ begin
   //end
   begin
     dmPdv.sqBusca.SQL.Text := 'SELECT CODMOVIMENTO FROM MOVIMENTO ' +
-      ' WHERE STATUS = 0 AND CODALMOXARIFADO = ' + dmPdv.ccusto +
+      ' WHERE STATUS = 0 AND CODNATUREZA = 3 ' +
+      ' AND CODALMOXARIFADO = ' + dmPdv.ccusto +
       ' ORDER BY CODMOVIMENTO DESC';
   end;
   dmPdv.sqBusca.Open;
