@@ -2810,7 +2810,6 @@ object fNfce: TfNfce
         Height = 157
         Top = 136
         Width = 613
-        ReadOnly = True
         ScrollBars = ssAutoBoth
         TabOrder = 2
       end
@@ -2982,8 +2981,8 @@ object fNfce: TfNfce
         Height = 195
         Top = 104
         Width = 641
-        ActivePage = TabSheet1
-        TabIndex = 0
+        ActivePage = TabSheet3
+        TabIndex = 2
         TabOrder = 4
         object TabSheet1: TTabSheet
           Caption = 'Retorno'
@@ -3011,7 +3010,7 @@ object fNfce: TfNfce
         end
         object TabSheet3: TTabSheet
           Caption = 'Configurações'
-          ClientHeight = 181
+          ClientHeight = 167
           ClientWidth = 633
           object cbSSLLib: TComboBox
             Left = 83
@@ -3155,9 +3154,9 @@ object fNfce: TfNfce
         TabOrder = 5
       end
       object Panel1: TPanel
-        Left = 164
+        Left = 32
         Height = 251
-        Top = 40
+        Top = -32
         Width = 456
         ClientHeight = 251
         ClientWidth = 456

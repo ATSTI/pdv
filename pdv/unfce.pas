@@ -158,20 +158,24 @@ var
  Protocolo, Recibo: String;
  str: String;
  ambiente: String;
+ ver_var: String;
 begin
   if (dmPdv.NfceSat = 'SAT') then
   begin
+    memoLog.Lines.Add('Gerando SAT');
     gerarSat();
     exit;
   end;
+  memoLog.Lines.Add('Gerando NFCe');
   ACBrNFe1.NotasFiscais.Clear;
   if (notaEmitida = 'S') then
   begin
     ShowMessage('Nota Fiscal já emitida.');
     Exit;
   end;
+  memoLog.Lines.Add('Carregando certificado(se parar deve estar pedindo permissao)');
   carregaAcbr;
-
+  memoLog.Lines.Add('Certificado carregado');
   if (dmPdv.tk = '') then
   begin
     ShowMessage('Cadastre: '+#13+#10+''+#13+#10+'Natureza Operação : 30 ' +
@@ -191,6 +195,7 @@ begin
   end;
 
   vAux := edNFCe.Text;
+  memoLog.Lines.Add('NFCe-' + edNFce.Text);
   //if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
   //  exit;
 
@@ -232,19 +237,22 @@ begin
   //  ambiente := 'homolog';
   AcbrNfe1.Configuracoes.Arquivos.PathSalvar := dmpdv.path_xml + '\NFce\';
   AcbrNfe1.Configuracoes.Arquivos.PathEvento := dmpdv.path_xml + '\Eventos\';
-
+  memoLog.Lines.Add('Gerando XML');
   GerarNFCe(vAux);
   //if ACBrNFe1.NotasFiscais.Add.NFe.ide.tpAmb = taHomologacao then
   //  ambiente := 'homolog';
 
   //edtCaminho.Text := ACBrNFe1.SSL.CertCNPJ;
   //ACBrNFe1.NotasFiscais.GravarXML(AcbrNfe1.Configuracoes.Arquivos.PathSalvar);
+  memoLog.Lines.Add('Assinando XML');
   ACBrNFe1.NotasFiscais.Assinar;
   //ACBrNFe1.NotasFiscais.GravarXML(AcbrNfe1.Configuracoes.Arquivos.PathSalvar);
 
   // Gravando a nota aqui pois se der erro no validar ja gravei
   GravarDadosNF('', '');
-
+  memoLog.Lines.Add('Gravando XML');
+  ACBrNFe1.NotasFiscais.GravarXML();
+  memoLog.Lines.Add('Validando');
   ACBrNFe1.NotasFiscais.Validar;
   //LoadXML(ACBrNFe1.NotasFiscais.Items[0].XML,  mRecebido);
 
@@ -254,10 +262,13 @@ begin
 
   //ACBrNFe1.DANFE.TipoDANFE := tiNFCeA4;
   if (dmPdv.NFE_Teste = 'N') then
+  begin
+    memoLog.Lines.Add('Enviando ...');
     ACBrNFe1.Enviar(vNumLote,True,Sincrono);
+  end;
 
-  MemoResp.Lines.Add(UTF8Encode(ACBrNFe1.WebServices.Retorno.RetWS));
-  memoResp.Lines.Add(UTF8Encode(ACBrNFe1.WebServices.Retorno.RetornoWS));
+  MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetWS);
+  MemoDados.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetornoWS);
 
   MemoDados.Lines.Add('');
   MemoDados.Lines.Add('Envio NFe');
@@ -278,11 +289,12 @@ begin
   Recibo := ACBrNFe1.WebServices.Retorno.Recibo;
   //LoadXML(ACBrNFe1.NotasFiscais.Items[0].XML,  mRecebido);
   //ACBrNFe1.NotasFiscais.Imprimir;
-
+  memoLog.Lines.Add('Enviado gravando retorno');
   GravarDadosNF(protocolo, recibo);
   MemoDados.Lines.Add('');
   MemoDados.Lines.Add('Nota Fiscal Consumidor, gerada com sucesso.');
   MemoDados.Lines.Add('');
+  //Application.ProcessMessages;
   ACBrNFe1.NotasFiscais.Clear;
   Close;
 end;
@@ -414,6 +426,13 @@ var msg_ncm: String;
  t: string;
  serie : String;
 begin
+  if (dmPdv.sqEmpresa.Active) then
+   dmPdv.sqEmpresa.Close;
+  ////dmPdv.sqEmpresa.Params[0].AsInteger := dm.CCustoPadrao; //Buscar de parametro
+  dmPdv.sqEmpresa.Open;
+  StatusBar1.Panels[0].Text := 'NFCe HOMOLOGACAO';
+  if (Trim(dmPdv.sqEmpresaTIPO.AsString) = '1') then
+    StatusBar1.Panels[0].Text := 'NFCe PRODUCAO';
   //ACBrNFe1.Integrador := ACBrIntegrador1;
   ACBrNFeDANFeESCPOS1.ACBrNFe := ACBrNFe1;
   ACBrNFeDANFeESCPOS1.PosPrinter := ACBrPosPrinter1;
@@ -845,6 +864,8 @@ begin
     end;
     //Adicionando Produtos
     contaItens := 0;
+    if (not dmPdv.sqLancamentos.Active) then
+      dmPdv.sqLancamentos.open;
     dmPdv.sqLancamentos.First;
     total_tributos := 0;
     vICMS := 0;
@@ -1575,21 +1596,26 @@ end;
 
 procedure TfNfce.carregaAcbr;
 begin
-  if (dmPdv.sqEmpresa.Active) then
-   dmPdv.sqEmpresa.Close;
-  ////dmPdv.sqEmpresa.Params[0].AsInteger := dm.CCustoPadrao; //Buscar de parametro
-  dmPdv.sqEmpresa.Open;
   ACBrNFe1.SSL.DescarregarCertificado;
-  ACBrNFe1.Configuracoes.Certificados.ArquivoPFX  := dmPdv.CaminhoCert;
-  ACBrNFe1.Configuracoes.Certificados.Senha       := dmPdv.SenhaCert;
-  edtNumSerie.Text := dmPdv.NumSerieCert;
-  edCertificado.Text := edtNumSerie.Text;
-  ACBrNFe1.Configuracoes.Certificados.NumeroSerie := edCertificado.Text;
+  if (dmPdv.CaminhoCert <> '') then
+  begin
+    ACBrNFe1.Configuracoes.Certificados.ArquivoPFX  := dmPdv.CaminhoCert;
+    ACBrNFe1.Configuracoes.Certificados.Senha       := dmPdv.SenhaCert;
+  end
+  else begin
+    edtNumSerie.Text := dmPdv.NumSerieCert;
+    edCertificado.Text := edtNumSerie.Text;
+    ACBrNFe1.Configuracoes.Certificados.NumeroSerie := edCertificado.Text;
+  end;
   ACBrNFe1.Configuracoes.WebServices.UF := 'SP';
   ACBrNFe1.Configuracoes.Geral.ModeloDF := moNFCe;
+  ACBrNFe1.Configuracoes.Geral.Salvar   := True;
   ACBrNFe1.Configuracoes.Geral.VersaoDF := ve400;
   //ACBrNFe1.Configuracoes.WebServices.UFCodigo := 35;
-  ACBrNFe1.Configuracoes.WebServices.Ambiente := taProducao;
+  if (Trim(dmPdv.sqEmpresaTIPO.AsString) = '1') then
+    ACBrNFe1.Configuracoes.WebServices.Ambiente := taProducao
+  else
+    ACBrNFe1.Configuracoes.WebServices.Ambiente := taHomologacao;
 
   //edtPathSchemas.Text  := Ini.ReadString( 'Geral','PathSchemas'  ,PathWithDelim(ExtractFilePath(Application.ExeName))+'Schemas\') ;
   ACBrNFe1.SSL.CarregarCertificado;
