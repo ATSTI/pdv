@@ -3436,6 +3436,7 @@ object fNfce: TfNfce
     CasasDecimais.MaskvUnCom = ',0.00'
     ACBrSAT = ACBrSAT1
     MsgAppQRCode = 'Consulte o QR Code pelo aplicativo  "De olho na nota", disponível na AppStore (Apple) e PlayStore (Android)'
+    PosPrinter = ACBrPosPrinter1
     left = 595
     top = 216
   end

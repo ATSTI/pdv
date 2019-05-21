@@ -1211,6 +1211,9 @@ begin
   ACBrSAT1.CFe.Clear;
   ArqINI := 'prjAtsAdmin.ini';
   ACBrSAT1.Extrato := ACBrSATExtratoESCPOS1;
+  ACBrSATExtratoESCPOS1.PosPrinter := ACBrPosPrinter1;
+  ACBrSAT1.ConfigArquivos.SalvarCFe:=True;
+
   INI := TIniFile.Create(ArqINI);
   try
     sat_ativacao := INI.ReadString('SAT','CodigoAtivacao','123456');
@@ -1515,24 +1518,27 @@ begin
                         '</ce><e><n>SENHA XXX</n></e>;'+
                         '</linha_simples>';}
   end;
+  memoLog.Lines.Add('Gerando o XML');
   memoDados.Lines.Text := ACBrSAT1.CFe.GerarXML( True );    // True = Gera apenas as TAGs da aplicação
   //if ACBrSAT1.ValidarDadosVenda( MemoDados.Text, Erro ) then
   //ACBrSAT1.EnviarDadosVenda(MemoDados.Text);
   //ShowMessage('XML Recebido do SAT, validado com sucesso');
 
   tini := now;
+  memoLog.Lines.Add('Enviando Dados');
   ACBrSAT1.EnviarDadosVenda( MemoDados.Text );
   tfim := now;
-  memoResp.Lines.Add('------------------------------------------------') ;
-  memoResp.Lines.Add('Iniciado em: '+DateTimeToStr(tini)) ;
-  memoResp.Lines.Add('Finalizado em: '+DateTimeToStr(tFim)) ;
-  memoResp.Lines.Add('') ;
-  memoResp.Lines.Add('Tempo de Envio e Recebimento: '+ FormatFloat('##0.00',SecondSpan(tini,tfim))+' segundos' ) ;
-  memoResp.Lines.Add('------------------------------------------------') ;
-
+  memoLog.Lines.Add('------------------------------------------------') ;
+  memoLog.Lines.Add('Iniciado em: '+DateTimeToStr(tini)) ;
+  memoLog.Lines.Add('Finalizado em: '+DateTimeToStr(tFim)) ;
+  memoLog.Lines.Add('') ;
+  memoLog.Lines.Add('Tempo de Envio e Recebimento: '+ FormatFloat('##0.00',SecondSpan(tini,tfim))+' segundos' ) ;
+  memoLog.Lines.Add('------------------------------------------------') ;
+  memoLog.Lines.Add('Retorno : ' + IntToStr(ACBrSAT1.Resposta.codigoDeRetorno));
   if ACBrSAT1.Resposta.codigoDeRetorno = 6000 then
   begin
     MemoResp.Lines.Text := ACBrSAT1.CFe.AsXMLString;
+    ACBrSAT1.ImprimirExtrato;
     begin
       try
         dmPdv.IbCon.ExecuteDirect('ALTER TRIGGER ALTERA_CONTABIL INACTIVE');
@@ -1546,6 +1552,7 @@ begin
       arquivosat := AcbrSat1.CFe.NomeArquivo;
       if (not DirectoryExists(arquivosat)) then
         CreateDir(arquivosat);
+      ACBrSAT1.CFe.SaveToFile(ACBrSAT1.CalcCFeNomeArq(''));
       chave_sat := Copy(ACBrSAT1.cfe.infCFe.ID,23,29);
       dmPdv.IbCon.ExecuteDirect('UPDATE VENDA SET STATUS1 = ' +
         QuotedStr('E') + ', OBS = ' + QuotedStr(arquivosat) +
@@ -1560,8 +1567,8 @@ begin
         //dm.sqlsisAdimin.Rollback(TD); //on failure, undo the changes}
       end;
     end;
-    ACBrSAT1.CFe.SaveToFile(arquivosat);
-    MemoResp.Lines.add('Cupom gerado com SUCESSO.');
+    //ACBrSAT1.CFe.SaveToFile(arquivosat);
+    MemoLog.Lines.add('Cupom gerado com SUCESSO.');
     MemoResp.Lines.Add(arquivosat);
     begin
       try
