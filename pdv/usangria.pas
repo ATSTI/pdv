@@ -37,6 +37,7 @@ type
   private
 
   public
+    SangriaReforco: String;
     procedure Sangria();
 
   end;
@@ -57,14 +58,15 @@ var
 begin
   if (edValor.Text = '') then
   begin
-    ShowMessage('Informar Valor da Sangria!');
+    ShowMessage('Informar Valor ' + SangriaReforco);
     exit;
   end;
   if (edMotivo.text = '') then
   begin
-    ShowMessage('Informar Motivo da Sangria!');
+    ShowMessage('Informar Motivo ' + SangriaReforco);
     exit;
   end;
+
   Sangria();
   ShowMessage('Gravado com Sucesso!');
 
@@ -80,7 +82,7 @@ begin
     Rewrite(IMPRESSORA);
     //lFile.LoadFromFile('caixa.txt');
     Writeln(IMPRESSORA, '');
-    Writeln(Impressora, 'SANGRIA CAIXA');
+    Writeln(Impressora, SangriaReforco + ' CAIXA');
     Writeln(IMPRESSORA, FormatDateTime('dd/mm/yyyy hh:MM:ss', Now));
     Writeln(IMPRESSORA, '');
     Writeln(Impressora, 'CAIXA : ' + dmPdv.nomeCaixa);
@@ -137,7 +139,10 @@ begin
   sqPagamento.Insert;
   sqPagamentoCODFORMA.AsInteger  := codForma;
   sqPagamentoCAIXA.AsInteger     := StrToInt(dmPdv.idcaixa);
-  sqPagamentoCOD_VENDA.AsInteger := 1;
+  if SangriaReforco = 'Sangria' then
+    sqPagamentoCOD_VENDA.AsInteger := 1
+  else
+    sqPagamentoCOD_VENDA.AsInteger := 0;
   sqPagamentoFORMA_PGTO.AsString := '1';
   sqPagamentoID_ENTRADA.AsInteger:= StrToINT(dmPdv.idcaixa);
   sqPagamentoN_DOC.AsString      := edMotivo.Text;
