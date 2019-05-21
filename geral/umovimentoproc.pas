@@ -23,6 +23,7 @@ type
     btnProcurar: TBitBtn;
     btnSangria: TBitBtn;
     btnFecharCaixa: TBitBtn;
+    btnReforco: TBitBtn;
     cbValorBusca: TComboBox;
     dsMovProc: TDataSource;
     edDataIni: TDateTimePicker;
@@ -53,6 +54,7 @@ type
     procedure btnFecharCaixaClick(Sender: TObject);
     procedure btnPROCClick(Sender: TObject);
     procedure btnProcurarClick(Sender: TObject);
+    procedure btnReforcoClick(Sender: TObject);
     procedure btnSairClick(Sender: TObject);
     procedure btnSALVClick(Sender: TObject);
     procedure btnSangriaClick(Sender: TObject);
@@ -85,6 +87,13 @@ end;
 procedure TfMovimentoProc.btnProcurarClick(Sender: TObject);
 begin
   acBuscar.Execute;
+end;
+
+procedure TfMovimentoProc.btnReforcoClick(Sender: TObject);
+begin
+  // Reforco
+  fSangria.SangriaReforco:= 'Reforco';
+  fSangria.ShowModal;
 end;
 
 procedure TfMovimentoProc.btnSairClick(Sender: TObject);
@@ -279,6 +288,7 @@ end;
 procedure TfMovimentoProc.btnSangriaClick(Sender: TObject);
 begin
   //fSangria.ShowModal;
+  fSangria.SangriaReforco:= 'Sangria';
   fSangria.ShowModal;
 end;
 
