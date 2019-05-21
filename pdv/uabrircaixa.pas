@@ -14,13 +14,15 @@ type
 
   TfAbrirCaixa = class(TForm)
     BitBtn24: TBitBtn;
-    btnSair: TBitBtn;
     btnAbrefecha: TBitBtn;
+    btnSair: TBitBtn;
     dtData: TDateTimePicker;
-    Label1: TLabel;
+    edReforco: TMaskEdit;
     edValor: TMaskEdit;
+    Label1: TLabel;
     Label10: TLabel;
     Label11: TLabel;
+    Label12: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
@@ -39,6 +41,7 @@ type
     edTBruto: TMaskEdit;
     edTLiquido: TMaskEdit;
     Panel1: TPanel;
+    Panel2: TPanel;
     procedure BitBtn24Click(Sender: TObject);
     procedure btnAbrefechaClick(Sender: TObject);
     procedure btnSairClick(Sender: TObject);
@@ -277,6 +280,23 @@ begin
     totalcaixa -= dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     edSangrias.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
   end;
+
+  sqlP := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
+  sqlP += ' where CAIXA = ' + cx_m;
+  sqlP += ' and STATE = 1 and FORMA_PGTO = 1';//Sangrias/Reforco
+  sqlP += ' and cod_venda = 0  ';//0 para Reforco Caixa, >1 para Outros
+  if (dmPdv.sqBusca.Active) then
+    dmPdv.sqBusca.Close;
+  dmPdv.sqBusca.SQL.Clear;
+  dmPdv.sqBusca.SQL.Add(sqlP);
+  dmPdv.sqBusca.Active:=True;
+  if (not dmPdv.sqBusca.IsEmpty) then
+  begin
+    totalliquido += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    totalcaixa += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    edReforco.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
+  end;
+
   edTCaixa.Text:= format('%6.2n',[totalcaixa]);
   edTBruto.Text:= format('%6.2n',[total]);
   edTLiquido.Text:= format('%6.2n',[totalliquido]);
