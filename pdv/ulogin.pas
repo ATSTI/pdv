@@ -84,6 +84,18 @@ begin
     situacao := dmPdv.sqBusca.Fields.FieldByName('SITUACAO').AsString;
     if (Trim(situacao) <> 'o') then
     begin
+      dmPdv.sqBusca.Close;
+      dmPdv.sqBusca.SQL.Clear;
+      dmPdv.sqBusca.SQL.Text := 'SELECT FIRST 1 IDCAIXACONTROLE, CODCAIXA, CODUSUARIO,' +
+         'SITUACAO, NOMECAIXA ' +
+         ' FROM CAIXA_CONTROLE WHERE CODUSUARIO = ' + dmPdv.varLogado +
+         '  AND  SITUACAO = ' + QuotedStr('o') +
+         ' ORDER BY IDCAIXACONTROLE DESC';
+      dmPdv.sqBusca.Open;
+    end;
+    situacao := dmPdv.sqBusca.Fields.FieldByName('SITUACAO').AsString;
+    if (Trim(situacao) <> 'o') then
+    begin
       ShowMessage('Sem Caixa Aberto para este usuário');
       dmPdv.nomeCaixa := 'FECHADO';
     end
