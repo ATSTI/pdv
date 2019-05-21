@@ -1103,6 +1103,10 @@ end;
 procedure TfPdv.FormShow(Sender: TObject);
 var sqlP: String;
 begin
+  ACBrPosPrinter1.ControlePorta:=dmPdv.imp_controle_porta;
+  ACBrPosPrinter1.LinhasBuffer:=dmPdv.imp_LinhasBuffer;
+  ACBrPosPrinter1.Device.SendBytesInterval:=dmpdv.imp_Interval;
+
   ultimo_pedido := 0;
   consultaItem := 'NAO';
   DBGrid2.Columns[0].FieldName:='CODPRO';
@@ -2169,9 +2173,9 @@ begin
     arquivo.free;
   end;
   ACBrPosPrinter1.Desativar;
-  ACBrPosPrinter1.LinhasBuffer := 0;
+  ACBrPosPrinter1.LinhasBuffer := dmPdv.imp_LinhasBuffer;
   ACBrPosPrinter1.LinhasEntreCupons := 0;
-  ACBrPosPrinter1.EspacoEntreLinhas := 0;
+  ACBrPosPrinter1.EspacoEntreLinhas := dmPdv.espacoEntreLinhas;
   ACBrPosPrinter1.ColunasFonteNormal := 48;
   ACBrPosPrinter1.Porta  := dmPdv.portaImp;
   ACBrPosPrinter1.ConfigBarras.MostrarCodigo := True;

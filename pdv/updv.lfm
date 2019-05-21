@@ -12697,6 +12697,7 @@ object fPdv: TfPdv
     top = 55
   end
   object ACBrPosPrinter1: TACBrPosPrinter
+    Device.SendBytesInterval = 200
     ConfigBarras.MostrarCodigo = False
     ConfigBarras.LarguraLinha = 0
     ConfigBarras.Altura = 0
@@ -12705,6 +12706,7 @@ object fPdv: TfPdv
     ConfigQRCode.LarguraModulo = 4
     ConfigQRCode.ErrorLevel = 0
     LinhasEntreCupons = 0
+    LinhasBuffer = 30
     left = 607
     top = 15
   end
