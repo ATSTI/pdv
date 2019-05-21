@@ -240,6 +240,9 @@ type
     SenhaCert :String;
     NumSerieCert :String;
     vendedor_padrao: Integer;
+    imp_controle_porta: Boolean;
+    imp_Interval: Integer;
+    imp_LinhasBuffer: Integer;
     function executaSql(strSql: String): Boolean;
     procedure gravaLog(DataLog: TDateTime; usuario: String; tipoMovimento: String;
     pc: String; valorAnt: String; valorPos: String; campoChave: String; acao: String);
@@ -310,6 +313,9 @@ begin
     espacoEntreLinhas := conf.ReadInteger('IMPRESSORA', 'EspacoEntreLinhas', 10);
     margemCodBarra := conf.ReadInteger('IMPRESSORA', 'MargemCodBarra', 50);
     tamanhoLinha := conf.ReadInteger('IMPRESSORA', 'TamanhoLinha', 36);
+    imp_controle_porta := conf.ReadBool('IMPRESSORA', 'ControlaPorta', False);
+    imp_Interval := conf.ReadInteger('IMPRESSORA', 'SendBytesInterval', 0);
+    imp_LinhasBuffer:= conf.ReadInteger('IMPRESSORA', 'LinhasBuffer', 0);
     //snh:= EncodeStringBase64(snh); // Ver a senha Encryptada
     snh:= DecodeStringBase64(snh);
     IBCon.Password := snh;
@@ -332,6 +338,7 @@ begin
     usaComanda := conf.ReadInteger( 'Outros','UsaComanda',0);
     usaCurso := conf.ReadInteger( 'Outros','UsaCurso',0);
     NfceSat := conf.ReadString( 'Outros','NfceSat','NFCE');
+    ccusto := conf.ReadString( 'Outros','CentroCusto','');
     //if (UpperCase(usosistema) = 'ODOO') then
     //begin
     //  PgCon.LibraryLocation:='C:\home\sisadmin\libpq.dll';
@@ -348,7 +355,9 @@ begin
   begin
     if (sqParametroPARAMETRO.AsString = 'CENTROCUSTO') then
     begin
-      ccusto:=sqParametroDADOS.AsString;
+      if (ccusto = '') then
+        ccusto:=sqParametroDADOS.AsString;
+
       ccusto_padrao:=sqParametroD1.AsString;
     end;
     if (sqParametroPARAMETRO.AsString = 'SERIENFCe') then
