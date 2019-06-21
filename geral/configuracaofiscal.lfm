@@ -1,0 +1,1113 @@
+object fConfiguracaoFiscal: TfConfiguracaoFiscal
+  Left = 217
+  Height = 665
+  Top = 153
+  Width = 1108
+  Caption = 'Configuração Fiscal'
+  ClientHeight = 665
+  ClientWidth = 1108
+  OnShow = FormShow
+  Position = poScreenCenter
+  LCLVersion = '2.0.2.0'
+  object Panel1: TPanel
+    Left = 0
+    Height = 72
+    Top = 0
+    Width = 1108
+    Align = alTop
+    ClientHeight = 72
+    ClientWidth = 1108
+    Color = cl3DLight
+    ParentColor = False
+    TabOrder = 0
+    object GroupBox1: TGroupBox
+      Left = 218
+      Height = 61
+      Top = 0
+      Width = 667
+      Caption = 'Filtro'
+      ClientHeight = 39
+      ClientWidth = 665
+      TabOrder = 0
+      object Label1: TLabel
+        Left = 16
+        Height = 21
+        Top = 0
+        Width = 37
+        Caption = 'CFOP'
+        ParentColor = False
+      end
+      object edCfopF: TEdit
+        Left = 65
+        Height = 38
+        Top = 0
+        Width = 79
+        TabOrder = 0
+      end
+      object Label2: TLabel
+        Left = 152
+        Height = 21
+        Top = 0
+        Width = 19
+        Caption = 'UF'
+        ParentColor = False
+      end
+      object edUFF: TEdit
+        Left = 178
+        Height = 38
+        Top = 0
+        Width = 52
+        TabOrder = 1
+      end
+      object Label3: TLabel
+        Left = 240
+        Height = 21
+        Top = 0
+        Width = 72
+        Caption = 'Tipo Fiscal'
+        ParentColor = False
+      end
+      object cbTipoFiscalF: TComboBox
+        Left = 323
+        Height = 38
+        Top = 0
+        Width = 277
+        ItemHeight = 0
+        ItemIndex = 7
+        Items.Strings = (
+          'Consumidor Final'
+          'Físico Contribuinte'
+          'Físico Não Contribuinte'
+          'Físico Simples'
+          'Jurídico Contribuinte'
+          'Jurídico Não Contribuinte'
+          'Jurídico Simples'
+          ''
+        )
+        TabOrder = 2
+      end
+    end
+    object BitBtn1: TBitBtn
+      Left = 24
+      Height = 38
+      Top = 10
+      Width = 163
+      Caption = 'Incluir'
+      TabOrder = 1
+    end
+    object BitBtn5: TBitBtn
+      Left = 904
+      Height = 51
+      Top = 11
+      Width = 112
+      Caption = 'Procurar'
+      Glyph.Data = {
+        460E0000424D460E00000000000036000000280000001E0000001E0000000100
+        200000000000100E000064000000640000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        000000000000619E551B609D55765D9954040000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000005F9C
+        5419619F56E862A056855C965404000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        00000000000000000000000000000000000000000000609D5518609D55E963A1
+        57FE61A0568550844A0100000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000609D5619609D55E6619F56FF62A057FF62A0
+        5685589150030000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        000000000000609D5619619E56E7619F56FF609D55FF63A258FA61A056835F9A
+        5504000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        000000000000000000000000000000000000000000000000000000000000609D
+        5619619E56E7629F56FF609D55FF609E55FF61A056FD61A056845D9652030000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        00000000000000000000000000000000000000000000609D5619619E56E7629F
+        56FF609D56FF5F9D55FF609E55FF619E55E95F9D551600000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000609D5619619E56E7629F56FF609D56FF609D
+        56FF619E55FF619E55E5609D5618000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        000000000000609D5619619E56E7629F56FF609D56FF609D56FF619E56FF619E
+        56E6609D56180000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000005D99
+        5417609C55E6619D55FF5F9B55FF5F9B55FF609C55FF609C55E55D9954160000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000065A6591C64A458E864A3
+        58FD63A258FB63A258FB64A358FB64A458E865A6591C00000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        000000000000000000005F9D530171B8608874BC62FC71B660FE72B760FD72B7
+        60FD71B660FD74BC62FC71B86088000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        000072B8605074BC62F672B860FF72B761FF72B861FF72B861FF72B861FF72B8
+        60FF74BC62F672B8604D00000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000070B75F2373B961D774BB
+        62FF71B760FF72B861FF72B861FF72B861FF72B861FF71B760FF74BB62FF73B9
+        61D570B65F230000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        000000000000000000006EB25F0872BA61AE75BD63FF70B65FFF72B861FF72B8
+        61FF72B861FF72B861FF72B861FF72B861FF70B75FFF74BC63FF72BA61AE6EB1
+        5E07000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        000072B9607673BC62FF71B760FF71B760FF72B861FF72B861FF72B861FF72B8
+        61FF72B861FF72B861FF71B760FF71B760FF73BC62FF72B96076000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000071B7604273BA61EF72B8
+        61FF71B760FF72B861FF72B861FF72B861FF72B861FF72B861FF72B861FF72B8
+        61FF72B861FF71B760FF72B861FF73BA61EE71B8604000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000070B6601A73BA61D075BE63FF71B760FF72B861FF72B8
+        61FF72B861FF72B861FF72B861FF72B861FF72B861FF72B861FF72B861FF72B8
+        61FF71B760FF75BE63FF72BA61CD70B660190000000000000000000000000000
+        00000000000000000000000000000000000000000000000000000000000069AA
+        580271B8609E74BD63FF70B760FF72B861FF72B861FF72B861FF72B861FF72B8
+        61FF72B861FF72B861FF72B861FF72B861FF72B861FF72B861FF72B861FF71B7
+        60FF73BB62FF71B8609D68A85A02000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000072B9616573BB62FA71B8
+        60FF71B760FF72B861FF72B861FF72B861FF72B861FF72B861FF72B861FF72B8
+        61FF72B861FF72B861FF72B861FF72B861FF72B861FF71B760FF71B760FF73BB
+        62FA72B960650000000000000000000000000000000000000000000000000000
+        0000000000000000000071B75F3772B961EC73BA61FF71B760FF72B861FF72B8
+        61FF72B861FF72B861FF72B861FF72B861FF72B861FF72B861FF72B861FF72B8
+        61FF72B861FF72B861FF72B861FF72B861FF71B760FF73BA61FF72B961EB71B8
+        5F340000000000000000000000000000000000000000000000000000000070B6
+        5F0F73B961C175BD63FF71B760FF72B861FF72B861FF72B861FF72B861FF72B8
+        61FF72B861FF72B861FF72B861FF72B861FF72B861FF72B861FF72B861FF72B8
+        61FF72B861FF72B861FF72B861FF71B760FF75BD63FF73BA61BF70B65F0F0000
+        0000000000000000000000000000000000006BB05C0172B8608D74BD63FD72B8
+        60FF72B861FF71B760FF70B660FF70B55FFF6FB35FFF6EB35EFF6DB25DFF6DB1
+        5EFF6DB05DFF6DB05DFF6DB15EFF6DB25DFF6EB35EFF6FB45FFF70B55FFF70B6
+        60FF71B760FF72B861FF72B860FF74BB62FD72B8608D66B05C01000000000000
+        0000000000000000000074BB615773BB62F96FB45FFF6BAD5BFF68A95AFF64A5
+        58FF63A257FF629F56FF619E55FF609E55FF609D55FF5F9D55FF609D54FF609D
+        54FF5F9D55FF609D55FF609E55FF619E56FF629F56FF63A257FF65A558FF68A9
+        5AFF6BAD5BFF6FB45EFF73BB62F973BB61560000000000000000000000006AAD
+        5A2B6BAF5DE066A759FF609D55FF5F9C54FF5F9C54FF5F9C55FF609D55FF609D
+        55FF609D55FF609D55FF609D55FF609D55FF609D55FF609D55FF609D55FF609D
+        55FF609D55FF609D55FF609D55FF609D55FF5F9C55FF5F9C54FF5F9C54FF619E
+        55FF66A759FF6BAF5DE06AAD5C2900000000619D562362A156C562A157FF5F9C
+        54FF609D55FF619E56FF619E56FF619E56FF619E56FF619E56FF619E56FF619E
+        56FF619E56FF619E56FF619E56FF619E56FF619E56FF619E56FF619E56FF619E
+        56FF619E56FF619E56FF619E56FF619E56FF619E56FF609D55FF5F9C54FF62A1
+        57FF629F56C3609D5622609D556165A659FF609F55FF609D55FF619E56FF619E
+        56FF619E56FF619E56FF619E56FF619E56FF619E56FF619E56FF619E56FF619E
+        56FF619E56FF619E56FF619E56FF619E56FF619E56FF619E56FF619E56FF619E
+        56FF619E56FF619E56FF619E56FF619E56FF609D55FF609F55FF65A558FF609D
+        5560609C551261A0569A62A157F765A459FF63A258FF62A056FF619E56FF619E
+        56FF609D55FF609D55FF609D55FF609D55FF609D55FF619E56FF619E56FF619E
+        56FF619E56FF609D55FF609D55FF609D55FF609D55FF609D55FF619E56FF619E
+        56FF62A056FF63A258FF65A459FF62A157F761A05697609C5512000000005F9A
+        5407609E553D62A0568E609E55CC62A157EA619F56FD63A258FF63A358FF63A2
+        58FF62A157FF62A057FF619F56FF619E56FF609D55FF609D55FF619E56FF619F
+        56FF62A057FF62A157FF63A258FF63A358FF63A258FF619F56FD62A157EA609E
+        55CB62A0568E609E553D5F9A5406000000000000000000000000000000000000
+        00005F9E5408619F562E5F9E5451619E567862A1579A62A157B662A057CD619F
+        56DD619E56E9619E56F5609D55FC609D55FC619E56F5619E56E9619F56DD62A0
+        57CD62A157B662A1579A619E56775F9E5451619F562E5F9E5408000000000000
+        00000000000000000000
+      }
+      TabOrder = 2
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Height = 280
+    Top = 72
+    Width = 1108
+    Align = alTop
+    ClientHeight = 280
+    ClientWidth = 1108
+    TabOrder = 1
+    object Label4: TLabel
+      Left = 6
+      Height = 21
+      Top = 8
+      Width = 37
+      Caption = 'CFOP'
+      ParentColor = False
+    end
+    object edCfop: TEdit
+      Left = 6
+      Height = 38
+      Top = 32
+      Width = 79
+      OnExit = edCfopExit
+      TabOrder = 0
+    end
+    object Label5: TLabel
+      Left = 91
+      Height = 21
+      Top = 8
+      Width = 19
+      Caption = 'UF'
+      ParentColor = False
+    end
+    object edUF: TEdit
+      Left = 91
+      Height = 38
+      Top = 32
+      Width = 52
+      OnExit = edUFExit
+      TabOrder = 1
+    end
+    object Label6: TLabel
+      Left = 6
+      Height = 21
+      Top = 76
+      Width = 72
+      Caption = 'Tipo Fiscal'
+      ParentColor = False
+    end
+    object cbTipoFiscal: TComboBox
+      Left = 6
+      Height = 38
+      Top = 94
+      Width = 209
+      ItemHeight = 0
+      ItemIndex = 7
+      Items.Strings = (
+        'Consumidor Final'
+        'Físico Contribuinte'
+        'Físico Não Contribuinte'
+        'Físico Simples'
+        'Jurídico Contribuinte'
+        'Jurídico Não Contribuinte'
+        'Jurídico Simples'
+        ''
+      )
+      OnChange = cbTipoFiscalChange
+      TabOrder = 2
+    end
+    object cbNaoGeraFatura: TCheckBox
+      Left = 6
+      Height = 25
+      Top = 133
+      Width = 137
+      Caption = 'Não gera Fatura'
+      TabOrder = 3
+    end
+    object gbICMSSimples: TGroupBox
+      Left = 226
+      Height = 108
+      Top = 8
+      Width = 230
+      Caption = 'ICMS Simples Nacional'
+      ClientHeight = 86
+      ClientWidth = 228
+      TabOrder = 4
+      object Label10: TLabel
+        Left = 8
+        Height = 21
+        Top = 12
+        Width = 47
+        Caption = 'CSOSN'
+        ParentColor = False
+      end
+      object cbCSOSN: TComboBox
+        Left = 8
+        Height = 31
+        Top = 35
+        Width = 214
+        Font.Height = -11
+        Font.Name = 'Sans'
+        ItemHeight = 0
+        Items.Strings = (
+          '101-Trib. Simples com perm. crédito'
+          '102-Trib. Simples SEM perm. crédito'
+          '103-Isenção ICMS Simples Nacional'
+          '201-Trib. Simples com perm. crédito com S.T.'
+          '202-Trib. Simples SEM perm. crédito com S.T.'
+          '203-Isenção ICMS Simples Nacional com S.T.'
+          '300-Imune'
+          '400-Não tributada pelo Simples Nacional'
+          '500-ICMS cobrado por S.T.'
+          '900-Outros'
+        )
+        OnChange = cbCSOSNChange
+        ParentFont = False
+        TabOrder = 0
+      end
+    end
+    object gbDifal: TGroupBox
+      Left = 582
+      Height = 138
+      Top = 8
+      Width = 158
+      Caption = 'DIFAL'
+      ClientHeight = 116
+      ClientWidth = 156
+      TabOrder = 6
+      Visible = False
+      object Label11: TLabel
+        Left = 8
+        Height = 21
+        Top = -2
+        Width = 26
+        Caption = 'FCP'
+        ParentColor = False
+      end
+      object Label12: TLabel
+        Left = 81
+        Height = 21
+        Top = -2
+        Width = 58
+        Caption = 'ICMS UF'
+        ParentColor = False
+      end
+      object Label13: TLabel
+        Left = 8
+        Height = 21
+        Hint = 'Aliquota de Icms Interestadual'
+        Top = 54
+        Width = 70
+        Caption = 'Aliq. Inter.'
+        ParentColor = False
+        ParentShowHint = False
+        ShowHint = True
+      end
+      object Label14: TLabel
+        Left = 81
+        Height = 21
+        Top = 54
+        Width = 70
+        Caption = 'Perc. Part.'
+        ParentColor = False
+        ParentShowHint = False
+        ShowHint = True
+      end
+      object edRBC1: TMaskEdit
+        Left = 8
+        Height = 38
+        Hint = 'Aliquota definida pelo Estado Destino'
+        Top = 18
+        Width = 67
+        CharCase = ecNormal
+        MaxLength = 0
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+        SpaceChar = '_'
+      end
+      object edRBC2: TMaskEdit
+        Left = 79
+        Height = 38
+        Hint = 'Aliquota definida pelo Estado Destino'
+        Top = 18
+        Width = 74
+        CharCase = ecNormal
+        MaxLength = 0
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 1
+        SpaceChar = '_'
+      end
+      object edRBC3: TMaskEdit
+        Left = 8
+        Height = 38
+        Hint = 'Aliquota definida pelo Estado Destino'
+        Top = 74
+        Width = 67
+        CharCase = ecNormal
+        MaxLength = 0
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 2
+        SpaceChar = '_'
+      end
+      object edRBC4: TMaskEdit
+        Left = 79
+        Height = 38
+        Hint = 'Aliquota definida pelo Estado Destino'
+        Top = 74
+        Width = 74
+        CharCase = ecNormal
+        MaxLength = 0
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 3
+        SpaceChar = '_'
+      end
+    end
+    object gbICMSSt: TGroupBox
+      Left = 458
+      Height = 138
+      Top = 8
+      Width = 121
+      Caption = 'ICMS ST'
+      ClientHeight = 116
+      ClientWidth = 119
+      TabOrder = 7
+      object Label15: TLabel
+        Left = 2
+        Height = 21
+        Top = 0
+        Width = 30
+        Caption = 'MVA'
+        ParentColor = False
+      end
+      object Label16: TLabel
+        Left = 0
+        Height = 21
+        Top = 37
+        Width = 52
+        Caption = 'Origem'
+        ParentColor = False
+      end
+      object Label17: TLabel
+        Left = 0
+        Height = 21
+        Top = 74
+        Width = 35
+        Caption = 'Dest.'
+        ParentColor = False
+      end
+      object edMva: TMaskEdit
+        Left = 55
+        Height = 38
+        Hint = 'Aliquota definida pelo Estado Destino'
+        Top = 0
+        Width = 62
+        CharCase = ecNormal
+        MaxLength = 0
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+        SpaceChar = '_'
+      end
+      object edOrigem: TMaskEdit
+        Left = 55
+        Height = 38
+        Hint = 'Aliquota definida pelo Estado Destino'
+        Top = 37
+        Width = 62
+        CharCase = ecNormal
+        MaxLength = 0
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 1
+        SpaceChar = '_'
+      end
+      object edDest: TMaskEdit
+        Left = 55
+        Height = 38
+        Hint = 'Aliquota definida pelo Estado Destino'
+        Top = 74
+        Width = 62
+        CharCase = ecNormal
+        MaxLength = 0
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 2
+        SpaceChar = '_'
+      end
+    end
+    object gbIPI: TGroupBox
+      Left = 744
+      Height = 138
+      Top = 8
+      Width = 240
+      Caption = 'IPI'
+      ClientHeight = 116
+      ClientWidth = 238
+      TabOrder = 8
+      object Label19: TLabel
+        Left = 10
+        Height = 21
+        Top = 35
+        Width = 30
+        Caption = 'Aliq.'
+        ParentColor = False
+      end
+      object Label20: TLabel
+        Left = 96
+        Height = 21
+        Top = 37
+        Width = 30
+        Caption = 'Enq.'
+        ParentColor = False
+      end
+      object edIPIAliq: TMaskEdit
+        Left = 10
+        Height = 38
+        Hint = 'Aliquota definida pelo Estado Destino'
+        Top = 58
+        Width = 81
+        CharCase = ecNormal
+        MaxLength = 0
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+        SpaceChar = '_'
+      end
+      object edIPIEnq: TMaskEdit
+        Left = 96
+        Height = 38
+        Hint = 'Aliquota definida pelo Estado Destino'
+        Top = 58
+        Width = 72
+        CharCase = ecNormal
+        MaxLength = 0
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 1
+        SpaceChar = '_'
+      end
+      object Label27: TLabel
+        Cursor = crHelp
+        Left = 131
+        Height = 21
+        Top = 35
+        Width = 14
+        Caption = '(&?)'
+        ParentColor = False
+        WordWrap = True
+        OnClick = Label27Click
+      end
+      object cbIpiCst: TComboBox
+        Left = 10
+        Height = 31
+        Top = 0
+        Width = 223
+        Font.Height = -11
+        Font.Name = 'Sans'
+        ItemHeight = 0
+        Items.Strings = (
+          '00-Entrada Recuperação Crédito'
+          '01-Entrada Tributada Alíq. Zero'
+          '02-Entrada Isenta'
+          '03-Entrada Não Tributada'
+          '04-Entrada Imune'
+          '05-Entrada com Suspensão'
+          '49-Outras Entradas'
+          '50-Saída Tributada'
+          '51-Saída Tributável Alíquota Zero'
+          '52-Saída Isenta'
+          '53-Saída Não Tributada'
+          '54-Saída Imune'
+          '55-Saída com Suspensão'
+          '99-Outras Saídas'
+        )
+        OnChange = cbCSTChange
+        ParentFont = False
+        TabOrder = 2
+      end
+    end
+    object gbPis: TGroupBox
+      Left = 544
+      Height = 60
+      Top = 155
+      Width = 341
+      Caption = 'Pis'
+      ClientHeight = 38
+      ClientWidth = 339
+      TabOrder = 9
+      object edPisAliq: TMaskEdit
+        Left = 280
+        Height = 31
+        Hint = 'Aliquota definida pelo Estado Destino'
+        Top = 0
+        Width = 54
+        CharCase = ecNormal
+        Font.Height = -11
+        Font.Name = 'Sans'
+        MaxLength = 0
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+        SpaceChar = '_'
+      end
+      object cbCSTPis: TComboBox
+        Left = 8
+        Height = 31
+        Top = 0
+        Width = 227
+        Font.Height = -11
+        Font.Name = 'Sans'
+        ItemHeight = 0
+        Items.Strings = (
+          '01-Oper. Trib. Alíq. Básica'
+          '02-Oper. Trib. Alíq. Diferenciada'
+          '03-Oper. Trib. Alíq. Un. Medida'
+          '04-Oper. Trib. Monof. Rev. Alíq. Zero'
+          '05-Oper. Trib. Subst. Tributária'
+          '06-Oper. Trib. Alíquota Zero'
+          '07-Oper. Isenta da Contribuição'
+          '08-Oper. sem Incidência Contrib.'
+          '09-Oper. com Suspensão Contrib.'
+          '49-Outras Operações de Saída'
+          '50-Oper. com Direito Crédito...'
+          '51-Oper. com Direito Crédito...'
+          '52-Oper. com Direito Crédito...'
+          '53-Oper. com Direito Crédito...'
+          '54-Oper. com Direito Crédito...'
+          '55-Oper. com Direito Crédito...'
+          '56-Oper. com Direito Crédito...'
+          '60-Crédito Presumido – Oper... '
+          '61-Crédito Presumido – Oper...'
+          '62-Crédito Presumido – Oper...'
+          '63-Crédito Presumido – Oper...'
+          '64-Crédito Presumido – Oper...'
+          '65-Crédito Presumido – Oper...'
+          '66-Crédito Presumido – Oper...'
+          '67-Crédito Presumido – Outras Oper.'
+          '70-Oper. Aquisição sem Direito Crédito'
+          '71-Oper. Aquisição com Isenção'
+          '72-Oper. Aquisição com Suspensão'
+          '73-Oper. Aquisição a Alíquota Zero'
+          '74-Oper. Aquisição sem Incid. Contrib.'
+          '75-Oper. Aquisição por Subst. Tributária'
+          '98-Outras Operações de Entrada'
+          '99-Outras Operações'
+        )
+        OnChange = cbCSTChange
+        ParentFont = False
+        TabOrder = 1
+      end
+      object Label21: TLabel
+        Left = 243
+        Height = 21
+        Top = 0
+        Width = 30
+        Caption = 'Aliq.'
+        ParentColor = False
+      end
+    end
+    object gbCofins: TGroupBox
+      Left = 221
+      Height = 62
+      Top = 152
+      Width = 320
+      Caption = 'Cofins'
+      ClientHeight = 40
+      ClientWidth = 318
+      TabOrder = 10
+      object edCofinsAliq: TMaskEdit
+        Left = 261
+        Height = 31
+        Hint = 'Aliquota definida pelo Estado Destino'
+        Top = 0
+        Width = 54
+        CharCase = ecNormal
+        Font.Height = -11
+        Font.Name = 'Sans'
+        MaxLength = 0
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+        SpaceChar = '_'
+      end
+      object cbCSTCofins: TComboBox
+        Left = 8
+        Height = 31
+        Top = 0
+        Width = 216
+        Font.Height = -11
+        Font.Name = 'Sans'
+        ItemHeight = 0
+        Items.Strings = (
+          '01-Oper. Trib. Alíq. Básica'
+          '02-Oper. Trib. Alíq. Diferenciada'
+          '03-Oper. Trib. Alíq. Un. Medida'
+          '04-Oper. Trib. Monof. Rev. Alíq. Zero'
+          '05-Oper. Trib. Subst. Tributária'
+          '06-Oper. Trib. Alíquota Zero'
+          '07-Oper. Isenta da Contribuição'
+          '08-Oper. sem Incidência Contrib.'
+          '09-Oper. com Suspensão Contrib.'
+          '49-Outras Operações de Saída'
+          '50-Oper. com Direito Crédito...'
+          '51-Oper. com Direito Crédito...'
+          '52-Oper. com Direito Crédito...'
+          '53-Oper. com Direito Crédito...'
+          '54-Oper. com Direito Crédito...'
+          '55-Oper. com Direito Crédito...'
+          '56-Oper. com Direito Crédito...'
+          '60-Crédito Presumido – Oper... '
+          '61-Crédito Presumido – Oper...'
+          '62-Crédito Presumido – Oper...'
+          '63-Crédito Presumido – Oper...'
+          '64-Crédito Presumido – Oper...'
+          '65-Crédito Presumido – Oper...'
+          '66-Crédito Presumido – Oper...'
+          '67-Crédito Presumido – Outras Oper.'
+          '70-Oper. Aquisição sem Direito Crédito'
+          '71-Oper. Aquisição com Isenção'
+          '72-Oper. Aquisição com Suspensão'
+          '73-Oper. Aquisição a Alíquota Zero'
+          '74-Oper. Aquisição sem Incid. Contrib.'
+          '75-Oper. Aquisição por Subst. Tributária'
+          '98-Outras Operações de Entrada'
+          '99-Outras Operações'
+        )
+        OnChange = cbCSTChange
+        ParentFont = False
+        TabOrder = 1
+      end
+      object Label22: TLabel
+        Left = 230
+        Height = 21
+        Top = 1
+        Width = 30
+        Caption = 'Aliq.'
+        ParentColor = False
+      end
+    end
+    object gbPorNcm: TGroupBox
+      Left = 221
+      Height = 60
+      Top = 216
+      Width = 188
+      Caption = 'Usar para o NCM'
+      ClientHeight = 38
+      ClientWidth = 186
+      TabOrder = 11
+      object Label25: TLabel
+        Left = 12
+        Height = 21
+        Top = 3
+        Width = 33
+        Caption = 'NCM'
+        ParentColor = False
+      end
+      object edNCM: TEdit
+        Left = 54
+        Height = 38
+        Top = 0
+        Width = 128
+        TabOrder = 0
+        Text = 'Todos'
+      end
+    end
+    object gbPorProduto: TGroupBox
+      Left = 416
+      Height = 60
+      Top = 216
+      Width = 683
+      Caption = 'Usar para o Produto'
+      ClientHeight = 38
+      ClientWidth = 681
+      TabOrder = 12
+      object Label26: TLabel
+        Left = 12
+        Height = 21
+        Top = 3
+        Width = 56
+        Caption = 'Produto'
+        ParentColor = False
+      end
+      object edProduto: TEdit
+        Left = 80
+        Height = 38
+        Top = 0
+        Width = 112
+        TabOrder = 0
+        Text = 'Todos'
+      end
+      object txtProduto: TStaticText
+        Left = 227
+        Height = 30
+        Top = 1
+        Width = 443
+        TabOrder = 1
+      end
+      object BitBtn2: TBitBtn
+        Left = 191
+        Height = 30
+        Top = 3
+        Width = 30
+        Caption = '...'
+        TabOrder = 2
+      end
+    end
+    object gbICMSNormal: TGroupBox
+      Left = 221
+      Height = 138
+      Top = 8
+      Width = 235
+      Caption = 'ICMS Regime Normal'
+      ClientHeight = 116
+      ClientWidth = 233
+      TabOrder = 5
+      object Label7: TLabel
+        Left = 8
+        Height = 21
+        Top = 0
+        Width = 25
+        Caption = 'CST'
+        ParentColor = False
+      end
+      object cbCST: TComboBox
+        Left = 42
+        Height = 31
+        Top = 0
+        Width = 188
+        Font.Height = -11
+        Font.Name = 'Sans'
+        ItemHeight = 0
+        Items.Strings = (
+          '00-Tributada integralmente'
+          '10-Tributada cobrança ICMS por S.T.'
+          '20-Com redução da BC'
+          '30-Isenta / não tributada com S.T.'
+          '40-Isenta'
+          '41-Não Tributada'
+          '50-Com Suspensão'
+          '51-Com Diferimento'
+          '60-ICMS cobrado por S.T.'
+          '70-Com redução da BC e S.T.'
+          '90-Outras'
+        )
+        OnChange = cbCSTChange
+        ParentFont = False
+        TabOrder = 0
+      end
+      object Label8: TLabel
+        Left = 8
+        Height = 21
+        Top = 37
+        Width = 57
+        Caption = 'Aliquota'
+        ParentColor = False
+      end
+      object edAliquota: TMaskEdit
+        Left = 112
+        Height = 38
+        Top = 37
+        Width = 118
+        CharCase = ecNormal
+        MaxLength = 0
+        TabOrder = 1
+        SpaceChar = '_'
+      end
+      object Label9: TLabel
+        Left = 8
+        Height = 21
+        Hint = 'Redução da Base de Cálculo'
+        Top = 74
+        Width = 94
+        Caption = 'Redução B. C.'
+        ParentColor = False
+        ParentShowHint = False
+        ShowHint = True
+      end
+      object edRBC: TMaskEdit
+        Left = 112
+        Height = 38
+        Top = 74
+        Width = 118
+        CharCase = ecNormal
+        MaxLength = 0
+        TabOrder = 2
+        SpaceChar = '_'
+      end
+    end
+  end
+  object Panel3: TPanel
+    Left = 0
+    Height = 81
+    Top = 584
+    Width = 1108
+    Align = alBottom
+    ClientHeight = 81
+    ClientWidth = 1108
+    Color = cl3DLight
+    ParentColor = False
+    TabOrder = 2
+    object BitBtn3: TBitBtn
+      Left = 924
+      Height = 30
+      Top = 27
+      Width = 75
+      Caption = 'BitBtn3'
+      TabOrder = 0
+    end
+  end
+  object Panel4: TPanel
+    Left = 0
+    Height = 232
+    Top = 352
+    Width = 1108
+    Align = alClient
+    ClientHeight = 232
+    ClientWidth = 1108
+    TabOrder = 3
+    object DBGrid1: TDBGrid
+      Left = 1
+      Height = 230
+      Top = 1
+      Width = 1106
+      Align = alClient
+      Color = clWindow
+      Columns = <>
+      TabOrder = 0
+    end
+  end
+  object pnInfo: TPanel
+    Left = 272
+    Height = 210
+    Top = 352
+    Width = 603
+    ClientHeight = 210
+    ClientWidth = 603
+    TabOrder = 4
+    Visible = False
+    object Memo1: TMemo
+      Left = 0
+      Height = 128
+      Top = 7
+      Width = 600
+      Color = clGradientActiveCaption
+      Lines.Strings = (
+        '  Código de Enquadramento Legal do IPI :'
+        '  -  Se CST = "02" ou "52", informar cEnq com um valor entre "301" e "399";'
+        '  -  Se CST = "04" ou "54", informar cEnq com um valor entre "001" e "099";'
+        '  -  Se CST = "05" ou "55", informar cEnq com um valor entre "101" e "199";'
+        '  -  Para os demais casos, informar cEnq com um valor entre "601" e "608" ou "999".'
+      )
+      TabOrder = 0
+    end
+    object BitBtn4: TBitBtn
+      Left = 480
+      Height = 51
+      Hint = 'Fechar Informações'
+      Top = 144
+      Width = 104
+      Caption = 'Fechar'
+      Glyph.Data = {
+        460E0000424D460E00000000000036000000280000001E0000001E0000000100
+        200000000000100E000064000000640000000000000000000000000000000000
+        000000000000000000000000000000000000000000000000000000000000C083
+        7312C184744BC486769DBF83739CBF8373000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        00000000000000000000C0847319C1847456C08474A4C08373E3C28575FFCB8A
+        7AFFBF8373BB0000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        00000000000000000000000000000000000000000000C084731FC0847460C084
+        74AEC08373EAC48676FFC58777FFC18474FFBF8373FFC48676FFBF8373B70000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000BC817123C184746BC08473B8C08373F0C58776FFC58776FFC18474FFBE82
+        72FFBE8272FFBF8373FFBF8373FFC38575FFBC8171BF7D5E5319806055198060
+        55198060551980605519846357198060550D0000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000BB8171C5C98A
+        79FFC48676FFC08473FFBE8272FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFC08473FFAD796AFA7D5E53EE806055EF806055EF806055EF8060
+        55EF846357EF8060557B00000000000000000000000000000000000000000000
+        000000000000000000000000000000000000BA8070C9C28574FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        72FFAD796AFF7F5F54FF816055FF816055FF816055FF816055FF866558FF8060
+        5585000000000000000000000000000000000000000000000000000000000000
+        00000000000000000000BB8171C9C38675FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFC08473FFAD796AFF7E5F
+        54FF806055FF806055FF806055FF806055FF856458FF80605584000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000BB8171C9C38675FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFC08473FFAD796AFF7E5F54FF806055FF8060
+        55FF806055FF806055FF856458FF806055840000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000BB8171C9C386
+        75FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFC08473FFAD796AFF7E5F54FF806055FF806055FF806055FF8060
+        55FF856458FF8060558400000000000000000000000000000000000000000000
+        000000000000000000000000000000000000BB8171C9C38675FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFC084
+        73FFAD796AFF7E5F54FF806055FF806055FF806055FF806055FF856458FF8060
+        5584000000004ACEEF0F4ACEEF44000000000000000000000000000000000000
+        00000000000000000000BB8171C9C38675FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFC08473FFAD796AFF7E5F
+        54FF806055FF806055FF806055FF806055FF856458FF80605584000000004ACE
+        EF1F4ACEF0EA4ACEEF7D00000000000000000000000000000000000000000000
+        0000BB8171C9C38675FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFC08473FFAD796AFF7E5F54FF806055FF8060
+        55FF806055FF806055FF856458FF80605584000000000000000049CDEE3B4AD0
+        F2EE4ACEEF7E0000000000000000000000000000000000000000BB8171C9C386
+        75FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFC08473FFAD796AFF7E5F54FF806055FF806055FF806055FF8060
+        55FF856458FF8060558400000000000000000000000049CDEE3B4AD0F2EE4ACE
+        EF7E00000000000000000000000000000000BB8171C9C38675FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFC084
+        73FFAD796AFF7E5F54FF806055FF806055FF806055FF806055FF856458FF8060
+        55840000000000000000000000000000000049CDEE3B4AD0F2EE4ACEF07D0000
+        00000000000000000000BB8171C9C38675FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFC08473FFAD796AFF7E5F
+        54FF806055FF806055FF806055FF806055FF856458FF80605584000000000000
+        000000000000000000000000000049CDEE3C4BD1F2EE4ACEF07D000000000000
+        0000BB8171C9C38675FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFC08473FFAD796AFF7D5F54FF805F54FF815C
+        4FFF815C4FFF815C4FFF876052FF8358497F0000000000000000000000000000
+        0000000000000000000049CDED324AD1F2E54ACEEF7A00000000BB8171C9C386
+        75FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFC08473FFAD796AFF7E5E53FF7E6157FF6497A3FF5DA5B6FF5EA4
+        B4FF60A5B5FF56B3CAD049CEEF9E4ACEEF9E4ACEEF9E4ACEEF9E4ACEEF9E4ACE
+        EF9E4ACEEF9949CDEECB4CD5F8FF4ACEEF72BB8171C9C38675FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFC084
+        73FFAD796AFF7E5E53FF7E6157FF65949EFF5FA1B1FF60A0AFFF62A2B0FF58B0
+        C5CC49CEEF954ACEEF964ACEEF964ACEEF964ACEEF964ACEEF964ACEEF9049CD
+        EEC84CD4F7FF4ACEEF6EBB8171C9C38675FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFC08473FFAD796AFF7D5F
+        54FF805F54FF815C4FFF825B4EFF825B4EFF875F52FF8457487F000000000000
+        00000000000000000000000000000000000049CDEE364AD1F2E749CEEF740000
+        0000BB8171C9C38675FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFC08473FFAD796AFF7E5F54FF806055FF8060
+        55FF806055FF806055FF856458FF806055840000000000000000000000000000
+        00000000000049CDEE414BD1F2F14ACEEF760000000000000000BB8171C9C386
+        75FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFC08473FFAD796AFF7E5F54FF806055FF806055FF806055FF8060
+        55FF856458FF806055840000000000000000000000000000000049CDEE424AD0
+        F2F04ACEEF75000000000000000000000000BB8171C9C38675FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFC084
+        73FFAD796AFF7E5F54FF806055FF806055FF806055FF806055FF856458FF8060
+        558400000000000000000000000049CDEE424AD0F2EF4ACEEF76000000000000
+        00000000000000000000BB8171C9C38675FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFC08473FFAD796AFF7E5F
+        54FF806055FF806055FF806055FF806055FF856458FF80605584000000000000
+        000049CDEE424AD0F2F04ACEEF76000000000000000000000000000000000000
+        0000BB8171C9C38675FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFC08473FFAD796AFF7E5F54FF806055FF8060
+        55FF806055FF806055FF856458FF80605584000000004ACEEF204ACEF0EB4ACE
+        EF77000000000000000000000000000000000000000000000000BB8171C9C386
+        75FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFBF8472FFAD796AFF7E5F54FF806055FF806055FF806055FF8060
+        55FF856458FF80605584000000004ACEEF0E4ACEEF3C00000000000000000000
+        000000000000000000000000000000000000BB8171C9C38675FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFBF8373FFBE8272FFBF8373FFC08473FFC285
+        74FFAC7869FF7D5E53FF806055FF806055FF806055FF806055FF856458FF8060
+        5584000000000000000000000000000000000000000000000000000000000000
+        00000000000000000000BB8171C9C38675FFBF8373FFBF8373FFBF8373FFBE83
+        73FFBF8373FFC18473FFC18473FFBB8171FFAD796AFF9A6E61FF876458FF7F5F
+        54FF806055FF806055FF806055FF806055FF856458FF80605584000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000BB8171C9C28674FFBF8373FFBF8373FFC18474FFC08373FFBA8070FFAB77
+        69FF976C5FFF876358FF7E5F54FF7D5E53FF7E5F54FF806055FF806055FF8060
+        55FF806055FF806055FF856458FF806055840000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000BC8171C9C587
+        76FFC08373FFB87F6FFFA87667FF956B5EFF856257FF7E5F54FF7D5E53FF7F5F
+        54FF7F6055FF806055FF806055FF806055FF806055FF806055FF806055FF8060
+        55FF856458FF8060558400000000000000000000000000000000000000000000
+        000000000000000000000000000000000000B37C6DC8AA7769FF926A5DFF8462
+        56FF7D5E53FF7D5E53FF7F5F54FF806055FF806055FF806055FF806055FF8060
+        55FF806055FF806055FF806055FF806055FF806055FF806055FF856458FF8060
+        5584000000000000000000000000000000000000000000000000000000000000
+        00000000000000000000
+      }
+      OnClick = BitBtn4Click
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 1
+    end
+  end
+end
