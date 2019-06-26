@@ -4,6 +4,7 @@ inherited fClienteBusca: TfClienteBusca
   Width = 696
   Caption = 'Busca Clientes'
   ClientWidth = 696
+  OnClose = FormClose
   OnShow = FormShow
   inherited Panel1: TPanel
     Width = 696
@@ -22,6 +23,9 @@ inherited fClienteBusca: TfClienteBusca
       Left = 264
       Width = 416
       OnKeyPress = Edit2KeyPress
+    end
+    inherited chInativo: TCheckBox
+      OnChange = chInativoChange
     end
     object Label2: TLabel[4]
       Left = 208
@@ -65,10 +69,12 @@ inherited fClienteBusca: TfClienteBusca
     end
     inherited btnGravar: TBitBtn
       Left = 4
+      OnClick = btnGravarClick
       TabOrder = 0
     end
     inherited btnExcluir: TBitBtn
       Left = 4
+      OnClick = btnExcluirClick
     end
     inherited btnSair1: TBitBtn
       Left = 4

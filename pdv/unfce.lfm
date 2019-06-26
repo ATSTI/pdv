@@ -2981,8 +2981,8 @@ object fNfce: TfNfce
         Height = 195
         Top = 104
         Width = 641
-        ActivePage = TabSheet3
-        TabIndex = 2
+        ActivePage = TabSheet2
+        TabIndex = 1
         TabOrder = 4
         object TabSheet1: TTabSheet
           Caption = 'Retorno'
@@ -3154,9 +3154,9 @@ object fNfce: TfNfce
         TabOrder = 5
       end
       object Panel1: TPanel
-        Left = 32
+        Left = 104
         Height = 251
-        Top = -32
+        Top = 56
         Width = 456
         ClientHeight = 251
         ClientWidth = 456

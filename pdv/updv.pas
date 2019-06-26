@@ -2107,7 +2107,7 @@ begin
           texto3 := texto3 + Format(' %6.2n',[dmPdv.sqLancamentosPRECO.AsFloat]);
           texto3 := texto3 + Format('   %6.2n',[dmPdv.sqLancamentosVALTOTAL.value]);
           totalR := totalR + dmPdv.sqLancamentosVALTOTAL.value;
-          produto_cupomf := trim(dmPdv.sqLancamentosDESCPRODUTO.Value);
+          produto_cupomf := trim(uutil.RemoveAcento(dmPdv.sqLancamentosDESCPRODUTO.Value));
           texto6 := texto6 + '  ' + Copy(produto_cupomf, 0, 36);       //descrição do produto
           Writeln(Impressora, uutil.RemoveAcento(texto6));
           if (length(produto_cupomf)>36) then

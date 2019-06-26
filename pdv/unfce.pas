@@ -229,6 +229,7 @@ begin
 
   ACBrNFe1.Configuracoes.Geral.IdCSC := dmPdv.id_tk;
   ACBrNFe1.Configuracoes.Geral.CSC := dmPdv.tk;
+  ACBrNFe1.Configuracoes.WebServices.TimeOut := 35000;
 
   //ACBrNFe1.Configuracoes.Geral.SSLLib := libCapicom;
 
@@ -249,7 +250,8 @@ begin
   //ACBrNFe1.NotasFiscais.GravarXML(AcbrNfe1.Configuracoes.Arquivos.PathSalvar);
 
   // Gravando a nota aqui pois se der erro no validar ja gravei
-  GravarDadosNF('', '');
+  //GravarDadosNF('', '');   COMENTEI aqui 12/06/19 so vou gravar qdo enviado receita
+  // estou pegando o ultimo numero usado em venda pra nao pular
   memoLog.Lines.Add('Gravando XML');
   ACBrNFe1.NotasFiscais.GravarXML();
   memoLog.Lines.Add('Validando');
@@ -265,35 +267,85 @@ begin
   begin
     memoLog.Lines.Add('Enviando ...');
     ACBrNFe1.Enviar(vNumLote,True,Sincrono);
+    memoLog.Lines.Add('cStat : ' + IntToStr(ACBrNFe1.WebServices.Retorno.cStat));
+    if (ACBrNFe1.WebServices.Retorno.cStat = 100) then
+    begin
+      Protocolo := ACBrNFe1.WebServices.Retorno.Protocolo;
+      Recibo := ACBrNFe1.WebServices.Retorno.Recibo;
+      GravarDadosNF(protocolo, recibo);
+    end;
+    if ((ACBrNFe1.WebServices.Retorno.cStat = 204)
+      or (ACBrNFe1.WebServices.Retorno.cStat = 539)) then
+    begin
+      Recibo := ACBrNFe1.WebServices.Retorno.Recibo;
+      memoLog.Lines.Add('Recibo : ' + recibo);
+      memoLog.Lines.Add('Chave : ' + recibo);
+      Protocolo := ACBrNFe1.WebServices.Retorno.ChaveNFe;
+      memoLog.Lines.Add('Deu erro de Duplicidade, executando consulta pela chave');
+      ACBrNFe1.NotasFiscais.Clear;
+      ACBrNFe1.WebServices.Consulta.NFeChave := Protocolo;
+      ACBrNFe1.WebServices.Consulta.Executar;
+      memoLog.Lines.Add('cStat consulta Chave : ' + IntToStr(ACBrNFe1.WebServices.Consulta.cStat));
+      if (ACBrNFe1.WebServices.Consulta.cStat = 100) then
+      begin
+        memoLog.Lines.Add('NFe Localizada , gravando ...');
+        Protocolo := ACBrNFe1.WebServices.Consulta.Protocolo;
+        GravarDadosNF(protocolo, recibo);
+        Exit;
+      end;
+      memoLog.Lines.Add('Nao encontrou enviando novamente ...');
+      ACBrNFe1.NotasFiscais.Clear;
+      carregaAcbr;
+      GerarNFCe(vAux);
+      num_nfce := num_nfce+1;
+      edNFce.Text:=IntToStr(num_nfce);
+      with ACBrNFe1.NotasFiscais.Add.NFe do
+      begin
+        Ide.cNF       := num_nfce;
+        Ide.nNF       := num_nfce;
+      end;
+      memoLog.Lines.Add('Assinando XML');
+      ACBrNFe1.NotasFiscais.Assinar;
+      memoLog.Lines.Add('Gravando XML');
+      ACBrNFe1.NotasFiscais.GravarXML();
+      memoLog.Lines.Add('Validando');
+      ACBrNFe1.NotasFiscais.Validar;
+      memoLog.Lines.Add('Enviando ...');
+      ACBrNFe1.Enviar(vNumLote,True,Sincrono);
+      memoLog.Lines.Add('cStat Re envio : ' + IntToStr(ACBrNFe1.WebServices.Retorno.cStat));
+      if (ACBrNFe1.WebServices.Retorno.cStat = 100) then
+      begin
+        Protocolo := ACBrNFe1.WebServices.Retorno.Protocolo;
+        Recibo := ACBrNFe1.WebServices.Retorno.Recibo;
+        GravarDadosNF(protocolo, recibo);
+      end;
+    end;
   end;
 
   MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetWS);
   MemoDados.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetornoWS);
 
-  MemoDados.Lines.Add('');
-  MemoDados.Lines.Add('Envio NFe');
-  MemoDados.Lines.Add('tpAmb: '+ TpAmbToStr(ACBrNFe1.WebServices.Retorno.TpAmb));
-  MemoDados.Lines.Add('verAplic: '+ ACBrNFe1.WebServices.Retorno.verAplic);
-  MemoDados.Lines.Add('cStat: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cStat));
-  MemoDados.Lines.Add('cUF: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cUF));
-  MemoDados.Lines.Add('xMotivo: '+ ACBrNFe1.WebServices.Retorno.xMotivo);
-  MemoDados.Lines.Add('cMsg: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cMsg));
-  MemoDados.Lines.Add('xMsg: '+ ACBrNFe1.WebServices.Retorno.xMsg);
-  MemoDados.Lines.Add('Recibo: '+ ACBrNFe1.WebServices.Retorno.Recibo);
-  MemoDados.Lines.Add('Protocolo: '+ ACBrNFe1.WebServices.Retorno.Protocolo);
+  memoLog.Lines.Add('');
+  memoLog.Lines.Add('Envio NFe');
+  memoLog.Lines.Add('tpAmb: '+ TpAmbToStr(ACBrNFe1.WebServices.Retorno.TpAmb));
+  memoLog.Lines.Add('verAplic: '+ ACBrNFe1.WebServices.Retorno.verAplic);
+  memoLog.Lines.Add('cStat: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cStat));
+  memoLog.Lines.Add('cUF: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cUF));
+  memoLog.Lines.Add('xMotivo: '+ ACBrNFe1.WebServices.Retorno.xMotivo);
+  memoLog.Lines.Add('cMsg: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cMsg));
+  memoLog.Lines.Add('xMsg: '+ ACBrNFe1.WebServices.Retorno.xMsg);
+  memoLog.Lines.Add('Recibo: '+ ACBrNFe1.WebServices.Retorno.Recibo);
+  memoLog.Lines.Add('Protocolo: '+ ACBrNFe1.WebServices.Retorno.Protocolo);
 
   ShowMessage('Nº do Protocolo de envio ' + ACBrNFe1.WebServices.Retorno.Protocolo);
   ShowMessage('Nº do Recibo de envio ' + ACBrNFe1.WebServices.Retorno.Recibo);
 
-  Protocolo := ACBrNFe1.WebServices.Retorno.Protocolo;
-  Recibo := ACBrNFe1.WebServices.Retorno.Recibo;
   //LoadXML(ACBrNFe1.NotasFiscais.Items[0].XML,  mRecebido);
   //ACBrNFe1.NotasFiscais.Imprimir;
   memoLog.Lines.Add('Enviado gravando retorno');
-  GravarDadosNF(protocolo, recibo);
-  MemoDados.Lines.Add('');
-  MemoDados.Lines.Add('Nota Fiscal Consumidor, gerada com sucesso.');
-  MemoDados.Lines.Add('');
+  memoLog.Lines.Add('');
+  memoLog.Lines.Add('Nota Fiscal Consumidor, gerada com sucesso.');
+  memoLog.Lines.Add('');
   //Application.ProcessMessages;
   ACBrNFe1.NotasFiscais.Clear;
   Close;
@@ -621,6 +673,13 @@ begin
     dmPdv.sqEmpresa.Close;
   ////dmPdv.sqEmpresa.Params[0].AsInteger := dm.CCustoPadrao; //Buscar de parametro
   dmPdv.sqEmpresa.Open;
+  dmPdv.busca_sql('SELECT MAX(NOTAFISCAL) AS NUM ' +
+    ' FROM VENDA WHERE SERIE = ' + QuotedStr('NFCE-'+dmPdv.varLogado));
+  if (num_nfce < dmPdv.sqBusca.FieldByName('NUM').AsInteger+1) then
+  begin
+    num_nfce := dmPdv.sqBusca.FieldByName('NUM').AsInteger+1;
+    edNFce.Text:=IntToStr(num_nfce);
+  end;
   with ACBrNFe1.NotasFiscais.Add.NFe do
   begin
     Ide.cNF       := num_nfce; //Caso não seja preenchido será gerado um número aleatório pelo componente
@@ -1558,6 +1617,8 @@ begin
         QuotedStr('E') + ', OBS = ' + QuotedStr(arquivosat) +
         ' ,N_DOCUMENTO = ' + QuotedStr(IntToStr(ACBrSAT1.CFe.ide.nCFe)) +
         ' ,N_BOLETO = ' + QuotedStr(chave_sat) +
+        ', NOTAFISCAL = ' + IntToStr(ACBrSAT1.CFe.ide.nCFe) +
+        ', SERIE = ' + QuotedStr('NFCE-'+dmPdv.varLogado) +
         ' WHERE CODVENDA = ' + IntToStr(nfce_codVenda));
       dmPdv.sTrans.Commit;
     except
@@ -1780,6 +1841,7 @@ begin
   carregaAcbr;
   //if not(InputQuery('WebServices Consultar', 'Chave da NF-e:', vChave)) then
   //  exit;
+  memoLog.Lines.Add('Executando consulta NFCe...');
   if (nomeXml <> '') then
   begin
     MemoResp.Lines.Clear;
@@ -1799,14 +1861,18 @@ begin
     end;
   end;
   ACBrNFe1.WebServices.Consulta.Executar;
+  memoLog.Lines.Add('Consulta executada  cStat: ' + IntToStr(ACBrNFe1.WebServices.Consulta.cStat));
   MemoResp.Lines.Text := ACBrNFe1.WebServices.Consulta.RetWS;
   memoDados.Lines.Text := ACBrNFe1.WebServices.Consulta.RetornoWS;
   if ACBrNFe1.WebServices.Consulta.Protocolo <> '' then
   begin
+    memoLog.Lines.Add('Consulta executada com sucesso');
     ShowMessage(ACBrNFe1.WebServices.Consulta.Protocolo);
     Protocolo := ACBrNFe1.WebServices.Consulta.Protocolo;
     Recibo := 'recibo';//ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe. .WebServices.Consulta.Recibo;
+    GravarDadosNF(protocolo, recibo);
   end;
+  memoLog.Lines.Add('Imprimindo NFCe ' + IntToStr(ACBrNFe1.NotasFiscais.Count));
   if ACBrNFe1.NotasFiscais.Count > 0 then
     ACBrNFe1.NotasFiscais.Imprimir;
 end;
@@ -1843,7 +1909,8 @@ begin
   MemoDados.Lines.Add('NumeroInicial: '      +IntToStr(ACBrNFe1.WebServices.Inutilizacao.NumeroFinal));
   MemoDados.Lines.Add('dhRecbto: ' +DateTimeToStr(ACBrNFe1.WebServices.Inutilizacao.dhRecbto));
   MemoDados.Lines.Add('Protocolo: '      +ACBrNFe1.WebServices.Inutilizacao.Protocolo);
-  ShowMessage('Númeração inutilizada com sucesso.');
+  ShowMessage('Numeração inutilizada com sucesso.');
+  ACBrNFe1.ImprimirInutilizacao;
 end;
 
 procedure TfNfce.btnNFce5Click(Sender: TObject);

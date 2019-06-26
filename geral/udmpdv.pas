@@ -243,6 +243,7 @@ type
     imp_controle_porta: Boolean;
     imp_Interval: Integer;
     imp_LinhasBuffer: Integer;
+    imp_ColunaFonteNormal: Integer;
     function executaSql(strSql: String): Boolean;
     procedure gravaLog(DataLog: TDateTime; usuario: String; tipoMovimento: String;
     pc: String; valorAnt: String; valorPos: String; campoChave: String; acao: String);
@@ -316,6 +317,7 @@ begin
     imp_controle_porta := conf.ReadBool('IMPRESSORA', 'ControlaPorta', False);
     imp_Interval := conf.ReadInteger('IMPRESSORA', 'SendBytesInterval', 0);
     imp_LinhasBuffer:= conf.ReadInteger('IMPRESSORA', 'LinhasBuffer', 0);
+    imp_ColunaFonteNormal:= conf.ReadInteger('IMPRESSORA', 'ColunaFonteNormal', 48);
     //snh:= EncodeStringBase64(snh); // Ver a senha Encryptada
     snh:= DecodeStringBase64(snh);
     IBCon.Password := snh;

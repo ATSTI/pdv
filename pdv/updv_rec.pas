@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, Buttons, DBGrids, MaskEdit, ActnList, Menus, ACBrPosPrinter, udmpdv,
   uvenda, uRecebimento, uClienteBusca, uNfce, sqldb, db, math, StrUtils, IniFiles,
-  uCadeira, typinfo;
+  uCadeira, typinfo, LConvEncoding;
 
 type
 
@@ -264,11 +264,24 @@ function TfPDV_Rec.RemoveAcento(Str: string): string;
   SemAcento = 'aaeouaoaeioucuAAEOUAOAEIOUCU';
 var
    x: Integer;
+   verAcento : String;
 begin;
   for x := 1 to Length(Str) do
   if Pos(Str[x],ComAcento) <> 0 then
-    Str[x] := SemAcento[Pos(Str[x], ComAcento)];
-  Result := Str;
+  begin
+    verAcento := Str[x];
+    if Str[x] > #120 then
+      str[x] := Char('')
+    else
+      Str[x] := SemAcento[Pos(Str[x], ComAcento)];
+    verAcento := Str[x];
+  end;
+  str := UTF8String(str);
+  for x := 1 to Length(Str) do
+    if Str[x] > #127 then
+      str[x] := 'a';
+  //Result := AnsiToUtf8(str);
+  Result := str;
 end;
 
 procedure TfPDV_Rec.calcula_total;
@@ -641,16 +654,16 @@ begin
 
       //produto_cupomf := trim(dmPdv.sqLancamentosCODPRO.Value) + '-' +
       //   trim(dmPdv.sqLancamentosDESCPRODUTO.Value) + ' - ' + trim(fVendas.cds_Mov_detMARCA.Value);
-      produto_cupomf := trim(dmPdv.sqLancamentosDESCPRODUTO.Value);
+      produto_cupomf := trim(RemoveAcento(dmPdv.sqLancamentosDESCPRODUTO.Value));
       texto6 := texto6 + '  ' + Copy(produto_cupomf, 0, 36);       //descrição do produto
-      Writeln(Impressora, RemoveAcento(texto6));
+      Writeln(Impressora, texto6);
       if (length(produto_cupomf)>36) then
       begin
         texto6 := '    ' + Copy(produto_cupomf, 37, 72);       //descrição do produto
-        Writeln(Impressora, RemoveAcento(texto6));
+        Writeln(Impressora, texto6);
       end;
 
-      Writeln(Impressora, RemoveAcento(texto3));//NOME DO PRODUTO
+      Writeln(Impressora, texto3);//NOME DO PRODUTO
       //with Printer.Canvas do
       //begin
       //  Font.Name := 'Courier New';
@@ -762,18 +775,18 @@ begin
           texto3 := '';
           texto6 := '  ';
           texto3 := texto3 + Format('            %-2s',[dmPdv.sqLancamentosUNIDADEMEDIDA.Value]);
-          texto3 := texto3 + Format('    %6.2n',[dmPdv.sqLancamentosQUANTIDADE.AsFloat]);
+          texto3 := texto3 + Format('    %6.3n',[dmPdv.sqLancamentosQUANTIDADE.AsFloat]);
           texto3 := texto3 + Format(' %6.2n',[dmPdv.sqLancamentosPRECO.AsFloat]);
           texto3 := texto3 + Format('   %6.2n',[dmPdv.sqLancamentosVALTOTAL.value]);
-          produto_cupomf := trim(dmPdv.sqLancamentosDESCPRODUTO.Value);
+          produto_cupomf := trim(RemoveAcento(dmPdv.sqLancamentosDESCPRODUTO.Value));
           texto6 := texto6 + '  ' + Copy(produto_cupomf, 0, dmPdv.tamanhoLinha);       //descrição do produto
-          Writeln(Impressora, RemoveAcento(texto6));
+          Writeln(Impressora, texto6);
           if (length(produto_cupomf)>dmPdv.tamanhoLinha) then
           begin
             texto6 := '    ' + Copy(produto_cupomf, dmPdv.tamanhoLinha+1, dmPdv.tamanhoLinha*2);       //descrição do produto
-            Writeln(Impressora, RemoveAcento(texto6));
+            Writeln(Impressora, texto6);
           end;
-          Writeln(Impressora, RemoveAcento(texto3));//NOME DO PRODUTO
+          Writeln(Impressora, texto3);//NOME DO PRODUTO
           dmPdv.sqLancamentos.next;
         end;
       end
@@ -880,13 +893,13 @@ begin
             texto3 := texto3 + Format('   %6.2n',[dmPdv.sqLancamentosVALTOTAL.value]);
             produto_cupomf := trim(dmPdv.sqLancamentosDESCPRODUTO.Value);
             texto6 := texto6 + '  ' + Copy(produto_cupomf, 0, dmPdv.tamanhoLinha);       //descrição do produto
-            Writeln(Impressora, RemoveAcento(texto6));
+            Writeln(Impressora, texto6);
             if (length(produto_cupomf)>dmPdv.tamanhoLinha) then
             begin
               texto6 := '    ' + Copy(produto_cupomf, dmPdv.tamanhoLinha+1, dmPdv.tamanhoLinha*2);       //descrição do produto
-              Writeln(Impressora, RemoveAcento(texto6));
+              Writeln(Impressora, texto6);
             end;
-            Writeln(Impressora, RemoveAcento(texto3));//NOME DO PRODUTO
+            Writeln(Impressora, texto3);//NOME DO PRODUTO
             dmPdv.sqLancamentos.next;
           end;
         end
@@ -962,10 +975,10 @@ begin
     arquivo.free;
   end;
   ACBrPosPrinter1.Desativar;
-  ACBrPosPrinter1.LinhasBuffer := 0;
+  ACBrPosPrinter1.LinhasBuffer := dmpdv.imp_LinhasBuffer;
   ACBrPosPrinter1.LinhasEntreCupons := 0;
-  ACBrPosPrinter1.EspacoEntreLinhas := 0;
-  ACBrPosPrinter1.ColunasFonteNormal := 48;
+  ACBrPosPrinter1.EspacoEntreLinhas := dmpdv.espacoEntreLinhas;
+  ACBrPosPrinter1.ColunasFonteNormal := dmpdv.imp_ColunaFonteNormal;
   ACBrPosPrinter1.Porta  := dmPdv.portaImp;
   //ACBrPosPrinter1.ControlePorta := cbControlePorta.Checked;
   ACBrPosPrinter1.CortaPapel := True;
@@ -983,7 +996,7 @@ begin
   // ACBrPosPrinter1.ConfigLogo.FatorX := seLogoFatorX.Value;
   // ACBrPosPrinter1.ConfigLogo.FatorY := seLogoFatorY.Value;
   ACBrPosPrinter1.Modelo := TACBrPosPrinterModelo(cbxModeloPosPrinter.ItemIndex);
-  ACBrPosPrinter1.Ativar ;
+  ACBrPosPrinter1.Ativar;
 
   ACBrPosPrinter1.Buffer.Text := MemoImp.Lines.Text;
   ACBrPosPrinter1.Imprimir;
@@ -1351,8 +1364,8 @@ begin
   end
   else begin
     imprimirTxt();
-    if (dmPdv.path_imp = 'imp.txt') then
-      imprimiAcbr();
+    //if (dmPdv.path_imp = 'imp.txt') then
+    imprimiAcbr();
   end;
   if (btnCadeira.Visible = True) then
   begin
@@ -1451,7 +1464,7 @@ end;
 
 procedure TfPDV_Rec.acCartaoDebitoExecute(Sender: TObject);
 begin
-  lblForma.Caption:='2-Cartão Débito';
+  lblForma.Caption:='2-Cartao Debito';
   edPagamento.SetFocus;
 end;
 
@@ -1463,7 +1476,7 @@ end;
 
 procedure TfPDV_Rec.acCartaoCreditoExecute(Sender: TObject);
 begin
-  lblForma.Caption:='3-Cartão Crédito';
+  lblForma.Caption:='3-Cartao Credito';
   edPagamento.SetFocus;
 end;
 

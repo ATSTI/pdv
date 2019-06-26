@@ -16,10 +16,14 @@ type
     chCurso: TCheckBox;
     dsCliente: TDataSource;
     Label2: TLabel;
+    procedure btnExcluirClick(Sender: TObject);
+    procedure btnGravarClick(Sender: TObject);
     procedure btnProcurarClick(Sender: TObject);
+    procedure chInativoChange(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
     procedure Edit1KeyPress(Sender: TObject; var Key: char);
     procedure Edit2KeyPress(Sender: TObject; var Key: char);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormShow(Sender: TObject);
   private
     procedure Procurar();
@@ -43,6 +47,41 @@ implementation
 procedure TfClienteBusca.btnProcurarClick(Sender: TObject);
 begin
     Procurar();
+end;
+
+procedure TfClienteBusca.chInativoChange(Sender: TObject);
+begin
+  Procurar();
+end;
+
+procedure TfClienteBusca.btnExcluirClick(Sender: TObject);
+var update_cli:string;
+begin
+  //inherited;
+  if MessageDlg('Confirma:', 'Confirma INATIVAR o Cliente: ' +
+    cNomeCliente , mtConfirmation,
+    [mbYes, mbNo, mbIgnore],0) = mrYes then
+  begin
+    update_cli := 'UPDATE CLIENTES SET STATUS = 0 WHERE CODCLIENTE = ' +
+      IntToStr(cCodCliente);
+    dmPdv.executaSql(update_cli);
+    dmPdv.sTrans.Commit;
+  end;
+end;
+
+procedure TfClienteBusca.btnGravarClick(Sender: TObject);
+  var update_cli:string;
+begin
+    //inherited;
+    if MessageDlg('Confirma:', 'Confirma ATIVAR o Cliente: ' +
+      cNomeCliente , mtConfirmation,
+      [mbYes, mbNo, mbIgnore],0) = mrYes then
+    begin
+      update_cli := 'UPDATE CLIENTES SET STATUS = 1 WHERE CODCLIENTE = ' +
+        IntToStr(cCodCliente);
+      dmPdv.executaSql(update_cli);
+      dmPdv.sTrans.Commit;
+    end;
 end;
 
 
@@ -69,6 +108,16 @@ begin
     Key := #0;
     if (edit2.Text <> '') then
       Procurar();
+  end;
+end;
+
+procedure TfClienteBusca.FormClose(Sender: TObject;
+  var CloseAction: TCloseAction);
+begin
+  if (chInativo.Checked) then
+  begin
+    cCodCliente := dmPdv.clientePadrao;
+    cNomeCliente:= 'Consumidor';
   end;
 end;
 
@@ -135,6 +184,7 @@ begin
 
   sql := 'SELECT * FROM CLIENTES';
   sql := sql + ' WHERE CODCLIENTE = ' + IntToStr(cCodCliente);
+  sql := sql + ' AND STATUS = 1';
   dmPdv.sqBusca.SQL.Text := sql;
   dmPdv.sqBusca.Open;
   if not dmPdv.sqBusca.IsEmpty then
