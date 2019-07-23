@@ -351,6 +351,8 @@ var
   fVnd : TVenda;
   vTeste: Integer;
   codForma: Integer;
+  vlr_desD: Double;
+  vlr_desT: String;
 begin
   if vStatus = 1 then
   begin
@@ -424,11 +426,12 @@ begin
   sqPagamentoN_DOC.AsString      := lblForma.Caption;
   sqPagamentoSTATE.AsInteger     := 0;
 
-
   vValorPago := StrParaFloat(edPagamento.Text);
   if vValorPago > vResto then
   begin
-    edTroco.Text := FloatToStr(vValorPago - vResto);
+    vlr_desD := vValorPago - vResto; // so pra ver o Troco
+    vlr_desT := FloatToStr(vValorPago - vResto);
+    edTroco.Text := vlr_desT;
     vValorPago := vResto;
   end;
   sqPagamentoVALOR_PAGO.AsFloat  := vValorPago;
@@ -1090,13 +1093,20 @@ end;
 function TfPDV_Rec.strParaFloat(vlr_st: String): Double;
 var tam: Integer;
   vVlrStr: String;
+  vVlr_decimais: String;
 begin
   if (Length(vlr_st) > 6) then
   begin
-    tam := Length(vlr_st)-7;
-    vVlrStr := copy(vlr_st,0,tam);
-    tam := Length(vVlrStr)+2;
-    vlr_st := vVlrStr + copy(vlr_st,tam,6);
+    vVlr_decimais := Copy(vlr_st,pos(',',vlr_st)+1,Length(vlr_st));
+    Vlr_st := Copy(vlr_st,0,pos(',',vlr_st)-1);
+    if (Length(vlr_st) > 3) then
+    begin
+      vVlrStr := StringReplace(vlr_st, '.', '', [rfReplaceAll]);
+      vlr_st := vVlrStr + ',' + vVlr_decimais;
+    end
+    else begin
+      vlr_st := vlr_st + ',' + vVlr_decimais;
+    end;
   end;
   result := StrToFloat(vlr_st);
 end;

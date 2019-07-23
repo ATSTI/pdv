@@ -1,11 +1,11 @@
 object fConfiguracaoFiscal: TfConfiguracaoFiscal
-  Left = 217
-  Height = 665
-  Top = 153
-  Width = 1108
+  Left = 266
+  Height = 705
+  Top = 124
+  Width = 1027
   Caption = 'Configuração Fiscal'
-  ClientHeight = 665
-  ClientWidth = 1108
+  ClientHeight = 705
+  ClientWidth = 1027
   OnShow = FormShow
   Position = poScreenCenter
   LCLVersion = '2.0.2.0'
@@ -13,10 +13,10 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
     Left = 0
     Height = 72
     Top = 0
-    Width = 1108
+    Width = 1027
     Align = alTop
     ClientHeight = 72
-    ClientWidth = 1108
+    ClientWidth = 1027
     Color = cl3DLight
     ParentColor = False
     TabOrder = 0
@@ -39,9 +39,12 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
       object edCfopF: TEdit
         Left = 65
-        Height = 38
+        Height = 31
         Top = 0
         Width = 79
+        Font.Height = -11
+        Font.Name = 'Sans'
+        ParentFont = False
         TabOrder = 0
       end
       object Label2: TLabel
@@ -54,9 +57,12 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
       object edUFF: TEdit
         Left = 178
-        Height = 38
+        Height = 31
         Top = 0
         Width = 52
+        Font.Height = -11
+        Font.Name = 'Sans'
+        ParentFont = False
         TabOrder = 1
       end
       object Label3: TLabel
@@ -69,9 +75,11 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
       object cbTipoFiscalF: TComboBox
         Left = 323
-        Height = 38
+        Height = 31
         Top = 0
         Width = 277
+        Font.Height = -11
+        Font.Name = 'Sans'
         ItemHeight = 0
         ItemIndex = 7
         Items.Strings = (
@@ -84,6 +92,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
           'Jurídico Simples'
           ''
         )
+        ParentFont = False
         TabOrder = 2
       end
     end
@@ -93,6 +102,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       Top = 10
       Width = 163
       Caption = 'Incluir'
+      OnClick = BitBtn1Click
       TabOrder = 1
     end
     object BitBtn5: TBitBtn
@@ -223,13 +233,95 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
   end
   object Panel2: TPanel
     Left = 0
-    Height = 280
+    Height = 352
     Top = 72
-    Width = 1108
+    Width = 1027
     Align = alTop
-    ClientHeight = 280
-    ClientWidth = 1108
+    ClientHeight = 352
+    ClientWidth = 1027
     TabOrder = 1
+    object gbICMSNormal: TGroupBox
+      Left = 8
+      Height = 155
+      Top = 48
+      Width = 235
+      Caption = 'ICMS Regime Normal'
+      ClientHeight = 133
+      ClientWidth = 233
+      TabOrder = 4
+      object Label7: TLabel
+        Left = 8
+        Height = 21
+        Top = 0
+        Width = 25
+        Caption = 'CST'
+        ParentColor = False
+      end
+      object cbCST: TComboBox
+        Left = 42
+        Height = 31
+        Top = 0
+        Width = 188
+        Font.Height = -11
+        Font.Name = 'Sans'
+        ItemHeight = 0
+        Items.Strings = (
+          '00-Tributada integralmente'
+          '10-Tributada cobrança ICMS por S.T.'
+          '20-Com redução da BC'
+          '30-Isenta / não tributada com S.T.'
+          '40-Isenta'
+          '41-Não Tributada'
+          '50-Com Suspensão'
+          '51-Com Diferimento'
+          '60-ICMS cobrado por S.T.'
+          '70-Com redução da BC e S.T.'
+          '90-Outras'
+        )
+        OnChange = cbCSTChange
+        ParentFont = False
+        TabOrder = 0
+      end
+      object Label8: TLabel
+        Left = 8
+        Height = 21
+        Top = 37
+        Width = 57
+        Caption = 'Aliquota'
+        ParentColor = False
+      end
+      object edAliquota: TMaskEdit
+        Left = 112
+        Height = 38
+        Top = 37
+        Width = 118
+        CharCase = ecNormal
+        MaxLength = 0
+        TabOrder = 1
+        SpaceChar = '_'
+      end
+      object Label9: TLabel
+        Left = 8
+        Height = 21
+        Hint = 'Redução da Base de Cálculo'
+        Top = 74
+        Width = 94
+        Caption = 'Redução B. C.'
+        ParentColor = False
+        ParentShowHint = False
+        ShowHint = True
+      end
+      object edRBC: TMaskEdit
+        Left = 112
+        Height = 38
+        Top = 74
+        Width = 118
+        CharCase = ecNormal
+        MaxLength = 0
+        TabOrder = 2
+        SpaceChar = '_'
+      end
+    end
     object Label4: TLabel
       Left = 6
       Height = 21
@@ -239,15 +331,18 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       ParentColor = False
     end
     object edCfop: TEdit
-      Left = 6
-      Height = 38
-      Top = 32
-      Width = 79
+      Left = 48
+      Height = 31
+      Top = 8
+      Width = 70
+      Font.Height = -11
+      Font.Name = 'Sans'
       OnExit = edCfopExit
+      ParentFont = False
       TabOrder = 0
     end
     object Label5: TLabel
-      Left = 91
+      Left = 120
       Height = 21
       Top = 8
       Width = 19
@@ -255,26 +350,31 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       ParentColor = False
     end
     object edUF: TEdit
-      Left = 91
-      Height = 38
-      Top = 32
-      Width = 52
+      Left = 144
+      Height = 31
+      Top = 8
+      Width = 40
+      Font.Height = -11
+      Font.Name = 'Sans'
       OnExit = edUFExit
+      ParentFont = False
       TabOrder = 1
     end
     object Label6: TLabel
-      Left = 6
+      Left = 192
       Height = 21
-      Top = 76
+      Top = 8
       Width = 72
       Caption = 'Tipo Fiscal'
       ParentColor = False
     end
     object cbTipoFiscal: TComboBox
-      Left = 6
-      Height = 38
-      Top = 94
+      Left = 272
+      Height = 31
+      Top = 8
       Width = 209
+      Font.Height = -11
+      Font.Name = 'Sans'
       ItemHeight = 0
       ItemIndex = 7
       Items.Strings = (
@@ -288,25 +388,26 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
         ''
       )
       OnChange = cbTipoFiscalChange
+      ParentFont = False
       TabOrder = 2
     end
     object cbNaoGeraFatura: TCheckBox
-      Left = 6
+      Left = 847
       Height = 25
-      Top = 133
+      Top = 8
       Width = 137
       Caption = 'Não gera Fatura'
-      TabOrder = 3
+      TabOrder = 17
     end
     object gbICMSSimples: TGroupBox
-      Left = 226
+      Left = 9
       Height = 108
-      Top = 8
-      Width = 230
+      Top = 48
+      Width = 234
       Caption = 'ICMS Simples Nacional'
       ClientHeight = 86
-      ClientWidth = 228
-      TabOrder = 4
+      ClientWidth = 232
+      TabOrder = 5
       object Label10: TLabel
         Left = 8
         Height = 21
@@ -341,14 +442,14 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
     end
     object gbDifal: TGroupBox
-      Left = 582
-      Height = 138
-      Top = 8
+      Left = 376
+      Height = 155
+      Top = 48
       Width = 158
       Caption = 'DIFAL'
-      ClientHeight = 116
+      ClientHeight = 133
       ClientWidth = 156
-      TabOrder = 6
+      TabOrder = 7
       Visible = False
       object Label11: TLabel
         Left = 8
@@ -387,10 +488,10 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
         ParentShowHint = False
         ShowHint = True
       end
-      object edRBC1: TMaskEdit
+      object edFCP: TMaskEdit
         Left = 8
         Height = 38
-        Hint = 'Aliquota definida pelo Estado Destino'
+        Hint = 'Percentual do ICMS relativo ao Fundo de Combate ''#224'' Pobreza (FCP) '#10'na UF de destino.'
         Top = 18
         Width = 67
         CharCase = ecNormal
@@ -400,7 +501,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
         TabOrder = 0
         SpaceChar = '_'
       end
-      object edRBC2: TMaskEdit
+      object edPIcmsUfDest: TMaskEdit
         Left = 79
         Height = 38
         Hint = 'Aliquota definida pelo Estado Destino'
@@ -413,7 +514,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
         TabOrder = 1
         SpaceChar = '_'
       end
-      object edRBC3: TMaskEdit
+      object edPIcmsInter: TMaskEdit
         Left = 8
         Height = 38
         Hint = 'Aliquota definida pelo Estado Destino'
@@ -426,7 +527,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
         TabOrder = 2
         SpaceChar = '_'
       end
-      object edRBC4: TMaskEdit
+      object edPIcmsPart: TMaskEdit
         Left = 79
         Height = 38
         Hint = 'Aliquota definida pelo Estado Destino'
@@ -440,94 +541,21 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
         SpaceChar = '_'
       end
     end
-    object gbICMSSt: TGroupBox
-      Left = 458
-      Height = 138
-      Top = 8
-      Width = 121
-      Caption = 'ICMS ST'
-      ClientHeight = 116
-      ClientWidth = 119
-      TabOrder = 7
-      object Label15: TLabel
-        Left = 2
-        Height = 21
-        Top = 0
-        Width = 30
-        Caption = 'MVA'
-        ParentColor = False
-      end
-      object Label16: TLabel
-        Left = 0
-        Height = 21
-        Top = 37
-        Width = 52
-        Caption = 'Origem'
-        ParentColor = False
-      end
-      object Label17: TLabel
-        Left = 0
-        Height = 21
-        Top = 74
-        Width = 35
-        Caption = 'Dest.'
-        ParentColor = False
-      end
-      object edMva: TMaskEdit
-        Left = 55
-        Height = 38
-        Hint = 'Aliquota definida pelo Estado Destino'
-        Top = 0
-        Width = 62
-        CharCase = ecNormal
-        MaxLength = 0
-        ParentShowHint = False
-        ShowHint = True
-        TabOrder = 0
-        SpaceChar = '_'
-      end
-      object edOrigem: TMaskEdit
-        Left = 55
-        Height = 38
-        Hint = 'Aliquota definida pelo Estado Destino'
-        Top = 37
-        Width = 62
-        CharCase = ecNormal
-        MaxLength = 0
-        ParentShowHint = False
-        ShowHint = True
-        TabOrder = 1
-        SpaceChar = '_'
-      end
-      object edDest: TMaskEdit
-        Left = 55
-        Height = 38
-        Hint = 'Aliquota definida pelo Estado Destino'
-        Top = 74
-        Width = 62
-        CharCase = ecNormal
-        MaxLength = 0
-        ParentShowHint = False
-        ShowHint = True
-        TabOrder = 2
-        SpaceChar = '_'
-      end
-    end
     object gbIPI: TGroupBox
-      Left = 744
-      Height = 138
-      Top = 8
+      Left = 537
+      Height = 155
+      Top = 48
       Width = 240
       Caption = 'IPI'
-      ClientHeight = 116
+      ClientHeight = 133
       ClientWidth = 238
       TabOrder = 8
       object Label19: TLabel
         Left = 10
         Height = 21
         Top = 35
-        Width = 30
-        Caption = 'Aliq.'
+        Width = 57
+        Caption = 'Aliquota'
         ParentColor = False
       end
       object Label20: TLabel
@@ -605,20 +633,20 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
     end
     object gbPis: TGroupBox
-      Left = 544
-      Height = 60
-      Top = 155
-      Width = 341
+      Left = 784
+      Height = 86
+      Top = 117
+      Width = 232
       Caption = 'Pis'
-      ClientHeight = 38
-      ClientWidth = 339
-      TabOrder = 9
+      ClientHeight = 64
+      ClientWidth = 230
+      TabOrder = 10
       object edPisAliq: TMaskEdit
-        Left = 280
+        Left = 157
         Height = 31
         Hint = 'Aliquota definida pelo Estado Destino'
-        Top = 0
-        Width = 54
+        Top = 25
+        Width = 70
         CharCase = ecNormal
         Font.Height = -11
         Font.Name = 'Sans'
@@ -630,10 +658,10 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
         SpaceChar = '_'
       end
       object cbCSTPis: TComboBox
-        Left = 8
+        Left = 2
         Height = 31
-        Top = 0
-        Width = 227
+        Top = -5
+        Width = 225
         Font.Height = -11
         Font.Name = 'Sans'
         ItemHeight = 0
@@ -677,29 +705,29 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
         TabOrder = 1
       end
       object Label21: TLabel
-        Left = 243
+        Left = 96
         Height = 21
-        Top = 0
-        Width = 30
-        Caption = 'Aliq.'
+        Top = 25
+        Width = 57
+        Caption = 'Aliquota'
         ParentColor = False
       end
     end
     object gbCofins: TGroupBox
-      Left = 221
-      Height = 62
-      Top = 152
-      Width = 320
+      Left = 784
+      Height = 81
+      Top = 41
+      Width = 232
       Caption = 'Cofins'
-      ClientHeight = 40
-      ClientWidth = 318
-      TabOrder = 10
+      ClientHeight = 59
+      ClientWidth = 230
+      TabOrder = 9
       object edCofinsAliq: TMaskEdit
-        Left = 261
+        Left = 157
         Height = 31
         Hint = 'Aliquota definida pelo Estado Destino'
-        Top = 0
-        Width = 54
+        Top = 28
+        Width = 70
         CharCase = ecNormal
         Font.Height = -11
         Font.Name = 'Sans'
@@ -711,10 +739,10 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
         SpaceChar = '_'
       end
       object cbCSTCofins: TComboBox
-        Left = 8
+        Left = 2
         Height = 31
-        Top = 0
-        Width = 216
+        Top = -2
+        Width = 225
         Font.Height = -11
         Font.Name = 'Sans'
         ItemHeight = 0
@@ -758,18 +786,18 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
         TabOrder = 1
       end
       object Label22: TLabel
-        Left = 230
+        Left = 96
         Height = 21
-        Top = 1
-        Width = 30
-        Caption = 'Aliq.'
+        Top = 27
+        Width = 57
+        Caption = 'Aliquota'
         ParentColor = False
       end
     end
     object gbPorNcm: TGroupBox
-      Left = 221
+      Left = 181
       Height = 60
-      Top = 216
+      Top = 204
       Width = 188
       Caption = 'Usar para o NCM'
       ClientHeight = 38
@@ -793,13 +821,13 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
     end
     object gbPorProduto: TGroupBox
-      Left = 416
+      Left = 376
       Height = 60
-      Top = 216
-      Width = 683
+      Top = 204
+      Width = 640
       Caption = 'Usar para o Produto'
       ClientHeight = 38
-      ClientWidth = 681
+      ClientWidth = 638
       TabOrder = 12
       object Label26: TLabel
         Left = 12
@@ -814,6 +842,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
         Height = 38
         Top = 0
         Width = 112
+        OnChange = edProdutoChange
         TabOrder = 0
         Text = 'Todos'
       end
@@ -821,7 +850,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
         Left = 227
         Height = 30
         Top = 1
-        Width = 443
+        Width = 402
         TabOrder = 1
       end
       object BitBtn2: TBitBtn
@@ -833,123 +862,310 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
         TabOrder = 2
       end
     end
-    object gbICMSNormal: TGroupBox
-      Left = 221
-      Height = 138
+    object cbOrigemProd: TComboBox
+      Left = 608
+      Height = 31
       Top = 8
-      Width = 235
-      Caption = 'ICMS Regime Normal'
-      ClientHeight = 116
-      ClientWidth = 233
-      TabOrder = 5
-      object Label7: TLabel
-        Left = 8
+      Width = 209
+      Font.Height = -11
+      Font.Name = 'Sans'
+      ItemHeight = 0
+      Items.Strings = (
+        '0-Nacional, exceto 3 a 5;'
+        '1-Estrangeira - Importação direta, exceto 6;'
+        '2-Estrangeira - Adq. mercado interno, exceto 7;'
+        '3-Nacional, com Conteúdo Importação > 40%;'
+        '4-Nacional, Decreto-Lei nº 288/1967'
+        '5-Nacional, com Conteúdo Importação <= 40%;'
+        '6-Estrangeira Imp. direta, sem similar nacional;'
+        '7-Estrangeira Adq. merc. interno, sem similar nac. '
+      )
+      OnChange = cbCSTChange
+      ParentFont = False
+      TabOrder = 3
+    end
+    object Label18: TLabel
+      Left = 488
+      Height = 21
+      Top = 8
+      Width = 112
+      Caption = 'Origem Produto'
+      ParentColor = False
+    end
+    object gbICMSSt: TGroupBox
+      Left = 248
+      Height = 155
+      Top = 48
+      Width = 121
+      Caption = 'ICMS ST'
+      ClientHeight = 133
+      ClientWidth = 119
+      TabOrder = 6
+      object Label15: TLabel
+        Left = 2
         Height = 21
         Top = 0
-        Width = 25
-        Caption = 'CST'
+        Width = 30
+        Caption = 'MVA'
         ParentColor = False
       end
-      object cbCST: TComboBox
-        Left = 42
-        Height = 31
-        Top = 0
-        Width = 188
-        Font.Height = -11
-        Font.Name = 'Sans'
-        ItemHeight = 0
-        Items.Strings = (
-          '00-Tributada integralmente'
-          '10-Tributada cobrança ICMS por S.T.'
-          '20-Com redução da BC'
-          '30-Isenta / não tributada com S.T.'
-          '40-Isenta'
-          '41-Não Tributada'
-          '50-Com Suspensão'
-          '51-Com Diferimento'
-          '60-ICMS cobrado por S.T.'
-          '70-Com redução da BC e S.T.'
-          '90-Outras'
-        )
-        OnChange = cbCSTChange
-        ParentFont = False
-        TabOrder = 0
-      end
-      object Label8: TLabel
-        Left = 8
+      object Label16: TLabel
+        Left = 0
         Height = 21
         Top = 37
-        Width = 57
-        Caption = 'Aliquota'
+        Width = 52
+        Caption = 'Origem'
         ParentColor = False
       end
-      object edAliquota: TMaskEdit
-        Left = 112
+      object Label17: TLabel
+        Left = 0
+        Height = 21
+        Top = 74
+        Width = 35
+        Caption = 'Dest.'
+        ParentColor = False
+      end
+      object edMva: TMaskEdit
+        Left = 55
         Height = 38
-        Top = 37
-        Width = 118
+        Hint = 'Aliquota definida pelo Estado Destino'
+        Top = 0
+        Width = 62
         CharCase = ecNormal
         MaxLength = 0
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+        SpaceChar = '_'
+      end
+      object edOrigem: TMaskEdit
+        Left = 55
+        Height = 38
+        Hint = 'Aliquota definida pelo Estado Destino'
+        Top = 37
+        Width = 62
+        CharCase = ecNormal
+        MaxLength = 0
+        ParentShowHint = False
+        ShowHint = True
         TabOrder = 1
         SpaceChar = '_'
       end
-      object Label9: TLabel
-        Left = 8
-        Height = 21
-        Hint = 'Redução da Base de Cálculo'
-        Top = 74
-        Width = 94
-        Caption = 'Redução B. C.'
-        ParentColor = False
-        ParentShowHint = False
-        ShowHint = True
-      end
-      object edRBC: TMaskEdit
-        Left = 112
+      object edDest: TMaskEdit
+        Left = 55
         Height = 38
+        Hint = 'Aliquota definida pelo Estado Destino'
         Top = 74
-        Width = 118
+        Width = 62
         CharCase = ecNormal
         MaxLength = 0
+        ParentShowHint = False
+        ShowHint = True
         TabOrder = 2
         SpaceChar = '_'
       end
     end
+    object edDA1: TEdit
+      Left = 6
+      Height = 31
+      Top = 271
+      Width = 485
+      Font.Height = -11
+      Font.Name = 'Sans'
+      ParentFont = False
+      TabOrder = 13
+    end
+    object Label23: TLabel
+      Left = 8
+      Height = 21
+      Top = 243
+      Width = 126
+      Caption = 'Dados Adicionais :'
+      ParentColor = False
+    end
+    object edDA2: TEdit
+      Left = 496
+      Height = 31
+      Top = 271
+      Width = 520
+      Font.Height = -11
+      Font.Name = 'Sans'
+      ParentFont = False
+      TabOrder = 14
+    end
+    object edDA3: TEdit
+      Left = 6
+      Height = 31
+      Top = 304
+      Width = 485
+      Font.Height = -11
+      Font.Name = 'Sans'
+      ParentFont = False
+      TabOrder = 15
+    end
+    object edDA4: TEdit
+      Left = 496
+      Height = 31
+      Top = 304
+      Width = 520
+      Font.Height = -11
+      Font.Name = 'Sans'
+      ParentFont = False
+      TabOrder = 16
+    end
   end
   object Panel3: TPanel
     Left = 0
-    Height = 81
-    Top = 584
-    Width = 1108
+    Height = 57
+    Top = 648
+    Width = 1027
     Align = alBottom
-    ClientHeight = 81
-    ClientWidth = 1108
+    ClientHeight = 57
+    ClientWidth = 1027
     Color = cl3DLight
     ParentColor = False
-    TabOrder = 2
+    TabOrder = 4
     object BitBtn3: TBitBtn
-      Left = 924
-      Height = 30
-      Top = 27
-      Width = 75
-      Caption = 'BitBtn3'
+      Left = 912
+      Height = 51
+      Top = 4
+      Width = 104
+      Caption = 'Fechar'
+      Glyph.Data = {
+        460E0000424D460E00000000000036000000280000001E0000001E0000000100
+        200000000000100E000064000000640000000000000000000000000000000000
+        000000000000000000000000000000000000000000000000000000000000C083
+        7312C184744BC486769DBF83739CBF8373000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        00000000000000000000C0847319C1847456C08474A4C08373E3C28575FFCB8A
+        7AFFBF8373BB0000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        00000000000000000000000000000000000000000000C084731FC0847460C084
+        74AEC08373EAC48676FFC58777FFC18474FFBF8373FFC48676FFBF8373B70000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000BC817123C184746BC08473B8C08373F0C58776FFC58776FFC18474FFBE82
+        72FFBE8272FFBF8373FFBF8373FFC38575FFBC8171BF7D5E5319806055198060
+        55198060551980605519846357198060550D0000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000BB8171C5C98A
+        79FFC48676FFC08473FFBE8272FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFC08473FFAD796AFA7D5E53EE806055EF806055EF806055EF8060
+        55EF846357EF8060557B00000000000000000000000000000000000000000000
+        000000000000000000000000000000000000BA8070C9C28574FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        72FFAD796AFF7F5F54FF816055FF816055FF816055FF816055FF866558FF8060
+        5585000000000000000000000000000000000000000000000000000000000000
+        00000000000000000000BB8171C9C38675FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFC08473FFAD796AFF7E5F
+        54FF806055FF806055FF806055FF806055FF856458FF80605584000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000BB8171C9C38675FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFC08473FFAD796AFF7E5F54FF806055FF8060
+        55FF806055FF806055FF856458FF806055840000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000BB8171C9C386
+        75FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFC08473FFAD796AFF7E5F54FF806055FF806055FF806055FF8060
+        55FF856458FF8060558400000000000000000000000000000000000000000000
+        000000000000000000000000000000000000BB8171C9C38675FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFC084
+        73FFAD796AFF7E5F54FF806055FF806055FF806055FF806055FF856458FF8060
+        5584000000004ACEEF0F4ACEEF44000000000000000000000000000000000000
+        00000000000000000000BB8171C9C38675FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFC08473FFAD796AFF7E5F
+        54FF806055FF806055FF806055FF806055FF856458FF80605584000000004ACE
+        EF1F4ACEF0EA4ACEEF7D00000000000000000000000000000000000000000000
+        0000BB8171C9C38675FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFC08473FFAD796AFF7E5F54FF806055FF8060
+        55FF806055FF806055FF856458FF80605584000000000000000049CDEE3B4AD0
+        F2EE4ACEEF7E0000000000000000000000000000000000000000BB8171C9C386
+        75FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFC08473FFAD796AFF7E5F54FF806055FF806055FF806055FF8060
+        55FF856458FF8060558400000000000000000000000049CDEE3B4AD0F2EE4ACE
+        EF7E00000000000000000000000000000000BB8171C9C38675FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFC084
+        73FFAD796AFF7E5F54FF806055FF806055FF806055FF806055FF856458FF8060
+        55840000000000000000000000000000000049CDEE3B4AD0F2EE4ACEF07D0000
+        00000000000000000000BB8171C9C38675FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFC08473FFAD796AFF7E5F
+        54FF806055FF806055FF806055FF806055FF856458FF80605584000000000000
+        000000000000000000000000000049CDEE3C4BD1F2EE4ACEF07D000000000000
+        0000BB8171C9C38675FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFC08473FFAD796AFF7D5F54FF805F54FF815C
+        4FFF815C4FFF815C4FFF876052FF8358497F0000000000000000000000000000
+        0000000000000000000049CDED324AD1F2E54ACEEF7A00000000BB8171C9C386
+        75FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFC08473FFAD796AFF7E5E53FF7E6157FF6497A3FF5DA5B6FF5EA4
+        B4FF60A5B5FF56B3CAD049CEEF9E4ACEEF9E4ACEEF9E4ACEEF9E4ACEEF9E4ACE
+        EF9E4ACEEF9949CDEECB4CD5F8FF4ACEEF72BB8171C9C38675FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFC084
+        73FFAD796AFF7E5E53FF7E6157FF65949EFF5FA1B1FF60A0AFFF62A2B0FF58B0
+        C5CC49CEEF954ACEEF964ACEEF964ACEEF964ACEEF964ACEEF964ACEEF9049CD
+        EEC84CD4F7FF4ACEEF6EBB8171C9C38675FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFC08473FFAD796AFF7D5F
+        54FF805F54FF815C4FFF825B4EFF825B4EFF875F52FF8457487F000000000000
+        00000000000000000000000000000000000049CDEE364AD1F2E749CEEF740000
+        0000BB8171C9C38675FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFC08473FFAD796AFF7E5F54FF806055FF8060
+        55FF806055FF806055FF856458FF806055840000000000000000000000000000
+        00000000000049CDEE414BD1F2F14ACEEF760000000000000000BB8171C9C386
+        75FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFC08473FFAD796AFF7E5F54FF806055FF806055FF806055FF8060
+        55FF856458FF806055840000000000000000000000000000000049CDEE424AD0
+        F2F04ACEEF75000000000000000000000000BB8171C9C38675FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFC084
+        73FFAD796AFF7E5F54FF806055FF806055FF806055FF806055FF856458FF8060
+        558400000000000000000000000049CDEE424AD0F2EF4ACEEF76000000000000
+        00000000000000000000BB8171C9C38675FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFC08473FFAD796AFF7E5F
+        54FF806055FF806055FF806055FF806055FF856458FF80605584000000000000
+        000049CDEE424AD0F2F04ACEEF76000000000000000000000000000000000000
+        0000BB8171C9C38675FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFC08473FFAD796AFF7E5F54FF806055FF8060
+        55FF806055FF806055FF856458FF80605584000000004ACEEF204ACEF0EB4ACE
+        EF77000000000000000000000000000000000000000000000000BB8171C9C386
+        75FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF8373FFBF83
+        73FFBF8373FFBF8472FFAD796AFF7E5F54FF806055FF806055FF806055FF8060
+        55FF856458FF80605584000000004ACEEF0E4ACEEF3C00000000000000000000
+        000000000000000000000000000000000000BB8171C9C38675FFBF8373FFBF83
+        73FFBF8373FFBF8373FFBF8373FFBF8373FFBE8272FFBF8373FFC08473FFC285
+        74FFAC7869FF7D5E53FF806055FF806055FF806055FF806055FF856458FF8060
+        5584000000000000000000000000000000000000000000000000000000000000
+        00000000000000000000BB8171C9C38675FFBF8373FFBF8373FFBF8373FFBE83
+        73FFBF8373FFC18473FFC18473FFBB8171FFAD796AFF9A6E61FF876458FF7F5F
+        54FF806055FF806055FF806055FF806055FF856458FF80605584000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000BB8171C9C28674FFBF8373FFBF8373FFC18474FFC08373FFBA8070FFAB77
+        69FF976C5FFF876358FF7E5F54FF7D5E53FF7E5F54FF806055FF806055FF8060
+        55FF806055FF806055FF856458FF806055840000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000BC8171C9C587
+        76FFC08373FFB87F6FFFA87667FF956B5EFF856257FF7E5F54FF7D5E53FF7F5F
+        54FF7F6055FF806055FF806055FF806055FF806055FF806055FF806055FF8060
+        55FF856458FF8060558400000000000000000000000000000000000000000000
+        000000000000000000000000000000000000B37C6DC8AA7769FF926A5DFF8462
+        56FF7D5E53FF7D5E53FF7F5F54FF806055FF806055FF806055FF806055FF8060
+        55FF806055FF806055FF806055FF806055FF806055FF806055FF856458FF8060
+        5584000000000000000000000000000000000000000000000000000000000000
+        00000000000000000000
+      }
+      OnClick = BitBtn3Click
       TabOrder = 0
     end
   end
   object Panel4: TPanel
     Left = 0
-    Height = 232
-    Top = 352
-    Width = 1108
+    Height = 224
+    Top = 424
+    Width = 1027
     Align = alClient
-    ClientHeight = 232
-    ClientWidth = 1108
-    TabOrder = 3
+    ClientHeight = 224
+    ClientWidth = 1027
+    TabOrder = 2
     object DBGrid1: TDBGrid
       Left = 1
-      Height = 230
+      Height = 222
       Top = 1
-      Width = 1106
+      Width = 1025
       Align = alClient
       Color = clWindow
       Columns = <>
@@ -963,7 +1179,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
     Width = 603
     ClientHeight = 210
     ClientWidth = 603
-    TabOrder = 4
+    TabOrder = 3
     Visible = False
     object Memo1: TMemo
       Left = 0

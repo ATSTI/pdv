@@ -288,7 +288,7 @@ begin
   path_exe := path_exe + 'conf.ini';
   if FileExists(path_exe) then
   begin
-    conf := TIniFile.Create(path_exe + 'conf.ini');
+    conf := TIniFile.Create(path_exe);
     try
       vstr := conf.ReadString('DATABASE', 'Name', '');
       IBCon.DatabaseName := vstr;

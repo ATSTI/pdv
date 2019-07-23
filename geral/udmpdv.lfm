@@ -15,7 +15,7 @@ object dmPdv: TdmPdv
     Transaction = sTrans
     UserName = 'SYSDBA'
     CharSet = 'UTF8'
-    HostName = 'localhost'
+    HostName = '127.0.0.1'
     CheckTransactionParams = False
     left = 40
     top = 18
