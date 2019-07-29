@@ -19,7 +19,6 @@ type
   TfNfce = class(TForm)
     ACBrEnterTab1: TACBrEnterTab;
     ACBrIntegrador1: TACBrIntegrador;
-    ACBrNFe1: TACBrNFe;
     ACBrNFeDANFeESCPOS1: TACBrNFeDANFeESCPOS;
     ACBrPosPrinter1: TACBrPosPrinter;
     ACBrSAT1: TACBrSAT;
@@ -115,6 +114,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure RadioGroup2Click(Sender: TObject);
   private
+    ACBrNFe1 : TACBrNFe;
     total_tributos: Double;
     serie_nfce: Integer;
     num_nfce: Integer;
@@ -409,6 +409,33 @@ var  N: TACBrPosPrinterModelo;
     V: TSSLHttpLib;
     X: TSSLXmlSignLib;
 begin
+  ACBrNFe1 := TACBrNFe.Create(ACBrNFe1);
+
+  //ACBrNFe1.OnTransmitError := ACBrNFe1TransmitError;
+  //ACBrNFe1.OnStatusChange := ACBrNFe1StatusChange;
+  //ACBrNFe1.OnGerarLog := ACBrNFe1GerarLog;
+  //ACBrNFe1.OnAntesDeAssinar := ACBrNFe1AntesDeAssinar;
+  ACBrNFe1.Configuracoes.Geral.SSLLib := libCustom;
+  ACBrNFe1.Configuracoes.Geral.SSLCryptLib := cryCapicom;
+  ACBrNFe1.Configuracoes.Geral.SSLHttpLib := httpNone;
+  ACBrNFe1.Configuracoes.Geral.SSLXmlSignLib := xsNone;
+  ACBrNFe1.Configuracoes.Geral.FormatoAlerta := 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.';
+  ACBrNFe1.Configuracoes.Geral.ModeloDF := moNFCe;
+  ACBrNFe1.Configuracoes.Geral.VersaoDF := ve400;
+  ACBrNFe1.Configuracoes.Geral.VersaoQRCode := veqr200;
+  ACBrNFe1.Configuracoes.Arquivos.SepararPorMes := True;
+  ACBrNFe1.Configuracoes.Arquivos.SalvarApenasNFeProcessadas := True;
+  ACBrNFe1.Configuracoes.WebServices.UF := 'SP';
+  ACBrNFe1.Configuracoes.WebServices.Ambiente := taProducao;
+  ACBrNFe1.Configuracoes.WebServices.AguardarConsultaRet := 0;
+  ACBrNFe1.Configuracoes.WebServices.QuebradeLinha := '|';
+
+  //ACBrNfe1.OnAntesDeAssinar:=ACBrNFe1AntesDeAssinar(ConteudoXML, docElement,
+  //    infElement, SignatureNode, SelectionNamespaces, IdSignature);
+  //ACBrNfe1.OnGerarLog:=ACBrNFe1GerarLog;
+  //ACBrNFe1.OnStatusChange:=ACBrNFe1StatusChange;
+  //ACBrNFe1.OnTransmitError:=ACBrNFe1TransmitError;
+
   //ACBrNFeDANFeESCPOS1 := TACBrNFeDANFeESCPOS.Create(nil);
   //ACBrNFeDANFCeFortes1 := TACBrNFeDANFCeFortes.Create(nil);
   {if (not DirectoryExists(dmPdv.path_exe + '\input')) then

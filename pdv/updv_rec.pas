@@ -364,6 +364,8 @@ var
   fVnd : TVenda;
   vTeste: Integer;
   codForma: Integer;
+  vlr_desD: Double;
+  vlr_desT: String;
 begin
   if vStatus = 1 then
   begin
@@ -437,11 +439,12 @@ begin
   sqPagamentoN_DOC.AsString      := lblForma.Caption;
   sqPagamentoSTATE.AsInteger     := 0;
 
-
   vValorPago := StrParaFloat(edPagamento.Text);
   if vValorPago > vResto then
   begin
-    edTroco.Text := FloatToStr(vValorPago - vResto);
+    vlr_desD := vValorPago - vResto; // so pra ver o Troco
+    vlr_desT := FloatToStr(vValorPago - vResto);
+    edTroco.Text := vlr_desT;
     vValorPago := vResto;
   end;
   sqPagamentoVALOR_PAGO.AsFloat  := vValorPago;
