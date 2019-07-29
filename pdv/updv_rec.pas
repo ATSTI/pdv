@@ -1103,13 +1103,20 @@ end;
 function TfPDV_Rec.strParaFloat(vlr_st: String): Double;
 var tam: Integer;
   vVlrStr: String;
+  vVlr_decimais: String;
 begin
   if (Length(vlr_st) > 6) then
   begin
-    tam := Length(vlr_st)-7;
-    vVlrStr := copy(vlr_st,0,tam);
-    tam := Length(vVlrStr)+2;
-    vlr_st := vVlrStr + copy(vlr_st,tam,6);
+    vVlr_decimais := Copy(vlr_st,pos(',',vlr_st)+1,Length(vlr_st));
+    Vlr_st := Copy(vlr_st,0,pos(',',vlr_st)-1);
+    if (Length(vlr_st) > 3) then
+    begin
+      vVlrStr := StringReplace(vlr_st, '.', '', [rfReplaceAll]);
+      vlr_st := vVlrStr + ',' + vVlr_decimais;
+    end
+    else begin
+      vlr_st := vlr_st + ',' + vVlr_decimais;
+    end;
   end;
   result := StrToFloat(vlr_st);
 end;

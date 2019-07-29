@@ -250,7 +250,7 @@ begin
   //ACBrNFe1.NotasFiscais.GravarXML(AcbrNfe1.Configuracoes.Arquivos.PathSalvar);
 
   // Gravando a nota aqui pois se der erro no validar ja gravei
-  //GravarDadosNF('', '');   COMENTEI aqui 12/06/19 so vou gravar qdo enviado receita
+  GravarDadosNF('', '');
   // estou pegando o ultimo numero usado em venda pra nao pular
   memoLog.Lines.Add('Gravando XML');
   ACBrNFe1.NotasFiscais.GravarXML();
@@ -1213,23 +1213,30 @@ procedure TfNfce.GravarDadosNF(protocolo: String; recibo: String);
 var str: String;
 begin
   try
-    if (num_nfce > 0) then
+    if ((num_nfce > 0) and (protocolo <> '')) then
     begin
       str := 'UPDATE SERIES SET ULTIMO_NUMERO = ' + IntToSTR(num_nfce) +
         ' WHERE SERIE = ' + QuotedStr('NFCE-'+dmPdv.varLogado);
       dmPdv.IbCon.ExecuteDirect(str);
     end;
-
-    str := 'UPDATE VENDA SET ';
-    str := str + ' XMLNFE = ' + quotedStr(ACBrNFe1.NotasFiscais.Items[0].XML);
-    str := str + ', NOMEXML = ' + QuotedStr(copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID,
-      (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
-    str := str + ', NOTAFISCAL = ' + IntToStr(num_nfce);
-    str := str + ', SERIE = ' + QuotedStr('NFCE-'+dmPdv.varLogado);
-    if (Protocolo <> '') then
-      str := str + ', PROTOCOLOENV = ' + quotedStr(Protocolo);
-    if (Recibo <> '') then
-      str := str + ', NUMRECIBO = ' + QuotedStr(Recibo);
+    if (protocolo <> '') then
+    begin
+      str := 'UPDATE VENDA SET ';
+      str := str + ' XMLNFE = ' + quotedStr(ACBrNFe1.NotasFiscais.Items[0].XML);
+      str := str + ', NOMEXML = ' + QuotedStr(copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID,
+        (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
+      str := str + ', NOTAFISCAL = ' + IntToStr(num_nfce);
+      str := str + ', SERIE = ' + QuotedStr('NFCE-'+dmPdv.varLogado);
+      if (Protocolo <> '') then
+        str := str + ', PROTOCOLOENV = ' + quotedStr(Protocolo);
+      if (Recibo <> '') then
+        str := str + ', NUMRECIBO = ' + QuotedStr(Recibo);
+    end
+    else begin
+      str := 'UPDATE VENDA SET ';
+      str := str + ' NOMEXML = ' +
+          QuotedStr('NFCE-' + dmPdv.varLogado + '-' + IntToStr(num_nfce));
+    end;
     str := str + ' WHERE CODVENDA = ' + IntToStr(nfce_codVenda);
     dmPdv.IbCon.ExecuteDirect(str);
     dmPdv.sTrans.Commit;
@@ -1780,26 +1787,32 @@ end;
 
 procedure TfNfce.BitBtn5Click(Sender: TObject);
 begin
-     // usando no CODSERIE o CODUSUARIO .. pra pegar a SERIE por USUARIO
-    dmPdv.sqBusca.Close;
-    dmPdv.sqBusca.SQL.Clear;
-    dmPdv.sqBusca.SQL.Text := 'SELECT * FROM SERIES WHERE SERIE = ' +
-      QuotedStr('NFCE-'+dmPdv.varLogado);
-    dmPdv.sqBusca.Open;
+  dmPdv.executaSql('UPDATE VENDA SET NOTAFISCAL = '  + IntToStr(num_nfce) +
+    ', SERIE = ' + QuotedStr('NFCE-'+dmPdv.varLogado) + ' WHERE NOMEXML = ' +
+    QuotedStr('NFCE-' + dmPdv.varLogado + '-' + IntToStr(num_nfce)));
+  dmPdv.executaSql('UPDATE SERIES SET ULTIMO_NUMERO = ' + IntToStr(num_nfce) +
+    ' WHERE SERIE = ' + QuotedStr('NFCE-'+dmPdv.varLogado));
+  dmPdv.sTrans.Commit;
+  // usando no CODSERIE o CODUSUARIO .. pra pegar a SERIE por USUARIO
+  dmPdv.sqBusca.Close;
+  dmPdv.sqBusca.SQL.Clear;
+  dmPdv.sqBusca.SQL.Text := 'SELECT * FROM SERIES WHERE SERIE = ' +
+    QuotedStr('NFCE-'+dmPdv.varLogado);
+  dmPdv.sqBusca.Open;
 
-    if dmPdv.sqBusca.IsEmpty then
-    begin
-      ShowMessage('Série não cadastrada para o Usuario deste Caixa.');
-      Exit;
-    end;
-    Try
-      serie_nfce := StrToInt(Trim(dmPdv.sqBusca.FieldByName('CODSERIE').AsString));
-    except
-      ShowMessage('O campo CODSERIE na serie NFCE tem que ser númerico.');
-      exit;
-    end;
-    num_nfce := dmPdv.sqBusca.FieldByName('ULTIMO_NUMERO').AsInteger+1;
-    edNFce.Text:=IntToStr(num_nfce)
+  if dmPdv.sqBusca.IsEmpty then
+  begin
+    ShowMessage('Série não cadastrada para o Usuario deste Caixa.');
+    Exit;
+  end;
+  Try
+    serie_nfce := StrToInt(Trim(dmPdv.sqBusca.FieldByName('CODSERIE').AsString));
+  except
+    ShowMessage('O campo CODSERIE na serie NFCE tem que ser númerico.');
+    exit;
+  end;
+  num_nfce := dmPdv.sqBusca.FieldByName('ULTIMO_NUMERO').AsInteger+1;
+  edNFce.Text:=IntToStr(num_nfce)
 end;
 
 procedure TfNfce.btnFecharClick(Sender: TObject);

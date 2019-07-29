@@ -147,7 +147,7 @@ object fLogin: TfLogin
     Height = 15
     Top = 330
     Width = 118
-    Caption = 'ATS Ti Sistemas , v. 4.2'
+    Caption = 'ATS Ti Sistemas , v. 4.3'
     ParentColor = False
   end
   object LHelpConnector1: TLHelpConnector
