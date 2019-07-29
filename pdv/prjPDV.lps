@@ -32,6 +32,7 @@
         <ComponentName Value="fPDV_Rec"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <TopLine Value="1528"/>
         <CursorPos X="57" Y="1545"/>
@@ -63,9 +64,9 @@
         <ComponentName Value="dmPdv"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <EditorIndex Value="10"/>
-        <TopLine Value="338"/>
-        <CursorPos X="43" Y="350"/>
+        <EditorIndex Value="8"/>
+        <TopLine Value="280"/>
+        <CursorPos X="2" Y="290"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -218,20 +219,18 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uNfce"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="8"/>
-        <TopLine Value="357"/>
-        <CursorPos X="56" Y="373"/>
-        <FoldState Value=" T3kO0{:,"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="405"/>
+        <CursorPos X="41" Y="412"/>
         <UsageCount Value="200"/>
         <Bookmarks Count="7">
-          <Item0 X="3" Y="638" ID="8"/>
-          <Item1 X="32" Y="1123" ID="7"/>
-          <Item2 Y="1842" ID="5"/>
-          <Item3 X="26" Y="650" ID="4"/>
-          <Item4 X="31" Y="1810" ID="3"/>
-          <Item5 X="11" Y="1644" ID="6"/>
-          <Item6 X="51" Y="462" ID="1"/>
+          <Item0 X="3" Y="637" ID="8"/>
+          <Item1 X="32" Y="1122" ID="7"/>
+          <Item2 Y="1841" ID="5"/>
+          <Item3 X="26" Y="649" ID="4"/>
+          <Item4 X="31" Y="1809" ID="3"/>
+          <Item5 X="11" Y="1643" ID="6"/>
+          <Item6 X="51" Y="461" ID="1"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -292,7 +291,7 @@
         <Filename Value="..\geral\uutil.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uUtil"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="7"/>
         <TopLine Value="40"/>
         <CursorPos X="25" Y="58"/>
         <UsageCount Value="271"/>
@@ -359,7 +358,7 @@
         <EditorIndex Value="4"/>
         <TopLine Value="140"/>
         <CursorPos X="65" Y="154"/>
-        <UsageCount Value="185"/>
+        <UsageCount Value="186"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit29>
@@ -371,7 +370,7 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="39" Y="13"/>
-        <UsageCount Value="81"/>
+        <UsageCount Value="82"/>
       </Unit30>
       <Unit31>
         <Filename Value="updv2.pas"/>
@@ -490,7 +489,7 @@
         <UsageCount Value="10"/>
       </Unit45>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="updv_rec.pas"/>
         <Caret Line="1106" TopLine="1084"/>
@@ -609,7 +608,7 @@
       </Position29>
       <Position30>
         <Filename Value="unfce.pas"/>
-        <Caret Line="365" Column="5" TopLine="344"/>
+        <Caret Line="370" Column="36" TopLine="150"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -647,20 +646,6 @@
         <Source Value="ureceber.pas"/>
         <Line Value="137"/>
       </Item4>
-      <Item5>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="unfce.pas"/>
-        <Line Value="1714"/>
-      </Item5>
-      <Item6>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="unfce.pas"/>
-        <Line Value="205"/>
-      </Item6>
     </BreakPoints>
     <Watches Count="6">
       <Item2>

@@ -1,15 +1,16 @@
 object fNfce: TfNfce
-  Left = 423
-  Height = 427
-  Top = 210
-  Width = 671
+  Left = 365
+  Height = 508
+  Top = 115
+  Width = 687
   Caption = 'Nota Fiscal Eletronica - Consumidor'
-  ClientHeight = 427
-  ClientWidth = 671
+  ClientHeight = 508
+  ClientWidth = 687
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  LCLVersion = '2.0.2.0'
+  Position = poScreenCenter
+  LCLVersion = '2.0.0.4'
   object edCPF: TMaskEdit
     Left = 120
     Height = 34
@@ -31,10 +32,10 @@ object fNfce: TfNfce
   end
   object edCertificado: TLabeledEdit
     Left = 362
-    Height = 21
+    Height = 23
     Top = 28
     Width = 180
-    EditLabel.Height = 13
+    EditLabel.Height = 15
     EditLabel.Width = 180
     EditLabel.Caption = 'Certificado'
     EditLabel.ParentColor = False
@@ -82,10 +83,10 @@ object fNfce: TfNfce
   end
   object edNFce: TLabeledEdit
     Left = 16
-    Height = 21
+    Height = 23
     Top = 28
     Width = 72
-    EditLabel.Height = 13
+    EditLabel.Height = 15
     EditLabel.Width = 72
     EditLabel.Caption = 'Num. NFe'
     EditLabel.ParentColor = False
@@ -106,7 +107,7 @@ object fNfce: TfNfce
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 8
-    ClientHeight = 19
+    ClientHeight = 17
     ClientWidth = 612
     Columns = 8
     Items.Strings = (
@@ -124,7 +125,7 @@ object fNfce: TfNfce
   end
   object lblProtocolo: TLabel
     Left = 20
-    Height = 13
+    Height = 15
     Top = 46
     Width = 3
     Caption = '.'
@@ -132,7 +133,7 @@ object fNfce: TfNfce
   end
   object PageControl2: TPageControl
     Left = 9
-    Height = 328
+    Height = 408
     Top = 72
     Width = 646
     ActivePage = TabSheet4
@@ -140,7 +141,7 @@ object fNfce: TfNfce
     TabOrder = 5
     object TabSheet4: TTabSheet
       Caption = 'NFCe'
-      ClientHeight = 302
+      ClientHeight = 380
       ClientWidth = 638
       object BitBtn3: TBitBtn
         Cursor = crHandPoint
@@ -2807,7 +2808,7 @@ object fNfce: TfNfce
       end
       object memoLog: TMemo
         Left = 3
-        Height = 157
+        Height = 240
         Top = 136
         Width = 613
         ScrollBars = ssAutoBoth
@@ -2816,7 +2817,7 @@ object fNfce: TfNfce
     end
     object TabSheet5: TTabSheet
       Caption = 'Geral'
-      ClientHeight = 300
+      ClientHeight = 380
       ClientWidth = 638
       object btnNFce: TBitBtn
         Left = 8
@@ -2978,19 +2979,19 @@ object fNfce: TfNfce
       end
       object PageControl1: TPageControl
         Left = 8
-        Height = 195
+        Height = 280
         Top = 104
         Width = 641
-        ActivePage = TabSheet2
-        TabIndex = 1
+        ActivePage = TabSheet3
+        TabIndex = 2
         TabOrder = 4
         object TabSheet1: TTabSheet
           Caption = 'Retorno'
-          ClientHeight = 167
+          ClientHeight = 252
           ClientWidth = 633
           object MemoResp: TMemo
             Left = 0
-            Height = 177
+            Height = 241
             Top = 7
             Width = 573
             TabOrder = 0
@@ -3002,7 +3003,7 @@ object fNfce: TfNfce
           ClientWidth = 633
           object MemoDados: TMemo
             Left = 8
-            Height = 171
+            Height = 227
             Top = 6
             Width = 617
             TabOrder = 0
@@ -3010,44 +3011,44 @@ object fNfce: TfNfce
         end
         object TabSheet3: TTabSheet
           Caption = 'Configurações'
-          ClientHeight = 167
+          ClientHeight = 252
           ClientWidth = 633
           object cbSSLLib: TComboBox
             Left = 83
-            Height = 21
+            Height = 23
             Top = 22
             Width = 172
-            ItemHeight = 13
+            ItemHeight = 15
             OnChange = cbSSLLibChange
             TabOrder = 0
             Text = 'cbSSLLib'
           end
           object cbCryptLib: TComboBox
             Left = 83
-            Height = 21
+            Height = 23
             Top = 52
             Width = 172
-            ItemHeight = 13
+            ItemHeight = 15
             OnChange = cbCryptLibChange
             TabOrder = 1
             Text = 'cbCryptLib'
           end
           object cbXmlSignLib: TComboBox
             Left = 83
-            Height = 21
+            Height = 23
             Top = 112
             Width = 172
-            ItemHeight = 13
+            ItemHeight = 15
             OnChange = cbXmlSignLibChange
             TabOrder = 2
             Text = 'cbXmlSignLib'
           end
           object cbHttpLib: TComboBox
             Left = 83
-            Height = 21
+            Height = 23
             Top = 82
             Width = 172
-            ItemHeight = 13
+            ItemHeight = 15
             OnChange = cbHttpLibChange
             TabOrder = 3
             Text = 'cbHttpLib'
@@ -3128,10 +3129,10 @@ object fNfce: TfNfce
           end
           object cbxModeloPosPrinter: TComboBox
             Left = 83
-            Height = 21
+            Height = 23
             Top = 144
             Width = 172
-            ItemHeight = 13
+            ItemHeight = 15
             TabOrder = 8
           end
           object Label4: TLabel
@@ -3154,9 +3155,9 @@ object fNfce: TfNfce
         TabOrder = 5
       end
       object Panel1: TPanel
-        Left = 104
+        Left = 80
         Height = 251
-        Top = 56
+        Top = 120
         Width = 456
         ClientHeight = 251
         ClientWidth = 456
@@ -3289,7 +3290,7 @@ object fNfce: TfNfce
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 2
-    ClientHeight = 22
+    ClientHeight = 20
     ClientWidth = 230
     Columns = 2
     ItemIndex = 0
@@ -3314,9 +3315,9 @@ object fNfce: TfNfce
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 20
-    Top = 407
-    Width = 671
+    Height = 23
+    Top = 485
+    Width = 687
     Panels = <    
       item
         Width = 350

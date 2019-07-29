@@ -1,7 +1,7 @@
 object fPDV_Rec: TfPDV_Rec
-  Left = 548
+  Left = 378
   Height = 515
-  Top = 119
+  Top = 109
   Width = 682
   Caption = 'Frente De caixa'
   ClientHeight = 515
@@ -10,14 +10,14 @@ object fPDV_Rec: TfPDV_Rec
   OnShow = FormShow
   PopupMenu = PopupMenu1
   Position = poScreenCenter
-  LCLVersion = '2.0.2.0'
+  LCLVersion = '2.0.0.4'
   object GroupBox1: TGroupBox
     Left = 0
     Height = 515
     Top = 0
     Width = 682
     Align = alClient
-    ClientHeight = 497
+    ClientHeight = 495
     ClientWidth = 678
     Color = clGradientActiveCaption
     ParentColor = False
@@ -91,7 +91,7 @@ object fPDV_Rec: TfPDV_Rec
         Left = 16
         Height = 18
         Top = 0
-        Width = 57
+        Width = 58
         Caption = 'Cliente:'
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
@@ -120,11 +120,11 @@ object fPDV_Rec: TfPDV_Rec
     end
     object GroupBox3: TGroupBox
       Left = 120
-      Height = 447
+      Height = 445
       Top = 50
       Width = 446
       Align = alClient
-      ClientHeight = 429
+      ClientHeight = 425
       ClientWidth = 442
       Color = clActiveBorder
       ParentColor = False
@@ -155,7 +155,7 @@ object fPDV_Rec: TfPDV_Rec
         Left = 224
         Height = 18
         Top = 80
-        Width = 78
+        Width = 80
         Caption = '1-Dinheiro'
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
@@ -199,7 +199,7 @@ object fPDV_Rec: TfPDV_Rec
         Left = 8
         Height = 18
         Top = 45
-        Width = 72
+        Width = 69
         Caption = 'Desconto'
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
@@ -238,7 +238,7 @@ object fPDV_Rec: TfPDV_Rec
         Left = 8
         Height = 18
         Top = 8
-        Width = 83
+        Width = 82
         Caption = 'Valor Total'
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
@@ -253,7 +253,7 @@ object fPDV_Rec: TfPDV_Rec
         Left = 8
         Height = 18
         Top = 80
-        Width = 85
+        Width = 88
         Caption = 'Valor Pagar'
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
@@ -266,9 +266,9 @@ object fPDV_Rec: TfPDV_Rec
       end
       object chkPercent: TCheckBox
         Left = 256
-        Height = 17
+        Height = 19
         Top = 40
-        Width = 85
+        Width = 84
         Action = acDescontoPercentual
         TabOrder = 4
       end
@@ -278,13 +278,13 @@ object fPDV_Rec: TfPDV_Rec
         Top = 296
         Width = 416
         Caption = 'Pagamentos'
-        ClientHeight = 102
+        ClientHeight = 100
         ClientWidth = 412
         TabOrder = 5
         OnClick = GroupBox2Click
         object DBGrid1: TDBGrid
           Left = 0
-          Height = 102
+          Height = 100
           Top = 0
           Width = 412
           Align = alClient
@@ -337,7 +337,7 @@ object fPDV_Rec: TfPDV_Rec
         Left = 8
         Height = 18
         Top = 120
-        Width = 80
+        Width = 81
         Caption = 'Valor Pago'
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
@@ -352,7 +352,7 @@ object fPDV_Rec: TfPDV_Rec
         Left = 8
         Height = 18
         Top = 152
-        Width = 68
+        Width = 67
         Caption = 'Restante'
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
@@ -367,7 +367,7 @@ object fPDV_Rec: TfPDV_Rec
         Left = 8
         Height = 18
         Top = 187
-        Width = 44
+        Width = 42
         Caption = 'Troco'
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
@@ -426,7 +426,7 @@ object fPDV_Rec: TfPDV_Rec
         Left = 8
         Height = 18
         Top = 219
-        Width = 62
+        Width = 65
         Caption = 'Parcelas'
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
@@ -440,7 +440,7 @@ object fPDV_Rec: TfPDV_Rec
       end
       object edParcela: TEdit
         Left = 104
-        Height = 21
+        Height = 23
         Top = 216
         Width = 30
         OnChange = edParcelaChange
@@ -470,7 +470,7 @@ object fPDV_Rec: TfPDV_Rec
       end
       object lblStatus: TLabel
         Left = 344
-        Height = 13
+        Height = 15
         Top = 155
         Width = 45
         Caption = 'lblStatus'
@@ -501,7 +501,7 @@ object fPDV_Rec: TfPDV_Rec
       end
       object edCupom: TEdit
         Left = 104
-        Height = 21
+        Height = 23
         Top = 251
         Width = 112
         OnKeyPress = edCupomKeyPress
@@ -512,7 +512,7 @@ object fPDV_Rec: TfPDV_Rec
         Left = 11
         Height = 18
         Top = 251
-        Width = 53
+        Width = 50
         Caption = 'Cupom'
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
@@ -1026,11 +1026,11 @@ object fPDV_Rec: TfPDV_Rec
     end
     object Panel3: TPanel
       Left = 566
-      Height = 447
+      Height = 445
       Top = 50
       Width = 112
       Align = alRight
-      ClientHeight = 447
+      ClientHeight = 445
       ClientWidth = 112
       Color = clGradientInactiveCaption
       ParentColor = False
@@ -1566,11 +1566,11 @@ object fPDV_Rec: TfPDV_Rec
     end
     object Panel1: TPanel
       Left = 0
-      Height = 447
+      Height = 445
       Top = 50
       Width = 120
       Align = alLeft
-      ClientHeight = 447
+      ClientHeight = 445
       ClientWidth = 120
       Color = clGradientInactiveCaption
       ParentColor = False
@@ -2835,10 +2835,10 @@ object fPDV_Rec: TfPDV_Rec
       end
       object cbxModeloPosPrinter: TComboBox
         Left = -2
-        Height = 21
+        Height = 23
         Top = 528
         Width = 189
-        ItemHeight = 13
+        ItemHeight = 15
         Style = csDropDownList
         TabOrder = 6
         Visible = False
@@ -3464,9 +3464,9 @@ object fPDV_Rec: TfPDV_Rec
     end
     object Label2: TLabel
       Left = 10
-      Height = 13
+      Height = 15
       Top = 202
-      Width = 35
+      Width = 34
       Caption = 'Label2'
       ParentColor = False
     end

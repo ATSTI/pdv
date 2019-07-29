@@ -410,7 +410,6 @@ var  N: TACBrPosPrinterModelo;
     X: TSSLXmlSignLib;
 begin
   ACBrNFe1 := TACBrNFe.Create(ACBrNFe1);
-
   //ACBrNFe1.OnTransmitError := ACBrNFe1TransmitError;
   //ACBrNFe1.OnStatusChange := ACBrNFe1StatusChange;
   //ACBrNFe1.OnGerarLog := ACBrNFe1GerarLog;
