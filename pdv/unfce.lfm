@@ -3374,6 +3374,7 @@ object fNfce: TfNfce
     CasasDecimais.vUnCom = 2
     CasasDecimais.MaskqCom = ',0.00'
     CasasDecimais.MaskvUnCom = ',0.00'
+    ACBrNFe = ACBrNFe1
     left = 325
     top = 45
   end
@@ -3423,5 +3424,29 @@ object fNfce: TfNfce
     PastaOutput = 'C:\Integrador\Output\'
     left = 608
     top = 271
+  end
+  object ACBrNFe1: TACBrNFe
+    OnTransmitError = ACBrNFe1TransmitError
+    OnStatusChange = ACBrNFe1StatusChange
+    OnGerarLog = ACBrNFe1GerarLog
+    OnAntesDeAssinar = ACBrNFe1AntesDeAssinar
+    Configuracoes.Geral.SSLLib = libNone
+    Configuracoes.Geral.SSLCryptLib = cryNone
+    Configuracoes.Geral.SSLHttpLib = httpNone
+    Configuracoes.Geral.SSLXmlSignLib = xsNone
+    Configuracoes.Geral.FormatoAlerta = 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.'
+    Configuracoes.Geral.ModeloDF = moNFCe
+    Configuracoes.Geral.VersaoDF = ve400
+    Configuracoes.Geral.VersaoQRCode = veqr200
+    Configuracoes.Arquivos.OrdenacaoPath = <>
+    Configuracoes.Arquivos.SepararPorMes = True
+    Configuracoes.Arquivos.SalvarEvento = True
+    Configuracoes.Arquivos.SalvarApenasNFeProcessadas = True
+    Configuracoes.WebServices.UF = 'SP'
+    Configuracoes.WebServices.AguardarConsultaRet = 0
+    Configuracoes.WebServices.QuebradeLinha = '|'
+    DANFE = ACBrNFeDANFeESCPOS1
+    left = 49
+    top = 144
   end
 end

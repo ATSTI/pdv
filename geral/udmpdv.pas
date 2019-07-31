@@ -286,10 +286,10 @@ begin
   IBCon.Connected:=False;
   sTrans.Params.Text := 'isc_tpb_read_committed';
   //IBCon.CharSet:='WIN1252';
-  path_exe := path_exe + 'conf.ini';
-  if FileExists(path_exe) then
+  //path_exe := path_exe;
+  if FileExists(path_exe  + 'conf.ini') then
   begin
-    conf := TIniFile.Create(path_exe);
+    conf := TIniFile.Create(path_exe + 'conf.ini');
     try
       vstr := conf.ReadString('DATABASE', 'Name', '');
       IBCon.DatabaseName := vstr;
@@ -336,10 +336,11 @@ begin
       conf.free;
     end;
   end;
-  path_exe := path_exe + 'dbxconnections.ini';
-  if FileExists(path_exe) then
+  //path_exe := path_exe + 'dbxconnections.ini';
+  {
+  if FileExists(path_exe + 'dbxconnections.ini') then
   begin
-    conf := TIniFile.Create(path_exe + 'conf.ini');
+    conf := TIniFile.Create(path_exe + 'dbxconnections.ini');
     try
       vstr := conf.ReadString('DATABASE', 'Name', '');
       IBCon.DatabaseName := vstr;
@@ -352,7 +353,7 @@ begin
       conf.free;
     end;
   end;
-
+  }
   sTrans.Active:=True;
   IBCon.Connected:=True;
   sqParametro.Active:=True;

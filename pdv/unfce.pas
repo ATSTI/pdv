@@ -19,6 +19,7 @@ type
   TfNfce = class(TForm)
     ACBrEnterTab1: TACBrEnterTab;
     ACBrIntegrador1: TACBrIntegrador;
+    ACBrNFe1: TACBrNFe;
     ACBrNFeDANFeESCPOS1: TACBrNFeDANFeESCPOS;
     ACBrPosPrinter1: TACBrPosPrinter;
     ACBrSAT1: TACBrSAT;
@@ -114,7 +115,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure RadioGroup2Click(Sender: TObject);
   private
-    ACBrNFe1 : TACBrNFe;
+    //ACBrNFe1 : TACBrNFe;
     total_tributos: Double;
     serie_nfce: Integer;
     num_nfce: Integer;
@@ -231,6 +232,8 @@ begin
   ACBrNFe1.Configuracoes.Geral.CSC := dmPdv.tk;
   ACBrNFe1.Configuracoes.WebServices.TimeOut := 35000;
 
+  ACBrNFe1.DANFE := ACBrNFeDANFeESCPOS1;
+
   //ACBrNFe1.Configuracoes.Geral.SSLLib := libCapicom;
 
   // TODO
@@ -253,6 +256,7 @@ begin
   GravarDadosNF('', '');
   // estou pegando o ultimo numero usado em venda pra nao pular
   memoLog.Lines.Add('Gravando XML');
+  //ACBrNFe1.NotasFiscais.Items[0].GravarXML();
   ACBrNFe1.NotasFiscais.GravarXML();
   memoLog.Lines.Add('Validando');
   ACBrNFe1.NotasFiscais.Validar;
@@ -266,7 +270,13 @@ begin
   if (dmPdv.NFE_Teste = 'N') then
   begin
     memoLog.Lines.Add('Enviando ...');
-    ACBrNFe1.Enviar(vNumLote,True,Sincrono);
+    Try
+      ACBrNFe1.Enviar(vNumLote,True,Sincrono);
+    Except
+      ver_var := IntToStr(ACBrNFe1.WebServices.Retorno.cStat);
+      ShowMessage('Erro para Enviar a NFCe, erro : ' + ver_var);
+      exit;
+    end;
     memoLog.Lines.Add('cStat : ' + IntToStr(ACBrNFe1.WebServices.Retorno.cStat));
     if (ACBrNFe1.WebServices.Retorno.cStat = 100) then
     begin
@@ -409,11 +419,13 @@ var  N: TACBrPosPrinterModelo;
     V: TSSLHttpLib;
     X: TSSLXmlSignLib;
 begin
-  ACBrNFe1 := TACBrNFe.Create(ACBrNFe1);
+  //ACBrNFe1 := TACBrNFe.Create(ACBrNFe1);
+
   //ACBrNFe1.OnTransmitError := ACBrNFe1TransmitError;
   //ACBrNFe1.OnStatusChange := ACBrNFe1StatusChange;
   //ACBrNFe1.OnGerarLog := ACBrNFe1GerarLog;
   //ACBrNFe1.OnAntesDeAssinar := ACBrNFe1AntesDeAssinar;
+  {
   ACBrNFe1.Configuracoes.Geral.SSLLib := libCustom;
   ACBrNFe1.Configuracoes.Geral.SSLCryptLib := cryCapicom;
   ACBrNFe1.Configuracoes.Geral.SSLHttpLib := httpNone;
@@ -428,6 +440,7 @@ begin
   ACBrNFe1.Configuracoes.WebServices.Ambiente := taProducao;
   ACBrNFe1.Configuracoes.WebServices.AguardarConsultaRet := 0;
   ACBrNFe1.Configuracoes.WebServices.QuebradeLinha := '|';
+  }
 
   //ACBrNfe1.OnAntesDeAssinar:=ACBrNFe1AntesDeAssinar(ConteudoXML, docElement,
   //    infElement, SignatureNode, SelectionNamespaces, IdSignature);
