@@ -949,10 +949,14 @@ var contaItens :integer;
   totalNFCe: Double;
   cod_barra: String;
   desconto_rateio: double;
+  desc_rateado: double;
   ncm_str: String;
+  num_itens: Integer;
 begin
   desconto_rateio := 0;
+  desc_rateado := 0;
   totalNFCe := 0;
+  num_itens := 0;
   ACBrNFe1.NotasFiscais.Items[0].nfe.Det.Clear;
   with ACBrNFe1.NotasFiscais.Items[0].NFe do
   begin
@@ -968,8 +972,10 @@ begin
     total_tributos := 0;
     vICMS := 0;
     vBC := 0;
+    num_itens := dmPdv.sqLancamentos.RecordCount;
     while not dmPdv.sqLancamentos.Eof do
     begin
+      num_itens -= 1;
       totalNFCe := totalNFCe + dmPdv.sqLancamentosTOTALITEM.AsFloat;
       contaItens := contaItens + 1;
       vBC += dmPdv.sqLancamentosVLR_BASEICMS.AsVariant;
@@ -1016,11 +1022,17 @@ begin
         Prod.vProd    := dmPdv.sqLancamentosTOTALITEM.AsFloat;
         Prod.vFrete   := 0 ; //dmPdv.sqLancamentosFRETE.AsCurrency;
         Prod.vDesc    := dmPdv.sqLancamentosVALOR_DESCONTO.AsCurrency;
-        if nfce_desconto > 0 then
+        if ((nfce_desconto > 0) and (num_itens = 0)) then
+        begin
+          // jogar diferenca rateio desconto no ultimo item
+          Prod.vDesc      := RoundTo(nfce_desconto - desc_rateado, -2);
+        end;
+        if ((nfce_desconto > 0) and (num_itens > 0)) then
         begin
           desconto_rateio := nfce_desconto/nfce_valor;
           desconto_rateio := dmPdv.sqLancamentosTOTALITEM.AsFloat * desconto_rateio;
           Prod.vDesc      := RoundTo(desconto_rateio, -2);
+          desc_rateado += Prod.vDesc;
         end;
 
         Prod.vOutro   := dmPdv.sqLancamentosVALOR_OUTROS.AsCurrency;
