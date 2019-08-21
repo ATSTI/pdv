@@ -40,16 +40,13 @@ Begin
 end;
 
 function RemoveAcento(Str: string): string;
-const
-ComAcento = 'àâêôûãõáéíóúçüÀÂÊÔÛÃÕÁÉÍÓÚÇÜ';
-SemAcento = 'aaeouaoaeioucuAAEOUAOAEIOUCU';
+type usaAscii = type AnsiString(20127);
 var
- x: Integer;
+  verAcento : String;
 begin;
-  for x := 1 to Length(Str) do
-    if Pos(Str[x],ComAcento) <> 0 then
-       Str[x] := SemAcento[Pos(Str[x], ComAcento)];
-  Result := Str;
+  // 21/08/2019 isto parece ter resolvido
+  verAcento := String(usaAscii(str));
+  result := verAcento;
 end;
 
 function strParaFloat(vlr_st: String): Double;
