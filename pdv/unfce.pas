@@ -10,7 +10,7 @@ uses
   uCertificadoLer, ufrmStatus, ACBrNFe, ACBrNFeDANFeESCPOS, ACBrDANFCeFortesFr,
   pcnConversao, pcnConversaoNFe, ACBrDFeSSL, ACBrPosPrinter, ACBrIntegrador,
   ACBrValidador, ACBrEnterTab, ACBrUtil, ACBrSAT, StrUtils, IniFiles, math,
-  ACBrSATClass, ACBrSATExtratoESCPOS, dateutils, ACBrBase, ACBrDFe;
+  ACBrSATClass, ACBrSATExtratoESCPOS, dateutils, ACBrBase, ACBrDFe, ACBrDFeUtil;
 
 type
 
@@ -721,7 +721,9 @@ begin
   end;
   with ACBrNFe1.NotasFiscais.Add.NFe do
   begin
-    Ide.cNF       := num_nfce; //Caso não seja preenchido será gerado um número aleatório pelo componente
+    //02/09/2019 troquei a linha abaixa
+    //Ide.cNF       := num_nfce; //Caso não seja preenchido será gerado um número aleatório pelo componente
+    Ide.cNF       := GerarCodigoNumerico(num_nfce);
     Ide.natOp     := 'VENDA';
     ////if (chkAvista.Checked) then
       Ide.indPag    := ipVista;
@@ -1151,7 +1153,7 @@ begin
               pICMS := dmPdv.sqLancamentosICMS.AsVariant;                     //ALIQUOTA DO ICMS
               vICMS := dmPdv.sqLancamentosVALOR_ICMS.AsVariant;                  //VALOR DO ICMS
             end;
-            modBCST :=  BCST;                                         //MODO DE BASE DE CALCULO SUBST. TRIBUTÁRIA(4) POR %
+            modBCST := dbisMargemValorAgregado;          //MODO DE BASE DE CALCULO SUBST. TRIBUTÁRIA(4) POR %
             vBCST := 0;
             if (not dmPdv.sqLancamentosICMS_SUBST.IsNull) then
               vBCST :=    dmPdv.sqLancamentosICMS_SUBST.AsVariant;                 //VALOR DA BASE DE CALCULO DA SUBST. TRIBUTÁRIA
