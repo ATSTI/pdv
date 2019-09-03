@@ -425,7 +425,7 @@ object fCTePrincipal: TfCTePrincipal
                 TabOrder = 24
               end
               object edtNumCte15: TEdit
-                Left = 936
+                Left = 927
                 Height = 23
                 Top = 400
                 Width = 288
