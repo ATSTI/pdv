@@ -40,6 +40,7 @@
         <Filename Value="ucteprincipal.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fCTePrincipal"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCtePrincipal"/>
       </Unit1>
