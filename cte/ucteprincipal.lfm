@@ -1,0 +1,8 @@
+object fCTePrincipal: TfCTePrincipal
+  Left = 313
+  Height = 505
+  Top = 127
+  Width = 704
+  Caption = 'CTe - Conhecimento de Transporte Eletrônico'
+  LCLVersion = '2.0.0.4'
+end
