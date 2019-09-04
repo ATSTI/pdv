@@ -29,8 +29,9 @@ object fCTePrincipal: TfCTePrincipal
         Align = alClient
         TabIndex = 0
         TabOrder = 0
-        OnChange = PageControl2Change
         object TabSheet2: TTabSheet
+          Cursor = crHandPoint
+          BorderWidth = 1
           Caption = 'Dados'
           ClientHeight = 473
           ClientWidth = 1251
@@ -98,7 +99,6 @@ object fCTePrincipal: TfCTePrincipal
                   '1 - Rodoviário'
                   '2 - Áereo'
                 )
-                OnClick = rgModalClick
                 TabOrder = 3
               end
               object Label2: TLabel
@@ -165,7 +165,6 @@ object fCTePrincipal: TfCTePrincipal
                   '0 - Sim'
                   '1 - Não'
                 )
-                OnClick = rgModalClick
                 TabOrder = 5
               end
               object rgTipoServico: TRadioGroup
@@ -192,7 +191,6 @@ object fCTePrincipal: TfCTePrincipal
                   '3 - Intermediário'
                   '4 - Conferir no XSD'
                 )
-                OnClick = rgModalClick
                 TabOrder = 6
               end
               object rgTiposCte: TRadioGroup
@@ -218,7 +216,6 @@ object fCTePrincipal: TfCTePrincipal
                   '2 - Anulação de Valores'
                   '3 - Substituição'
                 )
-                OnClick = rgModalClick
                 TabOrder = 7
               end
               object rgFormaEmissao: TRadioGroup
@@ -245,7 +242,6 @@ object fCTePrincipal: TfCTePrincipal
                   '7 - SVC-RS'
                   '8 - SVC-SP'
                 )
-                OnClick = rgModalClick
                 TabOrder = 8
               end
               object edtNumCte2: TEdit
@@ -276,7 +272,6 @@ object fCTePrincipal: TfCTePrincipal
                   'Retrato'
                   'Paisagem'
                 )
-                OnClick = rgModalClick
                 TabOrder = 10
               end
               object rgModal2: TRadioGroup
@@ -301,7 +296,6 @@ object fCTePrincipal: TfCTePrincipal
                   'A Pagar'
                   'Outros'
                 )
-                OnClick = rgModalClick
                 TabOrder = 11
               end
               object StaticText1: TStaticText
@@ -357,7 +351,6 @@ object fCTePrincipal: TfCTePrincipal
                 Align = alCustom
                 Caption = 'Local de Inicio da Prestação'
                 ParentColor = False
-                OnClick = Label7Click
               end
               object edtNumCte7: TEdit
                 Left = 520
@@ -425,12 +418,23 @@ object fCTePrincipal: TfCTePrincipal
                 TabOrder = 24
               end
               object edtNumCte15: TEdit
-                Left = 927
+                Left = 936
                 Height = 23
                 Top = 400
                 Width = 288
                 TabOrder = 25
               end
+              object BitBtn1: TBitBtn
+                Left = 80
+                Height = 30
+                Top = 368
+                Width = 24
+                Caption = '...'
+                TabOrder = 26
+              end
+            end
+            object TabSheet16: TTabSheet
+              Caption = 'TabSheet16'
             end
           end
         end
@@ -438,130 +442,113 @@ object fCTePrincipal: TfCTePrincipal
           Caption = 'Emitente'
           ClientHeight = 473
           ClientWidth = 1251
-          object edtNumCte16: TEdit
-            Left = 232
-            Height = 23
-            Top = 24
-            Width = 760
-            TabOrder = 0
-          end
-          object edtNumCte17: TEdit
+          object edtCodEmitente: TEdit
             Left = 40
             Height = 23
-            Top = 24
+            Top = 48
             Width = 144
-            TabOrder = 1
-          end
-          object Label9: TLabel
-            Left = 232
-            Height = 15
-            Top = 8
-            Width = 47
-            Align = alCustom
-            Caption = 'Emitente'
-            ParentColor = False
+            TabOrder = 0
           end
           object Label10: TLabel
             Left = 40
             Height = 15
-            Top = 8
+            Top = 32
             Width = 39
             Align = alCustom
             Caption = 'Código'
             ParentColor = False
           end
-          object edtNumCte18: TEdit
+          object edtEmitRazao: TEdit
             Left = 40
             Height = 23
-            Top = 72
+            Top = 96
             Width = 664
-            TabOrder = 2
+            TabOrder = 1
           end
           object Label11: TLabel
             Left = 40
             Height = 15
-            Top = 56
+            Top = 80
             Width = 65
             Align = alCustom
             Caption = 'Razão Social'
             ParentColor = False
           end
-          object edtNumCte19: TEdit
+          object edtEmitCNPJ: TEdit
             Left = 728
             Height = 23
-            Top = 72
+            Top = 96
             Width = 224
-            TabOrder = 3
+            TabOrder = 2
           end
           object Label12: TLabel
             Left = 728
             Height = 15
-            Top = 56
+            Top = 80
             Width = 27
             Align = alCustom
             Caption = 'CNPJ'
             ParentColor = False
           end
-          object edtNumCte20: TEdit
+          object edtEmitIE: TEdit
             Left = 968
             Height = 23
-            Top = 72
+            Top = 96
             Width = 224
-            TabOrder = 4
+            TabOrder = 3
           end
           object Label13: TLabel
             Left = 968
             Height = 15
-            Top = 56
+            Top = 80
             Width = 45
             Align = alCustom
             Caption = 'Insc. Est.'
             ParentColor = False
           end
           object Label14: TLabel
-            Left = 40
+            Left = 232
             Height = 15
-            Top = 104
+            Top = 32
             Width = 79
             Align = alCustom
             Caption = 'Nome Fantasia'
             ParentColor = False
           end
-          object edtNumCte21: TEdit
-            Left = 40
+          object edtEmitFantasia: TEdit
+            Left = 232
             Height = 23
-            Top = 120
-            Width = 664
-            TabOrder = 5
+            Top = 48
+            Width = 960
+            TabOrder = 4
           end
           object Label15: TLabel
             Left = 40
             Height = 15
-            Top = 152
+            Top = 176
             Width = 62
             Align = alCustom
             Caption = 'Logradouro'
             ParentColor = False
-            OnClick = Label15Click
           end
-          object edtNumCte22: TEdit
+          object edtEmitLogradouro: TEdit
             Left = 40
             Height = 23
-            Top = 168
+            Top = 192
             Width = 872
-            TabOrder = 6
+            TabOrder = 5
           end
-          object edtNumCte23: TEdit
+          object edtEmitNumero: TEdit
             Left = 968
             Height = 23
-            Top = 168
+            Top = 192
             Width = 224
-            TabOrder = 7
+            TabOrder = 6
           end
           object Label16: TLabel
             Left = 968
             Height = 15
-            Top = 152
+            Top = 176
             Width = 44
             Align = alCustom
             Caption = 'Número'
@@ -570,43 +557,114 @@ object fCTePrincipal: TfCTePrincipal
           object Label17: TLabel
             Left = 40
             Height = 15
-            Top = 200
+            Top = 224
             Width = 77
             Align = alCustom
             Caption = 'Complemento'
             ParentColor = False
           end
-          object edtNumCte24: TEdit
+          object edtEmitComp: TEdit
             Left = 40
             Height = 23
-            Top = 216
+            Top = 240
             Width = 400
-            TabOrder = 8
+            TabOrder = 7
           end
           object Label19: TLabel
             Left = 969
             Height = 15
-            Top = 200
+            Top = 224
             Width = 21
             Align = alCustom
             Caption = 'CEP'
             ParentColor = False
           end
-          object edtNumCte26: TEdit
+          object edtEmitCEP: TEdit
             Left = 968
             Height = 23
-            Top = 216
+            Top = 240
             Width = 224
-            TabOrder = 9
+            TabOrder = 8
           end
           object Label20: TLabel
             Left = 472
             Height = 15
-            Top = 200
+            Top = 224
             Width = 31
             Align = alCustom
             Caption = 'Bairro'
             ParentColor = False
+          end
+          object edtEmitBairro: TEdit
+            Left = 472
+            Height = 23
+            Top = 240
+            Width = 464
+            TabOrder = 9
+          end
+          object edtEmitCodCidade: TEdit
+            Left = 40
+            Height = 23
+            Top = 288
+            Width = 224
+            TabOrder = 10
+          end
+          object Label21: TLabel
+            Left = 42
+            Height = 15
+            Top = 272
+            Width = 52
+            Align = alCustom
+            Caption = 'Cód. IBGE'
+            ParentColor = False
+          end
+          object Label22: TLabel
+            Left = 298
+            Height = 15
+            Top = 272
+            Width = 37
+            Align = alCustom
+            Caption = 'Cidade'
+            ParentColor = False
+          end
+          object edtEmitCidade: TEdit
+            Left = 296
+            Height = 23
+            Top = 288
+            Width = 544
+            TabOrder = 11
+          end
+          object Label23: TLabel
+            Left = 874
+            Height = 15
+            Top = 272
+            Width = 14
+            Align = alCustom
+            Caption = 'UF'
+            ParentColor = False
+          end
+          object edtEmitUF: TEdit
+            Left = 872
+            Height = 23
+            Top = 288
+            Width = 64
+            TabOrder = 12
+          end
+          object Label24: TLabel
+            Left = 970
+            Height = 15
+            Top = 272
+            Width = 45
+            Align = alCustom
+            Caption = 'Telefone'
+            ParentColor = False
+          end
+          object edtEmitFone: TEdit
+            Left = 968
+            Height = 23
+            Top = 288
+            Width = 224
+            TabOrder = 13
           end
         end
         object TabSheet4: TTabSheet
@@ -614,28 +672,30 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabSheet6: TTabSheet
           Caption = 'Remetente'
-          OnContextPopup = TabSheet6ContextPopup
         end
         object TabSheet7: TTabSheet
-          Caption = 'TabSheet7'
+          Caption = 'Expedidor'
         end
         object TabSheet8: TTabSheet
-          Caption = 'TabSheet8'
+          Caption = 'Recebedor'
         end
         object TabSheet9: TTabSheet
-          Caption = 'TabSheet9'
+          Caption = 'Destinatário'
         end
         object TabSheet10: TTabSheet
-          Caption = 'TabSheet10'
+          Caption = 'Serviços e Impostos'
         end
         object TabSheet11: TTabSheet
-          Caption = 'TabSheet11'
+          Caption = 'Documentação Carga'
         end
         object TabSheet12: TTabSheet
-          Caption = 'TabSheet12'
+          Caption = 'Rodoviário'
         end
         object TabSheet13: TTabSheet
-          Caption = 'TabSheet13'
+          Caption = 'Dados Adicionais'
+        end
+        object TabSheet14: TTabSheet
+          Caption = 'CT-e Geradas'
         end
       end
     end
@@ -646,18 +706,25 @@ object fCTePrincipal: TfCTePrincipal
     Top = 529
     Width = 1267
     Align = alBottom
-    Caption = 'Panel1'
+    ClientHeight = 50
+    ClientWidth = 1267
     TabOrder = 1
+    object BitBtn2: TBitBtn
+      Left = 56
+      Height = 30
+      Top = 8
+      Width = 75
+      Caption = 'BitBtn2'
+      TabOrder = 0
+    end
   end
   object Label18: TLabel
     Left = 568
     Height = 15
-    Top = 240
+    Top = 264
     Width = 44
     Align = alCustom
     Caption = 'Número'
     ParentColor = False
-  end
-  object TabSheet14: TTabSheet
   end
 end
