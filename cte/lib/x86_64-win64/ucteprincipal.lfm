@@ -1,20 +1,20 @@
 object fCTePrincipal: TfCTePrincipal
-  Left = 21
-  Height = 623
-  Top = 137
-  Width = 1280
+  Left = 19
+  Height = 647
+  Top = 44
+  Width = 1305
   Caption = 'CTe - Conhecimento de Transporte Eletrônico'
-  ClientHeight = 623
-  ClientWidth = 1280
+  ClientHeight = 647
+  ClientWidth = 1305
   LCLVersion = '2.0.4.0'
   object Panel1: TPanel
     Left = 0
     Height = 50
-    Top = 573
-    Width = 1280
+    Top = 597
+    Width = 1305
     Align = alBottom
     ClientHeight = 50
-    ClientWidth = 1280
+    ClientWidth = 1305
     TabOrder = 0
     object btnIncCte: TBitBtn
       Left = 264
@@ -92,12 +92,12 @@ object fCTePrincipal: TfCTePrincipal
   end
   object PageControl1: TPageControl
     Left = 0
-    Height = 573
+    Height = 597
     Top = 0
-    Width = 1280
-    ActivePage = TabSheet17
+    Width = 1305
+    ActivePage = TabSheet20
     Align = alClient
-    TabIndex = 3
+    TabIndex = 5
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = 'CT-e'
@@ -108,9 +108,9 @@ object fCTePrincipal: TfCTePrincipal
         Height = 545
         Top = 0
         Width = 1272
-        ActivePage = TabSheet11
+        ActivePage = TabSheet2
         Align = alClient
-        TabIndex = 8
+        TabIndex = 0
         TabOrder = 0
         object TabSheet2: TTabSheet
           Cursor = crHandPoint
@@ -123,9 +123,9 @@ object fCTePrincipal: TfCTePrincipal
             Height = 517
             Top = 0
             Width = 1264
-            ActivePage = TabSheet16
+            ActivePage = TabSheet5
             Align = alClient
-            TabIndex = 1
+            TabIndex = 0
             TabOrder = 0
             object TabSheet5: TTabSheet
               Caption = 'Dados CT-e'
@@ -497,7 +497,7 @@ object fCTePrincipal: TfCTePrincipal
               object edtCaracAdTrans: TEdit
                 Left = 8
                 Height = 23
-                Top = 40
+                Top = 32
                 Width = 1216
                 TabOrder = 0
               end
@@ -512,7 +512,7 @@ object fCTePrincipal: TfCTePrincipal
               object StaticText3: TStaticText
                 Left = 8
                 Height = 16
-                Top = 96
+                Top = 72
                 Width = 328
                 Caption = 'Característica Adicional do Serviço '
                 TabOrder = 2
@@ -520,14 +520,14 @@ object fCTePrincipal: TfCTePrincipal
               object edtCaracAdServ: TEdit
                 Left = 8
                 Height = 23
-                Top = 120
+                Top = 88
                 Width = 1216
                 TabOrder = 3
               end
               object StaticText4: TStaticText
                 Left = 8
                 Height = 16
-                Top = 176
+                Top = 128
                 Width = 328
                 Caption = 'Funcionário Emissor do CT-e'
                 TabOrder = 4
@@ -535,14 +535,14 @@ object fCTePrincipal: TfCTePrincipal
               object edtFuncEmi: TEdit
                 Left = 8
                 Height = 23
-                Top = 200
+                Top = 144
                 Width = 1216
                 TabOrder = 5
               end
               object rgRetira1: TRadioGroup
                 Left = 8
                 Height = 45
-                Top = 264
+                Top = 184
                 Width = 208
                 AutoFill = True
                 Caption = 'Retira'
@@ -565,7 +565,7 @@ object fCTePrincipal: TfCTePrincipal
               object lblDetRetira: TStaticText
                 Left = 8
                 Height = 16
-                Top = 328
+                Top = 240
                 Width = 248
                 Caption = 'Detalhes da Retirada'
                 TabOrder = 7
@@ -573,9 +573,24 @@ object fCTePrincipal: TfCTePrincipal
               object memDetRetira: TMemo
                 Left = 8
                 Height = 78
-                Top = 346
+                Top = 256
                 Width = 1216
                 TabOrder = 8
+              end
+              object memxObs: TMemo
+                Left = 8
+                Height = 112
+                Top = 360
+                Width = 1216
+                TabOrder = 9
+              end
+              object lblDetRetira1: TStaticText
+                Left = 8
+                Height = 16
+                Top = 344
+                Width = 248
+                Caption = 'Informações Gerais'
+                TabOrder = 10
               end
             end
           end
@@ -2122,7 +2137,7 @@ object fCTePrincipal: TfCTePrincipal
           object StaticText11: TStaticText
             Left = 32
             Height = 16
-            Top = 56
+            Top = 47
             Width = 216
             Caption = 'Valor Total a Receber'
             TabOrder = 3
@@ -2130,7 +2145,7 @@ object fCTePrincipal: TfCTePrincipal
           object dbValReceber: TEdit
             Left = 336
             Height = 23
-            Top = 47
+            Top = 40
             Width = 224
             OnChange = dbValInfCargaChange
             TabOrder = 4
@@ -2138,7 +2153,7 @@ object fCTePrincipal: TfCTePrincipal
           object StaticText12: TStaticText
             Left = 32
             Height = 16
-            Top = 95
+            Top = 80
             Width = 216
             Caption = 'Valor Total dos Tributos'
             TabOrder = 5
@@ -2146,7 +2161,7 @@ object fCTePrincipal: TfCTePrincipal
           object dbValTotTri: TEdit
             Left = 336
             Height = 23
-            Top = 88
+            Top = 72
             Width = 224
             OnChange = dbValInfCargaChange
             TabOrder = 6
@@ -2886,9 +2901,6 @@ object fCTePrincipal: TfCTePrincipal
             TabOrder = 4
           end
         end
-        object TabSheet13: TTabSheet
-          Caption = 'Dados Adicionais'
-        end
       end
     end
     object TabSheet14: TTabSheet
@@ -3558,8 +3570,17 @@ object fCTePrincipal: TfCTePrincipal
     end
     object TabSheet20: TTabSheet
       Caption = 'Configurações'
-      ClientHeight = 545
-      ClientWidth = 1272
+      ClientHeight = 569
+      ClientWidth = 1297
+      object Label133: TLabel
+        Left = 798
+        Height = 15
+        Top = 64
+        Width = 31
+        Align = alCustom
+        Caption = 'SMTP'
+        ParentColor = False
+      end
       object GroupBox3: TGroupBox
         Left = 48
         Height = 72
@@ -3569,13 +3590,226 @@ object fCTePrincipal: TfCTePrincipal
         ClientHeight = 52
         ClientWidth = 357
         TabOrder = 0
-        object SpeedButton1: TSpeedButton
+        object sbtnCaminhoCert: TSpeedButton
           Left = 8
           Height = 27
           Top = 8
           Width = 320
+          Color = clWhite
+        end
+      end
+      object edtSmtpHost: TEdit
+        Left = 800
+        Height = 23
+        Top = 80
+        Width = 216
+        TabOrder = 1
+      end
+      object edtProxyPorta: TEdit
+        Left = 1032
+        Height = 23
+        Top = 80
+        Width = 120
+        TabOrder = 2
+      end
+      object Label134: TLabel
+        Left = 1032
+        Height = 15
+        Top = 64
+        Width = 28
+        Align = alCustom
+        Caption = 'Porta'
+        ParentColor = False
+      end
+      object edtProxySenha: TEdit
+        Left = 1032
+        Height = 23
+        Top = 136
+        Width = 120
+        TabOrder = 3
+      end
+      object Label135: TLabel
+        Left = 1032
+        Height = 15
+        Top = 120
+        Width = 32
+        Align = alCustom
+        Caption = 'Senha'
+        ParentColor = False
+      end
+      object Label136: TLabel
+        Left = 800
+        Height = 15
+        Top = 120
+        Width = 29
+        Align = alCustom
+        Caption = 'Email'
+        ParentColor = False
+      end
+      object edtProxyUser: TEdit
+        Left = 800
+        Height = 23
+        Top = 136
+        Width = 216
+        TabOrder = 4
+      end
+      object edtEmailAssunto1: TEdit
+        Left = 800
+        Height = 23
+        Top = 184
+        Width = 352
+        TabOrder = 5
+      end
+      object edtEmailAssunto: TLabel
+        Left = 800
+        Height = 15
+        Top = 168
+        Width = 92
+        Align = alCustom
+        Caption = 'Assunto do Email'
+        ParentColor = False
+      end
+      object cbEmailSSL: TCheckBox
+        Left = 802
+        Height = 19
+        Top = 215
+        Width = 169
+        Caption = 'SMTP Exige Conexão Segura'
+        TabOrder = 6
+      end
+      object mmEmailMsg: TMemo
+        Left = 800
+        Height = 179
+        Top = 248
+        Width = 352
+        DoubleBuffered = True
+        OnChange = mmEmailMsgChange
+        ParentDoubleBuffered = False
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 7
+      end
+      object DBEdit1: TEdit
+        Left = 56
+        Height = 23
+        Top = 392
+        Width = 56
+        TabOrder = 8
+      end
+      object DBEdit2: TEdit
+        Left = 120
+        Height = 23
+        Top = 392
+        Width = 128
+        TabOrder = 9
+      end
+      object Label137: TLabel
+        Left = 56
+        Height = 15
+        Top = 376
+        Width = 25
+        Align = alCustom
+        Caption = 'Série'
+        ParentColor = False
+      end
+      object Label138: TLabel
+        Left = 120
+        Height = 15
+        Top = 376
+        Width = 65
+        Align = alCustom
+        Caption = 'Último CT-e'
+        ParentColor = False
+      end
+      object Label139: TLabel
+        Left = 256
+        Height = 15
+        Top = 376
+        Width = 41
+        Align = alCustom
+        Caption = 'Modelo'
+        ParentColor = False
+      end
+      object DBEdit3: TEdit
+        Left = 256
+        Height = 23
+        Top = 392
+        Width = 72
+        TabOrder = 10
+      end
+      object Button27: TButton
+        Left = 56
+        Height = 25
+        Top = 416
+        Width = 272
+        Caption = 'Corrigir'
+        TabOrder = 11
+      end
+      object rgTipoAmb: TRadioGroup
+        Left = 56
+        Height = 45
+        Top = 224
+        Width = 282
+        AutoFill = True
+        Caption = 'Selecione o Ambiente de Destino'
+        ChildSizing.LeftRightSpacing = 6
+        ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+        ChildSizing.EnlargeVertical = crsHomogenousChildResize
+        ChildSizing.ShrinkHorizontal = crsScaleChilds
+        ChildSizing.ShrinkVertical = crsScaleChilds
+        ChildSizing.Layout = cclLeftToRightThenTopToBottom
+        ChildSizing.ControlsPerLine = 2
+        ClientHeight = 25
+        ClientWidth = 278
+        Columns = 2
+        Items.Strings = (
+          'Produção'
+          'Homologação'
+        )
+        TabOrder = 12
+      end
+      object GroupBox4: TGroupBox
+        Left = 48
+        Height = 62
+        Top = 296
+        Width = 283
+        Caption = 'Selecione a UF SEFAZ Autorizadora'
+        ClientHeight = 42
+        ClientWidth = 279
+        TabOrder = 13
+        object cbUF: TComboBox
+          Left = 8
+          Height = 23
+          Top = 8
+          Width = 264
+          ItemHeight = 15
+          TabOrder = 0
+        end
+      end
+      object GroupBox7: TGroupBox
+        Left = 48
+        Height = 72
+        Top = 128
+        Width = 361
+        Caption = 'Logomarca'
+        ClientHeight = 52
+        ClientWidth = 357
+        TabOrder = 14
+        object sbtnLogoMarca: TSpeedButton
+          Left = 8
+          Height = 27
+          Top = 8
+          Width = 320
+          Color = clWhite
         end
       end
     end
+  end
+  object SpeedButton3: TSpeedButton
+    Left = 8
+    Height = 27
+    Top = 8
+    Width = 320
+    Color = clWhite
   end
 end

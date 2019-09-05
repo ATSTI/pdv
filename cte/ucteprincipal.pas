@@ -43,6 +43,7 @@ type
     btnEnviarEmail: TButton;
     btnValidarXML: TButton;
     btnCC: TButton;
+    Button27: TButton;
     Button30: TButton;
     btnImprimirInut: TButton;
     btnImprimirEvento: TButton;
@@ -63,6 +64,7 @@ type
     cbEmailSSL: TCheckBox;
     combICMSDevido: TCheckBox;
     combCodSitTrib: TComboBox;
+    cbUF: TComboBox;
     combOutrosDocs: TComboBox;
     DBGrid1: TDBGrid;
     DBGrid2: TDBGrid;
@@ -90,6 +92,9 @@ type
     edtEmitNumero1: TEdit;
     edtEmitRazao1: TEdit;
     edtEmitUF1: TEdit;
+    DBEdit1: TEdit;
+    DBEdit2: TEdit;
+    DBEdit3: TEdit;
     edtNumCte10: TEdit;
     edtNumCte11: TEdit;
     edtNumCte12: TEdit;
@@ -112,6 +117,7 @@ type
     GroupBox2: TGroupBox;
     GroupBox3: TGroupBox;
     GroupBox4: TGroupBox;
+    GroupBox7: TGroupBox;
     Label105: TLabel;
     Label106: TLabel;
     Label107: TLabel;
@@ -145,12 +151,18 @@ type
     Label135: TLabel;
     Label136: TLabel;
     edtEmailAssunto: TLabel;
+    Label137: TLabel;
+    Label138: TLabel;
+    Label139: TLabel;
     Label9: TLabel;
     lblDetRetira1: TStaticText;
     mmEmailMsg: TMemo;
     memxObs: TMemo;
+    rgTipoAmb: TRadioGroup;
     rgRodLotacao: TRadioGroup;
-    SpeedButton1: TSpeedButton;
+    sbtnCaminhoCert: TSpeedButton;
+    SpeedButton3: TSpeedButton;
+    sbtnLogoMarca: TSpeedButton;
     TabSheet12: TTabSheet;
     TabSheet15: TTabSheet;
     TabSheet17: TTabSheet;

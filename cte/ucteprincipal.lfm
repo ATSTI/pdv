@@ -1,20 +1,20 @@
 object fCTePrincipal: TfCTePrincipal
-  Left = 10
-  Height = 623
-  Top = 121
-  Width = 1280
+  Left = 19
+  Height = 647
+  Top = 44
+  Width = 1305
   Caption = 'CTe - Conhecimento de Transporte Eletrônico'
-  ClientHeight = 623
-  ClientWidth = 1280
+  ClientHeight = 647
+  ClientWidth = 1305
   LCLVersion = '2.0.4.0'
   object Panel1: TPanel
     Left = 0
     Height = 50
-    Top = 573
-    Width = 1280
+    Top = 597
+    Width = 1305
     Align = alBottom
     ClientHeight = 50
-    ClientWidth = 1280
+    ClientWidth = 1305
     TabOrder = 0
     object btnIncCte: TBitBtn
       Left = 264
@@ -92,9 +92,9 @@ object fCTePrincipal: TfCTePrincipal
   end
   object PageControl1: TPageControl
     Left = 0
-    Height = 573
+    Height = 597
     Top = 0
-    Width = 1280
+    Width = 1305
     ActivePage = TabSheet20
     Align = alClient
     TabIndex = 5
@@ -123,9 +123,9 @@ object fCTePrincipal: TfCTePrincipal
             Height = 517
             Top = 0
             Width = 1264
-            ActivePage = TabSheet16
+            ActivePage = TabSheet5
             Align = alClient
-            TabIndex = 1
+            TabIndex = 0
             TabOrder = 0
             object TabSheet5: TTabSheet
               Caption = 'Dados CT-e'
@@ -3570,8 +3570,8 @@ object fCTePrincipal: TfCTePrincipal
     end
     object TabSheet20: TTabSheet
       Caption = 'Configurações'
-      ClientHeight = 545
-      ClientWidth = 1272
+      ClientHeight = 569
+      ClientWidth = 1297
       object Label133: TLabel
         Left = 798
         Height = 15
@@ -3590,34 +3590,27 @@ object fCTePrincipal: TfCTePrincipal
         ClientHeight = 52
         ClientWidth = 357
         TabOrder = 0
-        object SpeedButton1: TSpeedButton
+        object sbtnCaminhoCert: TSpeedButton
           Left = 8
           Height = 27
           Top = 8
           Width = 320
+          Color = clWhite
         end
-      end
-      object GroupBox4: TGroupBox
-        Left = 336
-        Height = 320
-        Top = 160
-        Width = 324
-        Caption = 'Email'
-        TabOrder = 1
       end
       object edtSmtpHost: TEdit
         Left = 800
         Height = 23
         Top = 80
         Width = 216
-        TabOrder = 2
+        TabOrder = 1
       end
       object edtProxyPorta: TEdit
         Left = 1032
         Height = 23
         Top = 80
         Width = 120
-        TabOrder = 3
+        TabOrder = 2
       end
       object Label134: TLabel
         Left = 1032
@@ -3633,7 +3626,7 @@ object fCTePrincipal: TfCTePrincipal
         Height = 23
         Top = 136
         Width = 120
-        TabOrder = 4
+        TabOrder = 3
       end
       object Label135: TLabel
         Left = 1032
@@ -3658,14 +3651,14 @@ object fCTePrincipal: TfCTePrincipal
         Height = 23
         Top = 136
         Width = 216
-        TabOrder = 5
+        TabOrder = 4
       end
       object edtEmailAssunto1: TEdit
         Left = 800
         Height = 23
         Top = 184
         Width = 352
-        TabOrder = 6
+        TabOrder = 5
       end
       object edtEmailAssunto: TLabel
         Left = 800
@@ -3682,7 +3675,7 @@ object fCTePrincipal: TfCTePrincipal
         Top = 215
         Width = 169
         Caption = 'SMTP Exige Conexão Segura'
-        TabOrder = 7
+        TabOrder = 6
       end
       object mmEmailMsg: TMemo
         Left = 800
@@ -3690,15 +3683,133 @@ object fCTePrincipal: TfCTePrincipal
         Top = 248
         Width = 352
         DoubleBuffered = True
-        Lines.Strings = (
-          'mmEmailMsg'
-        )
         OnChange = mmEmailMsgChange
         ParentDoubleBuffered = False
         ParentShowHint = False
         ShowHint = True
+        TabOrder = 7
+      end
+      object DBEdit1: TEdit
+        Left = 56
+        Height = 23
+        Top = 392
+        Width = 56
         TabOrder = 8
       end
+      object DBEdit2: TEdit
+        Left = 120
+        Height = 23
+        Top = 392
+        Width = 128
+        TabOrder = 9
+      end
+      object Label137: TLabel
+        Left = 56
+        Height = 15
+        Top = 376
+        Width = 25
+        Align = alCustom
+        Caption = 'Série'
+        ParentColor = False
+      end
+      object Label138: TLabel
+        Left = 120
+        Height = 15
+        Top = 376
+        Width = 65
+        Align = alCustom
+        Caption = 'Último CT-e'
+        ParentColor = False
+      end
+      object Label139: TLabel
+        Left = 256
+        Height = 15
+        Top = 376
+        Width = 41
+        Align = alCustom
+        Caption = 'Modelo'
+        ParentColor = False
+      end
+      object DBEdit3: TEdit
+        Left = 256
+        Height = 23
+        Top = 392
+        Width = 72
+        TabOrder = 10
+      end
+      object Button27: TButton
+        Left = 56
+        Height = 25
+        Top = 416
+        Width = 272
+        Caption = 'Corrigir'
+        TabOrder = 11
+      end
+      object rgTipoAmb: TRadioGroup
+        Left = 56
+        Height = 45
+        Top = 224
+        Width = 282
+        AutoFill = True
+        Caption = 'Selecione o Ambiente de Destino'
+        ChildSizing.LeftRightSpacing = 6
+        ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+        ChildSizing.EnlargeVertical = crsHomogenousChildResize
+        ChildSizing.ShrinkHorizontal = crsScaleChilds
+        ChildSizing.ShrinkVertical = crsScaleChilds
+        ChildSizing.Layout = cclLeftToRightThenTopToBottom
+        ChildSizing.ControlsPerLine = 2
+        ClientHeight = 25
+        ClientWidth = 278
+        Columns = 2
+        Items.Strings = (
+          'Produção'
+          'Homologação'
+        )
+        TabOrder = 12
+      end
+      object GroupBox4: TGroupBox
+        Left = 48
+        Height = 62
+        Top = 296
+        Width = 283
+        Caption = 'Selecione a UF SEFAZ Autorizadora'
+        ClientHeight = 42
+        ClientWidth = 279
+        TabOrder = 13
+        object cbUF: TComboBox
+          Left = 8
+          Height = 23
+          Top = 8
+          Width = 264
+          ItemHeight = 15
+          TabOrder = 0
+        end
+      end
+      object GroupBox7: TGroupBox
+        Left = 48
+        Height = 72
+        Top = 128
+        Width = 361
+        Caption = 'Logomarca'
+        ClientHeight = 52
+        ClientWidth = 357
+        TabOrder = 14
+        object sbtnLogoMarca: TSpeedButton
+          Left = 8
+          Height = 27
+          Top = 8
+          Width = 320
+          Color = clWhite
+        end
+      end
     end
+  end
+  object SpeedButton3: TSpeedButton
+    Left = 8
+    Height = 27
+    Top = 8
+    Width = 320
+    Color = clWhite
   end
 end
