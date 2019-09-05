@@ -14,19 +14,181 @@ type
 
   TfCTePrincipal = class(TForm)
     BitBtn1: TBitBtn;
-    BitBtn2: TBitBtn;
+    btnPreVisu: TBitBtn;
+    BitBtn11: TBitBtn;
+    BitBtn12: TBitBtn;
+    BitBtn13: TBitBtn;
+    BitBtn14: TBitBtn;
+    BitBtn15: TBitBtn;
+    BitBtn20: TBitBtn;
+    BitBtn21: TBitBtn;
+    BitBtn22: TBitBtn;
+    btnEditarCte: TBitBtn;
+    BitBtn16: TBitBtn;
+    BitBtn17: TBitBtn;
+    BitBtn18: TBitBtn;
+    BitBtn19: TBitBtn;
+    btnIncCte: TBitBtn;
     BitBtn3: TBitBtn;
     BitBtn4: TBitBtn;
-    edtCaracAdTrans1: TEdit;
-    edtCaracAdTrans2: TEdit;
-    edtCaracAdTrans3: TEdit;
+    BitBtn5: TBitBtn;
+    btnListarCte: TBitBtn;
+    btnDuplicar: TBitBtn;
+    BitBtn8: TBitBtn;
+    BitBtn9: TBitBtn;
+    btnImportarXML: TButton;
+    btnGerarPDFEvento: TButton;
+    btnEnviarEventoEmail: TButton;
+    btnGerarPDF: TButton;
+    btnEnviarEmail: TButton;
+    btnValidarXML: TButton;
+    btnCC: TButton;
+    Button30: TButton;
+    btnImprimirInut: TButton;
+    btnImprimirEvento: TButton;
+    btnImprimir: TButton;
+    btnImportarXML1: TButton;
+    btnConsultar: TButton;
+    btnConsultarChave: TButton;
+    btnEnvEPEC: TButton;
+    btnConsCad: TButton;
+    btnCriarEnviar: TButton;
+    btnConsultarRecibo: TButton;
+    btnStatusServ: TButton;
+    btnInutilizar: TButton;
+    btnGerar: TButton;
+    btnAtualizarBD: TButton;
+    btnGerarPDFInut: TButton;
+    Button9: TButton;
+    cbEmailSSL: TCheckBox;
+    combICMSDevido: TCheckBox;
+    combCodSitTrib: TComboBox;
+    combOutrosDocs: TComboBox;
+    DBGrid1: TDBGrid;
+    DBGrid2: TDBGrid;
+    DBGrid3: TDBGrid;
+    dgGridCTE: TDBGrid;
+    dbValInfCarga: TEdit;
+    dbValTotPrest: TEdit;
+    calValB: TEdit;
+    edtAntCNPJ: TEdit;
+    edtAntIE: TEdit;
+    edtAntNome: TEdit;
+    edtAntCHCTE: TEdit;
+    edtAntUF: TEdit;
+    edtCodEmitente1: TEdit;
+    edtEmitBairro1: TEdit;
+    edtEmitCEP1: TEdit;
+    edtEmitCidade1: TEdit;
+    edtEmitCNPJ1: TEdit;
+    edtEmitCodCidade1: TEdit;
+    edtEmitComp1: TEdit;
+    edtEmitFantasia1: TEdit;
+    edtEmitFone1: TEdit;
+    edtEmitIE1: TEdit;
+    edtEmitLogradouro1: TEdit;
+    edtEmitNumero1: TEdit;
+    edtEmitRazao1: TEdit;
+    edtEmitUF1: TEdit;
+    edtNumCte10: TEdit;
+    edtNumCte11: TEdit;
+    edtNumCte12: TEdit;
+    edtNumCte13: TEdit;
+    edtNumCte15: TEdit;
+    edtNumCte16: TEdit;
+    edtNumCte17: TEdit;
+    edtNumCte18: TEdit;
+    edtNumCte19: TEdit;
+    edtSmtpHost: TEdit;
+    edtRodRNTRC: TEdit;
+    edtNumCte14: TEdit;
+    edtOutrosDesc: TEdit;
+    edtOutrosNum: TEdit;
+    edtProxyPorta: TEdit;
+    edtProxySenha: TEdit;
+    edtProxyUser: TEdit;
+    edtEmailAssunto1: TEdit;
+    GroupBox1: TGroupBox;
+    GroupBox2: TGroupBox;
+    GroupBox3: TGroupBox;
+    GroupBox4: TGroupBox;
+    Label105: TLabel;
+    Label106: TLabel;
+    Label107: TLabel;
+    Label108: TLabel;
+    Label109: TLabel;
+    Label110: TLabel;
+    Label111: TLabel;
+    Label112: TLabel;
+    Label113: TLabel;
+    Label114: TLabel;
+    Label115: TLabel;
+    Label116: TLabel;
+    Label117: TLabel;
+    Label118: TLabel;
+    Label119: TLabel;
+    Label120: TLabel;
+    Label121: TLabel;
+    Label122: TLabel;
+    Label123: TLabel;
+    Label124: TLabel;
+    Label125: TLabel;
+    Label126: TLabel;
+    Label127: TLabel;
+    Label128: TLabel;
+    Label129: TLabel;
+    Label130: TLabel;
+    Label131: TLabel;
+    Label132: TLabel;
+    Label133: TLabel;
+    Label134: TLabel;
+    Label135: TLabel;
+    Label136: TLabel;
+    edtEmailAssunto: TLabel;
+    Label9: TLabel;
+    lblDetRetira1: TStaticText;
+    mmEmailMsg: TMemo;
+    memxObs: TMemo;
+    rgRodLotacao: TRadioGroup;
+    SpeedButton1: TSpeedButton;
+    TabSheet12: TTabSheet;
+    TabSheet15: TTabSheet;
+    TabSheet17: TTabSheet;
+    valOutrosVal: TEdit;
+    dataOutrosEmi: TEdit;
+    Label100: TLabel;
+    Label101: TLabel;
+    Label102: TLabel;
+    Label103: TLabel;
+    Label104: TLabel;
+    Label95: TLabel;
+    Label96: TLabel;
+    Label97: TLabel;
+    Label98: TLabel;
+    Label99: TLabel;
+    TabSheet14: TTabSheet;
+    valAliIn: TEdit;
+    StaticText30: TStaticText;
+    valpICMS: TEdit;
+    dbValInfCarga13: TEdit;
+    valAliInter: TEdit;
+    valIMCSPartF: TEdit;
+    dbValInfCarga16: TEdit;
+    dbValInfCarga17: TEdit;
+    valICMSPartI: TEdit;
+    dbValReceber: TEdit;
+    dbValTotTri: TEdit;
+    valpRedBC: TEdit;
+    valvBC: TEdit;
+    valvICMS: TEdit;
+    valvCred: TEdit;
+    edtProPred: TEdit;
+    edtOutCat: TEdit;
     edtCodEmitente: TEdit;
     edtEmitBairro: TEdit;
     edtCaracAdTrans: TEdit;
     edtCaracAdServ: TEdit;
     edtFuncEmi: TEdit;
-    edtNumCte10: TEdit;
-    edtNumCte21: TEdit;
     edtRecBairro: TEdit;
     edtDestBairro: TEdit;
     edtRecBusca: TEdit;
@@ -214,13 +376,13 @@ type
     Label92: TLabel;
     Label93: TLabel;
     Label94: TLabel;
-    memDetRetira: TStaticText;
-    memDetRetira1: TStaticText;
+    lblDetRetira: TStaticText;
+    memDetRetira: TMemo;
+    memDetRetira1: TMemo;
     PageControl1: TPageControl;
     PageControl2: TPageControl;
     PageControl3: TPageControl;
     PageControl4: TPageControl;
-    PageControl5: TPageControl;
     Panel1: TPanel;
     rgFormaEmissao: TRadioGroup;
     rgGlobalizado: TRadioGroup;
@@ -229,7 +391,6 @@ type
     rgModal2: TRadioGroup;
     rgDest: TRadioGroup;
     rgRetira1: TRadioGroup;
-    rgRetira2: TRadioGroup;
     rgTiposCte: TRadioGroup;
     rgTipoServico: TRadioGroup;
     rgRec: TRadioGroup;
@@ -237,24 +398,40 @@ type
     rgTipoServico2: TRadioGroup;
     rgTipoServico3: TRadioGroup;
     StaticText1: TStaticText;
+    StaticText10: TStaticText;
+    StaticText11: TStaticText;
+    StaticText12: TStaticText;
+    StaticText13: TStaticText;
+    StaticText14: TStaticText;
+    StaticText15: TStaticText;
+    StaticText16: TStaticText;
+    StaticText18: TStaticText;
+    StaticText19: TStaticText;
     StaticText2: TStaticText;
+    StaticText20: TStaticText;
+    StaticText21: TStaticText;
+    StaticText22: TStaticText;
+    StaticText23: TStaticText;
+    StaticText24: TStaticText;
+    StaticText25: TStaticText;
+    StaticText26: TStaticText;
+    StaticText27: TStaticText;
+    StaticText28: TStaticText;
+    StaticText29: TStaticText;
     StaticText3: TStaticText;
     StaticText4: TStaticText;
-    StaticText6: TStaticText;
     StaticText7: TStaticText;
+    StaticText8: TStaticText;
+    StaticText9: TStaticText;
     TabSheet1: TTabSheet;
     TabSheet10: TTabSheet;
     TabSheet11: TTabSheet;
-    TabSheet12: TTabSheet;
-    TabSheet13: TTabSheet;
-    TabSheet14: TTabSheet;
-    TabSheet15: TTabSheet;
     TabSheet16: TTabSheet;
-    TabSheet17: TTabSheet;
     TabSheet18: TTabSheet;
     TabSheet19: TTabSheet;
     TabSheet2: TTabSheet;
     TabSheet20: TTabSheet;
+    TabSheet21: TTabSheet;
     TabSheet22: TTabSheet;
     TabSheet3: TTabSheet;
     TabSheet4: TTabSheet;
@@ -263,7 +440,19 @@ type
     TabSheet7: TTabSheet;
     TabSheet8: TTabSheet;
     TabSheet9: TTabSheet;
+    procedure BitBtn20Click(Sender: TObject);
+    procedure btnStatusServClick(Sender: TObject);
+    procedure Button11Click(Sender: TObject);
+    procedure dbValInfCargaChange(Sender: TObject);
+    procedure edtCodEmitente1Change(Sender: TObject);
+    procedure mmEmailMsgChange(Sender: TObject);
+    procedure StaticText13Click(Sender: TObject);
+    procedure StaticText6Click(Sender: TObject);
     procedure StaticText7Click(Sender: TObject);
+    procedure TabSheet12ContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
+    procedure TabSheet22ContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
   private
 
   public
@@ -284,6 +473,58 @@ implementation
 
 
 procedure TfCTePrincipal.StaticText7Click(Sender: TObject);
+begin
+
+end;
+
+procedure TfCTePrincipal.TabSheet12ContextPopup(Sender: TObject;
+  MousePos: TPoint; var Handled: Boolean);
+begin
+
+end;
+
+procedure TfCTePrincipal.TabSheet22ContextPopup(Sender: TObject;
+  MousePos: TPoint; var Handled: Boolean);
+begin
+
+end;
+
+procedure TfCTePrincipal.StaticText6Click(Sender: TObject);
+begin
+
+end;
+
+procedure TfCTePrincipal.dbValInfCargaChange(Sender: TObject);
+begin
+
+end;
+
+procedure TfCTePrincipal.BitBtn20Click(Sender: TObject);
+begin
+
+end;
+
+procedure TfCTePrincipal.btnStatusServClick(Sender: TObject);
+begin
+
+end;
+
+procedure TfCTePrincipal.Button11Click(Sender: TObject);
+begin
+
+end;
+
+procedure TfCTePrincipal.edtCodEmitente1Change(Sender: TObject);
+begin
+
+end;
+
+procedure TfCTePrincipal.mmEmailMsgChange(Sender: TObject);
+begin
+
+end;
+
+procedure TfCTePrincipal.StaticText13Click(Sender: TObject);
 begin
 
 end;

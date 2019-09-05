@@ -1,28 +1,84 @@
 object fCTePrincipal: TfCTePrincipal
-  Left = 19
-  Height = 579
-  Top = 102
-  Width = 1267
+  Left = 21
+  Height = 623
+  Top = 137
+  Width = 1280
   Caption = 'CTe - Conhecimento de Transporte Eletrônico'
-  ClientHeight = 579
-  ClientWidth = 1267
+  ClientHeight = 623
+  ClientWidth = 1280
   LCLVersion = '2.0.4.0'
   object Panel1: TPanel
     Left = 0
     Height = 50
-    Top = 529
-    Width = 1267
+    Top = 573
+    Width = 1280
     Align = alBottom
     ClientHeight = 50
-    ClientWidth = 1267
+    ClientWidth = 1280
     TabOrder = 0
-    object BitBtn2: TBitBtn
-      Left = 56
+    object btnIncCte: TBitBtn
+      Left = 264
       Height = 30
       Top = 8
       Width = 75
-      Caption = 'BitBtn2'
+      Caption = 'Incluir'
       TabOrder = 0
+    end
+    object BitBtn5: TBitBtn
+      Left = 936
+      Height = 30
+      Top = 8
+      Width = 75
+      Caption = 'Excluir'
+      TabOrder = 1
+    end
+    object btnListarCte: TBitBtn
+      Left = 168
+      Height = 30
+      Top = 8
+      Width = 75
+      Caption = 'Listar'
+      TabOrder = 2
+    end
+    object btnDuplicar: TBitBtn
+      Left = 360
+      Height = 30
+      Top = 8
+      Width = 75
+      Caption = 'Duplicar'
+      TabOrder = 3
+    end
+    object BitBtn8: TBitBtn
+      Left = 536
+      Height = 30
+      Top = -56
+      Width = 75
+      Caption = 'Gravar'
+      TabOrder = 4
+    end
+    object BitBtn9: TBitBtn
+      Left = 1032
+      Height = 30
+      Top = 8
+      Width = 75
+      Caption = 'Gerar'
+      TabOrder = 5
+    end
+    object btnPreVisu: TBitBtn
+      Left = 640
+      Height = 30
+      Top = 8
+      Width = 168
+      Caption = 'Pré-Vizualizar'
+      TabOrder = 6
+    end
+    object btnEditarCte: TBitBtn
+      Left = 456
+      Height = 30
+      Top = 8
+      Width = 75
+      Caption = 'Editar'
+      TabOrder = 7
     end
   end
   object Label18: TLabel
@@ -36,45 +92,45 @@ object fCTePrincipal: TfCTePrincipal
   end
   object PageControl1: TPageControl
     Left = 0
-    Height = 529
+    Height = 573
     Top = 0
-    Width = 1267
-    ActivePage = TabSheet1
+    Width = 1280
+    ActivePage = TabSheet17
     Align = alClient
-    TabIndex = 0
+    TabIndex = 3
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = 'CT-e'
-      ClientHeight = 501
-      ClientWidth = 1259
+      ClientHeight = 545
+      ClientWidth = 1272
       object PageControl2: TPageControl
         Left = 0
-        Height = 501
+        Height = 545
         Top = 0
-        Width = 1259
-        ActivePage = TabSheet6
+        Width = 1272
+        ActivePage = TabSheet11
         Align = alClient
-        TabIndex = 3
+        TabIndex = 8
         TabOrder = 0
         object TabSheet2: TTabSheet
           Cursor = crHandPoint
           BorderWidth = 1
           Caption = 'Dados'
-          ClientHeight = 473
-          ClientWidth = 1251
+          ClientHeight = 517
+          ClientWidth = 1264
           object PageControl3: TPageControl
             Left = 0
-            Height = 473
+            Height = 517
             Top = 0
-            Width = 1251
-            ActivePage = TabSheet5
+            Width = 1264
+            ActivePage = TabSheet16
             Align = alClient
-            TabIndex = 0
+            TabIndex = 1
             TabOrder = 0
             object TabSheet5: TTabSheet
               Caption = 'Dados CT-e'
-              ClientHeight = 445
-              ClientWidth = 1243
+              ClientHeight = 489
+              ClientWidth = 1256
               object edtModelo: TEdit
                 Left = 24
                 Height = 23
@@ -85,7 +141,7 @@ object fCTePrincipal: TfCTePrincipal
               object Label1: TLabel
                 Left = 24
                 Height = 15
-                Top = 0
+                Top = 8
                 Width = 41
                 Align = alCustom
                 Caption = 'Modelo'
@@ -109,7 +165,7 @@ object fCTePrincipal: TfCTePrincipal
                 Left = 14
                 Height = 45
                 Top = 56
-                Width = 274
+                Width = 282
                 AutoFill = True
                 Caption = 'Modal'
                 ChildSizing.LeftRightSpacing = 6
@@ -120,27 +176,27 @@ object fCTePrincipal: TfCTePrincipal
                 ChildSizing.Layout = cclLeftToRightThenTopToBottom
                 ChildSizing.ControlsPerLine = 2
                 ClientHeight = 25
-                ClientWidth = 270
+                ClientWidth = 278
                 Columns = 2
                 Items.Strings = (
-                  '1 - Rodoviário'
-                  '2 - Áereo'
+                  'Rodoviário'
+                  ' Áereo'
                 )
                 TabOrder = 3
               end
               object Label2: TLabel
-                Left = 136
+                Left = 96
                 Height = 15
-                Top = 0
+                Top = 8
                 Width = 25
                 Align = alCustom
                 Caption = 'Série'
                 ParentColor = False
               end
               object Label3: TLabel
-                Left = 232
+                Left = 194
                 Height = 15
-                Top = 0
+                Top = 8
                 Width = 44
                 Align = alCustom
                 Caption = 'Número'
@@ -154,18 +210,18 @@ object fCTePrincipal: TfCTePrincipal
                 TabOrder = 4
               end
               object Label4: TLabel
-                Left = 368
+                Left = 304
                 Height = 15
-                Top = 0
+                Top = 8
                 Width = 101
                 Align = alCustom
                 Caption = 'Data/Hora Emissão'
                 ParentColor = False
               end
               object Label5: TLabel
-                Left = 832
+                Left = 488
                 Height = 15
-                Top = 0
+                Top = 8
                 Width = 47
                 Align = alCustom
                 Caption = 'Emitente'
@@ -189,8 +245,8 @@ object fCTePrincipal: TfCTePrincipal
                 ClientWidth = 270
                 Columns = 2
                 Items.Strings = (
-                  '0 - Sim'
-                  '1 - Não'
+                  'Sim'
+                  'Não'
                 )
                 TabOrder = 5
               end
@@ -212,11 +268,11 @@ object fCTePrincipal: TfCTePrincipal
                 ClientWidth = 790
                 Columns = 5
                 Items.Strings = (
-                  '0 - Normal'
-                  '1 - SubContratação'
-                  '2 - Redespacho'
-                  '3 - Intermediário'
-                  '4 - Conferir no XSD'
+                  'Normal'
+                  'SubContratação'
+                  'Redespacho'
+                  'Intermediário'
+                  'Conferir no XSD'
                 )
                 TabOrder = 6
               end
@@ -238,10 +294,10 @@ object fCTePrincipal: TfCTePrincipal
                 ClientWidth = 788
                 Columns = 4
                 Items.Strings = (
-                  '0 - Normal'
-                  '1 - Complemento de Valores'
-                  '2 - Anulação de Valores'
-                  '3 - Substituição'
+                  'Normal'
+                  'Complemento de Valores'
+                  'Anulação de Valores'
+                  'Substituição'
                 )
                 TabOrder = 7
               end
@@ -249,7 +305,7 @@ object fCTePrincipal: TfCTePrincipal
                 Left = 16
                 Height = 48
                 Top = 200
-                Width = 848
+                Width = 792
                 AutoFill = True
                 Caption = 'Forma de Emissão'
                 ChildSizing.LeftRightSpacing = 6
@@ -260,14 +316,14 @@ object fCTePrincipal: TfCTePrincipal
                 ChildSizing.Layout = cclLeftToRightThenTopToBottom
                 ChildSizing.ControlsPerLine = 5
                 ClientHeight = 28
-                ClientWidth = 844
+                ClientWidth = 788
                 Columns = 5
                 Items.Strings = (
-                  '1 - Normal'
-                  '4 - EPEC'
-                  '5 - Contig. FSDA'
-                  '7 - SVC-RS'
-                  '8 - SVC-SP'
+                  'Normal'
+                  'EPEC'
+                  'Contig. FSDA'
+                  'SVC-RS'
+                  'SVC-SP'
                 )
                 TabOrder = 8
               end
@@ -305,7 +361,7 @@ object fCTePrincipal: TfCTePrincipal
                 Left = 16
                 Height = 45
                 Top = 256
-                Width = 274
+                Width = 280
                 AutoFill = True
                 Caption = 'Forma de Pagamento'
                 ChildSizing.LeftRightSpacing = 6
@@ -316,7 +372,7 @@ object fCTePrincipal: TfCTePrincipal
                 ChildSizing.Layout = cclLeftToRightThenTopToBottom
                 ChildSizing.ControlsPerLine = 3
                 ClientHeight = 25
-                ClientWidth = 270
+                ClientWidth = 276
                 Columns = 3
                 Items.Strings = (
                   'Pago'
@@ -328,7 +384,7 @@ object fCTePrincipal: TfCTePrincipal
               object StaticText1: TStaticText
                 Left = 24
                 Height = 16
-                Top = 312
+                Top = 320
                 Width = 248
                 Caption = 'Chave de Acesso CT-e Referenciada'
                 TabOrder = 12
@@ -357,7 +413,7 @@ object fCTePrincipal: TfCTePrincipal
               object Label6: TLabel
                 Left = 24
                 Height = 15
-                Top = 376
+                Top = 384
                 Width = 136
                 Align = alCustom
                 Caption = 'Local de Emissão do CT-e'
@@ -373,7 +429,7 @@ object fCTePrincipal: TfCTePrincipal
               object Label7: TLabel
                 Left = 448
                 Height = 15
-                Top = 376
+                Top = 384
                 Width = 146
                 Align = alCustom
                 Caption = 'Local de Inicio da Prestação'
@@ -394,9 +450,9 @@ object fCTePrincipal: TfCTePrincipal
                 TabOrder = 18
               end
               object Label8: TLabel
-                Left = 864
+                Left = 856
                 Height = 15
-                Top = 376
+                Top = 384
                 Width = 162
                 Align = alCustom
                 Caption = 'Local do Término da Prestação'
@@ -435,14 +491,99 @@ object fCTePrincipal: TfCTePrincipal
               end
             end
             object TabSheet16: TTabSheet
-              Caption = 'TabSheet16'
+              Caption = 'Dados Complementares'
+              ClientHeight = 489
+              ClientWidth = 1256
+              object edtCaracAdTrans: TEdit
+                Left = 8
+                Height = 23
+                Top = 40
+                Width = 1216
+                TabOrder = 0
+              end
+              object StaticText2: TStaticText
+                Left = 8
+                Height = 16
+                Top = 16
+                Width = 328
+                Caption = 'Característica Adicional do Transporte '
+                TabOrder = 1
+              end
+              object StaticText3: TStaticText
+                Left = 8
+                Height = 16
+                Top = 96
+                Width = 328
+                Caption = 'Característica Adicional do Serviço '
+                TabOrder = 2
+              end
+              object edtCaracAdServ: TEdit
+                Left = 8
+                Height = 23
+                Top = 120
+                Width = 1216
+                TabOrder = 3
+              end
+              object StaticText4: TStaticText
+                Left = 8
+                Height = 16
+                Top = 176
+                Width = 328
+                Caption = 'Funcionário Emissor do CT-e'
+                TabOrder = 4
+              end
+              object edtFuncEmi: TEdit
+                Left = 8
+                Height = 23
+                Top = 200
+                Width = 1216
+                TabOrder = 5
+              end
+              object rgRetira1: TRadioGroup
+                Left = 8
+                Height = 45
+                Top = 264
+                Width = 208
+                AutoFill = True
+                Caption = 'Retira'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclLeftToRightThenTopToBottom
+                ChildSizing.ControlsPerLine = 2
+                ClientHeight = 25
+                ClientWidth = 204
+                Columns = 2
+                Items.Strings = (
+                  'Sim'
+                  'Não'
+                )
+                TabOrder = 6
+              end
+              object lblDetRetira: TStaticText
+                Left = 8
+                Height = 16
+                Top = 328
+                Width = 248
+                Caption = 'Detalhes da Retirada'
+                TabOrder = 7
+              end
+              object memDetRetira: TMemo
+                Left = 8
+                Height = 78
+                Top = 346
+                Width = 1216
+                TabOrder = 8
+              end
             end
           end
         end
         object TabSheet3: TTabSheet
           Caption = 'Emitente'
-          ClientHeight = 473
-          ClientWidth = 1251
+          ClientHeight = 517
+          ClientWidth = 1264
           object edtCodEmitente: TEdit
             Left = 40
             Height = 23
@@ -670,9 +811,9 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabSheet4: TTabSheet
           Caption = 'Tomador'
-          ClientHeight = 473
-          ClientWidth = 1251
-          object rgTipoServico1: TRadioGroup
+          ClientHeight = 517
+          ClientWidth = 1264
+          object rgTomador: TRadioGroup
             Left = 8
             Height = 45
             Top = 16
@@ -690,19 +831,243 @@ object fCTePrincipal: TfCTePrincipal
             ClientWidth = 1038
             Columns = 5
             Items.Strings = (
-              '0 - Remetente'
-              '1 - Expedidor'
-              '2 - Recebedor'
-              '3 - Destinatário'
-              '4 - Outros'
+              'Remetente'
+              'Expedidor'
+              'Recebedor'
+              'Destinatário'
+              'Outros'
             )
             TabOrder = 0
+          end
+          object edtBuscaTomador: TEdit
+            Left = 40
+            Height = 23
+            Top = 88
+            Width = 144
+            TabOrder = 1
+          end
+          object edtNomeTomador: TEdit
+            Left = 232
+            Height = 23
+            Top = 88
+            Width = 960
+            TabOrder = 2
+          end
+          object edtRazaoTomador: TEdit
+            Left = 40
+            Height = 23
+            Top = 136
+            Width = 664
+            TabOrder = 3
+          end
+          object edtCNPJTomador: TEdit
+            Left = 728
+            Height = 23
+            Top = 136
+            Width = 224
+            TabOrder = 4
+          end
+          object edtIETomador: TEdit
+            Left = 968
+            Height = 23
+            Top = 136
+            Width = 224
+            TabOrder = 5
+          end
+          object edtEndTomador: TEdit
+            Left = 40
+            Height = 23
+            Top = 224
+            Width = 872
+            TabOrder = 6
+          end
+          object edtNumTomador: TEdit
+            Left = 968
+            Height = 23
+            Top = 224
+            Width = 224
+            TabOrder = 7
+          end
+          object edtCompTomador: TEdit
+            Left = 40
+            Height = 23
+            Top = 280
+            Width = 400
+            TabOrder = 8
+          end
+          object edtBairroTomador: TEdit
+            Left = 472
+            Height = 23
+            Top = 280
+            Width = 464
+            TabOrder = 9
+          end
+          object edtCepTomador: TEdit
+            Left = 968
+            Height = 23
+            Top = 280
+            Width = 224
+            TabOrder = 10
+          end
+          object edtTomadorCodCidade: TEdit
+            Left = 40
+            Height = 23
+            Top = 336
+            Width = 224
+            TabOrder = 11
+          end
+          object edtTomadorCidade: TEdit
+            Left = 296
+            Height = 23
+            Top = 336
+            Width = 544
+            TabOrder = 12
+          end
+          object edtTomadorUF: TEdit
+            Left = 872
+            Height = 23
+            Top = 336
+            Width = 64
+            TabOrder = 13
+          end
+          object edtTomadorFone: TEdit
+            Left = 969
+            Height = 23
+            Top = 336
+            Width = 224
+            TabOrder = 14
+          end
+          object Label53: TLabel
+            Left = 40
+            Height = 15
+            Top = 72
+            Width = 39
+            Align = alCustom
+            Caption = 'Código'
+            ParentColor = False
+          end
+          object Label54: TLabel
+            Left = 232
+            Height = 15
+            Top = 72
+            Width = 79
+            Align = alCustom
+            Caption = 'Nome Fantasia'
+            ParentColor = False
+          end
+          object Label55: TLabel
+            Left = 40
+            Height = 15
+            Top = 120
+            Width = 65
+            Align = alCustom
+            Caption = 'Razão Social'
+            ParentColor = False
+          end
+          object Label56: TLabel
+            Left = 728
+            Height = 15
+            Top = 120
+            Width = 27
+            Align = alCustom
+            Caption = 'CNPJ'
+            ParentColor = False
+          end
+          object Label57: TLabel
+            Left = 968
+            Height = 15
+            Top = 120
+            Width = 45
+            Align = alCustom
+            Caption = 'Insc. Est.'
+            ParentColor = False
+          end
+          object Label58: TLabel
+            Left = 40
+            Height = 15
+            Top = 208
+            Width = 62
+            Align = alCustom
+            Caption = 'Logradouro'
+            ParentColor = False
+          end
+          object Label59: TLabel
+            Left = 968
+            Height = 15
+            Top = 208
+            Width = 44
+            Align = alCustom
+            Caption = 'Número'
+            ParentColor = False
+          end
+          object Label60: TLabel
+            Left = 40
+            Height = 15
+            Top = 264
+            Width = 77
+            Align = alCustom
+            Caption = 'Complemento'
+            ParentColor = False
+          end
+          object Label61: TLabel
+            Left = 472
+            Height = 15
+            Top = 264
+            Width = 31
+            Align = alCustom
+            Caption = 'Bairro'
+            ParentColor = False
+          end
+          object Label62: TLabel
+            Left = 969
+            Height = 15
+            Top = 264
+            Width = 21
+            Align = alCustom
+            Caption = 'CEP'
+            ParentColor = False
+          end
+          object Label63: TLabel
+            Left = 42
+            Height = 15
+            Top = 320
+            Width = 52
+            Align = alCustom
+            Caption = 'Cód. IBGE'
+            ParentColor = False
+          end
+          object Label64: TLabel
+            Left = 298
+            Height = 15
+            Top = 320
+            Width = 37
+            Align = alCustom
+            Caption = 'Cidade'
+            ParentColor = False
+          end
+          object Label65: TLabel
+            Left = 874
+            Height = 15
+            Top = 320
+            Width = 14
+            Align = alCustom
+            Caption = 'UF'
+            ParentColor = False
+          end
+          object Label66: TLabel
+            Left = 971
+            Height = 15
+            Top = 320
+            Width = 45
+            Align = alCustom
+            Caption = 'Telefone'
+            ParentColor = False
           end
         end
         object TabSheet6: TTabSheet
           Caption = 'Remetente'
-          ClientHeight = 473
-          ClientWidth = 1251
+          ClientHeight = 517
+          ClientWidth = 1264
           object rgTipoServico2: TRadioGroup
             Left = 32
             Height = 45
@@ -954,31 +1319,2263 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabSheet7: TTabSheet
           Caption = 'Expedidor'
+          ClientHeight = 517
+          ClientWidth = 1264
+          object rgTipoServico3: TRadioGroup
+            Left = 32
+            Height = 45
+            Top = 16
+            Width = 386
+            AutoFill = True
+            Caption = 'Expedidor'
+            ChildSizing.LeftRightSpacing = 6
+            ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+            ChildSizing.EnlargeVertical = crsHomogenousChildResize
+            ChildSizing.ShrinkHorizontal = crsScaleChilds
+            ChildSizing.ShrinkVertical = crsScaleChilds
+            ChildSizing.Layout = cclLeftToRightThenTopToBottom
+            ChildSizing.ControlsPerLine = 2
+            ClientHeight = 25
+            ClientWidth = 382
+            Columns = 2
+            Items.Strings = (
+              'Com Expedidor'
+              'Sem Expedidor'
+            )
+            TabOrder = 0
+          end
+          object edtExpBusca: TEdit
+            Left = 40
+            Height = 23
+            Top = 88
+            Width = 144
+            TabOrder = 1
+          end
+          object edtExpNome: TEdit
+            Left = 232
+            Height = 23
+            Top = 88
+            Width = 960
+            TabOrder = 2
+          end
+          object edtExpRazao: TEdit
+            Left = 40
+            Height = 23
+            Top = 136
+            Width = 664
+            TabOrder = 3
+          end
+          object edtExpCNPJ: TEdit
+            Left = 728
+            Height = 23
+            Top = 136
+            Width = 224
+            TabOrder = 4
+          end
+          object edtExpIE: TEdit
+            Left = 968
+            Height = 23
+            Top = 136
+            Width = 224
+            TabOrder = 5
+          end
+          object edtExpEnd: TEdit
+            Left = 40
+            Height = 23
+            Top = 224
+            Width = 872
+            TabOrder = 6
+          end
+          object edtExpNum: TEdit
+            Left = 968
+            Height = 23
+            Top = 224
+            Width = 224
+            TabOrder = 7
+          end
+          object edtExpComp: TEdit
+            Left = 40
+            Height = 23
+            Top = 280
+            Width = 400
+            TabOrder = 8
+          end
+          object edtExpBairro: TEdit
+            Left = 472
+            Height = 23
+            Top = 280
+            Width = 464
+            TabOrder = 9
+          end
+          object edtExpCep: TEdit
+            Left = 968
+            Height = 23
+            Top = 280
+            Width = 224
+            TabOrder = 10
+          end
+          object edtExpCodCidade: TEdit
+            Left = 40
+            Height = 23
+            Top = 336
+            Width = 224
+            TabOrder = 11
+          end
+          object edtExpCidade: TEdit
+            Left = 296
+            Height = 23
+            Top = 336
+            Width = 544
+            TabOrder = 12
+          end
+          object edtExpUF: TEdit
+            Left = 872
+            Height = 23
+            Top = 336
+            Width = 64
+            TabOrder = 13
+          end
+          object edtExpFone: TEdit
+            Left = 969
+            Height = 23
+            Top = 336
+            Width = 224
+            TabOrder = 14
+          end
+          object Label39: TLabel
+            Left = 40
+            Height = 15
+            Top = 72
+            Width = 39
+            Align = alCustom
+            Caption = 'Código'
+            ParentColor = False
+          end
+          object Label40: TLabel
+            Left = 232
+            Height = 15
+            Top = 72
+            Width = 79
+            Align = alCustom
+            Caption = 'Nome Fantasia'
+            ParentColor = False
+          end
+          object Label41: TLabel
+            Left = 40
+            Height = 15
+            Top = 120
+            Width = 65
+            Align = alCustom
+            Caption = 'Razão Social'
+            ParentColor = False
+          end
+          object Label42: TLabel
+            Left = 728
+            Height = 15
+            Top = 120
+            Width = 27
+            Align = alCustom
+            Caption = 'CNPJ'
+            ParentColor = False
+          end
+          object Label43: TLabel
+            Left = 968
+            Height = 15
+            Top = 120
+            Width = 45
+            Align = alCustom
+            Caption = 'Insc. Est.'
+            ParentColor = False
+          end
+          object Label44: TLabel
+            Left = 40
+            Height = 15
+            Top = 208
+            Width = 62
+            Align = alCustom
+            Caption = 'Logradouro'
+            ParentColor = False
+          end
+          object Label45: TLabel
+            Left = 968
+            Height = 15
+            Top = 208
+            Width = 44
+            Align = alCustom
+            Caption = 'Número'
+            ParentColor = False
+          end
+          object Label46: TLabel
+            Left = 40
+            Height = 15
+            Top = 264
+            Width = 77
+            Align = alCustom
+            Caption = 'Complemento'
+            ParentColor = False
+          end
+          object Label47: TLabel
+            Left = 472
+            Height = 15
+            Top = 264
+            Width = 31
+            Align = alCustom
+            Caption = 'Bairro'
+            ParentColor = False
+          end
+          object Label48: TLabel
+            Left = 968
+            Height = 15
+            Top = 264
+            Width = 21
+            Align = alCustom
+            Caption = 'CEP'
+            ParentColor = False
+          end
+          object Label49: TLabel
+            Left = 42
+            Height = 15
+            Top = 320
+            Width = 52
+            Align = alCustom
+            Caption = 'Cód. IBGE'
+            ParentColor = False
+          end
+          object Label50: TLabel
+            Left = 298
+            Height = 15
+            Top = 320
+            Width = 37
+            Align = alCustom
+            Caption = 'Cidade'
+            ParentColor = False
+          end
+          object Label51: TLabel
+            Left = 874
+            Height = 15
+            Top = 320
+            Width = 14
+            Align = alCustom
+            Caption = 'UF'
+            ParentColor = False
+          end
+          object Label52: TLabel
+            Left = 971
+            Height = 15
+            Top = 320
+            Width = 45
+            Align = alCustom
+            Caption = 'Telefone'
+            ParentColor = False
+          end
         end
         object TabSheet8: TTabSheet
           Caption = 'Recebedor'
+          ClientHeight = 517
+          ClientWidth = 1264
+          object rgRec: TRadioGroup
+            Left = 32
+            Height = 45
+            Top = 16
+            Width = 386
+            AutoFill = True
+            Caption = 'Recebedor'
+            ChildSizing.LeftRightSpacing = 6
+            ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+            ChildSizing.EnlargeVertical = crsHomogenousChildResize
+            ChildSizing.ShrinkHorizontal = crsScaleChilds
+            ChildSizing.ShrinkVertical = crsScaleChilds
+            ChildSizing.Layout = cclLeftToRightThenTopToBottom
+            ChildSizing.ControlsPerLine = 2
+            ClientHeight = 25
+            ClientWidth = 382
+            Columns = 2
+            Items.Strings = (
+              'Com Recebedor'
+              'Sem Recebedor'
+            )
+            TabOrder = 0
+          end
+          object edtRecBusca: TEdit
+            Left = 40
+            Height = 23
+            Top = 88
+            Width = 144
+            TabOrder = 1
+          end
+          object edtRecNome: TEdit
+            Left = 232
+            Height = 23
+            Top = 88
+            Width = 960
+            TabOrder = 2
+          end
+          object edtRecRazao: TEdit
+            Left = 40
+            Height = 23
+            Top = 136
+            Width = 664
+            TabOrder = 3
+          end
+          object edtRecCNPJ: TEdit
+            Left = 728
+            Height = 23
+            Top = 136
+            Width = 224
+            TabOrder = 4
+          end
+          object edtRecIE: TEdit
+            Left = 968
+            Height = 23
+            Top = 136
+            Width = 224
+            TabOrder = 5
+          end
+          object edtRecEnd: TEdit
+            Left = 40
+            Height = 23
+            Top = 224
+            Width = 872
+            TabOrder = 6
+          end
+          object edtRecNum: TEdit
+            Left = 968
+            Height = 23
+            Top = 224
+            Width = 224
+            TabOrder = 7
+          end
+          object edtRecComp: TEdit
+            Left = 40
+            Height = 23
+            Top = 280
+            Width = 400
+            TabOrder = 8
+          end
+          object edtRecBairro: TEdit
+            Left = 472
+            Height = 23
+            Top = 280
+            Width = 464
+            TabOrder = 9
+          end
+          object edtRecCep: TEdit
+            Left = 968
+            Height = 23
+            Top = 280
+            Width = 224
+            TabOrder = 10
+          end
+          object edtRecCodCidade: TEdit
+            Left = 40
+            Height = 23
+            Top = 336
+            Width = 224
+            TabOrder = 11
+          end
+          object edtRecCidade: TEdit
+            Left = 296
+            Height = 23
+            Top = 336
+            Width = 544
+            TabOrder = 12
+          end
+          object edtRecUF: TEdit
+            Left = 872
+            Height = 23
+            Top = 336
+            Width = 64
+            TabOrder = 13
+          end
+          object edtRecFone: TEdit
+            Left = 969
+            Height = 23
+            Top = 336
+            Width = 224
+            TabOrder = 14
+          end
+          object Label67: TLabel
+            Left = 40
+            Height = 15
+            Top = 72
+            Width = 39
+            Align = alCustom
+            Caption = 'Código'
+            ParentColor = False
+          end
+          object Label68: TLabel
+            Left = 232
+            Height = 15
+            Top = 72
+            Width = 79
+            Align = alCustom
+            Caption = 'Nome Fantasia'
+            ParentColor = False
+          end
+          object Label69: TLabel
+            Left = 40
+            Height = 15
+            Top = 120
+            Width = 65
+            Align = alCustom
+            Caption = 'Razão Social'
+            ParentColor = False
+          end
+          object Label70: TLabel
+            Left = 728
+            Height = 15
+            Top = 120
+            Width = 27
+            Align = alCustom
+            Caption = 'CNPJ'
+            ParentColor = False
+          end
+          object Label71: TLabel
+            Left = 968
+            Height = 15
+            Top = 120
+            Width = 45
+            Align = alCustom
+            Caption = 'Insc. Est.'
+            ParentColor = False
+          end
+          object Label72: TLabel
+            Left = 40
+            Height = 15
+            Top = 208
+            Width = 62
+            Align = alCustom
+            Caption = 'Logradouro'
+            ParentColor = False
+          end
+          object Label73: TLabel
+            Left = 968
+            Height = 15
+            Top = 208
+            Width = 44
+            Align = alCustom
+            Caption = 'Número'
+            ParentColor = False
+          end
+          object Label74: TLabel
+            Left = 40
+            Height = 15
+            Top = 264
+            Width = 77
+            Align = alCustom
+            Caption = 'Complemento'
+            ParentColor = False
+          end
+          object Label75: TLabel
+            Left = 472
+            Height = 15
+            Top = 264
+            Width = 31
+            Align = alCustom
+            Caption = 'Bairro'
+            ParentColor = False
+          end
+          object Label76: TLabel
+            Left = 968
+            Height = 15
+            Top = 264
+            Width = 21
+            Align = alCustom
+            Caption = 'CEP'
+            ParentColor = False
+          end
+          object Label77: TLabel
+            Left = 42
+            Height = 15
+            Top = 320
+            Width = 52
+            Align = alCustom
+            Caption = 'Cód. IBGE'
+            ParentColor = False
+          end
+          object Label78: TLabel
+            Left = 298
+            Height = 15
+            Top = 320
+            Width = 37
+            Align = alCustom
+            Caption = 'Cidade'
+            ParentColor = False
+          end
+          object Label79: TLabel
+            Left = 874
+            Height = 15
+            Top = 320
+            Width = 14
+            Align = alCustom
+            Caption = 'UF'
+            ParentColor = False
+          end
+          object Label80: TLabel
+            Left = 971
+            Height = 15
+            Top = 320
+            Width = 45
+            Align = alCustom
+            Caption = 'Telefone'
+            ParentColor = False
+          end
         end
         object TabSheet9: TTabSheet
           Caption = 'Destinatário'
+          ClientHeight = 517
+          ClientWidth = 1264
+          object rgDest: TRadioGroup
+            Left = 32
+            Height = 45
+            Top = 16
+            Width = 856
+            AutoFill = True
+            Caption = 'Destinatário'
+            ChildSizing.LeftRightSpacing = 6
+            ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+            ChildSizing.EnlargeVertical = crsHomogenousChildResize
+            ChildSizing.ShrinkHorizontal = crsScaleChilds
+            ChildSizing.ShrinkVertical = crsScaleChilds
+            ChildSizing.Layout = cclLeftToRightThenTopToBottom
+            ChildSizing.ControlsPerLine = 3
+            ClientHeight = 25
+            ClientWidth = 852
+            Columns = 3
+            Items.Strings = (
+              'Com Destino'
+              'Sem Destino: Redespacho Intermediário'
+              'Sem Destino: Serviço Vinculado a Multimodal'
+            )
+            TabOrder = 0
+          end
+          object edtDestBusca: TEdit
+            Left = 40
+            Height = 23
+            Top = 88
+            Width = 144
+            TabOrder = 1
+          end
+          object edtDestNome: TEdit
+            Left = 232
+            Height = 23
+            Top = 88
+            Width = 960
+            TabOrder = 2
+          end
+          object edtDestRazao: TEdit
+            Left = 40
+            Height = 23
+            Top = 136
+            Width = 664
+            TabOrder = 3
+          end
+          object edtDestCNPJ: TEdit
+            Left = 728
+            Height = 23
+            Top = 136
+            Width = 224
+            TabOrder = 4
+          end
+          object edtDestIE: TEdit
+            Left = 968
+            Height = 23
+            Top = 136
+            Width = 224
+            TabOrder = 5
+          end
+          object edtDestEnd: TEdit
+            Left = 40
+            Height = 23
+            Top = 224
+            Width = 872
+            TabOrder = 6
+          end
+          object edtDestNum: TEdit
+            Left = 968
+            Height = 23
+            Top = 224
+            Width = 224
+            TabOrder = 7
+          end
+          object edtDestComp: TEdit
+            Left = 40
+            Height = 23
+            Top = 280
+            Width = 400
+            TabOrder = 8
+          end
+          object edtDestBairro: TEdit
+            Left = 472
+            Height = 23
+            Top = 280
+            Width = 464
+            TabOrder = 9
+          end
+          object edtDestCEP: TEdit
+            Left = 968
+            Height = 23
+            Top = 280
+            Width = 224
+            TabOrder = 10
+          end
+          object edtDestCodCidade: TEdit
+            Left = 40
+            Height = 23
+            Top = 336
+            Width = 224
+            TabOrder = 11
+          end
+          object edtDestCidade: TEdit
+            Left = 296
+            Height = 23
+            Top = 336
+            Width = 544
+            TabOrder = 12
+          end
+          object edtDestUF: TEdit
+            Left = 872
+            Height = 23
+            Top = 336
+            Width = 64
+            TabOrder = 13
+          end
+          object edtDestFone: TEdit
+            Left = 969
+            Height = 23
+            Top = 336
+            Width = 224
+            TabOrder = 14
+          end
+          object Label81: TLabel
+            Left = 40
+            Height = 15
+            Top = 72
+            Width = 39
+            Align = alCustom
+            Caption = 'Código'
+            ParentColor = False
+          end
+          object Label82: TLabel
+            Left = 232
+            Height = 15
+            Top = 72
+            Width = 79
+            Align = alCustom
+            Caption = 'Nome Fantasia'
+            ParentColor = False
+          end
+          object Label83: TLabel
+            Left = 40
+            Height = 15
+            Top = 120
+            Width = 65
+            Align = alCustom
+            Caption = 'Razão Social'
+            ParentColor = False
+          end
+          object Label84: TLabel
+            Left = 728
+            Height = 15
+            Top = 120
+            Width = 27
+            Align = alCustom
+            Caption = 'CNPJ'
+            ParentColor = False
+          end
+          object Label85: TLabel
+            Left = 968
+            Height = 15
+            Top = 120
+            Width = 45
+            Align = alCustom
+            Caption = 'Insc. Est.'
+            ParentColor = False
+          end
+          object Label86: TLabel
+            Left = 40
+            Height = 15
+            Top = 208
+            Width = 62
+            Align = alCustom
+            Caption = 'Logradouro'
+            ParentColor = False
+          end
+          object Label87: TLabel
+            Left = 968
+            Height = 15
+            Top = 208
+            Width = 44
+            Align = alCustom
+            Caption = 'Número'
+            ParentColor = False
+          end
+          object Label88: TLabel
+            Left = 40
+            Height = 15
+            Top = 264
+            Width = 77
+            Align = alCustom
+            Caption = 'Complemento'
+            ParentColor = False
+          end
+          object Label89: TLabel
+            Left = 472
+            Height = 15
+            Top = 264
+            Width = 31
+            Align = alCustom
+            Caption = 'Bairro'
+            ParentColor = False
+          end
+          object Label90: TLabel
+            Left = 968
+            Height = 15
+            Top = 264
+            Width = 21
+            Align = alCustom
+            Caption = 'CEP'
+            ParentColor = False
+          end
+          object Label91: TLabel
+            Left = 42
+            Height = 15
+            Top = 320
+            Width = 52
+            Align = alCustom
+            Caption = 'Cód. IBGE'
+            ParentColor = False
+          end
+          object Label92: TLabel
+            Left = 298
+            Height = 15
+            Top = 320
+            Width = 37
+            Align = alCustom
+            Caption = 'Cidade'
+            ParentColor = False
+          end
+          object Label93: TLabel
+            Left = 874
+            Height = 15
+            Top = 320
+            Width = 14
+            Align = alCustom
+            Caption = 'UF'
+            ParentColor = False
+          end
+          object Label94: TLabel
+            Left = 971
+            Height = 15
+            Top = 320
+            Width = 45
+            Align = alCustom
+            Caption = 'Telefone'
+            ParentColor = False
+          end
         end
         object TabSheet10: TTabSheet
           Caption = 'Serviços e Impostos'
+          ClientHeight = 517
+          ClientWidth = 1264
+          object DBGrid2: TDBGrid
+            Left = 32
+            Height = 136
+            Top = 143
+            Width = 531
+            Align = alCustom
+            AutoFillColumns = True
+            Color = clWindow
+            Columns = <            
+              item
+                Alignment = taCenter
+                ButtonStyle = cbsButton
+                Layout = tlCenter
+                Title.Caption = 'Descrição'
+                Width = 249
+                FieldName = 'Descrição'
+              end            
+              item
+                Alignment = taCenter
+                Title.Caption = 'Valor'
+                Width = 249
+                FieldName = 'Valor'
+              end>
+            TabOrder = 0
+          end
+          object StaticText10: TStaticText
+            Left = 32
+            Height = 16
+            Top = 15
+            Width = 216
+            Caption = 'Valor Total Prestação Serviço'
+            TabOrder = 1
+          end
+          object dbValTotPrest: TEdit
+            Left = 336
+            Height = 23
+            Top = 8
+            Width = 224
+            OnChange = dbValInfCargaChange
+            TabOrder = 2
+          end
+          object StaticText11: TStaticText
+            Left = 32
+            Height = 16
+            Top = 56
+            Width = 216
+            Caption = 'Valor Total a Receber'
+            TabOrder = 3
+          end
+          object dbValReceber: TEdit
+            Left = 336
+            Height = 23
+            Top = 47
+            Width = 224
+            OnChange = dbValInfCargaChange
+            TabOrder = 4
+          end
+          object StaticText12: TStaticText
+            Left = 32
+            Height = 16
+            Top = 95
+            Width = 216
+            Caption = 'Valor Total dos Tributos'
+            TabOrder = 5
+          end
+          object dbValTotTri: TEdit
+            Left = 336
+            Height = 23
+            Top = 88
+            Width = 224
+            OnChange = dbValInfCargaChange
+            TabOrder = 6
+          end
+          object StaticText13: TStaticText
+            Left = 32
+            Height = 16
+            Top = 120
+            Width = 216
+            Caption = 'Componente do Valor da Prestação'
+            OnClick = StaticText13Click
+            TabOrder = 7
+          end
+          object StaticText14: TStaticText
+            Left = 32
+            Height = 16
+            Top = 336
+            Width = 216
+            Caption = 'CST - ICMS'
+            TabOrder = 8
+          end
+          object StaticText15: TStaticText
+            Left = 32
+            Height = 16
+            Top = 368
+            Width = 216
+            Caption = 'Percentual Redução BC'
+            TabOrder = 9
+          end
+          object valpRedBC: TEdit
+            Left = 336
+            Height = 23
+            Top = 360
+            Width = 224
+            OnChange = dbValInfCargaChange
+            TabOrder = 10
+          end
+          object StaticText16: TStaticText
+            Left = 32
+            Height = 16
+            Top = 400
+            Width = 216
+            Caption = 'Valor BC ICMS'
+            TabOrder = 11
+          end
+          object valvBC: TEdit
+            Left = 336
+            Height = 23
+            Top = 393
+            Width = 224
+            OnChange = dbValInfCargaChange
+            TabOrder = 12
+          end
+          object valvICMS: TEdit
+            Left = 336
+            Height = 23
+            Top = 457
+            Width = 224
+            OnChange = dbValInfCargaChange
+            TabOrder = 13
+          end
+          object StaticText18: TStaticText
+            Left = 32
+            Height = 16
+            Top = 464
+            Width = 128
+            Caption = 'Valor ICMS'
+            TabOrder = 14
+          end
+          object StaticText19: TStaticText
+            Left = 32
+            Height = 16
+            Top = 495
+            Width = 264
+            Caption = 'Valor Crédito Outorgado/Presumido'
+            TabOrder = 15
+          end
+          object valvCred: TEdit
+            Left = 336
+            Height = 23
+            Top = 488
+            Width = 224
+            OnChange = dbValInfCargaChange
+            TabOrder = 16
+          end
+          object StaticText20: TStaticText
+            Left = 744
+            Height = 16
+            Top = 47
+            Width = 216
+            Caption = 'Valor BC ICMS'
+            TabOrder = 17
+          end
+          object calValB: TEdit
+            Left = 992
+            Height = 23
+            Top = 40
+            Width = 224
+            OnChange = dbValInfCargaChange
+            TabOrder = 18
+          end
+          object StaticText21: TStaticText
+            Left = 744
+            Height = 16
+            Top = 79
+            Width = 216
+            Caption = 'Aliquota Interna UF Término'
+            TabOrder = 19
+          end
+          object valAliIn: TEdit
+            Left = 992
+            Height = 23
+            Top = 72
+            Width = 224
+            OnChange = dbValInfCargaChange
+            TabOrder = 20
+          end
+          object StaticText23: TStaticText
+            Left = 744
+            Height = 16
+            Top = 143
+            Width = 216
+            Caption = 'Percentual de Partilha UF Término'
+            TabOrder = 21
+          end
+          object dbValInfCarga13: TEdit
+            Left = 992
+            Height = 23
+            Top = 136
+            Width = 224
+            OnChange = dbValInfCargaChange
+            TabOrder = 22
+          end
+          object StaticText25: TStaticText
+            Left = 744
+            Height = 16
+            Top = 208
+            Width = 216
+            Caption = 'Valor ICMS de Partilha UF Término'
+            TabOrder = 23
+          end
+          object valIMCSPartF: TEdit
+            Left = 992
+            Height = 23
+            Top = 200
+            Width = 224
+            OnChange = dbValInfCargaChange
+            TabOrder = 24
+          end
+          object StaticText26: TStaticText
+            Left = 744
+            Height = 16
+            Top = 239
+            Width = 216
+            Caption = '% ICMS FCP UF Término'
+            TabOrder = 25
+          end
+          object dbValInfCarga16: TEdit
+            Left = 992
+            Height = 23
+            Top = 232
+            Width = 224
+            OnChange = dbValInfCargaChange
+            TabOrder = 26
+          end
+          object StaticText27: TStaticText
+            Left = 744
+            Height = 16
+            Top = 271
+            Width = 216
+            Caption = 'Valor ICMS FCP UF Término'
+            TabOrder = 27
+          end
+          object dbValInfCarga17: TEdit
+            Left = 992
+            Height = 23
+            Top = 264
+            Width = 224
+            OnChange = dbValInfCargaChange
+            TabOrder = 28
+          end
+          object StaticText22: TStaticText
+            Left = 32
+            Height = 16
+            Top = 431
+            Width = 128
+            Caption = '% Aliquota ICMS'
+            TabOrder = 29
+          end
+          object valpICMS: TEdit
+            Left = 336
+            Height = 23
+            Top = 424
+            Width = 224
+            OnChange = dbValInfCargaChange
+            TabOrder = 30
+          end
+          object StaticText24: TStaticText
+            Left = 744
+            Height = 16
+            Top = 112
+            Width = 216
+            Caption = 'Aliquota Interestadual'
+            TabOrder = 31
+          end
+          object valAliInter: TEdit
+            Left = 992
+            Height = 23
+            Top = 104
+            Width = 224
+            OnChange = dbValInfCargaChange
+            TabOrder = 32
+          end
+          object valICMSPartI: TEdit
+            Left = 992
+            Height = 23
+            Top = 168
+            Width = 224
+            OnChange = dbValInfCargaChange
+            TabOrder = 33
+          end
+          object StaticText28: TStaticText
+            Left = 744
+            Height = 16
+            Top = 175
+            Width = 216
+            Caption = 'Valor ICMS de Partilha UF Início'
+            TabOrder = 34
+          end
+          object memDetRetira1: TMemo
+            Left = 616
+            Height = 166
+            Top = 346
+            Width = 600
+            TabOrder = 35
+          end
+          object StaticText29: TStaticText
+            Left = 616
+            Height = 16
+            Top = 328
+            Width = 312
+            Caption = 'Informações Adicionais de Interesse do Fisco'
+            TabOrder = 36
+          end
+          object combCodSitTrib: TComboBox
+            Left = 120
+            Height = 23
+            Top = 329
+            Width = 440
+            ItemHeight = 15
+            TabOrder = 37
+          end
+          object combICMSDevido: TCheckBox
+            Left = 744
+            Height = 19
+            Top = 5
+            Width = 20
+            TabOrder = 38
+          end
+          object StaticText30: TStaticText
+            Left = 768
+            Height = 16
+            Top = 8
+            Width = 352
+            Caption = 'Preencher o ICMS Devido para UF Término Serviço'
+            TabOrder = 39
+          end
+          object BitBtn15: TBitBtn
+            Left = 104
+            Height = 30
+            Top = 280
+            Width = 75
+            Caption = 'Incluir'
+            TabOrder = 40
+          end
+          object BitBtn20: TBitBtn
+            Left = 32
+            Height = 30
+            Top = 280
+            Width = 75
+            Caption = 'Editar'
+            TabOrder = 41
+          end
+          object BitBtn21: TBitBtn
+            Left = 176
+            Height = 30
+            Top = 280
+            Width = 75
+            Caption = 'Excluir'
+            TabOrder = 42
+          end
+          object BitBtn22: TBitBtn
+            Left = 248
+            Height = 30
+            Top = 280
+            Width = 75
+            Caption = 'Gravar'
+            TabOrder = 43
+          end
         end
         object TabSheet11: TTabSheet
           Caption = 'Documentação Carga'
+          ClientHeight = 517
+          ClientWidth = 1264
+          object PageControl4: TPageControl
+            Left = 0
+            Height = 517
+            Top = 0
+            Width = 1264
+            ActivePage = TabSheet18
+            Align = alClient
+            TabIndex = 1
+            TabOrder = 0
+            object TabSheet22: TTabSheet
+              Caption = 'Inf. da Carga'
+              ClientHeight = 489
+              ClientWidth = 1256
+              OnContextPopup = TabSheet22ContextPopup
+              object dbValInfCarga: TEdit
+                Left = 32
+                Height = 23
+                Top = 40
+                Width = 224
+                OnChange = dbValInfCargaChange
+                TabOrder = 0
+              end
+              object edtProPred: TEdit
+                Left = 32
+                Height = 23
+                Top = 96
+                Width = 616
+                TabOrder = 1
+              end
+              object edtOutCat: TEdit
+                Left = 32
+                Height = 23
+                Top = 152
+                Width = 616
+                TabOrder = 2
+              end
+              object StaticText7: TStaticText
+                Left = 32
+                Height = 16
+                Top = 80
+                Width = 216
+                Caption = 'Produto Predominante'
+                TabOrder = 3
+              end
+              object StaticText8: TStaticText
+                Left = 32
+                Height = 16
+                Top = 136
+                Width = 216
+                Caption = 'Outras Caracteristícas do Produto'
+                TabOrder = 4
+              end
+              object DBGrid1: TDBGrid
+                Left = 32
+                Height = 224
+                Top = 208
+                Width = 624
+                Align = alCustom
+                AutoAdvance = aaRight
+                AutoFillColumns = True
+                Color = clWindow
+                Columns = <                
+                  item
+                    Alignment = taCenter
+                    Title.Alignment = taCenter
+                    Title.Caption = 'Unidade'
+                    Width = 197
+                    FieldName = 'Código Unidade Medida'
+                  end                
+                  item
+                    Title.Alignment = taCenter
+                    Title.Caption = 'Medida'
+                    Width = 197
+                    FieldName = 'Tipo de Medida'
+                  end                
+                  item
+                    Title.Alignment = taCenter
+                    Title.Caption = 'Quantidade'
+                    Width = 197
+                    FieldName = 'Quantidade'
+                  end>
+                TabOrder = 5
+              end
+              object StaticText9: TStaticText
+                Left = 32
+                Height = 16
+                Top = 24
+                Width = 216
+                Caption = 'Valor Carga'
+                TabOrder = 6
+              end
+              object BitBtn11: TBitBtn
+                Left = 32
+                Height = 30
+                Top = 432
+                Width = 75
+                Caption = 'Editar'
+                TabOrder = 7
+              end
+              object BitBtn12: TBitBtn
+                Left = 104
+                Height = 30
+                Top = 432
+                Width = 75
+                Caption = 'Incluir'
+                TabOrder = 8
+              end
+              object BitBtn13: TBitBtn
+                Left = 248
+                Height = 30
+                Top = 432
+                Width = 75
+                Caption = 'Gravar'
+                TabOrder = 9
+              end
+              object BitBtn14: TBitBtn
+                Left = 176
+                Height = 30
+                Top = 432
+                Width = 75
+                Caption = 'Excluir'
+                TabOrder = 10
+              end
+            end
+            object TabSheet18: TTabSheet
+              Caption = 'Doc.Transp.Anterior'
+              ClientHeight = 489
+              ClientWidth = 1256
+              object edtAntNome: TEdit
+                Left = 32
+                Height = 23
+                Top = 40
+                Width = 664
+                TabOrder = 0
+              end
+              object edtAntCNPJ: TEdit
+                Left = 32
+                Height = 23
+                Top = 104
+                Width = 304
+                TabOrder = 1
+              end
+              object edtAntIE: TEdit
+                Left = 360
+                Height = 23
+                Top = 104
+                Width = 248
+                TabOrder = 2
+              end
+              object edtAntUF: TEdit
+                Left = 632
+                Height = 23
+                Top = 104
+                Width = 64
+                TabOrder = 3
+              end
+              object edtAntCHCTE: TEdit
+                Left = 32
+                Height = 23
+                Top = 176
+                Width = 664
+                TabOrder = 4
+              end
+              object Label95: TLabel
+                Left = 32
+                Height = 15
+                Top = 24
+                Width = 65
+                Align = alCustom
+                Caption = 'Razão Social'
+                ParentColor = False
+              end
+              object Label96: TLabel
+                Left = 32
+                Height = 15
+                Top = 88
+                Width = 27
+                Align = alCustom
+                Caption = 'CNPJ'
+                ParentColor = False
+              end
+              object Label97: TLabel
+                Left = 360
+                Height = 15
+                Top = 88
+                Width = 45
+                Align = alCustom
+                Caption = 'Insc. Est.'
+                ParentColor = False
+              end
+              object Label98: TLabel
+                Left = 632
+                Height = 15
+                Top = 88
+                Width = 14
+                Align = alCustom
+                Caption = 'UF'
+                ParentColor = False
+              end
+              object Label99: TLabel
+                Left = 32
+                Height = 15
+                Top = 160
+                Width = 181
+                Align = alCustom
+                Caption = 'Chave de Acesso do CT-e Anterior'
+                ParentColor = False
+              end
+            end
+            object TabSheet21: TTabSheet
+              Caption = 'NF-e '
+              ClientHeight = 489
+              ClientWidth = 1256
+              object DBGrid3: TDBGrid
+                Left = 40
+                Height = 296
+                Top = 24
+                Width = 1160
+                AutoFillColumns = True
+                Color = clWindow
+                Columns = <                
+                  item
+                    Alignment = taCenter
+                    Title.Caption = 'Chave de Acesso NF-e'
+                    Width = 375
+                    FieldName = 'Chave de Acesso NF-e'
+                  end                
+                  item
+                    Alignment = taRightJustify
+                    MinSize = 50
+                    MaxSize = 50
+                    Title.Caption = 'PIN'
+                    Width = 375
+                    FieldName = 'PIN'
+                  end                
+                  item
+                    Alignment = taCenter
+                    Title.Caption = 'Data Prevista de Entrega'
+                    Width = 377
+                    FieldName = 'Data Prevista de Entrega'
+                  end>
+                TabOrder = 0
+              end
+              object BitBtn16: TBitBtn
+                Left = 40
+                Height = 30
+                Top = 320
+                Width = 75
+                Caption = 'Editar'
+                TabOrder = 1
+              end
+              object BitBtn17: TBitBtn
+                Left = 112
+                Height = 30
+                Top = 320
+                Width = 75
+                Caption = 'Incluir'
+                TabOrder = 2
+              end
+              object BitBtn18: TBitBtn
+                Left = 184
+                Height = 30
+                Top = 320
+                Width = 75
+                Caption = 'Excluir'
+                TabOrder = 3
+              end
+              object BitBtn19: TBitBtn
+                Left = 256
+                Height = 30
+                Top = 320
+                Width = 75
+                Caption = 'Gravar'
+                TabOrder = 4
+              end
+              object Label100: TLabel
+                Left = 296
+                Height = 15
+                Top = 376
+                Width = 51
+                Align = alCustom
+                Caption = 'Descrição'
+                ParentColor = False
+              end
+              object Label101: TLabel
+                Left = 40
+                Height = 15
+                Top = 376
+                Width = 107
+                Align = alCustom
+                Caption = 'Outros Documentos'
+                ParentColor = False
+              end
+              object edtOutrosDesc: TEdit
+                Left = 296
+                Height = 23
+                Top = 392
+                Width = 904
+                TabOrder = 5
+              end
+              object edtOutrosNum: TEdit
+                Left = 40
+                Height = 23
+                Top = 440
+                Width = 464
+                TabOrder = 6
+              end
+              object Label102: TLabel
+                Left = 40
+                Height = 15
+                Top = 424
+                Width = 127
+                Align = alCustom
+                Caption = 'Número do Documento'
+                ParentColor = False
+              end
+              object valOutrosVal: TEdit
+                Left = 528
+                Height = 23
+                Top = 440
+                Width = 360
+                TabOrder = 7
+              end
+              object dataOutrosEmi: TEdit
+                Left = 912
+                Height = 23
+                Top = 440
+                Width = 288
+                TabOrder = 8
+              end
+              object Label103: TLabel
+                Left = 528
+                Height = 15
+                Top = 424
+                Width = 109
+                Align = alCustom
+                Caption = 'Valor do Documento'
+                ParentColor = False
+              end
+              object Label104: TLabel
+                Left = 912
+                Height = 15
+                Top = 424
+                Width = 107
+                Align = alCustom
+                Caption = 'Data do Documento'
+                ParentColor = False
+              end
+              object combOutrosDocs: TComboBox
+                Left = 43
+                Height = 23
+                Top = 392
+                Width = 225
+                ItemHeight = 15
+                TabOrder = 9
+              end
+            end
+          end
         end
-        object TabSheet12: TTabSheet
+        object TabSheet15: TTabSheet
           Caption = 'Rodoviário'
+          ClientHeight = 517
+          ClientWidth = 1264
+          object edtRodRNTRC: TEdit
+            Left = 48
+            Height = 23
+            Top = 48
+            Width = 168
+            TabOrder = 0
+          end
+          object Label123: TLabel
+            Left = 48
+            Height = 15
+            Top = 32
+            Width = 38
+            Align = alCustom
+            Caption = 'RNTRC'
+            ParentColor = False
+          end
+          object edtNumCte14: TEdit
+            Left = 248
+            Height = 23
+            Top = 48
+            Width = 256
+            TabOrder = 1
+          end
+          object Label124: TLabel
+            Left = 248
+            Height = 15
+            Top = 32
+            Width = 127
+            Align = alCustom
+            Caption = 'Data Prevista de Entrega'
+            ParentColor = False
+          end
+          object rgRodLotacao: TRadioGroup
+            Left = 48
+            Height = 64
+            Top = 128
+            Width = 394
+            AutoFill = True
+            Caption = 'Indicador de Lotação'
+            ChildSizing.LeftRightSpacing = 6
+            ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+            ChildSizing.EnlargeVertical = crsHomogenousChildResize
+            ChildSizing.ShrinkHorizontal = crsScaleChilds
+            ChildSizing.ShrinkVertical = crsScaleChilds
+            ChildSizing.Layout = cclLeftToRightThenTopToBottom
+            ChildSizing.ControlsPerLine = 2
+            ClientHeight = 44
+            ClientWidth = 390
+            Columns = 2
+            Items.Strings = (
+              'Não'
+              'Sim'
+            )
+            TabOrder = 2
+          end
+          object GroupBox1: TGroupBox
+            Left = 48
+            Height = 109
+            Top = 216
+            Width = 1112
+            Caption = 'Lacres Núm.'
+            TabOrder = 3
+          end
+          object GroupBox2: TGroupBox
+            Left = 48
+            Height = 109
+            Top = 360
+            Width = 1112
+            Caption = 'Ordem de Coleta Associadas'
+            TabOrder = 4
+          end
         end
         object TabSheet13: TTabSheet
           Caption = 'Dados Adicionais'
         end
-        object TabSheet14: TTabSheet
-          Caption = 'CT-e Geradas'
+      end
+    end
+    object TabSheet14: TTabSheet
+      Caption = 'CT-e Geradas'
+      ClientHeight = 545
+      ClientWidth = 1272
+      object dgGridCTE: TDBGrid
+        Left = 40
+        Height = 432
+        Top = 88
+        Width = 1185
+        AutoFillColumns = True
+        Color = clWindow
+        Columns = <        
+          item
+            Alignment = taLeftJustify
+            Layout = tlCenter
+            Title.Caption = 'Série'
+            Width = 164
+            FieldName = 'Série'
+          end        
+          item
+            Title.Caption = 'Número'
+            Width = 164
+            FieldName = 'Número'
+          end        
+          item
+            Title.Caption = 'Data Emissão'
+            Width = 164
+            FieldName = 'Data Emissão'
+          end        
+          item
+            Title.Caption = 'Chave'
+            Width = 164
+            FieldName = 'Chave'
+          end        
+          item
+            Title.Caption = 'Núm. Protocolo'
+            Width = 164
+            FieldName = 'Núm. Protocolo'
+          end        
+          item
+            Title.Caption = 'Status'
+            Width = 164
+            FieldName = 'Status'
+          end        
+          item
+            Title.Caption = 'Nat. Operação'
+            Width = 168
+            FieldName = 'Nat. Operação'
+          end>
+        TabOrder = 0
+      end
+      object edtNumCte10: TEdit
+        Left = 40
+        Height = 23
+        Top = 32
+        Width = 736
+        TabOrder = 1
+      end
+      object Label9: TLabel
+        Left = 40
+        Height = 15
+        Top = 16
+        Width = 47
+        Align = alCustom
+        Caption = 'Emitente'
+        ParentColor = False
+      end
+      object edtNumCte11: TEdit
+        Left = 1000
+        Height = 23
+        Top = 32
+        Width = 96
+        TabOrder = 2
+      end
+      object Label120: TLabel
+        Left = 976
+        Height = 15
+        Top = 40
+        Width = 14
+        Align = alCustom
+        Caption = 'De'
+        ParentColor = False
+      end
+      object Label121: TLabel
+        Left = 1000
+        Height = 15
+        Top = 16
+        Width = 41
+        Align = alCustom
+        Caption = 'Período'
+        ParentColor = False
+      end
+      object edtNumCte12: TEdit
+        Left = 1128
+        Height = 23
+        Top = 32
+        Width = 96
+        TabOrder = 3
+      end
+      object Label122: TLabel
+        Left = 1104
+        Height = 15
+        Top = 40
+        Width = 18
+        Align = alCustom
+        Caption = 'Até'
+        ParentColor = False
+      end
+    end
+    object TabSheet12: TTabSheet
+      Caption = 'Importar Cliente'
+      ClientHeight = 545
+      ClientWidth = 1272
+      OnContextPopup = TabSheet12ContextPopup
+      object edtCodEmitente1: TEdit
+        Left = 40
+        Height = 23
+        Top = 152
+        Width = 144
+        OnChange = edtCodEmitente1Change
+        TabOrder = 0
+      end
+      object edtEmitFantasia1: TEdit
+        Left = 232
+        Height = 23
+        Top = 152
+        Width = 960
+        TabOrder = 1
+      end
+      object edtEmitRazao1: TEdit
+        Left = 40
+        Height = 23
+        Top = 208
+        Width = 664
+        TabOrder = 2
+      end
+      object edtEmitCNPJ1: TEdit
+        Left = 728
+        Height = 23
+        Top = 208
+        Width = 224
+        TabOrder = 3
+      end
+      object edtEmitIE1: TEdit
+        Left = 968
+        Height = 23
+        Top = 208
+        Width = 224
+        TabOrder = 4
+      end
+      object edtEmitLogradouro1: TEdit
+        Left = 40
+        Height = 23
+        Top = 264
+        Width = 872
+        TabOrder = 5
+      end
+      object edtEmitNumero1: TEdit
+        Left = 968
+        Height = 23
+        Top = 264
+        Width = 224
+        TabOrder = 6
+      end
+      object edtEmitComp1: TEdit
+        Left = 40
+        Height = 23
+        Top = 312
+        Width = 400
+        TabOrder = 7
+      end
+      object edtEmitBairro1: TEdit
+        Left = 472
+        Height = 23
+        Top = 312
+        Width = 464
+        TabOrder = 8
+      end
+      object edtEmitCEP1: TEdit
+        Left = 968
+        Height = 23
+        Top = 312
+        Width = 224
+        TabOrder = 9
+      end
+      object edtEmitCodCidade1: TEdit
+        Left = 40
+        Height = 23
+        Top = 368
+        Width = 224
+        TabOrder = 10
+      end
+      object edtEmitCidade1: TEdit
+        Left = 298
+        Height = 23
+        Top = 368
+        Width = 544
+        TabOrder = 11
+      end
+      object edtEmitUF1: TEdit
+        Left = 874
+        Height = 23
+        Top = 368
+        Width = 64
+        TabOrder = 12
+      end
+      object edtEmitFone1: TEdit
+        Left = 970
+        Height = 23
+        Top = 368
+        Width = 224
+        TabOrder = 13
+      end
+      object Label105: TLabel
+        Left = 232
+        Height = 15
+        Top = 136
+        Width = 79
+        Align = alCustom
+        Caption = 'Nome Fantasia'
+        ParentColor = False
+      end
+      object Label106: TLabel
+        Left = 40
+        Height = 15
+        Top = 192
+        Width = 65
+        Align = alCustom
+        Caption = 'Razão Social'
+        ParentColor = False
+      end
+      object Label107: TLabel
+        Left = 728
+        Height = 15
+        Top = 192
+        Width = 27
+        Align = alCustom
+        Caption = 'CNPJ'
+        ParentColor = False
+      end
+      object Label108: TLabel
+        Left = 968
+        Height = 15
+        Top = 192
+        Width = 45
+        Align = alCustom
+        Caption = 'Insc. Est.'
+        ParentColor = False
+      end
+      object Label109: TLabel
+        Left = 40
+        Height = 15
+        Top = 248
+        Width = 62
+        Align = alCustom
+        Caption = 'Logradouro'
+        ParentColor = False
+      end
+      object Label110: TLabel
+        Left = 968
+        Height = 15
+        Top = 248
+        Width = 44
+        Align = alCustom
+        Caption = 'Número'
+        ParentColor = False
+      end
+      object Label111: TLabel
+        Left = 40
+        Height = 15
+        Top = 296
+        Width = 77
+        Align = alCustom
+        Caption = 'Complemento'
+        ParentColor = False
+      end
+      object Label112: TLabel
+        Left = 472
+        Height = 15
+        Top = 296
+        Width = 31
+        Align = alCustom
+        Caption = 'Bairro'
+        ParentColor = False
+      end
+      object Label113: TLabel
+        Left = 969
+        Height = 15
+        Top = 296
+        Width = 21
+        Align = alCustom
+        Caption = 'CEP'
+        ParentColor = False
+      end
+      object Label114: TLabel
+        Left = 40
+        Height = 15
+        Top = 352
+        Width = 52
+        Align = alCustom
+        Caption = 'Cód. IBGE'
+        ParentColor = False
+      end
+      object Label115: TLabel
+        Left = 298
+        Height = 15
+        Top = 352
+        Width = 37
+        Align = alCustom
+        Caption = 'Cidade'
+        ParentColor = False
+      end
+      object Label116: TLabel
+        Left = 872
+        Height = 15
+        Top = 352
+        Width = 14
+        Align = alCustom
+        Caption = 'UF'
+        ParentColor = False
+      end
+      object Label117: TLabel
+        Left = 967
+        Height = 15
+        Top = 352
+        Width = 45
+        Align = alCustom
+        Caption = 'Telefone'
+        ParentColor = False
+      end
+      object Label118: TLabel
+        Left = 40
+        Height = 15
+        Top = 64
+        Width = 39
+        Align = alCustom
+        Caption = 'Código'
+        ParentColor = False
+      end
+      object Label119: TLabel
+        Left = 40
+        Height = 15
+        Top = 136
+        Width = 39
+        Align = alCustom
+        Caption = 'Código'
+        ParentColor = False
+      end
+      object btnImportarXML: TButton
+        Left = 40
+        Height = 60
+        Top = 40
+        Width = 312
+        Caption = 'Buscar XML NF-e'
+        TabOrder = 14
+      end
+    end
+    object TabSheet17: TTabSheet
+      Caption = 'Carta de Correção'
+      ClientHeight = 545
+      ClientWidth = 1272
+      object btnCC: TButton
+        Left = 504
+        Height = 61
+        Top = 48
+        Width = 269
+        Caption = 'Carta de Correção'
+        TabOrder = 0
+      end
+      object edtNumCte13: TEdit
+        Left = 280
+        Height = 23
+        Top = 144
+        Width = 736
+        TabOrder = 1
+      end
+      object edtNumCte15: TEdit
+        Left = 280
+        Height = 23
+        Top = 240
+        Width = 736
+        TabOrder = 2
+      end
+      object edtNumCte16: TEdit
+        Left = 280
+        Height = 23
+        Top = 192
+        Width = 80
+        TabOrder = 3
+      end
+      object edtNumCte17: TEdit
+        Left = 280
+        Height = 23
+        Top = 288
+        Width = 736
+        TabOrder = 4
+      end
+      object edtNumCte18: TEdit
+        Left = 280
+        Height = 23
+        Top = 336
+        Width = 736
+        TabOrder = 5
+      end
+      object edtNumCte19: TEdit
+        Left = 280
+        Height = 23
+        Top = 384
+        Width = 80
+        TabOrder = 6
+      end
+      object Label125: TLabel
+        Left = 280
+        Height = 15
+        Top = 128
+        Width = 92
+        Align = alCustom
+        Caption = 'Chave de Acesso '
+        ParentColor = False
+      end
+      object Label126: TLabel
+        Left = 280
+        Height = 15
+        Top = 176
+        Width = 57
+        Align = alCustom
+        Caption = 'Sequência '
+        ParentColor = False
+      end
+      object Label127: TLabel
+        Left = 360
+        Height = 15
+        Top = 200
+        Width = 125
+        Align = alCustom
+        Caption = '(Digitar 1 para Primeira)'
+        ParentColor = False
+      end
+      object Label128: TLabel
+        Left = 280
+        Height = 15
+        Top = 224
+        Width = 81
+        Align = alCustom
+        Caption = 'Grupo Alterado'
+        ParentColor = False
+      end
+      object Label129: TLabel
+        Left = 280
+        Height = 15
+        Top = 272
+        Width = 76
+        Align = alCustom
+        Caption = 'Texto Digitado'
+        ParentColor = False
+      end
+      object Label130: TLabel
+        Left = 280
+        Height = 15
+        Top = 320
+        Width = 81
+        Align = alCustom
+        Caption = 'Texto Corrigido'
+        ParentColor = False
+      end
+      object Label131: TLabel
+        Left = 280
+        Height = 15
+        Top = 368
+        Width = 74
+        Align = alCustom
+        Caption = 'Núm. do Item'
+        ParentColor = False
+      end
+      object Label132: TLabel
+        Left = 360
+        Height = 15
+        Top = 392
+        Width = 126
+        Align = alCustom
+        Caption = '(Digitar 1 para Primeiro)'
+        ParentColor = False
+      end
+    end
+    object TabSheet19: TTabSheet
+      Caption = 'Serviços'
+      ClientHeight = 545
+      ClientWidth = 1272
+      object btnImprimirInut: TButton
+        Left = 24
+        Height = 34
+        Top = 280
+        Width = 266
+        Caption = 'Imprimir Inutilização'
+        TabOrder = 0
+      end
+      object btnGerarPDFInut: TButton
+        Left = 296
+        Height = 34
+        Top = 280
+        Width = 258
+        Caption = 'Gerar PDF Inutilização'
+        TabOrder = 1
+      end
+      object Button9: TButton
+        Left = 560
+        Height = 34
+        Top = 280
+        Width = 258
+        Caption = 'Cancelar CT-e'
+        TabOrder = 2
+      end
+      object btnImprimirEvento: TButton
+        Left = 24
+        Height = 34
+        Top = 240
+        Width = 266
+        Caption = 'Imprimir Evento'
+        TabOrder = 3
+      end
+      object btnGerarPDFEvento: TButton
+        Left = 296
+        Height = 34
+        Top = 240
+        Width = 258
+        Caption = 'Gerar PDF Evento'
+        TabOrder = 4
+      end
+      object btnEnviarEventoEmail: TButton
+        Left = 560
+        Height = 34
+        Top = 240
+        Width = 258
+        Caption = 'Enviar Evento Email'
+        TabOrder = 5
+      end
+      object btnImprimir: TButton
+        Left = 24
+        Height = 34
+        Top = 200
+        Width = 266
+        Caption = 'Imprimir DACTe'
+        TabOrder = 6
+      end
+      object btnGerarPDF: TButton
+        Left = 296
+        Height = 34
+        Top = 200
+        Width = 258
+        Caption = 'Gerar PDF'
+        TabOrder = 7
+      end
+      object btnEnviarEmail: TButton
+        Left = 560
+        Height = 34
+        Top = 200
+        Width = 258
+        Caption = 'Enviar CT-e Email'
+        TabOrder = 8
+      end
+      object btnImportarXML1: TButton
+        Left = 24
+        Height = 34
+        Top = 160
+        Width = 266
+        Caption = 'Importar XML'
+        TabOrder = 9
+      end
+      object btnValidarXML: TButton
+        Left = 296
+        Height = 34
+        Top = 160
+        Width = 258
+        Caption = 'Validar XML'
+        TabOrder = 10
+      end
+      object Button30: TButton
+        Left = 560
+        Height = 34
+        Top = 160
+        Width = 258
+        Caption = 'Importar txt/XML'
+        TabOrder = 11
+      end
+      object btnConsultar: TButton
+        Left = 24
+        Height = 34
+        Top = 120
+        Width = 266
+        Caption = 'Consultar Carregando XML'
+        TabOrder = 12
+      end
+      object btnConsultarChave: TButton
+        Left = 296
+        Height = 34
+        Top = 120
+        Width = 258
+        Caption = 'Consultar Chave Acesso'
+        TabOrder = 13
+      end
+      object btnEnvEPEC: TButton
+        Left = 560
+        Height = 34
+        Top = 120
+        Width = 258
+        Caption = 'Enviar EPEC'
+        TabOrder = 14
+      end
+      object btnConsCad: TButton
+        Left = 24
+        Height = 34
+        Top = 80
+        Width = 266
+        Caption = 'Consulta Cadastro'
+        TabOrder = 15
+      end
+      object btnCriarEnviar: TButton
+        Left = 296
+        Height = 34
+        Top = 80
+        Width = 258
+        Caption = 'Criar e Enviar'
+        TabOrder = 16
+      end
+      object btnConsultarRecibo: TButton
+        Left = 560
+        Height = 34
+        Top = 80
+        Width = 258
+        Caption = 'Consultar Recibo Lote'
+        TabOrder = 17
+      end
+      object btnStatusServ: TButton
+        Left = 24
+        Height = 34
+        Top = 40
+        Width = 266
+        Caption = 'Status Serviço'
+        TabOrder = 18
+      end
+      object btnInutilizar: TButton
+        Left = 296
+        Height = 34
+        Top = 40
+        Width = 258
+        Caption = 'Inutilizar Numeração'
+        TabOrder = 19
+      end
+      object btnGerar: TButton
+        Left = 560
+        Height = 34
+        Top = 40
+        Width = 258
+        Caption = 'Gerar CT-e'
+        TabOrder = 20
+      end
+      object btnAtualizarBD: TButton
+        Left = 24
+        Height = 56
+        Top = 384
+        Width = 346
+        Caption = 'Atualizar Banco de Dados'
+        TabOrder = 21
+      end
+    end
+    object TabSheet20: TTabSheet
+      Caption = 'Configurações'
+      ClientHeight = 545
+      ClientWidth = 1272
+      object GroupBox3: TGroupBox
+        Left = 48
+        Height = 72
+        Top = 32
+        Width = 361
+        Caption = 'Certificado Digital'
+        ClientHeight = 52
+        ClientWidth = 357
+        TabOrder = 0
+        object SpeedButton1: TSpeedButton
+          Left = 8
+          Height = 27
+          Top = 8
+          Width = 320
         end
       end
     end
-  end
-  object TabSheet15: TTabSheet
   end
 end
