@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
   StdCtrls, Menus, Buttons, DBGrids, DateTimePicker, Types, IniFiles,
   ACBrCTe, ACBrCTeDACTEClass, ACBrMail, ACBrBase, ACBrDFe, pcnConversao,
-  pcteConversaoCTe;
+  pcteConversaoCTe, DateUtils;
 
 type
 
@@ -17,6 +17,15 @@ type
   TfCTePrincipal = class(TForm)
     ACBrCTe1: TACBrCTe;
     BitBtn1: TBitBtn;
+    btnGravarCTe: TBitBtn;
+    combICMSDevido: TComboBox;
+    DateTimePicker1: TDateTimePicker;
+    DateTimePicker2: TDateTimePicker;
+    OpenDialog1: TOpenDialog;
+    sbtnPathSalvar: TBitBtn;
+    sbtnLogoMarca: TBitBtn;
+    Edit2: TEdit;
+    sbtnGetCert: TBitBtn;
     btnPreVisu: TBitBtn;
     BitBtn11: TBitBtn;
     BitBtn12: TBitBtn;
@@ -67,7 +76,7 @@ type
     cbEmailSSL: TCheckBox;
     ckVisualizar: TCheckBox;
     ckSalvar: TCheckBox;
-    combICMSDevido: TCheckBox;
+    CheckBox1: TCheckBox;
     combCodSitTrib: TComboBox;
     cbUF: TComboBox;
     combOutrosDocs: TComboBox;
@@ -190,10 +199,8 @@ type
     rgTipoAmb: TRadioGroup;
     rgRodLotacao: TRadioGroup;
     sbtnCaminhoCert: TSpeedButton;
-    SpeedButton3: TSpeedButton;
-    sbtnLogoMarca: TSpeedButton;
     TabSheet12: TTabSheet;
-    TabSheet15: TTabSheet;
+    TabRodoviario: TTabSheet;
     TabSheet17: TTabSheet;
     valOutrosVal: TEdit;
     dataOutrosEmi: TEdit;
@@ -207,7 +214,7 @@ type
     Label97: TLabel;
     Label98: TLabel;
     Label99: TLabel;
-    TabSheet14: TTabSheet;
+    TabCteGeradas: TTabSheet;
     valAliIn: TEdit;
     StaticText30: TStaticText;
     valpICMS: TEdit;
@@ -465,7 +472,7 @@ type
     StaticText8: TStaticText;
     StaticText9: TStaticText;
     TabSheet1: TTabSheet;
-    TabSheet10: TTabSheet;
+    TabServicosImpostos: TTabSheet;
     TabSheet11: TTabSheet;
     TabSheet16: TTabSheet;
     TabSheet18: TTabSheet;
@@ -473,14 +480,14 @@ type
     TabSheet2: TTabSheet;
     TabSheet20: TTabSheet;
     TabSheet21: TTabSheet;
-    TabSheet22: TTabSheet;
+    TabInfoCarga: TTabSheet;
     TabSheet3: TTabSheet;
-    TabSheet4: TTabSheet;
-    TabSheet5: TTabSheet;
+    TabTomador: TTabSheet;
+    TabDadosCte: TTabSheet;
     TabSheet6: TTabSheet;
-    TabSheet7: TTabSheet;
-    TabSheet8: TTabSheet;
-    TabSheet9: TTabSheet;
+    TabExpedidor: TTabSheet;
+    TabRecebedor: TTabSheet;
+    TabDestinatario: TTabSheet;
     procedure BitBtn20Click(Sender: TObject);
     procedure btnStatusServClick(Sender: TObject);
     procedure Button11Click(Sender: TObject);
@@ -492,14 +499,27 @@ type
     procedure rgRecClick(Sender: TObject);
     procedure rgRemClick(Sender: TObject);
     procedure rgTomadorClick(Sender: TObject);
+    procedure sbtnGetCertClick(Sender: TObject);
+    procedure sbtnLogoMarcaClick(Sender: TObject);
+    procedure sbtnPathSalvarClick(Sender: TObject);
     procedure StaticText13Click(Sender: TObject);
     procedure StaticText6Click(Sender: TObject);
     procedure StaticText7Click(Sender: TObject);
+    procedure TabCteGeradasShow(Sender: TObject);
+    procedure TabDadosCteShow(Sender: TObject);
+    procedure TabExpedidorShow(Sender: TObject);
+    procedure TabInfoCargaShow(Sender: TObject);
+    procedure TabRecebedorShow(Sender: TObject);
+    procedure TabRodoviarioShow(Sender: TObject);
+    procedure TabServicosImpostosShow(Sender: TObject);
     procedure TabSheet12ContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
-    procedure TabSheet22ContextPopup(Sender: TObject; MousePos: TPoint;
+    procedure TabInfoCargaContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
+    procedure TabDestinatarioShow(Sender: TObject);
+    procedure TabTomadorShow(Sender: TObject);
   private
+    modoGravacao : string;
     val_genCte : integer;
     val0 , val1, val2 : Double;
     valC :string;
@@ -520,6 +540,8 @@ type
 
 var
   fCTePrincipal: TfCTePrincipal;
+const
+  SELDIRHELP = 1000;
 
 implementation
 
@@ -538,16 +560,101 @@ begin
 
 end;
 
+procedure TfCTePrincipal.TabCteGeradasShow(Sender: TObject);
+  var vDate1 , vDate2 : TdateTime;
+begin
+  vDate1 := StartOfTheMonth(today);
+  DateTimePicker1.Date := vDate1 ;
+  vDate2 := today;
+  DateTimePicker2.Date := vDate2 ;
+end;
+
+procedure TfCTePrincipal.TabDadosCteShow(Sender: TObject);
+begin
+  edtSerieCte.SetFocus;
+end;
+
+procedure TfCTePrincipal.TabExpedidorShow(Sender: TObject);
+begin
+  edtExpBusca.SetFocus;
+end;
+
+procedure TfCTePrincipal.TabInfoCargaShow(Sender: TObject);
+begin
+  if(modoGravacao = 'INCLUIR')then
+  begin
+    btnGravarCTe.Click;
+  end;
+  dbValInfCarga.SetFocus;
+  //TODO
+  //Lazarus-Cte
+  {
+  if(edtNumCte.Text <> '') then
+  begin
+      if not(dm.qQC.Active)then
+    dm.qQC.Active;
+    dm.qQC.Params[0].AsInteger := val_genCte;
+    dm.qQC.Open;
+  end;}
+end;
+
+procedure TfCTePrincipal.TabRecebedorShow(Sender: TObject);
+begin
+  edtRecBusca.SetFocus;
+end;
+
+procedure TfCTePrincipal.TabRodoviarioShow(Sender: TObject);
+begin
+  edtRodRNTRC.SetFocus;
+end;
+
+procedure TfCTePrincipal.TabServicosImpostosShow(Sender: TObject);
+begin
+ if(modoGravacao = 'INCLUIR')then
+ begin
+   btnGravarCTe.Click;
+ end;
+ //Lazarus-Cte
+ {
+ if(edtNumCte.Text <> '') then
+ begin
+   if not(dm.qCOMP.Active)then
+     dm.qCOMP.Active;
+   dm.qCOMP.Params[0].AsInteger := val_genCte;
+   dm.qCOMP.Open;
+ end;
+ }
+ CheckBox1.Enabled := False;
+ calValB.Enabled := False;
+ valAliIn.Enabled := False;
+ valAliInter.Enabled := False;
+ valICMSPartI.Enabled := False;
+ valIMCSPartF.Enabled := False;
+ //Lazarus-Cte
+ //valCombIni.Enabled := False;
+ //valCombFim.Enabled := False;
+end;
+
 procedure TfCTePrincipal.TabSheet12ContextPopup(Sender: TObject;
   MousePos: TPoint; var Handled: Boolean);
 begin
 
 end;
 
-procedure TfCTePrincipal.TabSheet22ContextPopup(Sender: TObject;
+procedure TfCTePrincipal.TabInfoCargaContextPopup(Sender: TObject;
   MousePos: TPoint; var Handled: Boolean);
 begin
 
+end;
+
+procedure TfCTePrincipal.TabDestinatarioShow(Sender: TObject);
+begin
+  edtDestBusca.SetFocus;
+end;
+
+procedure TfCTePrincipal.TabTomadorShow(Sender: TObject);
+begin
+  edtBuscaTomador.SetFocus;
 end;
 
 procedure TfCTePrincipal.GravarConfiguracao;
@@ -1396,7 +1503,7 @@ begin
     //  Dados do Modal Rodoviário
 
     infCTeNorm.rodo.RNTRC := edtRodRNTRC.Text;
-    infCTeNorm.rodo.dPrev := StrToDate(dataRodPrev.Text);
+    infCTeNorm.rodo.dPrev := dataRodPrev.Date;
 
     case rgRodLotacao.ItemIndex of
       0: infCTeNorm.rodo.lota := ltNao;
@@ -1695,6 +1802,37 @@ begin
   begin
     GroupBoxTomador.Visible := True;
   end;
+end;
+
+procedure TfCTePrincipal.sbtnGetCertClick(Sender: TObject);
+begin
+  edtNumSerie.Text := ACBrCTe1.SSL.SelecionarCertificado;
+end;
+
+procedure TfCTePrincipal.sbtnLogoMarcaClick(Sender: TObject);
+begin
+  OpenDialog1.Title := 'Selecione o Logo';
+  OpenDialog1.DefaultExt := '*.bmp';
+  OpenDialog1.Filter := 'Arquivos BMP (*.bmp)|*.bmp|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ExtractFileDir(application.ExeName);
+
+  if OpenDialog1.Execute then
+  begin
+    edtLogoMarca.Text := OpenDialog1.FileName;
+  end;
+end;
+
+procedure TfCTePrincipal.sbtnPathSalvarClick(Sender: TObject);
+var
+ Dir : string;
+begin
+  if Length(edtPathLogs.Text) <= 0 then
+    Dir := ExtractFileDir(application.ExeName)
+  else
+    Dir := edtPathLogs.Text;
+
+ if SelectDirectory(Dir, [sdAllowCreate, sdPerformCreate, sdPrompt],SELDIRHELP) then
+   edtPathLogs.Text := Dir;
 end;
 
 procedure TfCTePrincipal.StaticText13Click(Sender: TObject);
