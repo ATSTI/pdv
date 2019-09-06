@@ -26,12 +26,21 @@
       <FormatVersion Value="2"/>
       <Modes Count="0"/>
     </RunParams>
-    <RequiredPackages Count="1">
+    <RequiredPackages Count="4">
       <Item1>
-        <PackageName Value="LCL"/>
+        <PackageName Value="DateTimeCtrls"/>
       </Item1>
+      <Item2>
+        <PackageName Value="ACBr_CTe"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="FCL"/>
+      </Item3>
+      <Item4>
+        <PackageName Value="LCL"/>
+      </Item4>
     </RequiredPackages>
-    <Units Count="2">
+    <Units Count="5">
       <Unit0>
         <Filename Value="prjCTe.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -44,16 +53,38 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCtePrincipal"/>
       </Unit1>
+      <Unit2>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="dmPdv"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="DataModule"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="udmcte.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="dmCte"/>
+        <ResourceBaseClass Value="DataModule"/>
+        <UnitName Value="uDmCte"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="unfe.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form1"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uNFe"/>
+      </Unit4>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="/home/sisadmin/prjCTe"/>
+      <Filename Value="\home\publico\tmp\prjCTe"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
+      <OtherUnitFiles Value="..\geral"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

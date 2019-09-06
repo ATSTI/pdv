@@ -1,0 +1,16 @@
+object dmCte: TdmCte
+  OldCreateOrder = False
+  Height = 512
+  HorizontalOffset = 435
+  VerticalOffset = 250
+  Width = 808
+  PPI = 96
+  object cdsCte: TSQLQuery
+    FieldDefs = <>
+    Database = dmPdv.IbCon
+    Transaction = dmPdv.sTrans
+    Params = <>
+    left = 68
+    top = 85
+  end
+end
