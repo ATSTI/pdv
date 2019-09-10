@@ -2253,7 +2253,6 @@ begin
      JvDateTimePicker2.Date := vDate2 ;
 
 end;
-//AQUI
 procedure TfrmDemo_ACBrCTe.TabSheet25Show(Sender: TObject);
 begin
   if(modoGravacao = 'INCLUIR')then
@@ -2315,6 +2314,7 @@ end;
 
 procedure TfrmDemo_ACBrCTe.TabSheet41Show(Sender: TObject);
 begin
+//PULEI 
   if(modoGravacao = 'INCLUIR')then
   begin
     btnGravarCTe.Click;
@@ -2330,6 +2330,7 @@ end;
 
 procedure TfrmDemo_ACBrCTe.TabSheet42Show(Sender: TObject);
 begin
+  //PULEI   Motorista
   if(modoGravacao = 'INCLUIR')then
   begin
     btnGravarCTe.Click;
@@ -2366,6 +2367,7 @@ end;
 
 Procedure TfrmDemo_ACBrCTe.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+  
   if (dm.cdsCTE.State in [dsInsert, dsEdit]) then
   begin
     MessageDlg('Grave as alterações antes de fechar.', mtInformation, [mbOK], 0);
@@ -2378,6 +2380,10 @@ procedure TfrmDemo_ACBrCTe.FormCreate(Sender: TObject);
 var contar : integer;
        emp,nomexeC ,nomexebd : string ;
 begin
+
+//PAREI AQUI , acho q isso fica melhor no ONShow
+
+
   LerConfiguracao;
   // PageControl1.ActivePage := TabSheet2;  // Dados
   //PageControl1.ActivePage := TabSheet4;  // Emitente
@@ -2731,7 +2737,7 @@ end;
 
 procedure TfrmDemo_ACBrCTe.btnIncluirClick(Sender: TObject);
 begin
-
+  // NAO ENTENDI isso
   if (dm.cdsCTENPROT.AsString <> '') then
   begin
     MessageDlg('CTe Ja Enviada.', mtInformation, [mbOK], 0);
@@ -2792,7 +2798,7 @@ begin
   ACBrCTe1.Conhecimentos.Clear;
   GerarCTe(vAux);
   ACBrCTe1.Conhecimentos.Items[0].GravarXML('','');
-
+  
   ShowMessage('Arquivo gerado em: '+ACBrCTe1.Conhecimentos.Items[0].NomeArq);
   MemoDados.Lines.Add('Arquivo gerado em: '+ACBrCTe1.Conhecimentos.Items[0].NomeArq);
   MemoResp.Lines.LoadFromFile(ACBrCTe1.Conhecimentos.Items[0].NomeArq);
@@ -5694,7 +5700,6 @@ end;
 
 
 
-
 procedure TfrmDemo_ACBrCTe.btnCliCaClick(Sender: TObject);
 //var strInsere , strEndereco : string;
  //   generetor,genEnd : integer;
@@ -6618,6 +6623,10 @@ procedure TfrmDemo_ACBrCTe.btnCCClick(Sender: TObject);
 var Chave , sCNPJ ,sGrupo , sCampo, sValor : string;
      nSequencia , iNumItem : integer ;
 begin
+
+  // PULEI   , existe ??
+  
+
  ACBrCTe1.EventoCTe.Evento.Clear;
 
  chave      := edtChave.Text ;
@@ -6662,6 +6671,7 @@ end;
 
 procedure TfrmDemo_ACBrCTe.btnImprimirClick(Sender: TObject);
 begin
+// AQUI
  OpenDialog1.Title := 'Selecione o CTe';
  OpenDialog1.DefaultExt := '*-cte.xml';
  OpenDialog1.Filter := 'Arquivos CTe (*-cte.xml)|*-cte.xml|Arquivos XML (*.xml)|*.xml|Todos os Arquivos (*.*)|*.*';
@@ -6832,7 +6842,6 @@ end;
 procedure TfrmDemo_ACBrCTe.btnExcluirClick(Sender: TObject);
 var strExclui:string;
 begin
-
   if (dm.cdsCTENPROT.AsString <> '') then
   begin
     MessageDlg('CTe Ja Enviada.', mtInformation, [mbOK], 0);
@@ -7036,6 +7045,7 @@ end;
 
 procedure TfrmDemo_ACBrCTe.edtRecBuscaChange(Sender: TObject);
 begin
+  // AQUI
   if(edtRecBusca.Text = '') then
   begin
      MessageDlg('Escolha um Recebedor', mtWarning, [mbOK], 0);
@@ -7150,6 +7160,7 @@ end;
 /// ver se precisa disso abaixo 08/11/2016
 procedure TfrmDemo_ACBrCTe.edtExpBuscaChange(Sender: TObject);
 begin
+  // PULEI
   if(edtExpBusca.Text = '') then
   begin
      MessageDlg('Escolha um Expeditor', mtWarning, [mbOK], 0);
@@ -7230,6 +7241,7 @@ end;
 
 procedure TfrmDemo_ACBrCTe.CheckBox1Click(Sender: TObject);
 begin
+    // AQUI
     if CheckBox1.Checked = true then
     begin
       combICMSDevido.Enabled := True;

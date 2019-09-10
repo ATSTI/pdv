@@ -1,19 +1,22 @@
 object fCTePrincipal: TfCTePrincipal
   Left = 262
-  Height = 647
+  Height = 674
   Top = 151
   Width = 1305
   Caption = 'CTe - Conhecimento de Transporte Eletrônico'
-  ClientHeight = 647
+  ClientHeight = 674
   ClientWidth = 1305
+  OnClose = FormClose
+  OnKeyPress = FormKeyPress
+  OnShow = FormShow
   LCLVersion = '2.0.4.0'
   object Panel1: TPanel
     Left = 0
-    Height = 50
-    Top = 597
+    Height = 66
+    Top = 608
     Width = 1305
     Align = alBottom
-    ClientHeight = 50
+    ClientHeight = 66
     ClientWidth = 1305
     TabOrder = 0
     object btnIncCte: TBitBtn
@@ -22,6 +25,7 @@ object fCTePrincipal: TfCTePrincipal
       Top = 8
       Width = 75
       Caption = 'Incluir'
+      OnClick = btnIncCteClick
       TabOrder = 0
     end
     object BitBtn5: TBitBtn
@@ -38,6 +42,7 @@ object fCTePrincipal: TfCTePrincipal
       Top = 8
       Width = 75
       Caption = 'Listar'
+      OnClick = btnListarCteClick
       TabOrder = 2
     end
     object btnDuplicar: TBitBtn
@@ -46,6 +51,7 @@ object fCTePrincipal: TfCTePrincipal
       Top = 8
       Width = 75
       Caption = 'Duplicar'
+      OnClick = btnDuplicarClick
       TabOrder = 3
     end
     object BitBtn8: TBitBtn
@@ -56,20 +62,104 @@ object fCTePrincipal: TfCTePrincipal
       Caption = 'Gravar'
       TabOrder = 4
     end
-    object BitBtn9: TBitBtn
+    object btnGerarCte: TBitBtn
       Left = 1032
-      Height = 30
-      Top = 8
-      Width = 75
-      Caption = 'Gerar'
+      Height = 34
+      Top = 5
+      Width = 130
+      Caption = 'Gerar CTe'
+      Glyph.Data = {
+        FA090000424DFA09000000000000360000002800000019000000190000000100
+        200000000000C409000064000000640000000000000000000000FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF0088AE250888AE255488AE
+        25A288AE25D388AE25FB88AE25FF88AE25FB88AE25D388AE25A288AE255488AE
+        2508FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF0088AE260788AE257488AE25EB88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25EB88AE257488AE2607FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF0088AE252688AE25D488AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25D488AE2526FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF0088AE253C88AE25F188AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25F188AE253CFFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF0088AE252688AE25F188AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25F188AE2526FFFFFF00FFFFFF00FFFFFF0088AE260788AE25D488AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25D488AE2607FFFFFF00FFFFFF0088AE257488AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE2574FFFFFF0088AE250888AE25EB88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25EB88AE250888AE255488AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF94B5
+        4FFFE6EDDEFFDEE6D1FF88AE26FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE255488AE
+        25A288AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FFA6C0
+        78FFF4F7F0FFD3DEC2FFE9EFE2FFD6E1C7FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25A288AE25D388AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FFBCCE
+        9EFFF8FAF6FFBCCE9EFF88AE25FF91B349FFF0F4EAFFC7D6B0FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25D388AE25FB88AE25FF88AE25FF88AE25FF88AE25FF89AF2AFFD3DE
+        C2FFF4F7F0FFA6C078FF88AE25FF88AE25FF88AE25FF9CBA65FFF5F7F1FFBDCF
+        A0FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FB88AE25FF88AE25FF88AE25FF88AE25FF88AE25FFBFD0
+        A4FFE6EDDEFF94B54FFF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FFA4BF
+        74FFF8F9F5FFAFC68AFF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FB88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FFAFC68AFFF8F9F5FFA4BF75FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FB88AE25D388AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FFBDCFA0FFF5F7F1FF9CBA65FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25D388AE25A288AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FFC7D6B0FFF0F4EBFF91B3
+        49FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25A288AE255488AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FFD6E1
+        C7FFE9EFE2FF8EB13EFF88AE25FF88AE25FF88AE25FF88AE25FF88AE255488AE
+        250888AE25EB88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE26FFDEE6D1FFC0D1A5FF88AE25FF88AE25FF88AE25FF88AE25EB88AE
+        2508FFFFFF0088AE257488AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        2574FFFFFF00FFFFFF0088AE260788AE25D488AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25D488AE2607FFFFFF00FFFFFF00FFFFFF0088AE252688AE25F188AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25F188AE2526FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF0088AE253C88AE
+        25F188AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25F188AE253CFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF0088AE252688AE25D488AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+        25D488AE2526FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF0088AE260788AE257488AE25EB88AE25FF88AE25FF88AE
+        25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25EB88AE
+        257488AE2607FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF0088AE250888AE255488AE
+        25A288AE25D388AE25FB88AE25FF88AE25FB88AE25D388AE25A288AE255488AE
+        2508FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+      }
+      OnClick = btnGerarCteClick
       TabOrder = 5
     end
     object btnPreVisu: TBitBtn
-      Left = 640
+      Left = 536
       Height = 30
       Top = 8
       Width = 168
       Caption = 'Pré-Vizualizar'
+      OnClick = btnPreVisuClick
       TabOrder = 6
     end
     object btnEditarCte: TBitBtn
@@ -78,6 +168,7 @@ object fCTePrincipal: TfCTePrincipal
       Top = 8
       Width = 75
       Caption = 'Editar'
+      OnClick = btnEditarCteClick
       TabOrder = 7
     end
     object btnGravarCTe: TBitBtn
@@ -86,7 +177,15 @@ object fCTePrincipal: TfCTePrincipal
       Top = 8
       Width = 107
       Caption = 'Gravar'
+      OnClick = btnGravarCTeClick
       TabOrder = 8
+    end
+    object StatusBar1: TStatusBar
+      Left = 1
+      Height = 21
+      Top = 44
+      Width = 1303
+      Panels = <>
     end
   end
   object Label18: TLabel
@@ -100,20 +199,161 @@ object fCTePrincipal: TfCTePrincipal
   end
   object PageControl1: TPageControl
     Left = 0
-    Height = 597
+    Height = 608
     Top = 0
     Width = 1305
     ActivePage = TabSheet1
     Align = alClient
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 1
+    object TabCteGeradas: TTabSheet
+      Caption = 'CT-e Geradas'
+      ClientHeight = 573
+      ClientWidth = 1299
+      OnShow = TabCteGeradasShow
+      object dgGridCTE: TDBGrid
+        Left = 40
+        Height = 432
+        Top = 88
+        Width = 1185
+        AutoFillColumns = True
+        Color = clWindow
+        Columns = <        
+          item
+            Title.Caption = 'Série'
+            Width = 167
+            FieldName = 'Série'
+          end        
+          item
+            Title.Caption = 'Número'
+            Width = 167
+            FieldName = 'Número'
+          end        
+          item
+            Title.Caption = 'Data Emissão'
+            Width = 167
+            FieldName = 'Data Emissão'
+          end        
+          item
+            Title.Caption = 'Chave'
+            Width = 167
+            FieldName = 'Chave'
+          end        
+          item
+            Title.Caption = 'Núm. Protocolo'
+            Width = 167
+            FieldName = 'Núm. Protocolo'
+          end        
+          item
+            Title.Caption = 'Status'
+            Width = 167
+            FieldName = 'Status'
+          end        
+          item
+            Title.Caption = 'Nat. Operação'
+            Width = 167
+            FieldName = 'Nat. Operação'
+          end>
+        TabOrder = 1
+      end
+      object Label9: TLabel
+        Left = 40
+        Height = 17
+        Top = 16
+        Width = 50
+        Align = alCustom
+        Caption = 'Emitente'
+        ParentColor = False
+      end
+      object Label120: TLabel
+        Left = 976
+        Height = 17
+        Top = 36
+        Width = 16
+        Align = alCustom
+        Caption = 'De'
+        ParentColor = False
+      end
+      object Label121: TLabel
+        Left = 1000
+        Height = 17
+        Top = 18
+        Width = 43
+        Align = alCustom
+        Caption = 'Período'
+        ParentColor = False
+      end
+      object Label122: TLabel
+        Left = 1104
+        Height = 17
+        Top = 36
+        Width = 19
+        Align = alCustom
+        Caption = 'Até'
+        ParentColor = False
+      end
+      object comboEmpresa: TComboBox
+        Left = 41
+        Height = 27
+        Top = 36
+        Width = 866
+        ItemHeight = 0
+        OnChange = comboEmpresaChange
+        TabOrder = 0
+        Text = 'Selecione a Empresa'
+      end
+      object DateTimePicker1: TDateTimePicker
+        Left = 1003
+        Height = 23
+        Top = 36
+        Width = 87
+        CenturyFrom = 1941
+        MaxDate = 2958465
+        MinDate = -53780
+        TabOrder = 2
+        TrailingSeparator = False
+        TextForNullDate = 'NULL'
+        LeadingZeros = True
+        Kind = dtkDate
+        TimeFormat = tf24
+        TimeDisplay = tdHMS
+        DateMode = dmComboBox
+        Date = 43714
+        Time = 0.712287094909698
+        UseDefaultSeparators = True
+        HideDateTimeParts = []
+        MonthNames = 'Long'
+      end
+      object DateTimePicker2: TDateTimePicker
+        Left = 1136
+        Height = 23
+        Top = 36
+        Width = 87
+        CenturyFrom = 1941
+        MaxDate = 2958465
+        MinDate = -53780
+        TabOrder = 3
+        TrailingSeparator = False
+        TextForNullDate = 'NULL'
+        LeadingZeros = True
+        Kind = dtkDate
+        TimeFormat = tf24
+        TimeDisplay = tdHMS
+        DateMode = dmComboBox
+        Date = 43714
+        Time = 0.712325428241456
+        UseDefaultSeparators = True
+        HideDateTimeParts = []
+        MonthNames = 'Long'
+      end
+    end
     object TabSheet1: TTabSheet
       Caption = 'CT-e'
-      ClientHeight = 562
+      ClientHeight = 573
       ClientWidth = 1299
       object PageControl2: TPageControl
         Left = 0
-        Height = 562
+        Height = 573
         Top = 0
         Width = 1299
         ActivePage = TabSheet11
@@ -124,11 +364,11 @@ object fCTePrincipal: TfCTePrincipal
           Cursor = crHandPoint
           BorderWidth = 1
           Caption = 'Dados'
-          ClientHeight = 527
+          ClientHeight = 538
           ClientWidth = 1293
           object PageControl3: TPageControl
             Left = 0
-            Height = 527
+            Height = 538
             Top = 0
             Width = 1293
             ActivePage = TabDadosCte
@@ -137,7 +377,7 @@ object fCTePrincipal: TfCTePrincipal
             TabOrder = 0
             object TabDadosCte: TTabSheet
               Caption = 'Dados CT-e'
-              ClientHeight = 492
+              ClientHeight = 503
               ClientWidth = 1287
               OnShow = TabDadosCteShow
               object edtModelo: TEdit
@@ -392,8 +632,8 @@ object fCTePrincipal: TfCTePrincipal
               end
               object StaticText1: TStaticText
                 Left = 24
-                Height = 16
-                Top = 320
+                Height = 17
+                Top = 319
                 Width = 248
                 Caption = 'Chave de Acesso CT-e Referenciada'
                 TabOrder = 12
@@ -503,6 +743,7 @@ object fCTePrincipal: TfCTePrincipal
                 Height = 27
                 Top = 102
                 Width = 80
+                OnExit = edtCfopExit
                 TabOrder = 23
                 Text = 'edtCfop'
               end
@@ -561,10 +802,11 @@ object fCTePrincipal: TfCTePrincipal
                 Text = 'edtFimCodCidade'
               end
             end
-            object TabSheet16: TTabSheet
+            object TabDadosComplementares: TTabSheet
               Caption = 'Dados Complementares'
-              ClientHeight = 492
+              ClientHeight = 503
               ClientWidth = 1287
+              OnShow = TabDadosComplementaresShow
               object edtCaracAdTrans: TEdit
                 Left = 8
                 Height = 27
@@ -574,16 +816,16 @@ object fCTePrincipal: TfCTePrincipal
               end
               object StaticText2: TStaticText
                 Left = 8
-                Height = 16
-                Top = 16
+                Height = 19
+                Top = 12
                 Width = 328
                 Caption = 'Característica Adicional do Transporte '
                 TabOrder = 1
               end
               object StaticText3: TStaticText
                 Left = 8
-                Height = 16
-                Top = 72
+                Height = 18
+                Top = 69
                 Width = 328
                 Caption = 'Característica Adicional do Serviço '
                 TabOrder = 2
@@ -597,8 +839,8 @@ object fCTePrincipal: TfCTePrincipal
               end
               object StaticText4: TStaticText
                 Left = 8
-                Height = 16
-                Top = 128
+                Height = 18
+                Top = 124
                 Width = 328
                 Caption = 'Funcionário Emissor do CT-e'
                 TabOrder = 4
@@ -635,8 +877,8 @@ object fCTePrincipal: TfCTePrincipal
               end
               object lblDetRetira: TStaticText
                 Left = 8
-                Height = 16
-                Top = 240
+                Height = 18
+                Top = 237
                 Width = 248
                 Caption = 'Detalhes da Retirada'
                 TabOrder = 7
@@ -657,8 +899,8 @@ object fCTePrincipal: TfCTePrincipal
               end
               object lblDetRetira1: TStaticText
                 Left = 8
-                Height = 16
-                Top = 344
+                Height = 19
+                Top = 341
                 Width = 248
                 Caption = 'Informações Gerais'
                 TabOrder = 10
@@ -668,7 +910,7 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabSheet3: TTabSheet
           Caption = 'Emitente'
-          ClientHeight = 527
+          ClientHeight = 538
           ClientWidth = 1293
           object edtCodEmitente: TEdit
             Left = 40
@@ -897,7 +1139,7 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabTomador: TTabSheet
           Caption = 'Tomador'
-          ClientHeight = 527
+          ClientHeight = 538
           ClientWidth = 1293
           OnShow = TabTomadorShow
           object rgTomador: TRadioGroup
@@ -932,6 +1174,7 @@ object fCTePrincipal: TfCTePrincipal
             Height = 27
             Top = 88
             Width = 144
+            OnExit = edtBuscaTomadorExit
             TabOrder = 1
           end
           object edtNomeTomador: TEdit
@@ -1162,7 +1405,7 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabSheet6: TTabSheet
           Caption = 'Remetente'
-          ClientHeight = 527
+          ClientHeight = 538
           ClientWidth = 1293
           object rgRem: TRadioGroup
             Left = 32
@@ -1194,6 +1437,7 @@ object fCTePrincipal: TfCTePrincipal
             Height = 27
             Top = 88
             Width = 144
+            OnExit = edtRemBuscaExit
             TabOrder = 1
           end
           object Label25: TLabel
@@ -1424,7 +1668,7 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabExpedidor: TTabSheet
           Caption = 'Expedidor'
-          ClientHeight = 527
+          ClientHeight = 538
           ClientWidth = 1293
           OnShow = TabExpedidorShow
           object rgExp: TRadioGroup
@@ -1686,7 +1930,7 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabRecebedor: TTabSheet
           Caption = 'Recebedor'
-          ClientHeight = 527
+          ClientHeight = 538
           ClientWidth = 1293
           OnShow = TabRecebedorShow
           object rgRec: TRadioGroup
@@ -1718,6 +1962,7 @@ object fCTePrincipal: TfCTePrincipal
             Height = 27
             Top = 88
             Width = 144
+            OnExit = edtRecBuscaExit
             TabOrder = 1
           end
           object edtRecNome: TEdit
@@ -1948,7 +2193,7 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabDestinatario: TTabSheet
           Caption = 'Destinatário'
-          ClientHeight = 527
+          ClientHeight = 538
           ClientWidth = 1293
           OnShow = TabDestinatarioShow
           object rgDest: TRadioGroup
@@ -1981,6 +2226,7 @@ object fCTePrincipal: TfCTePrincipal
             Height = 27
             Top = 88
             Width = 144
+            OnExit = edtDestBuscaExit
             TabOrder = 1
           end
           object edtDestNome: TEdit
@@ -2203,7 +2449,7 @@ object fCTePrincipal: TfCTePrincipal
           object GroupBoxDestinatario: TGroupBox
             Left = 32
             Height = 126
-            Top = 352
+            Top = 376
             Width = 1020
             Caption = 'GroupBoxDestinatario'
             TabOrder = 15
@@ -2219,7 +2465,7 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabServicosImpostos: TTabSheet
           Caption = 'Serviços e Impostos'
-          ClientHeight = 527
+          ClientHeight = 538
           ClientWidth = 1293
           OnShow = TabServicosImpostosShow
           object DBGrid2: TDBGrid
@@ -2235,13 +2481,13 @@ object fCTePrincipal: TfCTePrincipal
                 Alignment = taCenter
                 ButtonStyle = cbsButton
                 Title.Caption = 'Descrição'
-                Width = 251
+                Width = 257
                 FieldName = 'Descrição'
               end            
               item
                 Alignment = taCenter
                 Title.Caption = 'Valor'
-                Width = 251
+                Width = 258
                 FieldName = 'Valor'
               end>
             TabOrder = 0
@@ -2305,16 +2551,16 @@ object fCTePrincipal: TfCTePrincipal
           end
           object StaticText14: TStaticText
             Left = 32
-            Height = 16
-            Top = 336
+            Height = 19
+            Top = 329
             Width = 216
             Caption = 'CST - ICMS'
             TabOrder = 8
           end
           object StaticText15: TStaticText
             Left = 32
-            Height = 16
-            Top = 368
+            Height = 19
+            Top = 360
             Width = 216
             Caption = 'Percentual Redução BC'
             TabOrder = 9
@@ -2329,8 +2575,8 @@ object fCTePrincipal: TfCTePrincipal
           end
           object StaticText16: TStaticText
             Left = 32
-            Height = 16
-            Top = 400
+            Height = 18
+            Top = 393
             Width = 216
             Caption = 'Valor BC ICMS'
             TabOrder = 11
@@ -2353,16 +2599,16 @@ object fCTePrincipal: TfCTePrincipal
           end
           object StaticText18: TStaticText
             Left = 32
-            Height = 16
-            Top = 464
+            Height = 18
+            Top = 457
             Width = 128
             Caption = 'Valor ICMS'
             TabOrder = 14
           end
           object StaticText19: TStaticText
             Left = 32
-            Height = 16
-            Top = 495
+            Height = 18
+            Top = 488
             Width = 264
             Caption = 'Valor Crédito Outorgado/Presumido'
             TabOrder = 15
@@ -2473,8 +2719,8 @@ object fCTePrincipal: TfCTePrincipal
           end
           object StaticText22: TStaticText
             Left = 32
-            Height = 16
-            Top = 431
+            Height = 18
+            Top = 424
             Width = 128
             Caption = '% Aliquota ICMS'
             TabOrder = 29
@@ -2528,8 +2774,8 @@ object fCTePrincipal: TfCTePrincipal
           end
           object StaticText29: TStaticText
             Left = 616
-            Height = 16
-            Top = 328
+            Height = 18
+            Top = 325
             Width = 312
             Caption = 'Informações Adicionais de Interesse do Fisco'
             TabOrder = 36
@@ -2565,20 +2811,22 @@ object fCTePrincipal: TfCTePrincipal
             Caption = 'Incluir'
             TabOrder = 40
           end
-          object BitBtn20: TBitBtn
+          object btnEditarComp: TBitBtn
             Left = 32
             Height = 30
             Top = 280
             Width = 75
             Caption = 'Editar'
+            OnClick = btnEditarCompClick
             TabOrder = 41
           end
-          object BitBtn21: TBitBtn
+          object btnExcluirComp: TBitBtn
             Left = 176
             Height = 30
             Top = 280
             Width = 75
             Caption = 'Excluir'
+            OnClick = btnExcluirCompClick
             TabOrder = 42
           end
           object BitBtn22: TBitBtn
@@ -2608,20 +2856,20 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabSheet11: TTabSheet
           Caption = 'Documentação Carga'
-          ClientHeight = 527
+          ClientHeight = 538
           ClientWidth = 1293
           object PageControl4: TPageControl
             Left = 0
-            Height = 527
+            Height = 538
             Top = 0
             Width = 1293
-            ActivePage = TabInfoCarga
+            ActivePage = TabNfe
             Align = alClient
-            TabIndex = 0
+            TabIndex = 2
             TabOrder = 0
             object TabInfoCarga: TTabSheet
               Caption = 'Inf. da Carga'
-              ClientHeight = 492
+              ClientHeight = 503
               ClientWidth = 1287
               OnContextPopup = TabInfoCargaContextPopup
               OnShow = TabInfoCargaShow
@@ -2663,7 +2911,7 @@ object fCTePrincipal: TfCTePrincipal
                 Caption = 'Outras Caracteristícas do Produto'
                 TabOrder = 4
               end
-              object DBGrid1: TDBGrid
+              object dbGridQC: TDBGrid
                 Left = 32
                 Height = 224
                 Top = 208
@@ -2677,19 +2925,19 @@ object fCTePrincipal: TfCTePrincipal
                     Alignment = taCenter
                     Title.Alignment = taCenter
                     Title.Caption = 'Unidade'
-                    Width = 198
+                    Width = 202
                     FieldName = 'Código Unidade Medida'
                   end                
                   item
                     Title.Alignment = taCenter
                     Title.Caption = 'Medida'
-                    Width = 198
+                    Width = 202
                     FieldName = 'Tipo de Medida'
                   end                
                   item
                     Title.Alignment = taCenter
                     Title.Caption = 'Quantidade'
-                    Width = 199
+                    Width = 204
                     FieldName = 'Quantidade'
                   end>
                 Scrollbars = ssVertical
@@ -2703,23 +2951,25 @@ object fCTePrincipal: TfCTePrincipal
                 Caption = 'Valor Carga'
                 TabOrder = 6
               end
-              object BitBtn11: TBitBtn
+              object btnInfCargaEdita: TBitBtn
                 Left = 32
                 Height = 30
                 Top = 432
                 Width = 75
                 Caption = 'Editar'
+                OnClick = btnInfCargaEditaClick
                 TabOrder = 7
               end
-              object BitBtn12: TBitBtn
+              object btnInfCargaInclui: TBitBtn
                 Left = 104
                 Height = 30
                 Top = 432
                 Width = 75
                 Caption = 'Incluir'
+                OnClick = btnInfCargaIncluiClick
                 TabOrder = 8
               end
-              object BitBtn13: TBitBtn
+              object btnInfCargaGrava: TBitBtn
                 Left = 248
                 Height = 30
                 Top = 432
@@ -2727,18 +2977,19 @@ object fCTePrincipal: TfCTePrincipal
                 Caption = 'Gravar'
                 TabOrder = 9
               end
-              object BitBtn14: TBitBtn
+              object btnInfCargaExclui: TBitBtn
                 Left = 176
                 Height = 30
                 Top = 432
                 Width = 75
                 Caption = 'Excluir'
+                OnClick = btnInfCargaExcluiClick
                 TabOrder = 10
               end
             end
             object TabSheet18: TTabSheet
               Caption = 'Doc.Transp.Anterior'
-              ClientHeight = 492
+              ClientHeight = 503
               ClientWidth = 1287
               object edtAntNome: TEdit
                 Left = 32
@@ -2821,10 +3072,11 @@ object fCTePrincipal: TfCTePrincipal
                 ParentColor = False
               end
             end
-            object TabSheet21: TTabSheet
+            object TabNfe: TTabSheet
               Caption = 'NF-e '
-              ClientHeight = 492
+              ClientHeight = 503
               ClientWidth = 1287
+              OnShow = TabNfeShow
               object DBGrid3: TDBGrid
                 Left = 40
                 Height = 296
@@ -2864,12 +3116,13 @@ object fCTePrincipal: TfCTePrincipal
                 Caption = 'Editar'
                 TabOrder = 1
               end
-              object BitBtn17: TBitBtn
+              object btnIncluirNFe: TBitBtn
                 Left = 112
                 Height = 30
                 Top = 320
                 Width = 75
                 Caption = 'Incluir'
+                OnClick = btnIncluirNFeClick
                 TabOrder = 2
               end
               object BitBtn18: TBitBtn
@@ -2929,20 +3182,6 @@ object fCTePrincipal: TfCTePrincipal
                 Caption = 'Número do Documento'
                 ParentColor = False
               end
-              object valOutrosVal: TEdit
-                Left = 528
-                Height = 27
-                Top = 440
-                Width = 360
-                TabOrder = 7
-              end
-              object dataOutrosEmi: TEdit
-                Left = 912
-                Height = 27
-                Top = 440
-                Width = 288
-                TabOrder = 8
-              end
               object Label103: TLabel
                 Left = 528
                 Height = 17
@@ -2953,7 +3192,7 @@ object fCTePrincipal: TfCTePrincipal
                 ParentColor = False
               end
               object Label104: TLabel
-                Left = 912
+                Left = 784
                 Height = 17
                 Top = 424
                 Width = 112
@@ -2967,14 +3206,53 @@ object fCTePrincipal: TfCTePrincipal
                 Top = 392
                 Width = 225
                 ItemHeight = 0
+                TabOrder = 7
+              end
+              object dataOutrosEmi: TDateTimePicker
+                Left = 784
+                Height = 23
+                Top = 440
+                Width = 143
+                CenturyFrom = 1941
+                MaxDate = 2958465
+                MinDate = -53780
+                AutoSize = False
+                TabOrder = 8
+                TrailingSeparator = False
+                TextForNullDate = 'NULL'
+                LeadingZeros = True
+                Kind = dtkDate
+                TimeFormat = tf24
+                TimeDisplay = tdHMS
+                DateMode = dmComboBox
+                Date = 43718
+                Time = 0.720899467589334
+                UseDefaultSeparators = True
+                HideDateTimeParts = []
+                MonthNames = 'Long'
+              end
+              object valOutrosVal: TCalcEdit
+                Left = 528
+                Height = 27
+                Top = 440
+                Width = 216
+                CalculatorLayout = clNormal
+                AsFloat = 0
+                AsInteger = 0
+                ButtonWidth = 23
+                DialogTop = 0
+                DialogLeft = 0
+                NumGlyphs = 1
+                MaxLength = 0
                 TabOrder = 9
+                Text = 'valOutrosVal'
               end
             end
           end
         end
         object TabRodoviario: TTabSheet
           Caption = 'Rodoviário'
-          ClientHeight = 527
+          ClientHeight = 538
           ClientWidth = 1293
           OnShow = TabRodoviarioShow
           object edtRodRNTRC: TEdit
@@ -3066,212 +3344,104 @@ object fCTePrincipal: TfCTePrincipal
         end
       end
     end
-    object TabCteGeradas: TTabSheet
-      Caption = 'CT-e Geradas'
-      ClientHeight = 562
-      ClientWidth = 1299
-      OnShow = TabCteGeradasShow
-      object dgGridCTE: TDBGrid
-        Left = 40
-        Height = 432
-        Top = 88
-        Width = 1185
-        AutoFillColumns = True
-        Color = clWindow
-        Columns = <        
-          item
-            Title.Caption = 'Série'
-            Width = 165
-            FieldName = 'Série'
-          end        
-          item
-            Title.Caption = 'Número'
-            Width = 165
-            FieldName = 'Número'
-          end        
-          item
-            Title.Caption = 'Data Emissão'
-            Width = 165
-            FieldName = 'Data Emissão'
-          end        
-          item
-            Title.Caption = 'Chave'
-            Width = 165
-            FieldName = 'Chave'
-          end        
-          item
-            Title.Caption = 'Núm. Protocolo'
-            Width = 165
-            FieldName = 'Núm. Protocolo'
-          end        
-          item
-            Title.Caption = 'Status'
-            Width = 165
-            FieldName = 'Status'
-          end        
-          item
-            Title.Caption = 'Nat. Operação'
-            Width = 166
-            FieldName = 'Nat. Operação'
-          end>
-        TabOrder = 0
-      end
-      object edtNumCte10: TEdit
-        Left = 40
-        Height = 27
-        Top = 32
-        Width = 736
-        TabOrder = 1
-      end
-      object Label9: TLabel
-        Left = 40
-        Height = 17
-        Top = 16
-        Width = 50
-        Align = alCustom
-        Caption = 'Emitente'
-        ParentColor = False
-      end
-      object edtNumCte11: TEdit
-        Left = 1000
-        Height = 27
-        Top = 32
-        Width = 96
-        TabOrder = 2
-      end
-      object Label120: TLabel
-        Left = 976
-        Height = 17
-        Top = 40
-        Width = 16
-        Align = alCustom
-        Caption = 'De'
-        ParentColor = False
-      end
-      object Label121: TLabel
-        Left = 1000
-        Height = 17
-        Top = 16
-        Width = 43
-        Align = alCustom
-        Caption = 'Período'
-        ParentColor = False
-      end
-      object edtNumCte12: TEdit
-        Left = 1128
-        Height = 27
-        Top = 32
-        Width = 96
-        TabOrder = 3
-      end
-      object Label122: TLabel
-        Left = 1104
-        Height = 17
-        Top = 40
-        Width = 19
-        Align = alCustom
-        Caption = 'Até'
-        ParentColor = False
-      end
-    end
     object TabSheet12: TTabSheet
       Caption = 'Importar Cliente'
-      ClientHeight = 562
+      ClientHeight = 573
       ClientWidth = 1299
       OnContextPopup = TabSheet12ContextPopup
-      object edtCodEmitente1: TEdit
+      object edtXMLCod: TEdit
         Left = 40
         Height = 27
         Top = 152
         Width = 144
-        OnChange = edtCodEmitente1Change
+        OnChange = edtXMLCodChange
         TabOrder = 0
       end
-      object edtEmitFantasia1: TEdit
+      object edtXMLNome: TEdit
         Left = 232
         Height = 27
         Top = 152
         Width = 960
         TabOrder = 1
       end
-      object edtEmitRazao1: TEdit
+      object edtXMLRazao: TEdit
         Left = 40
         Height = 27
         Top = 208
         Width = 664
         TabOrder = 2
       end
-      object edtEmitCNPJ1: TEdit
+      object edtXMLCnpj: TEdit
         Left = 728
         Height = 27
         Top = 208
         Width = 224
         TabOrder = 3
       end
-      object edtEmitIE1: TEdit
+      object edtXMLIE: TEdit
         Left = 968
         Height = 27
         Top = 208
         Width = 224
         TabOrder = 4
       end
-      object edtEmitLogradouro1: TEdit
+      object edtXMLLogradouro: TEdit
         Left = 40
         Height = 27
         Top = 264
         Width = 872
         TabOrder = 5
       end
-      object edtEmitNumero1: TEdit
+      object edtXMLNumero: TEdit
         Left = 968
         Height = 27
         Top = 264
         Width = 224
         TabOrder = 6
       end
-      object edtEmitComp1: TEdit
+      object edtXMLComp: TEdit
         Left = 40
         Height = 27
         Top = 312
         Width = 400
         TabOrder = 7
       end
-      object edtEmitBairro1: TEdit
+      object edtXMLBairro: TEdit
         Left = 472
         Height = 27
         Top = 312
         Width = 464
         TabOrder = 8
       end
-      object edtEmitCEP1: TEdit
+      object edtXMLCEP: TEdit
         Left = 968
         Height = 27
         Top = 312
         Width = 224
         TabOrder = 9
       end
-      object edtEmitCodCidade1: TEdit
+      object edtXMLCodCidade: TEdit
         Left = 40
         Height = 27
         Top = 368
         Width = 224
         TabOrder = 10
       end
-      object edtEmitCidade1: TEdit
+      object edtXMLCidade: TEdit
         Left = 298
         Height = 27
         Top = 368
         Width = 544
         TabOrder = 11
       end
-      object edtEmitUF1: TEdit
+      object edtXMLUF: TEdit
         Left = 874
         Height = 27
         Top = 368
         Width = 64
         TabOrder = 12
       end
-      object edtEmitFone1: TEdit
+      object edtXMLFone: TEdit
         Left = 970
         Height = 27
         Top = 368
@@ -3413,18 +3583,19 @@ object fCTePrincipal: TfCTePrincipal
         Caption = 'Código'
         ParentColor = False
       end
-      object btnImportarXML: TButton
-        Left = 40
-        Height = 60
-        Top = 40
-        Width = 312
-        Caption = 'Buscar XML NF-e'
+      object btnImportarXML: TBitBtn
+        Left = 105
+        Height = 83
+        Top = 21
+        Width = 289
+        Caption = 'Importar XML - NFe'
+        OnClick = btnImportarXMLClick
         TabOrder = 14
       end
     end
     object TabSheet17: TTabSheet
       Caption = 'Carta de Correção'
-      ClientHeight = 562
+      ClientHeight = 573
       ClientWidth = 1299
       object btnCC: TButton
         Left = 504
@@ -3551,79 +3722,16 @@ object fCTePrincipal: TfCTePrincipal
     end
     object TabSheet19: TTabSheet
       Caption = 'Serviços'
-      ClientHeight = 562
+      ClientHeight = 573
       ClientWidth = 1299
-      object btnImprimirInut: TButton
-        Left = 24
-        Height = 34
-        Top = 280
-        Width = 266
-        Caption = 'Imprimir Inutilização'
-        TabOrder = 0
-      end
-      object btnGerarPDFInut: TButton
-        Left = 296
-        Height = 34
-        Top = 280
-        Width = 258
-        Caption = 'Gerar PDF Inutilização'
-        TabOrder = 1
-      end
-      object Button9: TButton
-        Left = 560
-        Height = 34
-        Top = 280
-        Width = 258
-        Caption = 'Cancelar CT-e'
-        TabOrder = 2
-      end
-      object btnImprimirEvento: TButton
-        Left = 24
-        Height = 34
-        Top = 240
-        Width = 266
-        Caption = 'Imprimir Evento'
-        TabOrder = 3
-      end
-      object btnGerarPDFEvento: TButton
-        Left = 296
-        Height = 34
-        Top = 240
-        Width = 258
-        Caption = 'Gerar PDF Evento'
-        TabOrder = 4
-      end
-      object btnEnviarEventoEmail: TButton
-        Left = 560
-        Height = 34
-        Top = 240
-        Width = 258
-        Caption = 'Enviar Evento Email'
-        TabOrder = 5
-      end
       object btnImprimir: TButton
         Left = 24
         Height = 34
         Top = 200
         Width = 266
         Caption = 'Imprimir DACTe'
-        TabOrder = 6
-      end
-      object btnGerarPDF: TButton
-        Left = 296
-        Height = 34
-        Top = 200
-        Width = 258
-        Caption = 'Gerar PDF'
-        TabOrder = 7
-      end
-      object btnEnviarEmail: TButton
-        Left = 560
-        Height = 34
-        Top = 200
-        Width = 258
-        Caption = 'Enviar CT-e Email'
-        TabOrder = 8
+        OnClick = btnImprimirClick
+        TabOrder = 0
       end
       object btnImportarXML1: TButton
         Left = 24
@@ -3631,7 +3739,7 @@ object fCTePrincipal: TfCTePrincipal
         Top = 160
         Width = 266
         Caption = 'Importar XML'
-        TabOrder = 9
+        TabOrder = 1
       end
       object btnValidarXML: TButton
         Left = 296
@@ -3639,7 +3747,8 @@ object fCTePrincipal: TfCTePrincipal
         Top = 160
         Width = 258
         Caption = 'Validar XML'
-        TabOrder = 10
+        OnClick = btnValidarXMLClick
+        TabOrder = 2
       end
       object Button30: TButton
         Left = 560
@@ -3647,7 +3756,7 @@ object fCTePrincipal: TfCTePrincipal
         Top = 160
         Width = 258
         Caption = 'Importar txt/XML'
-        TabOrder = 11
+        TabOrder = 3
       end
       object btnConsultar: TButton
         Left = 24
@@ -3655,7 +3764,8 @@ object fCTePrincipal: TfCTePrincipal
         Top = 120
         Width = 266
         Caption = 'Consultar Carregando XML'
-        TabOrder = 12
+        OnClick = btnConsultarClick
+        TabOrder = 4
       end
       object btnConsultarChave: TButton
         Left = 296
@@ -3663,15 +3773,8 @@ object fCTePrincipal: TfCTePrincipal
         Top = 120
         Width = 258
         Caption = 'Consultar Chave Acesso'
-        TabOrder = 13
-      end
-      object btnEnvEPEC: TButton
-        Left = 560
-        Height = 34
-        Top = 120
-        Width = 258
-        Caption = 'Enviar EPEC'
-        TabOrder = 14
+        OnClick = btnConsultarChaveClick
+        TabOrder = 5
       end
       object btnConsCad: TButton
         Left = 24
@@ -3679,15 +3782,8 @@ object fCTePrincipal: TfCTePrincipal
         Top = 80
         Width = 266
         Caption = 'Consulta Cadastro'
-        TabOrder = 15
-      end
-      object btnCriarEnviar: TButton
-        Left = 296
-        Height = 34
-        Top = 80
-        Width = 258
-        Caption = 'Criar e Enviar'
-        TabOrder = 16
+        OnClick = btnConsCadClick
+        TabOrder = 6
       end
       object btnConsultarRecibo: TButton
         Left = 560
@@ -3695,7 +3791,8 @@ object fCTePrincipal: TfCTePrincipal
         Top = 80
         Width = 258
         Caption = 'Consultar Recibo Lote'
-        TabOrder = 17
+        OnClick = btnConsultarReciboClick
+        TabOrder = 7
       end
       object btnStatusServ: TButton
         Left = 24
@@ -3703,7 +3800,8 @@ object fCTePrincipal: TfCTePrincipal
         Top = 40
         Width = 266
         Caption = 'Status Serviço'
-        TabOrder = 18
+        OnClick = btnStatusServClick
+        TabOrder = 8
       end
       object btnInutilizar: TButton
         Left = 296
@@ -3711,82 +3809,318 @@ object fCTePrincipal: TfCTePrincipal
         Top = 40
         Width = 258
         Caption = 'Inutilizar Numeração'
-        TabOrder = 19
-      end
-      object btnGerar: TButton
-        Left = 560
-        Height = 34
-        Top = 40
-        Width = 258
-        Caption = 'Gerar CT-e'
-        TabOrder = 20
+        OnClick = btnInutilizarClick
+        TabOrder = 9
       end
       object btnAtualizarBD: TButton
-        Left = 24
+        Left = 879
         Height = 56
-        Top = 384
+        Top = 504
         Width = 346
         Caption = 'Atualizar Banco de Dados'
-        TabOrder = 21
+        OnClick = btnAtualizarBDClick
+        TabOrder = 10
       end
       object MemoDados: TMemo
-        Left = 868
+        Left = 872
         Height = 365
-        Top = 138
+        Top = 8
         Width = 353
         Lines.Strings = (
           'MemoDados'
         )
+        TabOrder = 11
+      end
+      object memoRespWS: TMemo
+        Left = 10
+        Height = 117
+        Top = 443
+        Width = 433
+        Lines.Strings = (
+          'memoRespWS'
+        )
+        TabOrder = 12
+      end
+      object memoResp: TMemo
+        Left = 448
+        Height = 117
+        Top = 443
+        Width = 426
+        Lines.Strings = (
+          'memoResp'
+        )
+        TabOrder = 13
+      end
+      object btnGerar: TBitBtn
+        Left = 560
+        Height = 34
+        Top = 40
+        Width = 258
+        Caption = 'Gerar Cte'
+        Glyph.Data = {
+          FA090000424DFA09000000000000360000002800000019000000190000000100
+          200000000000C409000064000000640000000000000000000000FFFFFF00FFFF
+          FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF0088AE250888AE255488AE
+          25A288AE25D388AE25FB88AE25FF88AE25FB88AE25D388AE25A288AE255488AE
+          2508FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+          FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF0088AE260788AE257488AE25EB88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25EB88AE257488AE2607FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+          FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF0088AE252688AE25D488AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25D488AE2526FFFFFF00FFFFFF00FFFF
+          FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF0088AE253C88AE25F188AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25F188AE253CFFFF
+          FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF0088AE252688AE25F188AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25F188AE2526FFFFFF00FFFFFF00FFFFFF0088AE260788AE25D488AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25D488AE2607FFFFFF00FFFFFF0088AE257488AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE2574FFFFFF0088AE250888AE25EB88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25EB88AE250888AE255488AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF94B5
+          4FFFE6EDDEFFDEE6D1FF88AE26FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE255488AE
+          25A288AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FFA6C0
+          78FFF4F7F0FFD3DEC2FFE9EFE2FFD6E1C7FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25A288AE25D388AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FFBCCE
+          9EFFF8FAF6FFBCCE9EFF88AE25FF91B349FFF0F4EAFFC7D6B0FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25D388AE25FB88AE25FF88AE25FF88AE25FF88AE25FF89AF2AFFD3DE
+          C2FFF4F7F0FFA6C078FF88AE25FF88AE25FF88AE25FF9CBA65FFF5F7F1FFBDCF
+          A0FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FB88AE25FF88AE25FF88AE25FF88AE25FF88AE25FFBFD0
+          A4FFE6EDDEFF94B54FFF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FFA4BF
+          74FFF8F9F5FFAFC68AFF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FB88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FFAFC68AFFF8F9F5FFA4BF75FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FB88AE25D388AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FFBDCFA0FFF5F7F1FF9CBA65FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25D388AE25A288AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FFC7D6B0FFF0F4EBFF91B3
+          49FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25A288AE255488AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FFD6E1
+          C7FFE9EFE2FF8EB13EFF88AE25FF88AE25FF88AE25FF88AE25FF88AE255488AE
+          250888AE25EB88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE26FFDEE6D1FFC0D1A5FF88AE25FF88AE25FF88AE25FF88AE25EB88AE
+          2508FFFFFF0088AE257488AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          2574FFFFFF00FFFFFF0088AE260788AE25D488AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25D488AE2607FFFFFF00FFFFFF00FFFFFF0088AE252688AE25F188AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25F188AE2526FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF0088AE253C88AE
+          25F188AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25F188AE253CFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+          FF0088AE252688AE25D488AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE
+          25D488AE2526FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+          FF00FFFFFF00FFFFFF0088AE260788AE257488AE25EB88AE25FF88AE25FF88AE
+          25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25FF88AE25EB88AE
+          257488AE2607FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+          FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF0088AE250888AE255488AE
+          25A288AE25D388AE25FB88AE25FF88AE25FB88AE25D388AE25A288AE255488AE
+          2508FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        }
+        ImageWidth = 40
+        OnClick = btnGerarCteClick
+        TabOrder = 14
+      end
+      object btnEnvEPEC: TBitBtn
+        Left = 560
+        Height = 34
+        Top = 120
+        Width = 258
+        Caption = 'Enviar EPEC'
+        Enabled = False
+        TabOrder = 15
+      end
+      object btnCancelarCte: TBitBtn
+        Left = 560
+        Height = 34
+        Top = 280
+        Width = 258
+        Caption = 'Cancelar CT-e'
+        Glyph.Data = {
+          FA090000424DFA09000000000000360000002800000019000000190000000100
+          200000000000C4090000640000006400000000000000000000008BFF3A008BFF
+          3A008BFF3A004F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF8BFF
+          3A008BFF3A008BFF3A004F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF8BFF3A008BFF3A008BFF3A004F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF8BFF3A008BFF3A008BFF3A004E4B64FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4A5AD7FF4A5AD7FF4A5AD7FF4D4E7DFF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4A5AD7FF4A5AD7FF4A5AD7FF4D4E7DFF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4A5AD7FF4A5AD7FF4A5AD7FF4D4E
+          7DFF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4C5191FF4F46
+          40FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4C5089FF4E4957FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4A5AD7FF4A5AD7FF4A5A
+          D7FF4D4E7DFF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4B55
+          AEFF4B56B7FF4F4640FF4F4538FF4F4538FF4F4538FF4C5194FF4A58C8FF4E48
+          50FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4A5AD7FF4A5A
+          D7FF4A5AD7FF4D4E7DFF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4539FF4B55AEFF4B56B7FF4F4640FF4F4538FF4C5194FF4A58C8FF4E49
+          58FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4A5A
+          D7FF4A5AD7FF4A5AD7FF4D4E7DFF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4539FF4B55AEFF4B56B7FF4C5194FF4A58C8FF4E49
+          58FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4A5AD7FF4A5AD7FF4A5AD7FF4D4E7DFF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4539FF4B57C1FF4A59D3FF4E4A
+          5FFF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4A5AD7FF4A5AD7FF4A5AD7FF4D4E7DFF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4C5194FF4A58C8FF4B55
+          B3FF4B56B7FF4F4640FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4A5AD7FF4A5AD7FF4A5AD7FF4D4E7DFF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4C5194FF4A58C8FF4E49
+          58FF4F4539FF4B55AEFF4B56B7FF4F4640FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4A5AD7FF4A5AD7FF4A5AD7FF4D4E7DFF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4C5194FF4A58C8FF4E49
+          58FF4F4538FF4F4538FF4F4539FF4B55AEFF4B56B7FF4F4640FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4A5AD7FF4A5AD7FF4A5AD7FF4D4E
+          7DFF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4B55B0FF4E49
+          58FF4F4538FF4F4538FF4F4538FF4F4538FF4F4539FF4C53A6FF4E4A61FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4A5AD7FF4A5AD7FF4A5A
+          D7FF4D4E7DFF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4A5AD7FF4A5A
+          D7FF4A5AD7FF4D4E7DFF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4A5A
+          D7FF4A5AD7FF4A5AD7FF4D4E7DFF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4A5AD7FF4A5AD7FF4A5AD7FF4D4E7DFF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4A5AD7FF4A5AD7FF4A5AD7FF4D4E7DFF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4A5AD7FF4A5AD7FF4A5AD7FF4D4E7DFF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+          38FF4F4538FF4F4538FF4F4538FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5A
+          D7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5A
+          D7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5A
+          D7FF4A5AD7FF8BFF3A008BFF3A008BFF3A004A5AD7FF4A5AD7FF4A5AD7FF4A5A
+          D7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5A
+          D7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5A
+          D7FF4A5AD7FF4A5AD7FF8BFF3A008BFF3A008BFF3A004A5AD7FF4A5AD7FF4A5A
+          D7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5A
+          D7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5A
+          D7FF4A5AD7FF4A5AD7FF4A5AD7FF8BFF3A008BFF3A008BFF3A004A5AD7FF4A5A
+          D7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5A
+          D7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5A
+          D7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF8BFF3A008BFF3A008BFF3A00
+        }
+        OnClick = btnCancelarCteClick
+        TabOrder = 16
+      end
+      object edCteCancelar: TLabeledEdit
+        Left = 568
+        Height = 27
+        Top = 345
+        Width = 248
+        EditLabel.Height = 17
+        EditLabel.Width = 248
+        EditLabel.Caption = 'Número CTe para Cancelar'
+        EditLabel.ParentColor = False
+        TabOrder = 17
+      end
+      object btnGerarPDF: TBitBtn
+        Left = 300
+        Height = 28
+        Top = 203
+        Width = 249
+        Caption = 'Gerar PDF'
+        OnClick = btnGerarPDFClick
+        TabOrder = 18
+      end
+      object btnEnviarEmail: TBitBtn
+        Left = 563
+        Height = 28
+        Top = 200
+        Width = 252
+        Caption = 'Enviar CT-e Email'
+        OnClick = btnEnviarEmailClick
+        TabOrder = 19
+      end
+      object btnImprimirEvento: TBitBtn
+        Left = 28
+        Height = 32
+        Top = 243
+        Width = 258
+        Caption = 'Imprimir Evento'
+        OnClick = btnImprimirEventoClick
+        TabOrder = 20
+      end
+      object btnGerarPDFEvento: TBitBtn
+        Left = 303
+        Height = 26
+        Top = 245
+        Width = 248
+        Caption = 'Gerar PDF Evento'
+        OnClick = btnGerarPDFEventoClick
+        TabOrder = 21
+      end
+      object btnEnviarEventoEmail: TBitBtn
+        Left = 568
+        Height = 28
+        Top = 242
+        Width = 249
+        Caption = 'Enviar Evento Email'
+        OnClick = btnEnviarEventoEmailClick
         TabOrder = 22
       end
-      object DateTimePicker1: TDateTimePicker
-        Left = 424
-        Height = 23
-        Top = 391
-        Width = 87
-        CenturyFrom = 1941
-        MaxDate = 2958465
-        MinDate = -53780
+      object btnImprimirInut: TBitBtn
+        Left = 30
+        Height = 30
+        Top = 280
+        Width = 260
+        Caption = 'Imprimir Inutilização'
+        OnClick = btnImprimirInutClick
         TabOrder = 23
-        TrailingSeparator = False
-        TextForNullDate = 'NULL'
-        LeadingZeros = True
-        Kind = dtkDate
-        TimeFormat = tf24
-        TimeDisplay = tdHMS
-        DateMode = dmComboBox
-        Date = 43714
-        Time = 0.712287094909698
-        UseDefaultSeparators = True
-        HideDateTimeParts = []
-        MonthNames = 'Long'
       end
-      object DateTimePicker2: TDateTimePicker
-        Left = 571
-        Height = 23
-        Top = 392
-        Width = 87
-        CenturyFrom = 1941
-        MaxDate = 2958465
-        MinDate = -53780
+      object btnGerarPDFInut: TBitBtn
+        Left = 307
+        Height = 31
+        Top = 282
+        Width = 242
+        Caption = 'Gerar PDF Inutilização'
+        OnClick = btnGerarPDFInutClick
         TabOrder = 24
-        TrailingSeparator = False
-        TextForNullDate = 'NULL'
-        LeadingZeros = True
-        Kind = dtkDate
-        TimeFormat = tf24
-        TimeDisplay = tdHMS
-        DateMode = dmComboBox
-        Date = 43714
-        Time = 0.712325428241456
-        UseDefaultSeparators = True
-        HideDateTimeParts = []
-        MonthNames = 'Long'
       end
     end
     object TabSheet20: TTabSheet
       Caption = 'Configurações'
-      ClientHeight = 562
+      ClientHeight = 573
       ClientWidth = 1299
       object Label133: TLabel
         Left = 798
@@ -3962,14 +4296,6 @@ object fCTePrincipal: TfCTePrincipal
         Width = 72
         TabOrder = 10
       end
-      object Button27: TButton
-        Left = 56
-        Height = 25
-        Top = 432
-        Width = 272
-        Caption = 'Corrigir'
-        TabOrder = 11
-      end
       object rgTipoAmb: TRadioGroup
         Left = 56
         Height = 45
@@ -3991,7 +4317,7 @@ object fCTePrincipal: TfCTePrincipal
           'Produção'
           'Homologação'
         )
-        TabOrder = 12
+        TabOrder = 11
       end
       object GroupBox4: TGroupBox
         Left = 48
@@ -4001,7 +4327,7 @@ object fCTePrincipal: TfCTePrincipal
         Caption = 'Selecione a UF SEFAZ Autorizadora'
         ClientHeight = 43
         ClientWidth = 279
-        TabOrder = 13
+        TabOrder = 12
         object cbUF: TComboBox
           Left = 8
           Height = 27
@@ -4019,7 +4345,7 @@ object fCTePrincipal: TfCTePrincipal
         Caption = 'Logomarca'
         ClientHeight = 53
         ClientWidth = 357
-        TabOrder = 14
+        TabOrder = 13
         object sbtnLogoMarca: TBitBtn
           Left = 323
           Height = 30
@@ -4043,7 +4369,7 @@ object fCTePrincipal: TfCTePrincipal
         Height = 27
         Top = 83
         Width = 80
-        TabOrder = 15
+        TabOrder = 14
         Text = 'edtCaminho'
       end
       object edtSenha: TEdit
@@ -4051,7 +4377,7 @@ object fCTePrincipal: TfCTePrincipal
         Height = 27
         Top = 133
         Width = 80
-        TabOrder = 16
+        TabOrder = 15
         Text = 'edtSenha'
       end
       object edtNumSerie: TEdit
@@ -4059,7 +4385,7 @@ object fCTePrincipal: TfCTePrincipal
         Height = 27
         Top = 169
         Width = 80
-        TabOrder = 17
+        TabOrder = 16
         Text = 'edtNumSerie'
       end
       object rgTipoDACTe: TRadioGroup
@@ -4076,14 +4402,14 @@ object fCTePrincipal: TfCTePrincipal
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        TabOrder = 18
+        TabOrder = 17
       end
       object edtLogoMarca: TEdit
         Left = 447
         Height = 27
         Top = 335
         Width = 80
-        TabOrder = 19
+        TabOrder = 18
         Text = 'edtLogoMarca'
       end
       object ckSalvar: TCheckBox
@@ -4092,14 +4418,14 @@ object fCTePrincipal: TfCTePrincipal
         Top = 370
         Width = 224
         Caption = 'Salvar Arquivos de Envio e Resposta'
-        TabOrder = 20
+        TabOrder = 19
       end
       object edtPathLogs: TEdit
         Left = 448
         Height = 27
         Top = 404
         Width = 80
-        TabOrder = 21
+        TabOrder = 20
         Text = 'edtPathLogs'
       end
       object ckVisualizar: TCheckBox
@@ -4108,14 +4434,14 @@ object fCTePrincipal: TfCTePrincipal
         Top = 445
         Width = 89
         Caption = 'ckVisualizar'
-        TabOrder = 22
+        TabOrder = 21
       end
       object edtProxyHost: TEdit
         Left = 444
         Height = 27
         Top = 477
         Width = 80
-        TabOrder = 23
+        TabOrder = 22
         Text = 'edtProxyHost'
       end
       object edtSmtpPort: TEdit
@@ -4123,7 +4449,7 @@ object fCTePrincipal: TfCTePrincipal
         Height = 27
         Top = 476
         Width = 80
-        TabOrder = 24
+        TabOrder = 23
         Text = 'edtSmtpPort'
       end
       object edtSmtpUser: TEdit
@@ -4131,7 +4457,7 @@ object fCTePrincipal: TfCTePrincipal
         Height = 27
         Top = 477
         Width = 80
-        TabOrder = 25
+        TabOrder = 24
         Text = 'edtSmtpUser'
       end
       object edtSmtpPass: TEdit
@@ -4139,7 +4465,7 @@ object fCTePrincipal: TfCTePrincipal
         Height = 27
         Top = 479
         Width = 80
-        TabOrder = 26
+        TabOrder = 25
         Text = 'edtSmtpPass'
       end
       object Edit1: TEdit
@@ -4147,7 +4473,7 @@ object fCTePrincipal: TfCTePrincipal
         Height = 27
         Top = 480
         Width = 80
-        TabOrder = 27
+        TabOrder = 26
         Text = 'Edit1'
       end
       object sbtnPathSalvar: TBitBtn
@@ -4157,11 +4483,21 @@ object fCTePrincipal: TfCTePrincipal
         Width = 75
         Caption = 'sbtnPathSalvar'
         OnClick = sbtnPathSalvarClick
+        TabOrder = 27
+      end
+      object btnCorrigirSerie: TBitBtn
+        Left = 59
+        Height = 22
+        Top = 432
+        Width = 266
+        Caption = 'Corrigir'
+        OnClick = btnCorrigirSerieClick
         TabOrder = 28
       end
     end
   end
   object ACBrCTe1: TACBrCTe
+    OnStatusChange = ACBrCTe1StatusChange
     Configuracoes.Geral.SSLLib = libNone
     Configuracoes.Geral.SSLCryptLib = cryNone
     Configuracoes.Geral.SSLHttpLib = httpNone
@@ -4172,11 +4508,26 @@ object fCTePrincipal: TfCTePrincipal
     Configuracoes.WebServices.AguardarConsultaRet = 0
     Configuracoes.WebServices.QuebradeLinha = '|'
     Configuracoes.RespTec.IdCSRT = 0
-    left = 616
-    top = 43
+    left = 336
+    top = 392
   end
   object OpenDialog1: TOpenDialog
-    left = 548
-    top = 43
+    left = 216
+    top = 392
+  end
+  object ACBrNFe1: TACBrNFe
+    Configuracoes.Geral.SSLLib = libNone
+    Configuracoes.Geral.SSLCryptLib = cryNone
+    Configuracoes.Geral.SSLHttpLib = httpNone
+    Configuracoes.Geral.SSLXmlSignLib = xsNone
+    Configuracoes.Geral.FormatoAlerta = 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.'
+    Configuracoes.Geral.VersaoQRCode = veqr000
+    Configuracoes.Arquivos.OrdenacaoPath = <>
+    Configuracoes.WebServices.UF = 'SP'
+    Configuracoes.WebServices.AguardarConsultaRet = 0
+    Configuracoes.WebServices.QuebradeLinha = '|'
+    Configuracoes.RespTec.IdCSRT = 0
+    left = 432
+    top = 392
   end
 end
