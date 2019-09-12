@@ -113,6 +113,7 @@ begin
   sqlProc += ' (SELECT SUM(VALTOTAL) FROM MOVIMENTODETALHE MD WHERE MD.CODMOVIMENTO ';
   sqlProc += ' = m.CODMOVIMENTO) END ';
   sqlProc += ' AS VALOR, v.SERIE, m.STATUS ';
+  sqlProc += ' ,((m.data_fechou-m.DATA_SISTEMA)*24*60) AS TEMPO ';
   sqlProc += ' FROM MOVIMENTO m  ';
   sqlProc += ' INNER JOIN CLIENTES c ON c.CODCLIENTE = m.CODCLIENTE';
   sqlProc += ' LEFT OUTER JOIN USUARIO u ON m.codVendedor = u.codUsuario';
@@ -320,7 +321,9 @@ begin
   DBGrid1.Columns[5].FieldName:='CLIENTE';
   DBGrid1.Columns[6].FieldName:='VALOR';
   DBGrid1.Columns[6].DisplayFormat:=',##0.00';
-  end;
+  DBGrid1.Columns[7].FieldName:='TEMPO';
+  DBGrid1.Columns[7].DisplayFormat:=',##0.00';
+end;
 
 procedure TfMovimentoProc.FormShow(Sender: TObject);
 begin

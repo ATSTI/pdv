@@ -341,8 +341,8 @@ procedure TfAbrirCaixa.FecharCaixa();
 var str:string;
   codCaixa:integer;
   vlrCaixa:double;
+  IMPRESSORA:TextFile;
 begin
-
   str := 'update CAIXA_CONTROLE set SITUACAO = ';
   str := str + QuotedStr('F');
   str := str + ', DATAFECHAMENTO = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', now));
@@ -355,18 +355,65 @@ begin
   else begin
     str := str + ', VALORFECHA = ' + FloatToStr(vlrCaixa);
   end;
-  str := str + ' where IDCAIXACONTROLE = ' + dmpdv.idcaixa;
+  //str := str + ' where IDCAIXACONTROLE = ' + dmpdv.idcaixa;
+  str := str + ' WHERE CODUSUARIO = ' + dmPdv.varLogado;
+  str := str + '   AND SITUACAO = ' + QuotedStr('o');
   DecimalSeparator:=',';
-  dmPdv.IbCon.ExecuteDirect(str);
+  try
+    dmPdv.IbCon.ExecuteDirect(str);
 
-  // cancelo pedidos abertos sem valores
-  dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET STATUS = 2' +
+    // cancelo pedidos abertos sem valores
+    dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET STATUS = 2' +
       ' WHERE CODORIGEM = ' + dmPdv.idcaixa +
       '   AND CODALMOXARIFADO = ' + dmPdv.ccusto +
       '   AND STATUS = 0');
-  dmPdv.nomeCaixa := 'FECHADO';
-  dmPdv.sTrans.Commit;
-  ShowMessage('Caixa fechado com sucesso!');
+    dmPdv.nomeCaixa := 'FECHADO';
+    dmPdv.sTrans.Commit;
+    ShowMessage('Caixa fechado com sucesso!');
+    begin  // IMPRESSAO
+      // leio um arquivo txt e imprimo
+      //lFile := TStringList.Create;
+      if (dmPdv.CupomImp = 'Texto') then
+      begin
+        AssignFile(IMPRESSORA, dmPdv.portaIMP);
+      end
+      else begin
+        AssignFile(IMPRESSORA, dmPdv.path_imp);
+      end;
+
+      try
+        Rewrite(IMPRESSORA);
+        //lFile.LoadFromFile('caixa.txt');
+        Writeln(IMPRESSORA, '');
+        Writeln(Impressora, 'FECHAMENTO DO CAIXA');
+        Writeln(IMPRESSORA, '');
+        Writeln(Impressora, 'CAIXA : ' + dmPdv.nomeCaixa);
+        Writeln(IMPRESSORA, FormatDateTime('dd/mm/yyyy hh:MM:ss', Now));
+        Writeln(IMPRESSORA, '');
+        Writeln(IMPRESSORA, 'Dinheiro       - ' + edDinheiro.Text);
+        Writeln(IMPRESSORA, 'Cartao Credito - ' + edCcred.Text);
+        Writeln(IMPRESSORA, 'Cartao Debito  - ' + edCdeb.Text);
+        Writeln(IMPRESSORA, 'Cheque         - ' + edCheque.Text);
+        if (edFaturado.Text <> '0,00') then
+          Writeln(IMPRESSORA, 'Faturado       - ' + edFaturado.Text);
+        Writeln(IMPRESSORA, 'Sangria        - ' + edSangrias.Text);
+        Writeln(IMPRESSORA, '---------------------------');
+        Writeln(IMPRESSORA, 'Total Caixa    - ' + edTCaixa.Text);
+        Writeln(IMPRESSORA, 'Total Bruto    - ' + edTBruto.Text);
+        Writeln(IMPRESSORA, 'Total Liquido  - ' + edTLiquido.Text);
+        Writeln(IMPRESSORA, '---------------------------');
+        Writeln(IMPRESSORA, '');
+      finally
+        CloseFile(IMPRESSORA);
+      end;
+    end; // FIM IMPRESSAO
+  except
+    on e: Exception do
+    begin
+      dmpdv.sTrans.Rollback;
+      ShowMessage('Erro para fechar o Caixa : ' + e.Message);
+    end;
+  end;
 end;
 
 end.

@@ -587,10 +587,12 @@ begin
   begin
     //controlaPedidos(codMov, 1, 1);
     buscaPedidosAbertoCaixa(codMov);
-    if (qtde_ped = 0) then
+    {if (qtde_ped = 0) then
       btnNovo.Click
     else
-      btnVnd1.Click;
+      btnVnd1.Click;} //03/09/22019
+    dmPdv.sqLancamentos.Close;
+    btnNovo.SetFocus;
   end;
   if (dmPdv.usaComanda > 0) then
   begin
@@ -1944,7 +1946,7 @@ begin
         edClienteNome.Text :=  'Comanda ' + codComanda;
         pnComanda.Caption := 'Comanda ' + codComanda;
         //btnNovo.Click;
-        iniciarVenda();
+        //iniciarVenda(); // 03/09/2019
         buscaPedidosAbertoCaixa(codMov);
         //controlaPedidos(codMov, 0, 0);
         lblPedido.Caption:=IntToStr(codMov);

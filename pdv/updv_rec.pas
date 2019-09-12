@@ -486,10 +486,22 @@ begin
   dmPdv.IbCon.ExecuteDirect('UPDATE FORMA_ENTRADA SET STATE = 1 ' +
     ' WHERE STATE = 0 AND ID_ENTRADA = ' +
     IntToStr(vCodMovimento));
-  dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET STATUS = 1 ' +
-    ' , CODCLIENTE = ' + IntToStr(vCliente) +
-    ' WHERE CODMOVIMENTO  = ' +
-    IntToStr(vCodMovimento) + ' AND STATUS = 0');
+  try
+    dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET STATUS = 1 ' +
+      ' , CODCLIENTE = ' + IntToStr(vCliente) +
+      ' , DATA_FECHOU = ' + QuotedStr(FormatDateTime('mm/dd/yyyy hh:MM:ss', Now)) +
+      ' WHERE CODMOVIMENTO  = ' +
+      IntToStr(vCodMovimento) + ' AND STATUS = 0');
+  except
+    dmPdv.IbCon.ExecuteDirect('ALTER TABLE MOVIMENTO ' +
+      ' ADD DATA_FECHOU TIMESTAMP');
+    dmPdv.sTrans.Commit;
+    dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET STATUS = 1 ' +
+      ' , CODCLIENTE = ' + IntToStr(vCliente) +
+      ' , DATA_FECHOU = ' + QuotedStr(FormatDateTime('mm/dd/yyyy hh:MM:ss', Now)) +
+      ' WHERE CODMOVIMENTO  = ' +
+      IntToStr(vCodMovimento) + ' AND STATUS = 0');
+  end;
 
   vStatus := 1;
 

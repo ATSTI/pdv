@@ -8,7 +8,7 @@ object fAbrirCaixa: TfAbrirCaixa
   ClientWidth = 584
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '2.0.0.4'
+  LCLVersion = '2.0.4.0'
   object Panel1: TPanel
     Left = 0
     Height = 268
