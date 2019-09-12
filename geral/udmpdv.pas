@@ -194,6 +194,7 @@ type
     sTrans: TSQLTransaction;
     procedure DataModuleCreate(Sender: TObject);
     procedure IbConAfterDisconnect(Sender: TObject);
+    procedure IbConBeforeConnect(Sender: TObject);
   private
     procedure atualiza_bd();
   public
@@ -245,6 +246,7 @@ type
     imp_LinhasBuffer: Integer;
     imp_ColunaFonteNormal: Integer;
     function executaSql(strSql: String): Boolean;
+    procedure executaDSQL(strDSQL: String); // criei pra executar o atualiza Bd
     procedure gravaLog(DataLog: TDateTime; usuario: String; tipoMovimento: String;
     pc: String; valorAnt: String; valorPos: String; campoChave: String; acao: String);
     function busca_generator(generator: String): integer;
@@ -408,6 +410,11 @@ begin
 
 end;
 
+procedure TdmPdv.IbConBeforeConnect(Sender: TObject);
+begin
+
+end;
+
 procedure TdmPdv.atualiza_bd();
 begin
   Try
@@ -561,6 +568,16 @@ begin
         E.Message,mtError,[mbOK],0);
       Result := False;
     end;
+  end;
+end;
+
+procedure TdmPdv.executaDSQL(strDSQL: String);
+begin
+  try
+    ibcon.ExecuteDirect(strDSql);
+    sTrans.Commit;
+  except
+    sTrans.Rollback;
   end;
 end;
 

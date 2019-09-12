@@ -1,0 +1,2820 @@
+object dmCte: TdmCte
+  OldCreateOrder = False
+  Height = 512
+  HorizontalOffset = 435
+  VerticalOffset = 250
+  Width = 808
+  PPI = 96
+  object cdsCte: TSQLQuery
+    IndexName = 'DEFAULT_ORDER'
+    FieldDefs = <    
+      item
+        Name = 'COD_CTE'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'CODEMITENTE'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'CTE_ESTADO'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'CTE_CHAVE'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'CTE_CFOP'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'CTE_NATOP'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'IFORPAG'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'MODELO'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'CTE_SERIE'
+        DataType = ftString
+        Precision = -1
+        Size = 24
+      end    
+      item
+        Name = 'CTE_NUMERO'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'DHEMI'
+        DataType = ftDateTime
+        Precision = -1
+      end    
+      item
+        Name = 'TPIMP'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'TPOEMISSAO'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'TIPOAMBIENTE'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'TIPOCTE'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'PROCEMI'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'VERPROC'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'REFCTE'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'CODIGOMUNICIPIO'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'EMPRESACIDADE'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'EMPRESAESTADO'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'MODAL'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'TIPOSERVICO'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'ENV_CODCIDADE'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'ENV_CIDADE'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'ENV_ESTADO'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'INI_CODCIDADE'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'INI_CIDADE'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'INI_ESTADO'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'FIM_CODCIDADE'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'FIM_CIDADE'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'FIM_ESTADO'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'RETIRA'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'DETRETIRA'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'EMITENTE'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'E_RG'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'E_CNPJCPF'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'E_IESTADUAL'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'E_RSOCIAL'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'E_FANTASIA'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'E_TELEFONE'
+        DataType = ftString
+        Precision = -1
+        Size = 60
+      end    
+      item
+        Name = 'E_ENDERECO'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'E_NUMERO'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'E_COMPLEMENTO'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'E_BAIRRO'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'E_CODIGOMUNICIPI'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'E_CIDADE'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'E_CEP'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'E_ESTADO'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'E_CODIGOPAIS'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'E_PAIS'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'TOMADORSERVICO'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'T_RG'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'T_CNPJCPF'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'T_IESTADUAL'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'T_RSOCIAL'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'T_FANTASIA'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'T_TELEFONE'
+        DataType = ftString
+        Precision = -1
+        Size = 60
+      end    
+      item
+        Name = 'T_ENDERECO'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'T_NUMERO'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'T_COMPLEMENTO'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'T_BAIRRO'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'T_CODIGOMUNICIPI'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'T_CIDADE'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'T_CEP'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'T_ESTADO'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'T_CODIGOPAIS'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'T_PAIS'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'REMETENTE'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'R_RG'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'R_CNPJCPF'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'R_IESTADUAL'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'R_RSOCIAL'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'R_FANTASIA'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'R_TELEFONE'
+        DataType = ftString
+        Precision = -1
+        Size = 60
+      end    
+      item
+        Name = 'R_ENDERECO'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'R_NUMERO'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'R_COMPLEMENTO'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'R_BAIRRO'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'R_CODIGOMUNICIPI'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'R_CIDADE'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'R_CEP'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'R_ESTADO'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'R_CODIGOPAIS'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'R_PAIS'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'DESTINATARIO'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'D_RG'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'D_CNPJCPF'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'D_IESTADUAL'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'D_RSOCIAL'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'D_FANTASIA'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'D_TELEFONE'
+        DataType = ftString
+        Precision = -1
+        Size = 60
+      end    
+      item
+        Name = 'D_ENDERECO'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'D_NUMERO'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'D_COMPLEMENTO'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'D_BAIRRO'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'D_CODIGOMUNICIPI'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'D_CIDADE'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'D_CEP'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'D_ESTADO'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'D_CODIGOPAIS'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'D_PAIS'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'EXPEDITOR'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'EX_RG'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'EX_CNPJCPF'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'EX_IESTADUAL'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'EX_RSOCIAL'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'EX_FANTASIA'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'EX_TELEFONE'
+        DataType = ftString
+        Precision = -1
+        Size = 60
+      end    
+      item
+        Name = 'EX_ENDERECO'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'EX_NUMERO'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'EX_COMPLEMENTO'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'EX_BAIRRO'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'EX_CODIGOMUNICIPI'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'EX_CIDADE'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'EX_CEP'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'EX_ESTADO'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'EX_CODIGOPAIS'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'EX_PAIS'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'CARAC_TRANSP'
+        DataType = ftString
+        Precision = -1
+        Size = 60
+      end    
+      item
+        Name = 'CARAC_SERV'
+        DataType = ftString
+        Precision = -1
+        Size = 120
+      end    
+      item
+        Name = 'FUNC_EMI'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'DET_RETIRA'
+        DataType = ftString
+        Precision = -1
+        Size = 640
+      end    
+      item
+        Name = 'VPREST'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VREC'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'COMPONENTE'
+        DataType = ftString
+        Precision = -1
+        Size = 60
+      end    
+      item
+        Name = 'VCOMPONENTE'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALTOTTRI'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'COMBCODSITTRIB'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'STATUS'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'VALINFCARGA'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'PROPRED'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'OUTCAT'
+        DataType = ftString
+        Precision = -1
+        Size = 120
+      end    
+      item
+        Name = 'RNTRC'
+        DataType = ftString
+        Precision = -1
+        Size = 32
+      end    
+      item
+        Name = 'DATARODPREV'
+        DataType = ftDate
+        Precision = -1
+      end    
+      item
+        Name = 'RGRODLOTACAO'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'OBS_GERAL'
+        DataType = ftString
+        Precision = -1
+        Size = 1200
+      end    
+      item
+        Name = 'NPROT'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'CHCTE'
+        DataType = ftString
+        Precision = -1
+        Size = 200
+      end    
+      item
+        Name = 'RECEBEDOR'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'RE_RG'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'RE_CNPJCPF'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'RE_IESTADUAL'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'RE_RSOCIAL'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'RE_FANTASIA'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'RE_TELEFONE'
+        DataType = ftString
+        Precision = -1
+        Size = 60
+      end    
+      item
+        Name = 'RE_ENDERECO'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'RE_NUMERO'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'RE_COMPLEMENTO'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'RE_BAIRRO'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'RE_CODIGOMUNICIPI'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'RE_CIDADE'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'RE_CEP'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'RE_ESTADO'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'RE_CODIGOPAIS'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'RE_PAIS'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'OUTPDOC'
+        DataType = ftString
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'OUDESCOUTRO'
+        DataType = ftString
+        Precision = -1
+        Size = 400
+      end    
+      item
+        Name = 'OUNDOC'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'OUDEMI'
+        DataType = ftDateTime
+        Precision = -1
+      end    
+      item
+        Name = 'OUVDOCFISC'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'ANT_CNPJ'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'ANT_IE'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'ANT_UF'
+        DataType = ftString
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'ANT_NOME'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'ANT_CHCTE'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'IN_IMPOSTOS'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'VALPREDBC'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALVBC'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALPICMS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALVICMS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALVCRED'
+        DataType = ftFloat
+        Precision = -1
+      end>
+    Database = dmPdv.IbCon
+    Transaction = dmPdv.sTrans
+    SQL.Strings = (
+      'SELECT * FROM CTE WHERE COD_CTE = :PCTE'
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'PCTE'
+        ParamType = ptInput
+      end>
+    left = 80
+    top = 88
+    object cdsCteCOD_CTE: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_CTE'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object cdsCteCODEMITENTE: TLongintField
+      FieldKind = fkData
+      FieldName = 'CODEMITENTE'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteCTE_ESTADO: TLongintField
+      FieldKind = fkData
+      FieldName = 'CTE_ESTADO'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteCTE_CHAVE: TLongintField
+      FieldKind = fkData
+      FieldName = 'CTE_CHAVE'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteCTE_CFOP: TLongintField
+      FieldKind = fkData
+      FieldName = 'CTE_CFOP'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteCTE_NATOP: TStringField
+      FieldKind = fkData
+      FieldName = 'CTE_NATOP'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteIFORPAG: TLongintField
+      FieldKind = fkData
+      FieldName = 'IFORPAG'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteMODELO: TStringField
+      FieldKind = fkData
+      FieldName = 'MODELO'
+      Index = 7
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object cdsCteCTE_SERIE: TStringField
+      FieldKind = fkData
+      FieldName = 'CTE_SERIE'
+      Index = 8
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 24
+    end
+    object cdsCteCTE_NUMERO: TLongintField
+      FieldKind = fkData
+      FieldName = 'CTE_NUMERO'
+      Index = 9
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteDHEMI: TDateTimeField
+      FieldKind = fkData
+      FieldName = 'DHEMI'
+      Index = 10
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteTPIMP: TLongintField
+      FieldKind = fkData
+      FieldName = 'TPIMP'
+      Index = 11
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteTPOEMISSAO: TLongintField
+      FieldKind = fkData
+      FieldName = 'TPOEMISSAO'
+      Index = 12
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteTIPOAMBIENTE: TLongintField
+      FieldKind = fkData
+      FieldName = 'TIPOAMBIENTE'
+      Index = 13
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteTIPOCTE: TLongintField
+      FieldKind = fkData
+      FieldName = 'TIPOCTE'
+      Index = 14
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCtePROCEMI: TLongintField
+      FieldKind = fkData
+      FieldName = 'PROCEMI'
+      Index = 15
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteVERPROC: TStringField
+      FieldKind = fkData
+      FieldName = 'VERPROC'
+      Index = 16
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteREFCTE: TStringField
+      FieldKind = fkData
+      FieldName = 'REFCTE'
+      Index = 17
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteCODIGOMUNICIPIO: TStringField
+      FieldKind = fkData
+      FieldName = 'CODIGOMUNICIPIO'
+      Index = 18
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object cdsCteEMPRESACIDADE: TStringField
+      FieldKind = fkData
+      FieldName = 'EMPRESACIDADE'
+      Index = 19
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteEMPRESAESTADO: TStringField
+      FieldKind = fkData
+      FieldName = 'EMPRESAESTADO'
+      Index = 20
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object cdsCteMODAL: TStringField
+      FieldKind = fkData
+      FieldName = 'MODAL'
+      Index = 21
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object cdsCteTIPOSERVICO: TLongintField
+      FieldKind = fkData
+      FieldName = 'TIPOSERVICO'
+      Index = 22
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteENV_CODCIDADE: TStringField
+      FieldKind = fkData
+      FieldName = 'ENV_CODCIDADE'
+      Index = 23
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object cdsCteENV_CIDADE: TStringField
+      FieldKind = fkData
+      FieldName = 'ENV_CIDADE'
+      Index = 24
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteENV_ESTADO: TStringField
+      FieldKind = fkData
+      FieldName = 'ENV_ESTADO'
+      Index = 25
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object cdsCteINI_CODCIDADE: TStringField
+      FieldKind = fkData
+      FieldName = 'INI_CODCIDADE'
+      Index = 26
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object cdsCteINI_CIDADE: TStringField
+      FieldKind = fkData
+      FieldName = 'INI_CIDADE'
+      Index = 27
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteINI_ESTADO: TStringField
+      FieldKind = fkData
+      FieldName = 'INI_ESTADO'
+      Index = 28
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object cdsCteFIM_CODCIDADE: TStringField
+      FieldKind = fkData
+      FieldName = 'FIM_CODCIDADE'
+      Index = 29
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object cdsCteFIM_CIDADE: TStringField
+      FieldKind = fkData
+      FieldName = 'FIM_CIDADE'
+      Index = 30
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteFIM_ESTADO: TStringField
+      FieldKind = fkData
+      FieldName = 'FIM_ESTADO'
+      Index = 31
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object cdsCteRETIRA: TLongintField
+      FieldKind = fkData
+      FieldName = 'RETIRA'
+      Index = 32
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteDETRETIRA: TStringField
+      FieldKind = fkData
+      FieldName = 'DETRETIRA'
+      Index = 33
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteEMITENTE: TLongintField
+      FieldKind = fkData
+      FieldName = 'EMITENTE'
+      Index = 34
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteE_RG: TStringField
+      FieldKind = fkData
+      FieldName = 'E_RG'
+      Index = 35
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteE_CNPJCPF: TStringField
+      FieldKind = fkData
+      FieldName = 'E_CNPJCPF'
+      Index = 36
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteE_IESTADUAL: TStringField
+      FieldKind = fkData
+      FieldName = 'E_IESTADUAL'
+      Index = 37
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteE_RSOCIAL: TStringField
+      FieldKind = fkData
+      FieldName = 'E_RSOCIAL'
+      Index = 38
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteE_FANTASIA: TStringField
+      FieldKind = fkData
+      FieldName = 'E_FANTASIA'
+      Index = 39
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteE_TELEFONE: TStringField
+      FieldKind = fkData
+      FieldName = 'E_TELEFONE'
+      Index = 40
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 60
+    end
+    object cdsCteE_ENDERECO: TStringField
+      FieldKind = fkData
+      FieldName = 'E_ENDERECO'
+      Index = 41
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteE_NUMERO: TStringField
+      FieldKind = fkData
+      FieldName = 'E_NUMERO'
+      Index = 42
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object cdsCteE_COMPLEMENTO: TStringField
+      FieldKind = fkData
+      FieldName = 'E_COMPLEMENTO'
+      Index = 43
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteE_BAIRRO: TStringField
+      FieldKind = fkData
+      FieldName = 'E_BAIRRO'
+      Index = 44
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteE_CODIGOMUNICIPI: TStringField
+      FieldKind = fkData
+      FieldName = 'E_CODIGOMUNICIPI'
+      Index = 45
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object cdsCteE_CIDADE: TStringField
+      FieldKind = fkData
+      FieldName = 'E_CIDADE'
+      Index = 46
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteE_CEP: TStringField
+      FieldKind = fkData
+      FieldName = 'E_CEP'
+      Index = 47
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object cdsCteE_ESTADO: TStringField
+      FieldKind = fkData
+      FieldName = 'E_ESTADO'
+      Index = 48
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object cdsCteE_CODIGOPAIS: TLongintField
+      FieldKind = fkData
+      FieldName = 'E_CODIGOPAIS'
+      Index = 49
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteE_PAIS: TStringField
+      FieldKind = fkData
+      FieldName = 'E_PAIS'
+      Index = 50
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteTOMADORSERVICO: TLongintField
+      FieldKind = fkData
+      FieldName = 'TOMADORSERVICO'
+      Index = 51
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteT_RG: TStringField
+      FieldKind = fkData
+      FieldName = 'T_RG'
+      Index = 52
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteT_CNPJCPF: TStringField
+      FieldKind = fkData
+      FieldName = 'T_CNPJCPF'
+      Index = 53
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteT_IESTADUAL: TStringField
+      FieldKind = fkData
+      FieldName = 'T_IESTADUAL'
+      Index = 54
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteT_RSOCIAL: TStringField
+      FieldKind = fkData
+      FieldName = 'T_RSOCIAL'
+      Index = 55
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteT_FANTASIA: TStringField
+      FieldKind = fkData
+      FieldName = 'T_FANTASIA'
+      Index = 56
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteT_TELEFONE: TStringField
+      FieldKind = fkData
+      FieldName = 'T_TELEFONE'
+      Index = 57
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 60
+    end
+    object cdsCteT_ENDERECO: TStringField
+      FieldKind = fkData
+      FieldName = 'T_ENDERECO'
+      Index = 58
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteT_NUMERO: TStringField
+      FieldKind = fkData
+      FieldName = 'T_NUMERO'
+      Index = 59
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object cdsCteT_COMPLEMENTO: TStringField
+      FieldKind = fkData
+      FieldName = 'T_COMPLEMENTO'
+      Index = 60
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteT_BAIRRO: TStringField
+      FieldKind = fkData
+      FieldName = 'T_BAIRRO'
+      Index = 61
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteT_CODIGOMUNICIPI: TStringField
+      FieldKind = fkData
+      FieldName = 'T_CODIGOMUNICIPI'
+      Index = 62
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object cdsCteT_CIDADE: TStringField
+      FieldKind = fkData
+      FieldName = 'T_CIDADE'
+      Index = 63
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteT_CEP: TStringField
+      FieldKind = fkData
+      FieldName = 'T_CEP'
+      Index = 64
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object cdsCteT_ESTADO: TStringField
+      FieldKind = fkData
+      FieldName = 'T_ESTADO'
+      Index = 65
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object cdsCteT_CODIGOPAIS: TLongintField
+      FieldKind = fkData
+      FieldName = 'T_CODIGOPAIS'
+      Index = 66
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteT_PAIS: TStringField
+      FieldKind = fkData
+      FieldName = 'T_PAIS'
+      Index = 67
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteREMETENTE: TLongintField
+      FieldKind = fkData
+      FieldName = 'REMETENTE'
+      Index = 68
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteR_RG: TStringField
+      FieldKind = fkData
+      FieldName = 'R_RG'
+      Index = 69
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteR_CNPJCPF: TStringField
+      FieldKind = fkData
+      FieldName = 'R_CNPJCPF'
+      Index = 70
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteR_IESTADUAL: TStringField
+      FieldKind = fkData
+      FieldName = 'R_IESTADUAL'
+      Index = 71
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteR_RSOCIAL: TStringField
+      FieldKind = fkData
+      FieldName = 'R_RSOCIAL'
+      Index = 72
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteR_FANTASIA: TStringField
+      FieldKind = fkData
+      FieldName = 'R_FANTASIA'
+      Index = 73
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteR_TELEFONE: TStringField
+      FieldKind = fkData
+      FieldName = 'R_TELEFONE'
+      Index = 74
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 60
+    end
+    object cdsCteR_ENDERECO: TStringField
+      FieldKind = fkData
+      FieldName = 'R_ENDERECO'
+      Index = 75
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteR_NUMERO: TStringField
+      FieldKind = fkData
+      FieldName = 'R_NUMERO'
+      Index = 76
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object cdsCteR_COMPLEMENTO: TStringField
+      FieldKind = fkData
+      FieldName = 'R_COMPLEMENTO'
+      Index = 77
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteR_BAIRRO: TStringField
+      FieldKind = fkData
+      FieldName = 'R_BAIRRO'
+      Index = 78
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteR_CODIGOMUNICIPI: TStringField
+      FieldKind = fkData
+      FieldName = 'R_CODIGOMUNICIPI'
+      Index = 79
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object cdsCteR_CIDADE: TStringField
+      FieldKind = fkData
+      FieldName = 'R_CIDADE'
+      Index = 80
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteR_CEP: TStringField
+      FieldKind = fkData
+      FieldName = 'R_CEP'
+      Index = 81
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object cdsCteR_ESTADO: TStringField
+      FieldKind = fkData
+      FieldName = 'R_ESTADO'
+      Index = 82
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object cdsCteR_CODIGOPAIS: TLongintField
+      FieldKind = fkData
+      FieldName = 'R_CODIGOPAIS'
+      Index = 83
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteR_PAIS: TStringField
+      FieldKind = fkData
+      FieldName = 'R_PAIS'
+      Index = 84
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteDESTINATARIO: TLongintField
+      FieldKind = fkData
+      FieldName = 'DESTINATARIO'
+      Index = 85
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteD_RG: TStringField
+      FieldKind = fkData
+      FieldName = 'D_RG'
+      Index = 86
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteD_CNPJCPF: TStringField
+      FieldKind = fkData
+      FieldName = 'D_CNPJCPF'
+      Index = 87
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteD_IESTADUAL: TStringField
+      FieldKind = fkData
+      FieldName = 'D_IESTADUAL'
+      Index = 88
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteD_RSOCIAL: TStringField
+      FieldKind = fkData
+      FieldName = 'D_RSOCIAL'
+      Index = 89
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteD_FANTASIA: TStringField
+      FieldKind = fkData
+      FieldName = 'D_FANTASIA'
+      Index = 90
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteD_TELEFONE: TStringField
+      FieldKind = fkData
+      FieldName = 'D_TELEFONE'
+      Index = 91
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 60
+    end
+    object cdsCteD_ENDERECO: TStringField
+      FieldKind = fkData
+      FieldName = 'D_ENDERECO'
+      Index = 92
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteD_NUMERO: TStringField
+      FieldKind = fkData
+      FieldName = 'D_NUMERO'
+      Index = 93
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object cdsCteD_COMPLEMENTO: TStringField
+      FieldKind = fkData
+      FieldName = 'D_COMPLEMENTO'
+      Index = 94
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteD_BAIRRO: TStringField
+      FieldKind = fkData
+      FieldName = 'D_BAIRRO'
+      Index = 95
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteD_CODIGOMUNICIPI: TStringField
+      FieldKind = fkData
+      FieldName = 'D_CODIGOMUNICIPI'
+      Index = 96
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object cdsCteD_CIDADE: TStringField
+      FieldKind = fkData
+      FieldName = 'D_CIDADE'
+      Index = 97
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteD_CEP: TStringField
+      FieldKind = fkData
+      FieldName = 'D_CEP'
+      Index = 98
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object cdsCteD_ESTADO: TStringField
+      FieldKind = fkData
+      FieldName = 'D_ESTADO'
+      Index = 99
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object cdsCteD_CODIGOPAIS: TLongintField
+      FieldKind = fkData
+      FieldName = 'D_CODIGOPAIS'
+      Index = 100
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteD_PAIS: TStringField
+      FieldKind = fkData
+      FieldName = 'D_PAIS'
+      Index = 101
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteEXPEDITOR: TLongintField
+      FieldKind = fkData
+      FieldName = 'EXPEDITOR'
+      Index = 102
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteEX_RG: TStringField
+      FieldKind = fkData
+      FieldName = 'EX_RG'
+      Index = 103
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteEX_CNPJCPF: TStringField
+      FieldKind = fkData
+      FieldName = 'EX_CNPJCPF'
+      Index = 104
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteEX_IESTADUAL: TStringField
+      FieldKind = fkData
+      FieldName = 'EX_IESTADUAL'
+      Index = 105
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteEX_RSOCIAL: TStringField
+      FieldKind = fkData
+      FieldName = 'EX_RSOCIAL'
+      Index = 106
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteEX_FANTASIA: TStringField
+      FieldKind = fkData
+      FieldName = 'EX_FANTASIA'
+      Index = 107
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteEX_TELEFONE: TStringField
+      FieldKind = fkData
+      FieldName = 'EX_TELEFONE'
+      Index = 108
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 60
+    end
+    object cdsCteEX_ENDERECO: TStringField
+      FieldKind = fkData
+      FieldName = 'EX_ENDERECO'
+      Index = 109
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteEX_NUMERO: TStringField
+      FieldKind = fkData
+      FieldName = 'EX_NUMERO'
+      Index = 110
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object cdsCteEX_COMPLEMENTO: TStringField
+      FieldKind = fkData
+      FieldName = 'EX_COMPLEMENTO'
+      Index = 111
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteEX_BAIRRO: TStringField
+      FieldKind = fkData
+      FieldName = 'EX_BAIRRO'
+      Index = 112
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteEX_CODIGOMUNICIPI: TStringField
+      FieldKind = fkData
+      FieldName = 'EX_CODIGOMUNICIPI'
+      Index = 113
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object cdsCteEX_CIDADE: TStringField
+      FieldKind = fkData
+      FieldName = 'EX_CIDADE'
+      Index = 114
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteEX_CEP: TStringField
+      FieldKind = fkData
+      FieldName = 'EX_CEP'
+      Index = 115
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object cdsCteEX_ESTADO: TStringField
+      FieldKind = fkData
+      FieldName = 'EX_ESTADO'
+      Index = 116
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object cdsCteEX_CODIGOPAIS: TLongintField
+      FieldKind = fkData
+      FieldName = 'EX_CODIGOPAIS'
+      Index = 117
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteEX_PAIS: TStringField
+      FieldKind = fkData
+      FieldName = 'EX_PAIS'
+      Index = 118
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteCARAC_TRANSP: TStringField
+      FieldKind = fkData
+      FieldName = 'CARAC_TRANSP'
+      Index = 119
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 60
+    end
+    object cdsCteCARAC_SERV: TStringField
+      FieldKind = fkData
+      FieldName = 'CARAC_SERV'
+      Index = 120
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 120
+    end
+    object cdsCteFUNC_EMI: TStringField
+      FieldKind = fkData
+      FieldName = 'FUNC_EMI'
+      Index = 121
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteDET_RETIRA: TStringField
+      FieldKind = fkData
+      FieldName = 'DET_RETIRA'
+      Index = 122
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 640
+    end
+    object cdsCteVPREST: TFloatField
+      FieldKind = fkData
+      FieldName = 'VPREST'
+      Index = 123
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object cdsCteVREC: TFloatField
+      FieldKind = fkData
+      FieldName = 'VREC'
+      Index = 124
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object cdsCteCOMPONENTE: TStringField
+      FieldKind = fkData
+      FieldName = 'COMPONENTE'
+      Index = 125
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 60
+    end
+    object cdsCteVCOMPONENTE: TFloatField
+      FieldKind = fkData
+      FieldName = 'VCOMPONENTE'
+      Index = 126
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object cdsCteVALTOTTRI: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALTOTTRI'
+      Index = 127
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object cdsCteCOMBCODSITTRIB: TLongintField
+      FieldKind = fkData
+      FieldName = 'COMBCODSITTRIB'
+      Index = 128
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteSTATUS: TStringField
+      FieldKind = fkData
+      FieldName = 'STATUS'
+      Index = 129
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteVALINFCARGA: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALINFCARGA'
+      Index = 130
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object cdsCtePROPRED: TStringField
+      FieldKind = fkData
+      FieldName = 'PROPRED'
+      Index = 131
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteOUTCAT: TStringField
+      FieldKind = fkData
+      FieldName = 'OUTCAT'
+      Index = 132
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 120
+    end
+    object cdsCteRNTRC: TStringField
+      FieldKind = fkData
+      FieldName = 'RNTRC'
+      Index = 133
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 32
+    end
+    object cdsCteDATARODPREV: TDateField
+      FieldKind = fkData
+      FieldName = 'DATARODPREV'
+      Index = 134
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteRGRODLOTACAO: TLongintField
+      FieldKind = fkData
+      FieldName = 'RGRODLOTACAO'
+      Index = 135
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteOBS_GERAL: TStringField
+      FieldKind = fkData
+      FieldName = 'OBS_GERAL'
+      Index = 136
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 1200
+    end
+    object cdsCteNPROT: TStringField
+      FieldKind = fkData
+      FieldName = 'NPROT'
+      Index = 137
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteCHCTE: TStringField
+      FieldKind = fkData
+      FieldName = 'CHCTE'
+      Index = 138
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 200
+    end
+    object cdsCteRECEBEDOR: TLongintField
+      FieldKind = fkData
+      FieldName = 'RECEBEDOR'
+      Index = 139
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteRE_RG: TStringField
+      FieldKind = fkData
+      FieldName = 'RE_RG'
+      Index = 140
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteRE_CNPJCPF: TStringField
+      FieldKind = fkData
+      FieldName = 'RE_CNPJCPF'
+      Index = 141
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteRE_IESTADUAL: TStringField
+      FieldKind = fkData
+      FieldName = 'RE_IESTADUAL'
+      Index = 142
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteRE_RSOCIAL: TStringField
+      FieldKind = fkData
+      FieldName = 'RE_RSOCIAL'
+      Index = 143
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteRE_FANTASIA: TStringField
+      FieldKind = fkData
+      FieldName = 'RE_FANTASIA'
+      Index = 144
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteRE_TELEFONE: TStringField
+      FieldKind = fkData
+      FieldName = 'RE_TELEFONE'
+      Index = 145
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 60
+    end
+    object cdsCteRE_ENDERECO: TStringField
+      FieldKind = fkData
+      FieldName = 'RE_ENDERECO'
+      Index = 146
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteRE_NUMERO: TStringField
+      FieldKind = fkData
+      FieldName = 'RE_NUMERO'
+      Index = 147
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object cdsCteRE_COMPLEMENTO: TStringField
+      FieldKind = fkData
+      FieldName = 'RE_COMPLEMENTO'
+      Index = 148
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteRE_BAIRRO: TStringField
+      FieldKind = fkData
+      FieldName = 'RE_BAIRRO'
+      Index = 149
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteRE_CODIGOMUNICIPI: TStringField
+      FieldKind = fkData
+      FieldName = 'RE_CODIGOMUNICIPI'
+      Index = 150
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object cdsCteRE_CIDADE: TStringField
+      FieldKind = fkData
+      FieldName = 'RE_CIDADE'
+      Index = 151
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteRE_CEP: TStringField
+      FieldKind = fkData
+      FieldName = 'RE_CEP'
+      Index = 152
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object cdsCteRE_ESTADO: TStringField
+      FieldKind = fkData
+      FieldName = 'RE_ESTADO'
+      Index = 153
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object cdsCteRE_CODIGOPAIS: TLongintField
+      FieldKind = fkData
+      FieldName = 'RE_CODIGOPAIS'
+      Index = 154
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteRE_PAIS: TStringField
+      FieldKind = fkData
+      FieldName = 'RE_PAIS'
+      Index = 155
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteOUTPDOC: TStringField
+      FieldKind = fkData
+      FieldName = 'OUTPDOC'
+      Index = 156
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object cdsCteOUDESCOUTRO: TStringField
+      FieldKind = fkData
+      FieldName = 'OUDESCOUTRO'
+      Index = 157
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 400
+    end
+    object cdsCteOUNDOC: TStringField
+      FieldKind = fkData
+      FieldName = 'OUNDOC'
+      Index = 158
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteOUDEMI: TDateTimeField
+      FieldKind = fkData
+      FieldName = 'OUDEMI'
+      Index = 159
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteOUVDOCFISC: TFloatField
+      FieldKind = fkData
+      FieldName = 'OUVDOCFISC'
+      Index = 160
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object cdsCteANT_CNPJ: TStringField
+      FieldKind = fkData
+      FieldName = 'ANT_CNPJ'
+      Index = 161
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteANT_IE: TStringField
+      FieldKind = fkData
+      FieldName = 'ANT_IE'
+      Index = 162
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cdsCteANT_UF: TStringField
+      FieldKind = fkData
+      FieldName = 'ANT_UF'
+      Index = 163
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object cdsCteANT_NOME: TStringField
+      FieldKind = fkData
+      FieldName = 'ANT_NOME'
+      Index = 164
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteANT_CHCTE: TStringField
+      FieldKind = fkData
+      FieldName = 'ANT_CHCTE'
+      Index = 165
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteIN_IMPOSTOS: TLongintField
+      FieldKind = fkData
+      FieldName = 'IN_IMPOSTOS'
+      Index = 166
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteVALPREDBC: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALPREDBC'
+      Index = 167
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object cdsCteVALVBC: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALVBC'
+      Index = 168
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object cdsCteVALPICMS: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALPICMS'
+      Index = 169
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object cdsCteVALVICMS: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALVICMS'
+      Index = 170
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object cdsCteVALVCRED: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALVCRED'
+      Index = 171
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+  end
+  object sqQC: TSQLQuery
+    FieldDefs = <>
+    Database = dmPdv.IbCon
+    Transaction = dmPdv.sTrans
+    SQL.Strings = (
+      'select * from CTE_QC where COD_CTE = :pCTE'
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'pCTE'
+        ParamType = ptInput
+      end>
+    left = 149
+    top = 88
+  end
+  object sqNFe: TSQLQuery
+    FieldDefs = <>
+    Database = dmPdv.IbCon
+    Transaction = dmPdv.sTrans
+    SQL.Strings = (
+      'select * from CTE_NFE where CTE_NFE =:pCTE'
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'pCTE'
+        ParamType = ptInput
+      end>
+    left = 216
+    top = 88
+  end
+  object sqComp: TSQLQuery
+    FieldDefs = <>
+    Database = dmPdv.IbCon
+    Transaction = dmPdv.sTrans
+    SQL.Strings = (
+      'select * from CTE_COMP where COD_CTE  = :pCTE'
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'pCTE'
+        ParamType = ptInput
+      end>
+    left = 288
+    top = 88
+  end
+  object sqSeg: TSQLQuery
+    FieldDefs = <>
+    Database = dmPdv.IbCon
+    Transaction = dmPdv.sTrans
+    SQL.Strings = (
+      'select * from CTE_SEGURO  where COD_CTE =:pCTE'
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'pCTE'
+        ParamType = ptInput
+      end>
+    left = 352
+    top = 88
+  end
+  object sqVeic: TSQLQuery
+    FieldDefs = <>
+    Database = dmPdv.IbCon
+    Transaction = dmPdv.sTrans
+    SQL.Strings = (
+      'select * from CTE_VEICULOS  where COD_CTE =:pCTE'
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'pCTE'
+        ParamType = ptInput
+      end>
+    left = 416
+    top = 88
+  end
+  object sqMot: TSQLQuery
+    FieldDefs = <>
+    Database = dmPdv.IbCon
+    Transaction = dmPdv.sTrans
+    SQL.Strings = (
+      'select * from CTE_MOTORISTA where COD_CTE =:pCTE'
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'pCTE'
+        ParamType = ptInput
+      end>
+    left = 480
+    top = 88
+  end
+end
