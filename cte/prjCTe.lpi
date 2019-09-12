@@ -46,7 +46,7 @@
         <PackageName Value="LCL"/>
       </Item6>
     </RequiredPackages>
-    <Units Count="6">
+    <Units Count="8">
       <Unit0>
         <Filename Value="prjCTe.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -77,7 +77,7 @@
       <Unit4>
         <Filename Value="unfe.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="Form1"/>
+        <ComponentName Value="fNFe"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uNFe"/>
@@ -89,6 +89,22 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit5>
+      <Unit6>
+        <Filename Value="ucompvalor.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fCompValor"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uCompValor"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="uquantcarga.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fQuantCarga"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uQuantCarga"/>
+      </Unit7>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

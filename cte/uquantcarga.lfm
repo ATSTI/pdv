@@ -1,0 +1,8 @@
+object fQuantCarga: TfQuantCarga
+  Left = 427
+  Height = 240
+  Top = 250
+  Width = 320
+  Caption = 'fQuantCarga'
+  LCLVersion = '2.0.4.0'
+end

@@ -18,7 +18,7 @@ object fCTePrincipal: TfCTePrincipal
     Align = alBottom
     ClientHeight = 66
     ClientWidth = 1305
-    TabOrder = 0
+    TabOrder = 1
     object btnIncCte: TBitBtn
       Left = 264
       Height = 30
@@ -202,10 +202,10 @@ object fCTePrincipal: TfCTePrincipal
     Height = 608
     Top = 0
     Width = 1305
-    ActivePage = TabSheet1
+    ActivePage = TabCteGeradas
     Align = alClient
-    TabIndex = 1
-    TabOrder = 1
+    TabIndex = 0
+    TabOrder = 0
     object TabCteGeradas: TTabSheet
       Caption = 'CT-e Geradas'
       ClientHeight = 573
@@ -216,44 +216,41 @@ object fCTePrincipal: TfCTePrincipal
         Height = 432
         Top = 88
         Width = 1185
-        AutoFillColumns = True
         Color = clWindow
         Columns = <        
           item
-            Title.Caption = 'Série'
-            Width = 167
-            FieldName = 'Série'
-          end        
-          item
+            MaxSize = 80
             Title.Caption = 'Número'
-            Width = 167
-            FieldName = 'Número'
+            Width = 100
+            FieldName = 'CTE_NUMERO'
           end        
           item
             Title.Caption = 'Data Emissão'
-            Width = 167
-            FieldName = 'Data Emissão'
+            Width = 100
+            FieldName = 'DHEMI'
           end        
           item
-            Title.Caption = 'Chave'
-            Width = 167
-            FieldName = 'Chave'
+            Title.Caption = 'Cliente'
+            Width = 400
+            FieldName = 'D_FANTASIA'
           end        
           item
             Title.Caption = 'Núm. Protocolo'
-            Width = 167
-            FieldName = 'Núm. Protocolo'
+            Width = 192
+            FieldName = 'NPROT'
           end        
           item
-            Title.Caption = 'Status'
-            Width = 167
-            FieldName = 'Status'
+            Title.Caption = 'Situação'
+            Width = 300
+            FieldName = 'STATUS_CTE'
           end        
           item
-            Title.Caption = 'Nat. Operação'
-            Width = 167
-            FieldName = 'Nat. Operação'
+            Title.Caption = 'Valor Recebimento'
+            Width = 80
+            FieldName = 'VREC'
+            DisplayFormat = ',##0.00'
           end>
+        DataSource = dmCte.dsCte
         TabOrder = 1
       end
       object Label9: TLabel
@@ -356,9 +353,9 @@ object fCTePrincipal: TfCTePrincipal
         Height = 573
         Top = 0
         Width = 1299
-        ActivePage = TabSheet11
+        ActivePage = TabSheet3
         Align = alClient
-        TabIndex = 8
+        TabIndex = 1
         TabOrder = 0
         object TabSheet2: TTabSheet
           Cursor = crHandPoint
@@ -2468,7 +2465,7 @@ object fCTePrincipal: TfCTePrincipal
           ClientHeight = 538
           ClientWidth = 1293
           OnShow = TabServicosImpostosShow
-          object DBGrid2: TDBGrid
+          object dbGridComp: TDBGrid
             Left = 32
             Height = 136
             Top = 143
@@ -2481,13 +2478,13 @@ object fCTePrincipal: TfCTePrincipal
                 Alignment = taCenter
                 ButtonStyle = cbsButton
                 Title.Caption = 'Descrição'
-                Width = 257
+                Width = 251
                 FieldName = 'Descrição'
               end            
               item
                 Alignment = taCenter
                 Title.Caption = 'Valor'
-                Width = 258
+                Width = 251
                 FieldName = 'Valor'
               end>
             TabOrder = 0
@@ -2500,29 +2497,13 @@ object fCTePrincipal: TfCTePrincipal
             Caption = 'Valor Total Prestação Serviço'
             TabOrder = 1
           end
-          object dbValTotPrest: TEdit
-            Left = 336
-            Height = 27
-            Top = 8
-            Width = 224
-            OnChange = dbValInfCargaChange
-            TabOrder = 2
-          end
           object StaticText11: TStaticText
             Left = 35
             Height = 23
             Top = 40
             Width = 216
             Caption = 'Valor Total a Receber'
-            TabOrder = 3
-          end
-          object dbValReceber: TEdit
-            Left = 336
-            Height = 27
-            Top = 40
-            Width = 224
-            OnChange = dbValInfCargaChange
-            TabOrder = 4
+            TabOrder = 2
           end
           object StaticText12: TStaticText
             Left = 35
@@ -2530,15 +2511,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 72
             Width = 216
             Caption = 'Valor Total dos Tributos'
-            TabOrder = 5
-          end
-          object dbValTotTri: TEdit
-            Left = 336
-            Height = 27
-            Top = 72
-            Width = 224
-            OnChange = dbValInfCargaChange
-            TabOrder = 6
+            TabOrder = 3
           end
           object StaticText13: TStaticText
             Left = 32
@@ -2547,7 +2520,7 @@ object fCTePrincipal: TfCTePrincipal
             Width = 216
             Caption = 'Componente do Valor da Prestação'
             OnClick = StaticText13Click
-            TabOrder = 7
+            TabOrder = 4
           end
           object StaticText14: TStaticText
             Left = 32
@@ -2555,7 +2528,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 329
             Width = 216
             Caption = 'CST - ICMS'
-            TabOrder = 8
+            TabOrder = 5
           end
           object StaticText15: TStaticText
             Left = 32
@@ -2563,15 +2536,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 360
             Width = 216
             Caption = 'Percentual Redução BC'
-            TabOrder = 9
-          end
-          object valpRedBC: TEdit
-            Left = 336
-            Height = 27
-            Top = 360
-            Width = 224
-            OnChange = dbValInfCargaChange
-            TabOrder = 10
+            TabOrder = 6
           end
           object StaticText16: TStaticText
             Left = 32
@@ -2579,23 +2544,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 393
             Width = 216
             Caption = 'Valor BC ICMS'
-            TabOrder = 11
-          end
-          object valvBC: TEdit
-            Left = 336
-            Height = 27
-            Top = 393
-            Width = 224
-            OnChange = dbValInfCargaChange
-            TabOrder = 12
-          end
-          object valvICMS: TEdit
-            Left = 336
-            Height = 27
-            Top = 457
-            Width = 224
-            OnChange = dbValInfCargaChange
-            TabOrder = 13
+            TabOrder = 7
           end
           object StaticText18: TStaticText
             Left = 32
@@ -2603,7 +2552,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 457
             Width = 128
             Caption = 'Valor ICMS'
-            TabOrder = 14
+            TabOrder = 8
           end
           object StaticText19: TStaticText
             Left = 32
@@ -2611,15 +2560,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 488
             Width = 264
             Caption = 'Valor Crédito Outorgado/Presumido'
-            TabOrder = 15
-          end
-          object valvCred: TEdit
-            Left = 336
-            Height = 27
-            Top = 488
-            Width = 224
-            OnChange = dbValInfCargaChange
-            TabOrder = 16
+            TabOrder = 9
           end
           object StaticText20: TStaticText
             Left = 744
@@ -2627,7 +2568,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 40
             Width = 216
             Caption = 'Valor BC ICMS'
-            TabOrder = 17
+            TabOrder = 10
           end
           object calValB: TEdit
             Left = 992
@@ -2635,7 +2576,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 40
             Width = 224
             OnChange = dbValInfCargaChange
-            TabOrder = 18
+            TabOrder = 11
           end
           object StaticText21: TStaticText
             Left = 744
@@ -2643,7 +2584,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 72
             Width = 216
             Caption = 'Aliquota Interna UF Término'
-            TabOrder = 19
+            TabOrder = 12
           end
           object valAliIn: TEdit
             Left = 992
@@ -2651,7 +2592,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 72
             Width = 224
             OnChange = dbValInfCargaChange
-            TabOrder = 20
+            TabOrder = 13
           end
           object StaticText23: TStaticText
             Left = 744
@@ -2659,7 +2600,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 136
             Width = 216
             Caption = 'Percentual de Partilha UF Término'
-            TabOrder = 21
+            TabOrder = 14
           end
           object dbValInfCarga13: TEdit
             Left = 992
@@ -2667,7 +2608,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 136
             Width = 224
             OnChange = dbValInfCargaChange
-            TabOrder = 22
+            TabOrder = 15
           end
           object StaticText25: TStaticText
             Left = 744
@@ -2675,7 +2616,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 200
             Width = 216
             Caption = 'Valor ICMS de Partilha UF Término'
-            TabOrder = 23
+            TabOrder = 16
           end
           object valIMCSPartF: TEdit
             Left = 992
@@ -2683,7 +2624,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 200
             Width = 224
             OnChange = dbValInfCargaChange
-            TabOrder = 24
+            TabOrder = 17
           end
           object StaticText26: TStaticText
             Left = 744
@@ -2691,7 +2632,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 232
             Width = 216
             Caption = '% ICMS FCP UF Término'
-            TabOrder = 25
+            TabOrder = 18
           end
           object dbValInfCarga16: TEdit
             Left = 992
@@ -2699,7 +2640,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 232
             Width = 224
             OnChange = dbValInfCargaChange
-            TabOrder = 26
+            TabOrder = 19
           end
           object StaticText27: TStaticText
             Left = 744
@@ -2707,7 +2648,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 264
             Width = 216
             Caption = 'Valor ICMS FCP UF Término'
-            TabOrder = 27
+            TabOrder = 20
           end
           object dbValInfCarga17: TEdit
             Left = 992
@@ -2715,7 +2656,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 264
             Width = 224
             OnChange = dbValInfCargaChange
-            TabOrder = 28
+            TabOrder = 21
           end
           object StaticText22: TStaticText
             Left = 32
@@ -2723,15 +2664,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 424
             Width = 128
             Caption = '% Aliquota ICMS'
-            TabOrder = 29
-          end
-          object valpICMS: TEdit
-            Left = 336
-            Height = 27
-            Top = 424
-            Width = 224
-            OnChange = dbValInfCargaChange
-            TabOrder = 30
+            TabOrder = 22
           end
           object StaticText24: TStaticText
             Left = 744
@@ -2739,7 +2672,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 104
             Width = 216
             Caption = 'Aliquota Interestadual'
-            TabOrder = 31
+            TabOrder = 23
           end
           object valAliInter: TEdit
             Left = 992
@@ -2747,7 +2680,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 104
             Width = 224
             OnChange = dbValInfCargaChange
-            TabOrder = 32
+            TabOrder = 24
           end
           object valICMSPartI: TEdit
             Left = 992
@@ -2755,7 +2688,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 168
             Width = 224
             OnChange = dbValInfCargaChange
-            TabOrder = 33
+            TabOrder = 25
           end
           object StaticText28: TStaticText
             Left = 744
@@ -2763,14 +2696,14 @@ object fCTePrincipal: TfCTePrincipal
             Top = 168
             Width = 216
             Caption = 'Valor ICMS de Partilha UF Início'
-            TabOrder = 34
+            TabOrder = 26
           end
           object memDetRetira1: TMemo
             Left = 616
             Height = 166
             Top = 346
             Width = 600
-            TabOrder = 35
+            TabOrder = 27
           end
           object StaticText29: TStaticText
             Left = 616
@@ -2778,7 +2711,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 325
             Width = 312
             Caption = 'Informações Adicionais de Interesse do Fisco'
-            TabOrder = 36
+            TabOrder = 28
           end
           object combCodSitTrib: TComboBox
             Left = 120
@@ -2786,14 +2719,14 @@ object fCTePrincipal: TfCTePrincipal
             Top = 329
             Width = 440
             ItemHeight = 0
-            TabOrder = 37
+            TabOrder = 29
           end
           object CheckBox1: TCheckBox
             Left = 744
             Height = 21
             Top = 5
             Width = 21
-            TabOrder = 38
+            TabOrder = 30
           end
           object StaticText30: TStaticText
             Left = 768
@@ -2801,7 +2734,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 8
             Width = 352
             Caption = 'Preencher o ICMS Devido para UF Término Serviço'
-            TabOrder = 39
+            TabOrder = 31
           end
           object BitBtn15: TBitBtn
             Left = 104
@@ -2809,7 +2742,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 280
             Width = 75
             Caption = 'Incluir'
-            TabOrder = 40
+            TabOrder = 32
           end
           object btnEditarComp: TBitBtn
             Left = 32
@@ -2818,7 +2751,7 @@ object fCTePrincipal: TfCTePrincipal
             Width = 75
             Caption = 'Editar'
             OnClick = btnEditarCompClick
-            TabOrder = 41
+            TabOrder = 33
           end
           object btnExcluirComp: TBitBtn
             Left = 176
@@ -2827,7 +2760,7 @@ object fCTePrincipal: TfCTePrincipal
             Width = 75
             Caption = 'Excluir'
             OnClick = btnExcluirCompClick
-            TabOrder = 42
+            TabOrder = 34
           end
           object BitBtn22: TBitBtn
             Left = 248
@@ -2835,7 +2768,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 280
             Width = 75
             Caption = 'Gravar'
-            TabOrder = 43
+            TabOrder = 35
           end
           object combICMSDevido: TComboBox
             Left = 569
@@ -2850,8 +2783,136 @@ object fCTePrincipal: TfCTePrincipal
               '100%  partir de 2019'
               'Outro Valor'
             )
-            TabOrder = 44
+            TabOrder = 36
             Text = 'combICMSDevido'
+          end
+          object dbValpRedBC: TCalcEdit
+            Left = 290
+            Height = 27
+            Top = 360
+            Width = 103
+            CalculatorLayout = clNormal
+            AsFloat = 0
+            AsInteger = 0
+            ButtonWidth = 23
+            DialogTop = 0
+            DialogLeft = 0
+            NumGlyphs = 1
+            MaxLength = 0
+            TabOrder = 37
+            Text = 'dbValpRedBC'
+          end
+          object dbValvBC: TCalcEdit
+            Left = 290
+            Height = 27
+            Top = 393
+            Width = 103
+            CalculatorLayout = clNormal
+            AsFloat = 0
+            AsInteger = 0
+            ButtonWidth = 23
+            DialogTop = 0
+            DialogLeft = 0
+            NumGlyphs = 1
+            MaxLength = 0
+            TabOrder = 38
+            Text = 'dbValvBC'
+          end
+          object dbValPIcms: TCalcEdit
+            Left = 290
+            Height = 27
+            Top = 424
+            Width = 103
+            CalculatorLayout = clNormal
+            AsFloat = 0
+            AsInteger = 0
+            ButtonWidth = 23
+            DialogTop = 0
+            DialogLeft = 0
+            NumGlyphs = 1
+            MaxLength = 0
+            TabOrder = 39
+            Text = 'dbValPIcms'
+          end
+          object dbValVICMS: TCalcEdit
+            Left = 290
+            Height = 27
+            Top = 456
+            Width = 103
+            CalculatorLayout = clNormal
+            AsFloat = 0
+            AsInteger = 0
+            ButtonWidth = 23
+            DialogTop = 0
+            DialogLeft = 0
+            NumGlyphs = 1
+            MaxLength = 0
+            TabOrder = 40
+            Text = '0,00'
+          end
+          object dbValVCred: TCalcEdit
+            Left = 290
+            Height = 27
+            Top = 488
+            Width = 103
+            CalculatorLayout = clNormal
+            AsFloat = 0
+            AsInteger = 0
+            ButtonWidth = 23
+            DialogTop = 0
+            DialogLeft = 0
+            NumGlyphs = 1
+            MaxLength = 0
+            TabOrder = 41
+            Text = '0,00'
+          end
+          object dbValTotPrest: TCalcEdit
+            Left = 384
+            Height = 27
+            Top = 9
+            Width = 103
+            CalculatorLayout = clNormal
+            AsFloat = 0
+            AsInteger = 0
+            ButtonWidth = 23
+            DialogTop = 0
+            DialogLeft = 0
+            NumGlyphs = 1
+            MaxLength = 0
+            TabOrder = 42
+            Text = 'dbValTotPrest'
+          end
+          object dbValReceber: TCalcEdit
+            Left = 384
+            Height = 27
+            Top = 43
+            Width = 103
+            CalculatorLayout = clNormal
+            AsFloat = 0
+            AsInteger = 0
+            ButtonWidth = 23
+            DialogTop = 0
+            DialogLeft = 0
+            NumGlyphs = 1
+            MaxLength = 0
+            TabOrder = 43
+            Text = 'dbValReceber'
+          end
+          object dbValTotTri: TCalcEdit
+            Left = 384
+            Height = 27
+            Top = 80
+            Width = 103
+            CalculatorLayout = clNormal
+            AsFloat = 0
+            AsInteger = 0
+            ButtonWidth = 23
+            DialogTop = 0
+            DialogLeft = 0
+            NumGlyphs = 1
+            MaxLength = 0
+            TabOrder = 44
+            Text = 'dbValTotTri'
           end
         end
         object TabSheet11: TTabSheet
@@ -2873,27 +2934,19 @@ object fCTePrincipal: TfCTePrincipal
               ClientWidth = 1287
               OnContextPopup = TabInfoCargaContextPopup
               OnShow = TabInfoCargaShow
-              object dbValInfCarga: TEdit
-                Left = 32
-                Height = 27
-                Top = 40
-                Width = 224
-                OnChange = dbValInfCargaChange
-                TabOrder = 0
-              end
               object edtProPred: TEdit
                 Left = 32
                 Height = 27
                 Top = 96
                 Width = 616
-                TabOrder = 1
+                TabOrder = 0
               end
               object edtOutCat: TEdit
                 Left = 32
                 Height = 27
                 Top = 152
                 Width = 616
-                TabOrder = 2
+                TabOrder = 1
               end
               object StaticText7: TStaticText
                 Left = 32
@@ -2901,7 +2954,7 @@ object fCTePrincipal: TfCTePrincipal
                 Top = 76
                 Width = 216
                 Caption = 'Produto Predominante'
-                TabOrder = 3
+                TabOrder = 2
               end
               object StaticText8: TStaticText
                 Left = 32
@@ -2909,7 +2962,7 @@ object fCTePrincipal: TfCTePrincipal
                 Top = 132
                 Width = 216
                 Caption = 'Outras Caracteristícas do Produto'
-                TabOrder = 4
+                TabOrder = 3
               end
               object dbGridQC: TDBGrid
                 Left = 32
@@ -2925,23 +2978,23 @@ object fCTePrincipal: TfCTePrincipal
                     Alignment = taCenter
                     Title.Alignment = taCenter
                     Title.Caption = 'Unidade'
-                    Width = 202
+                    Width = 198
                     FieldName = 'Código Unidade Medida'
                   end                
                   item
                     Title.Alignment = taCenter
                     Title.Caption = 'Medida'
-                    Width = 202
+                    Width = 198
                     FieldName = 'Tipo de Medida'
                   end                
                   item
                     Title.Alignment = taCenter
                     Title.Caption = 'Quantidade'
-                    Width = 204
+                    Width = 199
                     FieldName = 'Quantidade'
                   end>
                 Scrollbars = ssVertical
-                TabOrder = 5
+                TabOrder = 4
               end
               object StaticText9: TStaticText
                 Left = 32
@@ -2949,7 +3002,7 @@ object fCTePrincipal: TfCTePrincipal
                 Top = 21
                 Width = 216
                 Caption = 'Valor Carga'
-                TabOrder = 6
+                TabOrder = 5
               end
               object btnInfCargaEdita: TBitBtn
                 Left = 32
@@ -2958,7 +3011,7 @@ object fCTePrincipal: TfCTePrincipal
                 Width = 75
                 Caption = 'Editar'
                 OnClick = btnInfCargaEditaClick
-                TabOrder = 7
+                TabOrder = 6
               end
               object btnInfCargaInclui: TBitBtn
                 Left = 104
@@ -2967,7 +3020,7 @@ object fCTePrincipal: TfCTePrincipal
                 Width = 75
                 Caption = 'Incluir'
                 OnClick = btnInfCargaIncluiClick
-                TabOrder = 8
+                TabOrder = 7
               end
               object btnInfCargaGrava: TBitBtn
                 Left = 248
@@ -2975,7 +3028,7 @@ object fCTePrincipal: TfCTePrincipal
                 Top = 432
                 Width = 75
                 Caption = 'Gravar'
-                TabOrder = 9
+                TabOrder = 8
               end
               object btnInfCargaExclui: TBitBtn
                 Left = 176
@@ -2984,7 +3037,23 @@ object fCTePrincipal: TfCTePrincipal
                 Width = 75
                 Caption = 'Excluir'
                 OnClick = btnInfCargaExcluiClick
+                TabOrder = 9
+              end
+              object dbValInfCarga: TCalcEdit
+                Left = 38
+                Height = 27
+                Top = 46
+                Width = 103
+                CalculatorLayout = clNormal
+                AsFloat = 0
+                AsInteger = 0
+                ButtonWidth = 23
+                DialogTop = 0
+                DialogLeft = 0
+                NumGlyphs = 1
+                MaxLength = 0
                 TabOrder = 10
+                Text = 'dbValInfCarga'
               end
             end
             object TabSheet18: TTabSheet

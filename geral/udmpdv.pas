@@ -505,10 +505,10 @@ begin
     logStr := logStr + ')';
     IbCon.ExecuteDirect(logStr);
   except
-    on E: EDatabaseError do
+    on dmPdv: EDatabaseError do
     begin
       MessageDlg('Error','Erro na conexao com a base de dados, erro : ' +
-        E.Message,mtError,[mbOK],0);
+        dmPdv.Message,mtError,[mbOK],0);
     end;
   end;
 end;
@@ -562,10 +562,10 @@ begin
     ibcon.ExecuteDirect(strSql);
     Result := True;
   except
-    on E: EDatabaseError do
+    on dmPdv: EDatabaseError do
     begin
       MessageDlg('Error','Erro na conexao com a base de dados, erro : ' +
-        E.Message,mtError,[mbOK],0);
+        dmPdv.Message,mtError,[mbOK],0);
       Result := False;
     end;
   end;

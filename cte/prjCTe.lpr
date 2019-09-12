@@ -7,19 +7,22 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, zcomponent, datetimectrls, uCtePrincipal, uDmCte, uNFe
+  Forms, zcomponent, datetimectrls, uCtePrincipal, uDmCte, uNFe, uCompValor,
+  uQuantCarga, udmpdv, ufrmStatus
   { you can add units after this };
 
 {$R *.res}
 
 begin
   RequireDerivedFormResource:=True;
-  SetFBLibPath('/usr/lib/x86-64-linux-gnu/libfbclient.so.2.5.9');
   Application.Scaled:=True;
   Application.Initialize;
-  Application.CreateForm(TfCTePrincipal, fCTePrincipal);
+  Application.CreateForm(TdmPdv, dmPdv);
   Application.CreateForm(TdmCte, dmCte);
-  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TfCTePrincipal, fCTePrincipal);
+  Application.CreateForm(TfNFe, fNFe);
+  Application.CreateForm(TfCompValor, fCompValor);
+  Application.CreateForm(TfQuantCarga, fQuantCarga);
   Application.Run;
 end.
 

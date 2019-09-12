@@ -6,7 +6,6 @@ object dmCte: TdmCte
   Width = 808
   PPI = 96
   object cdsCte: TSQLQuery
-    IndexName = 'DEFAULT_ORDER'
     FieldDefs = <    
       item
         Name = 'COD_CTE'
@@ -1000,12 +999,32 @@ object dmCte: TdmCte
     Database = dmPdv.IbCon
     Transaction = dmPdv.sTrans
     SQL.Strings = (
-      'SELECT * FROM CTE WHERE COD_CTE = :PCTE'
+      'select * from CTE'
+      'where ((emitente = :pEmi )'
+      '  and ((cte_numero = :num_cte) or (:num_cte = 0)))'
+      '  and DHEMI between :Data1 and  :Data2'
+      'order by CTE_NUMERO desc'
+      ''
     )
     Params = <    
       item
         DataType = ftInteger
-        Name = 'PCTE'
+        Name = 'pEmi'
+        ParamType = ptInput
+      end    
+      item
+        DataType = ftInteger
+        Name = 'num_cte'
+        ParamType = ptInput
+      end    
+      item
+        DataType = ftDate
+        Name = 'Data1'
+        ParamType = ptInput
+      end    
+      item
+        DataType = ftDate
+        Name = 'Data2'
         ParamType = ptInput
       end>
     left = 80
@@ -2816,5 +2835,10 @@ object dmCte: TdmCte
       end>
     left = 480
     top = 88
+  end
+  object dsCte: TDataSource
+    DataSet = cdsCte
+    left = 82
+    top = 147
   end
 end

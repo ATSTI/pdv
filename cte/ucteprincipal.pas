@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
   StdCtrls, Menus, Buttons, DBGrids, EditBtn, DateTimePicker, Types, IniFiles,
   ACBrCTe, ACBrCTeDACTEClass, ACBrMail, ACBrBase, ACBrDFe, ACBrNFe,
-  pcnConversao, pcteConversaoCTe, DateUtils;
+  pcnConversao, pcteConversaoCTe, DateUtils, ACBrUtil;
 
 type
 
@@ -31,6 +31,14 @@ type
     btnEnvEPEC: TBitBtn;
     btnGerar: TBitBtn;
     btnGravarCTe: TBitBtn;
+    dbValTotTri: TCalcEdit;
+    dbValReceber: TCalcEdit;
+    dbValTotPrest: TCalcEdit;
+    dbValInfCarga: TCalcEdit;
+    dbValVICMS: TCalcEdit;
+    dbValPIcms: TCalcEdit;
+    dbValvBC: TCalcEdit;
+    dbValpRedBC: TCalcEdit;
     valOutrosVal: TCalcEdit;
     combICMSDevido: TComboBox;
     comboEmpresa: TComboBox;
@@ -89,11 +97,9 @@ type
     dataGerarCte: TDateTimePicker;
     dataRodPrev: TDateTimePicker;
     dbGridQC: TDBGrid;
-    DBGrid2: TDBGrid;
+    dbGridComp: TDBGrid;
     DBGrid3: TDBGrid;
     dgGridCTE: TDBGrid;
-    dbValInfCarga: TEdit;
-    dbValTotPrest: TEdit;
     calValB: TEdit;
     Edit1: TEdit;
     edtDestISUF: TEdit;
@@ -219,19 +225,12 @@ type
     TabCteGeradas: TTabSheet;
     valAliIn: TEdit;
     StaticText30: TStaticText;
-    valpICMS: TEdit;
     dbValInfCarga13: TEdit;
     valAliInter: TEdit;
     valIMCSPartF: TEdit;
     dbValInfCarga16: TEdit;
     dbValInfCarga17: TEdit;
     valICMSPartI: TEdit;
-    dbValReceber: TEdit;
-    dbValTotTri: TEdit;
-    valpRedBC: TEdit;
-    valvBC: TEdit;
-    valvICMS: TEdit;
-    valvCred: TEdit;
     edtProPred: TEdit;
     edtOutCat: TEdit;
     edtCodEmitente: TEdit;
@@ -490,6 +489,7 @@ type
     TabExpedidor: TTabSheet;
     TabRecebedor: TTabSheet;
     TabDestinatario: TTabSheet;
+    dbValVCred: TCalcEdit;
     procedure ACBrCTe1StatusChange(Sender: TObject);
     procedure btnGerarPDFInutClick(Sender: TObject);
     procedure btnImprimirInutClick(Sender: TObject);
@@ -566,6 +566,7 @@ type
     procedure TabDestinatarioShow(Sender: TObject);
     procedure TabTomadorShow(Sender: TObject);
   private
+    vCteStr: String;
     modoGravacao : string;
     val_genCte : integer;
     val0 , val1, val2 : Double;
@@ -585,7 +586,20 @@ type
     procedure duplicar(velhaCte: String);
     procedure CarregarCte(NumCte: String);
     procedure CarregarXML(ChaveCte: String);
+    procedure EditarA;
+    procedure EditarB;
+    procedure EditarC;
+    procedure EditarD;
+    procedure EditarE;
+    procedure EditarF;
+    procedure EditarG;
+    procedure EditarEX;
+    procedure EditarT;
+    procedure EditarR;
+    procedure EditarDE;
+    procedure EditarREC;
     function LimparString(ATExto, ACaracteres: string): string;
+    function GravarCTe: String;
   public
 
   end;
@@ -597,7 +611,7 @@ const
 
 implementation
 
-uses udmpdv, ufrmStatus, uDmCte, uNFe;
+uses udmpdv, ufrmStatus, uDmCte, uNFe, uCompValor, uQuantCarga;
 
 {$R *.lfm}
 
@@ -613,41 +627,28 @@ begin
 end;
 
 procedure TfCTePrincipal.TabCteGeradasShow(Sender: TObject);
-  var vDate1 , vDate2 : TdateTime;
 begin
-  vDate1 := StartOfTheMonth(today);
-  DateTimePicker1.Date := vDate1 ;
-  vDate2 := today;
-  DateTimePicker2.Date := vDate2 ;
-  if (not dmPdv.sqEmpresa.Active) then
-    dmPdv.sqEmpresa.Open;
-  if (dmPdv.sqEmpresa.RecordCount = 1) then
-  begin
-    buscaEmpresa('');
-  end
-  else begin
-    comboEmpresa.SetFocus;
-  end;
 end;
 
 procedure TfCTePrincipal.TabDadosComplementaresShow(Sender: TObject);
 begin
-  edtCaracAdTrans.SetFocus;
+  //edtCaracAdTrans.SetFocus;
 end;
 
 procedure TfCTePrincipal.TabDadosCteShow(Sender: TObject);
 begin
-  edtSerieCte.SetFocus;
+  //edtSerieCte.SetFocus;
 end;
 
 procedure TfCTePrincipal.TabExpedidorShow(Sender: TObject);
 begin
-  edtExpBusca.SetFocus;
+  //edtExpBusca.SetFocus;
 end;
 
 procedure TfCTePrincipal.TabInfoCargaShow(Sender: TObject);
 begin
-  if(modoGravacao = 'INCLUIR')then
+ {
+  if (modoGravacao = 'INCLUIR') then
   begin
     btnGravarCTe.Click;
   end;
@@ -659,10 +660,12 @@ begin
     dmCte.sqQC.Params[0].AsInteger := val_genCte;
     dmCte.sqQC.Open;
   end;
+  }
 end;
 
 procedure TfCTePrincipal.TabNfeShow(Sender: TObject);
 begin
+  {
   if(edtNumCte.Text <> '') then
   begin
     if not(dmCte.sqNFe.Active)then
@@ -670,26 +673,28 @@ begin
     dmCte.sqNFe.Params[0].AsInteger := val_genCte;
     dmCte.sqNFe.Open;
   end;
+  }
 end;
 
 procedure TfCTePrincipal.TabRecebedorShow(Sender: TObject);
 begin
-  edtRecBusca.SetFocus;
+  //edtRecBusca.SetFocus;
 end;
 
 procedure TfCTePrincipal.TabRodoviarioShow(Sender: TObject);
 begin
-  edtRodRNTRC.SetFocus;
+  //edtRodRNTRC.SetFocus;
 end;
 
 procedure TfCTePrincipal.TabServicosImpostosShow(Sender: TObject);
 begin
- if(modoGravacao = 'INCLUIR')then
+  {
+  if(modoGravacao = 'INCLUIR')then
  begin
    btnGravarCTe.Click;
  end;
  //Lazarus-Cte
- {
+
  if(edtNumCte.Text <> '') then
  begin
    if not(dm.qCOMP.Active)then
@@ -697,7 +702,7 @@ begin
    dm.qCOMP.Params[0].AsInteger := val_genCte;
    dm.qCOMP.Open;
  end;
- }
+
  CheckBox1.Enabled := False;
  calValB.Enabled := False;
  valAliIn.Enabled := False;
@@ -707,6 +712,7 @@ begin
  //Lazarus-Cte
  //valCombIni.Enabled := False;
  //valCombFim.Enabled := False;
+ }
 end;
 
 procedure TfCTePrincipal.TabSheet12ContextPopup(Sender: TObject;
@@ -723,12 +729,12 @@ end;
 
 procedure TfCTePrincipal.TabDestinatarioShow(Sender: TObject);
 begin
-  edtDestBusca.SetFocus;
+  //edtDestBusca.SetFocus;
 end;
 
 procedure TfCTePrincipal.TabTomadorShow(Sender: TObject);
 begin
-  edtBuscaTomador.SetFocus;
+  //edtBuscaTomador.SetFocus;
 end;
 
 procedure TfCTePrincipal.GravarConfiguracao;
@@ -929,18 +935,20 @@ begin
   edtEmailAssunto.Text  := Ini.ReadString( 'Email','Assunto','');
   cbEmailSSL.Checked    := Ini.ReadBool(   'Email','SSL'    ,False);
 
-  StreamMemo := TMemoryStream.Create;
+  {StreamMemo := TMemoryStream.Create;
   Ini.ReadBinaryStream( 'Email','Mensagem',StreamMemo);
   mmEmailMsg.Lines.LoadFromStream(StreamMemo);
-  StreamMemo.Free;
+  StreamMemo.Free;}
 
-  ACBrCTe1.MAIL.Host := edtSmtpHost.Text;
-  ACBrCTe1.MAIL.Port := edtSmtpPort.Text;
-  ACBrCTe1.MAIL.Username := edtSmtpUser.Text;
-  ACBrCTe1.MAIL.Password := edtSmtpPass.Text;
-  ACBrCTe1.MAIL.SetSSL   := cbEmailSSL.Checked;
-  ACBrCTe1.MAIL.ReadingConfirmation := False;
-
+   if (edtSmtpHost.Text <> '') then
+   begin
+     ACBrCTe1.MAIL.Host := edtSmtpHost.Text;
+     ACBrCTe1.MAIL.Port := edtSmtpPort.Text;
+     ACBrCTe1.MAIL.Username := edtSmtpUser.Text;
+     ACBrCTe1.MAIL.Password := edtSmtpPass.Text;
+     ACBrCTe1.MAIL.SetSSL   := cbEmailSSL.Checked;
+     ACBrCTe1.MAIL.ReadingConfirmation := False;
+   end;
  finally
   Ini.Free;
  end;
@@ -1496,7 +1504,7 @@ begin
          Imp.ICMS.ICMS00.CST   := cst00;
          Imp.ICMS.ICMS00.vBC   := StrToFloat(dbVALVBC.Field.Value);
          Imp.ICMS.ICMS00.pICMS := StrToFloat(dbVALPICMS.Field.Value);
-         Imp.ICMS.ICMS00.vICMS := StrToFloat(dbVALVICMS.Field.Value);             // valvICMS.Value;
+         Imp.ICMS.ICMS00.vICMS := StrToFloat(dbVALVICMS.Field.Value);             // dbValVICMS.Value;
        end;
 
     1: begin                        //20 - Tributação com Redulçao da BC do ICMS
@@ -1549,7 +1557,7 @@ begin
          Imp.ICMS.ICMS90.vBC    := StringToFloat(dbvalvBC.Field.Value); //RoundTo(DM_CNT.Conhec2BaseCalc.AsFloat, -2);
          Imp.ICMS.ICMS90.pICMS  := StringToFloat(dbvalpICMS.Field.Value); //RoundTo(DM_CNT.Conhec2AliqICMS.AsFloat, -2);
          Imp.ICMS.ICMS90.vICMS  := StringToFloat(dbvalvICMS.Field.Value); //RoundTo(DM_CNT.Conhec2ValorICMS.AsFloat, -2);
-       // Imp.ICMS.ICMS90.vCred  := valvCred.Value; //RoundTo(DM_CNT.Conhec2CreditoICMS.AsFloat, -2);
+       // Imp.ICMS.ICMS90.vCred  := dbValVCred.Value; //RoundTo(DM_CNT.Conhec2CreditoICMS.AsFloat, -2);
        end;
 
     8: begin                    // 90 - SIMPLES NACIONAL
@@ -2182,11 +2190,11 @@ begin
   if(dmCte.cdsCTENPROT.AsString = '')then
   begin
     combCodSitTrib.ItemIndex := dmCte.cdsCTECOMBCODSITTRIB.Value;
-    dbVALPREDBC.Field.Value := dmCte.cdsCTEVALPREDBC.Value;
-    dbVALVBC.Field.Value    := dmCte.cdsCTEVALVBC.Value;
-    dbVALPICMS.Field.Value  := dmCte.cdsCTEVALPICMS.Value;
-    dbVALVICMS.Field.Value  := dmCte.cdsCTEVALVICMS.Value;
-    dbVALVCRED.Field.Value  := dmCte.cdsCTEVALVCRED.Value;
+    dbValpRedBC.AsFloat := dmCte.cdsCTEVALPREDBC.AsFloat;
+    dbValvBC.AsFloat    := dmCte.cdsCTEVALVBC.AsFloat;
+    dbValPIcms.AsFloat  := dmCte.cdsCTEVALPICMS.AsFloat;
+    dbValVICMS.AsFloat  := dmCte.cdsCTEVALVICMS.AsFloat;
+    dbValVCred.AsFloat  := dmCte.cdsCTEVALVCRED.AsFloat;
   end;
 
   if (dmCte.cdsCTE.Active)then
@@ -2227,6 +2235,121 @@ begin
   end;
 end;
 
+procedure TfCTePrincipal.EditarA;
+begin
+  if (edtCFOP.Text <> '') then
+  begin
+    vCteStr := 'UPDATE CTE SET CTE_CFOP = ' ;
+    vCteStr := vCteStr +  QuotedStr(edtCFOP.Text);
+    vCteStr := vCteStr +  ', CTE_NATOP = ' ;
+    vCteStr := vCteStr + QuotedStr(Copy(edtNatOpe.Text,1,60)); //QuotedStr(edtNatOpe.Text);
+    vCteStr := vCteStr +  ', DHEMI = ' ;
+    vCteStr := vCteStr +  QuotedStr(FormatDateTime('mm/dd/yyyy',dataGerarCte.date));
+    vCteStr := vCteStr +  ', ENV_CODCIDADE = ';
+    vCteStr := vCteStr +  QuotedStr(edtEnvCodCidade.Text);
+    vCteStr := vCteStr +  ', ENV_CIDADE = ' ;
+    vCteStr := vCteStr +  QuotedStr(edtEnvCidade.Text);
+    vCteStr := vCteStr +  ', ENV_ESTADO = ' ;
+    vCteStr := vCteStr +  QuotedStr(edtEnvUF.Text);
+    vCteStr := vCteStr +  ',INI_CODCIDADE = ';
+    vCteStr := vCteStr +  QuotedStr(edtIniCodCidade.Text);
+    vCteStr := vCteStr +  ',INI_CIDADE = ';
+    vCteStr := vCteStr +  QuotedStr(edtIniCidade.Text);
+    vCteStr := vCteStr +  ',INI_ESTADO = ';
+    vCteStr := vCteStr +  QuotedStr(edtIniUF.Text);
+
+    vCteStr := vCteStr +  ',FIM_CODCIDADE = ';
+    vCteStr := vCteStr +  QuotedStr(edtFimCodCidade.Text);
+    vCteStr := vCteStr +  ',FIM_CIDADE = ';
+    vCteStr := vCteStr +  QuotedStr(edtFimCidade.Text);
+    vCteStr := vCteStr +  ',FIM_ESTADO = ';
+    vCteStr := vCteStr +  QuotedStr(edtFimUF.Text);
+
+    vCteStr := vCteStr +  ',MODAL = ';
+    vCteStr := vCteStr +  IntToStr(rgModal.ItemIndex);  //MODAL
+    vCteStr := vCteStr +  ', TIPOSERVICO = ';
+    vCteStr := vCteStr +  IntToStr(rgTipoServico.ItemIndex);  // TIPOSERVICO
+    vCteStr := vCteStr +  ',TIPOCTE = ';
+    vCteStr := vCteStr +  IntToStr(rgTiposCte.ItemIndex);     // TIPOCTE
+    vCteStr := vCteStr +  ',TPOEMISSAO = ';
+    vCteStr := vCteStr +  IntToStr(rgFormaEmissao.ItemIndex); // TPOEMISSAO
+    vCteStr := vCteStr +  ',IFORPAG = ';
+    vCteStr := vCteStr +  IntToStr(rgForPag.ItemIndex);       // IFORPAG
+    vCteStr := vCteStr +  ',TPIMP = ';
+    vCteStr := vCteStr +  IntToStr(rgTipoDACTe.ItemIndex);    // TPIMP
+    vCteStr := vCteStr +' where COD_CTE = ' ;
+    vCteStr := vCteStr +  IntToStr(val_genCte);
+    MemoDados.Text := vCteStr;
+    try
+      FormatSettings.DecimalSeparator := ',';
+      dmPdv.IbCon.ExecuteDirect(vCteStr);
+      dmPdv.sTrans.Commit;
+    except
+      on E : Exception do
+      begin
+        ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
+        dmPdv.sTrans.Rollback;
+        exit;
+      end;
+    end;
+  end;
+end;
+
+procedure TfCTePrincipal.EditarB;
+begin
+
+end;
+
+procedure TfCTePrincipal.EditarC;
+begin
+
+end;
+
+procedure TfCTePrincipal.EditarD;
+begin
+
+end;
+
+procedure TfCTePrincipal.EditarE;
+begin
+
+end;
+
+procedure TfCTePrincipal.EditarF;
+begin
+
+end;
+
+procedure TfCTePrincipal.EditarG;
+begin
+
+end;
+
+procedure TfCTePrincipal.EditarEX;
+begin
+
+end;
+
+procedure TfCTePrincipal.EditarT;
+begin
+
+end;
+
+procedure TfCTePrincipal.EditarR;
+begin
+
+end;
+
+procedure TfCTePrincipal.EditarDE;
+begin
+
+end;
+
+procedure TfCTePrincipal.EditarREC;
+begin
+
+end;
+
 function TfCTePrincipal.LimparString(ATExto, ACaracteres: string): string;
  var
    strAux            : string;
@@ -2237,6 +2360,199 @@ function TfCTePrincipal.LimparString(ATExto, ACaracteres: string): string;
      if Pos(Copy(ATexto, I, 1), ACaracteres) <= 0 then
        strAux := strAux + Copy(ATexto, I, 1);
    Result := strAux;
+end;
+
+function TfCTePrincipal.GravarCTe: String;
+begin
+  if (edtEmitCNPJ.Text <> '') then
+  begin
+    val_genCte := dmPdv.busca_generator('GEN_CTE');
+    strInsere := 'INSERT INTO CTE ( COD_CTE, CODEMITENTE, CTE_ESTADO , CTE_CHAVE, CTE_CFOP , CTE_NATOP, MODELO '+
+      ', CTE_SERIE, CTE_NUMERO, DHEMI, MODAL, TIPOSERVICO, TIPOCTE, TPOEMISSAO,IFORPAG,  TPIMP , '+
+      '  ENV_CODCIDADE '+
+      ', ENV_CIDADE, ENV_ESTADO, INI_CODCIDADE, INI_CIDADE, INI_ESTADO, FIM_CODCIDADE, FIM_CIDADE '+
+      ', FIM_ESTADO,E_CNPJCPF, E_IESTADUAL, E_RSOCIAL, E_FANTASIA '+
+      ', E_TELEFONE , E_ENDERECO, E_NUMERO, E_COMPLEMENTO, E_BAIRRO, E_CODIGOMUNICIPI, E_CIDADE, E_CEP '+
+      ', E_ESTADO,TOMADORSERVICO, T_CNPJCPF, T_IESTADUAL, T_RSOCIAL '+
+      ', T_FANTASIA, T_TELEFONE, T_ENDERECO, T_NUMERO, T_COMPLEMENTO, T_BAIRRO, T_CODIGOMUNICIPI '+
+      ', T_CIDADE, T_CEP, T_ESTADO, R_CNPJCPF, R_IESTADUAL '+
+      ', R_RSOCIAL, R_FANTASIA, R_TELEFONE, R_ENDERECO, R_NUMERO, R_COMPLEMENTO,R_BAIRRO, R_CODIGOMUNICIPI '+
+      ', R_CIDADE, R_CEP, R_ESTADO, D_CNPJCPF, D_IESTADUAL '+
+      ', D_RSOCIAL,D_FANTASIA, D_TELEFONE, D_ENDERECO, D_NUMERO, D_COMPLEMENTO, D_BAIRRO, D_CODIGOMUNICIPI '+
+      ', D_CIDADE, D_CEP, D_ESTADO, EX_CNPJCPF, EX_IESTADUAL '+
+      ', EX_RSOCIAL , EX_FANTASIA, EX_TELEFONE, EX_ENDERECO, EX_NUMERO, EX_COMPLEMENTO, EX_BAIRRO '+
+      ', EX_CODIGOMUNICIPI, EX_CIDADE, EX_CEP, EX_ESTADO ' +
+      ', RE_CNPJCPF, RE_IESTADUAL, RE_RSOCIAL, RE_FANTASIA, RE_TELEFONE , RE_ENDERECO, RE_NUMERO ' +
+      ', RE_COMPLEMENTO, RE_BAIRRO, RE_CODIGOMUNICIPI, RE_CIDADE, RE_CEP, RE_ESTADO ' +
+      ', CARAC_TRANSP,CARAC_SERV , FUNC_EMI , RETIRA '+
+      ', DET_RETIRA ,VPREST,VREC,VALTOTTRI ,COMBCODSITTRIB , VALINFCARGA ,PROPRED, OUTCAT,RNTRC,DATARODPREV,RGRODLOTACAO'+
+      ', OBS_GERAL ,OUTPDOC ,OUDESCOUTRO ,OUNDOC ,OUDEMI,OUVDOCFISC ,EMITENTE '+
+      ',ANT_CNPJ,ANT_IE,ANT_UF,ANT_NOME,ANT_CHCTE,VALPREDBC,VALVBC,VALPICMS,VALVICMS,VALVCRED ) VALUES ( ';
+
+    FormatSettings.DecimalSeparator := '.';
+
+    strInsere := strInsere + IntToStr(val_genCte);  //COD_CTE
+    strInsere := strInsere + ', ' + IntToStr(1); //CODEMITENTE
+    strInsere := strInsere + ', ' + IntToStr(35);  //CTE_ESTADO
+    strInsere := strInsere + ', ' + IntToStr(100);  //CTE_CHAVE
+    strInsere := strInsere + ', ' + QuotedStr(edtCFOP.Text);  //CTE_CFOP
+    strInsere := strInsere + ', ' + QuotedStr(Copy(edtNatOpe.Text,1,60));
+    strInsere := strInsere + ', ' + QuotedStr(edtModelo.Text); // MODELO
+    strInsere := strInsere + ', ' + QuotedStr(edtSerieCte.Text); //CTE_SERIE
+    strInsere := strInsere + ', ' + QuotedStr(edtNumCte.Text);  //CTE_NUMERO
+    strInsere := strInsere + ', ' + QuotedStr(FormatDateTime('mm/dd/yyyy',dataGerarCte.date));  ///DHEMI
+
+    strInsere := strInsere + ', ' + IntToStr(rgModal.ItemIndex);  //MODAL
+    strInsere := strInsere + ', ' + IntToStr(rgTipoServico.ItemIndex);  // TIPOSERVICO
+    strInsere := strInsere + ', ' + IntToStr(rgTiposCte.ItemIndex);     // TIPOCTE
+    strInsere := strInsere + ', ' + IntToStr(rgFormaEmissao.ItemIndex); // TPOEMISSAO
+    strInsere := strInsere + ', ' + IntToStr(rgForPag.ItemIndex);       // IFORPAG
+    strInsere := strInsere + ', ' + IntToStr(rgTipoDACTe.ItemIndex);    // TPIMP
+
+    strInsere := strInsere + ', ' + QuotedStr(edtEnvCodCidade.Text);  // ENV_CODCIDADE
+    strInsere := strInsere + ', ' + QuotedStr(edtEnvCidade.Text);   // ENV_CIDADE
+    strInsere := strInsere + ', ' + QuotedStr(edtEnvUF.Text);     // ENV_ESTADO
+    strInsere := strInsere + ', ' + QuotedStr(edtIniCodCidade.Text); // INI_CODCIDADE
+    strInsere := strInsere + ', ' + QuotedStr(edtIniCidade.Text); // INI_CIDADE
+    strInsere := strInsere + ', ' + QuotedStr(edtIniUF.Text);    // INI_ESTADO
+    strInsere := strInsere + ', ' + QuotedStr(edtFimCodCidade.Text);  // FIM_CODCIDADE
+    strInsere := strInsere + ', ' + QuotedStr(edtFimCidade.Text); // FIM_CIDADE
+    strInsere := strInsere + ', ' + QuotedStr(edtFimUF.Text);  // FIM_ESTADO
+
+    // EMITENTE
+    // E_RG
+    // E_CODIGOPAIS
+    // E_PAIS
+
+    strInsere := strInsere + ', ' + QuotedStr(edtEmitCNPJ.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtEmitIE.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtEmitRazao.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtEmitFantasia.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtEmitFone.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtEmitLogradouro.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtEmitNumero.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtEmitComp.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtEmitBairro.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtEmitCodCidade.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtEmitCidade.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtEmitCep.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtEmitUF.Text);
+
+    strInsere := strInsere + ', ' +  IntToStr(rgTomador.ItemIndex);
+
+    strInsere := strInsere + ', ' + QuotedStr(edtCNPJTomador.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtIETomador.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRazaoTomador.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtNomeTomador.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtFoneTomador.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtEndTomador.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtNumTomador.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtCompTomador.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtBairroTomador.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtTomadorCodCidade.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtTomadorCidade.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtCepTomador.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtTomadorUF.Text);
+
+    strInsere := strInsere + ', ' + QuotedStr(edtRemCNPJ.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRemIE.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRemRazao.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRemNome.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRemFone.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRemEnd.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRemNum.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRemComp.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRemBairro.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRemCodCidade.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRemCidade.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRemCep.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRemUF.Text);
+
+    strInsere := strInsere + ', ' + QuotedStr(edtDestCNPJ.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtDestIE.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtDestRazao.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtDestNome.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtDestFone.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtDestEnd.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtDestNum.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtDestComp.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtDestBairro.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtDestCodCidade.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtDestCidade.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtDestCep.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtDestUF.Text);
+
+    strInsere := strInsere + ', ' + QuotedStr(edtExpCNPJ.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtExpIE.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtExpRazao.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtExpNome.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtExpFone.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtExpEnd.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtExpNum.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtExpComp.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtExpBairro.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtExpCodCidade.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtExpCidade.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtExpCep.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtExpUF.Text);
+
+    strInsere := strInsere + ', ' + QuotedStr(edtRecCNPJ.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRecIE.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRecRazao.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRecNome.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRecFone.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRecEnd.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRecNum.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRecComp.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRecBairro.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRecCodCidade.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRecCidade.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRecCep.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRecUF.Text);
+
+    strInsere := strInsere + ', ' + QuotedStr(edtCaracAdTrans.Text); // CARAC_TRANSP
+    strInsere := strInsere + ', ' + QuotedStr(edtCaracAdServ.Text); // CARAC_SERV
+    strInsere := strInsere + ', ' + QuotedStr(edtFuncEmi.Text); // FUNC_EMI
+
+    strInsere := strInsere + ', ' + IntToStr(rgRetira.ItemIndex);  //
+    strInsere := strInsere + ', ' + QuotedStr(memDetRetira.Text);
+    strInsere := strInsere + ', ' + FloatToStr(dbValTotPrest.AsFloat);
+    strInsere := strInsere + ', ' + FloatToStr(dbValReceber.AsFloat);
+    strInsere := strInsere + ', ' + FloatToStr(dbValTotTri.AsFloat);
+    strInsere := strInsere + ', ' + QuotedStr(combCodSitTrib.ItemIndex.ToString);
+    strInsere := strInsere + ', ' + FloatToStr(dbValInfCarga.AsFloat);
+    strInsere := strInsere + ', ' + QuotedStr(edtProPred.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtOutCat.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtRodRNTRC.Text);
+    strInsere := strInsere + ', ' + QuotedStr(FormatDateTime('mm/dd/yyyy',dataRodPrev.date));
+    strInsere := strInsere + ', ' + IntToStr(rgRodLotacao.ItemIndex);
+    strInsere := strInsere + ', ' + QuotedStr(memxObs.Text);
+    // outros docs
+    strInsere := strInsere + ', ' + QuotedStr(combOutrosDocs.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtOutrosDesc.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtOutrosNum.Text);
+    strInsere := strInsere + ', ' + QuotedStr(FormatDateTime('mm/dd/yyyy',dataRodPrev.date));
+    strInsere := strInsere + ', ' + FloatToStr(valOutrosVal.AsFloat);
+    // Esse é o ultimo Campo do Insert ' EMITENTE'
+    strInsere := strInsere + ', ' + QuotedStr(edtCodEmitente.Text);
+   // docs anterior 15/08/19
+    strInsere := strInsere + ', ' + QuotedStr(edtAntCNPJ.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtAntIE.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtAntUF.Text );
+    strInsere := strInsere + ', ' + QuotedStr(edtAntNome.Text);
+    strInsere := strInsere + ', ' + QuotedStr(edtAntCHCTE.Text);
+    strInsere := strInsere + ', '  + FloatToStr(dbVALPREDBC.AsFloat) ;
+    strInsere := strInsere + ', '  + FloatToStr(dbVALVBC.AsFloat);
+    strInsere := strInsere + ', '  + FloatToStr(dbVALPICMS.AsFloat) ;
+    strInsere := strInsere + ', '  + FloatToStr(dbVALVICMS.AsFloat) ;
+    strInsere := strInsere + ', '  + FloatToStr(dbVALVCRED.AsFloat) ;
+    strInsere := strInsere + ')';
+    MemoDados.Text := strInsere;
+    result := strInsere;
+  end
+  else
+    result := '1';
+  FormatSettings.DecimalSeparator := ',';
 end;
 
 procedure TfCTePrincipal.StaticText6Click(Sender: TObject);
@@ -2267,18 +2583,16 @@ begin
     edtTomadorCodCidade.Text := LimparString(dmPdv.sqBusca.FieldByName('CD_IBGE').AsString,'-');
     edtTomadorCidade.Text := dmPdv.sqBusca.FieldByName('CIDADE').AsString;
     edtTomadorUF.Text := dmPdv.sqBusca.FieldByName('UF').AsString;
-    edtTomadorNome.Text := dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString;
-    edtTomadorRazao.Text := dmPdv.sqBusca.FieldByName('RAZAOSOCIAL').AsString;
-    edtTomadorCNPJ.Text := dmPdv.sqBusca.FieldByName('CNPJ').AsString;
-    edtTomadorIE.Text := dmPdv.sqBusca.FieldByName('INSCESTADUAL').AsString;
-    edtTomadorFone.Text := dmPdv.sqBusca.FieldByName('DDD').AsString +
+    edtNomeTomador.Text := dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString;
+    edtRazaoTomador.Text := dmPdv.sqBusca.FieldByName('RAZAOSOCIAL').AsString;
+    edtCNPJTomador.Text := dmPdv.sqBusca.FieldByName('CNPJ').AsString;
+    edtIETomador.Text := dmPdv.sqBusca.FieldByName('INSCESTADUAL').AsString;
+    edtFoneTomador.Text := dmPdv.sqBusca.FieldByName('DDD').AsString +
       '-' + dmPdv.sqBusca.FieldByName('TELEFONE').AsString;
-    edtTomadorEnd.Text := dmPdv.sqBusca.FieldByName('LOGRADOURO').AsString;
-    edtTomadorNum.Text := dmPdv.sqBusca.FieldByName('NUMERO').AsString;
-    edtTomadorCidade.Text := dmPdv.sqBusca.FieldByName('CIDADE').AsString;
-    edtTomadorBairro.Text := dmPdv.sqBusca.FieldByName('BAIRRO').AsString;
-    edtTomadorCep.TExt := dmPdv.sqBusca.FieldByName('CEP').AsString;
-    edtTomadorUF.Text := dmPdv.sqBusca.FieldByName('UF').AsString;
+    edtEndTomador.Text := dmPdv.sqBusca.FieldByName('LOGRADOURO').AsString;
+    edtNumTomador.Text := dmPdv.sqBusca.FieldByName('NUMERO').AsString;
+    edtBairroTomador.Text := dmPdv.sqBusca.FieldByName('BAIRRO').AsString;
+    edtCepTomador.TExt := dmPdv.sqBusca.FieldByName('CEP').AsString;
   end;
 end;
 
@@ -2294,7 +2608,7 @@ begin
       ShowMessage('Este CFOP não existe.');
       Exit;
     end;
-    edtCFOP.Text := LimparString(dmPdv.sqBusca.FieldByName('CFCOD'.AsString),'-');
+    edtCFOP.Text := LimparString(dmPdv.sqBusca.FieldByName('CFCOD').AsString,'-');
     edtNatOpe.Text := Copy(dmPdv.sqBusca.FieldByName('CFNOME').AsString,1,60);
   end;
 end;
@@ -2482,7 +2796,9 @@ begin
   MemoDados.Lines.Add('xMotivo: '+ ACBrCTe1.WebServices.Retorno.xMotivo);
   MemoDados.Lines.Add('xMsg: '+ ACBrCTe1.WebServices.Retorno.Msg);
   MemoDados.Lines.Add('Protocolo: '+ ACBrCTe1.WebServices.Retorno.Protocolo);
-  if(dmCte.cdsCTESTATUS_CTE.AsString = '')then
+  // TODO descomentar abaixo
+  {
+  if (dmCte.cdsCTESTATUS_CTE.AsString = '')then
   begin
     strEdita := 'UPDATE CTE SET NPROTCANCEL = ';
     strEdita := strEdita + QuotedStr(ACBrCTe1.WebServices.Retorno.Protocolo);
@@ -2508,7 +2824,7 @@ begin
         exit;
       end;
     end;
-  end;
+  end;}
 end;
 
 procedure TfCTePrincipal.btnCorrigirSerieClick(Sender: TObject);
@@ -2717,50 +3033,50 @@ procedure TfCTePrincipal.btnDuplicarClick(Sender: TObject);
 var velha_nCte: Integer;
 begin
   btnEditarCte.Click;
-  velha_nCte := dm.cdsCTECOD_CTE.AsInteger;;
+  velha_nCte := dmCte.cdsCTECOD_CTE.AsInteger;;
   modoGravacao := 'DUPLICAR';
   FormatSettings.DecimalSeparator := '.';
-  val_genCte := dm.cdsCTECOD_CTE.AsInteger;
+  val_genCte := dmCte.cdsCTECOD_CTE.AsInteger;
   if (dmCte.cdsCte.Active) then
     dmCte.cdsCte.Edit;
 
-  edtCFOP.Text := dm.cdsCTECTE_CFOP.AsString;
-  edtNatOpe.Text := dm.cdsCTECTE_NATOP.AsString;
-  edtModelo.Text := dm.cdsCTEMODELO.AsString;
-  edtSerieCte.Text := dm.cdsCTECTE_SERIE.AsString;
-  edtNumCte.Text := dm.cdsCTECTE_NUMERO.AsString;
-  dataGerarCte.date := dm.cdsCTEDHEMI.Value;
-  rgModal.ItemIndex := dm.cdsCTEMODAL.AsInteger;
-  rgTipoServico.ItemIndex  :=  dm.cdsCTETIPOSERVICO.AsInteger;
-  rgTiposCte.ItemIndex :=     dm.cdsCTETIPOCTE.AsInteger;
-  rgFormaEmissao.ItemIndex := dm.cdsCTETPOEMISSAO.AsInteger;
-  rgForPag.ItemIndex :=       dm.cdsCTEIFORPAG.AsInteger;
-  rgTipoDACTe.ItemIndex :=    dm.cdsCTETPIMP.AsInteger;
-  edtEnvCodCidade.Text := dm.cdsCTEENV_CODCIDADE.AsString;
-  edtEnvCidade.Text :=    dm.cdsCTEENV_CIDADE.AsString;
-  edtEnvUF.Text :=        dm.cdsCTEENV_ESTADO.AsString;
-  edtIniCodCidade.Text := dm.cdsCTEINI_CODCIDADE.AsString;
-  edtIniCidade.Text :=    dm.cdsCTEINI_CIDADE.AsString;
-  edtIniUF.Text :=        dm.cdsCTEINI_ESTADO.AsString;
-  edtFimCodCidade.Text := dm.cdsCTEFIM_CODCIDADE.AsString;
-  edtFimCidade.Text :=    dm.cdsCTEFIM_CIDADE.AsString;
-  edtFimUF.Text :=        dm.cdsCTEFIM_ESTADO.AsString;
+  edtCFOP.Text             := dmCte.cdsCTECTE_CFOP.AsString;
+  edtNatOpe.Text           := dmCte.cdsCTECTE_NATOP.AsString;
+  edtModelo.Text           := dmCte.cdsCTEMODELO.AsString;
+  edtSerieCte.Text         := dmCte.cdsCTECTE_SERIE.AsString;
+  edtNumCte.Text           := dmCte.cdsCTECTE_NUMERO.AsString;
+  dataGerarCte.date        := dmCte.cdsCTEDHEMI.Value;
+  rgModal.ItemIndex        := dmCte.cdsCTEMODAL.AsInteger;
+  rgTipoServico.ItemIndex  := dmCte.cdsCTETIPOSERVICO.AsInteger;
+  rgTiposCte.ItemIndex     := dmCte.cdsCTETIPOCTE.AsInteger;
+  rgFormaEmissao.ItemIndex := dmCte.cdsCTETPOEMISSAO.AsInteger;
+  rgForPag.ItemIndex       := dmCte.cdsCTEIFORPAG.AsInteger;
+  rgTipoDACTe.ItemIndex    := dmCte.cdsCTETPIMP.AsInteger;
+  edtEnvCodCidade.Text     := dmCte.cdsCTEENV_CODCIDADE.AsString;
+  edtEnvCidade.Text :=    dmCte.cdsCTEENV_CIDADE.AsString;
+  edtEnvUF.Text :=        dmCte.cdsCTEENV_ESTADO.AsString;
+  edtIniCodCidade.Text := dmCte.cdsCTEINI_CODCIDADE.AsString;
+  edtIniCidade.Text :=    dmCte.cdsCTEINI_CIDADE.AsString;
+  edtIniUF.Text :=        dmCte.cdsCTEINI_ESTADO.AsString;
+  edtFimCodCidade.Text := dmCte.cdsCTEFIM_CODCIDADE.AsString;
+  edtFimCidade.Text :=    dmCte.cdsCTEFIM_CIDADE.AsString;
+  edtFimUF.Text :=        dmCte.cdsCTEFIM_ESTADO.AsString;
   // emitente
-  comboEmpresa.Text       := dm.cdsCTEE_RSOCIAL.AsString;
-  edtCodEmitente.Text     := dm.cdsCTEEMITENTE.AsString;
-  edtEmitCNPJ.Text        := dm.cdsCTEE_CNPJCPF.AsString;
-  edtEmitIE.Text          := dm.cdsCTEE_IESTADUAL.AsString;
-  edtEmitRazao.Text       := dm.cdsCTEE_RSOCIAL.AsString;
-  edtEmitFantasia.Text    := dm.cdsCTEE_FANTASIA.AsString;
-  edtEmitFone.Text        := dm.cdsCTEE_TELEFONE.AsString;
-  edtEmitLogradouro.Text  := dm.cdsCTEE_ENDERECO.AsString;
-  edtEmitNumero.Text      := dm.cdsCTEE_NUMERO.AsString;
-  edtEmitComp.Text        := dm.cdsCTEE_COMPLEMENTO.AsString;
-  edtEmitBairro.Text      := dm.cdsCTEE_BAIRRO.AsString;
-  edtEmitCodCidade.Text   := dm.cdsCTEE_CODIGOMUNICIPI.AsString;
-  edtEmitCidade.Text      := dm.cdsCTEE_CIDADE.AsString;
-  edtEmitCep.Text         := dm.cdsCTEE_CEP.AsString;
-  edtEmitUF.Text          := dm.cdsCTEE_ESTADO.AsString;
+  comboEmpresa.Text       := dmCte.cdsCTEE_RSOCIAL.AsString;
+  edtCodEmitente.Text     := dmCte.cdsCTEEMITENTE.AsString;
+  edtEmitCNPJ.Text        := dmCte.cdsCTEE_CNPJCPF.AsString;
+  edtEmitIE.Text          := dmCte.cdsCTEE_IESTADUAL.AsString;
+  edtEmitRazao.Text       := dmCte.cdsCTEE_RSOCIAL.AsString;
+  edtEmitFantasia.Text    := dmCte.cdsCTEE_FANTASIA.AsString;
+  edtEmitFone.Text        := dmCte.cdsCTEE_TELEFONE.AsString;
+  edtEmitLogradouro.Text  := dmCte.cdsCTEE_ENDERECO.AsString;
+  edtEmitNumero.Text      := dmCte.cdsCTEE_NUMERO.AsString;
+  edtEmitComp.Text        := dmCte.cdsCTEE_COMPLEMENTO.AsString;
+  edtEmitBairro.Text      := dmCte.cdsCTEE_BAIRRO.AsString;
+  edtEmitCodCidade.Text   := dmCte.cdsCTEE_CODIGOMUNICIPI.AsString;
+  edtEmitCidade.Text      := dmCte.cdsCTEE_CIDADE.AsString;
+  edtEmitCep.Text         := dmCte.cdsCTEE_CEP.AsString;
+  edtEmitUF.Text          := dmCte.cdsCTEE_ESTADO.AsString;
   // tomador
   if(dmCTe.cdsCTET_CNPJCPF.AsString <> '') then
   begin
@@ -2826,7 +3142,7 @@ begin
     edtRecUF.Text        := dmCTe.cdsCTERE_ESTADO.AsString;
   end;
 
-  if(dm.cdsCTEEX_CNPJCPF.AsString <> '') then
+  if(dmCte.cdsCTEEX_CNPJCPF.AsString <> '') then
   begin
     rgExp.ItemIndex := 0;
     edtExpCNPJ.Text      := dmCTe.cdsCTEEX_CNPJCPF.AsString;
@@ -2843,7 +3159,6 @@ begin
     edtExpCep.Text       := dmCTe.cdsCTEEX_CEP.AsString;
     edtExpUF.Text        := dmCTe.cdsCTEEX_ESTADO.AsString;
   end;
-
   edtCaracAdTrans.Text := dmCTe.cdsCTECARAC_TRANSP.AsString;
   edtCaracAdServ.Text  := dmCTe.cdsCTECARAC_SERV.AsString;
   edtFuncEmi.Text      := dmCTe.cdsCTEFUNC_EMI.AsString;
@@ -2853,7 +3168,8 @@ begin
 
   combCodSitTrib.ItemIndex := dmCTe.cdsCTECOMBCODSITTRIB.Value;
 
-  dbValInfCarga.Field.Value := dmCTe.cdsCTEVALINFCARGA.Value;
+  // TODO trocar o componente abaixo
+  dbValInfCarga.AsFloat := dmCTe.cdsCTEVALINFCARGA.AsFloat;
   edtProPred.Text := dmCTe.cdsCTEPROPRED.AsString;
   edtOutCat.Text := dmCTe.cdsCTEOUTCAT.AsString;
 
@@ -2871,7 +3187,7 @@ begin
   if (dmCte.sqQC.Active)then
     dmCte.sqQC.Close;
   dmCte.sqQC.Params[0].AsInteger := val_genCte;
-  dmCte.sqQC.cdsQC.Open;
+  dmCte.sqQC.Open;
 
   if (dmCte.sqNFe.Active)then
     dmCte.sqNFe.Close;
@@ -2892,7 +3208,7 @@ begin
   dataOutrosEmi.DateTime := dmCte.cdsCTEOUDEMI.AsDateTime  ;
   edtOutrosNum.Text      := dmCte.cdsCTEOUNDOC.AsString ;
   edtOutrosDesc.Text     := dmCte.cdsCTEOUDESCOUTRO.AsString ;
-  valOutrosVal.Value     := dmCte.cdsCTEOUVDOCFISC.Value ;
+  valOutrosVal.AsFloat   := dmCte.cdsCTEOUVDOCFISC.AsFloat;
 
   if (dmCte.cdsCTE.Active)then
     dmCte.cdsCTE.Close;
@@ -2900,6 +3216,8 @@ begin
   dmCte.cdsCTE.Params[1].AsInteger := StrToInt(edtNumCte.Text);
   dmCte.cdsCTE.Open;
 
+  // comentei aqui, pois não entra
+  {
   if (modoGravacao = 'EDITAR') then
   begin
     // vai pra primeira ABA
@@ -2913,12 +3231,11 @@ begin
       btnGravarCte.Font.Style := [fsBold];
       dmCte.cdsCTE.Edit;
     end;
-    edtCFOPBusca.ReadOnly := False;
     edtCFOP.ReadOnly := False;
     edtNatOpe.ReadOnly := False;
     btnPreVisu.Enabled := True;
   end;
-
+  }
   btnIncCte.Click;
   btnGravarCTe.Click;
   duplicar(IntToStr(velha_nCte));
@@ -2954,48 +3271,42 @@ procedure TfCTePrincipal.btnEditarCteClick(Sender: TObject);
 begin
   StatusBar1.SimpleText := 'Editando CTe : ' +
     IntToStr(dmCte.cdsCTECOD_CTE.AsInteger);
+  modoGravacao := 'EDITAR';
   if (dmCte.cdsCTENPROT.AsString <> '') then
   begin
     MessageDlg('CTe já enviada. Não é possível GRAVAR alterações.', mtInformation, [mbOK], 0);
     StatusBar1.SimpleText := 'Consultando CTe : ' +
-      IntToStr(dmCte.cdsCTECOD_CTE.AsInteger) + ' já enviada.;
+      IntToStr(dmCte.cdsCTECOD_CTE.AsInteger) + ' já enviada.';
   end;
-
   CarregarCte(IntToStr(dmCte.cdsCTECOD_CTE.AsInteger));
-
-  if (modoGravacao = 'EDITAR') then
+  // vai pra primeira ABA
+  //PageControl1.ActivePage:=TabSheet2;
+  btnGerar.Enabled := True;
+  if (dmCte.cdsCTENPROT.AsString = '') then
   begin
-    // vai pra primeira ABA
-    //PageControl1.ActivePage:=TabSheet2;
-    btnGerar.Enabled := True;
-    modoGravacao := 'EDITAR';
-    if (dmCte.cdsCTENPROT.AsString = '') then
-    begin
-      btnGravarCTe.Caption := 'Gravar CTE *';
-      dmCte.cdsCTE.Edit;
-      btnGravarCTe.Enabled := True;
-    end
-    else begin
-      btnGravarCTe.Enabled := False;
-    end;
-    edtCFOPBusca.ReadOnly  := False;
-    edtCFOP.ReadOnly       := False;
-    edtNatOpe.ReadOnly     := False;
-    btnPreVisu.Enabled     := True;
+    btnGravarCTe.Caption := 'Gravar CTE *';
+    dmCte.cdsCTE.Edit;
+    btnGravarCTe.Enabled := True;
+  end
+  else begin
+    btnGravarCTe.Enabled := False;
   end;
+  edtCFOP.ReadOnly       := False;
+  edtNatOpe.ReadOnly     := False;
+  btnPreVisu.Enabled     := True;
 end;
 
 procedure TfCTePrincipal.btnGerarClick(Sender: TObject);
 var   vAux : String;
  strEdita :string;
 begin
-  if (dm.cdsCTENPROT.AsString <> '') then
+  btnGerarCte.Click;
+  {
+  if (dmCte.cdsCTENPROT.AsString <> '') then
   begin
     ShowMessage('Arquivo ja Gerado e Enviado' );
     exit;
   end;
-  // if not(InputQuery('WebServices Enviar', 'Numero do Conhecimento', vAux))
-  // then exit;
   vAux := edtNumCte.Text;
   ACBrCTe1.Conhecimentos.Clear;
   GerarCTe(vAux);
@@ -3004,23 +3315,10 @@ begin
   ShowMessage('Arquivo gerado em: '+ACBrCTe1.Conhecimentos.Items[0].NomeArq);
   MemoDados.Lines.Add('Arquivo gerado em: '+ACBrCTe1.Conhecimentos.Items[0].NomeArq);
   MemoResp.Lines.LoadFromFile(ACBrCTe1.Conhecimentos.Items[0].NomeArq);
-  //LoadXML(MemoResp, WBResposta);
-  PageControl2.ActivePageIndex := 1;
 
-  // validar
-  //OpenDialog1.Title := 'Selecione o CTe';
-  //OpenDialog1.DefaultExt := '*-cte.xml';
-  //OpenDialog1.Filter := 'Arquivos CTe (*-cte.xml)|*-cte.xml|Arquivos XML (*.xml)|*.xml|Todos os Arquivos (*.*)|*.*';
-  //OpenDialog1.InitialDir := ACBrCTe1.Configuracoes.Arquivos.PathSalvar;
-
-  //if OpenDialog1.Execute then
-  //begin
-  //  ACBrCTe1.Conhecimentos.Clear;
-  //  ACBrCTe1.Conhecimentos.LoadFromFile(OpenDialog1.FileName);
-     ACBrCTe1.Conhecimentos.Assinar;
-     ACBrCTe1.Conhecimentos.Validar;
-     showmessage('Conhecimento de Transporte Eletrônico Valido');
-  //end;
+  ACBrCTe1.Conhecimentos.Assinar;
+  ACBrCTe1.Conhecimentos.Validar;
+  showmessage('Conhecimento de Transporte Eletrônico Valido');
 
   ACBrCTe1.Enviar(1); //(StrToInt(vNumLote));
 
@@ -3042,8 +3340,6 @@ begin
 
   if (ACBrCTe1.WebServices.Retorno.Recibo <> '') then
   begin
-    dm.con.AutoCommit := True;
-
     strEdita := 'UPDATE CTE SET NPROT = ';
     strEdita := strEdita + QuotedStr(ACBrCTe1.WebServices.Retorno.Protocolo);
     strEdita := strEdita + ', CHCTE = ';
@@ -3054,12 +3350,9 @@ begin
 
     strEdita := strEdita + ' WHERE COD_CTE = ';
     strEdita := strEdita + IntToStr(val_genCte);
-
-    dm.con.StartTransaction;
-
     try
-      dm.con.ExecuteDirect(strEdita);
-      dm.con.Commit;
+      dmPdv.IbCon.ExecuteDirect(strEdita);
+      dmPdv.sTrans.Commit;
 
       MessageDlg('Protocolo Gravada com Sucesso.', mtInformation, [mbOK], 0);
       FormatSettings.DecimalSeparator := ',';
@@ -3073,12 +3366,9 @@ begin
         exit;
       end;
     end;
-
   end;
-
-
   ACBrCTe1.Conhecimentos.Clear;
-
+  }
 end;
 
 procedure TfCTePrincipal.btnGerarCteClick(Sender: TObject);
@@ -3087,7 +3377,7 @@ var
   strEdita :string;
   vChave_cte: String;
 begin
-  if (dm.cdsCTENPROT.AsString <> '') then
+  if (dmCte.cdsCTENPROT.AsString <> '') then
   begin
     ShowMessage('Arquivo ja Gerado e Enviado' );
     exit;
@@ -3106,7 +3396,7 @@ begin
 
   ACBrCTe1.Conhecimentos.Assinar;
   ACBrCTe1.Conhecimentos.Validar;
-  StatusBar1.SimpleText := StatusBar1.SimpleText + ' - Situação : Valido');
+  StatusBar1.SimpleText := StatusBar1.SimpleText + ' - Situação : Valido';
 
   ACBrCTe1.Enviar(1); //(StrToInt(vNumLote));
 
@@ -3312,12 +3602,12 @@ begin
   begin
     if ( dbGridQC.Columns[1].Field.Value <> '') then
     begin
-      strExclui := 'DELETE FROM CTE_QC';
-      strExclui += ' WHERE COD_CTE_QC = ';
-      strExclui += IntToStr(dmCTe.sqQC.FieldByName('COD_CTE_QC').AsInteger);
+      vCteStr := 'DELETE FROM CTE_QC';
+      vCteStr += ' WHERE COD_CTE_QC = ';
+      vCteStr += IntToStr(dmCTe.sqQC.FieldByName('COD_CTE_QC').AsInteger);
 
       try
-        dmPdv.IbCon.ExecuteDirect(strExclui);
+        dmPdv.IbCon.ExecuteDirect(vCteStr);
         dmPdv.sTrans.Commit;
         MessageDlg('Quantidade de Carga Excluida com Sucesso.', mtInformation, [mbOK], 0);
         dmCte.sqQC.Refresh;
@@ -3364,7 +3654,7 @@ begin
       if (vDup <> 1 ) then
         MessageDlg('CTe Gravada com sucesso.', mtInformation, [mbOK], 0);
       FormatSettings.DecimalSeparator := ',';
-      modoGravacao := 'EDITAR';
+      //modoGravacao := 'EDITAR'; // Comentei aqui
     except
       on E : Exception do
       begin
@@ -3373,7 +3663,6 @@ begin
         exit;
       end;
     end;
-
   end
   else begin
     if (dmCte.cdsCTENPROT.AsString <> '') then
@@ -3395,10 +3684,9 @@ begin
     EditarRE;
     EditarDE;
   end;
-
   btnGravarCTe.Caption := 'Gravar CTE';
   btnPreVisu.Enabled := True;
-
+  modoGravacao := 'CONSULTAR';
   if (dmCTe.cdsCTE.Active)then
     dmCTe.cdsCTE.Close;
   dmCTe.cdsCTE.Params[0].AsInteger := StrToInt(edtCodEmitente.Text);
@@ -3435,7 +3723,7 @@ begin
   edtXMLCidade.Text := '';
   edtXMLUF.Text := '';
   edtXMLFone.Text := '';
-  trvwNFe.Items.Clear;
+  //trvwNFe.Items.Clear;
   OpenDialog1.FileName  :=  '';
   OpenDialog1.Title := 'Selecione a NFE';
   OpenDialog1.DefaultExt := '*-nfe.XML';
@@ -3598,12 +3886,9 @@ begin
     edtNumCte.Text := IntToStr(dmPdv.sqBusca.FieldByName('ULTIMO_NUMERO').asInteger + 1);
   end;
   dataGerarCte.DateTime := now;
-  edtCFOPBusca.ReadOnly := False;
   edtCFOP.ReadOnly := False;
   edtNatOpe.ReadOnly := False;
   btnGerar.Enabled := True;
-  PageControl1.TabIndex := 0;
-  edtCFOPBusca.SetFocus;
   StatusBar1.SimpleText := 'CTe Iniciada com Sucesso. MODO : INCLUSÃO' ;
   modoGravacao := 'INCLUIR';
 
@@ -3649,7 +3934,7 @@ begin
     dmCte.cdsCte.Open;
   dmCte.cdsCte.Append;
 
-  VALPICMS.Text := FloatToStr(percent_icms);
+  dbValPIcms.Text := FloatToStr(percent_icms);
 
   btnGravarCTe.Caption := 'Gravar CTE *';
 end;
@@ -3707,18 +3992,18 @@ end;
 
 procedure TfCTePrincipal.btnListarCteClick(Sender: TObject);
 begin
+  { // COMENTEI AQUI
   if (dmCte.cdsCTE.State in [dsEdit, dsInsert]) then
   begin
     MessageDlg('Grave ou Cancele suas modificaçes antes de continuar.', mtInformation, [mbOK], 0);
     exit;
   end;
   modoGravacao := 'EDITAR';
-
+  }
   if(edtCodEmitente.Text = '') then
   begin
    MessageDlg('Inicie um Emitente .', mtInformation, [mbOK], 0);
-   PageControl1.ActivePage := TabSheet4;
-   exit
+   exit;
   end;
 
   dmCte.cdsCTE.Close;
@@ -3736,7 +4021,7 @@ var   vAux : String;
 begin
   vAux := edtNumCte.Text;
   ACBrCTe1.Conhecimentos.Clear;
-  if (dm.cdsCTENPROT.AsString = '') then
+  if (dmCte.cdsCTENPROT.AsString = '') then
   begin
     GerarCTe(vAux);
     ACBrCTe1.Conhecimentos.Items[0].GravarXML('','');
@@ -3804,9 +4089,10 @@ end;
 procedure TfCTePrincipal.FormClose(Sender: TObject;
   var CloseAction: TCloseAction);
 begin
-  if (dmCte.sqCTE.State in [dsInsert, dsEdit]) then
+  if ((modoGravacao = 'INCLUIR') or (modoGravacao = 'EDITAR')) then
   begin
-    btnGravarCTe.Click;
+    ShowMessage('Grave ou Cancele as modificações.');
+    Exit;
   end;
   GravarConfiguracao;
 end;
@@ -3821,7 +4107,9 @@ begin
 end;
 
 procedure TfCTePrincipal.FormShow(Sender: TObject);
-//var emp,nomexeC ,nomexebd : string ;
+var
+   emp,nomexeC ,nomexebd : string ;
+   vDate1 , vDate2 : TdateTime;
 begin
   dmPdv.sqEmpresa.Open;
   while not dmPdv.sqEmpresa.Eof do
@@ -3829,7 +4117,11 @@ begin
     comboEmpresa.Items.Add(dmPdv.sqEmpresaRAZAO.AsString);
     dmPdv.sqEmpresa.Next;
   end;
-
+  if (dmPdv.sqEmpresa.RecordCount = 1) then
+  begin
+    comboEmpresa.ItemIndex :=0;
+    buscaEmpresa(dmPdv.sqEmpresaRAZAO.AsString);
+  end;
   LerConfiguracao;
 
   dmPdv.sqParametro.Open;
@@ -3848,18 +4140,17 @@ begin
       end;
       if(dmPdv.sqParametroINSTRUCOES.Text = 'A Licença de uso expirada.') then
       begin
-        PageControl1.ActivePage := TabSheet44;
         comboEmpresa.Enabled    := False;
         btnListarCte.Enabled    := False;
         btnIncCte.Enabled       := False;
         btnEditarCte.Enabled    := False;
-        btnDuplicarCTe.Enabled  := False;
-        btnImpPeriodo.Enabled   := False;
+        btnDuplicar.Enabled     := False;
+        //btnImpPeriodo.Enabled   := False;
         btnGerar.Enabled        := False;
         BitBtn1.Enabled         := False;
         btnGravarCTe.Enabled    := False;
-        btnSalvarConfig.Enabled := False;
-        SpeedButton1.Enabled    := False;
+        //btnSalvarConfig.Enabled := False;
+        //SpeedButton1.Enabled    := False;
       end
       else begin
         DadosBasicos;
@@ -3867,7 +4158,11 @@ begin
       end;
     end;
   end;
-  modoGravacao := 'EDITAR';
+  vDate1 := StartOfTheMonth(today);
+  DateTimePicker1.Date := vDate1 ;
+  vDate2 := today;
+  DateTimePicker2.Date := vDate2 ;
+  modoGravacao := 'CONSULTAR';
 end;
 
 procedure TfCTePrincipal.mmEmailMsgChange(Sender: TObject);

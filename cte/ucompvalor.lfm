@@ -1,0 +1,50 @@
+object fCompValor: TfCompValor
+  Left = 435
+  Height = 240
+  Top = 250
+  Width = 320
+  Caption = 'fCompValor'
+  ClientHeight = 240
+  ClientWidth = 320
+  LCLVersion = '2.0.4.0'
+  object btnOk: TBitBtn
+    Left = 112
+    Height = 30
+    Top = 164
+    Width = 75
+    Caption = 'btnOk'
+    TabOrder = 0
+  end
+  object edtCompNome: TLabeledEdit
+    Left = 52
+    Height = 27
+    Top = 41
+    Width = 80
+    EditLabel.Height = 17
+    EditLabel.Width = 80
+    EditLabel.Caption = 'edtCompNome'
+    EditLabel.ParentColor = False
+    TabOrder = 1
+    Text = 'edtCompNome'
+  end
+  object valComp: TLabeledEdit
+    Left = 179
+    Height = 27
+    Top = 36
+    Width = 80
+    EditLabel.Height = 17
+    EditLabel.Width = 80
+    EditLabel.Caption = 'valComp'
+    EditLabel.ParentColor = False
+    TabOrder = 2
+    Text = 'valComp'
+  end
+  object btnEdita: TBitBtn
+    Left = 192
+    Height = 30
+    Top = 164
+    Width = 75
+    Caption = 'btnEdita'
+    TabOrder = 3
+  end
+end

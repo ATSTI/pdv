@@ -5,22 +5,23 @@ unit uNFe;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Buttons;
 
 type
 
-  { TForm1 }
+  { TfNFe }
 
-  TForm1 = class(TForm)
+  TfNFe = class(TForm)
+    btnEdita: TBitBtn;
     edtNFserie: TEdit;
   private
 
   public
-
+    fnfe : integer;
   end;
 
 var
-  Form1: TForm1;
+  fNFe: TfNFe;
 
 implementation
 
