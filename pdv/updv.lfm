@@ -104,7 +104,7 @@ object fPdv: TfPdv
       Left = 272
       Height = 22
       Top = 56
-      Width = 131
+      Width = 120
       Caption = 'Finalizar venda'
       Font.CharSet = ANSI_CHARSET
       Font.Color = clWhite
@@ -121,7 +121,7 @@ object fPdv: TfPdv
       Left = 400
       Height = 22
       Top = 57
-      Width = 134
+      Width = 123
       Caption = 'Cancelar Venda'
       Font.CharSet = ANSI_CHARSET
       Font.Color = clWhite

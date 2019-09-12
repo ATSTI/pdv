@@ -657,26 +657,26 @@ object fMovimentoProc: TfMovimentoProc
       item
         MaxSize = 140
         Title.Caption = 'Código'
-        Width = 134
+        Width = 115
       end    
       item
         MaxSize = 120
         Title.Caption = 'Data'
-        Width = 134
+        Width = 115
       end    
       item
         MaxSize = 100
         Title.Caption = 'Núm. Venda'
-        Width = 134
+        Width = 115
       end    
       item
         MaxSize = 70
         Title.Caption = 'Série'
-        Width = 134
+        Width = 115
       end    
       item
         Title.Caption = 'Vendedor'
-        Width = 134
+        Width = 115
       end    
       item
         MaxSize = 300
@@ -688,7 +688,13 @@ object fMovimentoProc: TfMovimentoProc
         MaxSize = 120
         Title.Alignment = taRightJustify
         Title.Caption = 'Valor'
-        Width = 137
+        Width = 115
+      end    
+      item
+        Alignment = taRightJustify
+        Title.Alignment = taRightJustify
+        Title.Caption = 'Tempo'
+        Width = 117
       end>
     DataSource = dsMovProc
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
