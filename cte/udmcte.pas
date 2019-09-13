@@ -185,7 +185,13 @@ type
     cdsCteVERPROC: TStringField;
     cdsCteVPREST: TFloatField;
     cdsCteVREC: TFloatField;
+    dsQC: TDataSource;
     dsCte: TDataSource;
+    sqQCCOD_CTE: TLongintField;
+    sqQCCOD_CTE_QC: TLongintField;
+    sqQCMEDIDA: TStringField;
+    sqQCQUANT: TFloatField;
+    sqQCUNID: TStringField;
     sqSeg: TSQLQuery;
     sqNFe: TSQLQuery;
     sqQC: TSQLQuery;

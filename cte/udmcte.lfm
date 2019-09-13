@@ -2242,6 +2242,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
+      DisplayFormat = ',##0.00'
       MaxValue = 0
       MinValue = 0
       Precision = -1
@@ -2254,6 +2255,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
+      DisplayFormat = ',##0.00'
       MaxValue = 0
       MinValue = 0
       Precision = -1
@@ -2288,6 +2290,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
+      DisplayFormat = ',##0.00'
       MaxValue = 0
       MinValue = 0
       Precision = -1
@@ -2319,6 +2322,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
+      DisplayFormat = ',##0.00'
       MaxValue = 0
       MinValue = 0
       Precision = -1
@@ -2616,6 +2620,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
+      DisplayFormat = ',##0.00'
       MaxValue = 0
       MinValue = 0
       Precision = -1
@@ -2687,6 +2692,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
+      DisplayFormat = ',##0.00'
       MaxValue = 0
       MinValue = 0
       Precision = -1
@@ -2699,6 +2705,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
+      DisplayFormat = ',##0.00'
       MaxValue = 0
       MinValue = 0
       Precision = -1
@@ -2711,6 +2718,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
+      DisplayFormat = ',##0.00'
       MaxValue = 0
       MinValue = 0
       Precision = -1
@@ -2723,6 +2731,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
+      DisplayFormat = ',##0.00'
       MaxValue = 0
       MinValue = 0
       Precision = -1
@@ -2735,13 +2744,41 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
+      DisplayFormat = ',##0.00'
       MaxValue = 0
       MinValue = 0
       Precision = -1
     end
   end
   object sqQC: TSQLQuery
-    FieldDefs = <>
+    FieldDefs = <    
+      item
+        Name = 'COD_CTE_QC'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'COD_CTE'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'UNID'
+        DataType = ftString
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'MEDIDA'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'QUANT'
+        DataType = ftFloat
+        Precision = -1
+      end>
     Database = dmPdv.IbCon
     Transaction = dmPdv.sTrans
     SQL.Strings = (
@@ -2755,6 +2792,56 @@ object dmCte: TdmCte
       end>
     left = 149
     top = 88
+    object sqQCCOD_CTE_QC: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_CTE_QC'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object sqQCCOD_CTE: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_CTE'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqQCUNID: TStringField
+      FieldKind = fkData
+      FieldName = 'UNID'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object sqQCMEDIDA: TStringField
+      FieldKind = fkData
+      FieldName = 'MEDIDA'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object sqQCQUANT: TFloatField
+      FieldKind = fkData
+      FieldName = 'QUANT'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
   end
   object sqNFe: TSQLQuery
     FieldDefs = <>
@@ -2839,6 +2926,11 @@ object dmCte: TdmCte
   object dsCte: TDataSource
     DataSet = cdsCte
     left = 82
+    top = 147
+  end
+  object dsQC: TDataSource
+    DataSet = sqQC
+    left = 147
     top = 147
   end
 end
