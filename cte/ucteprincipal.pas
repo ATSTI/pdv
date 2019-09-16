@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
   StdCtrls, Menus, Buttons, DBGrids, EditBtn, Spin, DBCtrls, DateTimePicker,
   Types, IniFiles, ACBrCTe, ACBrCTeDACTEClass, ACBrMail, ACBrBase, ACBrDFe,
-  ACBrNFe, pcnConversao, pcteConversaoCTe, DateUtils, ACBrUtil;
+  ACBrNFe, pcnConversao, pcteConversaoCTe, DateUtils, ACBrUtil, db;
 
 type
 
@@ -18,6 +18,7 @@ type
     ACBrCTe1: TACBrCTe;
     ACBrNFe1: TACBrNFe;
     BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
     btnGerarPDFInut: TBitBtn;
     btnImprimirInut: TBitBtn;
     btnEnviarEventoEmail: TBitBtn;
@@ -36,6 +37,8 @@ type
     DateTimePicker1: TDateTimePicker;
     DateTimePicker2: TDateTimePicker;
     calValB: TDBEdit;
+    Label140: TLabel;
+    Label141: TLabel;
     valAliIn: TDBEdit;
     dbValInfCarga: TDBEdit;
     valOutrosVal: TDBEdit;
@@ -74,9 +77,9 @@ type
     btnExcluirComp: TBitBtn;
     BitBtn22: TBitBtn;
     btnEditarCte: TBitBtn;
-    BitBtn16: TBitBtn;
+    btnEditarNFe: TBitBtn;
     btnIncluirNFe: TBitBtn;
-    BitBtn18: TBitBtn;
+    btnExcluirNFe: TBitBtn;
     BitBtn19: TBitBtn;
     btnIncCte: TBitBtn;
     BitBtn3: TBitBtn;
@@ -108,7 +111,7 @@ type
     dataRodPrev: TDateTimePicker;
     dbGridQC: TDBGrid;
     dbGridComp: TDBGrid;
-    DBGrid3: TDBGrid;
+    DBGridNFe: TDBGrid;
     Edit1: TEdit;
     edtDestISUF: TEdit;
     edtFimCodCidade: TEdit;
@@ -318,8 +321,7 @@ type
     edtRemUF: TEdit;
     edtModelo: TEdit;
     edtNumCte: TEdit;
-    edtNumCte1: TEdit;
-    edtNumCte2: TEdit;
+    edtEmitenteCte: TEdit;
     edtNumCte3: TEdit;
     edtEnvUF: TEdit;
     edtEnvCidade: TEdit;
@@ -493,10 +495,15 @@ type
     TabRecebedor: TTabSheet;
     TabDestinatario: TTabSheet;
     procedure ACBrCTe1StatusChange(Sender: TObject);
+    procedure BitBtn15Click(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
+    procedure btnEditarNFeClick(Sender: TObject);
+    procedure btnExcluirNFeClick(Sender: TObject);
     procedure btnGerarPDFInutClick(Sender: TObject);
     procedure btnImprimirInutClick(Sender: TObject);
     procedure btnInfCargaEditaClick(Sender: TObject);
     procedure btnInfCargaExcluiClick(Sender: TObject);
+    procedure btnInfCargaGravaClick(Sender: TObject);
     procedure btnInfCargaIncluiClick(Sender: TObject);
     procedure BitBtn20Click(Sender: TObject);
     procedure btnAtualizarBDClick(Sender: TObject);
@@ -550,6 +557,7 @@ type
     procedure sbtnLogoMarcaClick(Sender: TObject);
     procedure sbtnPathSalvarClick(Sender: TObject);
     procedure StaticText13Click(Sender: TObject);
+    procedure StaticText22Click(Sender: TObject);
     procedure StaticText6Click(Sender: TObject);
     procedure StaticText7Click(Sender: TObject);
     procedure TabCteGeradasShow(Sender: TObject);
@@ -858,11 +866,11 @@ begin
    edtNumSerie.Text := Ini.ReadString( 'Certificado','NumSerie','');
    ACBrCTe1.Configuracoes.Certificados.NumeroSerie := edtNumSerie.Text;
    //edtNumSerie.Text := ACBrCTe1.Configuracoes.Certificados.NumeroSerie;
-   Label1.Caption := 'Informe o número de série do certificado'#13+
+   {Label1.Caption := 'Informe o número de série do certificado'#13+
                      'Disponível no Internet Explorer no menu'#13+
                      'Ferramentas - Opções da Internet - Conteúdo '#13+
                      'Certificados - Exibir - Detalhes - '#13+
-                     'Número do certificado';
+                     'Número do certificado';}
    Label2.Visible     := False;
    edtCaminho.Visible := False;
    edtSenha.Visible   := False;
@@ -1786,8 +1794,8 @@ begin
 
 // pcPrincipal.ActivePage := TabDados;  // Dados
  //pcPrincipal.ActivePage := TabSheet24;  // Cte GEradas
- label58.Caption := edtEmitRazao.Text;
- label59.Caption := edtEmitRazao.Text;
+ //label58.Caption := edtEmitRazao.Text;
+ //label59.Caption := edtEmitRazao.Text;
 
 end;
 
@@ -2007,6 +2015,7 @@ begin
   edtSerieCte.Text        := dmCte.cdsCTECTE_SERIE.AsString;
   edtNumCte.Text          := dmCte.cdsCTECTE_NUMERO.AsString;
   dataGerarCte.date       := dmCte.cdsCTEDHEMI.Value;
+  edtEmitenteCte.Text     := dmCte.cdsCTEE_FANTASIA.AsString;
   rgModal.ItemIndex       := StrToInt(Trim(dmCte.cdsCTEMODAL.AsString));
   rgTipoServico.ItemIndex := dmCte.cdsCTETIPOSERVICO.AsInteger;
   rgTiposCte.ItemIndex    := dmCte.cdsCTETIPOCTE.AsInteger;
@@ -2278,18 +2287,7 @@ begin
     vCteStr := vCteStr +' where COD_CTE = ' ;
     vCteStr := vCteStr +  IntToStr(val_genCte);
     MemoDados.Text := vCteStr;
-    try
-      FormatSettings.DecimalSeparator := ',';
-      dmPdv.IbCon.ExecuteDirect(vCteStr);
-      dmPdv.sTrans.Commit;
-    except
-      on E : Exception do
-      begin
-        ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-        dmPdv.sTrans.Rollback;
-        exit;
-      end;
-    end;
+    dmPdv.IbCon.ExecuteDirect(vCteStr);
   end;
 end;
 
@@ -2297,7 +2295,6 @@ procedure TfCTePrincipal.EditarB;
 begin
   if (edtNumCte.Text <> '') then
   begin
-    FormatSettings.DecimalSeparator := '.';
     vCteStr := 'UPDATE CTE SET CARAC_TRANSP = ';
     vCteStr := vCteStr + QuotedStr(edtCaracAdTrans.Text); // CARAC_TRANSP
     vCteStr := vCteStr +  ',CARAC_SERV = ';
@@ -2308,18 +2305,7 @@ begin
     vCteStr := vCteStr +' where COD_CTE = ' ;
     vCteStr := vCteStr +  IntToStr(val_genCte);
     MemoDados.Text := vCteStr;
-    try
-     FormatSettings.DecimalSeparator := ',';
-     dmPdv.IbCon.ExecuteDirect(vCteStr);
-     dmPdv.sTrans.Commit
-    except
-      on E : Exception do
-      begin
-        ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-        dmPdv.sTrans.Rollback;
-        exit;
-      end;
-    end;
+    dmPdv.IbCon.ExecuteDirect(vCteStr);
   end;
 end;
 
@@ -2335,18 +2321,7 @@ begin
     vCteStr := vCteStr +' where COD_CTE = ' ;
     vCteStr := vCteStr +  IntToStr(val_genCte);
     MemoDados.Text := vCteStr;
-    try
-     FormatSettings.DecimalSeparator := ',';
-     dmPdv.IbCon.ExecuteDirect(vCteStr);
-     dmPdv.sTrans.Commit
-    except
-      on E : Exception do
-      begin
-        ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-        dmPdv.sTrans.Rollback;
-        exit;
-      end;
-    end;
+    dmPdv.IbCon.ExecuteDirect(vCteStr);
   end;
 end;
 
@@ -2354,41 +2329,29 @@ procedure TfCTePrincipal.EditarD;
 begin
   if (edtNumCte.Text <> '') then
   begin
-    FormatSettings.DecimalSeparator := '.';
     vCteStr := 'UPDATE CTE SET VPREST = ';
-    vCteStr:= vCteStr + FloatToStr(dbValTotPrest.Field.Value);
-    if (dbValReceber.Field.Value > 0) then
+    vCteStr:= vCteStr + FloatToStr(dmCte.cdsCteVPREST.AsFloat);
+    if (dmCte.cdsCteVREC.AsFloat > 0) then
     begin
-      vCteStr:= vCteStr +  ',VREC = ' + FloatToStr(dbValReceber.Field.Value);
+      vCteStr:= vCteStr +  ',VREC = ' + FloatToStr(dmCte.cdsCteVREC.AsFloat);
     end
     else begin
       vCteStr:= vCteStr +  ',VREC = ' + '0';
     end;
     vCteStr:= vCteStr +  ' ,VALTOTTRI = ';
-    vCteStr:= vCteStr + FloatToStr(dbValTotTri.Field.Value);
+    vCteStr:= vCteStr + FloatToStr(dmCte.cdsCteVALTOTTRI.AsFloat);
     vCteStr:= vCteStr +  ',COMBCODSITTRIB = ';
     vCteStr:= vCteStr + IntToStr(combCodSitTrib.ItemIndex);
-    vCteStr += ',VALPREDBC = ' + FloatToStr(dbVALPREDBC.Field.Value);
-    vCteStr += ',VALVBC = ' + FloatToStr(dbVALVBC.Field.Value);
-    vCteStr += ',VALPICMS = ' + FloatToStr(dbVALPICMS.Field.Value);
-    vCteStr += ',VALVICMS = ' + FloatToStr(dbVALVICMS.Field.Value);
-    vCteStr += ',VALVCRED = ' + FloatToStr(dbVALVCRED.Field.Value);
+    vCteStr += ',VALPREDBC = ' + FloatToStr(dmCte.cdsCteVALPREDBC.AsFloat);
+    vCteStr += ',VALVBC = ' + FloatToStr(dmCte.cdsCteVALVBC.AsFloat);
+    vCteStr += ',VALPICMS = ' + FloatToStr(dmCte.cdsCteVALPICMS.AsFloat);
+    vCteStr += ',VALVICMS = ' + FloatToStr(dmCte.cdsCteVALVICMS.AsFloat);
+    vCteStr += ',VALVCRED = ' + FloatToStr(dmCte.cdsCteVALVCRED.AsFloat);
 
     vCteStr := vCteStr +' where COD_CTE = ' ;
     vCteStr := vCteStr +  IntToStr(val_genCte);
     MemoDados.Text := vCteStr;
-    FormatSettings.DecimalSeparator := ',';
-    try
-     dmPdv.IbCon.ExecuteDirect(vCteStr);
-     dmPdv.sTrans.Commit
-    except
-      on E : Exception do
-      begin
-        ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-        dmPdv.sTrans.Rollback;
-        exit;
-      end;
-    end;
+    dmPdv.IbCon.ExecuteDirect(vCteStr);
   end;
 end;
 
@@ -2396,9 +2359,8 @@ procedure TfCTePrincipal.EditarE;
 begin
   if (edtNumCte.Text <> '') then
   begin
-    FormatSettings.DecimalSeparator := '.';
     vCteStr := 'UPDATE CTE SET VALINFCARGA = ';
-    vCteStr:= vCteStr +  FloatToStr(dbValInfCarga.Field.Value);
+    vCteStr:= vCteStr +  FloatToStr(dmCte.cdsCteVALINFCARGA.AsFloat);
     vCteStr:= vCteStr +  ', PROPRED = ';
     vCteStr:= vCteStr + QuotedStr(edtProPred.Text);
     vCteStr:= vCteStr +  ',OUTCAT = ';
@@ -2407,18 +2369,7 @@ begin
     vCteStr := vCteStr +' where COD_CTE = ' ;
     vCteStr := vCteStr +  IntToStr(val_genCte);
     MemoDados.Text := vCteStr;
-    try
-     FormatSettings.DecimalSeparator := ',';
-     dmPdv.IbCon.ExecuteDirect(vCteStr);
-     dmPdv.sTrans.Commit
-    except
-      on E : Exception do
-      begin
-        ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-        dmPdv.sTrans.Rollback;
-        exit;
-      end;
-    end;
+    dmPdv.IbCon.ExecuteDirect(vCteStr);
   end;
 end;
 
@@ -2446,18 +2397,7 @@ begin
     vCteStr := vCteStr +' where COD_CTE = ' ;
     vCteStr := vCteStr +  IntToStr(val_genCte);
     MemoDados.Text := vCteStr;
-    try
-     FormatSettings.DecimalSeparator := ',';
-     dmPdv.IbCon.ExecuteDirect(vCteStr);
-     dmPdv.sTrans.Commit
-    except
-      on E : Exception do
-      begin
-        ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-        dmPdv.sTrans.Rollback;
-        exit;
-      end;
-    end;
+    dmPdv.IbCon.ExecuteDirect(vCteStr);
   end;
 end;
 
@@ -2465,7 +2405,6 @@ procedure TfCTePrincipal.EditarG;
 begin
   if (edtNumCte.Text <> '') then
   begin
-    FormatSettings.DecimalSeparator := '.';
     vCteStr := 'UPDATE CTE SET OBS_GERAL = ';
     vCteStr:= vCteStr + QuotedStr(memxObs.Text);
     vCteStr := vCteStr +  ',OUTPDOC = ';
@@ -2477,23 +2416,12 @@ begin
     vCteStr := vCteStr +  ',OUDEMI = ';
     vCteStr := vCteStr +  QuotedStr(FormatDateTime('mm/dd/yyyy',dataOutrosEmi.date));
     vCteStr := vCteStr +  ',OUVDOCFISC= ';
-    vCteStr := vCteStr +  FloatToStr(valOutrosVal.Field.Value);
+    vCteStr := vCteStr +  FloatToStr(dmCte.cdsCteOUVDOCFISC.AsFloat);
 
     vCteStr := vCteStr +' where COD_CTE = ' ;
     vCteStr := vCteStr +  IntToStr(val_genCte);
     MemoDados.Text := vCteStr;
-    try
-     FormatSettings.DecimalSeparator := ',';
-     dmPdv.IbCon.ExecuteDirect(vCteStr);
-     dmPdv.sTrans.Commit
-    except
-      on E : Exception do
-      begin
-        ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-        dmPdv.sTrans.Rollback;
-        exit;
-      end;
-    end;
+    dmPdv.IbCon.ExecuteDirect(vCteStr);
   end;
 end;
 
@@ -2531,18 +2459,7 @@ begin
     vCteStr := vCteStr +' where COD_CTE = ' ;
     vCteStr := vCteStr +  IntToStr(val_genCte);
     MemoDados.Text := vCteStr;
-    try
-     FormatSettings.DecimalSeparator := ',';
-     dmPdv.IbCon.ExecuteDirect(vCteStr);
-     dmPdv.sTrans.Commit
-    except
-      on E : Exception do
-      begin
-        ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-        dmPdv.sTrans.Rollback;
-        exit;
-      end;
-    end;
+    dmPdv.IbCon.ExecuteDirect(vCteStr);
   end;
 end;
 
@@ -2618,20 +2535,7 @@ begin
     vCteStr := vCteStr +  IntToStr(val_genCte);
     MemoDados.Text := vCteStr;
   end;
-
-  try
-   FormatSettings.DecimalSeparator := ',';
-   dmPdv.IbCon.ExecuteDirect(vCteStr);
-   dmPdv.sTrans.Commit
-  except
-    on E : Exception do
-    begin
-      ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-      dmPdv.sTrans.Rollback;
-      exit;
-    end;
-  end;
-
+  dmPdv.IbCon.ExecuteDirect(vCteStr);
 end;
 
 procedure TfCTePrincipal.EditarR;
@@ -2672,20 +2576,8 @@ begin
     vCteStr := vCteStr +' where COD_CTE = ' ;
     vCteStr := vCteStr +  IntToStr(val_genCte);
     MemoDados.Text := vCteStr;
-    try
-     FormatSettings.DecimalSeparator := ',';
-     dmPdv.IbCon.ExecuteDirect(vCteStr);
-     dmPdv.sTrans.Commit
-    except
-      on E : Exception do
-      begin
-        ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-        dmPdv.sTrans.Rollback;
-        exit;
-      end;
-    end;
+    dmPdv.IbCon.ExecuteDirect(vCteStr);
   end;
-
 end;
 
 procedure TfCTePrincipal.EditarDE;
@@ -2725,18 +2617,7 @@ begin
       vCteStr := vCteStr +' where COD_CTE = ' ;
       vCteStr := vCteStr +  IntToStr(val_genCte);
       MemoDados.Text := vCteStr;
-      try
-       FormatSettings.DecimalSeparator := ',';
-       dmPdv.IbCon.ExecuteDirect(vCteStr);
-       dmPdv.sTrans.Commit
-      except
-        on E : Exception do
-        begin
-          ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-          dmPdv.sTrans.Rollback;
-          exit;
-        end;
-      end;
+      dmPdv.IbCon.ExecuteDirect(vCteStr);
     end;
   end;
 end;
@@ -2779,18 +2660,7 @@ begin
     vCteStr := vCteStr +' where COD_CTE = ' ;
     vCteStr := vCteStr +  IntToStr(val_genCte);
     MemoDados.Text := vCteStr;
-    try
-     FormatSettings.DecimalSeparator := ',';
-     dmPdv.IbCon.ExecuteDirect(vCteStr);
-     dmPdv.sTrans.Commit
-    except
-      on E : Exception do
-      begin
-        ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-        dmPdv.sTrans.Rollback;
-        exit;
-      end;
-    end;
+    dmPdv.IbCon.ExecuteDirect(vCteStr);
   end;
 end;
 
@@ -2807,6 +2677,7 @@ function TfCTePrincipal.LimparString(ATExto, ACaracteres: string): string;
 end;
 
 function TfCTePrincipal.GravarCTe: String;
+var verVlr: String;
 begin
   if (edtEmitCNPJ.Text <> '') then
   begin
@@ -2960,11 +2831,12 @@ begin
 
     strInsere := strInsere + ', ' + IntToStr(rgRetira.ItemIndex);  //
     strInsere := strInsere + ', ' + QuotedStr(memDetRetira.Text);
-    strInsere := strInsere + ', ' + FloatToStr(dbValTotPrest.Field.Value);
-    strInsere := strInsere + ', ' + FloatToStr(dbValReceber.Field.Value);
-    strInsere := strInsere + ', ' + FloatToStr(dbValTotTri.Field.Value);
+    verVlr := FloatToStr(dmCte.cdsCteVPREST.AsFloat);
+    strInsere := strInsere + ', ' + FloatToStr(dmCte.cdsCteVPREST.AsFloat);
+    strInsere := strInsere + ', ' + FloatToStr(dmCte.cdsCteVREC.AsFloat);
+    strInsere := strInsere + ', ' + FloatToStr(dmCte.cdsCteVALTOTTRI.AsFloat);
     strInsere := strInsere + ', ' + QuotedStr(combCodSitTrib.ItemIndex.ToString);
-    strInsere := strInsere + ', ' + FloatToStr(dbValInfCarga.Field.Value);
+    strInsere := strInsere + ', ' + FloatToStr(dmCte.cdsCteVALINFCARGA.AsFloat);
     strInsere := strInsere + ', ' + QuotedStr(edtProPred.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtOutCat.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtRodRNTRC.Text);
@@ -2976,7 +2848,7 @@ begin
     strInsere := strInsere + ', ' + QuotedStr(edtOutrosDesc.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtOutrosNum.Text);
     strInsere := strInsere + ', ' + QuotedStr(FormatDateTime('mm/dd/yyyy',dataRodPrev.date));
-    strInsere := strInsere + ', ' + FloatToStr(valOutrosVal.Field.Value);
+    strInsere := strInsere + ', ' + FloatToStr(dmCte.cdsCteOUVDOCFISC.AsFloat);
     // Esse é o ultimo Campo do Insert ' EMITENTE'
     strInsere := strInsere + ', ' + QuotedStr(edtCodEmitente.Text);
    // docs anterior 15/08/19
@@ -2985,11 +2857,11 @@ begin
     strInsere := strInsere + ', ' + QuotedStr(edtAntUF.Text );
     strInsere := strInsere + ', ' + QuotedStr(edtAntNome.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtAntCHCTE.Text);
-    strInsere := strInsere + ', ' + FloatToStr(dbVALPREDBC.Field.Value) ;
-    strInsere := strInsere + ', ' + FloatToStr(dbVALVBC.Field.Value);
-    strInsere := strInsere + ', ' + FloatToStr(dbVALPICMS.Field.Value) ;
-    strInsere := strInsere + ', ' + FloatToStr(dbVALVICMS.Field.Value) ;
-    strInsere := strInsere + ', ' + FloatToStr(dbVALVCRED.Field.Value) ;
+    strInsere := strInsere + ', ' + FloatToStr(dmCte.cdsCteVALPREDBC.AsFloat);
+    strInsere := strInsere + ', ' + FloatToStr(dmCte.cdsCteVALVBC.AsFloat);
+    strInsere := strInsere + ', ' + FloatToStr(dmCte.cdsCteVALPICMS.AsFloat);
+    strInsere := strInsere + ', ' + FloatToStr(dmCte.cdsCteVALVICMS.AsFloat);
+    strInsere := strInsere + ', ' + FloatToStr(dmCte.cdsCteVALVCRED.AsFloat);
     strInsere := strInsere + ')';
     MemoDados.Text := strInsere;
     result := strInsere;
@@ -3490,7 +3362,7 @@ begin
   edtSerieCte.Text         := dmCte.cdsCTECTE_SERIE.AsString;
   edtNumCte.Text           := dmCte.cdsCTECTE_NUMERO.AsString;
   dataGerarCte.date        := dmCte.cdsCTEDHEMI.Value;
-  rgModal.ItemIndex        := dmCte.cdsCTEMODAL.AsInteger;
+  rgModal.ItemIndex        := StrToInt(Trim(dmCte.cdsCTEMODAL.AsString));
   rgTipoServico.ItemIndex  := dmCte.cdsCTETIPOSERVICO.AsInteger;
   rgTiposCte.ItemIndex     := dmCte.cdsCTETIPOCTE.AsInteger;
   rgFormaEmissao.ItemIndex := dmCte.cdsCTETPOEMISSAO.AsInteger;
@@ -3698,17 +3570,7 @@ begin
   dmCte.sqCOMP.Params[0].AsInteger := val_genCte;
   dmCte.sqCOMP.Open;
   dmCte.sqCOMP.Edit;
-
-  fCompValor := TfCompValor.Create(Application);
-  try
-    fCompValor.btnOk.Visible :=False;
-    fCompValor.edtCompNome.Text := dbGridComp.Columns[0].Field.Value;
-    fCompValor.valComp.Text := dbGridComp.Columns[1].Field.Value;
-    fCompValor.ShowModal;
-  finally
-    fCompValor.Free;
-  end;
-
+  fCompValor.ShowModal;
 end;
 
 procedure TfCTePrincipal.btnEditarCteClick(Sender: TObject);
@@ -4002,6 +3864,85 @@ begin
   Application.ProcessMessages;
 end;
 
+procedure TfCTePrincipal.BitBtn15Click(Sender: TObject);
+begin
+  if (dmCte.cdsCTENPROT.AsString <> '') then
+  begin
+    MessageDlg('CTe Ja Enviada.', mtInformation, [mbOK], 0);
+    exit;
+  end;
+
+  if not(dmCte.sqComp.Active)then
+    dmCte.sqComp.Active;
+  dmCte.sqComp.Params[0].AsInteger := val_genCte;
+  dmCte.sqComp.Open;
+  dmCte.sqComp.Append;
+  fCompValor.ShowModal;
+end;
+
+procedure TfCTePrincipal.BitBtn2Click(Sender: TObject);
+begin
+  btnListarCte.Click;
+  pcPrincipal.PageIndex:=0;
+end;
+
+procedure TfCTePrincipal.btnEditarNFeClick(Sender: TObject);
+begin
+
+  if (dmCte.cdsCTENPROT.AsString <> '') then
+  begin
+    MessageDlg('CTe Ja Enviada.', mtInformation, [mbOK], 0);
+    exit;
+  end;
+
+  if not(dmCte.sqNFe.Active)then
+    dmCte.sqNFe.Active;
+  dmCte.sqNFe.Params[0].AsInteger := val_genCte;
+  dmCte.sqNFe.Open;
+  dmCte.sqNFe.Edit;
+
+  fNFe.btnOk.Visible :=False;
+  fNFe.edtNFeChave.Text :=  dbgridNFe.Columns[0].Field.Value;
+  if(fNFe.edtNFePin.Text <> '') then
+  begin
+    fNFe.edtNFePin.Text := dbgridNFe.Columns[1].Field.Value;
+  end;
+  fNFe.dataNFePrev.Text := dbgridNFe.Columns[2].Field.Value;
+  fNFe.ShowModal;
+end;
+
+procedure TfCTePrincipal.btnExcluirNFeClick(Sender: TObject);
+begin
+  if (dmCte.cdsCTENPROT.AsString <> '') then
+  begin
+    MessageDlg('CTe Ja Enviada.', mtInformation, [mbOK], 0);
+    exit;
+  end;
+
+  if MessageDlg('Deseja realmente excluir este registro?',mtConfirmation, [mbYes,mbNo],0) = mrYes then
+  begin
+    if ( DBGridNFe.Columns[1].Field.Value <> '') then
+    begin
+      vCteStr := 'DELETE FROM CTE_NFE';
+      vCteStr := vCteStr + ' WHERE COD_CTE_NFE = ';
+      vCteStr := vCteStr +  IntToStr(dmCte.sqNFeCOD_CTE_NFE.AsInteger);
+      try
+        dmPdv.IbCon.ExecuteDirect(vCteStr);
+        dmPdv.sTrans.Commit;
+        MessageDlg('NFe excluida com sucesso.', mtInformation, [mbOK], 0);
+        dmCte.sqNFe.Refresh;
+      except
+        on E : Exception do
+        begin
+          ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
+          dmPdv.sTrans.Rollback;
+          exit;
+        end;
+      end;
+    end;
+  end;
+end;
+
 procedure TfCTePrincipal.btnGerarPDFInutClick(Sender: TObject);
 begin
   OpenDialog1.Title := 'Selecione o ProcInutCTe';
@@ -4032,7 +3973,20 @@ end;
 
 procedure TfCTePrincipal.btnInfCargaEditaClick(Sender: TObject);
 begin
+  if (dmCte.cdsCTENPROT.AsString <> '') then
+  begin
+    MessageDlg('CTe Ja Enviada.', mtInformation, [mbOK], 0);
+    exit;
+  end;
 
+  if not(dmCte.sqQC.Active)then
+    dmCte.sqQC.Active;
+  dmCte.sqQC.Params[0].AsInteger := val_genCte;
+  dmCte.sqQC.Open;
+  dmCte.sqQC.Edit;
+
+  fQuantCarga.btnEditar.Visible :=False;
+  fQuantCarga.ShowModal;
 end;
 
 procedure TfCTePrincipal.btnInfCargaExcluiClick(Sender: TObject);
@@ -4068,9 +4022,14 @@ begin
   end;
 end;
 
+procedure TfCTePrincipal.btnInfCargaGravaClick(Sender: TObject);
+begin
+
+end;
+
 procedure TfCTePrincipal.btnInfCargaIncluiClick(Sender: TObject);
 begin
-  if (dm.cdsCTENPROT.AsString <> '') then
+  if (dmCte.cdsCTENPROT.AsString <> '') then
   begin
     MessageDlg('CTe Ja Enviada.', mtInformation, [mbOK], 0);
     exit;
@@ -4094,7 +4053,10 @@ begin
     edtCFOP.SetFocus;
     exit;
   end;
-
+  strEdita := FloatToStr(dmCte.cdsCteVPREST.AsFloat);
+  if (dmCte.dsCte.State in [dsEdit, dsInsert]) then
+    dmCte.cdsCte.Post;
+  strEdita := FloatToStr(dmCte.cdsCteVPREST.AsFloat);
   if ((modoGravacao = 'INCLUIR') or (modoGravacao = 'DUPLICAR')) then
   begin
     strEdita := 'UPDATE SERIES SET ULTIMO_NUMERO = ';
@@ -4127,19 +4089,31 @@ begin
       MessageDlg('CTe Ja Enviada. Não Pode ser Editada', mtInformation, [mbOK], 0);
       exit;
     end;
-    EditarA; //
-    EditarB; // Aba Dados Complementares
-    EditarC;
-    EditarD; // Aba serviços e Impostos
-    EditarE;
-    EditarF; // aba outros docs
-    EditarG;
-    EditarEX;
-    EditarT;
-    EditarR;
-    EditarREC;
-    EditarRE;
-    EditarDE;
+    try
+      FormatSettings.DecimalSeparator := '.';
+      EditarA; //
+      EditarB; // Aba Dados Complementares
+      EditarC;
+      EditarD; // Aba serviços e Impostos
+      EditarE;
+      EditarF; // aba outros docs
+      EditarG;
+      EditarEX;
+      EditarT;
+      EditarR;
+      EditarREC;
+      EditarRE;
+      EditarDE;
+      FormatSettings.DecimalSeparator := ',';
+      dmPdv.sTrans.Commit;
+    except
+      on E : Exception do
+      begin
+        ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
+        dmPdv.sTrans.Rollback;
+        exit;
+      end;
+    end;
   end;
   btnGravarCTe.Caption := 'Gravar CTE';
   btnPreVisu.Enabled := True;
@@ -4391,7 +4365,8 @@ begin
     dmCte.cdsCte.Open;
   dmCte.cdsCte.Append;
 
-  dbValPIcms.Text := FloatToStr(percent_icms);
+  //dbValPIcms.Text := FloatToStr(percent_icms);
+  dmCte.cdsCteVALPICMS.AsFloat := percent_icms;
 
   btnGravarCTe.Caption := 'Gravar CTE *';
 end;
@@ -4415,13 +4390,8 @@ begin
   dmCte.sqNFe.Open;
   dmCte.sqNFe.Edit;
 
-  fNFe := TfNFe.Create(Application);
-  try
-    fNFe.btnEdita.Visible :=False;
-    fNFe.ShowModal;
-  finally
-    fNFe.Free;
-  end;
+  fNFe.btnEdita.Visible :=False;
+  fNFe.ShowModal;
 end;
 
 procedure TfCTePrincipal.btnInutilizarClick(Sender: TObject);
@@ -4744,6 +4714,11 @@ begin
 end;
 
 procedure TfCTePrincipal.StaticText13Click(Sender: TObject);
+begin
+
+end;
+
+procedure TfCTePrincipal.StaticText22Click(Sender: TObject);
 begin
 
 end;

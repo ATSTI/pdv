@@ -3,48 +3,67 @@ object fCompValor: TfCompValor
   Height = 240
   Top = 250
   Width = 320
-  Caption = 'fCompValor'
+  Caption = 'Componentes Valor'
   ClientHeight = 240
   ClientWidth = 320
   LCLVersion = '2.0.4.0'
   object btnOk: TBitBtn
-    Left = 112
+    Left = 144
     Height = 30
-    Top = 164
+    Top = 176
     Width = 75
-    Caption = 'btnOk'
+    Default = True
+    DefaultCaption = True
+    Kind = bkOK
+    ModalResult = 1
+    OnClick = btnOkClick
     TabOrder = 0
   end
-  object edtCompNome: TLabeledEdit
-    Left = 52
-    Height = 27
-    Top = 41
-    Width = 80
-    EditLabel.Height = 17
-    EditLabel.Width = 80
-    EditLabel.Caption = 'edtCompNome'
-    EditLabel.ParentColor = False
-    TabOrder = 1
-    Text = 'edtCompNome'
+  object Label1: TLabel
+    Left = 50
+    Height = 17
+    Top = 86
+    Width = 29
+    Caption = 'Valor'
+    ParentColor = False
   end
-  object valComp: TLabeledEdit
-    Left = 179
-    Height = 27
-    Top = 36
-    Width = 80
-    EditLabel.Height = 17
-    EditLabel.Width = 80
-    EditLabel.Caption = 'valComp'
-    EditLabel.ParentColor = False
-    TabOrder = 2
-    Text = 'valComp'
-  end
-  object btnEdita: TBitBtn
-    Left = 192
+  object BitBtn1: TBitBtn
+    Left = 221
     Height = 30
-    Top = 164
+    Top = 176
     Width = 75
-    Caption = 'btnEdita'
+    Caption = 'Fechar'
+    OnClick = BitBtn1Click
+    TabOrder = 1
+  end
+  object dbCompNome: TDBEdit
+    Left = 48
+    Height = 27
+    Top = 48
+    Width = 248
+    DataField = 'COMP_NOME'
+    DataSource = dmCte.dsComp
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 2
+  end
+  object dbValComp: TDBEdit
+    Left = 48
+    Height = 27
+    Top = 104
+    Width = 80
+    DataField = 'COMP_VALOR'
+    DataSource = dmCte.dsComp
+    CharCase = ecNormal
+    MaxLength = 0
     TabOrder = 3
+  end
+  object Label2: TLabel
+    Left = 50
+    Height = 17
+    Top = 26
+    Width = 72
+    Caption = 'Componente'
+    ParentColor = False
   end
 end

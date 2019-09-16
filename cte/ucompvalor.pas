@@ -5,17 +5,23 @@ unit uCompValor;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Buttons, ExtCtrls;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Buttons, ExtCtrls,
+  EditBtn, StdCtrls, DBCtrls, db;
 
 type
 
   { TfCompValor }
 
   TfCompValor = class(TForm)
-    btnEdita: TBitBtn;
+    BitBtn1: TBitBtn;
     btnOk: TBitBtn;
-    edtCompNome: TLabeledEdit;
-    valComp: TLabeledEdit;
+    dbCompNome: TDBEdit;
+    dbValComp: TDBEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    procedure BitBtn1Click(Sender: TObject);
+    procedure btnEditaClick(Sender: TObject);
+    procedure btnOkClick(Sender: TObject);
   private
 
   public
@@ -27,7 +33,67 @@ var
 
 implementation
 
+uses udmpdv, uDmCte;
+
 {$R *.lfm}
+
+{ TfCompValor }
+
+procedure TfCompValor.btnOkClick(Sender: TObject);
+var vstr_sql :string;
+begin
+  vstr_sql := '';
+  if (dmCte.sqCompCOMP_NOME.AsString <> '') then
+  begin
+    FormatSettings.DecimalSeparator := '.';
+    if (dmCte.dsComp.State in [dsInsert]) then
+    begin
+      vstr_sql := 'INSERT INTO CTE_COMP (COD_CTE ,COMP_NOME, COMP_VALOR  ' +
+                 ') VALUES ( ';
+      vstr_sql := vstr_sql +  IntToStr(dmCte.cdsCteCOD_CTE.AsInteger) ;
+      vstr_sql := vstr_sql + ', ' + QuotedStr(dmCte.sqCompCOMP_NOME.AsString);
+      vstr_sql := vstr_sql + ', '  + FloatToStr(dmCte.sqCompCOMP_VALOR.AsFloat);
+      vstr_sql := vstr_sql + ')';
+    end;
+    if (dmCte.dsComp.State in [dsEdit]) then
+    begin
+      vstr_sql := 'UPDATE CTE_COMP SET COMP_NOME = ';
+      vstr_sql := vstr_sql + QuotedStr(dmCte.sqCompCOMP_NOME.AsString);
+      vstr_sql := vstr_sql + ', COMP_VALOR = ';
+      vstr_sql := vstr_sql +  FloatToStr(dmCte.sqCompCOMP_VALOR.AsFloat)  ; // +  Format('%8.2f', [valComp.Value]);
+      vstr_sql := vstr_sql + ' WHERE COD_CTE_COMP = ';
+      vstr_sql := vstr_sql + IntToStr(dmCte.sqCOMPCOD_CTE_COMP.AsInteger);
+    end;
+    FormatSettings.DecimalSeparator := ',';
+    if (vstr_sql <> '') then
+    begin
+    try
+      dmPdv.Ibcon.ExecuteDirect(vstr_sql);
+      dmCte.sqCOMP.Close;
+      dmPdv.sTrans.Commit;
+      dmCte.sqCOMP.Open;
+      fvalor := 1;
+      Close;
+    except
+      on E : Exception do
+      begin
+        ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
+        dmPdv.sTrans.Rollback;
+        exit;
+      end;
+    end;
+    end;
+  end;
+end;
+
+procedure TfCompValor.btnEditaClick(Sender: TObject);
+begin
+end;
+
+procedure TfCompValor.BitBtn1Click(Sender: TObject);
+begin
+  Close;
+end;
 
 end.
 

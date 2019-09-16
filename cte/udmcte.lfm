@@ -2838,13 +2838,40 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
+      DisplayFormat = ',##0.0'
       MaxValue = 0
       MinValue = 0
       Precision = -1
     end
   end
   object sqNFe: TSQLQuery
-    FieldDefs = <>
+    FieldDefs = <    
+      item
+        Name = 'COD_CTE_NFE'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'CTE_NFE'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'CHAVE'
+        DataType = ftString
+        Precision = -1
+        Size = 320
+      end    
+      item
+        Name = 'PIN'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'DPREV'
+        DataType = ftDate
+        Precision = -1
+      end>
     Database = dmPdv.IbCon
     Transaction = dmPdv.sTrans
     SQL.Strings = (
@@ -2858,9 +2885,76 @@ object dmCte: TdmCte
       end>
     left = 216
     top = 88
+    object sqNFeCOD_CTE_NFE: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_CTE_NFE'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object sqNFeCTE_NFE: TLongintField
+      FieldKind = fkData
+      FieldName = 'CTE_NFE'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqNFeCHAVE: TStringField
+      FieldKind = fkData
+      FieldName = 'CHAVE'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 320
+    end
+    object sqNFePIN: TLongintField
+      FieldKind = fkData
+      FieldName = 'PIN'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqNFeDPREV: TDateField
+      FieldKind = fkData
+      FieldName = 'DPREV'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
   end
   object sqComp: TSQLQuery
-    FieldDefs = <>
+    FieldDefs = <    
+      item
+        Name = 'COD_CTE_COMP'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'COD_CTE'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'COMP_NOME'
+        DataType = ftString
+        Precision = -1
+        Size = 60
+      end    
+      item
+        Name = 'COMP_VALOR'
+        DataType = ftFloat
+        Precision = -1
+      end>
     Database = dmPdv.IbCon
     Transaction = dmPdv.sTrans
     SQL.Strings = (
@@ -2874,6 +2968,47 @@ object dmCte: TdmCte
       end>
     left = 288
     top = 88
+    object sqCompCOD_CTE_COMP: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_CTE_COMP'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object sqCompCOD_CTE: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_CTE'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqCompCOMP_NOME: TStringField
+      FieldKind = fkData
+      FieldName = 'COMP_NOME'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 60
+    end
+    object sqCompCOMP_VALOR: TFloatField
+      FieldKind = fkData
+      FieldName = 'COMP_VALOR'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      DisplayFormat = ',##0.00'
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
   end
   object sqSeg: TSQLQuery
     FieldDefs = <>
@@ -2931,6 +3066,16 @@ object dmCte: TdmCte
   object dsQC: TDataSource
     DataSet = sqQC
     left = 147
+    top = 147
+  end
+  object dsComp: TDataSource
+    DataSet = sqComp
+    left = 288
+    top = 147
+  end
+  object dsNFe: TDataSource
+    DataSet = sqNFe
+    left = 216
     top = 147
   end
 end
