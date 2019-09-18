@@ -5,7 +5,7 @@ unit udmpdv;
 interface
 
 uses
-  Classes, SysUtils, IBConnection, sqldb, pqconnection, db, FileUtil, IniFiles,
+  Classes, SysUtils, IBConnection, sqldb, db, FileUtil, IniFiles,
   Dialogs,  base64;
 
 type

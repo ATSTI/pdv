@@ -19,8 +19,6 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCtePrincipal"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="4339"/>
         <CursorPos X="26" Y="4353"/>
         <UsageCount Value="166"/>
         <Bookmarks Count="6">
@@ -40,9 +38,8 @@
         <ComponentName Value="dmPdv"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <EditorIndex Value="4"/>
-        <TopLine Value="384"/>
-        <CursorPos X="59" Y="398"/>
+        <EditorIndex Value="3"/>
+        <CursorPos X="43" Y="8"/>
         <UsageCount Value="129"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -54,8 +51,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="uDmCte"/>
-        <EditorIndex Value="5"/>
-        <TopLine Value="168"/>
+        <EditorIndex Value="4"/>
         <CursorPos X="51" Y="180"/>
         <UsageCount Value="128"/>
         <Loaded Value="True"/>
@@ -68,7 +64,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uNFe"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="6"/>
         <TopLine Value="75"/>
         <CursorPos X="5" Y="91"/>
         <UsageCount Value="123"/>
@@ -103,7 +99,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uQuantCarga"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="8"/>
         <TopLine Value="67"/>
         <CursorPos Y="80"/>
         <UsageCount Value="79"/>
@@ -117,8 +113,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uClienteBusca"/>
-        <EditorIndex Value="3"/>
-        <TopLine Value="118"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
         <CursorPos X="21" Y="136"/>
         <UsageCount Value="33"/>
         <Loaded Value="True"/>
@@ -156,13 +152,26 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uPadrao"/>
-        <EditorIndex Value="8"/>
-        <TopLine Value="41"/>
+        <EditorIndex Value="7"/>
         <CursorPos Y="55"/>
         <UsageCount Value="30"/>
         <Loaded Value="True"/>
       </Unit11>
       <Unit12>
+        <Filename Value="uveiculocte.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fVeiculoCte"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uVeiculoCte"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="134"/>
+        <CursorPos X="29" Y="137"/>
+        <UsageCount Value="29"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit12>
+      <Unit13>
         <Filename Value="..\upadraobusca.pas"/>
         <ComponentName Value="fPadraoBusca"/>
         <HasResources Value="True"/>
@@ -172,23 +181,23 @@
         <TopLine Value="43"/>
         <CursorPos X="53" Y="59"/>
         <UsageCount Value="20"/>
-      </Unit12>
-      <Unit13>
+      </Unit13>
+      <Unit14>
         <Filename Value="..\uclientebusca.pas"/>
         <HasResources Value="True"/>
         <UnitName Value="uClienteBusca"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="63" Y="12"/>
         <UsageCount Value="19"/>
-      </Unit13>
-      <Unit14>
+      </Unit14>
+      <Unit15>
         <Filename Value="C:\lazarus\lcl\include\custompage.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="252"/>
         <CursorPos Y="265"/>
         <UsageCount Value="4"/>
-      </Unit14>
-      <Unit15>
+      </Unit15>
+      <Unit16>
         <Filename Value="ucteprincipal.lfm"/>
         <ComponentName Value="fCTePrincipal"/>
         <HasResources Value="True"/>
@@ -204,122 +213,107 @@
         </ExtraEditor1>
         <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
-      </Unit15>
-      <Unit16>
+      </Unit16>
+      <Unit17>
         <Filename Value="prjCTe.lpi"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="56"/>
         <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="XML"/>
-      </Unit16>
-      <Unit17>
+      </Unit17>
+      <Unit18>
         <Filename Value="C:\lazarus\lcl\comctrls.pp"/>
         <UnitName Value="ComCtrls"/>
         <EditorIndex Value="-1"/>
         <UsageCount Value="3"/>
-      </Unit17>
-      <Unit18>
+      </Unit18>
+      <Unit19>
         <Filename Value="..\..\..\..\..\usr\share\lazarus\2.0.4\lcl\include\customform.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="446"/>
         <CursorPos Y="460"/>
         <UsageCount Value="7"/>
-      </Unit18>
-      <Unit19>
+      </Unit19>
+      <Unit20>
         <Filename Value="..\..\acbr\Exemplos\ACBrDFe\ACBrNFe\Lazarus\ufrmStatus.pas"/>
         <ComponentName Value="frmStatus"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
         <UsageCount Value="1"/>
-      </Unit19>
-      <Unit20>
+      </Unit20>
+      <Unit21>
         <Filename Value="..\..\..\..\..\usr\share\fpcsrc\3.0.4\packages\fcl-db\src\sqldb\interbase\ibconnection.pp"/>
         <UnitName Value="IBConnection"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1739"/>
         <CursorPos X="34" Y="604"/>
         <UsageCount Value="4"/>
-      </Unit20>
-      <Unit21>
+      </Unit21>
+      <Unit22>
         <Filename Value="..\..\..\..\..\usr\share\lazarus\2.0.4\lcl\include\application.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2238"/>
         <CursorPos Y="2256"/>
         <UsageCount Value="7"/>
-      </Unit21>
-      <Unit22>
+      </Unit22>
+      <Unit23>
         <Filename Value="..\..\..\..\..\usr\share\lazarus\2.0.4\lcl\interfaces\gtk2\gtk2wscustommemo.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="118"/>
         <CursorPos Y="131"/>
         <UsageCount Value="5"/>
-      </Unit22>
-      <Unit23>
+      </Unit23>
+      <Unit24>
         <Filename Value="..\..\lazarus\acbr\Fontes\ACBrTCP\ACBrMail.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="367"/>
         <CursorPos Y="381"/>
         <UsageCount Value="20"/>
-      </Unit23>
-      <Unit24>
+      </Unit24>
+      <Unit25>
         <Filename Value="..\..\..\..\..\usr\share\lazarus\2.0.4\lcl\include\radiogroup.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="370"/>
         <CursorPos Y="384"/>
         <UsageCount Value="17"/>
-      </Unit24>
-      <Unit25>
+      </Unit25>
+      <Unit26>
         <Filename Value="..\..\..\..\..\usr\share\lazarus\2.0.4\lcl\include\bitbtn.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="46"/>
         <CursorPos Y="67"/>
         <UsageCount Value="16"/>
-      </Unit25>
-      <Unit26>
+      </Unit26>
+      <Unit27>
         <Filename Value="..\pdv\updv.pas"/>
         <HasResources Value="True"/>
         <UnitName Value="uPdv"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="277"/>
         <CursorPos Y="292"/>
         <UsageCount Value="18"/>
-        <Loaded Value="True"/>
-      </Unit26>
-      <Unit27>
+      </Unit27>
+      <Unit28>
         <Filename Value="..\pdv\uclientebusca.pas"/>
         <HasResources Value="True"/>
         <UnitName Value="uClienteBusca"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="26" Y="15"/>
         <UsageCount Value="20"/>
-      </Unit27>
-      <Unit28>
+      </Unit28>
+      <Unit29>
         <Filename Value="..\pdv\uclientebusca.lfm"/>
         <EditorIndex Value="-1"/>
         <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
-      </Unit28>
-      <Unit29>
+      </Unit29>
+      <Unit30>
         <Filename Value="..\geral\uclientebusca.lfm"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="91"/>
         <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
-      </Unit29>
-      <Unit30>
-        <Filename Value="uveiculocte.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="fVeiculoCte"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="uVeiculoCte"/>
-        <EditorIndex Value="6"/>
-        <TopLine Value="134"/>
-        <CursorPos X="29" Y="137"/>
-        <UsageCount Value="29"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit30>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
