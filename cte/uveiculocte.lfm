@@ -1,0 +1,364 @@
+inherited fVeiculoCte: TfVeiculoCte
+  Left = 387
+  Top = 266
+  Caption = 'Veiculo'
+  OnCreate = FormCreate
+  OnShow = FormShow
+  inherited Panel2: TPanel
+    inherited btnSALV: TImage
+      OnClick = btnSALVClick
+    end
+  end
+  inherited Panel3: TPanel
+    object DBEdit1: TDBEdit[0]
+      Left = 184
+      Height = 27
+      Top = 16
+      Width = 80
+      DataField = 'RENAVAM'
+      DataSource = dmCte.dsVeiculo
+      CharCase = ecNormal
+      MaxLength = 0
+      TabOrder = 0
+    end
+    object DBEdit2: TDBEdit[1]
+      Left = 184
+      Height = 27
+      Top = 48
+      Width = 80
+      DataField = 'PLACA'
+      DataSource = dmCte.dsVeiculo
+      CharCase = ecNormal
+      MaxLength = 0
+      TabOrder = 1
+    end
+    object DBEdit3: TDBEdit[2]
+      Left = 184
+      Height = 27
+      Top = 80
+      Width = 80
+      DataField = 'TARA'
+      DataSource = dmCte.dsVeiculo
+      CharCase = ecNormal
+      MaxLength = 0
+      TabOrder = 2
+    end
+    object DBEdit4: TDBEdit[3]
+      Left = 184
+      Height = 27
+      Top = 112
+      Width = 80
+      DataField = 'CAPKG'
+      DataSource = dmCte.dsVeiculo
+      CharCase = ecNormal
+      MaxLength = 0
+      TabOrder = 3
+    end
+    object DBEdit5: TDBEdit[4]
+      Left = 184
+      Height = 27
+      Top = 144
+      Width = 80
+      DataField = 'CAPM3'
+      DataSource = dmCte.dsVeiculo
+      CharCase = ecNormal
+      MaxLength = 0
+      TabOrder = 4
+    end
+    object DBEdit6: TDBEdit[5]
+      Left = 400
+      Height = 27
+      Top = 80
+      Width = 80
+      DataField = 'VUF'
+      DataSource = dmCte.dsVeiculo
+      CharCase = ecNormal
+      MaxLength = 0
+      TabOrder = 5
+    end
+    object Label1: TLabel[6]
+      Left = 35
+      Height = 17
+      Top = 16
+      Width = 52
+      Caption = 'Renavam'
+      ParentColor = False
+    end
+    object Label2: TLabel[7]
+      Left = 35
+      Height = 17
+      Top = 48
+      Width = 30
+      Caption = 'Placa'
+      ParentColor = False
+    end
+    object Label3: TLabel[8]
+      Left = 35
+      Height = 17
+      Top = 80
+      Width = 49
+      Caption = 'Tara (kg)'
+      ParentColor = False
+    end
+    object Label4: TLabel[9]
+      Left = 35
+      Height = 17
+      Top = 112
+      Width = 90
+      Caption = 'Capacidade (kg)'
+      ParentColor = False
+    end
+    object Label5: TLabel[10]
+      Left = 35
+      Height = 17
+      Top = 144
+      Width = 95
+      Caption = 'Capacidade (M3)'
+      ParentColor = False
+    end
+    object Label6: TLabel[11]
+      Left = 35
+      Height = 17
+      Top = 176
+      Width = 86
+      Caption = 'Tipo de Rodado'
+      ParentColor = False
+    end
+    object Label7: TLabel[12]
+      Left = 352
+      Height = 17
+      Top = 176
+      Width = 104
+      Caption = 'Tipo de Carroceria'
+      ParentColor = False
+    end
+    object Label8: TLabel[13]
+      Left = 352
+      Height = 17
+      Top = 129
+      Width = 84
+      Caption = 'Tipo de Veiculo'
+      ParentColor = False
+    end
+    object Label16: TLabel[14]
+      Left = 344
+      Height = 17
+      Top = 80
+      Width = 44
+      Caption = 'UF Veic.'
+      ParentColor = False
+    end
+    object gbProprietario: TGroupBox[15]
+      Left = 40
+      Height = 139
+      Top = 272
+      Width = 632
+      Caption = 'Proprietário (Quando o Veículo não for do emitente do CT-e)'
+      ClientHeight = 120
+      ClientWidth = 628
+      TabOrder = 6
+      Visible = False
+      object Label11: TLabel
+        Left = 8
+        Height = 17
+        Top = 1
+        Width = 58
+        Caption = 'CPF / CNPJ'
+        ParentColor = False
+      end
+      object DBEdit7: TDBEdit
+        Left = 88
+        Height = 27
+        Top = 0
+        Width = 144
+        DataField = 'CNPJ'
+        DataSource = dmCte.dsVeiculo
+        CharCase = ecNormal
+        MaxLength = 0
+        TabOrder = 0
+      end
+      object Label14: TLabel
+        Left = 8
+        Height = 17
+        Top = 56
+        Width = 72
+        Caption = 'Razão/Nome'
+        ParentColor = False
+      end
+      object DBEdit8: TDBEdit
+        Left = 88
+        Height = 27
+        Top = 56
+        Width = 312
+        DataField = 'NOME'
+        DataSource = dmCte.dsVeiculo
+        CharCase = ecNormal
+        MaxLength = 0
+        TabOrder = 1
+      end
+      object Label15: TLabel
+        Left = 8
+        Height = 17
+        Top = 28
+        Width = 77
+        Caption = 'Insc. Estadual'
+        ParentColor = False
+      end
+      object DBEdit9: TDBEdit
+        Left = 88
+        Height = 27
+        Top = 28
+        Width = 144
+        DataField = 'IE'
+        DataSource = dmCte.dsVeiculo
+        CharCase = ecNormal
+        MaxLength = 0
+        TabOrder = 2
+      end
+      object btnBuscaProprietario: TBitBtn
+        Left = 232
+        Height = 30
+        Top = 0
+        Width = 75
+        Caption = '...'
+        OnClick = btnBuscaProprietarioClick
+        TabOrder = 3
+      end
+      object Label10: TLabel
+        Left = 8
+        Height = 17
+        Top = 96
+        Width = 15
+        Caption = 'UF'
+        ParentColor = False
+      end
+      object DBEdit12: TDBEdit
+        Left = 88
+        Height = 27
+        Top = 86
+        Width = 56
+        DataField = 'UF'
+        DataSource = dmCte.dsVeiculo
+        CharCase = ecNormal
+        MaxLength = 0
+        TabOrder = 4
+      end
+    end
+    object DBEdit10: TDBEdit[16]
+      Left = 400
+      Height = 27
+      Hint = 'Código interno de uso da transportadora'
+      Top = 16
+      Width = 216
+      DataField = 'CINT'
+      DataSource = dmCte.dsVeiculo
+      CharCase = ecNormal
+      MaxLength = 0
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 7
+    end
+    object Label17: TLabel[17]
+      Left = 360
+      Height = 17
+      Top = 16
+      Width = 28
+      Caption = 'CINT'
+      ParentColor = False
+    end
+    object Label18: TLabel[18]
+      Left = 350
+      Height = 17
+      Top = 46
+      Width = 38
+      Caption = 'RNTRC'
+      ParentColor = False
+    end
+    object cbTpVeic: TComboBox[19]
+      Left = 352
+      Height = 27
+      Top = 148
+      Width = 320
+      ItemHeight = 0
+      Items.Strings = (
+        '0-Tração'
+        '1-Reboque'
+      )
+      TabOrder = 8
+    end
+    object cbTpRodado: TComboBox[20]
+      Left = 35
+      Height = 27
+      Top = 200
+      Width = 301
+      ItemHeight = 0
+      Items.Strings = (
+        '00 - não aplicável'
+        '01 - Truck'
+        '02 - Toco'
+        '03 - Cavalo Mecânico'
+        '04 - VAN'
+        '05 - utilitário'
+        '06 - automóvel'
+        '99 - outros'
+      )
+      TabOrder = 9
+    end
+    object DBEdit11: TDBEdit[21]
+      Left = 400
+      Height = 27
+      Hint = 'Código interno de uso da transportadora'
+      Top = 46
+      Width = 216
+      DataField = 'RNTRC'
+      DataSource = dmCte.dsVeiculo
+      CharCase = ecNormal
+      MaxLength = 0
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 10
+    end
+    object cbTpCarroceria: TComboBox[22]
+      Left = 352
+      Height = 27
+      Top = 200
+      Width = 320
+      ItemHeight = 0
+      Items.Strings = (
+        '00 - não aplicável'
+        '01 - Aberta'
+        '02 - Fechada/Baú'
+        '03 - Granelera'
+        '04 - Porta Container'
+        '05 - Sider'
+      )
+      TabOrder = 11
+      Text = 'cbTpCarroceria'
+    end
+    object Label13: TLabel[23]
+      Left = 40
+      Height = 17
+      Top = 240
+      Width = 111
+      Caption = 'Tipo de Proprietario'
+      ParentColor = False
+    end
+    object cbProprietario: TComboBox[24]
+      Left = 176
+      Height = 27
+      Top = 240
+      Width = 276
+      ItemHeight = 0
+      Items.Strings = (
+        'Próprio'
+        'Terceiro'
+      )
+      OnChange = cbProprietarioChange
+      TabOrder = 12
+    end
+  end
+  inherited ds: TDataSource
+    left = 120
+    top = 24
+  end
+end

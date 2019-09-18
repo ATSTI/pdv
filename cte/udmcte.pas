@@ -185,6 +185,7 @@ type
     cdsCteVERPROC: TStringField;
     cdsCteVPREST: TFloatField;
     cdsCteVREC: TFloatField;
+    dsVeiculo: TDataSource;
     dsNFe: TDataSource;
     dsComp: TDataSource;
     dsQC: TDataSource;
@@ -209,6 +210,26 @@ type
     sqComp: TSQLQuery;
     sqVeic: TSQLQuery;
     sqMot: TSQLQuery;
+    sqVeicCAPKG: TLongintField;
+    sqVeicCAPM3: TLongintField;
+    sqVeicCINT: TStringField;
+    sqVeicCNPJ: TStringField;
+    sqVeicCOD_CTE: TLongintField;
+    sqVeicCOD_CTE_VEICULOS: TLongintField;
+    sqVeicIE: TStringField;
+    sqVeicNOME: TStringField;
+    sqVeicPLACA: TStringField;
+    sqVeicRENAVAM: TStringField;
+    sqVeicRNTRC: TStringField;
+    sqVeicTARA: TLongintField;
+    sqVeicTPCAR: TStringField;
+    sqVeicTPPROP: TStringField;
+    sqVeicTPROD: TStringField;
+    sqVeicTPVEIC: TStringField;
+    sqVeicUF: TStringField;
+    sqVeicVALINFCARGA: TFloatField;
+    sqVeicVTPPROP: TLongintField;
+    sqVeicVUF: TStringField;
   private
 
   public

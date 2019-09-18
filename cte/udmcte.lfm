@@ -3027,7 +3027,120 @@ object dmCte: TdmCte
     top = 88
   end
   object sqVeic: TSQLQuery
-    FieldDefs = <>
+    FieldDefs = <    
+      item
+        Name = 'COD_CTE_VEICULOS'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'COD_CTE'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'CINT'
+        DataType = ftString
+        Precision = -1
+        Size = 40
+      end    
+      item
+        Name = 'RENAVAM'
+        DataType = ftString
+        Precision = -1
+        Size = 44
+      end    
+      item
+        Name = 'PLACA'
+        DataType = ftString
+        Precision = -1
+        Size = 28
+      end    
+      item
+        Name = 'TARA'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'CAPKG'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'CAPM3'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'TPROD'
+        DataType = ftString
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'TPCAR'
+        DataType = ftString
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'TPVEIC'
+        DataType = ftString
+        Precision = -1
+        Size = 4
+      end    
+      item
+        Name = 'TPPROP'
+        DataType = ftString
+        Precision = -1
+        Size = 4
+      end    
+      item
+        Name = 'UF'
+        DataType = ftString
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'CNPJ'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'RNTRC'
+        DataType = ftString
+        Precision = -1
+        Size = 32
+      end    
+      item
+        Name = 'NOME'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'IE'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'VTPPROP'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'VUF'
+        DataType = ftString
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'VALINFCARGA'
+        DataType = ftFloat
+        Precision = -1
+      end>
     Database = dmPdv.IbCon
     Transaction = dmPdv.sTrans
     SQL.Strings = (
@@ -3041,6 +3154,202 @@ object dmCte: TdmCte
       end>
     left = 416
     top = 88
+    object sqVeicCOD_CTE_VEICULOS: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_CTE_VEICULOS'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object sqVeicCOD_CTE: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_CTE'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqVeicCINT: TStringField
+      FieldKind = fkData
+      FieldName = 'CINT'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object sqVeicRENAVAM: TStringField
+      FieldKind = fkData
+      FieldName = 'RENAVAM'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 44
+    end
+    object sqVeicPLACA: TStringField
+      FieldKind = fkData
+      FieldName = 'PLACA'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 28
+    end
+    object sqVeicTARA: TLongintField
+      FieldKind = fkData
+      FieldName = 'TARA'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqVeicCAPKG: TLongintField
+      FieldKind = fkData
+      FieldName = 'CAPKG'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqVeicCAPM3: TLongintField
+      FieldKind = fkData
+      FieldName = 'CAPM3'
+      Index = 7
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqVeicTPROD: TStringField
+      FieldKind = fkData
+      FieldName = 'TPROD'
+      Index = 8
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object sqVeicTPCAR: TStringField
+      FieldKind = fkData
+      FieldName = 'TPCAR'
+      Index = 9
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object sqVeicTPVEIC: TStringField
+      FieldKind = fkData
+      FieldName = 'TPVEIC'
+      Index = 10
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 4
+    end
+    object sqVeicTPPROP: TStringField
+      FieldKind = fkData
+      FieldName = 'TPPROP'
+      Index = 11
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 4
+    end
+    object sqVeicUF: TStringField
+      FieldKind = fkData
+      FieldName = 'UF'
+      Index = 12
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object sqVeicCNPJ: TStringField
+      FieldKind = fkData
+      FieldName = 'CNPJ'
+      Index = 13
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object sqVeicRNTRC: TStringField
+      FieldKind = fkData
+      FieldName = 'RNTRC'
+      Index = 14
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 32
+    end
+    object sqVeicNOME: TStringField
+      FieldKind = fkData
+      FieldName = 'NOME'
+      Index = 15
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object sqVeicIE: TStringField
+      FieldKind = fkData
+      FieldName = 'IE'
+      Index = 16
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object sqVeicVTPPROP: TLongintField
+      FieldKind = fkData
+      FieldName = 'VTPPROP'
+      Index = 17
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqVeicVUF: TStringField
+      FieldKind = fkData
+      FieldName = 'VUF'
+      Index = 18
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object sqVeicVALINFCARGA: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALINFCARGA'
+      Index = 19
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
   end
   object sqMot: TSQLQuery
     FieldDefs = <>
@@ -3077,5 +3386,10 @@ object dmCte: TdmCte
     DataSet = sqNFe
     left = 216
     top = 147
+  end
+  object dsVeiculo: TDataSource
+    DataSet = sqVeic
+    left = 415
+    top = 154
   end
 end

@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-  Buttons, EditBtn;
+  Buttons, EditBtn, DBCtrls, db;
 
 type
 
@@ -14,16 +14,16 @@ type
 
   TfQuantCarga = class(TForm)
     btnGravar: TBitBtn;
-    btnEditar: TBitBtn;
     btnFechar: TBitBtn;
-    valQC: TCalcEdit;
+    dbQCtpMed: TDBEdit;
+    dbQCQuant: TDBEdit;
     cbTipoUN: TComboBox;
-    edCodUn: TLabeledEdit;
     Label1: TLabel;
     Label2: TLabel;
     procedure btnEditarClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure btnGravarClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
 
   public
@@ -47,72 +47,56 @@ begin
 end;
 
 procedure TfQuantCarga.btnEditarClick(Sender: TObject);
-var strEdita :string;
 begin
-  if (cbTipoUN.Text <> '') then
-  begin
-    FormatSettings.DecimalSeparator := '.';
-    strEdita := 'UPDATE CTE_QC SET UNID = ';
-    strEdita := strEdita + QuotedStr(Copy(cbTipoUn.Text,1,2));
-    strEdita := strEdita + ', MEDIDA = ';
-    strEdita := strEdita +  QuotedStr(edCodUn.Text);
-    strEdita := strEdita + ', QUANT = ';
-    strEdita := strEdita + FloatToStr(valQc.AsFloat) ; //+  Format('%8.2f', [valQCQ.Value]);
-    strEdita := strEdita + ' WHERE COD_CTE_QC = ';
-    strEdita := strEdita + IntToStr(dmCte.sqQCCOD_CTE_QC.AsInteger);
-    FormatSettings.DecimalSeparator := ',';
-    try
-      dmPdv.Ibcon.ExecuteDirect(strEdita);
-      dmPdv.sTrans.Commit;
-      dmCte.sqQC.Refresh;
-      fcarga := 1;
-      close;
-    except
-      on E : Exception do
-      begin
-        ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-        dmPdv.sTrans.Rollback;
-        exit;
-      end;
-    end;
-  end;
 end;
 
 procedure TfQuantCarga.btnGravarClick(Sender: TObject);
-var strInsere :string;
+var vQCstr_sql :string;
 begin
-  if (dmCte.cdsCTENPROT.AsString <> '') then
+  vQCstr_sql := '';
+  FormatSettings.DecimalSeparator := '.';
+  if (dmCte.dsQC.State in [dsInsert]) then
   begin
-    MessageDlg('CTe Ja Enviada.', mtInformation, [mbOK], 0);
-    exit;
-  end;
-  if (cbTipoUn.Text <> '') then
-  begin
-    strInsere := 'INSERT INTO CTE_QC (COD_CTE ,UNID, MEDIDA, QUANT  ' +
+    vQCstr_sql := 'INSERT INTO CTE_QC (COD_CTE ,UNID, MEDIDA, QUANT  ' +
                  ') VALUES ( ';
-    FormatSettings.DecimalSeparator := '.';
+    vQCstr_sql := vQCstr_sql + IntToStr(dmCte.cdsCteCOD_CTE.AsInteger);
+    vQCstr_sql := vQCstr_sql + ', ' + QuotedStr(Copy(cbTipoUn.Text,1,2));
+    vQCstr_sql := vQCstr_sql + ', ' + QuotedStr(dmCte.sqQCMEDIDA.AsString);
+    vQCstr_sql := vQCstr_sql + ', ' +  FloatToStr(dmCte.sqQCQUANT.AsFloat) ;
+    vQCstr_sql := vQCstr_sql + ')';
+  end;
+  if (dmCte.dsQC.State in [dsEdit]) then
+  begin
+    vQCstr_sql := 'UPDATE CTE_QC SET UNID = ';
+    vQCstr_sql := vQCstr_sql + QuotedStr(Copy(cbTipoUn.Text,1,2));
+    vQCstr_sql := vQCstr_sql + ', MEDIDA = ';
+    vQCstr_sql := vQCstr_sql +  QuotedStr(dmCte.sqQCMEDIDA.AsString);
+    vQCstr_sql := vQCstr_sql + ', QUANT = ';
+    vQCstr_sql := vQCstr_sql + FloatToStr(dmCte.sqQCQUANT.AsFloat);
+    vQCstr_sql := vQCstr_sql + ' WHERE COD_CTE_QC = ';
+    vQCstr_sql := vQCstr_sql + IntToStr(dmCte.sqQCCOD_CTE_QC.AsInteger);
+  end;
+  FormatSettings.DecimalSeparator := ',';
+  if (vQCstr_sql <> '') then
+    dmPdv.Ibcon.ExecuteDirect(vQCstr_sql);
+  Close;
+end;
 
-    strInsere := strInsere + IntToStr(dmCte.sqQCCOD_CTE.AsInteger);
-    strInsere := strInsere + ', ' + QuotedStr(Copy(cbTipoUn.Text,1,2));
-    strInsere := strInsere + ', ' + QuotedStr(edCodUn.Text);
-    strInsere := strInsere + ', ' +  FloatToStr(valQC.AsFloat) ;
-    strInsere := strInsere + ')';
-    FormatSettings.DecimalSeparator := ',';
-    try
-      dmPdv.Ibcon.ExecuteDirect(strInsere);
-      dmPdv.sTrans.Commit;
-      dmCte.sqQC.Refresh;
-      fcarga := 1;
-      Close;
-    except
-      on E : Exception do
-      begin
-        ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-        dmPdv.sTrans.Rollback;
-        exit;
-      end;
-    end;
-  end
+procedure TfQuantCarga.FormShow(Sender: TObject);
+begin
+  cbTipoUN.ItemIndex := -1;
+  if (dmCte.sqQCUNID.AsString = '00') then
+    cbTipoUN.ItemIndex := 0;
+  if (dmCte.sqQCUNID.AsString = '01') then
+    cbTipoUN.ItemIndex := 1;
+  if (dmCte.sqQCUNID.AsString = '02') then
+    cbTipoUN.ItemIndex := 2;
+  if (dmCte.sqQCUNID.AsString = '03') then
+    cbTipoUN.ItemIndex := 3;
+  if (dmCte.sqQCUNID.AsString = '04') then
+    cbTipoUN.ItemIndex := 4;
+  if(dmCte.sqQCUNID.AsString = '05') then
+    cbTipoUN.ItemIndex := 5;
 end;
 
 end.

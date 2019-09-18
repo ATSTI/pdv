@@ -6,24 +6,14 @@ object fQuantCarga: TfQuantCarga
   Caption = 'Quantidade Carga'
   ClientHeight = 240
   ClientWidth = 320
+  OnShow = FormShow
   LCLVersion = '2.0.4.0'
-  object edCodUn: TLabeledEdit
-    Left = 72
-    Height = 27
-    Top = 36
-    Width = 208
-    EditLabel.Height = 17
-    EditLabel.Width = 208
-    EditLabel.Caption = '* Codigo da Unidade de Medidas'
-    EditLabel.ParentColor = False
-    TabOrder = 0
-  end
   object Label1: TLabel
     Left = 74
     Height = 17
     Top = 78
-    Width = 96
-    Caption = '* Tipo de Medida'
+    Width = 178
+    Caption = '* Código da Unidade de Medida'
     ParentColor = False
   end
   object cbTipoUN: TComboBox
@@ -43,50 +33,25 @@ object fQuantCarga: TfQuantCarga
     TabOrder = 1
   end
   object btnGravar: TBitBtn
-    Left = 36
+    Left = 120
     Height = 30
-    Top = 202
+    Top = 200
     Width = 75
     Default = True
     DefaultCaption = True
     Kind = bkOK
     ModalResult = 1
     OnClick = btnGravarClick
-    TabOrder = 2
-  end
-  object btnEditar: TBitBtn
-    Left = 120
-    Height = 30
-    Top = 202
-    Width = 75
-    Caption = 'Editar'
-    OnClick = btnEditarClick
     TabOrder = 3
   end
   object btnFechar: TBitBtn
     Left = 205
     Height = 30
-    Top = 202
+    Top = 200
     Width = 75
     Caption = 'Fechar'
     OnClick = btnFecharClick
     TabOrder = 4
-  end
-  object valQC: TCalcEdit
-    Left = 75
-    Height = 27
-    Top = 152
-    Width = 103
-    CalculatorLayout = clNormal
-    AsFloat = 0
-    AsInteger = 0
-    ButtonWidth = 23
-    DialogTop = 0
-    DialogLeft = 0
-    NumGlyphs = 1
-    MaxLength = 0
-    TabOrder = 5
-    Text = 'valQC'
   end
   object Label2: TLabel
     Left = 75
@@ -95,5 +60,27 @@ object fQuantCarga: TfQuantCarga
     Width = 75
     Caption = '* Quantidade'
     ParentColor = False
+  end
+  object dbQCtpMed: TDBEdit
+    Left = 75
+    Height = 27
+    Top = 32
+    Width = 205
+    DataField = 'MEDIDA'
+    DataSource = dmCte.dsQC
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 0
+  end
+  object dbQCQuant: TDBEdit
+    Left = 75
+    Height = 27
+    Top = 160
+    Width = 80
+    DataField = 'QUANT'
+    DataSource = dmCte.dsQC
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 2
   end
 end

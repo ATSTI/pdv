@@ -18,7 +18,16 @@ type
     ACBrCTe1: TACBrCTe;
     ACBrNFe1: TACBrNFe;
     BitBtn1: TBitBtn;
+    BitBtn10: TBitBtn;
+    BitBtn11: TBitBtn;
+    BitBtn12: TBitBtn;
+    btnVeicIncluir: TBitBtn;
+    btnVeicEditar: TBitBtn;
+    btnVeicExcluir: TBitBtn;
     BitBtn2: TBitBtn;
+    BitBtn6: TBitBtn;
+    BitBtn7: TBitBtn;
+    BitBtn9: TBitBtn;
     btnGerarPDFInut: TBitBtn;
     btnImprimirInut: TBitBtn;
     btnEnviarEventoEmail: TBitBtn;
@@ -32,13 +41,32 @@ type
     btnEnvEPEC: TBitBtn;
     btnGerar: TBitBtn;
     btnGravarCTe: TBitBtn;
+    btnInfCargaEdita1: TBitBtn;
+    btnInfCargaExclui1: TBitBtn;
+    btnInfCargaInclui1: TBitBtn;
     btnListarCte: TBitBtn;
     comboEmpresa: TComboBox;
+    dataRodPrev: TDateTimePicker;
     DateTimePicker1: TDateTimePicker;
     DateTimePicker2: TDateTimePicker;
     calValB: TDBEdit;
+    DBGrid1: TDBGrid;
+    DBGrid2: TDBGrid;
+    DBGrid3: TDBGrid;
+    edtRodRNTRC: TEdit;
+    GroupBox1: TGroupBox;
+    GroupBox2: TGroupBox;
+    GroupBox5: TGroupBox;
+    GroupBox6: TGroupBox;
+    GroupBox8: TGroupBox;
+    Label123: TLabel;
+    Label124: TLabel;
     Label140: TLabel;
     Label141: TLabel;
+    Panel4: TPanel;
+    Panel5: TPanel;
+    Panel6: TPanel;
+    rgRodLotacao: TRadioGroup;
     valAliIn: TDBEdit;
     dbValInfCarga: TDBEdit;
     valOutrosVal: TDBEdit;
@@ -70,7 +98,6 @@ type
     btnPreVisu: TBitBtn;
     btnInfCargaEdita: TBitBtn;
     btnInfCargaInclui: TBitBtn;
-    btnInfCargaGrava: TBitBtn;
     btnInfCargaExclui: TBitBtn;
     BitBtn15: TBitBtn;
     btnEditarComp: TBitBtn;
@@ -80,7 +107,6 @@ type
     btnEditarNFe: TBitBtn;
     btnIncluirNFe: TBitBtn;
     btnExcluirNFe: TBitBtn;
-    BitBtn19: TBitBtn;
     btnIncCte: TBitBtn;
     BitBtn3: TBitBtn;
     BitBtn4: TBitBtn;
@@ -108,7 +134,6 @@ type
     cbUF: TComboBox;
     combOutrosDocs: TComboBox;
     dataGerarCte: TDateTimePicker;
-    dataRodPrev: TDateTimePicker;
     dbGridQC: TDBGrid;
     dbGridComp: TDBGrid;
     DBGridNFe: TDBGrid;
@@ -157,15 +182,12 @@ type
     edtNumCte18: TEdit;
     edtNumCte19: TEdit;
     edtSmtpHost: TEdit;
-    edtRodRNTRC: TEdit;
     edtOutrosDesc: TEdit;
     edtOutrosNum: TEdit;
     edtProxyPorta: TEdit;
     edtProxySenha: TEdit;
     edtProxyUser: TEdit;
     edtEmailAssunto: TEdit;
-    GroupBox1: TGroupBox;
-    GroupBox2: TGroupBox;
     GroupBox3: TGroupBox;
     GroupBox4: TGroupBox;
     GroupBoxTomador: TGroupBox;
@@ -189,8 +211,6 @@ type
     Label117: TLabel;
     Label118: TLabel;
     Label119: TLabel;
-    Label123: TLabel;
-    Label124: TLabel;
     Label125: TLabel;
     Label126: TLabel;
     Label127: TLabel;
@@ -213,7 +233,6 @@ type
     memxObs: TMemo;
     rgTipoDACTe: TRadioGroup;
     rgTipoAmb: TRadioGroup;
-    rgRodLotacao: TRadioGroup;
     sbtnCaminhoCert: TSpeedButton;
     StatusBar1: TStatusBar;
     TabSheet12: TTabSheet;
@@ -495,8 +514,19 @@ type
     TabRecebedor: TTabSheet;
     TabDestinatario: TTabSheet;
     procedure ACBrCTe1StatusChange(Sender: TObject);
+    procedure BitBtn10Click(Sender: TObject);
+    procedure BitBtn11Click(Sender: TObject);
+    procedure BitBtn12Click(Sender: TObject);
     procedure BitBtn15Click(Sender: TObject);
+    procedure BitBtn19Click(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
+    procedure BitBtn3Click(Sender: TObject);
+    procedure BitBtn4Click(Sender: TObject);
+    procedure BitBtn5Click(Sender: TObject);
+    procedure BitBtn6Click(Sender: TObject);
+    procedure BitBtn7Click(Sender: TObject);
+    procedure BitBtn9Click(Sender: TObject);
     procedure btnEditarNFeClick(Sender: TObject);
     procedure btnExcluirNFeClick(Sender: TObject);
     procedure btnGerarPDFInutClick(Sender: TObject);
@@ -534,9 +564,13 @@ type
     procedure btnPreVisuClick(Sender: TObject);
     procedure btnStatusServClick(Sender: TObject);
     procedure btnValidarXMLClick(Sender: TObject);
+    procedure btnVeicEditarClick(Sender: TObject);
+    procedure btnVeicExcluirClick(Sender: TObject);
+    procedure btnVeicIncluirClick(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure comboEmpresaChange(Sender: TObject);
     procedure dbValInfCargaChange(Sender: TObject);
+    procedure dgGridCTEDblClick(Sender: TObject);
     procedure edtBuscaTomadorExit(Sender: TObject);
     procedure edtCfopExit(Sender: TObject);
     procedure edtDestBuscaExit(Sender: TObject);
@@ -621,7 +655,8 @@ const
 
 implementation
 
-uses udmpdv, ufrmStatus, uDmCte, uNFe, uCompValor, uQuantCarga;
+uses udmpdv, ufrmStatus, uDmCte, uNFe, uCompValor, uQuantCarga, uVeiculoCte,
+  uClienteBusca, umunicipiobusca;
 
 {$R *.lfm}
 
@@ -830,6 +865,10 @@ begin
     edtEmitCodCidade.Text:= LimparString(dmPdv.sqEmpresaCD_IBGE.AsString,'-');
     edtEmitCidade.Text   := dmPdv.sqEmpresaCIDADE.AsString;
     edtEmitUF.Text       := dmPdv.sqEmpresaUF.AsString;
+
+    edtEnvUF.Text := dmPdv.sqEmpresaUF.AsString;
+    edtEnvCodCidade.Text := LimparString(dmPdv.sqEmpresaCD_IBGE.AsString,'-');
+    edtEnvCidade.Text := dmPdv.sqEmpresaCIDADE.AsString;
 
     edtSmtpHost.Text     := dmPdv.sqEmpresaSMTP.AsString;
     edtSmtpPort.Text     := dmPdv.sqEmpresaPORTA.AsString;
@@ -2881,6 +2920,11 @@ begin
 
 end;
 
+procedure TfCTePrincipal.dgGridCTEDblClick(Sender: TObject);
+begin
+  btnEditarCte.Click;
+end;
+
 procedure TfCTePrincipal.edtBuscaTomadorExit(Sender: TObject);
 begin
   if (edtBuscaTomador.Text <> '') then
@@ -3564,11 +3608,6 @@ begin
     MessageDlg('CTe Ja Enviada.', mtInformation, [mbOK], 0);
     exit;
   end;
-
-  if not(dmCte.sqCOMP.Active)then
-    dmCte.sqCOMP.Active;
-  dmCte.sqCOMP.Params[0].AsInteger := val_genCte;
-  dmCte.sqCOMP.Open;
   dmCte.sqCOMP.Edit;
   fCompValor.ShowModal;
 end;
@@ -3600,7 +3639,8 @@ begin
   edtCFOP.ReadOnly      := False;
   edtNatOpe.ReadOnly    := False;
   btnPreVisu.Enabled    := True;
-  pcPrincipal.PageIndex := 1;
+  pcPrincipal.ActivePageIndex := 1;
+  pcCte.ActivePageIndex := 0;
 end;
 
 procedure TfCTePrincipal.btnGerarClick(Sender: TObject);
@@ -3864,6 +3904,75 @@ begin
   Application.ProcessMessages;
 end;
 
+procedure TfCTePrincipal.BitBtn10Click(Sender: TObject);
+begin
+  // busca emitente
+  if (edtExpBusca.Text <> '') then
+  begin
+    fClienteBusca.cCodCliente := StrToInt(edtExpBusca.Text);
+    fClienteBusca.BuscaCliente;
+    if fClienteBusca.cNomeCliente = '' then
+    begin
+      ShowMessage('Cliente não Encontrado');
+      Exit;
+    end;
+    edtExpNome.Text := fClienteBusca.cNomeCliente;
+    edtExpBusca.Text := IntToStr(fClienteBusca.cCodCliente);
+  end
+  else begin
+    fClienteBusca.ShowModal;
+    edtExpBusca.Text := IntToStr(fClienteBusca.cCodCliente);
+    edtExpNome.Text := fClienteBusca.cNomeCliente;
+  end;
+  edtExpBusca.SetFocus;
+end;
+
+procedure TfCTePrincipal.BitBtn11Click(Sender: TObject);
+begin
+  // busca emitente
+  if (edtRecBusca.Text <> '') then
+  begin
+    fClienteBusca.cCodCliente := StrToInt(edtRecBusca.Text);
+    fClienteBusca.BuscaCliente;
+    if fClienteBusca.cNomeCliente = '' then
+    begin
+      ShowMessage('Cliente não Encontrado');
+      Exit;
+    end;
+    edtRecNome.Text := fClienteBusca.cNomeCliente;
+    edtRecBusca.Text := IntToStr(fClienteBusca.cCodCliente);
+  end
+  else begin
+    fClienteBusca.ShowModal;
+    edtRecBusca.Text := IntToStr(fClienteBusca.cCodCliente);
+    edtRecNome.Text := fClienteBusca.cNomeCliente;
+  end;
+  edtRecBusca.SetFocus;
+end;
+
+procedure TfCTePrincipal.BitBtn12Click(Sender: TObject);
+begin
+  // busca emitente
+  if (edtDestBusca.Text <> '') then
+  begin
+    fClienteBusca.cCodCliente := StrToInt(edtDestBusca.Text);
+    fClienteBusca.BuscaCliente;
+    if fClienteBusca.cNomeCliente = '' then
+    begin
+      ShowMessage('Cliente não Encontrado');
+      Exit;
+    end;
+    edtDestNome.Text := fClienteBusca.cNomeCliente;
+    edtDestBusca.Text := IntToStr(fClienteBusca.cCodCliente);
+  end
+  else begin
+    fClienteBusca.ShowModal;
+    edtDestBusca.Text := IntToStr(fClienteBusca.cCodCliente);
+    edtDestNome.Text := fClienteBusca.cNomeCliente;
+  end;
+  edtDestBusca.SetFocus;
+end;
+
 procedure TfCTePrincipal.BitBtn15Click(Sender: TObject);
 begin
   if (dmCte.cdsCTENPROT.AsString <> '') then
@@ -3871,13 +3980,33 @@ begin
     MessageDlg('CTe Ja Enviada.', mtInformation, [mbOK], 0);
     exit;
   end;
-
-  if not(dmCte.sqComp.Active)then
-    dmCte.sqComp.Active;
-  dmCte.sqComp.Params[0].AsInteger := val_genCte;
-  dmCte.sqComp.Open;
   dmCte.sqComp.Append;
   fCompValor.ShowModal;
+end;
+
+procedure TfCTePrincipal.BitBtn19Click(Sender: TObject);
+begin
+
+end;
+
+procedure TfCTePrincipal.BitBtn1Click(Sender: TObject);
+begin
+  if (edtEnvCidade.Text <> '') then
+  begin
+    fMunicipioBusca.cCodMun := edtEnvCidade.Text;
+    fMunicipioBusca.BuscaMunicipio;
+    if fMunicipioBusca.cNomeMun = '' then
+    begin
+      ShowMessage('Municipio não encontrado');
+      Exit;
+    end;
+  end
+  else begin
+    fMunicipioBusca.ShowModal;
+  end;
+  edtEnvCidade.Text := fMunicipioBusca.cNomeMun;
+  edtEnvCodCidade.Text := fMunicipioBusca.cCodMun;
+  edtEnvUF.Text := fMunicipioBusca.cUfMun;
 end;
 
 procedure TfCTePrincipal.BitBtn2Click(Sender: TObject);
@@ -3886,28 +4015,134 @@ begin
   pcPrincipal.PageIndex:=0;
 end;
 
-procedure TfCTePrincipal.btnEditarNFeClick(Sender: TObject);
+procedure TfCTePrincipal.BitBtn3Click(Sender: TObject);
 begin
+  if (edtIniCidade.Text <> '') then
+  begin
+    fMunicipioBusca.cCodMun := edtIniCidade.Text;
+    fMunicipioBusca.BuscaMunicipio;
+    if fMunicipioBusca.cNomeMun = '' then
+    begin
+      ShowMessage('Municipio não encontrado');
+      Exit;
+    end;
+  end
+  else begin
+    fMunicipioBusca.ShowModal;
+  end;
+  edtIniCidade.Text := fMunicipioBusca.cNomeMun;
+  edtIniCodCidade.Text := fMunicipioBusca.cCodMun;
+  edtIniUF.Text := fMunicipioBusca.cUfMun;
+end;
 
+procedure TfCTePrincipal.BitBtn4Click(Sender: TObject);
+begin
+  if (edtFimCidade.Text <> '') then
+  begin
+    fMunicipioBusca.cCodMun := edtFimCidade.Text;
+    fMunicipioBusca.BuscaMunicipio;
+    if fMunicipioBusca.cNomeMun = '' then
+    begin
+      ShowMessage('Municipio não encontrado');
+      Exit;
+    end;
+  end
+  else begin
+    fMunicipioBusca.ShowModal;
+  end;
+  edtFimCidade.Text := fMunicipioBusca.cNomeMun;
+  edtFimCodCidade.Text := fMunicipioBusca.cCodMun;
+  edtFimUF.Text := fMunicipioBusca.cUfMun;
+end;
+
+procedure TfCTePrincipal.BitBtn5Click(Sender: TObject);
+begin
   if (dmCte.cdsCTENPROT.AsString <> '') then
   begin
     MessageDlg('CTe Ja Enviada.', mtInformation, [mbOK], 0);
     exit;
   end;
+  dmPdv.IbCon.ExecuteDirect('DELETE FROM CTE');
 
-  if not(dmCte.sqNFe.Active)then
-    dmCte.sqNFe.Active;
-  dmCte.sqNFe.Params[0].AsInteger := val_genCte;
-  dmCte.sqNFe.Open;
-  dmCte.sqNFe.Edit;
+end;
 
-  fNFe.btnOk.Visible :=False;
-  fNFe.edtNFeChave.Text :=  dbgridNFe.Columns[0].Field.Value;
-  if(fNFe.edtNFePin.Text <> '') then
+procedure TfCTePrincipal.BitBtn6Click(Sender: TObject);
+begin
+  // busca emitente
+  if (edtCodEmitente.Text <> '') then
   begin
-    fNFe.edtNFePin.Text := dbgridNFe.Columns[1].Field.Value;
+    fClienteBusca.cCodCliente := StrToInt(edtCodEmitente.Text);
+    fClienteBusca.BuscaCliente;
+    if fClienteBusca.cNomeCliente = '' then
+    begin
+      ShowMessage('Cliente não Encontrado');
+      Exit;
+    end;
+    edtEmitFantasia.Text := fClienteBusca.cNomeCliente;
+    edtCodEmitente.Text := IntToStr(fClienteBusca.cCodCliente);
+  end
+  else begin
+    fClienteBusca.ShowModal;
+    edtCodEmitente.Text := IntToStr(fClienteBusca.cCodCliente);
+    edtEmitFantasia.Text := fClienteBusca.cNomeCliente;
   end;
-  fNFe.dataNFePrev.Text := dbgridNFe.Columns[2].Field.Value;
+  edtCodEmitente.SetFocus;
+end;
+
+procedure TfCTePrincipal.BitBtn7Click(Sender: TObject);
+begin
+  // busca emitente
+  if (edtBuscaTomador.Text <> '') then
+  begin
+    fClienteBusca.cCodCliente := StrToInt(edtBuscaTomador.Text);
+    fClienteBusca.BuscaCliente;
+    if fClienteBusca.cNomeCliente = '' then
+    begin
+      ShowMessage('Cliente não Encontrado');
+      Exit;
+    end;
+    edtNomeTomador.Text := fClienteBusca.cNomeCliente;
+    edtBuscaTomador.Text := IntToStr(fClienteBusca.cCodCliente);
+  end
+  else begin
+    fClienteBusca.ShowModal;
+    edtBuscaTomador.Text := IntToStr(fClienteBusca.cCodCliente);
+    edtNomeTomador.Text := fClienteBusca.cNomeCliente;
+  end;
+  edtBuscaTomador.SetFocus;
+end;
+
+procedure TfCTePrincipal.BitBtn9Click(Sender: TObject);
+begin
+ // busca emitente
+ if (edtRemBusca.Text <> '') then
+ begin
+   fClienteBusca.cCodCliente := StrToInt(edtRemBusca.Text);
+   fClienteBusca.BuscaCliente;
+   if fClienteBusca.cNomeCliente = '' then
+   begin
+     ShowMessage('Cliente não Encontrado');
+     Exit;
+   end;
+   edtRemNome.Text := fClienteBusca.cNomeCliente;
+   edtRemBusca.Text := IntToStr(fClienteBusca.cCodCliente);
+ end
+ else begin
+   fClienteBusca.ShowModal;
+   edtRemBusca.Text := IntToStr(fClienteBusca.cCodCliente);
+   edtRemNome.Text := fClienteBusca.cNomeCliente;
+ end;
+ edtRemBusca.SetFocus;
+end;
+
+procedure TfCTePrincipal.btnEditarNFeClick(Sender: TObject);
+begin
+  if (dmCte.cdsCTENPROT.AsString <> '') then
+  begin
+    MessageDlg('CTe Ja Enviada.', mtInformation, [mbOK], 0);
+    exit;
+  end;
+  dmCte.sqNFe.Edit;
   fNFe.ShowModal;
 end;
 
@@ -3978,14 +4213,7 @@ begin
     MessageDlg('CTe Ja Enviada.', mtInformation, [mbOK], 0);
     exit;
   end;
-
-  if not(dmCte.sqQC.Active)then
-    dmCte.sqQC.Active;
-  dmCte.sqQC.Params[0].AsInteger := val_genCte;
-  dmCte.sqQC.Open;
   dmCte.sqQC.Edit;
-
-  fQuantCarga.btnEditar.Visible :=False;
   fQuantCarga.ShowModal;
 end;
 
@@ -4034,13 +4262,7 @@ begin
     MessageDlg('CTe Ja Enviada.', mtInformation, [mbOK], 0);
     exit;
   end;
-
-  if not(dmCte.sqQC.Active)then
-    dmCte.sqQC.Active;
-  dmCte.sqQC.Params[0].AsInteger := val_genCte;
-  dmCte.sqQC.Open;
-  dmCte.sqQC.Edit;
-
+  dmCte.sqQC.Append;
   fQuantCarga.ShowModal;
 end;
 
@@ -4124,6 +4346,11 @@ begin
   dmCTe.cdsCTE.Params[1].AsInteger := StrToInt(edtNumCte.Text);
   dmCTe.cdsCTE.Open;
 
+  dmCte.sqNFe.Open;
+  dmCte.sqVeic.Open;
+  dmCte.sqComp.Open;
+  dmCte.sqMot.Open;
+  dmCte.sqQC.Open;
   vDup := 1;
   if ((fQuantCarga.fcarga <> 1) and (fCompValor.fvalor <> 1)
     and (fNFe.fnfe <> 1) and (vDup <> 1)) then
@@ -4441,6 +4668,7 @@ begin
   dmCte.cdsCTE.Params[2].AsDate := DateTimePicker1.Date;
   dmCte.cdsCTE.Params[3].AsDate := DateTimePicker2.Date;
   dmCte.cdsCTE.Open;
+  btnEditarCte.SetFocus;
 end;
 
 procedure TfCTePrincipal.btnPreVisuClick(Sender: TObject);
@@ -4496,6 +4724,45 @@ begin
     ACBrCTe1.Conhecimentos.Validar;
     showmessage('Conhecimento de Transporte Eletrônico Valido');
    end;
+end;
+
+procedure TfCTePrincipal.btnVeicEditarClick(Sender: TObject);
+begin
+  if ((modoGravacao = 'INCLUIR') or (modoGravacao = 'EDITAR')) then
+  begin
+    dmCte.sqVeic.Edit;
+    fVeiculoCte.ShowModal;
+  end;
+end;
+
+procedure TfCTePrincipal.btnVeicExcluirClick(Sender: TObject);
+begin
+  if (dmCte.cdsCTENPROT.AsString <> '') then
+  begin
+    MessageDlg('CTe Ja Enviada.', mtInformation, [mbOK], 0);
+    exit;
+  end;
+
+  if MessageDlg('Deseja realmente excluir este registro?',mtConfirmation, [mbYes,mbNo],0) = mrYes then
+  begin
+    if ( dbGridQC.Columns[1].Field.Value <> '') then
+    begin
+      strInsere := 'DELETE FROM CTE_VEICULOS';
+      strInsere := strInsere + ' WHERE COD_CTE_VEICULOS = ';
+      strInsere := strInsere +  IntToStr(dmCte.sqVeicCOD_CTE_VEICULOS.AsInteger);
+      dmPdv.IbCon.ExecuteDirect(strInsere);
+      dmCte.sqVeic.Delete;
+    end;
+  end;
+end;
+
+procedure TfCTePrincipal.btnVeicIncluirClick(Sender: TObject);
+begin
+  if ((modoGravacao = 'INCLUIR') or (modoGravacao = 'EDITAR')) then
+  begin
+    dmCte.sqVeic.Append;
+    fVeiculoCte.ShowModal;
+  end;
 end;
 
 procedure TfCTePrincipal.Button11Click(Sender: TObject);

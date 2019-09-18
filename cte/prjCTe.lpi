@@ -46,7 +46,7 @@
         <PackageName Value="LCL"/>
       </Item6>
     </RequiredPackages>
-    <Units Count="8">
+    <Units Count="13">
       <Unit0>
         <Filename Value="prjCTe.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -105,6 +105,45 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uQuantCarga"/>
       </Unit7>
+      <Unit8>
+        <Filename Value="..\geral\uclientebusca.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fClienteBusca"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uClienteBusca"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="..\geral\upadraobusca.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fPadraoBusca"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uPadraoBusca"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="..\geral\umunicipiobusca.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fMunicipioBusca"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="..\geral\upadrao.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fPadrao"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uPadrao"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="uveiculocte.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fVeiculoCte"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uVeiculoCte"/>
+      </Unit12>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

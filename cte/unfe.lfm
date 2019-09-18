@@ -2,71 +2,100 @@ object fNFe: TfNFe
   Left = 427
   Height = 321
   Top = 250
-  Width = 445
+  Width = 490
   Caption = 'fNFe'
   ClientHeight = 321
-  ClientWidth = 445
+  ClientWidth = 490
   LCLVersion = '2.0.4.0'
   object btnEdita: TBitBtn
-    Left = 160
+    Left = 389
     Height = 30
-    Top = 264
+    Top = 232
     Width = 75
-    Caption = 'btnEdita'
+    Caption = 'Fechar'
+    OnClick = btnEditaClick
     TabOrder = 0
   end
   object btnOk: TBitBtn
-    Left = 64
+    Left = 296
     Height = 30
-    Top = 264
+    Top = 232
     Width = 75
-    Caption = 'btnOk'
+    Default = True
+    DefaultCaption = True
+    Kind = bkOK
     ModalResult = 1
+    OnClick = btnOkClick
     TabOrder = 1
   end
-  object edtNFeChave: TLabeledEdit
-    Left = 32
-    Height = 27
-    Top = 90
-    Width = 304
-    EditLabel.Height = 17
-    EditLabel.Width = 304
-    EditLabel.Caption = 'Chave NFe'
-    EditLabel.ParentColor = False
-    TabOrder = 2
-    Text = 'edtNFeChave'
-  end
-  object edtNFePin: TLabeledEdit
-    Left = 32
-    Height = 27
-    Top = 152
-    Width = 216
-    EditLabel.Height = 17
-    EditLabel.Width = 216
-    EditLabel.Caption = 'PIN'
-    EditLabel.ParentColor = False
-    TabOrder = 3
-    Text = 'edtNFePin'
-  end
-  object dataNFePrev: TDateEdit
-    Left = 36
-    Height = 27
-    Top = 32
-    Width = 103
-    CalendarDisplaySettings = [dsShowHeadings, dsShowDayNames]
-    DateOrder = doNone
-    ButtonWidth = 23
-    NumGlyphs = 1
-    MaxLength = 0
-    TabOrder = 4
-    Text = 'dataNFePrev'
-  end
   object Label1: TLabel
-    Left = 36
+    Left = 32
     Height = 17
     Top = 11
     Width = 75
     Caption = 'Data Previsto'
+    ParentColor = False
+  end
+  object DBEdit1: TDBEdit
+    Left = 32
+    Height = 27
+    Top = 88
+    Width = 432
+    DataField = 'CHAVE'
+    DataSource = dmCte.dsNFe
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 2
+  end
+  object DBDateTimePicker1: TDBDateTimePicker
+    Left = 32
+    Height = 23
+    Top = 32
+    Width = 223
+    DataField = 'DPREV'
+    DataSource = dmCte.dsNFe
+    ReadOnly = False
+    CenturyFrom = 1941
+    MaxDate = 2958465
+    MinDate = -53780
+    AutoSize = False
+    TabOrder = 3
+    TrailingSeparator = False
+    TextForNullDate = 'NULL'
+    LeadingZeros = True
+    Kind = dtkDate
+    TimeFormat = tf24
+    TimeDisplay = tdHMS
+    DateMode = dmComboBox
+    UseDefaultSeparators = True
+    HideDateTimeParts = []
+    MonthNames = 'Long'
+  end
+  object DBEdit2: TDBEdit
+    Left = 32
+    Height = 27
+    Top = 152
+    Width = 432
+    DataField = 'PIN'
+    DataSource = dmCte.dsNFe
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 4
+  end
+  object Label2: TLabel
+    Left = 32
+    Height = 17
+    Top = 66
+    Width = 60
+    Caption = 'Chave NFe'
+    ParentColor = False
+  end
+  object Label3: TLabel
+    Left = 35
+    Height = 17
+    Top = 133
+    Width = 17
+    Caption = 'Pin'
     ParentColor = False
   end
 end

@@ -1,0 +1,33 @@
+inherited fMunicipioBusca: TfMunicipioBusca
+  OnClose = FormClose
+  OnShow = FormShow
+  inherited Panel1: TPanel
+    inherited Edit1: TEdit
+      TabOrder = 1
+    end
+    inherited Edit2: TEdit
+      OnChange = Edit2Change
+      TabOrder = 0
+    end
+    inherited chInativo: TCheckBox
+      Visible = False
+    end
+  end
+  inherited Panel2: TPanel
+    inherited btnProcurar: TBitBtn
+      OnClick = btnProcurarClick
+    end
+    inherited btnSair1: TBitBtn
+      OnClick = btnSair1Click
+    end
+  end
+  inherited DBGrid1: TDBGrid
+    DataSource = dsMunicipio
+    OnDblClick = DBGrid1DblClick
+  end
+  object dsMunicipio: TDataSource[3]
+    DataSet = dmPdv.sqBusca
+    left = 246
+    top = 40
+  end
+end
