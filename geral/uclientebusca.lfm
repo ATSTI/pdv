@@ -12,6 +12,7 @@ inherited fClienteBusca: TfClienteBusca
     inherited Edit1: TEdit
       Width = 112
       OnKeyPress = Edit1KeyPress
+      TabOrder = 1
     end
     inherited Label1: TLabel
       Left = 24
@@ -23,6 +24,7 @@ inherited fClienteBusca: TfClienteBusca
       Left = 264
       Width = 416
       OnKeyPress = Edit2KeyPress
+      TabOrder = 0
     end
     inherited chInativo: TCheckBox
       OnChange = chInativoChange

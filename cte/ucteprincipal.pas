@@ -45,6 +45,7 @@ type
     btnInfCargaExclui1: TBitBtn;
     btnInfCargaInclui1: TBitBtn;
     btnListarCte: TBitBtn;
+    combICMSDevido: TComboBox;
     comboEmpresa: TComboBox;
     dataRodPrev: TDateTimePicker;
     DateTimePicker1: TDateTimePicker;
@@ -85,7 +86,6 @@ type
     Label9: TLabel;
     Panel2: TPanel;
     Panel3: TPanel;
-    combICMSDevido: TComboBox;
     dataOutrosEmi: TDateTimePicker;
     edCteCancelar: TLabeledEdit;
     memoResp: TMemo;
@@ -2467,7 +2467,7 @@ end;
 
 procedure TfCTePrincipal.EditarEX;
 begin
-  if(rgTomador.ItemIndex = 4) then        /// Conferir 04/09/19
+  //if(rgTomador.ItemIndex = 4) then        /// Conferir 04/09/19
   begin
     vCteStr := 'UPDATE CTE SET EX_CNPJCPF = ';
     vCteStr := vCteStr + QuotedStr(edtExpCNPJ.Text);
@@ -3016,7 +3016,7 @@ begin
       ' d.CEP, d.UF, d.CD_IBGE, d.DDD , d.TELEFONE  ' +
       ' FROM CLIENTES c, ENDERECOCLIENTE d ' +
       ' WHERE c.CODCLIENTE = d.CODCLIENTE ' +
-      ' AND d.TIPOEND = 0 AND c.CODCLIENTE = ' + edtRecBusca.Text);
+      ' AND d.TIPOEND = 0 AND c.CODCLIENTE = ' + edtExpBusca.Text);
     if (dmPdv.sqBusca.IsEmpty) then
     begin
       ShowMessage('Código do Cliente não existe.');
@@ -3446,13 +3446,16 @@ begin
     if (not dmPdv.sqBusca.IsEmpty) then
     begin
       nova_nCte := dmPdv.sqBusca.FieldByName('cod_nova_cte').AsInteger;
+      edtNumCte.Text := IntToStr(dmPdv.sqBusca.FieldByName('num_nova_cte').AsInteger);
       dmPdv.sTrans.Commit;
-      dmPdv.IbCon.Connected := False;
-      dmPdv.IbCon.Connected := True;
       v_duplCte := 'EXECUTE PROCEDURE cte_duplicar(' +
         IntToStr(velha_nCte) + ', ' + IntToStr(nova_nCte) + ')';
       dmPdv.Ibcon.ExecuteDirect(v_duplCte);
     end;
+    dmPdv.Ibcon.ExecuteDirect('UPDATE SERIES SET ' +
+      ' ULTIMO_NUMERO = ' + edtNumCte.Text +
+      ' WHERE MODELO = ' + QuotedStr('CT') +
+      '   AND CODSERIE = ' + QuotedStr(edtCodEmitente.Text));
     dmPdv.sTrans.Commit;
     MessageDlg('CTe duplicada com sucesso.', mtInformation, [mbOK], 0);
     btnListarCte.Click;
@@ -4891,6 +4894,15 @@ begin
     comboEmpresa.ItemIndex :=0;
     buscaEmpresa(dmPdv.sqEmpresaRAZAO.AsString);
   end;
+
+  combCodSitTrib.Items.Add('00 - Trib. Normal do ICMS');
+  combCodSitTrib.Items.Add('20 - Trib. Redução BC do ICMS');
+  combCodSitTrib.Items.Add('40 - ICMS Isenção');
+  combCodSitTrib.Items.Add('41 - ICMS não Tributado');
+  combCodSitTrib.Items.Add('51 - ICMS Deferido');
+  combCodSitTrib.Items.Add('60 - ICMS Cobrado Anterior ST');
+  combCodSitTrib.Items.Add('90 - ICMS Outros');
+
   LerConfiguracao;
 
   dmPdv.sqParametro.Open;
