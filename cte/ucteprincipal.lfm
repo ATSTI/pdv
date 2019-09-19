@@ -386,9 +386,9 @@ object fCTePrincipal: TfCTePrincipal
         Height = 573
         Top = 0
         Width = 1299
-        ActivePage = TabSheet11
+        ActivePage = TabDestinatario
         Align = alClient
-        TabIndex = 8
+        TabIndex = 6
         TabOrder = 0
         object TabDados: TTabSheet
           Cursor = crHandPoint
@@ -407,8 +407,8 @@ object fCTePrincipal: TfCTePrincipal
             TabOrder = 0
             object TabDadosCte: TTabSheet
               Caption = 'Dados CT-e'
-              ClientHeight = 503
-              ClientWidth = 1287
+              ClientHeight = 534
+              ClientWidth = 1289
               OnShow = TabDadosCteShow
               object edtModelo: TEdit
                 Left = 16
@@ -849,8 +849,8 @@ object fCTePrincipal: TfCTePrincipal
             end
             object TabDadosComplementares: TTabSheet
               Caption = 'Dados Complementares'
-              ClientHeight = 503
-              ClientWidth = 1287
+              ClientHeight = 534
+              ClientWidth = 1289
               OnShow = TabDadosComplementaresShow
               object edtCaracAdTrans: TEdit
                 Left = 8
@@ -1187,6 +1187,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 48
             Width = 47
             Caption = '...'
+            Enabled = False
             OnClick = BitBtn6Click
             TabOrder = 14
           end
@@ -1772,6 +1773,7 @@ object fCTePrincipal: TfCTePrincipal
             Height = 27
             Top = 88
             Width = 144
+            OnExit = edtExpBuscaExit
             TabOrder = 1
           end
           object edtExpNome: TEdit
@@ -2580,13 +2582,13 @@ object fCTePrincipal: TfCTePrincipal
                 Alignment = taCenter
                 ButtonStyle = cbsButton
                 Title.Caption = 'Descrição'
-                Width = 251
+                Width = 257
                 FieldName = 'COMP_NOME'
               end            
               item
                 Alignment = taCenter
                 Title.Caption = 'Valor'
-                Width = 251
+                Width = 258
                 FieldName = 'COMP_VALOR'
               end>
             DataSource = dmCte.dsComp
@@ -3281,7 +3283,7 @@ object fCTePrincipal: TfCTePrincipal
                   item
                     Alignment = taCenter
                     Title.Caption = 'Chave de Acesso NF-e'
-                    Width = 377
+                    Width = 381
                     FieldName = 'CHAVE'
                   end                
                   item
@@ -3289,13 +3291,13 @@ object fCTePrincipal: TfCTePrincipal
                     MinSize = 50
                     MaxSize = 50
                     Title.Caption = 'PIN'
-                    Width = 377
+                    Width = 381
                     FieldName = 'PIN'
                   end                
                   item
                     Alignment = taCenter
                     Title.Caption = 'Data Prevista de Entrega'
-                    Width = 377
+                    Width = 382
                     FieldName = 'DPREV'
                   end>
                 DataSource = dmCte.dsNFe
