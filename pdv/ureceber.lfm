@@ -7,7 +7,8 @@ object fRecebimento: TfRecebimento
   ClientHeight = 482
   ClientWidth = 809
   OnCreate = FormCreate
-  LCLVersion = '2.0.0.4'
+  OnShow = FormShow
+  LCLVersion = '2.0.4.0'
   object Panel1: TPanel
     Left = 0
     Height = 50
@@ -38,9 +39,9 @@ object fRecebimento: TfRecebimento
       SpaceChar = '_'
     end
     object edPago: TMaskEdit
-      Left = 152
+      Left = 72
       Height = 23
-      Top = 15
+      Top = 8
       Width = 88
       Alignment = taRightJustify
       CharCase = ecNormal
@@ -50,11 +51,46 @@ object fRecebimento: TfRecebimento
       SpaceChar = '_'
     end
     object Label2: TLabel
-      Left = 72
+      Left = 8
       Height = 15
-      Top = 15
+      Top = 10
       Width = 56
       Caption = 'Valor Pago'
+      ParentColor = False
+    end
+    object BitBtn2: TBitBtn
+      Left = 344
+      Height = 30
+      Top = 8
+      Width = 48
+      Caption = '1-Din.'
+      OnClick = acDinheiroExecute
+      TabOrder = 2
+    end
+    object BitBtn3: TBitBtn
+      Left = 400
+      Height = 30
+      Top = 8
+      Width = 48
+      Caption = '2-Déb'
+      OnClick = acDebitoExecute
+      TabOrder = 3
+    end
+    object BitBtn4: TBitBtn
+      Left = 456
+      Height = 30
+      Top = 8
+      Width = 48
+      Caption = '3-Créd.'
+      OnClick = acCreditoExecute
+      TabOrder = 4
+    end
+    object lblForma: TLabel
+      Left = 167
+      Height = 15
+      Top = 11
+      Width = 9
+      Caption = '...'
       ParentColor = False
     end
   end
@@ -73,28 +109,40 @@ object fRecebimento: TfRecebimento
       Top = 1
       Width = 807
       Align = alClient
-      AutoFillColumns = True
       Color = clWindow
       Columns = <      
         item
+          MaxSize = 80
           Title.Caption = 'Codigo'
-          Width = 154
+          Width = 60
         end      
         item
           Title.Caption = 'Data'
-          Width = 154
+          Width = 80
         end      
         item
           Title.Caption = 'Titulo'
-          Width = 154
+          Width = 80
         end      
         item
           Title.Caption = 'Vencimento'
-          Width = 154
+          Width = 80
         end      
         item
-          Title.Caption = 'Valor'
-          Width = 158
+          Title.Caption = 'Recebimento'
+          Width = 80
+        end      
+        item
+          Title.Caption = 'Cliente'
+          Width = 230
+        end      
+        item
+          Title.Caption = 'Total'
+          Width = 80
+        end      
+        item
+          Title.Caption = 'Saldo'
+          Width = 80
         end>
       DataSource = dsRec
       TabOrder = 0
@@ -563,10 +611,314 @@ object fRecebimento: TfRecebimento
       OnClick = Button1Click
       TabOrder = 6
     end
+    object BitBtn1: TBitBtn
+      Left = 561
+      Height = 32
+      Hint = 'Limpar Informações'
+      Top = 3
+      Width = 27
+      Glyph.Data = {
+        FA090000424DFA09000000000000360000002800000019000000190000000100
+        200000000000C4090000640000006400000000000000000000008BFF3A008BFF
+        3A008BFF3A004F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF8BFF
+        3A008BFF3A008BFF3A004F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF8BFF3A008BFF3A008BFF3A004F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF8BFF3A008BFF3A008BFF3A004E4B64FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4A5AD7FF4A5AD7FF4A5AD7FF4D4E7DFF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4A5AD7FF4A5AD7FF4A5AD7FF4D4E7DFF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4A5AD7FF4A5AD7FF4A5AD7FF4D4E
+        7DFF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4C5191FF4F46
+        40FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4C5089FF4E4957FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4A5AD7FF4A5AD7FF4A5A
+        D7FF4D4E7DFF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4B55
+        AEFF4B56B7FF4F4640FF4F4538FF4F4538FF4F4538FF4C5194FF4A58C8FF4E48
+        50FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4A5AD7FF4A5A
+        D7FF4A5AD7FF4D4E7DFF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4539FF4B55AEFF4B56B7FF4F4640FF4F4538FF4C5194FF4A58C8FF4E49
+        58FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4A5A
+        D7FF4A5AD7FF4A5AD7FF4D4E7DFF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4539FF4B55AEFF4B56B7FF4C5194FF4A58C8FF4E49
+        58FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4A5AD7FF4A5AD7FF4A5AD7FF4D4E7DFF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4539FF4B57C1FF4A59D3FF4E4A
+        5FFF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4A5AD7FF4A5AD7FF4A5AD7FF4D4E7DFF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4C5194FF4A58C8FF4B55
+        B3FF4B56B7FF4F4640FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4A5AD7FF4A5AD7FF4A5AD7FF4D4E7DFF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4C5194FF4A58C8FF4E49
+        58FF4F4539FF4B55AEFF4B56B7FF4F4640FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4A5AD7FF4A5AD7FF4A5AD7FF4D4E7DFF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4C5194FF4A58C8FF4E49
+        58FF4F4538FF4F4538FF4F4539FF4B55AEFF4B56B7FF4F4640FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4A5AD7FF4A5AD7FF4A5AD7FF4D4E
+        7DFF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4B55B0FF4E49
+        58FF4F4538FF4F4538FF4F4538FF4F4538FF4F4539FF4C53A6FF4E4A61FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4A5AD7FF4A5AD7FF4A5A
+        D7FF4D4E7DFF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4A5AD7FF4A5A
+        D7FF4A5AD7FF4D4E7DFF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4A5A
+        D7FF4A5AD7FF4A5AD7FF4D4E7DFF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4A5AD7FF4A5AD7FF4A5AD7FF4D4E7DFF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4A5AD7FF4A5AD7FF4A5AD7FF4D4E7DFF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4A5AD7FF4A5AD7FF4A5AD7FF4D4E7DFF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F4538FF4F45
+        38FF4F4538FF4F4538FF4F4538FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5A
+        D7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5A
+        D7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5A
+        D7FF4A5AD7FF8BFF3A008BFF3A008BFF3A004A5AD7FF4A5AD7FF4A5AD7FF4A5A
+        D7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5A
+        D7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5A
+        D7FF4A5AD7FF4A5AD7FF8BFF3A008BFF3A008BFF3A004A5AD7FF4A5AD7FF4A5A
+        D7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5A
+        D7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5A
+        D7FF4A5AD7FF4A5AD7FF4A5AD7FF8BFF3A008BFF3A008BFF3A004A5AD7FF4A5A
+        D7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5A
+        D7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5A
+        D7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF8BFF3A008BFF3A008BFF3A00
+      }
+      OnClick = BitBtn1Click
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 7
+    end
   end
   object dsRec: TDataSource
     DataSet = dmPdv.sqBusca
     left = 520
     top = 40
+  end
+  object sqPagamento: TSQLQuery
+    FieldDefs = <    
+      item
+        Name = 'CODFORMA'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'COD_VENDA'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'ID_ENTRADA'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'FORMA_PGTO'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 1
+      end    
+      item
+        Name = 'CAIXA'
+        DataType = ftSmallint
+        Precision = -1
+      end    
+      item
+        Name = 'N_DOC'
+        DataType = ftString
+        Precision = -1
+        Size = 60
+      end    
+      item
+        Name = 'VALOR_PAGO'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'CAIXINHA'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'TROCO'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'DESCONTO'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'STATE'
+        DataType = ftSmallint
+        Precision = -1
+      end>
+    Database = dmPdv.IbCon
+    Transaction = dmPdv.sTrans
+    SQL.Strings = (
+      'SELECT CODFORMA, COD_VENDA, ID_ENTRADA, FORMA_PGTO'
+      ', CAIXA , N_DOC, VALOR_PAGO, CAIXINHA,'
+      'TROCO, DESCONTO, STATE'
+      'FROM FORMA_ENTRADA'
+      'WHERE STATE < 2'
+      '  AND ID_ENTRADA = :PCODMOV'
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'PCODMOV'
+        ParamType = ptInput
+      end>
+    left = 360
+    top = 40
+    object sqPagamentoCOD_VENDA: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_VENDA'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      ReadOnly = False
+      Required = True
+    end
+    object sqPagamentoID_ENTRADA: TLongintField
+      FieldKind = fkData
+      FieldName = 'ID_ENTRADA'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      ReadOnly = False
+      Required = True
+    end
+    object sqPagamentoFORMA_PGTO: TStringField
+      FieldKind = fkData
+      FieldName = 'FORMA_PGTO'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sqPagamentoCAIXA: TSmallintField
+      FieldKind = fkData
+      FieldName = 'CAIXA'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqPagamentoN_DOC: TStringField
+      FieldKind = fkData
+      FieldName = 'N_DOC'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 60
+    end
+    object sqPagamentoVALOR_PAGO: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALOR_PAGO'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      DisplayFormat = ',##0.00'
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object sqPagamentoCAIXINHA: TFloatField
+      FieldKind = fkData
+      FieldName = 'CAIXINHA'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object sqPagamentoTROCO: TFloatField
+      FieldKind = fkData
+      FieldName = 'TROCO'
+      Index = 7
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      DisplayFormat = ',##0.00'
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object sqPagamentoDESCONTO: TFloatField
+      FieldKind = fkData
+      FieldName = 'DESCONTO'
+      Index = 8
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      DisplayFormat = ',##0.00'
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object sqPagamentoSTATE: TSmallintField
+      FieldKind = fkData
+      FieldName = 'STATE'
+      Index = 9
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqPagamentoCODFORMA: TLongintField
+      FieldKind = fkData
+      FieldName = 'CODFORMA'
+      Index = 10
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      ReadOnly = False
+      Required = True
+    end
+  end
+  object ActionList1: TActionList
+    left = 432
+    top = 34
+    object acDinheiro: TAction
+      Caption = 'F1-Dinheiro'
+      OnExecute = acDinheiroExecute
+      ShortCut = 112
+    end
+    object acDebito: TAction
+      Caption = 'F2-Debito'
+      OnExecute = acDebitoExecute
+    end
+    object acCredito: TAction
+      Caption = 'F3-Credito'
+      OnExecute = acCreditoExecute
+    end
   end
 end

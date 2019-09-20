@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  StdCtrls, DBGrids, Buttons, db, udmpdv;
+  StdCtrls, DBGrids, Buttons, db, udmpdv, uPadraoBusca;
 
 type
 
