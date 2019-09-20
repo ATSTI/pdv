@@ -45,6 +45,7 @@ type
     btnInfCargaExclui1: TBitBtn;
     btnInfCargaInclui1: TBitBtn;
     btnListarCte: TBitBtn;
+    combICMSDevido: TComboBox;
     comboEmpresa: TComboBox;
     dataRodPrev: TDateTimePicker;
     DateTimePicker1: TDateTimePicker;
@@ -85,7 +86,6 @@ type
     Label9: TLabel;
     Panel2: TPanel;
     Panel3: TPanel;
-    combICMSDevido: TComboBox;
     dataOutrosEmi: TDateTimePicker;
     edCteCancelar: TLabeledEdit;
     memoResp: TMemo;
@@ -574,6 +574,7 @@ type
     procedure edtBuscaTomadorExit(Sender: TObject);
     procedure edtCfopExit(Sender: TObject);
     procedure edtDestBuscaExit(Sender: TObject);
+    procedure edtExpBuscaExit(Sender: TObject);
     procedure edtRecBuscaExit(Sender: TObject);
     procedure edtRemBuscaExit(Sender: TObject);
     procedure edtXMLCodChange(Sender: TObject);
@@ -2161,7 +2162,7 @@ begin
     edtExpNome.Text          := dmCte.cdsCTEEX_FANTASIA.AsString;
     edtExpFone.Text          := dmCte.cdsCTEEX_TELEFONE.AsString;
     edtExpEnd.Text           := dmCte.cdsCTEEX_ENDERECO.AsString;
-    edtExpNum.Text           := dmCte.cdsCTEEX_COMPLEMENTO.AsString;
+    edtExpNum.Text           := dmCte.cdsCteEX_NUMERO.AsString;
     edtExpComp.Text          := dmCte.cdsCTEEX_COMPLEMENTO.AsString;
     edtExpBairro.Text        := dmCte.cdsCTEEX_BAIRRO.AsString;
     edtExpCodCidade.Text     := dmCte.cdsCTEEX_CODIGOMUNICIPI.AsString;
@@ -2466,7 +2467,7 @@ end;
 
 procedure TfCTePrincipal.EditarEX;
 begin
-  if(rgTomador.ItemIndex = 4) then        /// Conferir 04/09/19
+  //if(rgTomador.ItemIndex = 4) then        /// Conferir 04/09/19
   begin
     vCteStr := 'UPDATE CTE SET EX_CNPJCPF = ';
     vCteStr := vCteStr + QuotedStr(edtExpCNPJ.Text);
@@ -2931,7 +2932,7 @@ begin
   begin
     dmPdv.busca_sql('SELECT c.NOMECLIENTE, c.RAZAOSOCIAL, c.CNPJ, ' +
       ' c.INSCESTADUAL, d.LOGRADOURO, d.NUMERO, d.CIDADE, d.BAIRRO, ' +
-      ' d.CEP, d.UF, d.CD_IBGE ' +
+      ' d.CEP, d.UF, d.CD_IBGE, d.DDD , d.TELEFONE  ' +
       ' FROM CLIENTES c, ENDERECOCLIENTE d ' +
       ' WHERE c.CODCLIENTE = d.CODCLIENTE ' +
       ' AND d.TIPOEND = 0 AND c.CODCLIENTE = ' + edtBuscaTomador.Text);
@@ -2979,7 +2980,7 @@ begin
   begin
     dmPdv.busca_sql('SELECT c.NOMECLIENTE, c.RAZAOSOCIAL, c.CNPJ, ' +
       ' c.INSCESTADUAL, d.LOGRADOURO, d.NUMERO, d.CIDADE, d.BAIRRO, ' +
-      ' d.CEP, d.UF, d.CD_IBGE ' +
+      ' d.CEP, d.UF, d.CD_IBGE, d.DDD , d.TELEFONE  ' +
       ' FROM CLIENTES c, ENDERECOCLIENTE d ' +
       ' WHERE c.CODCLIENTE = d.CODCLIENTE ' +
       ' AND d.TIPOEND = 0 AND c.CODCLIENTE = ' + edtDestBusca.Text);
@@ -3006,13 +3007,45 @@ begin
   end;
 end;
 
+procedure TfCTePrincipal.edtExpBuscaExit(Sender: TObject);
+begin
+  if (edtExpBusca.Text <> '') then
+  begin
+    dmPdv.busca_sql('SELECT c.NOMECLIENTE, c.RAZAOSOCIAL, c.CNPJ, ' +
+      ' c.INSCESTADUAL, d.LOGRADOURO, d.NUMERO, d.CIDADE, d.BAIRRO, ' +
+      ' d.CEP, d.UF, d.CD_IBGE, d.DDD , d.TELEFONE  ' +
+      ' FROM CLIENTES c, ENDERECOCLIENTE d ' +
+      ' WHERE c.CODCLIENTE = d.CODCLIENTE ' +
+      ' AND d.TIPOEND = 0 AND c.CODCLIENTE = ' + edtExpBusca.Text);
+    if (dmPdv.sqBusca.IsEmpty) then
+    begin
+      ShowMessage('Código do Cliente não existe.');
+      Exit;
+    end;
+    edtExpCodCidade.Text := LimparString(dmPdv.sqBusca.FieldByName('CD_IBGE').AsString,'-');
+    edtExpCidade.Text := dmPdv.sqBusca.FieldByName('CIDADE').AsString;
+    edtExpUF.Text := dmPdv.sqBusca.FieldByName('UF').AsString;
+    edtExpNome.Text := dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString;
+    edtExpRazao.Text := dmPdv.sqBusca.FieldByName('RAZAOSOCIAL').AsString;
+    edtExpCNPJ.Text := dmPdv.sqBusca.FieldByName('CNPJ').AsString;
+    edtExpIE.Text := dmPdv.sqBusca.FieldByName('INSCESTADUAL').AsString;
+    edtExpFone.Text := dmPdv.sqBusca.FieldByName('DDD').AsString +
+      '-' + dmPdv.sqBusca.FieldByName('TELEFONE').AsString;
+    edtExpEnd.Text := dmPdv.sqBusca.FieldByName('LOGRADOURO').AsString;
+    edtExpNum.Text := dmPdv.sqBusca.FieldByName('NUMERO').AsString;
+    edtExpBairro.Text := dmPdv.sqBusca.FieldByName('BAIRRO').AsString;
+    edtExpCep.TExt := dmPdv.sqBusca.FieldByName('CEP').AsString;
+  end;
+
+end;
+
 procedure TfCTePrincipal.edtRecBuscaExit(Sender: TObject);
 begin
   if (edtRecBusca.Text <> '') then
   begin
     dmPdv.busca_sql('SELECT c.NOMECLIENTE, c.RAZAOSOCIAL, c.CNPJ, ' +
       ' c.INSCESTADUAL, d.LOGRADOURO, d.NUMERO, d.CIDADE, d.BAIRRO, ' +
-      ' d.CEP, d.UF, d.CD_IBGE ' +
+      ' d.CEP, d.UF, d.CD_IBGE, d.DDD , d.TELEFONE  ' +
       ' FROM CLIENTES c, ENDERECOCLIENTE d ' +
       ' WHERE c.CODCLIENTE = d.CODCLIENTE ' +
       ' AND d.TIPOEND = 0 AND c.CODCLIENTE = ' + edtRecBusca.Text);
@@ -3043,7 +3076,7 @@ begin
   begin
     dmPdv.busca_sql('SELECT c.NOMECLIENTE, c.RAZAOSOCIAL, c.CNPJ, ' +
       ' c.INSCESTADUAL, d.LOGRADOURO, d.NUMERO, d.CIDADE, d.BAIRRO, ' +
-      ' d.CEP, d.UF, d.CD_IBGE ' +
+      ' d.CEP, d.UF, d.CD_IBGE, d.DDD , d.TELEFONE  ' +
       ' FROM CLIENTES c, ENDERECOCLIENTE d ' +
       ' WHERE c.CODCLIENTE = d.CODCLIENTE ' +
       ' AND d.TIPOEND = 0 AND c.CODCLIENTE = ' + edtRemBusca.Text);
@@ -3391,7 +3424,51 @@ end;
 
 procedure TfCTePrincipal.btnDuplicarClick(Sender: TObject);
 var velha_nCte: Integer;
+    nova_nCte: Integer;
+    v_duplCte: String;
 begin
+ if (not dmCte.cdsCte.Active) then
+ begin
+    ShowMessage('Informe uma CTE para Duplicar');
+    Exit;
+ end;
+
+  if (dmCte.cdsCte.IsEmpty) then
+  begin
+     ShowMessage('Informe uma CTE para Duplicar');
+     Exit;
+  end;
+
+  try
+    velha_nCte := dmCte.cdsCteCOD_CTE.AsInteger;
+    dmPdv.busca_sql('SELECT * FROM cte_duplicar_cte(' +
+      IntToStr(velha_nCte) + ')');
+    if (not dmPdv.sqBusca.IsEmpty) then
+    begin
+      nova_nCte := dmPdv.sqBusca.FieldByName('cod_nova_cte').AsInteger;
+      edtNumCte.Text := IntToStr(dmPdv.sqBusca.FieldByName('num_nova_cte').AsInteger);
+      dmPdv.sTrans.Commit;
+      v_duplCte := 'EXECUTE PROCEDURE cte_duplicar(' +
+        IntToStr(velha_nCte) + ', ' + IntToStr(nova_nCte) + ')';
+      dmPdv.Ibcon.ExecuteDirect(v_duplCte);
+    end;
+    dmPdv.Ibcon.ExecuteDirect('UPDATE SERIES SET ' +
+      ' ULTIMO_NUMERO = ' + edtNumCte.Text +
+      ' WHERE MODELO = ' + QuotedStr('CT') +
+      '   AND CODSERIE = ' + QuotedStr(edtCodEmitente.Text));
+    dmPdv.sTrans.Commit;
+    MessageDlg('CTe duplicada com sucesso.', mtInformation, [mbOK], 0);
+    btnListarCte.Click;
+  except
+    on E : Exception do
+    begin
+      ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
+      dmPdv.sTrans.Rollback;
+      exit;
+    end;
+  end;
+
+ {
   btnEditarCte.Click;
   velha_nCte := dmCte.cdsCTECOD_CTE.AsInteger;;
   modoGravacao := 'DUPLICAR';
@@ -3599,6 +3676,7 @@ begin
   btnIncCte.Click;
   btnGravarCTe.Click;
   duplicar(IntToStr(velha_nCte));
+  }
 end;
 
 procedure TfCTePrincipal.btnEditarCompClick(Sender: TObject);
@@ -3924,7 +4002,7 @@ begin
     edtExpBusca.Text := IntToStr(fClienteBusca.cCodCliente);
     edtExpNome.Text := fClienteBusca.cNomeCliente;
   end;
-  edtExpBusca.SetFocus;
+  edtExpBuscaExit(Nil);
 end;
 
 procedure TfCTePrincipal.BitBtn11Click(Sender: TObject);
@@ -3947,7 +4025,7 @@ begin
     edtRecBusca.Text := IntToStr(fClienteBusca.cCodCliente);
     edtRecNome.Text := fClienteBusca.cNomeCliente;
   end;
-  edtRecBusca.SetFocus;
+  edtRecBuscaExit(Nil);
 end;
 
 procedure TfCTePrincipal.BitBtn12Click(Sender: TObject);
@@ -3970,7 +4048,7 @@ begin
     edtDestBusca.Text := IntToStr(fClienteBusca.cCodCliente);
     edtDestNome.Text := fClienteBusca.cNomeCliente;
   end;
-  edtDestBusca.SetFocus;
+  edtDestBuscaExit(Nil);
 end;
 
 procedure TfCTePrincipal.BitBtn15Click(Sender: TObject);
@@ -4109,7 +4187,7 @@ begin
     edtBuscaTomador.Text := IntToStr(fClienteBusca.cCodCliente);
     edtNomeTomador.Text := fClienteBusca.cNomeCliente;
   end;
-  edtBuscaTomador.SetFocus;
+  edtBuscaTomadorExit(Nil);
 end;
 
 procedure TfCTePrincipal.BitBtn9Click(Sender: TObject);
@@ -4132,7 +4210,7 @@ begin
    edtRemBusca.Text := IntToStr(fClienteBusca.cCodCliente);
    edtRemNome.Text := fClienteBusca.cNomeCliente;
  end;
- edtRemBusca.SetFocus;
+ edtRemBuscaExit(Nil);
 end;
 
 procedure TfCTePrincipal.btnEditarNFeClick(Sender: TObject);
@@ -4816,6 +4894,15 @@ begin
     comboEmpresa.ItemIndex :=0;
     buscaEmpresa(dmPdv.sqEmpresaRAZAO.AsString);
   end;
+
+  combCodSitTrib.Items.Add('00 - Trib. Normal do ICMS');
+  combCodSitTrib.Items.Add('20 - Trib. Redução BC do ICMS');
+  combCodSitTrib.Items.Add('40 - ICMS Isenção');
+  combCodSitTrib.Items.Add('41 - ICMS não Tributado');
+  combCodSitTrib.Items.Add('51 - ICMS Deferido');
+  combCodSitTrib.Items.Add('60 - ICMS Cobrado Anterior ST');
+  combCodSitTrib.Items.Add('90 - ICMS Outros');
+
   LerConfiguracao;
 
   dmPdv.sqParametro.Open;

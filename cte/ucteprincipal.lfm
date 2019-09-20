@@ -386,9 +386,9 @@ object fCTePrincipal: TfCTePrincipal
         Height = 573
         Top = 0
         Width = 1299
-        ActivePage = TabSheet11
+        ActivePage = TabExpedidor
         Align = alClient
-        TabIndex = 8
+        TabIndex = 4
         TabOrder = 0
         object TabDados: TTabSheet
           Cursor = crHandPoint
@@ -407,8 +407,8 @@ object fCTePrincipal: TfCTePrincipal
             TabOrder = 0
             object TabDadosCte: TTabSheet
               Caption = 'Dados CT-e'
-              ClientHeight = 503
-              ClientWidth = 1287
+              ClientHeight = 534
+              ClientWidth = 1289
               OnShow = TabDadosCteShow
               object edtModelo: TEdit
                 Left = 16
@@ -849,8 +849,8 @@ object fCTePrincipal: TfCTePrincipal
             end
             object TabDadosComplementares: TTabSheet
               Caption = 'Dados Complementares'
-              ClientHeight = 503
-              ClientWidth = 1287
+              ClientHeight = 534
+              ClientWidth = 1289
               OnShow = TabDadosComplementaresShow
               object edtCaracAdTrans: TEdit
                 Left = 8
@@ -1187,6 +1187,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 48
             Width = 47
             Caption = '...'
+            Enabled = False
             OnClick = BitBtn6Click
             TabOrder = 14
           end
@@ -1772,6 +1773,7 @@ object fCTePrincipal: TfCTePrincipal
             Height = 27
             Top = 88
             Width = 144
+            OnExit = edtExpBuscaExit
             TabOrder = 1
           end
           object edtExpNome: TEdit
@@ -2871,22 +2873,6 @@ object fCTePrincipal: TfCTePrincipal
             Caption = 'Gravar'
             TabOrder = 36
           end
-          object combICMSDevido: TComboBox
-            Left = 569
-            Height = 27
-            Top = 296
-            Width = 100
-            ItemHeight = 0
-            Items.Strings = (
-              '  40 % em 2016'
-              '  60 % em 2017'
-              '  80 % em 2018'
-              '100%  partir de 2019'
-              'Outro Valor'
-            )
-            TabOrder = 37
-            Text = 'combICMSDevido'
-          end
           object dbValTotPrest: TDBEdit
             Left = 364
             Height = 27
@@ -2929,7 +2915,7 @@ object fCTePrincipal: TfCTePrincipal
             DataSource = dmCte.dsCte
             CharCase = ecNormal
             MaxLength = 0
-            TabOrder = 38
+            TabOrder = 37
           end
           object dbValvBC: TDBEdit
             Left = 364
@@ -2940,7 +2926,7 @@ object fCTePrincipal: TfCTePrincipal
             DataSource = dmCte.dsCte
             CharCase = ecNormal
             MaxLength = 0
-            TabOrder = 39
+            TabOrder = 38
           end
           object dbValPIcms: TDBEdit
             Left = 364
@@ -2951,7 +2937,7 @@ object fCTePrincipal: TfCTePrincipal
             DataSource = dmCte.dsCte
             CharCase = ecNormal
             MaxLength = 0
-            TabOrder = 40
+            TabOrder = 39
           end
           object dbValVICMS: TDBEdit
             Left = 364
@@ -2962,7 +2948,7 @@ object fCTePrincipal: TfCTePrincipal
             DataSource = dmCte.dsCte
             CharCase = ecNormal
             MaxLength = 0
-            TabOrder = 41
+            TabOrder = 40
           end
           object dbValVCred: TDBEdit
             Left = 364
@@ -2973,7 +2959,7 @@ object fCTePrincipal: TfCTePrincipal
             DataSource = dmCte.dsCte
             CharCase = ecNormal
             MaxLength = 0
-            TabOrder = 42
+            TabOrder = 41
           end
           object calValB: TDBEdit
             Left = 992
@@ -2983,7 +2969,7 @@ object fCTePrincipal: TfCTePrincipal
             DataSource = dmCte.dsCte
             CharCase = ecNormal
             MaxLength = 0
-            TabOrder = 43
+            TabOrder = 42
           end
           object valAliIn: TDBEdit
             Left = 992
@@ -2993,7 +2979,23 @@ object fCTePrincipal: TfCTePrincipal
             DataSource = dmCte.dsCte
             CharCase = ecNormal
             MaxLength = 0
+            TabOrder = 43
+          end
+          object combICMSDevido: TComboBox
+            Left = 992
+            Height = 27
+            Top = 304
+            Width = 224
+            ItemHeight = 0
+            Items.Strings = (
+              '  40 % em 2016'
+              '  60 % em 2017'
+              '  80 % em 2018'
+              '100%  partir de 2019'
+              'Outro Valor'
+            )
             TabOrder = 44
+            Text = 'combICMSDevido'
           end
         end
         object TabSheet11: TTabSheet
@@ -3005,9 +3007,9 @@ object fCTePrincipal: TfCTePrincipal
             Height = 538
             Top = 0
             Width = 1293
-            ActivePage = TabInfoCarga
+            ActivePage = TabNfe
             Align = alClient
-            TabIndex = 0
+            TabIndex = 2
             TabOrder = 0
             object TabInfoCarga: TTabSheet
               Caption = 'Inf. da Carga'

@@ -72,9 +72,9 @@ begin
   end;
   if (dmCte.dsNFe.State in [dsInsert]) then
   begin
-    vNfe_str := 'INSERT INTO CTE_NFE (CTE_NFE, CHAVE,DPREV, PIN  ' +
-               ') VALUES ( ';
-    vNfe_str := vNfe_str + IntToStr(dmCte.cdsCteCOD_CTE.AsInteger);
+    vNfe_str := 'INSERT INTO CTE_NFE (COD_CTE_NFE, CTE_NFE, CHAVE,DPREV, PIN  ' +
+               ') VALUES ( GEN_ID(GEN_CTE_NFE_ID, 1)';
+    vNfe_str := vNfe_str + ', ' + IntToStr(dmCte.cdsCteCOD_CTE.AsInteger);
     vNfe_str := vNfe_str + ', ' + QuotedStr(dmCte.sqNFeCHAVE.AsString);
     vNfe_str := vNfe_str + ', ' + QuotedStr(FormatDateTime('mm/dd/yyyy',
       dmCte.sqNFeDPREV.AsDateTime));

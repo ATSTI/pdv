@@ -127,6 +127,9 @@ procedure TfClienteBusca.FormShow(Sender: TObject);
 begin
   //dmPdv.IbCon.Connected:=False;
   //dmPdv.IbCon.Connected:=True;
+  edit1.Text := '';
+  edit2.Text := '';
+  Edit2.SetFocus;
   DBGrid1.Columns[0].FieldName := 'CODCLIENTE';
   DBGrid1.Columns[1].FieldName := 'NOMECLIENTE';
   DBGrid1.Columns[0].Title.Caption:='Código';
@@ -183,14 +186,14 @@ end;
 procedure TfClienteBusca.BuscaCliente;
 var sql: String;
 begin
-  sql := 'SELECT c.NOMECLIENTE, c.RAZAOSOCIAL, c.CNPJ, ' +
+  sql := 'SELECT c.CODCLIENTE, c.NOMECLIENTE, c.RAZAOSOCIAL, c.CNPJ, ' +
       '   c.INSCESTADUAL, d.LOGRADOURO, d.NUMERO, d.CIDADE, d.BAIRRO, ' +
       '   d.CEP, d.UF, d.CD_IBGE ' +
       ' FROM CLIENTES c, ENDERECOCLIENTE d ' +
       ' WHERE c.CODCLIENTE = d.CODCLIENTE ' +
       ' AND d.TIPOEND = 0 ';
-  sql := sql + ' AND CODCLIENTE = ' + IntToStr(cCodCliente);
-  sql := sql + ' AND STATUS = 1';
+  sql := sql + ' AND c.CODCLIENTE = ' + IntToStr(cCodCliente);
+  sql := sql + ' AND c.STATUS = 1';
   dmPdv.busca_sql(sql);
   if not dmPdv.sqBusca.IsEmpty then
   begin
