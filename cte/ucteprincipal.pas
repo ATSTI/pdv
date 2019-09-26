@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
   StdCtrls, Menus, Buttons, DBGrids, EditBtn, Spin, DBCtrls, DateTimePicker,
   Types, IniFiles, ACBrCTe, ACBrCTeDACTEClass, ACBrMail, ACBrBase, ACBrDFe,
-  ACBrNFe, pcnConversao, pcteConversaoCTe, DateUtils, ACBrUtil, db;
+  ACBrNFe, pcnConversao, pcteConversaoCTe, DateUtils, ACBrUtil, db, ACBrDFeSSL;
 
 type
 
@@ -74,8 +74,13 @@ type
     btnVeicIncluir1: TBitBtn;
     Button30: TButton;
     calValB: TDBEdit;
+    cbCryptLib: TComboBox;
     cbEmailSSL: TCheckBox;
+    cbHttpLib: TComboBox;
+    cbSSLLib: TComboBox;
+    cbSSLType: TComboBox;
     cbUF: TComboBox;
+    cbXmlSignLib: TComboBox;
     CheckBox1: TCheckBox;
     ckSalvar: TCheckBox;
     ckVisualizar: TCheckBox;
@@ -301,6 +306,7 @@ type
     Label118: TLabel;
     Label119: TLabel;
     Label12: TLabel;
+    Label120: TLabel;
     Label121: TLabel;
     Label122: TLabel;
     Label123: TLabel;
@@ -324,7 +330,9 @@ type
     Label14: TLabel;
     Label140: TLabel;
     Label141: TLabel;
+    Label142: TLabel;
     Label143: TLabel;
+    Label144: TLabel;
     Label15: TLabel;
     Label16: TLabel;
     Label17: TLabel;
@@ -420,6 +428,11 @@ type
     lblDetRetira: TStaticText;
     lblDetRetira1: TStaticText;
     lblEmailAssunto: TLabel;
+    lCryptLib: TLabel;
+    lHttpLib: TLabel;
+    lSSLLib: TLabel;
+    lSSLLib1: TLabel;
+    lXmlSign: TLabel;
     memDetRetira: TMemo;
     memDetRetira1: TMemo;
     MemoDados: TMemo;
@@ -465,10 +478,10 @@ type
     rgTiposCte: TRadioGroup;
     rgTipoServico: TRadioGroup;
     rgTomador: TRadioGroup;
-    sbtnCaminhoCert: TStaticText;
-    sbtnGetCert: TBitBtn;
+    sbtnCaminhoCert: TSpeedButton;
+    sbtnGetCert: TSpeedButton;
     sbtnLogoMarca: TBitBtn;
-    sbtnPathSalvar: TBitBtn;
+    sbtnPathSalvar: TSpeedButton;
     StaticText1: TStaticText;
     StaticText10: TStaticText;
     StaticText11: TStaticText;
@@ -581,6 +594,11 @@ type
     procedure btnVeicExcluirClick(Sender: TObject);
     procedure btnVeicIncluirClick(Sender: TObject);
     procedure Button11Click(Sender: TObject);
+    procedure cbCryptLibChange(Sender: TObject);
+    procedure cbHttpLibChange(Sender: TObject);
+    procedure cbSSLLibChange(Sender: TObject);
+    procedure cbSSLTypeChange(Sender: TObject);
+    procedure cbXmlSignLibChange(Sender: TObject);
     procedure comboEmpresaChange(Sender: TObject);
     procedure dbValInfCargaChange(Sender: TObject);
     procedure dgGridCTEDblClick(Sender: TObject);
@@ -590,12 +608,15 @@ type
     procedure edtEmitCompChange(Sender: TObject);
     procedure edtEmitenteCteChange(Sender: TObject);
     procedure edtExpBuscaExit(Sender: TObject);
+    procedure edtNumSerieChange(Sender: TObject);
     procedure edtRecBuscaExit(Sender: TObject);
     procedure edtRemBuscaExit(Sender: TObject);
     procedure edtXMLCodChange(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
+    procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: char);
     procedure FormShow(Sender: TObject);
+    procedure Label120Click(Sender: TObject);
     procedure Label60Click(Sender: TObject);
     procedure mmEmailMsgChange(Sender: TObject);
     procedure PageControl2Exit(Sender: TObject);
@@ -662,6 +683,7 @@ type
     procedure EditarREC;
     function LimparString(ATExto, ACaracteres: string): string;
     function GravarCTe: String;
+    procedure AtualizaSSLLibsCombo;
   public
 
   end;
@@ -674,7 +696,7 @@ const
 implementation
 
 uses udmpdv, ufrmStatus, uDmCte, uNFe, uCompValor, uQuantCarga, uVeiculoCte,
-  uClienteBusca, umunicipiobusca, uCertificadoLer;
+  uClienteBusca, umunicipiobusca, uCertificadoLer,TypInfo, blcksock;
 
 {$R *.lfm}
 
@@ -813,6 +835,11 @@ begin
     Ini.WriteString( 'Certificado','Senha'   ,edtSenha.Text);
     Ini.WriteString( 'Certificado','NumSerie',edtNumSerie.Text);
 
+    Ini.WriteInteger( 'Certificado','SSLLib' , cbSSLLib.ItemIndex) ;
+    Ini.WriteInteger( 'Certificado','CryptLib' , cbCryptLib.ItemIndex) ;
+    Ini.WriteInteger( 'Certificado','HttpLib' , cbHttpLib.ItemIndex) ;
+    Ini.WriteInteger( 'Certificado','XmlSignLib' , cbXmlSignLib.ItemIndex) ;
+
     Ini.WriteInteger( 'Geral','DACTE'       ,rgTipoDACTe.ItemIndex);
     Ini.WriteInteger( 'Geral','FormaEmissao',rgFormaEmissao.ItemIndex);
     Ini.WriteInteger( 'Geral','TipoServico',rgTipoServico.ItemIndex);
@@ -933,14 +960,18 @@ begin
    edtSenha.Visible   := False;
    sbtnCaminhoCert.Visible := False;
   {$ENDIF}
-
+  cbSSLLib.ItemIndex:= Ini.ReadInteger( 'Certificado','SSLLib' ,0) ;
+  cbCryptLib.ItemIndex := Ini.ReadInteger( 'Certificado','CryptLib' , 0) ;
+  cbHttpLib.ItemIndex := Ini.ReadInteger( 'Certificado','HttpLib' , 0) ;
+  cbXmlSignLib.ItemIndex := Ini.ReadInteger( 'Certificado','XmlSignLib' , 0) ;
+  cbSSLType.ItemIndex    := Ini.ReadInteger( 'WebService','SSLType' , 0) ;
   rgFormaEmissao.ItemIndex := Ini.ReadInteger('Geral','FormaEmissao',0);
 
   ckSalvar.Checked         := Ini.ReadBool(   'Geral','Salvar'      ,True);
   edtPathLogs.Text         := Ini.ReadString( 'Geral','PathSalvar'  ,'');
 
   percent_icms     := Ini.ReadFloat( 'ICMS','Percentual'   , 0);
-
+  ACBrNFe1.SSL.SSLType := TSSLType( cbSSLType.ItemIndex );
   case rgFormaEmissao.ItemIndex of
    0: ACBrCTe1.Configuracoes.Geral.FormaEmissao := teNormal;
    1: ACBrCTe1.Configuracoes.Geral.FormaEmissao := teDPEC; // o mesmo que EPEC
@@ -948,6 +979,14 @@ begin
    3: ACBrCTe1.Configuracoes.Geral.FormaEmissao := teSVCRS;
    4: ACBrCTe1.Configuracoes.Geral.FormaEmissao := tESVCSP;
   end;
+
+  with ACBrNFe1.Configuracoes.Geral do
+   begin
+     SSLLib                := TSSLLib(cbSSLLib.ItemIndex);
+     SSLCryptLib           := TSSLCryptLib(cbCryptLib.ItemIndex);
+     SSLHttpLib            := TSSLHttpLib(cbHttpLib.ItemIndex);
+     SSLXmlSignLib         := TSSLXmlSignLib(cbXmlSignLib.ItemIndex);
+   end;
 
   ACBrCTe1.Configuracoes.Geral.Salvar := ckSalvar.Checked;
 
@@ -1784,7 +1823,7 @@ begin
     while( not dmCte.sqQC.Eof) do
     begin
       // UnidMed = (uM3,uKG, uTON, uUNIDADE, uLITROS , uMMBTU);
-      with infCTeNorm.infCarga.InfQ.New do
+      with infCTeNorm.infCarga.InfQ.Add do
       begin
         if (dmCte.sqQCUNID.AsString = '00') then
           cUnid  := uM3;
@@ -2913,6 +2952,16 @@ begin
   FormatSettings.DecimalSeparator := ',';
 end;
 
+procedure TfCTePrincipal.AtualizaSSLLibsCombo;
+begin
+ cbSSLLib.ItemIndex := Integer( ACBrNFe1.Configuracoes.Geral.SSLLib );
+ cbCryptLib.ItemIndex := Integer( ACBrNFe1.Configuracoes.Geral.SSLCryptLib );
+ cbHttpLib.ItemIndex := Integer( ACBrNFe1.Configuracoes.Geral.SSLHttpLib );
+ cbXmlSignLib.ItemIndex := Integer( ACBrNFe1.Configuracoes.Geral.SSLXmlSignLib );
+
+ cbSSLType.Enabled := (ACBrNFe1.Configuracoes.Geral.SSLHttpLib in [httpWinHttp, httpOpenSSL]) ;
+end;
+
 procedure TfCTePrincipal.StaticText6Click(Sender: TObject);
 begin
 
@@ -3048,6 +3097,11 @@ begin
     edtExpBairro.Text := dmPdv.sqBusca.FieldByName('BAIRRO').AsString;
     edtExpCep.TExt := dmPdv.sqBusca.FieldByName('CEP').AsString;
   end;
+
+end;
+
+procedure TfCTePrincipal.edtNumSerieChange(Sender: TObject);
+begin
 
 end;
 
@@ -4366,6 +4420,10 @@ end;
 procedure TfCTePrincipal.btnGravarCTeClick(Sender: TObject);
 var sql_retorno, strEdita: String;
 begin
+  if (edtNumCte.Text = '') then
+  begin
+    Exit;
+  end;
   if(edtCFOP.Text = '') then
   begin
     MessageDlg('Preecha o CFOP.', mtInformation, [mbOK], 0);
@@ -4867,6 +4925,53 @@ begin
 
 end;
 
+procedure TfCTePrincipal.cbCryptLibChange(Sender: TObject);
+begin
+  try
+    if cbCryptLib.ItemIndex <> -1 then
+      ACBrNFe1.Configuracoes.Geral.SSLCryptLib := TSSLCryptLib(cbCryptLib.ItemIndex);
+  finally
+    AtualizaSSLLibsCombo;
+  end;
+end;
+
+procedure TfCTePrincipal.cbHttpLibChange(Sender: TObject);
+begin
+  try
+    if cbHttpLib.ItemIndex <> -1 then
+      ACBrNFe1.Configuracoes.Geral.SSLHttpLib := TSSLHttpLib(cbHttpLib.ItemIndex);
+  finally
+    AtualizaSSLLibsCombo;
+  end;
+end;
+
+procedure TfCTePrincipal.cbSSLLibChange(Sender: TObject);
+begin
+ try
+   if cbSSLLib.ItemIndex <> -1 then
+     ACBrNFe1.Configuracoes.Geral.SSLLib := TSSLLib(cbSSLLib.ItemIndex);
+ finally
+   AtualizaSSLLibsCombo;
+ end;
+
+end;
+
+procedure TfCTePrincipal.cbSSLTypeChange(Sender: TObject);
+begin
+    if cbSSLType.ItemIndex <> -1 then
+     ACBrNFe1.SSL.SSLType := TSSLType(cbSSLType.ItemIndex);
+end;
+
+procedure TfCTePrincipal.cbXmlSignLibChange(Sender: TObject);
+begin
+  try
+    if cbXmlSignLib.ItemIndex <> -1 then
+      ACBrNFe1.Configuracoes.Geral.SSLXmlSignLib := TSSLXmlSignLib(cbXmlSignLib.ItemIndex);
+  finally
+    AtualizaSSLLibsCombo;
+  end;
+end;
+
 procedure TfCTePrincipal.comboEmpresaChange(Sender: TObject);
 begin
   buscaEmpresa(comboEmpresa.Text);
@@ -4886,6 +4991,44 @@ begin
     Exit;
   end;
   GravarConfiguracao;
+end;
+
+procedure TfCTePrincipal.FormCreate(Sender: TObject);
+var
+ T : TSSLLib;
+ I : TpcnTipoEmissao ;
+ //J : TpcnModeloDF;
+ //K : TpcnVersaoDF;
+ FS: TFileStream;
+ U: TSSLCryptLib;
+ V: TSSLHttpLib;
+ X: TSSLXmlSignLib;
+ Y: TSSLType;
+begin
+ cbSSLLib.Items.Clear ;
+ For T := Low(TSSLLib) to High(TSSLLib) do
+   cbSSLLib.Items.Add( GetEnumName(TypeInfo(TSSLLib), integer(T) ) ) ;
+ cbSSLLib.ItemIndex := 0 ;
+
+ cbCryptLib.Items.Clear ;
+ For U := Low(TSSLCryptLib) to High(TSSLCryptLib) do
+   cbCryptLib.Items.Add( GetEnumName(TypeInfo(TSSLCryptLib), integer(U) ) ) ;
+ cbCryptLib.ItemIndex := 0 ;
+
+ cbHttpLib.Items.Clear ;
+ For V := Low(TSSLHttpLib) to High(TSSLHttpLib) do
+   cbHttpLib.Items.Add( GetEnumName(TypeInfo(TSSLHttpLib), integer(V) ) ) ;
+ cbHttpLib.ItemIndex := 0 ;
+
+ cbXmlSignLib.Items.Clear ;
+ For X := Low(TSSLXmlSignLib) to High(TSSLXmlSignLib) do
+   cbXmlSignLib.Items.Add( GetEnumName(TypeInfo(TSSLXmlSignLib), integer(X) ) ) ;
+ cbXmlSignLib.ItemIndex := 0 ;
+
+ cbSSLType.Items.Clear ;
+ For Y := Low(TSSLType) to High(TSSLType) do
+   cbSSLType.Items.Add( GetEnumName(TypeInfo(TSSLType), integer(Y) ) ) ;
+ cbSSLType.ItemIndex := 0 ;
 end;
 
 procedure TfCTePrincipal.FormKeyPress(Sender: TObject; var Key: char);
@@ -4964,6 +5107,11 @@ begin
   DateTimePicker2.Date := vDate2 ;
   modoGravacao := 'CONSULTAR';
   pcPrincipal.PageIndex := 0;
+end;
+
+procedure TfCTePrincipal.Label120Click(Sender: TObject);
+begin
+
 end;
 
 procedure TfCTePrincipal.Label60Click(Sender: TObject);
