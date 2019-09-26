@@ -68,6 +68,7 @@ type
     Panel5: TPanel;
     Panel6: TPanel;
     rgRodLotacao: TRadioGroup;
+    sbtnCaminhoCert: TStaticText;
     valAliIn: TDBEdit;
     dbValInfCarga: TDBEdit;
     valOutrosVal: TDBEdit;
@@ -233,7 +234,6 @@ type
     memxObs: TMemo;
     rgTipoDACTe: TRadioGroup;
     rgTipoAmb: TRadioGroup;
-    sbtnCaminhoCert: TSpeedButton;
     StatusBar1: TStatusBar;
     TabSheet12: TTabSheet;
     TabRodoviario: TTabSheet;
@@ -657,7 +657,7 @@ const
 implementation
 
 uses udmpdv, ufrmStatus, uDmCte, uNFe, uCompValor, uQuantCarga, uVeiculoCte,
-  uClienteBusca, umunicipiobusca;
+  uClienteBusca, umunicipiobusca, uCertificadoLer;
 
 {$R *.lfm}
 
@@ -1077,10 +1077,10 @@ begin
    //if zEmpresaCODIGO.AsInteger = 0  // criar ou ver de onde vira
 
      // forma pgto
-    case  rgForPag.ItemIndex of
-    0: Ide.forPag := fpPago;
-    1: Ide.forPag := fpAPagar;
-    2: Ide.forPag := fpOutros;
+   case  rgForPag.ItemIndex of
+     0: Ide.forPag := fpPago;
+     1: Ide.forPag := fpAPagar;
+     2: Ide.forPag := fpOutros;
    end;
 
 
@@ -1097,25 +1097,25 @@ begin
 
    // TpcnTipoEmissao = (teNormal, teContingencia, teSCAN, teDPEC, teFSDA);
    case rgFormaEmissao.ItemIndex of
-    0: Ide.tpEmis:=teNormal;
-    1: Ide.tpEmis:=teContingencia;
-    2: Ide.tpEmis:=teSCAN;
-    3: Ide.tpEmis:=teDPEC;
-    4: Ide.tpEmis:=teFSDA;
+     0: Ide.tpEmis:=teNormal;
+     1: Ide.tpEmis:=teContingencia;
+     2: Ide.tpEmis:=teSCAN;
+     3: Ide.tpEmis:=teDPEC;
+     4: Ide.tpEmis:=teFSDA;
    end;
 
    // TpcnTipoAmbiente = (taProducao, taHomologacao);
    case  rgTipoAmb.ItemIndex of
-    0: Ide.tpAmb:=taProducao;
-    1: Ide.tpAmb:=taHomologacao;
+     0: Ide.tpAmb:=taProducao;
+     1: Ide.tpAmb:=taHomologacao;
    end;
 
    // TpcteTipoCTe = (tcNormal, tcComplemento, tcAnulacao, tcSubstituto);
    case rgTipoDACTe.ItemIndex of
-    0: Ide.tpCTe:=tcNormal;
-    1: Ide.tpCTe:=tcComplemento;
-    2: Ide.tpCTe:=tcAnulacao;
-    3: Ide.tpCTe:=tcSubstituto;
+     0: Ide.tpCTe:=tcNormal;
+     1: Ide.tpCTe:=tcComplemento;
+     2: Ide.tpCTe:=tcAnulacao;
+     3: Ide.tpCTe:=tcSubstituto;
    end;
 
    // TpcnProcessoEmissao = (peAplicativoContribuinte, peAvulsaFisco, peAvulsaContribuinte, peContribuinteAplicativoFisco);
@@ -1132,8 +1132,8 @@ begin
 
     // Ide.modal:= mdRodoviario;
     case rgModal.ItemIndex of
-     0: Ide.modal:=mdRodoviario;
-     1: Ide.modal:=mdAereo;
+      0: Ide.modal:=mdRodoviario;
+      1: Ide.modal:=mdAereo;
      //2: Ide.modal:=mdAquaviario;    // manoel não inlui no rgModal
      //3: Ide.modal:=mdFerroviario;
      //4: Ide.modal:=mdDutoviario;
@@ -1143,10 +1143,10 @@ begin
 
    // TpcteTipoServico = (tsNormal, tsSubcontratacao, tsRedespacho, tsIntermediario);
     case rgTipoServico.ItemIndex of
-     0: Ide.tpServ:=tsNormal;
-     1: Ide.tpServ:=tsSubcontratacao;
-     2: Ide.tpServ:=tsRedespacho;
-     3: Ide.tpServ:=tsIntermediario;
+      0: Ide.tpServ:=tsNormal;
+      1: Ide.tpServ:=tsSubcontratacao;
+      2: Ide.tpServ:=tsRedespacho;
+      3: Ide.tpServ:=tsIntermediario;
     end;
                                // incluir na aba Dados
 
@@ -1170,16 +1170,16 @@ begin
     // TpcteRetira
 
     case rgRetira.ItemIndex of
-     0: Ide.retira := rtSim;
-     1: Ide.retira := rtNao;
+      0: Ide.retira := rtSim;
+      1: Ide.retira := rtNao;
     end;
     Ide.xdetretira := memDetRetira.Text;
 
-                                         // Aba Tomador  inicio
+   // Aba Tomador  inicio
    //0-Remetente; 1-Expedidor; 2-Recebedor; 3-Destinatário Serão utilizadas as informações contidas no respectivo grupo,
 
    // Lazarus-Cte
-   //rgTomador.ItemIndex := dmCte.cdsCTETOMADORSERVICO.AsInteger;
+   rgTomador.ItemIndex := dmCte.cdsCTETOMADORSERVICO.AsInteger;
 
     case rgTomador.ItemIndex of
       0: rgTomador.ItemIndex := 0;
@@ -1321,33 +1321,31 @@ begin
 
     end;
 
-   // parcial nf   StringToFloat(Format('%8.2f', [calValCarga.Value]));
+    // parcial nf   StringToFloat(Format('%8.2f', [calValCarga.Value]));
 
-    //info Documentos
+   //info Documentos
 
-    //Lazarus-Cte
-    {
-    if not(dm.cdsNFe.Active)then
-    begin
-      dm.cdsNFe.Params[0].AsInteger := val_genCte;
-      dm.cdsNFe.Open;
-    end;
+   //Lazarus-Cte
+   if not(dmCte.sqNFe.Active) then
+   begin
+     dmCte.sqNFe.Params[0].AsInteger := val_genCte;
+     dmCte.sqNFe.Open;
+   end;
 
-    dm.cdsNFe.First;
-    while( not dm.cdsNFe.Eof) do begin
-      with infCTeNorm.infDoc.infNFe.Add do
-      begin
-        chave := dm.cdsNFeCHAVE.AsString;
-        PIN := dm.cdsNFePIN.AsString;
-        dPrev := dm.cdsNFeDPREV.Value; // ; FormatDateTime('mm/dd/yyyy',dm.cdsNFeDPREV.Text); //dm.cdsNFeDPREV.AsString;
-      end;
-      dm.cdsNFe.Next;
-    end;
-    dm.cdsNFe.Close;
-    }
+   dmCte.sqNFe.First;
+   while( not dmCte.sqNFe.Eof) do begin
+     with infCTeNorm.infDoc.infNFe.Add do
+     begin
+       chave := dmCte.sqNFeCHAVE.AsString;
+       PIN := dmCte.sqNFePIN.AsString;
+       dPrev := dmCte.sqNFeDPREV.Value; // ; FormatDateTime('mm/dd/yyyy',dm.cdsNFeDPREV.Text); //dm.cdsNFeDPREV.AsString;
+     end;
+     dmCte.sqNFe.Next;
+   end;
+
    case  rgGlobalizado.ItemIndex of
-    1: Ide.indGlobalizado :=tiSim;
-    0: Ide.indGlobalizado :=tiNao;
+     1: Ide.indGlobalizado :=tiSim;
+     0: Ide.indGlobalizado :=tiNao;
    end;
    // Lazarus-Cte
    {
@@ -1502,65 +1500,62 @@ begin
      // ABA Serviços e Impostos
      //  Valores da Prestação de Serviço
     // Lazarus-Cte
-    {
-    if (dbValTotPrest.Field.Value <> null) then
-      vPrest.vTPrest :=  dbValTotPrest.Field.Value;// /RoundTo(DM_CNT.Conhec2ValorTotal.AsFloat, -2);
-    if (dbValReceber.Field.Value <> null) then
-      vPrest.vRec    :=  dbValReceber.Field.Value;//valReceber.Value; // RoundTo(DM_CNT.Conhec2ValorTotal.AsFloat, -2);
+    vPrest.vTPrest := dmCte.cdsCteVPREST.AsFloat;
+    vPrest.vRec    := dmCte.cdsCteVREC.AsFloat;
 
-    if not(dm.cdsCOMP.Active)then
+    if not(dmCte.sqComp.Active)then
     begin
-      dm.cdsCOMP.Params[0].AsInteger := val_genCte;
-      dm.cdsCOMP.Open;
+      dmCte.sqComp.Params[0].AsInteger := val_genCte;
+      dmCte.sqComp.Open;
     end;
-
-    while( not dm.cdsCOMP.Eof) do begin
+    dmCte.sqComp.First;
+    while( not dmCte.sqComp.Eof) do begin
       with vPrest.comp.Add do
       begin
-        xNome := dm.cdsCOMPCOMP_NOME.AsString;
-        vComp := dm.cdsCOMPCOMP_VALOR.AsFloat;
+        xNome := dmCte.sqCompCOMP_NOME.AsString;
+        vComp := dmCte.sqCompCOMP_VALOR.AsFloat;
       end;
-      dm.cdsCOMP.Next;
+      dmCte.sqComp.Next;
     end;
-    dm.cdsCOMP.Close;
-    }
+
     //  Docs Anterior 15/08/19
+    if (edtAntCHCTE.Text <> '') then
+    begin
+      with infCTeNorm.docAnt.emiDocAnt.Add do
+      begin
+        CNPJCPF  := edtAntCNPJ.Text;  // '31776232000160';
+        xNome    := edtAntNome.Text; //'TRANS MOINHOS LOGISTICA LTDA';
+        uf       := edtAntUF.Text;    // 'PR';
+        ie       := edtAntIE.Text;  //'9079516349';
 
-     with infCTeNorm.docAnt.emiDocAnt.Add do
-     begin
-       CNPJCPF  := edtAntCNPJ.Text;  // '31776232000160';
-       xNome    := edtAntNome.Text; //'TRANS MOINHOS LOGISTICA LTDA';
-       uf       := edtAntUF.Text;    // 'PR';
-       ie       := edtAntIE.Text;  //'9079516349';
-
-       with idDocAnt.Add do
-       begin
-         idDocAntEle.Add.chCTe := edtAntCHCTE.Text; //'41190731776232000160570010000415871000157434';
-       end;
-     end;
-
+        with idDocAnt.Add do
+        begin
+          idDocAntEle.Add.chCTe := edtAntCHCTE.Text; //'41190731776232000160570010000415871000157434';
+        end;
+      end;
+    end;
    //  Valores dos Impostos
    // TpcnCSTIcms = (cst00, cst10, cst20, cst30, cst40, cst41, cst45, cst50, cst51, cst60, cst70, cst80, cst81, cst90);
    // 80 e 81 apenas para CTe
 
    //Lazarus-Cte
-   {
-    case combCodSitTrib.ItemIndex of    //00 - Tributação Normal do ICMS
+
+   case combCodSitTrib.ItemIndex of    //00 - Tributação Normal do ICMS
     0: begin
          Imp.ICMS.SituTrib     := cst00;
          Imp.ICMS.ICMS00.CST   := cst00;
-         Imp.ICMS.ICMS00.vBC   := StrToFloat(dbVALVBC.Field.Value);
-         Imp.ICMS.ICMS00.pICMS := StrToFloat(dbVALPICMS.Field.Value);
-         Imp.ICMS.ICMS00.vICMS := StrToFloat(dbVALVICMS.Field.Value);             // dbValVICMS.Value;
+         Imp.ICMS.ICMS00.vBC   := dmCte.cdsCteVALVBC.AsFloat;
+         Imp.ICMS.ICMS00.pICMS := dmCte.cdsCteVALPICMS.AsFloat;
+         Imp.ICMS.ICMS00.vICMS := dmCte.cdsCteVALVICMS.AsFloat;
        end;
 
     1: begin                        //20 - Tributação com Redulçao da BC do ICMS
          Imp.ICMS.SituTrib      := cst20;
          Imp.ICMS.ICMS20.CST    := cst20; // Tributação com BC reduzida do ICMS
-         Imp.ICMS.ICMS20.pRedBC := StrToFloat(dbvalpRedBC.Field.Value); //RoundTo(DM_CNT.Conhec2ReducaoICMS.AsFloat, -2);
-         Imp.ICMS.ICMS20.vBC    := StrToFloat(dbvalvBC.Field.Value); //RoundTo(DM_CNT.Conhec2BaseCalc.AsFloat, -2);
-         Imp.ICMS.ICMS20.pICMS  := StrToFloat(dbvalpICMS.Field.Value); //RoundTo(DM_CNT.Conhec2AliqICMS.AsFloat, -2);
-         Imp.ICMS.ICMS20.vICMS  := StrToFloat(dbvalvICMS.Field.Value); //RoundTo(DM_CNT.Conhec2ValorICMS.AsFloat, -2);
+         Imp.ICMS.ICMS20.vBC   := dmCte.cdsCteVALVBC.AsFloat;
+         Imp.ICMS.ICMS20.pICMS := dmCte.cdsCteVALPICMS.AsFloat;
+         Imp.ICMS.ICMS20.vICMS := dmCte.cdsCteVALVICMS.AsFloat;
+         Imp.ICMS.ICMS20.pRedBC := dmCte.cdsCteVALPREDBC.AsFloat;
          end;
 
     2: begin                         // 40 - ICMS Isenção
@@ -1581,30 +1576,32 @@ begin
     5: begin                      //   60 - ICMS Cobrado Anteriormente por Substituição Tributária
          Imp.ICMS.SituTrib          := cst60;
          Imp.ICMS.ICMS60.CST        := cst60;
+         // TODO incluir calc. ST
+         {
          Imp.ICMS.ICMS60.vBCSTRet   := StringToFloat(dbvalvBC.Field.Value);
          Imp.ICMS.ICMS60.vICMSSTRet := StringToFloat(dbvalpICMS.Field.Value);     // invertido
          Imp.ICMS.ICMS60.pICMSSTRet := StringToFloat(dbvalvICMS.Field.Value);     // invertido
          Imp.ICMS.ICMS60.vCred      := StringToFloat(dbvalvCred.Field.Value);
+         }
         end;
                                  // 90 - ICMS outros
     6: begin
          Imp.ICMS.SituTrib      := cst90;
          Imp.ICMS.ICMS90.CST    := cst90; // Tributação atribuida ao tomador ou 3. por ST
-         Imp.ICMS.ICMS90.pRedBC := StringToFloat(dbvalpRedBC.Field.Value);
-         Imp.ICMS.ICMS90.vBC    := StringToFloat(dbvalvBC.Field.Value);
-         Imp.ICMS.ICMS90.pICMS  := StringToFloat(dbvalpICMS.Field.Value);
-         Imp.ICMS.ICMS90.vICMS  := StringToFloat(dbvalvICMS.Field.Value);
-         Imp.ICMS.ICMS90.vCred  := StringToFloat(dbvalvCred.Field.Value);
+         Imp.ICMS.ICMS90.vBC    := dmCte.cdsCteVALVBC.AsFloat;
+         Imp.ICMS.ICMS90.pICMS  := dmCte.cdsCteVALPICMS.AsFloat;
+         Imp.ICMS.ICMS90.vICMS  := dmCte.cdsCteVALVICMS.AsFloat;
+         Imp.ICMS.ICMS90.pRedBC := dmCte.cdsCteVALPREDBC.AsFloat;
+         Imp.ICMS.ICMS90.vCred  := dmCte.cdsCteVALVCRED.AsFloat;
        end;
 
     7: begin                        // 90 - ICMS Outra UF
          Imp.ICMS.SituTrib      := cst90;
          Imp.ICMS.ICMS90.CST    := cst90;
-         Imp.ICMS.ICMS90.pRedBC := StringToFloat(dbvalpRedBC.Field.Value); //RoundTo(DM_CNT.Conhec2ReducaoICMS.AsFloat, -2);
-         Imp.ICMS.ICMS90.vBC    := StringToFloat(dbvalvBC.Field.Value); //RoundTo(DM_CNT.Conhec2BaseCalc.AsFloat, -2);
-         Imp.ICMS.ICMS90.pICMS  := StringToFloat(dbvalpICMS.Field.Value); //RoundTo(DM_CNT.Conhec2AliqICMS.AsFloat, -2);
-         Imp.ICMS.ICMS90.vICMS  := StringToFloat(dbvalvICMS.Field.Value); //RoundTo(DM_CNT.Conhec2ValorICMS.AsFloat, -2);
-       // Imp.ICMS.ICMS90.vCred  := dbValVCred.Value; //RoundTo(DM_CNT.Conhec2CreditoICMS.AsFloat, -2);
+         Imp.ICMS.ICMS90.vBC    := dmCte.cdsCteVALVBC.AsFloat;
+         Imp.ICMS.ICMS90.pICMS  := dmCte.cdsCteVALPICMS.AsFloat;
+         Imp.ICMS.ICMS90.vICMS  := dmCte.cdsCteVALVICMS.AsFloat;
+         Imp.ICMS.ICMS90.pRedBC := dmCte.cdsCteVALPREDBC.AsFloat;
        end;
 
     8: begin                    // 90 - SIMPLES NACIONAL
@@ -1612,22 +1609,16 @@ begin
          Imp.ICMS.ICMSSN.indSN := 1;
        end;
     end;
-    }
 
     //
     //  Informações da Carga
     //                                  //Format('%8.2f', [edPesoVol1.Value]);
 
-
-    // Lazarus-Cte
-    {
-    infCTeNorm.infCarga.vCarga  := StringToFloat(dbValInfCarga.Field.Value);  //StringToFloat(calValCarga.Text); // RoundTo(DM_CNT.Conhec2ValorTotalNF.AsFloat, -2);arga.vMerc   :=  calValCarga.Text; // RoundTo(DM_CNT.Conhec2ValorTotalNF.AsFloat, -2);
+    infCTeNorm.infCarga.vCarga  := dmCte.cdsCteVALINFCARGA.AsFloat;
     infCTeNorm.infCarga.proPred := edtProPred.Text; //DM_CNT.Conhec2Especie.AsString;
     infCTeNorm.infCarga.xOutCat := edtOutCat.Text; // DM_CNT.Conhec2Natureza.AsString;
-    }
 
     //  Dados do Modal Rodoviário
-
     infCTeNorm.rodo.RNTRC := edtRodRNTRC.Text;
     infCTeNorm.rodo.dPrev := dataRodPrev.Date;
 
@@ -1637,79 +1628,76 @@ begin
     end;
 
     // Lazarus-Cte
-    {
-    if (not dm.cdsVeic.Active)then
-    begin
-      dm.cdsVeic.Params[0].AsInteger := val_genCte;
-      dm.cdsVeic.Open;
-    end;
 
-    while( not dm.cdsVeic.Eof) do
+    if (not dmCte.sqVeic.Active)then
+    begin
+      dmCte.sqVeic.Params[0].AsInteger := val_genCte;
+      dmCte.sqVeic.Open;
+    end;
+    dmCte.sqVeic.First;
+    while( not dmCte.sqVeic.Eof) do
     begin
       with infCTeNorm.rodo.veic.Add  do
       begin
-        cInt  := dm.cdsVeicCINT.AsString ;
-        RENAVAM := dm.cdsVeicRENAVAM.AsString ;
-        placa := dm.cdsVeicPlaca.AsString ;
-        tara := dm.cdsVeicTara.AsInteger ;
-        capKG := dm.cdsVeicCAPKG.AsInteger ;
-        capM3 := dm.cdsVeicCAPM3.AsInteger ;
-        if(dm.cdsVeicTPPROP.AsString = 'P' )then
-        tpProp  := tpProprio;
-        if(dm.cdsVeicTPPROP.AsString = 'T' )then
-        tpProp  := tpTerceiro;
-        if(dm.cdsVeicTPVEIC.AsString = '0' )then
+        cInt  := dmCte.sqVeicCINT.AsString ;
+        RENAVAM := dmCte.sqVeicRENAVAM.AsString ;
+        placa := dmCte.sqVeicPlaca.AsString ;
+        tara := dmCte.sqVeicTara.AsInteger ;
+        capKG := dmCte.sqVeicCAPKG.AsInteger ;
+        capM3 := dmCte.sqVeicCAPM3.AsInteger ;
+        if (dmCte.sqVeicTPPROP.AsString = 'P' ) then
+          tpProp  := tpProprio;
+        if (dmCte.sqVeicTPPROP.AsString = 'T' ) then
+          tpProp  := tpTerceiro;
+        if (dmCte.sqVeicTPVEIC.AsString = '0' ) then
         tpVeic  := tvTracao;
-        if(dm.cdsVeicTPVEIC.AsString = '1' )then
-        tpVeic  := tvReboque;
-        if(dm.cdsVeicTPCAR.AsString = '00' )then
-        tpRod := trNaoAplicavel;
-        if(dm.cdsVeicTPCAR.AsString = '01' )then
-        tpRod := trTruck;
-        if(dm.cdsVeicTPCAR.AsString = '02' )then
-        tpRod := trToco;
-        if(dm.cdsVeicTPCAR.AsString = '03' )then
-        tpRod := trCavaloMecanico;
-        if(dm.cdsVeicTPCAR.AsString = '04' )then
-        tpRod := trVAN;
-        if(dm.cdsVeicTPCAR.AsString = '05' )then
-        tpRod := trUtilitario;
-        if(dm.cdsVeicTPCAR.AsString = '06' )then
-        tpRod := trOutros;
-        if(dm.cdsVeicTPCAR.AsString = '00' )then
-        tpCar := tcNaoAplicavel ;
-        if(dm.cdsVeicTPCAR.AsString = '01' )then
-        tpCar := tcAberta ;
-        if(dm.cdsVeicTPCAR.AsString = '02' )then
-        tpCar := tcFechada;
-        if(dm.cdsVeicTPCAR.AsString = '03' )then
-        tpCar := tcGraneleira;
-        if(dm.cdsVeicTPCAR.AsString = '04' )then
-        tpCar := tcPortaContainer;
-        if(dm.cdsVeicTPCAR.AsString = '05' )then
-        tpCar := tcSider;
-        UF := dm.cdsVeicUF.AsString ;
-        Prop.CNPJCPF := dm.cdsVeicCNPJ.AsString;
-        Prop.RNTRC   := dm.cdsVeicRNTRC.AsString;
-        Prop.xNome   := dm.cdsVeicNOME.AsString;
-        if(dm.cdsVeicIE.Text = '')then
-        Prop.IE      := 'ISENTO';
-        if(dm.cdsVeicIE.Text <> '')then
-        Prop.IE      := dm.cdsVeicIE.AsString;
-        Prop.UF      := dm.cdsVeicVUF.AsString;
+        if (dmCte.sqVeicTPVEIC.AsString = '1' ) then
+          tpVeic  := tvReboque;
+        if (dmCte.sqVeicTPCAR.AsString = '00' ) then
+          tpRod := trNaoAplicavel;
+        if (dmCte.sqVeicTPCAR.AsString = '01' ) then
+          tpRod := trTruck;
+        if (dmCte.sqVeicTPCAR.AsString = '02' ) then
+          tpRod := trToco;
+        if (dmCte.sqVeicTPCAR.AsString = '03' ) then
+          tpRod := trCavaloMecanico;
+        if (dmCte.sqVeicTPCAR.AsString = '04' ) then
+          tpRod := trVAN;
+        if (dmCte.sqVeicTPCAR.AsString = '05' ) then
+          tpRod := trUtilitario;
+        if (dmCte.sqVeicTPCAR.AsString = '06' ) then
+          tpRod := trOutros;
+        if (dmCte.sqVeicTPCAR.AsString = '00' ) then
+          tpCar := tcNaoAplicavel ;
+        if (dmCte.sqVeicTPCAR.AsString = '01' ) then
+          tpCar := tcAberta ;
+        if (dmCte.sqVeicTPCAR.AsString = '02' ) then
+          tpCar := tcFechada;
+        if (dmCte.sqVeicTPCAR.AsString = '03' ) then
+          tpCar := tcGraneleira;
+        if (dmCte.sqVeicTPCAR.AsString = '04' ) then
+          tpCar := tcPortaContainer;
+        if (dmCte.sqVeicTPCAR.AsString = '05' ) then
+          tpCar := tcSider;
+        UF := dmCte.sqVeicVUF.AsString ;
+        Prop.CNPJCPF := dmCte.sqVeicCNPJ.AsString;
+        Prop.RNTRC   := dmCte.sqVeicRNTRC.AsString;
+        Prop.xNome   := dmCte.sqVeicNOME.AsString;
+        if (dmCte.sqVeicIE.Text = '') then
+          Prop.IE := 'ISENTO';
+        if (dmCte.sqVeicIE.Text <> '') then
+          Prop.IE := dmCte.sqVeicIE.AsString;
+        Prop.UF   := dmCte.sqVeicVUF.AsString;
 
-        if(dm.cdsVeicVTPPROP.AsString = '0' )then
-        Prop.tpProp := tpTACAgregado;
-        if(dm.cdsVeicVTPPROP.AsString = '1' )then
-        Prop.tpProp := tpTACIndependente;
-        if(dm.cdsVeicVTPPROP.AsString = '2' )then
-        Prop.tpProp := tpOutros;
-
+        if (dmCte.sqVeicVTPPROP.AsString = '0' ) then
+          Prop.tpProp := tpTACAgregado;
+        if (dmCte.sqVeicVTPPROP.AsString = '1' ) then
+          Prop.tpProp := tpTACIndependente;
+        if (dmCte.sqVeicVTPPROP.AsString = '2' ) then
+          Prop.tpProp := tpOutros;
       end;
-      dm.cdsVeic.Next;
+      dmCte.sqVeic.Next;
     end;
-    dm.cdsVeic.Close;
-    }
 
     // Lazarus-Cte
     {
@@ -1768,40 +1756,37 @@ begin
      1: Ide.forPag := fpAPagar;
      2: Ide.forPag := fpOutros;
     end;
+    }
 
-
-    if not(dm.cdsQC.Active)then
+    if not (dmCte.sqQC.Active)then
     begin
-      dm.cdsQC.Params[0].AsInteger := val_genCte;
-      dm.cdsQC.Open;
+      dmCte.sqQC.Params[0].AsInteger := val_genCte;
+      dmCte.sqQC.Open;
     end;
 
-    while( not dm.cdsQC.Eof) do
+    while( not dmCte.sqQC.Eof) do
     begin
       // UnidMed = (uM3,uKG, uTON, uUNIDADE, uLITROS , uMMBTU);
-      with infCTeNorm.infCarga.InfQ.Add do
+      with infCTeNorm.infCarga.InfQ.New do
       begin
-      if(dm.cdsQCUNID.AsString = '00')then
-      cUnid  := uM3;
-      if(dm.cdsQCUNID.AsString = '01')then
-      cUnid  := uKG;
-      if(dm.cdsQCUNID.AsString = '02')then
-      cUnid  := uTON;
-      if(dm.cdsQCUNID.AsString = '03')then
-      cUnid  := uUNIDADE;
-      if(dm.cdsQCUNID.AsString = '04')then
-      cUnid  := uLITROS;
-      if(dm.cdsQCUNID.AsString = '05')then
-      cUnid  := uMMBTU;
-      tpMed  := dm.cdsQCMEDIDA.AsString;
-      qCarga := dm.cdsQCQUANT.Value;
+        if (dmCte.sqQCUNID.AsString = '00') then
+          cUnid  := uM3;
+        if (dmCte.sqQCUNID.AsString = '01') then
+          cUnid  := uKG;
+        if (dmCte.sqQCUNID.AsString = '02') then
+          cUnid  := uTON;
+        if (dmCte.sqQCUNID.AsString = '03') then
+          cUnid  := uUNIDADE;
+        if (dmCte.sqQCUNID.AsString = '04') then
+          cUnid  := uLITROS;
+        if (dmCte.sqQCUNID.AsString = '05') then
+          cUnid  := uMMBTU;
+        tpMed  := dmCte.sqQCMEDIDA.AsString;
+        qCarga := dmCte.sqQCQUANT.Value;
+      end;
+      dmCte.sqQC.Next;
     end;
-      dm.cdsQC.Next;
-    end;
-    dm.cdsQC.Close;
-    }
   end;
-
 end;
 
 procedure TfCTePrincipal.buscaEmpresa(Razao: String);
@@ -3352,6 +3337,8 @@ end;
 procedure TfCTePrincipal.btnConsCadClick(Sender: TObject);
 var  UF, Documento : String;
 begin
+  uf := '';
+  documento := '';
   if not(InputQuery('WebServices Consulta Cadastro ', 'UF do Documento a ser Consultado:', UF))
   then exit;
   if not(InputQuery('WebServices Consulta Cadastro ', 'Documento(CPF/CNPJ)', Documento))
@@ -5037,8 +5024,43 @@ begin
 end;
 
 procedure TfCTePrincipal.sbtnGetCertClick(Sender: TObject);
+var
+  I: Integer;
 begin
-  edtNumSerie.Text := ACBrCTe1.SSL.SelecionarCertificado;
+  frSelecionarCertificado := TfrSelecionarCertificado.Create(Self);
+  try
+    ACBrNFe1.SSL.LerCertificadosStore;
+
+    For I := 0 to ACBrNFe1.SSL.ListaCertificados.Count-1 do
+    begin
+      with ACBrNFe1.SSL.ListaCertificados[I] do
+      begin
+        if (CNPJ <> '') then
+        begin
+          with frSelecionarCertificado.StringGrid1 do
+          begin
+            RowCount := RowCount + 1;
+            Cells[ 0, RowCount-1] := NumeroSerie;
+            Cells[ 1, RowCount-1] := RazaoSocial;
+            Cells[ 2, RowCount-1] := CNPJ;
+            Cells[ 3, RowCount-1] := FormatDateBr(DataVenc);
+            Cells[ 4, RowCount-1] := Certificadora;
+          end;
+        end;
+      end;
+    end;
+
+    frSelecionarCertificado.ShowModal;
+
+    if frSelecionarCertificado.ModalResult = mrOK then
+      edtNumSerie.Text := frSelecionarCertificado.StringGrid1.Cells[ 0,
+                            frSelecionarCertificado.StringGrid1.Row];
+
+  finally
+     frSelecionarCertificado.Free;
+  end;
+
+  //edtNumSerie.Text := ACBrCTe1.SSL.SelecionarCertificado;
 end;
 
 procedure TfCTePrincipal.sbtnLogoMarcaClick(Sender: TObject);

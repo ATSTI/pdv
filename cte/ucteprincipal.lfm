@@ -203,9 +203,9 @@ object fCTePrincipal: TfCTePrincipal
     Height = 608
     Top = 0
     Width = 1305
-    ActivePage = TabCte
+    ActivePage = TabSheet20
     Align = alClient
-    TabIndex = 1
+    TabIndex = 5
     TabOrder = 0
     object TabCteGeradas: TTabSheet
       Caption = 'CT-e Geradas'
@@ -386,16 +386,16 @@ object fCTePrincipal: TfCTePrincipal
         Height = 573
         Top = 0
         Width = 1299
-        ActivePage = TabExpedidor
+        ActivePage = TabServicosImpostos
         Align = alClient
-        TabIndex = 4
+        TabIndex = 7
         TabOrder = 0
         object TabDados: TTabSheet
           Cursor = crHandPoint
           BorderWidth = 1
           Caption = 'Dados'
-          ClientHeight = 538
-          ClientWidth = 1293
+          ClientHeight = 569
+          ClientWidth = 1295
           object PageControl3: TPageControl
             Left = 0
             Height = 538
@@ -955,8 +955,8 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabSheet3: TTabSheet
           Caption = 'Emitente'
-          ClientHeight = 538
-          ClientWidth = 1293
+          ClientHeight = 569
+          ClientWidth = 1295
           object edtCodEmitente: TEdit
             Left = 88
             Height = 27
@@ -1194,8 +1194,8 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabTomador: TTabSheet
           Caption = 'Tomador'
-          ClientHeight = 538
-          ClientWidth = 1293
+          ClientHeight = 569
+          ClientWidth = 1295
           OnShow = TabTomadorShow
           object rgTomador: TRadioGroup
             Left = 8
@@ -1469,8 +1469,8 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabSheet6: TTabSheet
           Caption = 'Remetente'
-          ClientHeight = 538
-          ClientWidth = 1293
+          ClientHeight = 569
+          ClientWidth = 1295
           object rgRem: TRadioGroup
             Left = 32
             Height = 45
@@ -1741,8 +1741,8 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabExpedidor: TTabSheet
           Caption = 'Expedidor'
-          ClientHeight = 538
-          ClientWidth = 1293
+          ClientHeight = 569
+          ClientWidth = 1295
           OnShow = TabExpedidorShow
           object rgExp: TRadioGroup
             Left = 32
@@ -2013,8 +2013,8 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabRecebedor: TTabSheet
           Caption = 'Recebedor'
-          ClientHeight = 538
-          ClientWidth = 1293
+          ClientHeight = 569
+          ClientWidth = 1295
           OnShow = TabRecebedorShow
           object rgRec: TRadioGroup
             Left = 32
@@ -2285,8 +2285,8 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabDestinatario: TTabSheet
           Caption = 'Destinatário'
-          ClientHeight = 538
-          ClientWidth = 1293
+          ClientHeight = 569
+          ClientWidth = 1295
           OnShow = TabDestinatarioShow
           object rgDest: TRadioGroup
             Left = 32
@@ -2566,8 +2566,8 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabServicosImpostos: TTabSheet
           Caption = 'Serviços e Impostos'
-          ClientHeight = 538
-          ClientWidth = 1293
+          ClientHeight = 569
+          ClientWidth = 1295
           OnShow = TabServicosImpostosShow
           object dbGridComp: TDBGrid
             Left = 32
@@ -2582,13 +2582,13 @@ object fCTePrincipal: TfCTePrincipal
                 Alignment = taCenter
                 ButtonStyle = cbsButton
                 Title.Caption = 'Descrição'
-                Width = 251
+                Width = 257
                 FieldName = 'COMP_NOME'
               end            
               item
                 Alignment = taCenter
                 Title.Caption = 'Valor'
-                Width = 251
+                Width = 258
                 FieldName = 'COMP_VALOR'
               end>
             DataSource = dmCte.dsComp
@@ -3000,21 +3000,21 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabSheet11: TTabSheet
           Caption = 'Documentação Carga'
-          ClientHeight = 538
-          ClientWidth = 1293
+          ClientHeight = 569
+          ClientWidth = 1295
           object PageControl4: TPageControl
             Left = 0
             Height = 538
             Top = 0
             Width = 1293
-            ActivePage = TabNfe
+            ActivePage = TabSheet18
             Align = alClient
-            TabIndex = 2
+            TabIndex = 1
             TabOrder = 0
             object TabInfoCarga: TTabSheet
               Caption = 'Inf. da Carga'
-              ClientHeight = 503
-              ClientWidth = 1287
+              ClientHeight = 534
+              ClientWidth = 1289
               OnContextPopup = TabInfoCargaContextPopup
               OnShow = TabInfoCargaShow
               object edtProPred: TEdit
@@ -3061,19 +3061,19 @@ object fCTePrincipal: TfCTePrincipal
                     Alignment = taCenter
                     Title.Alignment = taCenter
                     Title.Caption = 'Unidade'
-                    Width = 198
+                    Width = 202
                     FieldName = 'MEDIDA'
                   end                
                   item
                     Title.Alignment = taCenter
                     Title.Caption = 'Medida'
-                    Width = 198
+                    Width = 202
                     FieldName = 'UNID'
                   end                
                   item
                     Title.Alignment = taCenter
                     Title.Caption = 'Quantidade'
-                    Width = 199
+                    Width = 204
                     FieldName = 'QUANT'
                   end>
                 DataSource = dmCte.dsQC
@@ -3131,8 +3131,8 @@ object fCTePrincipal: TfCTePrincipal
                 Height = 485
                 Top = 5
                 Width = 600
-                ClientHeight = 485
-                ClientWidth = 600
+                ClientHeight = 481
+                ClientWidth = 596
                 TabOrder = 10
                 object GroupBox8: TGroupBox
                   Left = 15
@@ -3184,8 +3184,8 @@ object fCTePrincipal: TfCTePrincipal
             end
             object TabSheet18: TTabSheet
               Caption = 'Doc.Transp.Anterior'
-              ClientHeight = 503
-              ClientWidth = 1287
+              ClientHeight = 534
+              ClientWidth = 1289
               object edtAntNome: TEdit
                 Left = 32
                 Height = 27
@@ -3269,8 +3269,8 @@ object fCTePrincipal: TfCTePrincipal
             end
             object TabNfe: TTabSheet
               Caption = 'NF-e /Outros Documentos'
-              ClientHeight = 503
-              ClientWidth = 1287
+              ClientHeight = 534
+              ClientWidth = 1289
               OnShow = TabNfeShow
               object DBGridNFe: TDBGrid
                 Left = 40
@@ -3283,7 +3283,7 @@ object fCTePrincipal: TfCTePrincipal
                   item
                     Alignment = taCenter
                     Title.Caption = 'Chave de Acesso NF-e'
-                    Width = 377
+                    Width = 381
                     FieldName = 'CHAVE'
                   end                
                   item
@@ -3291,13 +3291,13 @@ object fCTePrincipal: TfCTePrincipal
                     MinSize = 50
                     MaxSize = 50
                     Title.Caption = 'PIN'
-                    Width = 377
+                    Width = 381
                     FieldName = 'PIN'
                   end                
                   item
                     Alignment = taCenter
                     Title.Caption = 'Data Prevista de Entrega'
-                    Width = 377
+                    Width = 382
                     FieldName = 'DPREV'
                   end>
                 DataSource = dmCte.dsNFe
@@ -3437,8 +3437,8 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabRodoviario: TTabSheet
           Caption = 'Rodoviário'
-          ClientHeight = 538
-          ClientWidth = 1293
+          ClientHeight = 569
+          ClientWidth = 1295
           OnShow = TabRodoviarioShow
           object Panel4: TPanel
             Left = 0
@@ -3447,8 +3447,8 @@ object fCTePrincipal: TfCTePrincipal
             Width = 736
             Align = alClient
             Caption = 'Panel4'
-            ClientHeight = 538
-            ClientWidth = 736
+            ClientHeight = 534
+            ClientWidth = 732
             TabOrder = 0
             object Label123: TLabel
               Left = 48
@@ -3543,8 +3543,8 @@ object fCTePrincipal: TfCTePrincipal
             Top = 0
             Width = 557
             Align = alRight
-            ClientHeight = 538
-            ClientWidth = 557
+            ClientHeight = 534
+            ClientWidth = 553
             TabOrder = 1
             object GroupBox5: TGroupBox
               Left = 1
@@ -4413,13 +4413,6 @@ object fCTePrincipal: TfCTePrincipal
         ClientHeight = 53
         ClientWidth = 357
         TabOrder = 0
-        object sbtnCaminhoCert: TSpeedButton
-          Left = 8
-          Height = 27
-          Top = 8
-          Width = 320
-          Color = clWhite
-        end
         object sbtnGetCert: TBitBtn
           Left = 328
           Height = 30
@@ -4428,6 +4421,14 @@ object fCTePrincipal: TfCTePrincipal
           Caption = 'sbtnGetCert'
           OnClick = sbtnGetCertClick
           TabOrder = 0
+        end
+        object sbtnCaminhoCert: TStaticText
+          Left = 22
+          Height = 23
+          Top = 9
+          Width = 298
+          Caption = 'sbtnCaminhoCert'
+          TabOrder = 1
         end
       end
       object edtSmtpHost: TEdit
