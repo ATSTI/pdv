@@ -10,7 +10,7 @@ object fPDV_Rec: TfPDV_Rec
   OnShow = FormShow
   PopupMenu = PopupMenu1
   Position = poScreenCenter
-  LCLVersion = '2.0.0.4'
+  LCLVersion = '2.0.4.0'
   object GroupBox1: TGroupBox
     Left = 0
     Height = 515
@@ -3568,7 +3568,7 @@ object fPDV_Rec: TfPDV_Rec
         Name = 'PCODMOV'
         ParamType = ptInput
       end>
-    left = 288
+    left = 200
     object sqPagamentoCOD_VENDA: TLongintField
       FieldKind = fkData
       FieldName = 'COD_VENDA'
@@ -3691,7 +3691,7 @@ object fPDV_Rec: TfPDV_Rec
     left = 232
   end
   object ActionListFechamento: TActionList
-    left = 296
+    left = 368
     object acDescontoValor: TAction
       Caption = 'acDescontoValor'
       OnExecute = acDescontoValorExecute

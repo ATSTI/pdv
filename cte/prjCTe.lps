@@ -10,7 +10,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="49" Y="11"/>
-        <UsageCount Value="182"/>
+        <UsageCount Value="192"/>
       </Unit0>
       <Unit1>
         <Filename Value="ucteprincipal.pas"/>
@@ -20,16 +20,17 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCtePrincipal"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="5017"/>
-        <CursorPos X="3" Y="5030"/>
-        <UsageCount Value="182"/>
+        <TopLine Value="2923"/>
+        <CursorPos Y="2936"/>
+        <ComponentState Value="1"/>
+        <UsageCount Value="192"/>
         <Bookmarks Count="6">
           <Item0 X="3" Y="8" ID="1"/>
-          <Item1 X="20" Y="626" ID="2"/>
-          <Item2 X="7" Y="4226" ID="5"/>
-          <Item3 Y="4395" ID="7"/>
-          <Item4 X="44" Y="2732" ID="8"/>
-          <Item5 X="21" Y="3800" ID="6"/>
+          <Item1 X="20" Y="631" ID="2"/>
+          <Item2 X="7" Y="4254" ID="5"/>
+          <Item3 Y="4423" ID="7"/>
+          <Item4 X="44" Y="2752" ID="8"/>
+          <Item5 X="26" Y="3476" ID="6"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -43,7 +44,7 @@
         <EditorIndex Value="6"/>
         <TopLine Value="284"/>
         <CursorPos Y="292"/>
-        <UsageCount Value="145"/>
+        <UsageCount Value="155"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit2>
@@ -56,7 +57,7 @@
         <UnitName Value="uDmCte"/>
         <EditorIndex Value="7"/>
         <CursorPos X="51" Y="180"/>
-        <UsageCount Value="144"/>
+        <UsageCount Value="154"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit3>
@@ -70,7 +71,7 @@
         <EditorIndex Value="9"/>
         <TopLine Value="73"/>
         <CursorPos X="35" Y="77"/>
-        <UsageCount Value="139"/>
+        <UsageCount Value="149"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit4>
@@ -81,7 +82,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="131"/>
+        <UsageCount Value="141"/>
       </Unit5>
       <Unit6>
         <Filename Value="ucompvalor.pas"/>
@@ -90,10 +91,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCompValor"/>
-        <EditorIndex Value="4"/>
-        <TopLine Value="40"/>
-        <CursorPos Y="46"/>
-        <UsageCount Value="97"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="39"/>
+        <CursorPos X="59" Y="40"/>
+        <UsageCount Value="107"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit6>
@@ -107,7 +108,7 @@
         <EditorIndex Value="5"/>
         <TopLine Value="52"/>
         <CursorPos X="57" Y="61"/>
-        <UsageCount Value="95"/>
+        <UsageCount Value="105"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit7>
@@ -121,7 +122,7 @@
         <EditorIndex Value="3"/>
         <TopLine Value="126"/>
         <CursorPos X="18" Y="132"/>
-        <UsageCount Value="49"/>
+        <UsageCount Value="59"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit8>
@@ -135,7 +136,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="42"/>
         <CursorPos X="3" Y="47"/>
-        <UsageCount Value="49"/>
+        <UsageCount Value="59"/>
       </Unit9>
       <Unit10>
         <Filename Value="..\geral\umunicipiobusca.pas"/>
@@ -146,7 +147,7 @@
         <EditorIndex Value="2"/>
         <TopLine Value="102"/>
         <CursorPos X="40" Y="50"/>
-        <UsageCount Value="48"/>
+        <UsageCount Value="58"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit10>
@@ -159,7 +160,7 @@
         <UnitName Value="uPadrao"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="55"/>
-        <UsageCount Value="46"/>
+        <UsageCount Value="56"/>
       </Unit11>
       <Unit12>
         <Filename Value="uveiculocte.pas"/>
@@ -171,7 +172,7 @@
         <EditorIndex Value="8"/>
         <TopLine Value="134"/>
         <CursorPos X="29" Y="137"/>
-        <UsageCount Value="45"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit12>
@@ -198,24 +199,24 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="43"/>
         <CursorPos X="53" Y="59"/>
-        <UsageCount Value="19"/>
-      </Unit14>
-      <Unit15>
+        <UsageCount Value="18"/>
+      </Unit13>
+      <Unit14>
         <Filename Value="..\uclientebusca.pas"/>
         <HasResources Value="True"/>
         <UnitName Value="uClienteBusca"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="63" Y="12"/>
-        <UsageCount Value="18"/>
-      </Unit15>
-      <Unit16>
+        <UsageCount Value="17"/>
+      </Unit14>
+      <Unit15>
         <Filename Value="C:\lazarus\lcl\include\custompage.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="252"/>
         <CursorPos Y="265"/>
-        <UsageCount Value="3"/>
-      </Unit16>
-      <Unit17>
+        <UsageCount Value="2"/>
+      </Unit15>
+      <Unit16>
         <Filename Value="ucteprincipal.lfm"/>
         <ComponentName Value="fCTePrincipal"/>
         <HasResources Value="True"/>
@@ -229,21 +230,22 @@
           <TopLine Value="174"/>
           <CursorPos X="22" Y="188"/>
         </ExtraEditor1>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit17>
       <Unit18>
         <Filename Value="prjCTe.lpi"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="56"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
         <DefaultSyntaxHighlighter Value="XML"/>
       </Unit18>
       <Unit19>
-        <Filename Value="C:\lazarus\lcl\comctrls.pp"/>
-        <UnitName Value="ComCtrls"/>
+        <Filename Value="..\..\..\..\..\usr\share\lazarus\2.0.4\lcl\include\customform.inc"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="2"/>
+        <TopLine Value="446"/>
+        <CursorPos Y="460"/>
+        <UsageCount Value="5"/>
       </Unit19>
       <Unit20>
         <Filename Value="..\..\..\..\..\usr\share\lazarus\2.0.4\lcl\include\customform.inc"/>
@@ -323,137 +325,137 @@
       <Unit30>
         <Filename Value="..\pdv\uclientebusca.lfm"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit30>
       <Unit31>
         <Filename Value="..\geral\uclientebusca.lfm"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="91"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit31>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="4751" Column="13" TopLine="4728"/>
+        <Caret Line="4200" Column="2" TopLine="4197"/>
       </Position1>
       <Position2>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="116" Column="16" TopLine="103"/>
+        <Caret Line="4203" Column="2" TopLine="4200"/>
       </Position2>
       <Position3>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="136" Column="17" TopLine="114"/>
+        <Caret Line="4202" Column="2" TopLine="4199"/>
       </Position3>
       <Position4>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="553" Column="26" TopLine="531"/>
+        <Caret Line="4201" Column="2" TopLine="4198"/>
       </Position4>
       <Position5>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="628" Column="23" TopLine="612"/>
+        <Caret Line="4200" Column="2" TopLine="4197"/>
       </Position5>
       <Position6>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="1784" Column="48" TopLine="1773"/>
+        <Caret Line="4203" Column="2" TopLine="4200"/>
       </Position6>
       <Position7>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="2042" Column="15" TopLine="2019"/>
+        <Caret Line="4202" Column="2" TopLine="4199"/>
       </Position7>
       <Position8>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="2279" Column="77" TopLine="2256"/>
+        <Caret Line="4201" Column="2" TopLine="4198"/>
       </Position8>
       <Position9>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="2743" Column="87" TopLine="2721"/>
+        <Caret Line="4200" Column="2" TopLine="4197"/>
       </Position9>
       <Position10>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3472" Column="15" TopLine="3450"/>
+        <Caret Line="4199" Column="2" TopLine="4196"/>
       </Position10>
       <Position11>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3715" Column="14" TopLine="3692"/>
+        <Caret Line="4203" Column="2" TopLine="4200"/>
       </Position11>
       <Position12>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3724" Column="11" TopLine="3701"/>
+        <Caret Line="4202" Column="2" TopLine="4199"/>
       </Position12>
       <Position13>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3800" Column="21" TopLine="3791"/>
+        <Caret Line="4201" Column="2" TopLine="4198"/>
       </Position13>
       <Position14>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3801" Column="11" TopLine="3791"/>
+        <Caret Line="4200" Column="2" TopLine="4197"/>
       </Position14>
       <Position15>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="4611" Column="15" TopLine="4588"/>
+        <Caret Line="4199" Column="2" TopLine="4196"/>
       </Position15>
       <Position16>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="4746" Column="13" TopLine="4723"/>
+        <Caret Line="4203" Column="2" TopLine="4200"/>
       </Position16>
       <Position17>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="116" Column="16" TopLine="103"/>
+        <Caret Line="4202" Column="2" TopLine="4199"/>
       </Position17>
       <Position18>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="136" Column="17" TopLine="114"/>
+        <Caret Line="917" Column="4" TopLine="905"/>
       </Position18>
       <Position19>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="553" Column="26" TopLine="531"/>
+        <Caret Line="1435" Column="19" TopLine="1422"/>
       </Position19>
       <Position20>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="628" Column="23" TopLine="606"/>
+        <Caret Line="1436" Column="30" TopLine="1423"/>
       </Position20>
       <Position21>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="1059" Column="34" TopLine="1054"/>
+        <Caret Line="917" TopLine="905"/>
       </Position21>
       <Position22>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="1090" Column="28" TopLine="1052"/>
+        <Caret Line="916" TopLine="904"/>
       </Position22>
       <Position23>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3799" TopLine="3786"/>
+        <Caret Line="917" TopLine="905"/>
       </Position23>
       <Position24>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3798" TopLine="3785"/>
+        <Caret Line="916" TopLine="904"/>
       </Position24>
       <Position25>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3794" Column="17" TopLine="3786"/>
+        <Caret Line="915" TopLine="903"/>
       </Position25>
       <Position26>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="5037" Column="21" TopLine="5034"/>
+        <Caret Line="916" TopLine="904"/>
       </Position26>
       <Position27>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3795" Column="15" TopLine="3777"/>
+        <Caret Line="917" TopLine="905"/>
       </Position27>
       <Position28>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="626" Column="30" TopLine="613"/>
+        <Caret Line="911" Column="109" TopLine="906"/>
       </Position28>
       <Position29>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="885" Column="41" TopLine="889"/>
+        <Caret Line="773" Column="3" TopLine="769"/>
       </Position29>
       <Position30>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="917" Column="19" TopLine="903"/>
+        <Caret Line="3018" Column="3" TopLine="3016"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -462,47 +464,47 @@
     </RunParams>
   </ProjectSession>
   <Debugging>
-    <BreakPoints Count="11">
+    <BreakPoints Count="9">
       <Item1>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="ucteprincipal.pas"/>
-        <Line Value="4834"/>
+        <Line Value="4862"/>
       </Item1>
       <Item2>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\..\..\usr\share\fpcsrc\3.0.4\packages\fcl-db\src\sqldb\interbase\ibconnection.pp"/>
+        <Source Value="C:\usr\share\fpcsrc\3.0.4\packages\fcl-db\src\sqldb\interbase\ibconnection.pp"/>
         <Line Value="420"/>
       </Item2>
       <Item3>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\..\..\usr\share\fpcsrc\3.0.4\packages\fcl-db\src\sqldb\interbase\ibconnection.pp"/>
+        <Source Value="C:\usr\share\fpcsrc\3.0.4\packages\fcl-db\src\sqldb\interbase\ibconnection.pp"/>
         <Line Value="422"/>
       </Item3>
       <Item4>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\..\..\usr\share\fpcsrc\3.0.4\packages\fcl-db\src\sqldb\interbase\ibconnection.pp"/>
+        <Source Value="C:\usr\share\fpcsrc\3.0.4\packages\fcl-db\src\sqldb\interbase\ibconnection.pp"/>
         <Line Value="452"/>
       </Item4>
       <Item5>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\..\..\usr\share\fpcsrc\3.0.4\packages\fcl-db\src\sqldb\interbase\ibconnection.pp"/>
+        <Source Value="C:\usr\share\fpcsrc\3.0.4\packages\fcl-db\src\sqldb\interbase\ibconnection.pp"/>
         <Line Value="492"/>
       </Item5>
       <Item6>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\..\..\usr\share\fpcsrc\3.0.4\packages\fcl-db\src\sqldb\interbase\ibconnection.pp"/>
+        <Source Value="C:\usr\share\fpcsrc\3.0.4\packages\fcl-db\src\sqldb\interbase\ibconnection.pp"/>
         <Line Value="612"/>
       </Item6>
       <Item7>
@@ -510,36 +512,22 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="ucteprincipal.pas"/>
-        <Line Value="995"/>
+        <Line Value="1000"/>
       </Item7>
       <Item8>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="ucteprincipal.pas"/>
-        <Line Value="2853"/>
+        <Line Value="2873"/>
       </Item8>
       <Item9>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
-        <Source Value="ucteprincipal.pas"/>
-        <Line Value="2916"/>
-      </Item9>
-      <Item10>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
         <Source Value="..\geral\uclientebusca.pas"/>
         <Line Value="151"/>
-      </Item10>
-      <Item11>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="ucteprincipal.pas"/>
-        <Line Value="3799"/>
-      </Item11>
+      </Item9>
     </BreakPoints>
   </Debugging>
 </CONFIG>
