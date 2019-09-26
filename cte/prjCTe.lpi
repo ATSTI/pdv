@@ -12,6 +12,8 @@
       <UseXPManifest Value="True"/>
       <XPManifest>
         <DpiAware Value="True"/>
+        <TextName Value="AtsSolucoes.AdmAplication.CteApp"/>
+        <TextDesc Value="Gerador de Cte"/>
       </XPManifest>
       <Icon Value="0"/>
     </General>
