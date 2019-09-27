@@ -21,9 +21,11 @@ type
     BitBtn10: TBitBtn;
     BitBtn11: TBitBtn;
     BitBtn12: TBitBtn;
+    btnProximo: TBitBtn;
     BitBtn15: TBitBtn;
     BitBtn3: TBitBtn;
     BitBtn4: TBitBtn;
+    BitBtn5: TBitBtn;
     BitBtn6: TBitBtn;
     BitBtn7: TBitBtn;
     BitBtn9: TBitBtn;
@@ -37,6 +39,7 @@ type
     btnCorrigirSerie: TBitBtn;
     btnDuplicar: TBitBtn;
     btnEditarComp: TBitBtn;
+    btnEditarCte: TBitBtn;
     btnEditarNFe: TBitBtn;
     btnEnvEPEC: TBitBtn;
     btnEnviarEmail: TBitBtn;
@@ -50,11 +53,13 @@ type
     btnGerarPDFEvento: TBitBtn;
     btnGerarPDFInut: TBitBtn;
     btnGravarCTe: TBitBtn;
+    btnCancelarEdicaoCTe: TBitBtn;
     btnImportarXML: TBitBtn;
     btnImportarXML1: TButton;
     btnImprimir: TButton;
     btnImprimirEvento: TBitBtn;
     btnImprimirInut: TBitBtn;
+    btnIncCte: TBitBtn;
     btnIncluirNFe: TBitBtn;
     btnInfCargaEdita: TBitBtn;
     btnInfCargaEdita1: TBitBtn;
@@ -64,6 +69,16 @@ type
     btnInfCargaInclui1: TBitBtn;
     btnInutilizar: TButton;
     btnListarCte: TBitBtn;
+    btnProximo1: TBitBtn;
+    btnProximo10: TBitBtn;
+    btnProximo2: TBitBtn;
+    btnProximo3: TBitBtn;
+    btnProximo4: TBitBtn;
+    btnProximo5: TBitBtn;
+    btnProximo6: TBitBtn;
+    btnProximo7: TBitBtn;
+    btnProximo8: TBitBtn;
+    btnProximo9: TBitBtn;
     btnStatusServ: TButton;
     btnValidarXML: TButton;
     btnVeicEditar: TBitBtn;
@@ -93,9 +108,9 @@ type
     dataRodPrev: TDateTimePicker;
     DateTimePicker1: TDateTimePicker;
     DateTimePicker2: TDateTimePicker;
-    DBEdit1: TEdit;
-    DBEdit2: TEdit;
-    DBEdit3: TEdit;
+    edSerieAtualiza: TEdit;
+    edUltimoAtualiza: TEdit;
+    edModeloAtualiza: TEdit;
     DBGrid1: TDBGrid;
     DBGrid2: TDBGrid;
     DBGrid3: TDBGrid;
@@ -201,7 +216,7 @@ type
     edtNumCte17: TEdit;
     edtNumCte18: TEdit;
     edtNumCte19: TEdit;
-    edtNumCte3: TEdit;
+    edtCteReferenciada: TEdit;
     edtNumSerie: TEdit;
     edtNumTomador: TEdit;
     edtOutCat: TEdit;
@@ -442,9 +457,6 @@ type
     mmEmailMsg: TMemo;
     OpenDialog1: TOpenDialog;
     btnPreVisu: TBitBtn;
-    btnEditarCte: TBitBtn;
-    btnIncCte: TBitBtn;
-    BitBtn5: TBitBtn;
     BitBtn8: TBitBtn;
     btnGerarCte: TBitBtn;
     PageControl3: TPageControl;
@@ -542,6 +554,17 @@ type
     procedure BitBtn10Click(Sender: TObject);
     procedure BitBtn11Click(Sender: TObject);
     procedure BitBtn12Click(Sender: TObject);
+    procedure btnProximo10Click(Sender: TObject);
+    procedure btnProximo1Click(Sender: TObject);
+    procedure btnProximo2Click(Sender: TObject);
+    procedure btnProximo3Click(Sender: TObject);
+    procedure btnProximo4Click(Sender: TObject);
+    procedure btnProximo5Click(Sender: TObject);
+    procedure btnProximo6Click(Sender: TObject);
+    procedure btnProximo7Click(Sender: TObject);
+    procedure btnProximo8Click(Sender: TObject);
+    procedure btnProximo9Click(Sender: TObject);
+    procedure btnProximoClick(Sender: TObject);
     procedure BitBtn15Click(Sender: TObject);
     procedure BitBtn19Click(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
@@ -556,6 +579,7 @@ type
     procedure btnExcluirNFeClick(Sender: TObject);
     procedure btnGerarCte1Click(Sender: TObject);
     procedure btnGerarPDFInutClick(Sender: TObject);
+    procedure btnCancelarEdicaoCTeClick(Sender: TObject);
     procedure btnImprimirInutClick(Sender: TObject);
     procedure btnInfCargaEditaClick(Sender: TObject);
     procedure btnInfCargaExcluiClick(Sender: TObject);
@@ -649,6 +673,7 @@ type
     procedure TabDestinatarioShow(Sender: TObject);
     procedure TabTomadorShow(Sender: TObject);
   private
+    ver_cod_cte: Integer;
     vCteStr: String;
     modoGravacao : string;
     val_genCte : integer;
@@ -1117,6 +1142,13 @@ var
  i, j, CodigoMunicipio, Tomador: Integer;
  IE  : string;
 begin
+  if ((rgTipoServico.ItemIndex = 1) and
+    (edtAntCHCTE.Text = '')) then
+  begin
+    ShowMessage('Informe a Chave da Cte Anterior');
+    edtAntCHCTE.SetFocus;
+    Exit;
+  end;
 
   // O código abaixo faz parte da minha aplicação devendo ser feitas as alterações
   // necessárias para ser utilizado na sua.
@@ -1586,7 +1618,7 @@ begin
 
         with idDocAnt.Add do
         begin
-          idDocAntEle.Add.chCTe := edtAntCHCTE.Text; //'41190731776232000160570010000415871000157434';
+          idDocAntEle.Add.chave := edtAntCHCTE.Text; //'41190731776232000160570010000415871000157434';
         end;
       end;
     end;
@@ -1847,7 +1879,7 @@ end;
 
 procedure TfCTePrincipal.buscaEmpresa(Razao: String);
 begin
- if (Razao <> '') then
+ if (comboEmpresa.Text <> '') then
  begin
    dmPdv.busca_sql('SELECT * FROM empresa ' +
      ' WHERE razao = ' + QuotedStr(comboEmpresa.Text));
@@ -1870,7 +1902,7 @@ begin
  edtEmitCodCidade.Text := dmPdv.sqBusca.FieldByName('CD_IBGE').AsString;
  edtEmitCidade.Text := dmPdv.sqBusca.FieldByName('CIDADE').AsString;
  edtEmitUF.Text := dmPdv.sqBusca.FieldByName('UF').AsString;
-
+ edtEmitenteCte.Text := dmPdv.sqBusca.FieldByName('EMPRESA').AsString;
  label55.Caption := ' Emitente Iniciado' ;
 
 // pcPrincipal.ActivePage := TabDados;  // Dados
@@ -2196,6 +2228,7 @@ begin
 
   if(dmCte.cdsCTEEX_CNPJCPF.AsString <> '') then
   begin
+    GroupBoxExpeditor.Visible := True;
     rgExp.ItemIndex := 0;
     edtExpCNPJ.Text          := dmCte.cdsCTEEX_CNPJCPF.AsString;
     edtExpIE.Text            := dmCte.cdsCTEEX_IESTADUAL.AsString;
@@ -3288,9 +3321,14 @@ end;
 
 procedure TfCTePrincipal.btnCorrigirSerieClick(Sender: TObject);
 begin
-  // arrumar aqui
-  // TODO
-  dmPdv.IbCon.ExecuteDirect('UPDATE SERIES');
+  vCteStr := 'UPDATE SERIES SET ULTIMO_NUMERO = ';
+  vCteStr += QuotedStr(edUltimoAtualiza.Text);
+  vCteStr += ' WHERE MODELO = ';
+  vCteStr += QuotedStr(edModeloAtualiza.Text);
+  vCteStr += ' and CODSERIE = ';
+  vCteStr += QuotedStr(edSerieAtualiza.Text);
+
+  dmPdv.IbCon.ExecuteDirect(vCteStr);
   dmPdv.sTrans.Commit;
 end;
 
@@ -3495,17 +3533,25 @@ var velha_nCte: Integer;
     nova_nCte: Integer;
     v_duplCte: String;
 begin
- if (not dmCte.cdsCte.Active) then
- begin
+  btnGravarCTe.Enabled := False;
+  btnCancelarEdicaoCTe.Enabled := False;
+  btnPreVisu.Enabled := False;
+  btnGerarCte.Enabled := False;
+  if (not dmCte.cdsCte.Active) then
+  begin
     ShowMessage('Informe uma CTE para Duplicar');
     Exit;
- end;
+  end;
 
   if (dmCte.cdsCte.IsEmpty) then
   begin
      ShowMessage('Informe uma CTE para Duplicar');
      Exit;
   end;
+
+  if MessageDlg('Confirma DUPLICAR a CTe número : ' +
+     dmCte.cdsCteCTE_NUMERO.AsString +
+     ' ?',mtConfirmation, [mbYes,mbNo],0) = mrNo then exit;
 
   try
     velha_nCte := dmCte.cdsCteCOD_CTE.AsInteger;
@@ -3760,6 +3806,11 @@ end;
 
 procedure TfCTePrincipal.btnEditarCteClick(Sender: TObject);
 begin
+  if (not dmCte.cdsCte.Active) then
+  begin
+    ShowMessage('Selecione a CTe a editar.');
+    Exit;
+  end;
   StatusBar1.SimpleText := 'Editando CTe : ' +
     IntToStr(dmCte.cdsCTECOD_CTE.AsInteger);
   modoGravacao := 'EDITAR';
@@ -3787,6 +3838,10 @@ begin
   btnPreVisu.Enabled    := True;
   pcPrincipal.ActivePageIndex := 1;
   pcCte.ActivePageIndex := 0;
+  btnGravarCTe.Enabled := True;
+  btnCancelarEdicaoCTe.Enabled := True;
+  btnPreVisu.Enabled := True;
+  btnGerarCte.Enabled := True;
 end;
 
 procedure TfCTePrincipal.btnGerarClick(Sender: TObject);
@@ -3890,49 +3945,54 @@ begin
   ACBrCTe1.Conhecimentos.Assinar;
   ACBrCTe1.Conhecimentos.Validar;
   StatusBar1.SimpleText := StatusBar1.SimpleText + ' - Situação : Valido';
-
-  ACBrCTe1.Enviar(1); //(StrToInt(vNumLote));
-
-  MemoResp.Lines.Text   := UTF8Encode(ACBrCTe1.WebServices.Retorno.RetWS);
-  memoRespWS.Lines.Text := UTF8Encode(ACBrCTe1.WebServices.Retorno.RetWS);
-
-  //pcCte.ActivePageIndex := 5;
-  MemoDados.Lines.Add('');
-  MemoDados.Lines.Add('Envio CTe');
-  MemoDados.Lines.Add('tpAmb: '+ TpAmbToStr(ACBrCTe1.WebServices.Retorno.TpAmb));
-  MemoDados.Lines.Add('verAplic: '+ ACBrCTe1.WebServices.Retorno.verAplic);
-  MemoDados.Lines.Add('cStat: '+ IntToStr(ACBrCTe1.WebServices.Retorno.cStat));
-  MemoDados.Lines.Add('cUF: '+ IntToStr(ACBrCTe1.WebServices.Retorno.cUF));
-  MemoDados.Lines.Add('xMotivo: '+ ACBrCTe1.WebServices.Retorno.xMotivo);
-  MemoDados.Lines.Add('xMsg: '+ ACBrCTe1.WebServices.Retorno.Msg);
-  MemoDados.Lines.Add('Recibo: '+ ACBrCTe1.WebServices.Retorno.Recibo);
-  MemoDados.Lines.Add('Protocolo: '+ ACBrCTe1.WebServices.Retorno.Protocolo);
-
-  if (ACBrCTe1.WebServices.Retorno.Recibo <> '') then
+  if (dmPdv.modoDesenvolvedor = 'N') then
   begin
-    strEdita := 'UPDATE CTE SET NPROT = ';
-    strEdita := strEdita + QuotedStr(ACBrCTe1.WebServices.Retorno.Protocolo);
-    strEdita := strEdita + ', CHCTE = ';
-    strEdita := strEdita + QuotedStr(vChave_cte);
-    strEdita := strEdita + ', STATUS_CTE = ';
-    strEdita := strEdita + QuotedStr('Autorizada, Recibo: ' +
-      ACBrCTe1.WebServices.Retorno.Recibo);
-    strEdita := strEdita + ' WHERE COD_CTE = ';
-    strEdita := strEdita + IntToStr(val_genCte);
-    try
-      dmPdv.IbCon.ExecuteDirect(strEdita);
-      dmPdv.sTrans.Commit;
-      MessageDlg('CTe enviada com Sucesso.', mtInformation, [mbOK], 0);
-      FormatSettings.DecimalSeparator := ',';
-      ACBrCTe1.Conhecimentos.ImprimirPDF;
-    except
-      on E : Exception do
-      begin
-        ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-        dmPdv.sTrans.Rollback;
-        exit;
+    ACBrCTe1.Enviar(1); //(StrToInt(vNumLote));
+
+    MemoResp.Lines.Text   := UTF8Encode(ACBrCTe1.WebServices.Retorno.RetWS);
+    memoRespWS.Lines.Text := UTF8Encode(ACBrCTe1.WebServices.Retorno.RetWS);
+
+    //pcCte.ActivePageIndex := 5;
+    MemoDados.Lines.Add('');
+    MemoDados.Lines.Add('Envio CTe');
+    MemoDados.Lines.Add('tpAmb: '+ TpAmbToStr(ACBrCTe1.WebServices.Retorno.TpAmb));
+    MemoDados.Lines.Add('verAplic: '+ ACBrCTe1.WebServices.Retorno.verAplic);
+    MemoDados.Lines.Add('cStat: '+ IntToStr(ACBrCTe1.WebServices.Retorno.cStat));
+    MemoDados.Lines.Add('cUF: '+ IntToStr(ACBrCTe1.WebServices.Retorno.cUF));
+    MemoDados.Lines.Add('xMotivo: '+ ACBrCTe1.WebServices.Retorno.xMotivo);
+    MemoDados.Lines.Add('xMsg: '+ ACBrCTe1.WebServices.Retorno.Msg);
+    MemoDados.Lines.Add('Recibo: '+ ACBrCTe1.WebServices.Retorno.Recibo);
+    MemoDados.Lines.Add('Protocolo: '+ ACBrCTe1.WebServices.Retorno.Protocolo);
+
+    if (ACBrCTe1.WebServices.Retorno.Recibo <> '') then
+    begin
+      strEdita := 'UPDATE CTE SET NPROT = ';
+      strEdita := strEdita + QuotedStr(ACBrCTe1.WebServices.Retorno.Protocolo);
+      strEdita := strEdita + ', CHCTE = ';
+      strEdita := strEdita + QuotedStr(vChave_cte);
+      strEdita := strEdita + ', STATUS_CTE = ';
+      strEdita := strEdita + QuotedStr('Autorizada, Recibo: ' +
+        ACBrCTe1.WebServices.Retorno.Recibo);
+      strEdita := strEdita + ' WHERE COD_CTE = ';
+      strEdita := strEdita + IntToStr(val_genCte);
+      try
+        dmPdv.IbCon.ExecuteDirect(strEdita);
+        dmPdv.sTrans.Commit;
+        MessageDlg('CTe enviada com Sucesso.', mtInformation, [mbOK], 0);
+        FormatSettings.DecimalSeparator := ',';
+        ACBrCTe1.Conhecimentos.ImprimirPDF;
+      except
+        on E : Exception do
+        begin
+          ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
+          dmPdv.sTrans.Rollback;
+          exit;
+        end;
       end;
     end;
+  end
+  else begin
+    ShowMessage('XML gerado, mas sistema no modoDesenvolvedor (Outros)');
   end;
 end;
 
@@ -4119,6 +4179,76 @@ begin
   edtDestBuscaExit(Nil);
 end;
 
+procedure TfCTePrincipal.btnProximo10Click(Sender: TObject);
+begin
+  pcPrincipal.ActivePageIndex := 1;
+  pcCte.ActivePageIndex := 9;
+end;
+
+procedure TfCTePrincipal.btnProximo1Click(Sender: TObject);
+begin
+  pcPrincipal.ActivePageIndex := 1;
+  pcCte.ActivePageIndex := 2;
+end;
+
+procedure TfCTePrincipal.btnProximo2Click(Sender: TObject);
+begin
+  pcPrincipal.ActivePageIndex := 1;
+  pcCte.ActivePageIndex := 3;
+end;
+
+procedure TfCTePrincipal.btnProximo3Click(Sender: TObject);
+begin
+  pcPrincipal.ActivePageIndex := 1;
+  pcCte.ActivePageIndex := 4;
+end;
+
+procedure TfCTePrincipal.btnProximo4Click(Sender: TObject);
+begin
+  pcPrincipal.ActivePageIndex := 1;
+  pcCte.ActivePageIndex := 5;
+end;
+
+procedure TfCTePrincipal.btnProximo5Click(Sender: TObject);
+begin
+  pcPrincipal.ActivePageIndex := 1;
+  pcCte.ActivePageIndex := 6;
+end;
+
+procedure TfCTePrincipal.btnProximo6Click(Sender: TObject);
+begin
+ pcPrincipal.ActivePageIndex := 1;
+ pcCte.ActivePageIndex := 7;
+ PageControl4.ActivePageIndex := 1;
+end;
+
+procedure TfCTePrincipal.btnProximo7Click(Sender: TObject);
+begin
+  pcPrincipal.ActivePageIndex := 1;
+  pcCte.ActivePageIndex := 8;
+  PageControl4.ActivePageIndex := 0;
+end;
+
+procedure TfCTePrincipal.btnProximo8Click(Sender: TObject);
+begin
+  pcPrincipal.ActivePageIndex := 1;
+  pcCte.ActivePageIndex := 8;
+  PageControl4.ActivePageIndex := 1;
+end;
+
+procedure TfCTePrincipal.btnProximo9Click(Sender: TObject);
+begin
+  pcPrincipal.ActivePageIndex := 1;
+  pcCte.ActivePageIndex := 8;
+  PageControl4.ActivePageIndex := 2;
+end;
+
+procedure TfCTePrincipal.btnProximoClick(Sender: TObject);
+begin
+  pcPrincipal.ActivePageIndex := 1;
+  pcCte.ActivePageIndex := 1;
+end;
+
 procedure TfCTePrincipal.BitBtn15Click(Sender: TObject);
 begin
   if (dmCte.cdsCTENPROT.AsString <> '') then
@@ -4127,6 +4257,7 @@ begin
     exit;
   end;
   dmCte.sqComp.Append;
+  dmCte.sqCompCOD_CTE.AsInteger := val_genCte;
   fCompValor.ShowModal;
 end;
 
@@ -4157,8 +4288,8 @@ end;
 
 procedure TfCTePrincipal.BitBtn2Click(Sender: TObject);
 begin
-  btnListarCte.Click;
   pcPrincipal.PageIndex:=0;
+  btnListarCte.Click;
 end;
 
 procedure TfCTePrincipal.BitBtn3Click(Sender: TObject);
@@ -4203,13 +4334,35 @@ end;
 
 procedure TfCTePrincipal.BitBtn5Click(Sender: TObject);
 begin
+  btnGravarCTe.Enabled := False;
+  btnCancelarEdicaoCTe.Enabled := False;
+  btnPreVisu.Enabled := False;
+  btnGerarCte.Enabled := False;
   if (dmCte.cdsCTENPROT.AsString <> '') then
   begin
     MessageDlg('CTe Ja Enviada.', mtInformation, [mbOK], 0);
     exit;
   end;
-  dmPdv.IbCon.ExecuteDirect('DELETE FROM CTE');
+  if MessageDlg('Confirma EXCLUIR a CTe número : ' +
+     dmCte.cdsCteCTE_NUMERO.AsString +
+     ' ?',mtConfirmation, [mbYes,mbNo],1) = mrNo then exit;
 
+  dmPdv.IbCon.ExecuteDirect('DELETE FROM CTE_COMP WHERE COD_CTE = ' +
+    IntToStr(dmCte.cdsCTECOD_CTE.AsInteger));
+  dmPdv.IbCon.ExecuteDirect('DELETE FROM CTE_MOTORISTA WHERE COD_CTE = ' +
+    IntToStr(dmCte.cdsCTECOD_CTE.AsInteger));
+  dmPdv.IbCon.ExecuteDirect('DELETE FROM CTE_NFE WHERE CTE_NFE = ' +
+    IntToStr(dmCte.cdsCTECOD_CTE.AsInteger));
+  dmPdv.IbCon.ExecuteDirect('DELETE FROM CTE_QC WHERE COD_CTE = ' +
+    IntToStr(dmCte.cdsCTECOD_CTE.AsInteger));
+  dmPdv.IbCon.ExecuteDirect('DELETE FROM CTE_SEGURO WHERE COD_CTE = ' +
+    IntToStr(dmCte.cdsCTECOD_CTE.AsInteger));
+  dmPdv.IbCon.ExecuteDirect('DELETE FROM CTE_VEICULOS WHERE COD_CTE = ' +
+    IntToStr(dmCte.cdsCTECOD_CTE.AsInteger));
+  dmPdv.IbCon.ExecuteDirect('DELETE FROM CTE WHERE COD_CTE = ' +
+    IntToStr(dmCte.cdsCTECOD_CTE.AsInteger));
+  dmPdv.sTrans.Commit;
+  btnListarCte.Click;
 end;
 
 procedure TfCTePrincipal.BitBtn6Click(Sender: TObject);
@@ -4309,7 +4462,9 @@ begin
       vCteStr := vCteStr +  IntToStr(dmCte.sqNFeCOD_CTE_NFE.AsInteger);
       try
         dmPdv.IbCon.ExecuteDirect(vCteStr);
-        dmPdv.sTrans.Commit;
+        dmCte.sqNFe.Close;
+        dmCte.sqNFe.Open;
+        //dmPdv.sTrans.Commit;
         MessageDlg('NFe excluida com sucesso.', mtInformation, [mbOK], 0);
         dmCte.sqNFe.Refresh;
       except
@@ -4326,6 +4481,16 @@ end;
 
 procedure TfCTePrincipal.btnGerarCte1Click(Sender: TObject);
 begin
+  if (modoGravacao = 'EDITAR') then
+  begin
+    ShowMessage('Grave ou Cancele a edição da Cte');
+    Exit;
+  end;
+  if (modoGravacao = 'INCLUIR') then
+  begin
+    ShowMessage('Grave ou Cancele a Cte iniciada.');
+    Exit;
+  end;
   Close;
 end;
 
@@ -4341,6 +4506,15 @@ begin
     ACBrCTe1.InutCTe.LerXML(OpenDialog1.FileName);
     ACBrCTe1.ImprimirInutilizacao;
   end;
+end;
+
+procedure TfCTePrincipal.btnCancelarEdicaoCTeClick(Sender: TObject);
+begin
+  if MessageDlg('Confirma CANCELAR ? Todas as alterações serão perdidas'
+     ,mtConfirmation, [mbYes,mbNo],1) = mrNo then exit;
+  dmCte.cdsCte.Cancel;
+  modoGravacao:='CONSULTAR';
+  btnGravarCTe.Caption := 'Gravar';
 end;
 
 procedure TfCTePrincipal.btnImprimirInutClick(Sender: TObject);
@@ -4414,6 +4588,7 @@ begin
     exit;
   end;
   dmCte.sqQC.Append;
+  dmCte.sqQCCOD_CTE.AsInteger := val_genCte;
   fQuantCarga.ShowModal;
 end;
 
@@ -4431,9 +4606,6 @@ begin
     exit;
   end;
   strEdita := FloatToStr(dmCte.cdsCteVPREST.AsFloat);
-  if (dmCte.dsCte.State in [dsEdit, dsInsert]) then
-    dmCte.cdsCte.Post;
-  strEdita := FloatToStr(dmCte.cdsCteVPREST.AsFloat);
   if ((modoGravacao = 'INCLUIR') or (modoGravacao = 'DUPLICAR')) then
   begin
     strEdita := 'UPDATE SERIES SET ULTIMO_NUMERO = ';
@@ -4443,6 +4615,11 @@ begin
     strEdita := strEdita + ' and CODSERIE = ';
     strEdita := strEdita + QuotedStr(edtCodEmitente.Text);
     sql_retorno := GravarCTe;
+    if (dmCte.dsCte.State in [dsEdit, dsInsert]) then
+    begin
+      dmCte.cdsCteCOD_CTE.AsInteger := val_genCte;
+      dmCte.cdsCte.Post;
+    end;
     try
       dmPdv.IbCon.ExecuteDirect(sql_retorno);
       dmPdv.IbCon.ExecuteDirect(strEdita);
@@ -4499,6 +4676,8 @@ begin
     dmCTe.cdsCTE.Close;
   dmCTe.cdsCTE.Params[0].AsInteger := StrToInt(edtCodEmitente.Text);
   dmCTe.cdsCTE.Params[1].AsInteger := StrToInt(edtNumCte.Text);
+  dmCte.cdsCTE.Params[2].AsDate := DateTimePicker1.Date;
+  dmCte.cdsCTE.Params[3].AsDate := DateTimePicker2.Date;
   dmCTe.cdsCTE.Open;
 
   dmCte.sqNFe.Open;
@@ -4681,7 +4860,18 @@ end;
 procedure TfCTePrincipal.btnIncCteClick(Sender: TObject);
 var
   strEdita :string;
+  i: Integer;
 begin
+  // Limpando tudo
+  for i := 0 to fCTePrincipal.ComponentCount-1 do
+  begin
+    if fCTePrincipal.Components[i] is TEdit then
+      TEdit(fCTePrincipal.Components[i]).Clear;
+  end;
+  edtModelo.Text := '57';
+
+  buscaEmpresa(comboEmpresa.Text);
+
   if(edtCodEmitente.Text = '') then
   begin
     MessageDlg('Inicie um Emitente .', mtInformation, [mbOK], 0);
@@ -4749,7 +4939,13 @@ begin
 
   //dbValPIcms.Text := FloatToStr(percent_icms);
   dmCte.cdsCteVALPICMS.AsFloat := percent_icms;
+  pcPrincipal.ActivePageIndex := 1;
+  pcCte.ActivePageIndex := 0;
 
+  btnGravarCTe.Enabled := True;
+  btnCancelarEdicaoCTe.Enabled := True;
+  btnPreVisu.Enabled := True;
+  btnGerarCte.Enabled := True;
   btnGravarCTe.Caption := 'Gravar CTE *';
 end;
 
@@ -4768,10 +4964,9 @@ begin
   end;
   if not(dmCte.sqNFe.Active)then
     dmCte.sqNFe.Active;
-  dmCte.sqNFe.Params[0].AsInteger := val_genCte;
-  dmCte.sqNFe.Open;
-  dmCte.sqNFe.Edit;
 
+  dmCte.sqNFe.Append;
+  dmCte.sqNFeCTE_NFE.AsInteger := val_genCte;
   fNFe.btnEdita.Visible :=False;
   fNFe.ShowModal;
 end;
@@ -4801,6 +4996,10 @@ end;
 
 procedure TfCTePrincipal.btnListarCteClick(Sender: TObject);
 begin
+  btnGravarCTe.Enabled := False;
+  btnCancelarEdicaoCTe.Enabled := False;
+  btnPreVisu.Enabled := False;
+  btnGerarCte.Enabled := False;
   { // COMENTEI AQUI
   if (dmCte.cdsCTE.State in [dsEdit, dsInsert]) then
   begin
@@ -4916,6 +5115,7 @@ begin
   if ((modoGravacao = 'INCLUIR') or (modoGravacao = 'EDITAR')) then
   begin
     dmCte.sqVeic.Append;
+    dmCte.sqVeicCOD_CTE.AsInteger := val_genCte;
     fVeiculoCte.ShowModal;
   end;
 end;
@@ -4985,11 +5185,6 @@ end;
 procedure TfCTePrincipal.FormClose(Sender: TObject;
   var CloseAction: TCloseAction);
 begin
-  if ((modoGravacao = 'INCLUIR') or (modoGravacao = 'EDITAR')) then
-  begin
-    ShowMessage('Grave ou Cancele as modificações.');
-    Exit;
-  end;
   GravarConfiguracao;
 end;
 
@@ -5133,23 +5328,23 @@ procedure TfCTePrincipal.rgDestClick(Sender: TObject);
 begin
   if rgDest.ItemIndex = 0 then
   begin
-    GroupBoxDestinatario.Visible := False;
+    GroupBoxDestinatario.Visible := True;
   end;
 
   if rgDest.ItemIndex <> 0 then
   begin
-    GroupBoxDestinatario.Visible := True;
+    GroupBoxDestinatario.Visible := False;
   end;
 end;
 
 procedure TfCTePrincipal.rgExpClick(Sender: TObject);
 begin
-  if rgExp.ItemIndex = 0 then
+  if rgExp.ItemIndex = 1 then
   begin
     GroupBoxExpeditor.Visible := False;
   end;
 
-  if rgExp.ItemIndex = 1 then
+  if rgExp.ItemIndex = 0 then
   begin
     GroupBoxExpeditor.Visible := True;
   end;
@@ -5162,12 +5357,12 @@ end;
 
 procedure TfCTePrincipal.rgRecClick(Sender: TObject);
 begin
-  if rgRec.ItemIndex = 0 then
+  if rgRec.ItemIndex = 1 then
   begin
     GroupBoxRecebedor.Visible := False;
   end;
 
-  if rgRec.ItemIndex = 1 then
+  if rgRec.ItemIndex = 0 then
   begin
     GroupBoxRecebedor.Visible := True;
     edtRecBusca.Text     := '';
@@ -5189,12 +5384,12 @@ end;
 
 procedure TfCTePrincipal.rgRemClick(Sender: TObject);
 begin
-  if rgRem.ItemIndex = 0 then
+  if rgRem.ItemIndex = 1 then
   begin
     GroupBoxRemetente.Visible := False;
   end;
 
-  if rgRem.ItemIndex <> 0 then
+  if rgRem.ItemIndex <> 1 then
   begin
     GroupBoxRemetente.Visible := True;
   end;

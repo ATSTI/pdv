@@ -43,15 +43,9 @@ uses uDmCte, udmpdv;
 procedure TfNFe.btnOkClick(Sender: TObject);
 var vNfe_str:String;
 begin
-  // TODO testar o IF do Campo DATA
   if (dmCte.sqNFeCHAVE.AsString = '') then
   begin
     ShowMessage('Informe a CHAVE da NFe.');
-    Exit;
-  end;
-  if (dmCte.sqNFeDPREV.IsNull) then
-  begin
-    ShowMessage('Informe a Data da NFe.');
     Exit;
   end;
   vNfe_str := '';
@@ -65,8 +59,14 @@ begin
       vNfe_str := vNfe_str +  QuotedStr(IntToStr(dmCte.sqNFePIN.AsInteger));
     end;
     vNfe_str := vNfe_str + ', DPREV = ';
-    vNfe_str := vNfe_str +  QuotedStr(FormatDateTime('mm/dd/yyyy',
-      dmCte.sqNFeDPREV.AsDateTime));
+    if (DBDateTimePicker1.DateIsNull = False) then
+    begin
+      vNfe_str := vNfe_str +  QuotedStr(FormatDateTime('mm/dd/yyyy',
+        dmCte.sqNFeDPREV.AsDateTime));
+    end
+    else begin
+      vNfe_str := vNfe_str + ' NULL ';
+    end;
     vNfe_str := vNfe_str + ' WHERE COD_CTE_NFE = ';
     vNfe_str := vNfe_str + IntToStr(dmCte.sqNFeCOD_CTE_NFE.AsInteger);
   end;
@@ -74,10 +74,17 @@ begin
   begin
     vNfe_str := 'INSERT INTO CTE_NFE (COD_CTE_NFE, CTE_NFE, CHAVE,DPREV, PIN  ' +
                ') VALUES ( GEN_ID(GEN_CTE_NFE_ID, 1)';
-    vNfe_str := vNfe_str + ', ' + IntToStr(dmCte.cdsCteCOD_CTE.AsInteger);
+    vNfe_str := vNfe_str + ', ' + IntToStr(dmCte.sqNFeCTE_NFE.AsInteger);
     vNfe_str := vNfe_str + ', ' + QuotedStr(dmCte.sqNFeCHAVE.AsString);
-    vNfe_str := vNfe_str + ', ' + QuotedStr(FormatDateTime('mm/dd/yyyy',
-      dmCte.sqNFeDPREV.AsDateTime));
+    if (DBDateTimePicker1.DateIsNull = False) then
+    begin
+      vNfe_str := vNfe_str + ', ' + QuotedStr(FormatDateTime('mm/dd/yyyy',
+        dmCte.sqNFeDPREV.AsDateTime));
+    end
+    else begin
+      vNfe_str := vNfe_str + ', NULL ';
+    end;
+
     if(dmCte.sqNFePIN.AsInteger > 0)then
     begin
       vNfe_str := vNfe_str + ', ' + QuotedStr(IntToStr(dmCte.sqNFePIN.AsInteger));

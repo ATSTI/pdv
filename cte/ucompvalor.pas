@@ -48,7 +48,7 @@ begin
   begin
     vstr_sql := 'INSERT INTO CTE_COMP (COD_CTE_COMP, COD_CTE ,COMP_NOME, ' +
       ' COMP_VALOR) VALUES ( GEN_ID(GEN_CTE_COMP_ID,1)';
-    vstr_sql := vstr_sql + ', ' + IntToStr(dmCte.cdsCteCOD_CTE.AsInteger) ;
+    vstr_sql := vstr_sql + ', ' + IntToStr(dmCte.sqCompCOD_CTE.AsInteger) ;
     vstr_sql := vstr_sql + ', ' + QuotedStr(dmCte.sqCompCOMP_NOME.AsString);
     vstr_sql := vstr_sql + ', '  + FloatToStr(dmCte.sqCompCOMP_VALOR.AsFloat);
     vstr_sql := vstr_sql + ')';

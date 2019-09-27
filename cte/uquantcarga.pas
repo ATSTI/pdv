@@ -59,7 +59,7 @@ begin
   begin
     vQCstr_sql := 'INSERT INTO CTE_QC (COD_CTE_QC, COD_CTE ,UNID, ' +
       ' MEDIDA, QUANT) VALUES ( GEN_ID(GEN_CTE_QC_ID, 1)';
-    vQCstr_sql := vQCstr_sql + ', ' +IntToStr(dmCte.cdsCteCOD_CTE.AsInteger);
+    vQCstr_sql := vQCstr_sql + ', ' +IntToStr(dmCte.sqQCCOD_CTE.AsInteger);
     vQCstr_sql := vQCstr_sql + ', ' + QuotedStr(Copy(cbTipoUn.Text,1,2));
     vQCstr_sql := vQCstr_sql + ', ' + QuotedStr(dmCte.sqQCMEDIDA.AsString);
     vQCstr_sql := vQCstr_sql + ', ' +  FloatToStr(dmCte.sqQCQUANT.AsFloat) ;

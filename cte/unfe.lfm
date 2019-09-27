@@ -30,15 +30,15 @@ object fNFe: TfNFe
   end
   object Label1: TLabel
     Left = 32
-    Height = 17
+    Height = 15
     Top = 11
-    Width = 75
+    Width = 69
     Caption = 'Data Previsto'
     ParentColor = False
   end
   object DBEdit1: TDBEdit
     Left = 32
-    Height = 27
+    Height = 23
     Top = 88
     Width = 432
     DataField = 'CHAVE'
@@ -73,7 +73,7 @@ object fNFe: TfNFe
   end
   object DBEdit2: TDBEdit
     Left = 32
-    Height = 27
+    Height = 23
     Top = 152
     Width = 432
     DataField = 'PIN'
@@ -84,15 +84,15 @@ object fNFe: TfNFe
   end
   object Label2: TLabel
     Left = 32
-    Height = 17
+    Height = 15
     Top = 66
-    Width = 60
+    Width = 57
     Caption = 'Chave NFe'
     ParentColor = False
   end
   object Label3: TLabel
     Left = 35
-    Height = 17
+    Height = 15
     Top = 133
     Width = 17
     Caption = 'Pin'

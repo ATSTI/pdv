@@ -21,9 +21,9 @@ object fCompValor: TfCompValor
   end
   object Label1: TLabel
     Left = 50
-    Height = 17
+    Height = 15
     Top = 86
-    Width = 29
+    Width = 26
     Caption = 'Valor'
     ParentColor = False
   end
@@ -38,7 +38,7 @@ object fCompValor: TfCompValor
   end
   object dbCompNome: TDBEdit
     Left = 48
-    Height = 27
+    Height = 23
     Top = 48
     Width = 248
     DataField = 'COMP_NOME'
@@ -49,7 +49,7 @@ object fCompValor: TfCompValor
   end
   object dbValComp: TDBEdit
     Left = 48
-    Height = 27
+    Height = 23
     Top = 104
     Width = 80
     DataField = 'COMP_VALOR'
@@ -60,9 +60,9 @@ object fCompValor: TfCompValor
   end
   object Label2: TLabel
     Left = 50
-    Height = 17
+    Height = 15
     Top = 26
-    Width = 72
+    Width = 70
     Caption = 'Componente'
     ParentColor = False
   end

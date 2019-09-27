@@ -198,6 +198,7 @@ type
   private
     procedure atualiza_bd();
   public
+    modoDesenvolvedor: String;
     usosistema : string;
     usaComanda : Integer;
     usaCurso : Integer;
@@ -334,6 +335,7 @@ begin
       usaCurso := conf.ReadInteger( 'Outros','UsaCurso',0);
       NfceSat := conf.ReadString( 'Outros','NfceSat','NFCE');
       ccusto := conf.ReadString( 'Outros','CentroCusto','');
+      modoDesenvolvedor := conf.ReadString( 'Outros','modoDesenvolvedor','N');
     finally
       conf.free;
     end;
