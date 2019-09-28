@@ -109,6 +109,14 @@ type
     DateTimePicker1: TDateTimePicker;
     DateTimePicker2: TDateTimePicker;
     edSerieAtualiza: TEdit;
+    edtCaminho: TEdit;
+    edtEmailAssunto: TEdit;
+    edtLogoMarca: TEdit;
+    edtSenha: TEdit;
+    edtSmtpHost: TEdit;
+    edtSmtpPass: TEdit;
+    edtSmtpPort: TEdit;
+    edtSmtpUser: TEdit;
     edUltimoAtualiza: TEdit;
     edModeloAtualiza: TEdit;
     DBGrid1: TDBGrid;
@@ -131,8 +139,6 @@ type
     dbValVICMS: TDBEdit;
     dgGridCTE: TDBGrid;
     edCteCancelar: TLabeledEdit;
-    Edit1: TEdit;
-    Edit2: TEdit;
     edtAntCHCTE: TEdit;
     edtAntCNPJ: TEdit;
     edtAntIE: TEdit;
@@ -140,7 +146,6 @@ type
     edtAntUF: TEdit;
     edtBairroTomador: TEdit;
     edtBuscaTomador: TEdit;
-    edtCaminho: TEdit;
     edtCaracAdServ: TEdit;
     edtCaracAdTrans: TEdit;
     edtCepTomador: TEdit;
@@ -163,7 +168,6 @@ type
     edtDestNum: TEdit;
     edtDestRazao: TEdit;
     edtDestUF: TEdit;
-    edtEmailAssunto: TEdit;
     edtEmitBairro: TEdit;
     edtEmitCEP: TEdit;
     edtEmitCidade: TEdit;
@@ -205,7 +209,6 @@ type
     edtIniCidade: TEdit;
     edtIniCodCidade: TEdit;
     edtIniUF: TEdit;
-    edtLogoMarca: TEdit;
     edtModelo: TEdit;
     edtNatOpe: TEdit;
     edtNomeTomador: TEdit;
@@ -224,10 +227,6 @@ type
     edtOutrosNum: TEdit;
     edtPathLogs: TEdit;
     edtProPred: TEdit;
-    edtProxyHost: TEdit;
-    edtProxyPorta: TEdit;
-    edtProxySenha: TEdit;
-    edtProxyUser: TEdit;
     edtRazaoTomador: TEdit;
     edtRecBairro: TEdit;
     edtRecBusca: TEdit;
@@ -258,12 +257,7 @@ type
     edtRemRazao: TEdit;
     edtRemUF: TEdit;
     edtRodRNTRC: TEdit;
-    edtSenha: TEdit;
     edtSerieCte: TEdit;
-    edtSmtpHost: TEdit;
-    edtSmtpPass: TEdit;
-    edtSmtpPort: TEdit;
-    edtSmtpUser: TEdit;
     edtTomadorCidade: TEdit;
     edtTomadorCodCidade: TEdit;
     edtTomadorUF: TEdit;
@@ -282,6 +276,8 @@ type
     edtXMLRazao: TEdit;
     edtXMLUF: TEdit;
     GroupBox1: TGroupBox;
+    GroupBox10: TGroupBox;
+    GroupBox11: TGroupBox;
     GroupBox2: TGroupBox;
     GroupBox3: TGroupBox;
     GroupBox4: TGroupBox;
@@ -289,6 +285,7 @@ type
     GroupBox6: TGroupBox;
     GroupBox7: TGroupBox;
     GroupBox8: TGroupBox;
+    GroupBox9: TGroupBox;
     GroupBoxDestinatario: TGroupBox;
     GroupBoxExpeditor: TGroupBox;
     GroupBoxRecebedor: TGroupBox;
@@ -348,6 +345,8 @@ type
     Label142: TLabel;
     Label143: TLabel;
     Label144: TLabel;
+    Label145: TLabel;
+    Label146: TLabel;
     Label15: TLabel;
     Label16: TLabel;
     Label17: TLabel;
@@ -491,8 +490,8 @@ type
     rgTipoServico: TRadioGroup;
     rgTomador: TRadioGroup;
     sbtnCaminhoCert: TSpeedButton;
+    sbtnLogoMarca: TSpeedButton;
     sbtnGetCert: TSpeedButton;
-    sbtnLogoMarca: TBitBtn;
     sbtnPathSalvar: TSpeedButton;
     StaticText1: TStaticText;
     StaticText10: TStaticText;
@@ -876,10 +875,10 @@ begin
     Ini.WriteInteger( 'WebService','Ambiente'  ,rgTipoAmb.ItemIndex);
     Ini.WriteBool(   'WebService','Visualizar',ckVisualizar.Checked);
 
-    Ini.WriteString( 'Proxy','Host'   ,edtProxyHost.Text);
-    Ini.WriteString( 'Proxy','Porta'  ,edtProxyPorta.Text);
-    Ini.WriteString( 'Proxy','User'   ,edtProxyUser.Text);
-    Ini.WriteString( 'Proxy','Pass'   ,edtProxySenha.Text);
+    //Ini.WriteString( 'Proxy','Host'   ,edtProxyHost.Text);
+    //Ini.WriteString( 'Proxy','Porta'  ,edtProxyPorta.Text);
+    //Ini.WriteString( 'Proxy','User'   ,edtProxyUser.Text);
+    //Ini.WriteString( 'Proxy','Pass'   ,edtProxySenha.Text);
 
     Ini.WriteString( 'Emitente','CNPJ'       ,edtEmitCNPJ.Text);
     Ini.WriteString( 'Emitente','IE'         ,edtEmitIE.Text);
@@ -1024,14 +1023,14 @@ begin
   ACBrCTe1.Configuracoes.WebServices.Ambiente   := StrToTpAmb(Ok,IntToStr(rgTipoAmb.ItemIndex+1));
   ACBrCTe1.Configuracoes.WebServices.Visualizar := ckVisualizar.Checked;
 
-  edtProxyHost.Text  := Ini.ReadString( 'Proxy','Host'   ,'');
-  edtProxyPorta.Text := Ini.ReadString( 'Proxy','Porta'  ,'');
-  edtProxyUser.Text  := Ini.ReadString( 'Proxy','User'   ,'');
-  edtProxySenha.Text := Ini.ReadString( 'Proxy','Pass'   ,'');
-  ACBrCTe1.Configuracoes.WebServices.ProxyHost := edtProxyHost.Text;
-  ACBrCTe1.Configuracoes.WebServices.ProxyPort := edtProxyPorta.Text;
-  ACBrCTe1.Configuracoes.WebServices.ProxyUser := edtProxyUser.Text;
-  ACBrCTe1.Configuracoes.WebServices.ProxyPass := edtProxySenha.Text;
+  //edtProxyHost.Text  := Ini.ReadString( 'Proxy','Host'   ,'');
+  //edtProxyPorta.Text := Ini.ReadString( 'Proxy','Porta'  ,'');
+  //edtProxyUser.Text  := Ini.ReadString( 'Proxy','User'   ,'');
+  //edtProxySenha.Text := Ini.ReadString( 'Proxy','Pass'   ,'');
+  //ACBrCTe1.Configuracoes.WebServices.ProxyHost := edtProxyHost.Text;
+  //ACBrCTe1.Configuracoes.WebServices.ProxyPort := edtProxyPorta.Text;
+  //ACBrCTe1.Configuracoes.WebServices.ProxyUser := edtProxyUser.Text;
+  //ACBrCTe1.Configuracoes.WebServices.ProxyPass := edtProxySenha.Text;
 
   rgTipoDACTe.ItemIndex   := Ini.ReadInteger('Geral','DACTE'       ,0);
   rgTipoServico.ItemIndex := Ini.ReadInteger('Geral','TipoServico' ,0);
