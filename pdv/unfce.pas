@@ -32,6 +32,7 @@ type
     BitBtn3: TBitBtn;
     BitBtn4: TBitBtn;
     BitBtn5: TBitBtn;
+    BitBtn6: TBitBtn;
     btnFechar: TBitBtn;
     btnNFce: TBitBtn;
     btnNFce1: TBitBtn;
@@ -39,12 +40,16 @@ type
     btnNFce3: TBitBtn;
     btnNFce4: TBitBtn;
     btnNFce5: TBitBtn;
+    btnNFce6: TBitBtn;
+    btnNFce7: TBitBtn;
+    btnNFce8: TBitBtn;
     cbCryptLib: TComboBox;
     cbHttpLib: TComboBox;
     cbSSLLib: TComboBox;
     cbXmlSignLib: TComboBox;
     cbxModeloPosPrinter: TComboBox;
     edAno: TEdit;
+    edCancelamentoMotivo: TEdit;
     edModelo: TEdit;
     edJustificativa: TEdit;
     edSerie: TEdit;
@@ -57,6 +62,8 @@ type
     edCertificado: TLabeledEdit;
     edNFce: TLabeledEdit;
     Label1: TLabel;
+    Label10: TLabel;
+    lblCancelamento: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
@@ -75,6 +82,7 @@ type
     PageControl1: TPageControl;
     PageControl2: TPageControl;
     Panel1: TPanel;
+    pnCancelamento: TPanel;
     RadioGroup1: TRadioGroup;
     RadioGroup2: TRadioGroup;
     StatusBar1: TStatusBar;
@@ -98,12 +106,16 @@ type
     procedure BitBtn3Click(Sender: TObject);
     procedure BitBtn4Click(Sender: TObject);
     procedure BitBtn5Click(Sender: TObject);
+    procedure BitBtn6Click(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure btnNFce1Click(Sender: TObject);
     procedure btnNFce2Click(Sender: TObject);
     procedure btnNFce3Click(Sender: TObject);
     procedure btnNFce4Click(Sender: TObject);
     procedure btnNFce5Click(Sender: TObject);
+    procedure btnNFce6Click(Sender: TObject);
+    procedure btnNFce7Click(Sender: TObject);
+    procedure btnNFce8Click(Sender: TObject);
     procedure btnNFceClick(Sender: TObject);
     procedure cbCryptLibChange(Sender: TObject);
     procedure cbHttpLibChange(Sender: TObject);
@@ -224,30 +236,12 @@ begin
   end;
   Sincrono := False;
 
-  // carlos 23/12/14
-  ACBrNFe1.Configuracoes.Geral.ModeloDF := moNFCe;
-  ACBrNFe1.Configuracoes.Geral.VersaoDF := ve400;
-
-  ACBrNFe1.Configuracoes.Geral.IdCSC := dmPdv.id_tk;
-  ACBrNFe1.Configuracoes.Geral.CSC := dmPdv.tk;
-  ACBrNFe1.Configuracoes.WebServices.TimeOut := 35000;
-
   ACBrNFe1.DANFE := ACBrNFeDANFeESCPOS1;
 
   //ACBrNFe1.Configuracoes.Geral.SSLLib := libCapicom;
 
-  // TODO
-  //if ACBrNFe1.NotasFiscais.Add.NFe.ide.tpAmb = taHomologacao then
-  //  ambiente := 'homolog';
-  AcbrNfe1.Configuracoes.Arquivos.PathSalvar := dmpdv.path_xml + '\NFce\';
-  AcbrNfe1.Configuracoes.Arquivos.PathEvento := dmpdv.path_xml + '\Eventos\';
   memoLog.Lines.Add('Gerando XML');
   GerarNFCe(vAux);
-  //if ACBrNFe1.NotasFiscais.Add.NFe.ide.tpAmb = taHomologacao then
-  //  ambiente := 'homolog';
-
-  //edtCaminho.Text := ACBrNFe1.SSL.CertCNPJ;
-  //ACBrNFe1.NotasFiscais.GravarXML(AcbrNfe1.Configuracoes.Arquivos.PathSalvar);
   memoLog.Lines.Add('Assinando XML');
   ACBrNFe1.NotasFiscais.Assinar;
   //ACBrNFe1.NotasFiscais.GravarXML(AcbrNfe1.Configuracoes.Arquivos.PathSalvar);
@@ -1735,10 +1729,31 @@ begin
     edCertificado.Text := edtNumSerie.Text;
     ACBrNFe1.Configuracoes.Certificados.NumeroSerie := edCertificado.Text;
   end;
-  ACBrNFe1.Configuracoes.WebServices.UF := 'SP';
+  ACBrNFe1.Configuracoes.WebServices.UF := Trim(dmPdv.sqEmpresaUF.AsString);
+
+  if (dmPdv.sqEmpresaDIVERSOS3.AsString <> '') then
+  begin
+    ACBrNFe1.Configuracoes.WebServices.TimeZoneConf.TimeZoneStr := dmPdv.sqEmpresaDIVERSOS3.AsString;
+  end;
+
   ACBrNFe1.Configuracoes.Geral.ModeloDF := moNFCe;
   ACBrNFe1.Configuracoes.Geral.Salvar   := True;
+  ACBrNFe1.Configuracoes.Arquivos.Salvar:= True;
+  ACBrNFe1.Configuracoes.Arquivos.SalvarEvento:= True;
   ACBrNFe1.Configuracoes.Geral.VersaoDF := ve400;
+
+  ACBrNFe1.Configuracoes.Geral.IdCSC := dmPdv.id_tk;
+  ACBrNFe1.Configuracoes.Geral.CSC := dmPdv.tk;
+  ACBrNFe1.Configuracoes.WebServices.TimeOut := 35000;
+
+  if (not DirectoryExists(dmpdv.path_xml + '\NFce')) then
+    CreateDir(dmpdv.path_xml + '\NFce');
+  if (not DirectoryExists(dmpdv.path_xml + '\Eventos')) then
+    CreateDir(dmpdv.path_xml + '\Eventos');
+
+  AcbrNfe1.Configuracoes.Arquivos.PathSalvar := dmpdv.path_xml + '\NFce';
+  AcbrNfe1.Configuracoes.Arquivos.PathEvento := dmpdv.path_xml + '\Eventos';
+
   //ACBrNFe1.Configuracoes.WebServices.UFCodigo := 35;
   if (Trim(dmPdv.sqEmpresaTIPO.AsString) = '1') then
     ACBrNFe1.Configuracoes.WebServices.Ambiente := taProducao
@@ -1868,6 +1883,77 @@ begin
   edNFce.Text:=IntToStr(num_nfce)
 end;
 
+procedure TfNfce.BitBtn6Click(Sender: TObject);
+var idLote,vAux : String;
+begin
+  OpenDialog1.Title := 'Selecione a NFE';
+  OpenDialog1.DefaultExt := '*-nfe.XML';
+  OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
+  if OpenDialog1.Execute then
+  begin
+    ACBrNFe1.NotasFiscais.Clear;
+    ACBrNFe1.EventoNFe.Evento.Clear;
+    carregaAcbr;
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+
+    idLote := '1';
+      //if not(InputQuery('WebServices Eventos: Cancelamento', 'Identificador de controle do Lote de envio do Evento', idLote)) then
+      //   exit;
+      //if not(InputQuery('WebServices Eventos: Cancelamento', 'Justificativa', vAux)) then
+      //   exit;
+    lblCancelamento.Caption := 'Chave ' + acbrnfe1.NotasFiscais.Items[0].NFe.procNFe.chNFe;
+    //Copy(acbrnfe1.NotasFiscais.Items[0].NFe.infNFe.ID,4,44);
+    //lblCancelamento.Caption := 'Chave' + acbrnfe1.NotasFiscais.Items[0].NFe.procNFe.chNFe;
+    // Copy(acbrnfe1.NotasFiscais.Items[0].NFe.infNFe.ID,4,44);
+    ACBrNFe1.EventoNFe.idLote := StrToInt(idLote) ;
+    with ACBrNFe1.EventoNFe.Evento.Add do
+    begin
+      infEvento.dhEvento := now;
+      infEvento.tpEvento := teCancelamento;
+      infEvento.detEvento.xJust := edCancelamentoMotivo.Text;
+      infEvento.chNFe := acbrnfe1.NotasFiscais.Items[0].NFe.procNFe.chNFe;
+      infEvento.detEvento.nProt := acbrnfe1.NotasFiscais.Items[0].NFe.procNFe.nProt;
+    end;
+    //lblCancelamento.Caption := 'Gerando xml';
+    ACBrNFe1.EventoNFe.GerarXML;
+    //lblCancelamento.Caption := 'Enviando Evento, lote : ' + idLote;
+    if (ACBrNFe1.EnviarEvento(StrToInt(idLote))) then
+    begin
+      with ACBrNFe1.WebServices.EnvEvento do
+      begin
+        if (EventoRetorno.retEvento.Items[0].RetInfEvento.cStat <>  135) then
+        begin
+          raise Exception.CreateFmt(
+            'Ocorreu erro para cancelar a NFCe %d ,' + sLineBreak +
+            ' Motivo : %s', [
+            EventoRetorno.retEvento.Items[0].RetInfEvento.cStat,
+            EventoRetorno.retEvento.Items[0].RetInfEvento.xMotivo
+          ]);
+        end;
+      end;
+    end
+    else begin
+      with ACBrNFe1.WebServices.EnvEvento do
+      begin
+        raise Exception.Create(
+          'Ocorreram erros no cancelamento :' + sLineBreak +
+          'Ambiente : ' + TpAmbToStr(EventoRetorno.tpAmb) + sLineBreak +
+          'Orgao : ' + IntToStr(EventoRetorno.cOrgao) + sLineBreak +
+          'Status : ' + IntToStr(EventoRetorno.cStat) + sLineBreak +
+          'Motivo : ' + EventoRetorno.xMotivo
+        );
+      end;
+    end;
+    MemoResp.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetWS;
+    memoResp.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetornoWS;
+    //LoadXML(MemoResp, WBResposta);
+    ShowMessage(IntToStr(ACBrNFe1.WebServices.EnvEvento.cStat));
+    ShowMessage(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.nProt);
+  end;
+  pnCancelamento.Visible:=False;
+end;
+
 procedure TfNfce.btnFecharClick(Sender: TObject);
 begin
   Close;
@@ -1944,9 +2030,53 @@ begin
 end;
 
 procedure TfNfce.btnNFce3Click(Sender: TObject);
+var
+ Modelo, Serie, Ano, NumeroInicial, NumeroFinal, Justificativa : String;
+
 begin
   edSerie.Text := IntToStr(serie_nfce);
   Panel1.Visible:= True;
+  // gerar nfce
+  carregaAcbr;
+
+  begin
+   if not(InputQuery('WebServices Inutilização ', 'Ano',    Ano)) then
+      exit;
+   if not(InputQuery('WebServices Inutilização ', 'Modelo', Modelo)) then
+      exit;
+   if not(InputQuery('WebServices Inutilização ', 'Serie',  Serie)) then
+      exit;
+   if not(InputQuery('WebServices Inutilização ', 'Número Inicial', NumeroInicial)) then
+      exit;
+   if not(InputQuery('WebServices Inutilização ', 'Número Inicial', NumeroFinal)) then
+      exit;
+   if not(InputQuery('WebServices Inutilização ', 'Justificativa', Justificativa)) then
+      exit;
+    ACBrNFe1.WebServices.Inutiliza(RemoveChar(dmPdv.sqEmpresaCNPJ_CPF.AsString),
+      Justificativa, StrToInt(Ano), StrToInt(Modelo), StrToInt(Serie),
+      StrToInt(NumeroInicial), StrToInt(NumeroFinal));
+    MemoResp.Lines.Text :=  ACBrNFe1.WebServices.Inutilizacao.RetWS;
+    MemoResp.Lines.Text :=  ACBrNFe1.WebServices.Inutilizacao.RetornoWS;
+    //LoadXML(MemoResp, WBResposta);
+
+    //pgRespostas.ActivePageIndex := 1;
+
+    MemoDados.Lines.Add('');
+    MemoDados.Lines.Add('Inutilização');
+    MemoDados.Lines.Add('tpAmb: '    +TpAmbToStr(ACBrNFe1.WebServices.Inutilizacao.tpAmb));
+    MemoDados.Lines.Add('verAplic: ' +ACBrNFe1.WebServices.Inutilizacao.verAplic);
+    MemoDados.Lines.Add('cStat: '    +IntToStr(ACBrNFe1.WebServices.Inutilizacao.cStat));
+    MemoDados.Lines.Add('xMotivo: '  +ACBrNFe1.WebServices.Inutilizacao.xMotivo);
+    MemoDados.Lines.Add('cUF: '      +IntToStr(ACBrNFe1.WebServices.Inutilizacao.cUF));
+    MemoDados.Lines.Add('Ano: '      +IntToStr(ACBrNFe1.WebServices.Inutilizacao.Ano));
+    MemoDados.Lines.Add('CNPJ: '      +ACBrNFe1.WebServices.Inutilizacao.CNPJ);
+    MemoDados.Lines.Add('Modelo: '      +IntToStr(ACBrNFe1.WebServices.Inutilizacao.Modelo));
+    MemoDados.Lines.Add('Serie: '      +IntToStr(ACBrNFe1.WebServices.Inutilizacao.Serie));
+    MemoDados.Lines.Add('NumeroInicial: '      +IntToStr(ACBrNFe1.WebServices.Inutilizacao.NumeroInicial));
+    MemoDados.Lines.Add('NumeroInicial: '      +IntToStr(ACBrNFe1.WebServices.Inutilizacao.NumeroFinal));
+    MemoDados.Lines.Add('dhRecbto: ' +DateTimeToStr(ACBrNFe1.WebServices.Inutilizacao.dhRecbto));
+    MemoDados.Lines.Add('Protocolo: '      +ACBrNFe1.WebServices.Inutilizacao.Protocolo);
+  end;
 end;
 
 procedure TfNfce.btnNFce4Click(Sender: TObject);
@@ -1982,6 +2112,168 @@ end;
 procedure TfNfce.btnNFce5Click(Sender: TObject);
 begin
   Panel1.Visible := False;
+end;
+
+procedure TfNfce.btnNFce6Click(Sender: TObject);
+begin
+  edCancelamentoMotivo.Text := '';
+  pnCancelamento.Visible := True;
+end;
+
+procedure TfNfce.btnNFce7Click(Sender: TObject);
+var
+ vAux, vNumLote, vSincrono : String;
+ Sincrono : boolean;
+ Protocolo, Recibo: String;
+ str: String;
+ ambiente: String;
+ ver_var: String;
+begin
+  memoLog.Lines.Add('Gerando NFCe');
+  ACBrNFe1.NotasFiscais.Clear;
+  carregaAcbr;
+  ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.tpEmis:=teOffLine;
+  ACBrNFe1.Configuracoes.Geral.FormaEmissao:=teOffLine;
+  ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.dhCont:=Now;
+  ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.xJust:='Emissao em contigencia , falha conexao.';
+
+    if (notaEmitida = 'S') then
+    begin
+      ShowMessage('Nota Fiscal já emitida.');
+      Exit;
+    end;
+    memoLog.Lines.Add('Carregando certificado(se parar deve estar pedindo permissao)');
+
+    memoLog.Lines.Add('Certificado carregado');
+    if (dmPdv.tk = '') then
+    begin
+      ShowMessage('Cadastre: '+#13+#10+''+#13+#10+'Natureza Operação : 30 ' +
+        'para Nota Fiscal Consumidor;'+#13+#10+''+#13+#10+'Série :' +
+        'para ser usada na NFCe;'+#13+#10+''+#13+#10+'Parametro: ' +
+        'SERIENFCe com a série criada no campo D1.');
+      exit;
+    end;
+
+    if (validaCpfCnpj() = False) then
+      exit;
+
+    if (edCertificado.Text = '') then
+    begin
+      MessageDlg('Informe o certificado.',mtError,[mbok],0);
+      exit;
+    end;
+
+    vAux := edNFCe.Text;
+    memoLog.Lines.Add('NFCe-' + edNFce.Text);
+
+    vSincrono := '1';
+    Sincrono := True;
+    vNumLote := '1';
+
+    if Trim(vNumLote) = '' then
+    begin
+      MessageDlg('Número do Lote inválido.',mtError,[mbok],0);
+      exit;
+    end;
+
+    if (Trim(vSincrono) <> '1') and
+       (Trim(vSincrono) <> '0') then
+    begin
+       MessageDlg('Valor Inválido.',mtError,[mbok],0);
+       exit;
+    end;
+    Sincrono := False;
+
+    // carlos 23/12/14
+    ACBrNFe1.Configuracoes.Geral.ModeloDF := moNFCe;
+    ACBrNFe1.Configuracoes.Geral.VersaoDF := ve400;
+
+    ACBrNFe1.Configuracoes.Geral.IdCSC := dmPdv.id_tk;
+    ACBrNFe1.Configuracoes.Geral.CSC := dmPdv.tk;
+    ACBrNFe1.Configuracoes.WebServices.TimeOut := 35000;
+
+    ACBrNFe1.DANFE := ACBrNFeDANFeESCPOS1;
+
+    AcbrNfe1.Configuracoes.Arquivos.PathSalvar := dmpdv.path_xml + '\NFce\';
+    AcbrNfe1.Configuracoes.Arquivos.PathEvento := dmpdv.path_xml + '\Eventos\';
+    memoLog.Lines.Add('Gerando XML');
+    GerarNFCe(vAux);
+    memoLog.Lines.Add('Assinando XML');
+    ACBrNFe1.NotasFiscais.Assinar;
+
+    // Gravando a nota aqui pois se der erro no validar ja gravei
+    GravarDadosNF('', '');
+    // estou pegando o ultimo numero usado em venda pra nao pular
+    memoLog.Lines.Add('Gravando XML');
+    //ACBrNFe1.NotasFiscais.Items[0].GravarXML();
+    ACBrNFe1.NotasFiscais.GravarXML();
+    memoLog.Lines.Add('Validando');
+    ACBrNFe1.NotasFiscais.Validar;
+    //LoadXML(ACBrNFe1.NotasFiscais.Items[0].XML,  mRecebido);
+
+    // TODO
+    if (dmPdv.NFE_Teste = 'N') then
+    begin
+      memoLog.Lines.Add('Enviando ...');
+      Try
+        ACBrNFe1.Enviar(vNumLote,True,Sincrono);
+      Except
+        ver_var := IntToStr(ACBrNFe1.WebServices.Retorno.cStat);
+        ShowMessage('Erro para Enviar a NFCe, erro : ' + ver_var);
+        exit;
+      end;
+      memoLog.Lines.Add('cStat : ' + IntToStr(ACBrNFe1.WebServices.Retorno.cStat));
+      if (ACBrNFe1.WebServices.Retorno.cStat = 100) then
+      begin
+        Protocolo := 'CONT-' +  ACBrNFe1.WebServices.Retorno.Protocolo;
+        Recibo := ACBrNFe1.WebServices.Retorno.Recibo;
+        GravarDadosNF(protocolo, recibo);
+      end;
+    end;
+
+    MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetWS);
+    MemoDados.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetornoWS);
+
+    memoLog.Lines.Add('');
+    memoLog.Lines.Add('Envio NFe');
+    memoLog.Lines.Add('tpAmb: '+ TpAmbToStr(ACBrNFe1.WebServices.Retorno.TpAmb));
+    memoLog.Lines.Add('verAplic: '+ ACBrNFe1.WebServices.Retorno.verAplic);
+    memoLog.Lines.Add('cStat: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cStat));
+    memoLog.Lines.Add('cUF: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cUF));
+    memoLog.Lines.Add('xMotivo: '+ ACBrNFe1.WebServices.Retorno.xMotivo);
+    memoLog.Lines.Add('cMsg: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cMsg));
+    memoLog.Lines.Add('xMsg: '+ ACBrNFe1.WebServices.Retorno.xMsg);
+    memoLog.Lines.Add('Recibo: '+ ACBrNFe1.WebServices.Retorno.Recibo);
+    memoLog.Lines.Add('Protocolo: '+ ACBrNFe1.WebServices.Retorno.Protocolo);
+
+    ShowMessage('Nº do Protocolo de envio ' + ACBrNFe1.WebServices.Retorno.Protocolo);
+    ShowMessage('Nº do Recibo de envio ' + ACBrNFe1.WebServices.Retorno.Recibo);
+
+    //LoadXML(ACBrNFe1.NotasFiscais.Items[0].XML,  mRecebido);
+    //ACBrNFe1.NotasFiscais.Imprimir;
+    memoLog.Lines.Add('Enviado gravando retorno');
+    memoLog.Lines.Add('');
+    memoLog.Lines.Add('Nota Fiscal Consumidor, gerada com sucesso.');
+    memoLog.Lines.Add('');
+    //Application.ProcessMessages;
+    ACBrNFe1.NotasFiscais.Clear;
+    Close;
+end;
+
+procedure TfNfce.btnNFce8Click(Sender: TObject);
+var idLote,vAux : String;
+begin
+  OpenDialog1.Title := 'Selecione a NFE';
+  OpenDialog1.DefaultExt := '*-nfe.XML';
+  OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
+  if OpenDialog1.Execute then
+  begin
+    ACBrNFe1.NotasFiscais.Clear;
+    carregaAcbr;
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+    ACBrNFe1.NotasFiscais.GerarNFe;
+  end;
 end;
 
 procedure TfNfce.ACBrNFe1AntesDeAssinar(var ConteudoXML: String;

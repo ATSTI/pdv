@@ -21,6 +21,21 @@ type
     BitBtn10: TBitBtn;
     BitBtn11: TBitBtn;
     BitBtn12: TBitBtn;
+    btnConsCad: TButton;
+    btnConsultar: TButton;
+    btnConsultarChave: TButton;
+    btnConsultarRecibo: TButton;
+    btnEnviarEmail: TBitBtn;
+    btnGerar: TBitBtn;
+    btnGerarPDF: TBitBtn;
+    btnGerarPDFEvento: TBitBtn;
+    btnGerarPDFInut: TBitBtn;
+    btnImprimir: TButton;
+    btnImprimirEvento: TBitBtn;
+    btnImprimirInut: TBitBtn;
+    btnInutilizar: TBitBtn;
+    btnCancelarCte: TBitBtn;
+    btnCorrigirSerie: TBitBtn;
     btnProximo: TBitBtn;
     BitBtn15: TBitBtn;
     BitBtn3: TBitBtn;
@@ -30,35 +45,21 @@ type
     BitBtn7: TBitBtn;
     BitBtn9: TBitBtn;
     btnAtualizarBD: TButton;
-    btnCancelarCte: TBitBtn;
     btnCC: TButton;
-    btnConsCad: TButton;
-    btnConsultar: TButton;
-    btnConsultarChave: TButton;
-    btnConsultarRecibo: TButton;
-    btnCorrigirSerie: TBitBtn;
     btnDuplicar: TBitBtn;
     btnEditarComp: TBitBtn;
     btnEditarCte: TBitBtn;
     btnEditarNFe: TBitBtn;
     btnEnvEPEC: TBitBtn;
-    btnEnviarEmail: TBitBtn;
     btnEnviarEventoEmail: TBitBtn;
     btnExcluirComp: TBitBtn;
     btnExcluirNFe: TBitBtn;
-    btnGerar: TBitBtn;
     btnGerarCte1: TBitBtn;
     BitBtn2: TBitBtn;
-    btnGerarPDF: TBitBtn;
-    btnGerarPDFEvento: TBitBtn;
-    btnGerarPDFInut: TBitBtn;
     btnGravarCTe: TBitBtn;
     btnCancelarEdicaoCTe: TBitBtn;
     btnImportarXML: TBitBtn;
     btnImportarXML1: TButton;
-    btnImprimir: TButton;
-    btnImprimirEvento: TBitBtn;
-    btnImprimirInut: TBitBtn;
     btnIncCte: TBitBtn;
     btnIncluirNFe: TBitBtn;
     btnInfCargaEdita: TBitBtn;
@@ -67,7 +68,6 @@ type
     btnInfCargaExclui1: TBitBtn;
     btnInfCargaInclui: TBitBtn;
     btnInfCargaInclui1: TBitBtn;
-    btnInutilizar: TButton;
     btnListarCte: TBitBtn;
     btnProximo1: TBitBtn;
     btnProximo10: TBitBtn;
@@ -108,17 +108,24 @@ type
     dataRodPrev: TDateTimePicker;
     DateTimePicker1: TDateTimePicker;
     DateTimePicker2: TDateTimePicker;
+    edCteCancelar: TLabeledEdit;
+    edInutNumeroIni: TEdit;
+    edInutNumeroFim: TEdit;
+    edInutAno: TEdit;
+    edInutModelo: TEdit;
+    edInutSerie: TEdit;
+    edInutJustificativa: TEdit;
+    edModeloAtualiza: TEdit;
     edSerieAtualiza: TEdit;
     edtCaminho: TEdit;
     edtEmailAssunto: TEdit;
     edtLogoMarca: TEdit;
+    edtPathLogs: TEdit;
     edtSenha: TEdit;
     edtSmtpHost: TEdit;
     edtSmtpPass: TEdit;
     edtSmtpPort: TEdit;
     edtSmtpUser: TEdit;
-    edUltimoAtualiza: TEdit;
-    edModeloAtualiza: TEdit;
     DBGrid1: TDBGrid;
     DBGrid2: TDBGrid;
     DBGrid3: TDBGrid;
@@ -138,7 +145,6 @@ type
     dbValVCred: TDBEdit;
     dbValVICMS: TDBEdit;
     dgGridCTE: TDBGrid;
-    edCteCancelar: TLabeledEdit;
     edtAntCHCTE: TEdit;
     edtAntCNPJ: TEdit;
     edtAntIE: TEdit;
@@ -225,7 +231,6 @@ type
     edtOutCat: TEdit;
     edtOutrosDesc: TEdit;
     edtOutrosNum: TEdit;
-    edtPathLogs: TEdit;
     edtProPred: TEdit;
     edtRazaoTomador: TEdit;
     edtRecBairro: TEdit;
@@ -275,9 +280,17 @@ type
     edtXMLNumero: TEdit;
     edtXMLRazao: TEdit;
     edtXMLUF: TEdit;
+    edUltimoAtualiza: TEdit;
     GroupBox1: TGroupBox;
     GroupBox10: TGroupBox;
     GroupBox11: TGroupBox;
+    GroupBox12: TGroupBox;
+    GroupBox13: TGroupBox;
+    GroupBox14: TGroupBox;
+    GroupBox15: TGroupBox;
+    GroupBox16: TGroupBox;
+    GroupBox17: TGroupBox;
+    GroupBox18: TGroupBox;
     GroupBox2: TGroupBox;
     GroupBox3: TGroupBox;
     GroupBox4: TGroupBox;
@@ -347,7 +360,14 @@ type
     Label144: TLabel;
     Label145: TLabel;
     Label146: TLabel;
+    Label147: TLabel;
+    Label148: TLabel;
+    Label149: TLabel;
     Label15: TLabel;
+    Label150: TLabel;
+    Label151: TLabel;
+    Label152: TLabel;
+    Label153: TLabel;
     Label16: TLabel;
     Label17: TLabel;
     Label19: TLabel;
@@ -553,6 +573,7 @@ type
     procedure BitBtn10Click(Sender: TObject);
     procedure BitBtn11Click(Sender: TObject);
     procedure BitBtn12Click(Sender: TObject);
+    procedure btnImportarXML1Click(Sender: TObject);
     procedure btnProximo10Click(Sender: TObject);
     procedure btnProximo1Click(Sender: TObject);
     procedure btnProximo2Click(Sender: TObject);
@@ -617,6 +638,7 @@ type
     procedure btnVeicExcluirClick(Sender: TObject);
     procedure btnVeicIncluirClick(Sender: TObject);
     procedure Button11Click(Sender: TObject);
+    procedure Button30Click(Sender: TObject);
     procedure cbCryptLibChange(Sender: TObject);
     procedure cbHttpLibChange(Sender: TObject);
     procedure cbSSLLibChange(Sender: TObject);
@@ -640,6 +662,7 @@ type
     procedure FormKeyPress(Sender: TObject; var Key: char);
     procedure FormShow(Sender: TObject);
     procedure Label120Click(Sender: TObject);
+    procedure Label138Click(Sender: TObject);
     procedure Label60Click(Sender: TObject);
     procedure mmEmailMsgChange(Sender: TObject);
     procedure PageControl2Exit(Sender: TObject);
@@ -672,6 +695,7 @@ type
     procedure TabDestinatarioShow(Sender: TObject);
     procedure TabTomadorShow(Sender: TObject);
   private
+    vModeloCTe : integer;
     ver_cod_cte: Integer;
     vCteStr: String;
     modoGravacao : string;
@@ -867,11 +891,14 @@ begin
     Ini.WriteInteger( 'Geral','DACTE'       ,rgTipoDACTe.ItemIndex);
     Ini.WriteInteger( 'Geral','FormaEmissao',rgFormaEmissao.ItemIndex);
     Ini.WriteInteger( 'Geral','TipoServico',rgTipoServico.ItemIndex);
+    Ini.WriteInteger( 'Geral','TipoCTe',rgTiposCte.ItemIndex);
+    if (edtModelo.Text <> '') then
+      Ini.WriteInteger( 'Geral','ModeloCTe', StrToInt(Trim(edtModelo.Text)));
     Ini.WriteString( 'Geral','LogoMarca'   ,edtLogoMarca.Text);
     Ini.WriteBool(   'Geral','Salvar'      ,ckSalvar.Checked);
     Ini.WriteString( 'Geral','PathSalvar'  ,edtPathLogs.Text);
 
-    Ini.WriteString( 'WebService','UF'        ,cbUF.Text);
+    Ini.WriteString( 'WebService','UF'        ,Trim(cbUF.Text));
     Ini.WriteInteger( 'WebService','Ambiente'  ,rgTipoAmb.ItemIndex);
     Ini.WriteBool(   'WebService','Visualizar',ckVisualizar.Checked);
 
@@ -1033,6 +1060,7 @@ begin
   //ACBrCTe1.Configuracoes.WebServices.ProxyPass := edtProxySenha.Text;
 
   rgTipoDACTe.ItemIndex   := Ini.ReadInteger('Geral','DACTE'       ,0);
+  rgTiposCte.ItemIndex    := Ini.ReadInteger('Geral','TipoCTe'     ,0);
   rgTipoServico.ItemIndex := Ini.ReadInteger('Geral','TipoServico' ,0);
   edtLogoMarca.Text       := Ini.ReadString ('Geral','LogoMarca'   ,'');
 
@@ -1065,6 +1093,7 @@ begin
   edtEmailAssunto.Text  := Ini.ReadString( 'Email','Assunto','');
   cbEmailSSL.Checked    := Ini.ReadBool(   'Email','SSL'    ,False);
 
+  vModeloCte := Ini.ReadInteger('Geral','ModeloCTe' ,57);
   {StreamMemo := TMemoryStream.Create;
   Ini.ReadBinaryStream( 'Email','Mensagem',StreamMemo);
   mmEmailMsg.Lines.LoadFromStream(StreamMemo);
@@ -1171,16 +1200,16 @@ begin
    end;
 
 
-   Ide.modelo:= 57 ;
+   Ide.modelo:= StrToInt(edtModelo.Text);
    Ide.serie:= StrToInt(edtSerieCte.Text) ;// Criar ou ver da onde Vira DM_CNT.Conhec2Serie.AsInteger;
    Ide.nCT:= StrToInt(edtNumCte.Text);
    Ide.dhEmi:= dataGerarCte.DateTime;  // StringToDateTime(dataGerarCte.Text); //  Now;
-   Ide.tpImp:= tiRetrato;
+   if (rgTipoDACTe.ItemIndex = 0) then
+     Ide.tpImp:=  tiRetrato
+   else
+     Ide.tpImp:=  tiPaisagem;
 
-               // envio do CT-e       Inicio da Prestação
-
-
-
+   // envio do CT-e       Inicio da Prestação
 
    // TpcnTipoEmissao = (teNormal, teContingencia, teSCAN, teDPEC, teFSDA);
    case rgFormaEmissao.ItemIndex of
@@ -1198,7 +1227,7 @@ begin
    end;
 
    // TpcteTipoCTe = (tcNormal, tcComplemento, tcAnulacao, tcSubstituto);
-   case rgTipoDACTe.ItemIndex of
+   case rgTiposCte.ItemIndex of
      0: Ide.tpCTe:=tcNormal;
      1: Ide.tpCTe:=tcComplemento;
      2: Ide.tpCTe:=tcAnulacao;
@@ -4178,6 +4207,11 @@ begin
   edtDestBuscaExit(Nil);
 end;
 
+procedure TfCTePrincipal.btnImportarXML1Click(Sender: TObject);
+begin
+
+end;
+
 procedure TfCTePrincipal.btnProximo10Click(Sender: TObject);
 begin
   pcPrincipal.ActivePageIndex := 1;
@@ -4867,7 +4901,7 @@ begin
     if fCTePrincipal.Components[i] is TEdit then
       TEdit(fCTePrincipal.Components[i]).Clear;
   end;
-  edtModelo.Text := '57';
+  edtModelo.Text := IntToStr(vModeloCte);
 
   buscaEmpresa(comboEmpresa.Text);
 
@@ -4974,18 +5008,22 @@ procedure TfCTePrincipal.btnInutilizarClick(Sender: TObject);
 var
  Modelo, Serie, Ano, NumeroInicial, NumeroFinal, Justificativa : String;
 begin
-  if not(InputQuery('WebServices Inutilização ', 'Ano',    Ano))
-  then exit;
-  if not(InputQuery('WebServices Inutilização ', 'Modelo', Modelo))
-  then exit;
-  if not(InputQuery('WebServices Inutilização ', 'Serie',  Serie))
-  then exit;
-  if not(InputQuery('WebServices Inutilização ', 'Número Inicial', NumeroInicial))
-  then exit;
-  if not(InputQuery('WebServices Inutilização ', 'Número Inicial', NumeroFinal))
-  then exit;
-  if not(InputQuery('WebServices Inutilização ', 'Justificativa', Justificativa))
-  then exit;
+  if (edInutAno.Text = '') then
+  begin
+    ShowMessage('Informe o ano para inutilizar.');
+    Exit;
+  end;
+  ano := edInutAno.Text;
+  Modelo := edInutModelo.Text;
+  Serie := edInutSerie.Text;
+  NumeroInicial := edInutNumeroIni.Text;
+  NumeroFinal := edInutNumeroFim.Text;
+  if (edInutJustificativa.Text = '') then
+  begin
+    ShowMessage('Justifique o motivo da Inutilização.');
+    Exit;
+  end;
+  Justificativa := edInutJustificativa.Text;
   ACBrCTe1.WebServices.Inutiliza(edtEmitCNPJ.Text, Justificativa, StrToInt(Ano),
                                 StrToInt(Modelo), StrToInt(Serie),
                                 StrToInt(NumeroInicial), StrToInt(NumeroFinal));
@@ -5120,6 +5158,11 @@ begin
 end;
 
 procedure TfCTePrincipal.Button11Click(Sender: TObject);
+begin
+
+end;
+
+procedure TfCTePrincipal.Button30Click(Sender: TObject);
 begin
 
 end;
@@ -5261,6 +5304,18 @@ begin
 
   LerConfiguracao;
 
+  edInutModelo.Text := IntToStr(vModeloCTe);
+  dmPdv.busca_sql('SELECT SERIE_CTE ,ULTIMO_NUMERO FROM SERIES ' +
+    ' WHERE MODELO = ' + QuotedStr('CT') +
+    '   AND CODSERIE = ' + QuotedStr(edtCodEmitente.Text));
+  if (dmPdv.sqBusca.FieldByName('ULTIMO_NUMERO').asInteger > 0) then
+  begin
+    edtSerieCte.Text := dmPdv.sqBusca.FieldByName('SERIE_CTE').AsString;
+    edInutSerie.Text := dmPdv.sqBusca.FieldByName('SERIE_CTE').AsString;
+    edSerieAtualiza.Text := dmPdv.sqBusca.FieldByName('SERIE_CTE').AsString;
+    edUltimoAtualiza.Text := IntToStr(dmPdv.sqBusca.FieldByName('ULTIMO_NUMERO').AsInteger);
+  end;
+
   dmPdv.sqParametro.Open;
   While not  dmPdv.sqParametro.EOF do
   begin
@@ -5304,6 +5359,11 @@ begin
 end;
 
 procedure TfCTePrincipal.Label120Click(Sender: TObject);
+begin
+
+end;
+
+procedure TfCTePrincipal.Label138Click(Sender: TObject);
 begin
 
 end;

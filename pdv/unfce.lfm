@@ -10,7 +10,7 @@ object fNfce: TfNfce
   OnDestroy = FormDestroy
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '2.0.0.4'
+  LCLVersion = '2.0.4.0'
   object edCPF: TMaskEdit
     Left = 120
     Height = 34
@@ -132,7 +132,7 @@ object fNfce: TfNfce
     ParentColor = False
   end
   object PageControl2: TPageControl
-    Left = 9
+    Left = 8
     Height = 408
     Top = 72
     Width = 646
@@ -3275,6 +3275,33 @@ object fNfce: TfNfce
           ParentColor = False
         end
       end
+      object btnNFce6: TBitBtn
+        Left = 164
+        Height = 44
+        Top = 56
+        Width = 151
+        Caption = 'Cancelar NFCe'
+        OnClick = btnNFce6Click
+        TabOrder = 7
+      end
+      object btnNFce7: TBitBtn
+        Left = 320
+        Height = 44
+        Top = 56
+        Width = 151
+        Caption = 'NFCe Contigência'
+        OnClick = btnNFce7Click
+        TabOrder = 8
+      end
+      object btnNFce8: TBitBtn
+        Left = 472
+        Height = 44
+        Top = 56
+        Width = 151
+        Caption = 'Enviar Contigência'
+        OnClick = btnNFce8Click
+        TabOrder = 9
+      end
     end
   end
   object RadioGroup2: TRadioGroup
@@ -3326,6 +3353,48 @@ object fNfce: TfNfce
         Width = 50
       end>
     SimplePanel = False
+  end
+  object pnCancelamento: TPanel
+    Left = 144
+    Height = 173
+    Top = 248
+    Width = 343
+    ClientHeight = 173
+    ClientWidth = 343
+    TabOrder = 9
+    Visible = False
+    object Label10: TLabel
+      Left = 45
+      Height = 15
+      Top = 17
+      Width = 124
+      Caption = 'Motivo Cancelamento :'
+      ParentColor = False
+    end
+    object edCancelamentoMotivo: TEdit
+      Left = 27
+      Height = 23
+      Top = 50
+      Width = 229
+      TabOrder = 0
+    end
+    object BitBtn6: TBitBtn
+      Left = 136
+      Height = 30
+      Top = 99
+      Width = 120
+      Caption = 'Enviar Cancelamento'
+      OnClick = BitBtn6Click
+      TabOrder = 1
+    end
+    object lblCancelamento: TLabel
+      Left = 9
+      Height = 15
+      Top = 139
+      Width = 6
+      Caption = '..'
+      ParentColor = False
+    end
   end
   object ACBrValidador1: TACBrValidador
     TipoDocto = docGTIN
@@ -3442,9 +3511,13 @@ object fNfce: TfNfce
     Configuracoes.Arquivos.SepararPorMes = True
     Configuracoes.Arquivos.SalvarEvento = True
     Configuracoes.Arquivos.SalvarApenasNFeProcessadas = True
+    Configuracoes.WebServices.Visualizar = True
     Configuracoes.WebServices.UF = 'SP'
     Configuracoes.WebServices.AguardarConsultaRet = 0
+    Configuracoes.WebServices.Salvar = True
     Configuracoes.WebServices.QuebradeLinha = '|'
+    Configuracoes.WebServices.TimeZoneConf.ModoDeteccao = tzManual
+    Configuracoes.WebServices.TimeZoneConf.TimeZoneStr = '-03:00'
     DANFE = ACBrNFeDANFeESCPOS1
     left = 49
     top = 144
