@@ -33,6 +33,7 @@ type
     BitBtn4: TBitBtn;
     BitBtn5: TBitBtn;
     BitBtn6: TBitBtn;
+    BitBtn7: TBitBtn;
     btnFechar: TBitBtn;
     btnNFce: TBitBtn;
     btnNFce1: TBitBtn;
@@ -63,6 +64,7 @@ type
     edNFce: TLabeledEdit;
     Label1: TLabel;
     Label10: TLabel;
+    lblCancelamento2: TLabel;
     lblCancelamento: TLabel;
     Label2: TLabel;
     Label3: TLabel;
@@ -107,6 +109,7 @@ type
     procedure BitBtn4Click(Sender: TObject);
     procedure BitBtn5Click(Sender: TObject);
     procedure BitBtn6Click(Sender: TObject);
+    procedure BitBtn7Click(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure btnNFce1Click(Sender: TObject);
     procedure btnNFce2Click(Sender: TObject);
@@ -1909,15 +1912,26 @@ begin
     ACBrNFe1.EventoNFe.idLote := StrToInt(idLote) ;
     with ACBrNFe1.EventoNFe.Evento.Add do
     begin
+      infEvento.tpAmb := acbrnfe1.NotasFiscais.Items[0].NFe.Ide.tpAmb;
+      infEvento.CNPJ := acbrnfe1.NotasFiscais.Items[0].NFe.Emit.CNPJCPF;
+      infEvento.cOrgao := acbrnfe1.NotasFiscais.Items[0].NFe.Ide.cUF;
       infEvento.dhEvento := now;
       infEvento.tpEvento := teCancelamento;
+      infEvento.nSeqEvento := 1;
       infEvento.detEvento.xJust := edCancelamentoMotivo.Text;
       infEvento.chNFe := acbrnfe1.NotasFiscais.Items[0].NFe.procNFe.chNFe;
       infEvento.detEvento.nProt := acbrnfe1.NotasFiscais.Items[0].NFe.procNFe.nProt;
+      InfEvento.versaoEvento:='1.0';
     end;
-    //lblCancelamento.Caption := 'Gerando xml';
-    ACBrNFe1.EventoNFe.GerarXML;
-    //lblCancelamento.Caption := 'Enviando Evento, lote : ' + idLote;
+    lblCancelamento.Caption := 'Gerando xml ' + DateTimeToStr(now);
+    Try
+      ACBrNFe1.EventoNFe.GerarXML;
+      ACBrNFe1.EventoNFe.Gerador.SalvarArquivo('C:\home\evento.xml');
+    Except
+      ShowMessage('Erro para Gravar o XML : ' +
+        AcbrNfe1.Configuracoes.Arquivos.PathSalvar);
+    end;
+    lblCancelamento2.Caption := 'Enviando Evento, lote : ' + idLote;
     if (ACBrNFe1.EnviarEvento(StrToInt(idLote))) then
     begin
       with ACBrNFe1.WebServices.EnvEvento do
@@ -1951,6 +1965,11 @@ begin
     ShowMessage(IntToStr(ACBrNFe1.WebServices.EnvEvento.cStat));
     ShowMessage(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.nProt);
   end;
+  pnCancelamento.Visible:=False;
+end;
+
+procedure TfNfce.BitBtn7Click(Sender: TObject);
+begin
   pnCancelamento.Visible:=False;
 end;
 

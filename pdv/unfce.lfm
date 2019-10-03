@@ -3379,9 +3379,9 @@ object fNfce: TfNfce
       TabOrder = 0
     end
     object BitBtn6: TBitBtn
-      Left = 136
+      Left = 64
       Height = 30
-      Top = 99
+      Top = 102
       Width = 120
       Caption = 'Enviar Cancelamento'
       OnClick = BitBtn6Click
@@ -3393,6 +3393,23 @@ object fNfce: TfNfce
       Top = 139
       Width = 6
       Caption = '..'
+      ParentColor = False
+    end
+    object BitBtn7: TBitBtn
+      Left = 184
+      Height = 30
+      Top = 102
+      Width = 75
+      Caption = 'Fechar'
+      OnClick = BitBtn7Click
+      TabOrder = 2
+    end
+    object lblCancelamento2: TLabel
+      Left = 6
+      Height = 15
+      Top = 156
+      Width = 9
+      Caption = '...'
       ParentColor = False
     end
   end

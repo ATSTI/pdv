@@ -7,8 +7,9 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
   StdCtrls, Menus, Buttons, DBGrids, EditBtn, Spin, DBCtrls, DateTimePicker,
-  Types, IniFiles, ACBrCTe, ACBrCTeDACTEClass, ACBrMail, ACBrBase, ACBrDFe,
-  ACBrNFe, pcnConversao, pcteConversaoCTe, DateUtils, ACBrUtil, db, ACBrDFeSSL;
+  Types, IniFiles, ACBrCTe, ACBrCTeDACTEClass, ACBrCTeDACTeRLClass, ACBrMail,
+  ACBrBase, ACBrDFe, ACBrNFe, pcnConversao, pcteConversaoCTe, DateUtils,
+  ACBrUtil, db, ACBrDFeSSL;
 
 type
 
@@ -16,6 +17,8 @@ type
 
   TfCTePrincipal = class(TForm)
     ACBrCTe1: TACBrCTe;
+    ACBrCTe2: TACBrCTe;
+    ACBrCTeDACTeRL1: TACBrCTeDACTeRL;
     ACBrNFe1: TACBrNFe;
     BitBtn1: TBitBtn;
     BitBtn10: TBitBtn;
@@ -510,6 +513,7 @@ type
     rgTipoServico: TRadioGroup;
     rgTomador: TRadioGroup;
     sbtnCaminhoCert: TSpeedButton;
+    sbtnLerXmlCte: TSpeedButton;
     sbtnLogoMarca: TSpeedButton;
     sbtnGetCert: TSpeedButton;
     sbtnPathSalvar: TSpeedButton;
@@ -673,6 +677,7 @@ type
     procedure rgRemClick(Sender: TObject);
     procedure rgTomadorClick(Sender: TObject);
     procedure sbtnGetCertClick(Sender: TObject);
+    procedure sbtnLerXmlCteClick(Sender: TObject);
     procedure sbtnLogoMarcaClick(Sender: TObject);
     procedure sbtnPathSalvarClick(Sender: TObject);
     procedure StaticText13Click(Sender: TObject);
@@ -958,12 +963,12 @@ begin
     edtEmitNumero.Text   := dmPdv.sqEmpresaNUMERO.AsString;
     edtEmitComp.Text     := dmPdv.sqEmpresaLOGRADOURO.AsString;
     edtEmitBairro.Text   := dmPdv.sqEmpresaBAIRRO.AsString;
-    edtEmitCodCidade.Text:= LimparString(dmPdv.sqEmpresaCD_IBGE.AsString,'-');
+    edtEmitCodCidade.Text:= dmPdv.sqEmpresaCD_IBGE.AsString;
     edtEmitCidade.Text   := dmPdv.sqEmpresaCIDADE.AsString;
     edtEmitUF.Text       := dmPdv.sqEmpresaUF.AsString;
 
     edtEnvUF.Text := dmPdv.sqEmpresaUF.AsString;
-    edtEnvCodCidade.Text := LimparString(dmPdv.sqEmpresaCD_IBGE.AsString,'-');
+    edtEnvCodCidade.Text := dmPdv.sqEmpresaCD_IBGE.AsString;
     edtEnvCidade.Text := dmPdv.sqEmpresaCIDADE.AsString;
 
     edtSmtpHost.Text     := dmPdv.sqEmpresaSMTP.AsString;
@@ -991,7 +996,6 @@ begin
   {$IFDEF ACBrCTeOpenSSL}
    edtCaminho.Text  := Ini.ReadString( 'Certificado','Caminho' ,'');
    edtSenha.Text    := Ini.ReadString( 'Certificado','Senha'   ,'');
-
    ACBrCTe1.Configuracoes.Certificados.Certificado  := edtCaminho.Text;
    ACBrCTe1.Configuracoes.Certificados.Senha        := edtSenha.Text;
    edtNumSerie.Visible := False;
@@ -1000,6 +1004,8 @@ begin
   {$ELSE}
    edtNumSerie.Text := Ini.ReadString( 'Certificado','NumSerie','');
    ACBrCTe1.Configuracoes.Certificados.NumeroSerie := edtNumSerie.Text;
+   ACBrCte1.DACTE := ACBrCTeDACTeRL1;
+   ACBrCTeDACTeRL1.ACBrCTE := ACBrCTe1;
    //edtNumSerie.Text := ACBrCTe1.Configuracoes.Certificados.NumeroSerie;
    {Label1.Caption := 'Informe o número de série do certificado'#13+
                      'Disponível no Internet Explorer no menu'#13+
@@ -1070,6 +1076,7 @@ begin
     ACBrCTe1.DACTe.Logo         := edtLogoMarca.Text;
     ACBrCTe1.DACTe.PathPDF      := edtPathLogs.Text;
     ACBrCTe1.DACTe.TamanhoPapel := tpA4_2vias;
+    ACBrCTe1.DACTE.NomeDocumento:= edtNumCte.Text;
    end;
 
   edtEmitCNPJ.Text       := Ini.ReadString( 'Emitente','CNPJ'       ,'');
@@ -1267,17 +1274,17 @@ begin
                                // incluir na aba Dados
 
     // Emissão
-    Ide.cMunEnv := StrToInt(edtEnvCodCidade.Text);
+    Ide.cMunEnv := StrToInt(LimparString(edtEnvCodCidade.Text, '-'));
     Ide.xMunEnv := edtEnvCidade.Text;
     Ide.UFEnv := edtEnvUF.Text;
 
     // Inicio da Prestação
-    Ide.cMunIni:= StrToInt(edtIniCodCidade.Text); // DM_CNT.Conhec2CodCidadeColeta.AsInteger;
+    Ide.cMunIni:= StrToInt(LimparString(edtIniCodCidade.Text,'-')); // DM_CNT.Conhec2CodCidadeColeta.AsInteger;
     Ide.xMunIni:= edtIniCidade.Text; //DM_CNT.Conhec2NomeCidadeColeta.AsString;
     Ide.UFIni:= edtIniUF.Text; // DM_CNT.Conhec2EstadoColeta.AsString;
 
     // Termino da Prestação
-    Ide.cMunFim:= StrToInt(edtFimCodCidade.Text); // DM_CNT.Conhec2CodCidadeEntrega.AsInteger;
+    Ide.cMunFim:= StrToInt(LimparString(edtFimCodCidade.Text, '-')); // DM_CNT.Conhec2CodCidadeEntrega.AsInteger;
     Ide.xMunFim:= edtFimCidade.Text; // DM_CNT.Conhec2NomeCidadeEntrega.AsString;
     Ide.UFFim:= edtFimUF.Text; //DM_CNT.Conhec2EstadoEntrega.AsString;
 
@@ -2812,6 +2819,7 @@ function TfCTePrincipal.LimparString(ATExto, ACaracteres: string): string;
    I                 : integer;
  begin
    strAux := '';
+   ACaracteres := '-';
    for I := 1 to Length(ATexto) do
      if Pos(Copy(ATexto, I, 1), ACaracteres) <= 0 then
        strAux := strAux + Copy(ATexto, I, 1);
@@ -3053,7 +3061,7 @@ begin
       ShowMessage('Código do Cliente não existe.');
       Exit;
     end;
-    edtTomadorCodCidade.Text := LimparString(dmPdv.sqBusca.FieldByName('CD_IBGE').AsString,'-');
+    edtTomadorCodCidade.Text := dmPdv.sqBusca.FieldByName('CD_IBGE').AsString;
     edtTomadorCidade.Text := dmPdv.sqBusca.FieldByName('CIDADE').AsString;
     edtTomadorUF.Text := dmPdv.sqBusca.FieldByName('UF').AsString;
     edtNomeTomador.Text := dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString;
@@ -3101,7 +3109,7 @@ begin
       ShowMessage('Código do Cliente não existe.');
       Exit;
     end;
-    edtDestCodCidade.Text := LimparString(dmPdv.sqBusca.FieldByName('CD_IBGE').AsString,'-');
+    edtDestCodCidade.Text := dmPdv.sqBusca.FieldByName('CD_IBGE').AsString;
     edtDestCidade.Text := dmPdv.sqBusca.FieldByName('CIDADE').AsString;
     edtDestUF.Text := dmPdv.sqBusca.FieldByName('UF').AsString;
     edtDestNome.Text := dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString;
@@ -3212,7 +3220,7 @@ begin
       ShowMessage('Código do Cliente não existe.');
       Exit;
     end;
-    edtRemCodCidade.Text := LimparString(dmPdv.sqBusca.FieldByName('CD_IBGE').AsString,'-');
+    edtRemCodCidade.Text := dmPdv.sqBusca.FieldByName('CD_IBGE').AsString;
     edtRemCidade.Text := dmPdv.sqBusca.FieldByName('CIDADE').AsString;
     edtRemUF.Text := dmPdv.sqBusca.FieldByName('UF').AsString;
     edtRemNome.Text := dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString;
@@ -5064,6 +5072,7 @@ end;
 
 procedure TfCTePrincipal.btnPreVisuClick(Sender: TObject);
 var   vAux : String;
+ nome_arq: String;
 begin
   vAux := edtNumCte.Text;
   ACBrCTe1.Conhecimentos.Clear;
@@ -5071,14 +5080,29 @@ begin
   begin
     GerarCTe(vAux);
     ACBrCTe1.Conhecimentos.Items[0].GravarXML('','');
+    ACBrCTe1.Conhecimentos.Imprimir;
   end
   else begin
-    OpenDialog1.Title := 'Selecione o CTe';
-    OpenDialog1.DefaultExt := '*-cte.xml';
-    OpenDialog1.Filter := 'Arquivos CTe (*-cte.xml)|*-cte.xml|Arquivos XML (*.xml)|*.xml|Todos os Arquivos (*.*)|*.*';
-    OpenDialog1.InitialDir := ACBrCTe1.Configuracoes.Arquivos.PathSalvar;
+    nome_arq := ACBrCTe1.Configuracoes.Arquivos.PathSalvar +
+      dmCte.cdsCteCHCTE.AsString + '-cte.xml';
+    if (FileExists(nome_arq)) then
+    begin
+       ACBrCTe1.Conhecimentos.LoadFromFile(nome_arq);
+       ACBrCTe1.Conhecimentos.Imprimir;
+    end
+    else begin
+      OpenDialog1.Title := 'Selecione o CTe';
+      OpenDialog1.DefaultExt := '*-cte.xml';
+      OpenDialog1.Filter := 'Arquivos CTe (*-cte.xml)|*-cte.xml|Arquivos XML (*.xml)|*.xml|Todos os Arquivos (*.*)|*.*';
+      OpenDialog1.InitialDir := ACBrCTe1.Configuracoes.Arquivos.PathSalvar;
+      if OpenDialog1.Execute then
+      begin
+        ACBrCTe1.Conhecimentos.Clear;
+        ACBrCTe1.Conhecimentos.LoadFromFile(OpenDialog1.FileName);
+        ACBrCTe1.Conhecimentos.Imprimir;
+      end;
+    end;
   end;
-  ACBrCTe1.Conhecimentos.Imprimir;
 end;
 
 procedure TfCTePrincipal.btnStatusServClick(Sender: TObject);
@@ -5505,6 +5529,93 @@ begin
   end;
 
   //edtNumSerie.Text := ACBrCTe1.SSL.SelecionarCertificado;
+end;
+
+procedure TfCTePrincipal.sbtnLerXmlCteClick(Sender: TObject);
+ var v_lerxml: String;
+   i: Integer;
+   cod_gen : Integer;
+begin
+  // lendo xml
+ if ((modoGravacao = 'INCLUIR') or (modoGravacao = 'EDITAR')) then
+ begin
+   OpenDialog1.Title := 'Selecione o CTe';
+   OpenDialog1.DefaultExt := '*-cte.xml';
+   OpenDialog1.Filter := 'Arquivos CTe (*-cte.xml)|*-cte.xml|Arquivos XML (*.xml)|*.xml|Todos os Arquivos (*.*)|*.*';
+   OpenDialog1.InitialDir := ACBrCTe1.Configuracoes.Arquivos.PathSalvar;
+   if OpenDialog1.Execute then
+   begin
+     ACBrCTe2.Conhecimentos.Clear;
+     ACBrCTe2.Conhecimentos.LoadFromFile(OpenDialog1.FileName);
+     with ACBrCTe2.Conhecimentos.Items[0].CTe do
+     begin
+       // Expedidor
+       v_lerxml := emit.CNPJ;
+       if (Length(v_lerxml) > 11) then
+         v_lerxml := Copy(v_lerxml,0,2) + '.' + Copy(v_lerxml,3,3) + '.' +
+           Copy(v_lerxml,6,3) + '/' + Copy(v_lerxml,9,4) + '-' +
+           Copy(v_lerxml,13,2);
+       dmPdv.busca_sql('SELECT CODCLIENTE FROM CLIENTES ' +
+         ' WHERE CNPJ = ' + QuotedStr(v_lerxml));
+       if (not dmPdv.sqBusca.IsEmpty) then
+       begin
+         edtExpBusca.Text := IntToStr(dmPdv.sqBusca.FieldByName('CODCLIENTE').asInteger);
+         fClienteBusca.cCodCliente := StrToInt(edtExpBusca.Text);
+         fClienteBusca.BuscaCliente;
+         edtExpBuscaExit(Nil);
+         edtAntNome.Text := edtExpRazao.Text;
+         edtAntCNPJ.Text := edtExpCNPJ.Text;
+         edtAntIE.Text := edtExpIE.Text;
+         edtAntUF.Text := edtExpUF.Text;
+         v_lerxml := procCTe.chCTe;
+         edtAntCHCTE.Text := v_lerxml;
+       end;
+       // Remetente
+       v_lerxml := rem.CNPJ;
+       if (Length(v_lerxml) > 11) then
+         v_lerxml := Copy(v_lerxml,0,2) + '.' + Copy(v_lerxml,3,3) + '.' +
+           Copy(v_lerxml,6,3) + '/' + Copy(v_lerxml,9,4) + '-' +
+           Copy(v_lerxml,13,2);
+       dmPdv.busca_sql('SELECT CODCLIENTE FROM CLIENTES ' +
+         ' WHERE CNPJ = ' + QuotedStr(v_lerxml));
+       if (not dmPdv.sqBusca.IsEmpty) then
+       begin
+         edtRemBusca.Text := IntToStr(dmPdv.sqBusca.FieldByName('CODCLIENTE').asInteger);
+         fClienteBusca.cCodCliente := StrToInt(edtRemBusca.Text);
+         fClienteBusca.BuscaCliente;
+         edtRemBuscaExit(Nil);
+       end;
+
+       // Componentes
+       dmCte.cdsCteVREC.AsFloat := vPrest.vRec;
+       dmCte.cdsCteVPREST.AsFloat := vPrest.vTPrest;
+       for i := 0 to vPrest.Comp.Count  -1 do
+       begin
+         with vPrest.Comp.Items[i] do
+         begin
+           FormatSettings.DecimalSeparator := '.';
+           v_lerxml := 'INSERT INTO CTE_COMP (COD_CTE_COMP, COD_CTE ,COMP_NOME, ' +
+             ' COMP_VALOR) VALUES ( GEN_ID(GEN_CTE_COMP_ID,1)';
+           v_lerxml += ', ' + edtNumCte.Text;
+           v_lerxml += ', ' + QuotedStr(xNome);
+           v_lerxml += ', '  + FloatToStr(vComp);
+           v_lerxml += ')';
+           FormatSettings.DecimalSeparator := ',';
+           dmPdv.Ibcon.ExecuteDirect(vstr_sql);
+         end;
+       end;
+       // icms
+       with imp.ICMS do
+       begin
+         dmCte.cdsCteVALPICMS.AsFloat := ICMS00.pICMS;
+         dmCte.cdsCteVALVBC.AsFloat := ICMS00.vBC;
+         dmCte.cdsCteVALVICMS.AsFloat := ICMS00.vICMS;
+       end;
+       combCodSitTrib.ItemIndex:=0;
+
+     end;
+   end;
+ end;
 end;
 
 procedure TfCTePrincipal.sbtnLogoMarcaClick(Sender: TObject);

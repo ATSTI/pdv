@@ -652,9 +652,9 @@ object fCTePrincipal: TfCTePrincipal
     Height = 633
     Top = 0
     Width = 1305
-    ActivePage = TabCteGeradas
+    ActivePage = TabCte
     Align = alClient
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 1
     object TabCteGeradas: TTabSheet
       Caption = 'CT-e Geradas'
@@ -1210,9 +1210,9 @@ object fCTePrincipal: TfCTePrincipal
         Height = 605
         Top = 0
         Width = 1297
-        ActivePage = TabDados
+        ActivePage = TabServicosImpostos
         Align = alClient
-        TabIndex = 0
+        TabIndex = 7
         TabOrder = 0
         object TabDados: TTabSheet
           Cursor = crHandPoint
@@ -8585,9 +8585,9 @@ object fCTePrincipal: TfCTePrincipal
             Height = 577
             Top = 0
             Width = 1289
-            ActivePage = TabNfe
+            ActivePage = TabInfoCarga
             Align = alClient
-            TabIndex = 2
+            TabIndex = 0
             TabOrder = 0
             object TabInfoCarga: TTabSheet
               Caption = 'Inf. da Carga'
@@ -9525,6 +9525,29 @@ object fCTePrincipal: TfCTePrincipal
                 OnClick = btnProximo9Click
                 ParentBidiMode = False
                 TabOrder = 5
+              end
+              object sbtnLerXmlCte: TSpeedButton
+                Left = 696
+                Height = 24
+                Hint = 'Ler XML CTe'
+                Top = 176
+                Width = 23
+                Glyph.Data = {
+                  76010000424D7601000000000000760000002800000020000000100000000100
+                  04000000000000010000130B0000130B00001000000000000000000000000000
+                  800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+                  FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF0033333333B333
+                  333B33FF33337F3333F73BB3777BB7777BB3377FFFF77FFFF77333B000000000
+                  0B3333777777777777333330FFFFFFFF07333337F33333337F333330FFFFFFFF
+                  07333337F3FF3FFF7F333330F00F000F07333337F77377737F333330FFFFFFFF
+                  07333FF7F3FFFF3F7FFFBBB0F0000F0F0BB37777F7777373777F3BB0FFFFFFFF
+                  0BBB3777F3FF3FFF77773330F00F000003333337F773777773333330FFFF0FF0
+                  33333337F3FF7F37F3333330F08F0F0B33333337F7737F77FF333330FFFF003B
+                  B3333337FFFF77377FF333B000000333BB33337777777F3377FF3BB3333BB333
+                  3BB33773333773333773B333333B3333333B7333333733333337
+                }
+                NumGlyphs = 2
+                OnClick = sbtnLerXmlCteClick
               end
             end
             object TabNfe: TTabSheet
@@ -12394,7 +12417,44 @@ object fCTePrincipal: TfCTePrincipal
     Configuracoes.WebServices.UF = 'SP'
     Configuracoes.WebServices.AguardarConsultaRet = 0
     Configuracoes.WebServices.QuebradeLinha = '|'
+    DACTE = ACBrCTeDACTeRL1
     left = 688
     top = 48
+  end
+  object ACBrCTeDACTeRL1: TACBrCTeDACTeRL
+    Sistema = 'Projeto ACBr - www.projetoacbr.com.br'
+    MargemInferior = 0.8
+    MargemSuperior = 0.8
+    MargemEsquerda = 0.6
+    MargemDireita = 0.51
+    CasasDecimais.Formato = tdetInteger
+    CasasDecimais.qCom = 2
+    CasasDecimais.vUnCom = 2
+    CasasDecimais.MaskqCom = ',0.00'
+    CasasDecimais.MaskvUnCom = ',0.00'
+    ACBrCTE = ACBrCTe1
+    ImprimirHoraSaida = False
+    TipoDACTE = tiSemGeracao
+    TamanhoPapel = tpA4
+    Cancelada = False
+    ExibeResumoCanhoto = False
+    EPECEnviado = False
+    ImprimeDescPorc = False
+    PrintDialog = True
+    left = 577
+    top = 96
+  end
+  object ACBrCTe2: TACBrCTe
+    Configuracoes.Geral.SSLLib = libNone
+    Configuracoes.Geral.SSLCryptLib = cryNone
+    Configuracoes.Geral.SSLHttpLib = httpNone
+    Configuracoes.Geral.SSLXmlSignLib = xsNone
+    Configuracoes.Geral.FormatoAlerta = 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.'
+    Configuracoes.Arquivos.OrdenacaoPath = <>
+    Configuracoes.WebServices.UF = 'SP'
+    Configuracoes.WebServices.AguardarConsultaRet = 0
+    Configuracoes.WebServices.QuebradeLinha = '|'
+    left = 517
+    top = 453
   end
 end
