@@ -123,6 +123,7 @@ type
     edtCaminho: TEdit;
     edtEmailAssunto: TEdit;
     edtLogoMarca: TEdit;
+    edtCteImportar: TEdit;
     edtPathLogs: TEdit;
     edtSenha: TEdit;
     edtSmtpHost: TEdit;
@@ -294,6 +295,7 @@ type
     GroupBox16: TGroupBox;
     GroupBox17: TGroupBox;
     GroupBox18: TGroupBox;
+    GroupBox19: TGroupBox;
     GroupBox2: TGroupBox;
     GroupBox3: TGroupBox;
     GroupBox4: TGroupBox;
@@ -371,6 +373,7 @@ type
     Label151: TLabel;
     Label152: TLabel;
     Label153: TLabel;
+    Label154: TLabel;
     Label16: TLabel;
     Label17: TLabel;
     Label19: TLabel;
@@ -514,8 +517,10 @@ type
     rgTomador: TRadioGroup;
     sbtnCaminhoCert: TSpeedButton;
     sbtnLerXmlCte: TSpeedButton;
+    sbtnLerXmlCte1: TSpeedButton;
     sbtnLogoMarca: TSpeedButton;
     sbtnGetCert: TSpeedButton;
+    sbtnCteImportar: TSpeedButton;
     sbtnPathSalvar: TSpeedButton;
     StaticText1: TStaticText;
     StaticText10: TStaticText;
@@ -653,6 +658,7 @@ type
     procedure dgGridCTEDblClick(Sender: TObject);
     procedure edtBuscaTomadorExit(Sender: TObject);
     procedure edtCfopExit(Sender: TObject);
+    procedure edtCteImportarClick(Sender: TObject);
     procedure edtDestBuscaExit(Sender: TObject);
     procedure edtEmitCompChange(Sender: TObject);
     procedure edtEmitenteCteChange(Sender: TObject);
@@ -676,6 +682,7 @@ type
     procedure rgRecClick(Sender: TObject);
     procedure rgRemClick(Sender: TObject);
     procedure rgTomadorClick(Sender: TObject);
+    procedure sbtnCteImportarClick(Sender: TObject);
     procedure sbtnGetCertClick(Sender: TObject);
     procedure sbtnLerXmlCteClick(Sender: TObject);
     procedure sbtnLogoMarcaClick(Sender: TObject);
@@ -734,6 +741,7 @@ type
     procedure EditarR;
     procedure EditarDE;
     procedure EditarREC;
+    procedure cadastraClientes(camposCliente, camposEnd: String);
     function LimparString(ATExto, ACaracteres: string): string;
     function GravarCTe: String;
     procedure AtualizaSSLLibsCombo;
@@ -902,6 +910,7 @@ begin
     Ini.WriteString( 'Geral','LogoMarca'   ,edtLogoMarca.Text);
     Ini.WriteBool(   'Geral','Salvar'      ,ckSalvar.Checked);
     Ini.WriteString( 'Geral','PathSalvar'  ,edtPathLogs.Text);
+    Ini.WriteString( 'Geral','PathCTe'  ,edtCteImportar.Text);
 
     Ini.WriteString( 'WebService','UF'        ,Trim(cbUF.Text));
     Ini.WriteInteger( 'WebService','Ambiente'  ,rgTipoAmb.ItemIndex);
@@ -1026,6 +1035,7 @@ begin
 
   ckSalvar.Checked         := Ini.ReadBool(   'Geral','Salvar'      ,True);
   edtPathLogs.Text         := Ini.ReadString( 'Geral','PathSalvar'  ,'');
+  edtCteImportar.Text      := Ini.ReadString( 'Geral','PathCTe'  ,'');
 
   percent_icms     := Ini.ReadFloat( 'ICMS','Percentual'   , 0);
   ACBrNFe1.SSL.SSLType := TSSLType( cbSSLType.ItemIndex );
@@ -1207,9 +1217,9 @@ begin
    end;
 
 
-   Ide.modelo:= StrToInt(edtModelo.Text);
-   Ide.serie:= StrToInt(edtSerieCte.Text) ;// Criar ou ver da onde Vira DM_CNT.Conhec2Serie.AsInteger;
-   Ide.nCT:= StrToInt(edtNumCte.Text);
+   Ide.modelo:= StrToInt(Trim(edtModelo.Text));
+   Ide.serie:= StrToInt(Trim(edtSerieCte.Text)) ;// Criar ou ver da onde Vira DM_CNT.Conhec2Serie.AsInteger;
+   Ide.nCT:= StrToInt(Trim(edtNumCte.Text));
    Ide.dhEmi:= dataGerarCte.DateTime;  // StringToDateTime(dataGerarCte.Text); //  Now;
    if (rgTipoDACTe.ItemIndex = 0) then
      Ide.tpImp:=  tiRetrato
@@ -2813,6 +2823,68 @@ begin
   end;
 end;
 
+procedure TfCTePrincipal.cadastraClientes(camposCliente, camposEnd: String);
+var strEndereco: String;
+begin
+  //generetor := dmPdv.busca_generator('GEN_CLI');
+  strInsere := 'INSERT INTO CLIENTES (CODCLIENTE, NOMECLIENTE, RAZAOSOCIAL, TIPOFIRMA ' +
+              ', CNPJ, INSCESTADUAL, SEGMENTO, REGIAO, DATACADASTRO  , CODUSUARIO, STATUS ' +
+              ') VALUES (GEN_ID(GEN_CLI,1), ';
+  strInsere := strInsere + camposCliente + ')';
+  {
+  strInsere := strInsere +   IntToStr(generetor);
+  strInsere := strInsere + ', ' + QuotedStr(edtXMLNome.Text);
+  strInsere := strInsere + ', ' + QuotedStr(edtXMLRazao.Text);
+  strInsere := strInsere + ', ' + IntToStr(1);
+  strInsere := strInsere + ', ' + QuotedStr(edtXMLCnpj.Text);
+  strInsere := strInsere + ', ' + QuotedStr(edtXMLIE.Text);
+  strInsere := strInsere + ', ' + IntToStr(1);
+  strInsere := strInsere + ', ' + IntToStr(1);
+  strInsere := strInsere + ', ' + QuotedStr(FormatDateTime('mm/dd/yyyy',now));
+  strInsere := strInsere + ', ' + IntToStr(1);
+  strInsere := strInsere + ', ' + IntToStr(1);
+  strInsere := strInsere + ')';
+  }
+  strEndereco := 'INSERT INTO ENDERECOCLIENTE (CODCLIENTE, CODENDERECO , ' +
+               ' LOGRADOURO , BAIRRO, COMPLEMENTO '+
+               ', CIDADE , UF , CEP , TELEFONE , TIPOEND , DDD , ' +
+               ' NUMERO, CD_IBGE, PAIS  ' +
+               ') VALUES (GEN_ID(GEN_CLI_END,1), ';
+  strEndereco := strEndereco + camposEnd + ')';
+  {
+  strEndereco := strEndereco +   IntToStr(generetor);
+  generetor := dmPdv.busca_generator('GEN_CLI_END');
+  strEndereco := strEndereco + ', ' + IntToStr(generetor);
+  strEndereco := strEndereco + ', ' + QuotedStr(edtXMLLogradouro.Text);
+  strEndereco := strEndereco + ', ' + QuotedStr(edtXMLBairro.Text);
+  strEndereco := strEndereco + ', ' + QuotedStr(edtXMLComp.Text);
+  strEndereco := strEndereco + ', ' + QuotedStr(edtXMLCidade.Text);
+  strEndereco := strEndereco + ', ' + QuotedStr(edtXMLUF.Text);
+  strEndereco := strEndereco + ', ' + QuotedStr(edtXMLCEP.Text);
+  strEndereco := strEndereco + ', ' + QuotedStr(Copy(edtXMLFone.Text,2,12));
+  strEndereco := strEndereco + ', ' + IntToStr(0);
+  strEndereco := strEndereco + ', ' + QuotedStr(Copy(edtXMLFone.Text,0,2));
+  strEndereco := strEndereco + ', ' + QuotedStr(edtXMLNumero.Text);
+  strEndereco := strEndereco + ', ' + QuotedStr(edtXMLCodCidade.Text);
+  strEndereco := strEndereco + ', ' + QuotedStr('Brasil');
+  strEndereco := strEndereco + ')';
+  }
+  try
+   dmPdv.IbCon.ExecuteDirect(strInsere);
+   dmPdv.IbCon.ExecuteDirect(strEndereco);
+   dmPdv.sTrans.Commit;
+  except
+   on E : Exception do
+   begin
+     ShowMessage('Cadastro do Cliente, não pode ser criado, Classe: ' +
+       e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
+     dmPdv.sTrans.Rollback;
+     exit;
+   end;
+  end;
+
+end;
+
 function TfCTePrincipal.LimparString(ATExto, ACaracteres: string): string;
  var
    strAux            : string;
@@ -3092,6 +3164,10 @@ begin
     edtCFOP.Text := LimparString(dmPdv.sqBusca.FieldByName('CFCOD').AsString,'-');
     edtNatOpe.Text := Copy(dmPdv.sqBusca.FieldByName('CFNOME').AsString,1,60);
   end;
+end;
+
+procedure TfCTePrincipal.edtCteImportarClick(Sender: TObject);
+begin
 end;
 
 procedure TfCTePrincipal.edtDestBuscaExit(Sender: TObject);
@@ -3878,6 +3954,8 @@ begin
   btnCancelarEdicaoCTe.Enabled := True;
   btnPreVisu.Enabled := True;
   btnGerarCte.Enabled := True;
+  sbtnLerXmlCte.Enabled := True;
+  sbtnLerXmlCte1.Enabled := True;
 end;
 
 procedure TfCTePrincipal.btnGerarClick(Sender: TObject);
@@ -4726,6 +4804,7 @@ begin
   dmCte.sqComp.Open;
   dmCte.sqMot.Open;
   dmCte.sqQC.Open;
+
   vDup := 1;
   if ((fQuantCarga.fcarga <> 1) and (fCompValor.fvalor <> 1)
     and (fNFe.fnfe <> 1) and (vDup <> 1)) then
@@ -4809,58 +4888,26 @@ begin
       QuotedStr(edtXMLCnpj.Text));
     if (dmPdv.sqBusca.IsEmpty) then
     begin
-      generetor := dmPdv.busca_generator('GEN_CLI');
-      strInsere := 'INSERT INTO CLIENTES (CODCLIENTE, NOMECLIENTE, RAZAOSOCIAL, TIPOFIRMA ' +
-                   ', CNPJ, INSCESTADUAL, SEGMENTO, REGIAO, DATACADASTRO  , CODUSUARIO, STATUS ' +
-                   ') VALUES ( ';
-      strInsere := strInsere +   IntToStr(generetor);
-      strInsere := strInsere + ', ' + QuotedStr(edtXMLNome.Text);
-      strInsere := strInsere + ', ' + QuotedStr(edtXMLRazao.Text);
-      strInsere := strInsere + ', ' + IntToStr(1);
-      strInsere := strInsere + ', ' + QuotedStr(edtXMLCnpj.Text);
-      strInsere := strInsere + ', ' + QuotedStr(edtXMLIE.Text);
-      strInsere := strInsere + ', ' + IntToStr(1);
-      strInsere := strInsere + ', ' + IntToStr(1);
-      strInsere := strInsere + ', ' + QuotedStr(FormatDateTime('mm/dd/yyyy',now));
-      strInsere := strInsere + ', ' + IntToStr(1);
-      strInsere := strInsere + ', ' + IntToStr(1);
-      strInsere := strInsere + ')';
+      nome := QuotedStr(edtXMLNome.Text);
+      nome += ', ' + QuotedStr(edtXMLRazao.Text);
+      nome += ', 1, ' + QuotedStr(edtXMLCnpj.Text);
+      nome += ', ' + QuotedStr(edtXMLIE.Text);
+      nome += ', 1, 1, ' + QuotedStr(FormatDateTime('mm/dd/yyyy',now));
+      nome += ', 1, 1';
 
-      strEndereco := 'INSERT INTO ENDERECOCLIENTE (CODCLIENTE, CODENDERECO , ' +
-                    ' LOGRADOURO , BAIRRO, COMPLEMENTO '+
-                    ', CIDADE , UF , CEP , TELEFONE , TIPOEND , DDD , ' +
-                    ' NUMERO, CD_IBGE, PAIS  ' +
-                    ') VALUES ( ';
-
-      strEndereco := strEndereco +   IntToStr(generetor);
-      generetor := dmPdv.busca_generator('GEN_CLI_END');
-      strEndereco := strEndereco + ', ' + IntToStr(generetor);
-      strEndereco := strEndereco + ', ' + QuotedStr(edtXMLLogradouro.Text);
-      strEndereco := strEndereco + ', ' + QuotedStr(edtXMLBairro.Text);
-      strEndereco := strEndereco + ', ' + QuotedStr(edtXMLComp.Text);
-      strEndereco := strEndereco + ', ' + QuotedStr(edtXMLCidade.Text);
-      strEndereco := strEndereco + ', ' + QuotedStr(edtXMLUF.Text);
-      strEndereco := strEndereco + ', ' + QuotedStr(edtXMLCEP.Text);
-      strEndereco := strEndereco + ', ' + QuotedStr(Copy(edtXMLFone.Text,2,12));
-      strEndereco := strEndereco + ', ' + IntToStr(0);
-      strEndereco := strEndereco + ', ' + QuotedStr(Copy(edtXMLFone.Text,0,2));
-      strEndereco := strEndereco + ', ' + QuotedStr(edtXMLNumero.Text);
-      strEndereco := strEndereco + ', ' + QuotedStr(edtXMLCodCidade.Text);
-      strEndereco := strEndereco + ', ' + QuotedStr('Brasil');
-      strEndereco := strEndereco + ')';
-      try
-        dmPdv.IbCon.ExecuteDirect(strInsere);
-        dmPdv.IbCon.ExecuteDirect(strEndereco);
-        dmPdv.sTrans.Commit;
-      except
-        on E : Exception do
-        begin
-          ShowMessage('Cadastro do Cliente, não pode ser criado, Classe: ' +
-            e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-          dmPdv.sTrans.Rollback;
-          exit;
-        end;
-      end;
+      strEndereco := QuotedStr(edtXMLLogradouro.Text);
+      strEndereco += ', ' + QuotedStr(edtXMLBairro.Text);
+      strEndereco += ', ' + QuotedStr(edtXMLComp.Text);
+      strEndereco += ', ' + QuotedStr(edtXMLCidade.Text);
+      strEndereco += ', ' + QuotedStr(edtXMLUF.Text);
+      strEndereco += ', ' + QuotedStr(edtXMLCEP.Text);
+      strEndereco += ', ' + QuotedStr(Copy(edtXMLFone.Text,2,12));
+      strEndereco += ', ' + IntToStr(0);
+      strEndereco += ', ' + QuotedStr(Copy(edtXMLFone.Text,0,2));
+      strEndereco += ', ' + QuotedStr(edtXMLNumero.Text);
+      strEndereco += ', ' + QuotedStr(edtXMLCodCidade.Text);
+      strEndereco += ', ' + QuotedStr('Brasil');
+      cadastraClientes(nome, strEndereco);
     end;
   end;
 
@@ -4935,6 +4982,8 @@ begin
   btnGerar.Enabled := True;
   StatusBar1.SimpleText := 'CTe Iniciada com Sucesso. MODO : INCLUSÃO' ;
   modoGravacao := 'INCLUIR';
+  sbtnLerXmlCte.Enabled := True;
+  sbtnLerXmlCte1.Enabled := True;
 
   /// Começa aqui Correção dia 15/08/17
   if (dmCte.sqComp.Active)then
@@ -5045,6 +5094,9 @@ begin
   btnCancelarEdicaoCTe.Enabled := False;
   btnPreVisu.Enabled := False;
   btnGerarCte.Enabled := False;
+  sbtnLerXmlCte.Enabled := False;
+  sbtnLerXmlCte1.Enabled := False;
+
   { // COMENTEI AQUI
   if (dmCte.cdsCTE.State in [dsEdit, dsInsert]) then
   begin
@@ -5491,6 +5543,21 @@ begin
   end;
 end;
 
+procedure TfCTePrincipal.sbtnCteImportarClick(Sender: TObject);
+begin
+
+  OpenDialog1.Title := 'Informe o Caminho da CTe para importar';
+  OpenDialog1.DefaultExt := '*-cte.xml';
+  OpenDialog1.Filter := 'Arquivos CTe (*-cte.xml)|*-cte.xml|Arquivos XML (*.xml)|*.xml|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ACBrCTe1.Configuracoes.Arquivos.PathSalvar;
+
+   if OpenDialog1.Execute then
+   begin
+     edtCteImportar.Text := OpenDialog1.GetNamePath;
+   end;
+
+end;
+
 procedure TfCTePrincipal.sbtnGetCertClick(Sender: TObject);
 var
   I: Integer;
@@ -5535,6 +5602,7 @@ procedure TfCTePrincipal.sbtnLerXmlCteClick(Sender: TObject);
  var v_lerxml: String;
    i: Integer;
    cod_gen : Integer;
+   v_xml2, nome, strEndereco: String;
 begin
   // lendo xml
  if ((modoGravacao = 'INCLUIR') or (modoGravacao = 'EDITAR')) then
@@ -5542,13 +5610,50 @@ begin
    OpenDialog1.Title := 'Selecione o CTe';
    OpenDialog1.DefaultExt := '*-cte.xml';
    OpenDialog1.Filter := 'Arquivos CTe (*-cte.xml)|*-cte.xml|Arquivos XML (*.xml)|*.xml|Todos os Arquivos (*.*)|*.*';
-   OpenDialog1.InitialDir := ACBrCTe1.Configuracoes.Arquivos.PathSalvar;
+   OpenDialog1.InitialDir := edtCteImportar.Text;
    if OpenDialog1.Execute then
    begin
      ACBrCTe2.Conhecimentos.Clear;
      ACBrCTe2.Conhecimentos.LoadFromFile(OpenDialog1.FileName);
      with ACBrCTe2.Conhecimentos.Items[0].CTe do
      begin
+       // Destinatario
+       v_lerxml := dest.CNPJCPF;
+       if (Length(v_lerxml) > 11) then
+         v_lerxml := Copy(v_lerxml,0,2) + '.' + Copy(v_lerxml,3,3) + '.' +
+           Copy(v_lerxml,6,3) + '/' + Copy(v_lerxml,9,4) + '-' +
+           Copy(v_lerxml,13,2);
+       dmPdv.busca_sql('SELECT CODCLIENTE FROM CLIENTES ' +
+         ' WHERE CNPJ = ' + QuotedStr(v_lerxml));
+       if (not dmPdv.sqBusca.IsEmpty) then
+       begin
+         edtDestBusca.Text := IntToStr(dmPdv.sqBusca.FieldByName('CODCLIENTE').asInteger);
+         fClienteBusca.cCodCliente := StrToInt(edtDestBusca.Text);
+         fClienteBusca.BuscaCliente;
+         edtDestBuscaExit(Nil);
+       end
+       else begin
+         nome := QuotedStr(dest.xNome);
+         nome += ', ' + QuotedStr(dest.xNome);
+         nome += ', 1, ' + QuotedStr(dest.CNPJCPF);
+         nome += ', ' + QuotedStr(dest.IE);
+         nome += ', 1, 1, ' + QuotedStr(FormatDateTime('mm/dd/yyyy',now));
+         nome += ', 1, 1';
+
+         strEndereco := QuotedStr(dest.enderDest.xLgr);
+         strEndereco += ', ' + QuotedStr(dest.enderDest.xBairro);
+         strEndereco += ', ' + QuotedStr(dest.enderDest.xCpl);
+         strEndereco += ', ' + QuotedStr(dest.enderDest.xMun);
+         strEndereco += ', ' + QuotedStr(dest.enderDest.UF);
+         strEndereco += ', ' + QuotedStr(IntToStr(dest.enderDest.CEP));
+         strEndereco += ', ' + QuotedStr(Copy(dest.fone,2,12));
+         strEndereco += ', ' + IntToStr(0);
+         strEndereco += ', ' + QuotedStr(Copy(dest.Fone,0,2));
+         strEndereco += ', ' + QuotedStr(dest.enderDest.nro);
+         strEndereco += ', ' + QuotedStr(IntToStr(dest.enderDest.cMun));
+         strEndereco += ', ' + QuotedStr('Brasil');
+         cadastraClientes(nome, strEndereco);
+       end;
        // Expedidor
        v_lerxml := emit.CNPJ;
        if (Length(v_lerxml) > 11) then
@@ -5569,9 +5674,31 @@ begin
          edtAntUF.Text := edtExpUF.Text;
          v_lerxml := procCTe.chCTe;
          edtAntCHCTE.Text := v_lerxml;
+       end
+       else begin
+         nome := QuotedStr(emit.xNome);
+         nome += ', ' + QuotedStr(emit.xNome);
+         nome += ', 1, ' + QuotedStr(emit.CNPJ);
+         nome += ', ' + QuotedStr(emit.IE);
+         nome += ', 1, 1, ' + QuotedStr(FormatDateTime('mm/dd/yyyy',now));
+         nome += ', 1, 1';
+
+         strEndereco := QuotedStr(emit.enderEmit.xLgr);
+         strEndereco += ', ' + QuotedStr(emit.enderEmit.xBairro);
+         strEndereco += ', ' + QuotedStr(emit.enderEmit.xCpl);
+         strEndereco += ', ' + QuotedStr(emit.enderEmit.xMun);
+         strEndereco += ', ' + QuotedStr(emit.enderEmit.UF);
+         strEndereco += ', ' + QuotedStr(IntToStr(emit.enderEmit.CEP));
+         strEndereco += ', ' + QuotedStr(Copy(emit.enderEmit.fone,2,12));
+         strEndereco += ', ' + IntToStr(0);
+         strEndereco += ', ' + QuotedStr(Copy(emit.enderEmit.Fone,0,2));
+         strEndereco += ', ' + QuotedStr(emit.enderEmit.nro);
+         strEndereco += ', ' + QuotedStr(IntToStr(emit.enderEmit.cMun));
+         strEndereco += ', ' + QuotedStr('Brasil');
+         cadastraClientes(nome, strEndereco);
        end;
        // Remetente
-       v_lerxml := rem.CNPJ;
+       v_lerxml := rem.CNPJCPF;
        if (Length(v_lerxml) > 11) then
          v_lerxml := Copy(v_lerxml,0,2) + '.' + Copy(v_lerxml,3,3) + '.' +
            Copy(v_lerxml,6,3) + '/' + Copy(v_lerxml,9,4) + '-' +
@@ -5584,11 +5711,34 @@ begin
          fClienteBusca.cCodCliente := StrToInt(edtRemBusca.Text);
          fClienteBusca.BuscaCliente;
          edtRemBuscaExit(Nil);
-       end;
+       end
+       else begin
+         nome := QuotedStr(rem.xNome);
+         nome += ', ' + QuotedStr(rem.xNome);
+         nome += ', 1, ' + QuotedStr(rem.CNPJCPF);
+         nome += ', ' + QuotedStr(rem.IE);
+         nome += ', 1, 1, ' + QuotedStr(FormatDateTime('mm/dd/yyyy',now));
+         nome += ', 1, 1';
 
+         strEndereco := QuotedStr(rem.enderReme.xLgr);
+         strEndereco += ', ' + QuotedStr(rem.enderReme.xBairro);
+         strEndereco += ', ' + QuotedStr(rem.enderReme.xCpl);
+         strEndereco += ', ' + QuotedStr(rem.enderReme.xMun);
+         strEndereco += ', ' + QuotedStr(rem.enderReme.UF);
+         strEndereco += ', ' + QuotedStr(IntToStr(rem.enderReme.CEP));
+         strEndereco += ', ' + QuotedStr(Copy(rem.fone,2,12));
+         strEndereco += ', ' + IntToStr(0);
+         strEndereco += ', ' + QuotedStr(Copy(rem.Fone,0,2));
+         strEndereco += ', ' + QuotedStr(rem.enderReme.nro);
+         strEndereco += ', ' + QuotedStr(IntToStr(rem.enderReme.cMun));
+         strEndereco += ', ' + QuotedStr('Brasil');
+         cadastraClientes(nome, strEndereco);
+       end;
        // Componentes
        dmCte.cdsCteVREC.AsFloat := vPrest.vRec;
        dmCte.cdsCteVPREST.AsFloat := vPrest.vTPrest;
+       dmPdv.Ibcon.ExecuteDirect('DELETE FROM CTE_COMP' +
+         ' WHERE COD_CTE = ' +  IntToStr(val_genCte));
        for i := 0 to vPrest.Comp.Count  -1 do
        begin
          with vPrest.Comp.Items[i] do
@@ -5596,12 +5746,12 @@ begin
            FormatSettings.DecimalSeparator := '.';
            v_lerxml := 'INSERT INTO CTE_COMP (COD_CTE_COMP, COD_CTE ,COMP_NOME, ' +
              ' COMP_VALOR) VALUES ( GEN_ID(GEN_CTE_COMP_ID,1)';
-           v_lerxml += ', ' + edtNumCte.Text;
-           v_lerxml += ', ' + QuotedStr(xNome);
-           v_lerxml += ', '  + FloatToStr(vComp);
+           v_lerxml += ', ' + IntToStr(val_genCte);
+           v_lerxml += ', ' + QuotedStr(vPrest.Comp.Items[i].xNome);
+           v_lerxml += ', '  + FloatToStr(vPrest.Comp.Items[i].vComp);
            v_lerxml += ')';
            FormatSettings.DecimalSeparator := ',';
-           dmPdv.Ibcon.ExecuteDirect(vstr_sql);
+           dmPdv.Ibcon.ExecuteDirect(v_lerxml);
          end;
        end;
        // icms
@@ -5612,19 +5762,75 @@ begin
          dmCte.cdsCteVALVICMS.AsFloat := ICMS00.vICMS;
        end;
        combCodSitTrib.ItemIndex:=0;
+       // Documentacao carga
+       with infCTeNorm.infCarga do
+       begin
+         dmCte.cdsCteVALINFCARGA.AsFloat := vCarga;
+         edtProPred.Text := proPred;
+         edtOutCat.Text := xOutCat;
+         dmPdv.Ibcon.ExecuteDirect('DELETE FROM CTE_QC' +
+           ' WHERE COD_CTE = ' +  IntToStr(val_genCte));
+         for i := 0 to infQ.Count  -1 do
+         begin
+           FormatSettings.DecimalSeparator := '.';
+           v_lerxml := 'INSERT INTO CTE_QC (COD_CTE_QC, COD_CTE ,UNID, ' +
+                 ' MEDIDA, QUANT) VALUES ( GEN_ID(GEN_CTE_QC_ID, 1)';
+           v_lerxml += ', ' + IntToStr(val_genCte);
+           //uM3,uKG, uTON, uUNIDADE, uLITROS, uMMBTU
+           if (infQ.Items[i].cUnid = uM3) then
+              v_xml2 := '00';
+           if (infQ.Items[i].cUnid = uKG) then
+              v_xml2 := '01';
+           if (infQ.Items[i].cUnid = uTON) then
+              v_xml2 := '02';
+           if (infQ.Items[i].cUnid = uUNIDADE) then
+              v_xml2 := '03';
+           if (infQ.Items[i].cUnid = uLITROS) then
+              v_xml2 := '04';
+           if (infQ.Items[i].cUnid = uMMBTU) then
+              v_xml2 := '05';
+           v_lerxml += ', ' + QuotedStr(v_xml2);
+           v_lerxml += ', ' + QuotedStr(infQ.Items[i].tpMed);
+           v_lerxml += ', ' +  FloatToStr(infQ.Items[i].qCarga);
+           v_lerxml += ')';
+           FormatSettings.DecimalSeparator := ',';
+           dmPdv.Ibcon.ExecuteDirect(v_lerxml);
+         end;
+       end;
+       // NF-e
+       with infCTeNorm.infDoc do
+       begin
+         dmPdv.Ibcon.ExecuteDirect('DELETE FROM CTE_NFE' +
+           ' WHERE CTE_NFE = ' +  IntToStr(val_genCte));
+         for i := 0 to infNFe.Count  -1 do
+         begin
+           v_lerxml := 'INSERT INTO CTE_NFE (COD_CTE_NFE, CTE_NFE, CHAVE ' +
+                      ') VALUES ( GEN_ID(GEN_CTE_NFE_ID, 1)';
+           v_lerxml += ', ' + IntToStr(val_genCte);
+           v_lerxml += ', ' + QuotedStr(infNFe.Items[i].chave);
+           v_lerxml += ')';
+           dmPdv.Ibcon.ExecuteDirect(v_lerxml);
+         end;
+       end;
+     end; // fim do xml
 
-     end;
-   end;
+     //dmCte.sqComp.Close;
+     //dmCte.sqNFe.Close;
+     //dmCte.sqComp.Open;
+
+     //dmCte.sqNFe.Open;
+     btnGravarCTe.Click;
+     btnEditarCte.Click;
+   end; // fim do abrir xml
  end;
 end;
 
 procedure TfCTePrincipal.sbtnLogoMarcaClick(Sender: TObject);
 begin
-  OpenDialog1.Title := 'Selecione o Logo';
-  OpenDialog1.DefaultExt := '*.bmp';
-  OpenDialog1.Filter := 'Arquivos BMP (*.bmp)|*.bmp|Todos os Arquivos (*.*)|*.*';
-  OpenDialog1.InitialDir := ExtractFileDir(application.ExeName);
-
+ OpenDialog1.Title := 'Selecione o Logo';
+ OpenDialog1.DefaultExt := '*.bmp';
+ OpenDialog1.Filter := 'Arquivos BMP (*.bmp)|*.bmp|Todos os Arquivos (*.*)|*.*';
+ OpenDialog1.InitialDir := ExtractFileDir(application.ExeName);
   if OpenDialog1.Execute then
   begin
     edtLogoMarca.Text := OpenDialog1.FileName;
