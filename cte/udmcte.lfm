@@ -2778,11 +2778,25 @@ object dmCte: TdmCte
         Name = 'QUANT'
         DataType = ftFloat
         Precision = -1
+      end    
+      item
+        Name = 'UNIDADE'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 32
       end>
     Database = dmPdv.IbCon
     Transaction = dmPdv.sTrans
     SQL.Strings = (
-      'select * from CTE_QC where COD_CTE = :pCTE'
+      'select'
+      '  COD_CTE_QC'
+      ', COD_CTE'
+      ', UNID'
+      ', MEDIDA'
+      ', QUANT, CASE WHEN UNID = ''00'' THEN ''uM3'' WHEN UNID = ''01'' THEN ''uKG'''
+      ' WHEN UNID = ''02'' THEN ''uTON'' WHEN UNID = ''03'' THEN ''uUNIDADE'''
+      ' WHEN UNID = ''04'' THEN ''uLITROS'' WHEN UNID = ''05'' THEN ''uMMBTU'' END AS UNIDADE'
+      'from CTE_QC   where COD_CTE = :pCTE'
     )
     Params = <    
       item
@@ -2842,6 +2856,16 @@ object dmCte: TdmCte
       MaxValue = 0
       MinValue = 0
       Precision = -1
+    end
+    object sqQCUNIDADE: TStringField
+      FieldKind = fkData
+      FieldName = 'UNIDADE'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 32
     end
   end
   object sqNFe: TSQLQuery

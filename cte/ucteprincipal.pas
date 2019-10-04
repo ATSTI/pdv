@@ -24,6 +24,8 @@ type
     BitBtn10: TBitBtn;
     BitBtn11: TBitBtn;
     BitBtn12: TBitBtn;
+    BitBtn13: TBitBtn;
+    btnLimpaBusca: TBitBtn;
     btnConsCad: TButton;
     btnConsultar: TButton;
     btnConsultarChave: TButton;
@@ -39,7 +41,6 @@ type
     btnInutilizar: TBitBtn;
     btnCancelarCte: TBitBtn;
     btnCorrigirSerie: TBitBtn;
-    btnProximo: TBitBtn;
     BitBtn15: TBitBtn;
     BitBtn3: TBitBtn;
     BitBtn4: TBitBtn;
@@ -72,6 +73,7 @@ type
     btnInfCargaInclui: TBitBtn;
     btnInfCargaInclui1: TBitBtn;
     btnListarCte: TBitBtn;
+    btnProximo: TBitBtn;
     btnProximo1: TBitBtn;
     btnProximo10: TBitBtn;
     btnProximo2: TBitBtn;
@@ -121,6 +123,7 @@ type
     edModeloAtualiza: TEdit;
     edSerieAtualiza: TEdit;
     edtCaminho: TEdit;
+    edtDestNome1: TEdit;
     edtEmailAssunto: TEdit;
     edtLogoMarca: TEdit;
     edtCteImportar: TEdit;
@@ -374,6 +377,7 @@ type
     Label152: TLabel;
     Label153: TLabel;
     Label154: TLabel;
+    Label156: TLabel;
     Label16: TLabel;
     Label17: TLabel;
     Label19: TLabel;
@@ -582,7 +586,9 @@ type
     procedure BitBtn10Click(Sender: TObject);
     procedure BitBtn11Click(Sender: TObject);
     procedure BitBtn12Click(Sender: TObject);
+    procedure BitBtn13Click(Sender: TObject);
     procedure btnImportarXML1Click(Sender: TObject);
+    procedure btnLimpaBuscaClick(Sender: TObject);
     procedure btnProximo10Click(Sender: TObject);
     procedure btnProximo1Click(Sender: TObject);
     procedure btnProximo2Click(Sender: TObject);
@@ -660,6 +666,8 @@ type
     procedure edtCfopExit(Sender: TObject);
     procedure edtCteImportarClick(Sender: TObject);
     procedure edtDestBuscaExit(Sender: TObject);
+    procedure edtDestNome1Change(Sender: TObject);
+    procedure edtDestNome1KeyPress(Sender: TObject; var Key: char);
     procedure edtEmitCompChange(Sender: TObject);
     procedure edtEmitenteCteChange(Sender: TObject);
     procedure edtExpBuscaExit(Sender: TObject);
@@ -673,9 +681,11 @@ type
     procedure FormShow(Sender: TObject);
     procedure Label120Click(Sender: TObject);
     procedure Label138Click(Sender: TObject);
+    procedure Label155Click(Sender: TObject);
     procedure Label60Click(Sender: TObject);
     procedure mmEmailMsgChange(Sender: TObject);
     procedure PageControl2Exit(Sender: TObject);
+    procedure Panel3Click(Sender: TObject);
     procedure rgDestClick(Sender: TObject);
     procedure rgExpClick(Sender: TObject);
     procedure rgFormaEmissaoClick(Sender: TObject);
@@ -3203,6 +3213,21 @@ begin
   end;
 end;
 
+procedure TfCTePrincipal.edtDestNome1Change(Sender: TObject);
+begin
+
+end;
+
+procedure TfCTePrincipal.edtDestNome1KeyPress(Sender: TObject; var Key: char);
+begin
+  if (key = #13) then
+  begin
+    key:= #0;
+    SelectNext((Sender as TwinControl),True,True);
+    btnListarCte.Click;
+  end;
+end;
+
 procedure TfCTePrincipal.edtEmitCompChange(Sender: TObject);
 begin
 
@@ -4293,9 +4318,23 @@ begin
   edtDestBuscaExit(Nil);
 end;
 
+procedure TfCTePrincipal.BitBtn13Click(Sender: TObject);
+begin
+  // busca Destinatario
+  fClienteBusca.ShowModal;
+  edtDestNome1.Text := fClienteBusca.cNomeCliente;
+  btnListarCte.Click;
+end;
+
 procedure TfCTePrincipal.btnImportarXML1Click(Sender: TObject);
 begin
 
+end;
+
+procedure TfCTePrincipal.btnLimpaBuscaClick(Sender: TObject);
+begin
+  edtDestNome1.Text := '';
+  edtDestNome1.SetFocus;
 end;
 
 procedure TfCTePrincipal.btnProximo10Click(Sender: TObject);
@@ -4956,6 +4995,7 @@ begin
     if fCTePrincipal.Components[i] is TEdit then
       TEdit(fCTePrincipal.Components[i]).Clear;
   end;
+
   edtModelo.Text := IntToStr(vModeloCte);
 
   buscaEmpresa(comboEmpresa.Text);
@@ -5090,6 +5130,7 @@ end;
 
 procedure TfCTePrincipal.btnListarCteClick(Sender: TObject);
 begin
+  modoGravacao := 'CONSULTAR';
   btnGravarCTe.Enabled := False;
   btnCancelarEdicaoCTe.Enabled := False;
   btnPreVisu.Enabled := False;
@@ -5097,14 +5138,14 @@ begin
   sbtnLerXmlCte.Enabled := False;
   sbtnLerXmlCte1.Enabled := False;
 
-  { // COMENTEI AQUI
-  if (dmCte.cdsCTE.State in [dsEdit, dsInsert]) then
-  begin
-    MessageDlg('Grave ou Cancele suas modificaçes antes de continuar.', mtInformation, [mbOK], 0);
-    exit;
-  end;
-  modoGravacao := 'EDITAR';
-  }
+  dmCte.cdsCte.Close;
+  dmCte.cdsCte.SQL.Clear;
+  dmCte.cdsCte.SQL.Add('SELECT * FROM CTE ' +
+    ' WHERE ((emitente = :pEmi ) ' +
+    '   AND ((cte_numero = :num_cte) or (:num_cte = 0)) ' +
+    '   AND (DHEMI between :Data1 and  :Data2)) ' +
+    ' ORDER BY CTE_NUMERO DESC');
+
   if(edtCodEmitente.Text = '') then
   begin
    MessageDlg('Inicie um Emitente .', mtInformation, [mbOK], 0);
@@ -5112,6 +5153,16 @@ begin
   end;
 
   dmCte.cdsCTE.Close;
+  if (edtDestNome1.Text <> '') then
+  begin
+    dmCte.cdsCte.SQL.Clear;
+    dmCte.cdsCte.SQL.Add('SELECT * FROM CTE ' +
+      ' WHERE ((emitente = :pEmi ) ' +
+      '   AND ((cte_numero = :num_cte) or (:num_cte = 0)) ' +
+      '   AND (DHEMI between :Data1 and  :Data2) ' +
+      '   AND (UPPER(D_FANTASIA) LIKE UPPER(' + QuotedStr('%' +
+          edtDestNome1.Text + '%') + '))) ORDER BY CTE_NUMERO DESC');
+  end;
   if not(dmCte.cdsCTE.Active)then
     dmCte.cdsCTE.Active;
   dmCte.cdsCTE.Params[0].AsInteger := StrToInt(edtCodEmitente.Text);
@@ -5444,6 +5495,10 @@ begin
 
 end;
 
+procedure TfCTePrincipal.Label155Click(Sender: TObject);
+begin
+  end;
+
 procedure TfCTePrincipal.Label60Click(Sender: TObject);
 begin
 
@@ -5455,6 +5510,11 @@ begin
 end;
 
 procedure TfCTePrincipal.PageControl2Exit(Sender: TObject);
+begin
+
+end;
+
+procedure TfCTePrincipal.Panel3Click(Sender: TObject);
 begin
 
 end;
@@ -5608,7 +5668,7 @@ begin
  if ((modoGravacao = 'INCLUIR') or (modoGravacao = 'EDITAR')) then
  begin
    OpenDialog1.Title := 'Selecione o CTe';
-   OpenDialog1.DefaultExt := '*-cte.xml';
+   OpenDialog1.DefaultExt := '*.xml';
    OpenDialog1.Filter := 'Arquivos CTe (*-cte.xml)|*-cte.xml|Arquivos XML (*.xml)|*.xml|Todos os Arquivos (*.*)|*.*';
    OpenDialog1.InitialDir := edtCteImportar.Text;
    if OpenDialog1.Execute then

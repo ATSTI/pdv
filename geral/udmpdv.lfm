@@ -9,7 +9,7 @@ object dmPdv: TdmPdv
   object IbCon: TIBConnection
     Connected = False
     LoginPrompt = False
-    DatabaseName = '/home/publico/bd/sge_jaba.fdb'
+    DatabaseName = 'c:\home\bd\sge_jaba.fdb'
     KeepConnection = True
     Params.Strings = (
       'port=3050'
@@ -18,7 +18,7 @@ object dmPdv: TdmPdv
     Transaction = sTrans
     UserName = 'SYSDBA'
     CharSet = 'UTF8'
-    HostName = '192.168.6.100'
+    HostName = 'localhost'
     CheckTransactionParams = False
     left = 40
     top = 18

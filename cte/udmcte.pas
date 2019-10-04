@@ -204,6 +204,7 @@ type
     sqQCMEDIDA: TStringField;
     sqQCQUANT: TFloatField;
     sqQCUNID: TStringField;
+    sqQCUNIDADE: TStringField;
     sqSeg: TSQLQuery;
     sqNFe: TSQLQuery;
     sqQC: TSQLQuery;

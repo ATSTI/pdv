@@ -1,0 +1,8 @@
+object fNFe: TfNFe
+  Left = 313
+  Height = 408
+  Top = 127
+  Width = 726
+  Caption = 'fNFe'
+  LCLVersion = '2.0.4.0'
+end
