@@ -8,11 +8,9 @@
       <Unit0>
         <Filename Value="prjNFe.lpr"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="-1"/>
         <CursorPos X="22" Y="10"/>
         <UsageCount Value="20"/>
-        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="unfe.pas"/>
@@ -21,7 +19,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uNFe"/>
-        <CursorPos X="51" Y="15"/>
+        <IsVisibleTab Value="True"/>
+        <CursorPos X="19" Y="21"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -32,14 +31,14 @@
         <ComponentName Value="dmPdv"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="1"/>
         <CursorPos X="25" Y="6"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit2>
     </Units>
-    <JumpHistory Count="4" HistoryIndex="3">
+    <JumpHistory Count="6" HistoryIndex="5">
       <Position1>
         <Filename Value="unfe.pas"/>
         <Caret Line="16" Column="27"/>
@@ -54,8 +53,16 @@
       </Position3>
       <Position4>
         <Filename Value="unfe.pas"/>
-        <Caret Line="15" Column="51"/>
+        <Caret Line="15" Column="19"/>
       </Position4>
+      <Position5>
+        <Filename Value="unfe.pas"/>
+        <Caret Line="19" Column="19"/>
+      </Position5>
+      <Position6>
+        <Filename Value="unfe.pas"/>
+        <Caret Line="20" Column="19"/>
+      </Position6>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>

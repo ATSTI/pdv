@@ -4,5 +4,32 @@ object fNFe: TfNFe
   Top = 127
   Width = 726
   Caption = 'fNFe'
-  LCLVersion = '2.0.4.0'
+  ClientHeight = 408
+  ClientWidth = 726
+  LCLVersion = '2.0.2.0'
+  object Panel1: TPanel
+    Left = 0
+    Height = 77
+    Top = 0
+    Width = 726
+    Align = alTop
+    Caption = 'Panel1'
+    TabOrder = 0
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Height = 20
+    Top = 388
+    Width = 726
+    Panels = <>
+  end
+  object Panel2: TPanel
+    Left = 0
+    Height = 311
+    Top = 77
+    Width = 726
+    Align = alClient
+    Caption = 'Panel2'
+    TabOrder = 2
+  end
 end
