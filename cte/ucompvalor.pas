@@ -41,17 +41,23 @@ uses udmpdv, uDmCte;
 
 procedure TfCompValor.btnOkClick(Sender: TObject);
 var vstr_sql :string;
+  num_cod_comp: Integer;
 begin
   vstr_sql := '';
   FormatSettings.DecimalSeparator := '.';
   if (dmCte.dsComp.State in [dsInsert]) then
   begin
-    vstr_sql := 'INSERT INTO CTE_COMP (COD_CTE_COMP, COD_CTE ,COMP_NOME, ' +
-      ' COMP_VALOR) VALUES ( GEN_ID(GEN_CTE_COMP_ID,1)';
-    vstr_sql := vstr_sql + ', ' + IntToStr(dmCte.sqCompCOD_CTE.AsInteger) ;
-    vstr_sql := vstr_sql + ', ' + QuotedStr(dmCte.sqCompCOMP_NOME.AsString);
-    vstr_sql := vstr_sql + ', '  + FloatToStr(dmCte.sqCompCOMP_VALOR.AsFloat);
-    vstr_sql := vstr_sql + ')';
+    if (dmCte.sqCompCOMP_NOME.AsString <> '') then
+    begin
+      num_cod_comp := dmPdv.busca_generator('GEN_CTE_COMP_ID');
+      vstr_sql := 'INSERT INTO CTE_COMP (COD_CTE_COMP, COD_CTE ,COMP_NOME, ' +
+        ' COMP_VALOR) VALUES ( ' + IntToStr(num_cod_comp);
+      vstr_sql := vstr_sql + ', ' + IntToStr(dmCte.sqCompCOD_CTE.AsInteger) ;
+      vstr_sql := vstr_sql + ', ' + QuotedStr(dmCte.sqCompCOMP_NOME.AsString);
+      vstr_sql := vstr_sql + ', '  + FloatToStr(dmCte.sqCompCOMP_VALOR.AsFloat);
+      vstr_sql := vstr_sql + ')';
+      dmCte.sqCompCOD_CTE_COMP.AsInteger := num_cod_comp;
+    end;
   end;
   if (dmCte.dsComp.State in [dsEdit]) then
   begin

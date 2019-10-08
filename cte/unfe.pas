@@ -42,6 +42,7 @@ uses uDmCte, udmpdv;
 
 procedure TfNFe.btnOkClick(Sender: TObject);
 var vNfe_str:String;
+  vNum_nfe: Integer;
 begin
   if (dmCte.sqNFeCHAVE.AsString = '') then
   begin
@@ -72,8 +73,9 @@ begin
   end;
   if (dmCte.dsNFe.State in [dsInsert]) then
   begin
+    vNum_nfe := dmPdv.busca_generator('GEN_CTE_NFE_ID');
     vNfe_str := 'INSERT INTO CTE_NFE (COD_CTE_NFE, CTE_NFE, CHAVE,DPREV, PIN  ' +
-               ') VALUES ( GEN_ID(GEN_CTE_NFE_ID, 1)';
+               ') VALUES ( ' + IntToStr(vNum_nfe);
     vNfe_str := vNfe_str + ', ' + IntToStr(dmCte.sqNFeCTE_NFE.AsInteger);
     vNfe_str := vNfe_str + ', ' + QuotedStr(dmCte.sqNFeCHAVE.AsString);
     if (DBDateTimePicker1.DateIsNull = False) then
@@ -96,6 +98,7 @@ begin
   end;
   if (vNfe_str <> '') then
     dmPdv.Ibcon.ExecuteDirect(vNfe_str);
+  dmCte.sqNFeCOD_CTE_NFE.AsInteger := vNum_nfe;
   Close;
 end;
 

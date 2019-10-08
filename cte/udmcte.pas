@@ -104,6 +104,7 @@ type
     cdsCteMODAL: TStringField;
     cdsCteMODELO: TStringField;
     cdsCteNPROT: TStringField;
+    cdsCteNPROTCANCEL: TStringField;
     cdsCteOBS_GERAL: TStringField;
     cdsCteOUDEMI: TDateTimeField;
     cdsCteOUDESCOUTRO: TStringField;
@@ -152,6 +153,7 @@ type
     cdsCteR_RSOCIAL: TStringField;
     cdsCteR_TELEFONE: TStringField;
     cdsCteSTATUS: TStringField;
+    cdsCteSTATUS_CTE: TStringField;
     cdsCteTIPOAMBIENTE: TLongintField;
     cdsCteTIPOCTE: TLongintField;
     cdsCteTIPOSERVICO: TLongintField;
@@ -185,6 +187,7 @@ type
     cdsCteVERPROC: TStringField;
     cdsCteVPREST: TFloatField;
     cdsCteVREC: TFloatField;
+    dsSeguro: TDataSource;
     dsVeiculo: TDataSource;
     dsNFe: TDataSource;
     dsComp: TDataSource;
@@ -209,6 +212,13 @@ type
     sqNFe: TSQLQuery;
     sqQC: TSQLQuery;
     sqComp: TSQLQuery;
+    sqSegCOD_CTE: TLongintField;
+    sqSegCOD_CTE_SEGURO: TLongintField;
+    sqSegNOME_SEGURADORA: TStringField;
+    sqSegNUMERO_APOLICE: TStringField;
+    sqSegNUMERO_AVERBACAO: TStringField;
+    sqSegRESP: TLongintField;
+    sqSegVALOR: TFloatField;
     sqVeic: TSQLQuery;
     sqMot: TSQLQuery;
     sqVeicCAPKG: TLongintField;

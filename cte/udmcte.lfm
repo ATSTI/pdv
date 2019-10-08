@@ -995,6 +995,18 @@ object dmCte: TdmCte
         Name = 'VALVCRED'
         DataType = ftFloat
         Precision = -1
+      end    
+      item
+        Name = 'NPROTCANCEL'
+        DataType = ftString
+        Precision = -1
+        Size = 120
+      end    
+      item
+        Name = 'STATUS_CTE'
+        DataType = ftString
+        Precision = -1
+        Size = 120
       end>
     Database = dmPdv.IbCon
     Transaction = dmPdv.sTrans
@@ -2749,6 +2761,26 @@ object dmCte: TdmCte
       MinValue = 0
       Precision = -1
     end
+    object cdsCteNPROTCANCEL: TStringField
+      FieldKind = fkData
+      FieldName = 'NPROTCANCEL'
+      Index = 172
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 120
+    end
+    object cdsCteSTATUS_CTE: TStringField
+      FieldKind = fkData
+      FieldName = 'STATUS_CTE'
+      Index = 173
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 120
+    end
   end
   object sqQC: TSQLQuery
     FieldDefs = <    
@@ -3035,11 +3067,49 @@ object dmCte: TdmCte
     end
   end
   object sqSeg: TSQLQuery
-    FieldDefs = <>
+    FieldDefs = <    
+      item
+        Name = 'COD_CTE_SEGURO'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'COD_CTE'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'RESP'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'NOME_SEGURADORA'
+        DataType = ftString
+        Precision = -1
+        Size = 120
+      end    
+      item
+        Name = 'NUMERO_APOLICE'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'VALOR'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'NUMERO_AVERBACAO'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end>
     Database = dmPdv.IbCon
     Transaction = dmPdv.sTrans
     SQL.Strings = (
-      'select * from CTE_SEGURO  where COD_CTE =:pCTE'
+      'select * from CTE_SEGURO  where COD_CTE = :pCTE'
     )
     Params = <    
       item
@@ -3049,6 +3119,75 @@ object dmCte: TdmCte
       end>
     left = 352
     top = 88
+    object sqSegCOD_CTE_SEGURO: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_CTE_SEGURO'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object sqSegCOD_CTE: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_CTE'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqSegRESP: TLongintField
+      FieldKind = fkData
+      FieldName = 'RESP'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqSegNOME_SEGURADORA: TStringField
+      FieldKind = fkData
+      FieldName = 'NOME_SEGURADORA'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 120
+    end
+    object sqSegNUMERO_APOLICE: TStringField
+      FieldKind = fkData
+      FieldName = 'NUMERO_APOLICE'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object sqSegVALOR: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALOR'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object sqSegNUMERO_AVERBACAO: TStringField
+      FieldKind = fkData
+      FieldName = 'NUMERO_AVERBACAO'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
   end
   object sqVeic: TSQLQuery
     FieldDefs = <    
@@ -3415,5 +3554,10 @@ object dmCte: TdmCte
     DataSet = sqVeic
     left = 415
     top = 154
+  end
+  object dsSeguro: TDataSource
+    DataSet = sqSeg
+    left = 352
+    top = 147
   end
 end

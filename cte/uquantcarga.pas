@@ -20,6 +20,7 @@ type
     cbTipoUN: TComboBox;
     Label1: TLabel;
     Label2: TLabel;
+    Label3: TLabel;
     procedure btnEditarClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure btnGravarClick(Sender: TObject);
@@ -52,18 +53,24 @@ end;
 
 procedure TfQuantCarga.btnGravarClick(Sender: TObject);
 var vQCstr_sql :string;
+  v_numQC: Integer;
 begin
   vQCstr_sql := '';
   FormatSettings.DecimalSeparator := '.';
   if (dmCte.dsQC.State in [dsInsert]) then
   begin
-    vQCstr_sql := 'INSERT INTO CTE_QC (COD_CTE_QC, COD_CTE ,UNID, ' +
-      ' MEDIDA, QUANT) VALUES ( GEN_ID(GEN_CTE_QC_ID, 1)';
-    vQCstr_sql := vQCstr_sql + ', ' +IntToStr(dmCte.sqQCCOD_CTE.AsInteger);
-    vQCstr_sql := vQCstr_sql + ', ' + QuotedStr(Copy(cbTipoUn.Text,1,2));
-    vQCstr_sql := vQCstr_sql + ', ' + QuotedStr(dmCte.sqQCMEDIDA.AsString);
-    vQCstr_sql := vQCstr_sql + ', ' +  FloatToStr(dmCte.sqQCQUANT.AsFloat) ;
-    vQCstr_sql := vQCstr_sql + ')';
+    if (dmCte.sqQCMEDIDA.AsString <> '') then
+    begin
+      v_numQC := dmPdv.busca_generator('GEN_CTE_QC_ID');
+      vQCstr_sql := 'INSERT INTO CTE_QC (COD_CTE_QC, COD_CTE ,UNID, ' +
+        ' MEDIDA, QUANT) VALUES ( ' + IntToStr(v_numQC);
+      vQCstr_sql := vQCstr_sql + ', ' +IntToStr(dmCte.sqQCCOD_CTE.AsInteger);
+      vQCstr_sql := vQCstr_sql + ', ' + QuotedStr(Copy(cbTipoUn.Text,1,2));
+      vQCstr_sql := vQCstr_sql + ', ' + QuotedStr(dmCte.sqQCMEDIDA.AsString);
+      vQCstr_sql := vQCstr_sql + ', ' +  FloatToStr(dmCte.sqQCQUANT.AsFloat) ;
+      vQCstr_sql := vQCstr_sql + ')';
+      dmCte.sqQCCOD_CTE_QC.AsInteger := v_numQC;
+    end;
   end;
   if (dmCte.dsQC.State in [dsEdit]) then
   begin

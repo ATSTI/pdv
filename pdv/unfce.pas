@@ -1932,32 +1932,37 @@ begin
         AcbrNfe1.Configuracoes.Arquivos.PathSalvar);
     end;
     lblCancelamento2.Caption := 'Enviando Evento, lote : ' + idLote;
-    if (ACBrNFe1.EnviarEvento(StrToInt(idLote))) then
-    begin
-      with ACBrNFe1.WebServices.EnvEvento do
+    Try
+      if (ACBrNFe1.EnviarEvento(StrToInt(idLote))) then
       begin
-        if (EventoRetorno.retEvento.Items[0].RetInfEvento.cStat <>  135) then
+        with ACBrNFe1.WebServices.EnvEvento do
         begin
-          raise Exception.CreateFmt(
-            'Ocorreu erro para cancelar a NFCe %d ,' + sLineBreak +
-            ' Motivo : %s', [
-            EventoRetorno.retEvento.Items[0].RetInfEvento.cStat,
-            EventoRetorno.retEvento.Items[0].RetInfEvento.xMotivo
-          ]);
+          if (EventoRetorno.retEvento.Items[0].RetInfEvento.cStat <>  135) then
+          begin
+            raise Exception.CreateFmt(
+              'Ocorreu erro para cancelar a NFCe %d ,' + sLineBreak +
+              ' Motivo : %s', [
+              EventoRetorno.retEvento.Items[0].RetInfEvento.cStat,
+              EventoRetorno.retEvento.Items[0].RetInfEvento.xMotivo
+            ]);
+          end;
+        end;
+      end
+      else begin
+        with ACBrNFe1.WebServices.EnvEvento do
+        begin
+          raise Exception.Create(
+            'Ocorreram erros no cancelamento :' + sLineBreak +
+            'Ambiente : ' + TpAmbToStr(EventoRetorno.tpAmb) + sLineBreak +
+            'Orgao : ' + IntToStr(EventoRetorno.cOrgao) + sLineBreak +
+            'Status : ' + IntToStr(EventoRetorno.cStat) + sLineBreak +
+            'Motivo : ' + EventoRetorno.xMotivo
+          );
         end;
       end;
-    end
-    else begin
-      with ACBrNFe1.WebServices.EnvEvento do
-      begin
-        raise Exception.Create(
-          'Ocorreram erros no cancelamento :' + sLineBreak +
-          'Ambiente : ' + TpAmbToStr(EventoRetorno.tpAmb) + sLineBreak +
-          'Orgao : ' + IntToStr(EventoRetorno.cOrgao) + sLineBreak +
-          'Status : ' + IntToStr(EventoRetorno.cStat) + sLineBreak +
-          'Motivo : ' + EventoRetorno.xMotivo
-        );
-      end;
+    Except
+      on E:Exception do
+         ShowMessage('Erro para enviar NFCe : ' + e.Message);
     end;
     MemoResp.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetWS;
     memoResp.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetornoWS;
