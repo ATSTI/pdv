@@ -1675,7 +1675,7 @@ object fCTePrincipal: TfCTePrincipal
                   Left = 440
                   Height = 23
                   Top = 68
-                  Width = 128
+                  Width = 136
                   CenturyFrom = 1941
                   MaxDate = 2958465
                   MinDate = -53780
@@ -1684,7 +1684,7 @@ object fCTePrincipal: TfCTePrincipal
                   TrailingSeparator = False
                   TextForNullDate = 'NULL'
                   LeadingZeros = True
-                  Kind = dtkDate
+                  Kind = dtkDateTime
                   TimeFormat = tf24
                   TimeDisplay = tdHMS
                   DateMode = dmComboBox
@@ -10316,6 +10316,8 @@ object fCTePrincipal: TfCTePrincipal
                 Height = 23
                 Top = 440
                 Width = 143
+                ShowCheckBox = True
+                Checked = False
                 CenturyFrom = 1941
                 MaxDate = 47848
                 MinDate = 37165
@@ -10328,8 +10330,8 @@ object fCTePrincipal: TfCTePrincipal
                 TimeFormat = tf24
                 TimeDisplay = tdHMS
                 DateMode = dmComboBox
-                Date = 43718
-                Time = 0.720899467589334
+                Date = 1.7E308
+                Time = 1.7E308
                 UseDefaultSeparators = True
                 HideDateTimeParts = []
                 MonthNames = 'Long'
@@ -10839,12 +10841,15 @@ object fCTePrincipal: TfCTePrincipal
               Align = alCustom
               Caption = 'Data Prevista de Entrega'
               ParentColor = False
+              Visible = False
             end
             object dataRodPrev: TDateTimePicker
               Left = 251
               Height = 23
               Top = 48
               Width = 123
+              ShowCheckBox = True
+              Checked = False
               CenturyFrom = 1941
               MaxDate = 2958465
               MinDate = -53780
@@ -10853,6 +10858,7 @@ object fCTePrincipal: TfCTePrincipal
               TrailingSeparator = False
               TextForNullDate = 'NULL'
               LeadingZeros = True
+              Visible = False
               Kind = dtkDate
               TimeFormat = tf24
               TimeDisplay = tdHMS
@@ -11700,7 +11706,7 @@ object fCTePrincipal: TfCTePrincipal
         Left = 967
         Height = 15
         Top = 352
-        Width = 45
+        Width = 44
         Align = alCustom
         Caption = 'Telefone'
         ParentColor = False

@@ -1781,8 +1781,9 @@ begin
 
     //  Dados do Modal Rodoviário
     infCTeNorm.rodo.RNTRC := edtRodRNTRC.Text;
-    if (dataRodPrev.DateIsNull = False) then
-      infCTeNorm.rodo.dPrev := dataRodPrev.Date;
+    //removido CTe 3.0
+    //if (dataRodPrev.Checked) then
+    //  infCTeNorm.rodo.dPrev := dataRodPrev.Date;
 
     case rgRodLotacao.ItemIndex of
       0: infCTeNorm.rodo.lota := ltNao;
@@ -2342,7 +2343,15 @@ begin
   edtOutCat.Text       := dmCte.cdsCTEOUTCAT.AsString;
 
   edtRodRNTRC.Text     := dmCte.cdsCTERNTRC.AsString;
-  dataRodPrev.date     := dmCte.cdsCTEDATARODPREV.Value;
+  if (dmCte.cdsCTEDATARODPREV.IsNull) then
+  begin
+    dataRodPrev.Checked := False;
+    dataRodPrev.TextForNullDate:='';
+  end
+  else begin
+    dataRodPrev.Checked := True;
+    dataRodPrev.date     := dmCte.cdsCTEDATARODPREV.Value;
+  end;
   rgRodLotacao.ItemIndex := dmCte.cdsCTERGRODLOTACAO.Value;
 
   memxObs.Text         := dmCte.cdsCTEOBS_GERAL.Value;
@@ -2381,7 +2390,15 @@ begin
   }
   // outros
   combOutrosDocs.Text    := dmCte.cdsCTEOUTPDOC.AsString;
-  dataOutrosEmi.DateTime := dmCte.cdsCTEOUDEMI.AsDateTime;
+  if (dmCte.cdsCTEOUDEMI.IsNull) then
+  begin
+    dataOutrosEmi.Checked := False;
+    dataOutrosEmi.TextForNullDate:='';
+  end
+  else begin
+    dataOutrosEmi.Checked := True;
+    dataOutrosEmi.DateTime := dmCte.cdsCTEOUDEMI.AsDateTime;
+  end;
   edtOutrosNum.Text      := dmCte.cdsCTEOUNDOC.AsString;
   edtOutrosDesc.Text     := dmCte.cdsCTEOUDESCOUTRO.AsString;
 
@@ -2453,6 +2470,7 @@ begin
  try
    ACBrCTe1.Configuracoes.Geral.VersaoDF := TVersaoCTe(ve300);
    ACBrCTe1.Configuracoes.Certificados.NumeroSerie := edtNumSerie.Text;
+   ACBrCTe1.DACTE.UsaSeparadorPathPDF := True;
    //ShowMessage('Carregou certificado');
    if (edtCaminho.Text <> '') then
    begin
@@ -2520,7 +2538,7 @@ begin
     vCteStr := vCteStr +  ', CTE_NATOP = ' ;
     vCteStr := vCteStr + QuotedStr(Copy(edtNatOpe.Text,1,60)); //QuotedStr(edtNatOpe.Text);
     vCteStr := vCteStr +  ', DHEMI = ' ;
-    vCteStr := vCteStr +  QuotedStr(FormatDateTime('mm/dd/yyyy',dataGerarCte.date));
+    vCteStr := vCteStr +  QuotedStr(FormatDateTime('mm/dd/yyyy hh:MM',dataGerarCte.date));
     vCteStr := vCteStr +  ', MODELO = ';
     vCteStr := vCteStr +  QuotedStr(Trim(edtModelo.Text));
     vCteStr := vCteStr +  ', ENV_CODCIDADE = ';
@@ -2651,7 +2669,10 @@ begin
     vCteStr := 'UPDATE CTE SET RNTRC = ';
     vCteStr := vCteStr + QuotedStr(edtRodRNTRC.Text);
     vCteStr := vCteStr +  ',DATARODPREV = ';
-    vCteStr := vCteStr + QuotedStr(FormatDateTime('mm/dd/yyyy',dataRodPrev.date));
+    if (dataRodPrev.Checked) then
+      vCteStr := vCteStr + QuotedStr(FormatDateTime('mm/dd/yyyy',dataRodPrev.date))
+    else
+      vCteStr := vCteStr +  ' NULL ';
     vCteStr := vCteStr +  ',RGRODLOTACAO = ';
     vCteStr := vCteStr + IntToStr(rgRodLotacao.ItemIndex);
 
@@ -2685,7 +2706,10 @@ begin
     vCteStr := vCteStr +  ',OUNDOC = ';
     vCteStr := vCteStr +  QuotedStr(edtOutrosNum.Text);
     vCteStr := vCteStr +  ',OUDEMI = ';
-    vCteStr := vCteStr +  QuotedStr(FormatDateTime('mm/dd/yyyy',dataOutrosEmi.date));
+    if (dataOutrosEmi.Checked) then
+      vCteStr := vCteStr +  QuotedStr(FormatDateTime('mm/dd/yyyy',dataOutrosEmi.date))
+    else
+      vCteStr := vCteStr +  'NULL ';
     vCteStr := vCteStr +  ',OUVDOCFISC= ';
     vCteStr := vCteStr +  FloatToStr(dmCte.cdsCteOUVDOCFISC.AsFloat);
 
@@ -3207,7 +3231,7 @@ begin
     strInsere := strInsere + ', ' + QuotedStr(edtProPred.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtOutCat.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtRodRNTRC.Text);
-    if (not dataRodPrev.DateIsNull) then
+    if (dataRodPrev.Checked) then
       strInsere := strInsere + ', ' + QuotedStr(FormatDateTime('mm/dd/yyyy',dataRodPrev.date))
     else
       strInsere := strInsere + ', NULL';
@@ -3217,7 +3241,7 @@ begin
     strInsere := strInsere + ', ' + QuotedStr(combOutrosDocs.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtOutrosDesc.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtOutrosNum.Text);
-    if (not dataRodPrev.DateIsNull) then
+    if (dataRodPrev.Checked) then
       strInsere := strInsere + ', ' + QuotedStr(FormatDateTime('mm/dd/yyyy',dataRodPrev.date))
     else
       strInsere := strInsere + ', NULL';
@@ -4077,6 +4101,9 @@ begin
   end;
   lblCteAtual.Caption := IntToStr(dmCte.cdsCteCTE_NUMERO.AsInteger) +
     '-' + dmCte.cdsCteD_FANTASIA.AsString;
+  lblCteAtual1.Font.Color:=clBlack;
+  if (rgTipoAmb.ItemIndex = 1) then
+    lblCteAtual1.Font.Color:=clRed;
   lblCteAtual1.Caption := lblCteAtual.Caption;
   StatusBar1.SimpleText := 'Editando CTe : ' +
     IntToStr(dmCte.cdsCTECOD_CTE.AsInteger);
@@ -4458,6 +4485,9 @@ begin
   end;
   lblCteAtual.Caption := IntToStr(dmCte.cdsCteCTE_NUMERO.AsInteger) +
     '-' + dmCte.cdsCteD_FANTASIA.AsString;
+  lblCteAtual1.Font.Color:=clBlack;
+  if (rgTipoAmb.ItemIndex = 1) then
+    lblCteAtual1.Font.Color:=clRed;
   lblCteAtual1.Caption := lblCteAtual.Caption;
   edtDestBuscaExit(Nil);
 end;
@@ -4803,6 +4833,7 @@ begin
     exit;
   end;
   dmCte.sqNFe.Edit;
+  fNFe.path_xml := edtCteImportar.Text;
   fNFe.ShowModal;
 end;
 
@@ -5271,6 +5302,12 @@ begin
   edtModelo.Text := IntToStr(vModeloCte);
 
   buscaEmpresa(comboEmpresa.Text);
+  LerConfiguracao;
+
+  //dataOutrosEmi.Date := StrToDate('01/01/01');
+  //dataRodPrev.Date := StrToDate('01/01/01');
+  dataOutrosEmi.Checked := False;
+  dataRodPrev.Checked := False;
 
   if(edtCodEmitente.Text = '') then
   begin
@@ -5370,7 +5407,7 @@ begin
   end;
   if not(dmCte.sqNFe.Active)then
     dmCte.sqNFe.Active;
-
+  fNFe.path_xml := edtCteImportar.Text;
   dmCte.sqNFe.Append;
   dmCte.sqNFeCTE_NFE.AsInteger := val_genCte;
   fNFe.btnEdita.Visible :=False;
