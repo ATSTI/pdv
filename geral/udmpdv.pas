@@ -244,6 +244,7 @@ type
     vendedor_padrao: Integer;
     imp_controle_porta: Boolean;
     imp_Interval: Integer;
+    imp_vias: Integer;
     imp_LinhasBuffer: Integer;
     imp_ColunaFonteNormal: Integer;
     function executaSql(strSql: String): Boolean;
@@ -311,6 +312,7 @@ begin
       tamanhoLinha := conf.ReadInteger('IMPRESSORA', 'TamanhoLinha', 36);
       imp_controle_porta := conf.ReadBool('IMPRESSORA', 'ControlaPorta', False);
       imp_Interval := conf.ReadInteger('IMPRESSORA', 'SendBytesInterval', 0);
+      imp_vias := conf.ReadInteger('IMPRESSORA', 'NumeroVias', 1);
       imp_LinhasBuffer:= conf.ReadInteger('IMPRESSORA', 'LinhasBuffer', 0);
       //snh:= EncodeStringBase64(snh); // Ver a senha Encryptada
       snh:= DecodeStringBase64(snh);
@@ -400,11 +402,11 @@ begin
   sqBusca.SQL.Clear;
   sqBusca.SQL.Add('SELECT r.VERSAO FROM ATUALIZA r WHERE r.CODATUALIZA = 5000');
   sqBusca.Active:=True;
-  versao_sistema:=sqBusca.FieldByName('VERSAO').AsString;
-  if (versao_sistema <> '1.2') then
-  begin
+  versao_sistema := sqBusca.FieldByName('VERSAO').AsString;
+  //if (versao_sistema <> '1.2') then
+  //begin
     atualiza_bd();
-  end;
+  //end;
 end;
 
 procedure TdmPdv.IbConAfterDisconnect(Sender: TObject);
@@ -419,6 +421,8 @@ end;
 
 procedure TdmPdv.atualiza_bd();
 begin
+  if (versao_sistema = '1.1') then
+  begin
   Try
     IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD STATE SMALLINT');
   Except
@@ -467,21 +471,49 @@ begin
     IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD DESCONTO double precision');
   Except
   end;
-
-  {
-  Try
-    IbCon.ExecuteDirect('ALTER TABLE USUARIO ADD PODE_EXCLUIR CHAR(1)');
-  Except
-  end;
-  Try
-    IbCon.ExecuteDirect('ALTER TABLE USUARIO ADD PODE_DESCONTO CHAR(1)');
-  Except
-  end;}
-
-
-  IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.2') +
+    IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.2') +
     ' WHERE CODATUALIZA = 5000');
-  sTrans.Commit;
+    sTrans.Commit;
+  end;
+  if (versao_sistema = '1.2') then
+  begin
+    Try
+      IbCon.ExecuteDirect('ALTER TABLE MOVIMENTO ADD DATA_FECHOU TIMESTAMP');
+    Except
+    end;
+    IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.3') +
+    ' WHERE CODATUALIZA = 5000');
+    sTrans.Commit;
+  end;
+  if (versao_sistema = '1.3') then
+  begin
+    Try
+      IbCon.ExecuteDirect('ALTER TABLE CTE ADD UFPER VARCHAR( 2 ) ' +
+        ', ADD INFADFISCO VARCHAR( 500 ), ADD VPIS DOUBLE PRECISION ' +
+        ', ADD VCOFINS DOUBLE PRECISION, ADD VIR DOUBLE PRECISION ' +
+        ', ADD VINSS DOUBLE PRECISION, ADD VCSLL DOUBLE PRECISION ' +
+        ', ADD XDESCSERV VARCHAR( 30 ), ADD QCARGA DOUBLE PRECISION ' +
+        ', ADD TPSERV INTEGER, ADD TAF VARCHAR( 12 ) ' +
+        ', ADD NROREGESTADUAL VARCHAR( 25 ), ADD VEICRENAVAM VARCHAR( 11 ) ' +
+        ', ADD VEICPLACA VARCHAR( 7 ), ADD VEIUF VARCHAR( 2 ) ' +
+        ', ADD OBSCONT VARCHAR( 400 ), ADD TCPF VARCHAR( 11 ) ' +
+        ', ADD TCNPJ VARCHAR( 14 ) , ADD TTAF VARCHAR( 12 ) ' +
+        ', ADD TNROREGESTADUAL VARCHAR( 25 ), ADD TXNOME VARCHAR( 60 ) ' +
+        ', ADD TIE VARCHAR( 14 ), ADD TUF VARCHAR( 2 ) ' +
+        ', ADD TTPPROP VARCHAR( 14 ), ADD TUFT VARCHAR( 2 ) ' +
+        ', ADD OBSFISCO  VARCHAR( 300 )');
+        IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.4') +
+        ' WHERE CODATUALIZA = 5000');
+        sTrans.Commit;
+    Except
+      on dmPdv: EDatabaseError do
+      begin
+        MessageDlg('Error','Erro na atualização banco de dados : ' +
+          dmPdv.Message,mtError,[mbOK],0);
+        sTrans.Rollback;
+      end;
+    end;
+  end;
 end;
 
 procedure TdmPdv.gravaLog(DataLog: TDateTime; usuario: String;

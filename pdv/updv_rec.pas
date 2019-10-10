@@ -1014,7 +1014,19 @@ begin
   ACBrPosPrinter1.Ativar;
 
   ACBrPosPrinter1.Buffer.Text := MemoImp.Lines.Text;
-  ACBrPosPrinter1.Imprimir;
+  if (dmPdv.imp_vias = 1) then
+    ACBrPosPrinter1.Imprimir;
+  if (dmPdv.imp_vias = 2) then
+  begin
+    ACBrPosPrinter1.Imprimir;
+    ACBrPosPrinter1.Imprimir;
+  end;
+  if (dmPdv.imp_vias = 3) then
+  begin
+    ACBrPosPrinter1.Imprimir;
+    ACBrPosPrinter1.Imprimir;
+    ACBrPosPrinter1.Imprimir;
+  end;
 
 end;
 

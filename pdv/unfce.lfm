@@ -136,8 +136,8 @@ object fNfce: TfNfce
     Height = 408
     Top = 72
     Width = 646
-    ActivePage = TabSheet4
-    TabIndex = 0
+    ActivePage = TabSheet5
+    TabIndex = 1
     TabOrder = 5
     object TabSheet4: TTabSheet
       Caption = 'NFCe'
@@ -3143,6 +3143,70 @@ object fNfce: TfNfce
             Caption = 'Mod. Imp.'
             ParentColor = False
           end
+          object BitBtn8: TBitBtn
+            Left = 20
+            Height = 24
+            Top = 216
+            Width = 132
+            Caption = 'Carrega Certificado'
+            Glyph.Data = {
+              AA030000424DAA03000000000000360000002800000011000000110000000100
+              18000000000074030000C40E0000C40E00000000000000000000FEFCFBFFFDFB
+              FCFEF8F8FFF7F9FFF9F6FDF6FBFDFCFFFCFEFFF7FEFFF5FDFFF6FDFFF7FCFFF9
+              FFFEF7FEFEFAFEFEF9FFFBF6FF00F9FAF8FBFBFBF7F9F8FBFEFBF5F6FBFAFAFC
+              FAF7FBFDF4FEFEF8FEFFFFFFFFFFFFFCF8F8FBF9FAFEFBFEFBF7FDFEF9FFFDF8
+              FF00F5FDF7F5FCF9FAFCFEFEFDFFFAF6FDF8F5FDFAF9FEFAF9FAFFFFFF828181
+              AFB3AFFFFFFFFAFCF8FCFDFEFAF9FEFCF8FFFFFBFF00FBFFFFFBFFFFFFFFFFFF
+              FFFFFFFFFFFCFFFFFDFFFFFCFFFA61896112500F1F451AD9D8D9FFFFFFFFFFFF
+              F8FCFDFBFBFEFEFBFF00748174545C53545554605E624E5651546E523573350C
+              680D18961247F3411770143348342D4A30BCCDC0FCFFFEF5F8F9F7F8FE00858D
+              7D93968DD3CFCD6E6C69B5C6B272A36E2C892824B31F22F31B15FF1027B5253E
+              5C3F4A704E95AB97FFFFFFF2F9F6F8FAFF0086A08DD2D9D4EBE4E7EDE6EAF7FE
+              ECBFE3B245A33E53DF4E34DF2F18CA143CD83736A03D05180BC5D1D1FFFFFEF8
+              FAEDF6FEF4006B917B929E99FAF8FB917785857870637B503071293F99391B60
+              1A6AAD6432B22F2BC837002900AFBAB9FFFFFFFEFCEFF8FFEC0090A389E7E8DE
+              F9F3F5F0D8E7F6E7E7ECF7D9EFFEDC9BBF8BB4D8A9FAFFF5C4F5CA319E3664CB
+              521F361FFFFFFFF9FBFFFDFCFB00909076A5A496FBF4F78076856E646A7B756D
+              73715D8C8B74FAF2F9FFFAFFF6FFFD91CA8F6AC74535922175907DFEFFFFFFF7
+              FF00A09981E1E5D6ECF8F6EAFCFFFFFFFFEAE5E9DCCED1FFFFFF957B85D5C5D2
+              FFFFFFC7D7BB64A154309524398C3EAFD1B9FFFDFF00918E7C97A79A8CB0AD63
+              95959ABBBD7C7F8361464BAB868D825F6CAB98A686837C969C8850705C6AB073
+              408E3B598B52FFFFFF00979B92B7D2C977B0A75AA19B09413C95A8A49E9795EB
+              DCDAE7DDDB71716C989C8DDADDD46A7182A0B7B3C0E4BC35692783A580007D8B
+              8499BEB371AC9F6FB8AA7BB4A7DAF0ECFFFFFFFFFFFEFFFFF8F5FFF4FFFFFFB7
+              BEBE35373BB8B6C0FFFFFFC4D9C424521D0087958EA0BBAEA7D1C280AFA2C9F0
+              E2D9EDE7EDF3EEEAEEE2E8F1E6E2F8E7D6ECE5D9E6E27B8070ADA6ABFFFFFFFB
+              FEFFFBFFF8008F968ABFCDBEDDF3E095AB9CD4E6DAADB4B1CBCFCEB5BCBAA9B9
+              B0BCD7C5A0B9AAD6E8D74A5442B0AEA9FFFFFFF4F5F7F0FCF7008B8D7B8A8C79
+              979A858789789593898C888897939B7E81898B97977B91887B947B91A58B636C
+              65CBD0C6FFFFFAF9F8F7FEF6FF00
+            }
+            OnClick = BitBtn8Click
+            TabOrder = 9
+          end
+          object rgAmbiente: TRadioGroup
+            Left = 16
+            Height = 39
+            Top = 167
+            Width = 185
+            AutoFill = True
+            Caption = 'Ambiente'
+            ChildSizing.LeftRightSpacing = 6
+            ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+            ChildSizing.EnlargeVertical = crsHomogenousChildResize
+            ChildSizing.ShrinkHorizontal = crsScaleChilds
+            ChildSizing.ShrinkVertical = crsScaleChilds
+            ChildSizing.Layout = cclLeftToRightThenTopToBottom
+            ChildSizing.ControlsPerLine = 2
+            ClientHeight = 19
+            ClientWidth = 181
+            Columns = 2
+            Items.Strings = (
+              'Produção'
+              'Homologação'
+            )
+            TabOrder = 10
+          end
         end
       end
       object btnNFce3: TBitBtn
@@ -3155,9 +3219,9 @@ object fNfce: TfNfce
         TabOrder = 5
       end
       object Panel1: TPanel
-        Left = 80
+        Left = 24
         Height = 251
-        Top = 120
+        Top = 104
         Width = 456
         ClientHeight = 251
         ClientWidth = 456
@@ -3355,9 +3419,9 @@ object fNfce: TfNfce
     SimplePanel = False
   end
   object pnCancelamento: TPanel
-    Left = 144
+    Left = 160
     Height = 173
-    Top = 248
+    Top = 224
     Width = 343
     ClientHeight = 173
     ClientWidth = 343
@@ -3528,12 +3592,14 @@ object fNfce: TfNfce
     Configuracoes.Arquivos.SalvarEvento = True
     Configuracoes.Arquivos.SalvarApenasNFeProcessadas = True
     Configuracoes.WebServices.Visualizar = True
-    Configuracoes.WebServices.UF = 'SP'
+    Configuracoes.WebServices.UF = 'MS'
     Configuracoes.WebServices.AguardarConsultaRet = 0
     Configuracoes.WebServices.Salvar = True
     Configuracoes.WebServices.QuebradeLinha = '|'
     Configuracoes.WebServices.TimeZoneConf.ModoDeteccao = tzManual
     Configuracoes.WebServices.TimeZoneConf.TimeZoneStr = '-03:00'
+    Configuracoes.Certificados.ArquivoPFX = 'C:\Home\mais_flores_2019.pfx'
+    Configuracoes.Certificados.DadosPFX = '1234'
     Configuracoes.RespTec.IdCSRT = 0
     DANFE = ACBrNFeDANFeESCPOS1
     left = 49

@@ -34,6 +34,7 @@ type
     BitBtn5: TBitBtn;
     BitBtn6: TBitBtn;
     BitBtn7: TBitBtn;
+    BitBtn8: TBitBtn;
     btnFechar: TBitBtn;
     btnNFce: TBitBtn;
     btnNFce1: TBitBtn;
@@ -87,6 +88,7 @@ type
     pnCancelamento: TPanel;
     RadioGroup1: TRadioGroup;
     RadioGroup2: TRadioGroup;
+    rgAmbiente: TRadioGroup;
     StatusBar1: TStatusBar;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
@@ -110,6 +112,7 @@ type
     procedure BitBtn5Click(Sender: TObject);
     procedure BitBtn6Click(Sender: TObject);
     procedure BitBtn7Click(Sender: TObject);
+    procedure BitBtn8Click(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure btnNFce1Click(Sender: TObject);
     procedure btnNFce2Click(Sender: TObject);
@@ -242,7 +245,7 @@ begin
   ACBrNFe1.DANFE := ACBrNFeDANFeESCPOS1;
 
   //ACBrNFe1.Configuracoes.Geral.SSLLib := libCapicom;
-
+  try
   memoLog.Lines.Add('Gerando XML');
   GerarNFCe(vAux);
   memoLog.Lines.Add('Assinando XML');
@@ -267,13 +270,7 @@ begin
   if (dmPdv.NFE_Teste = 'N') then
   begin
     memoLog.Lines.Add('Enviando ...');
-    Try
-      ACBrNFe1.Enviar(vNumLote,True,Sincrono);
-    Except
-      ver_var := IntToStr(ACBrNFe1.WebServices.Retorno.cStat);
-      ShowMessage('Erro para Enviar a NFCe, erro : ' + ver_var);
-      exit;
-    end;
+    ACBrNFe1.Enviar(vNumLote,True,Sincrono);
     memoLog.Lines.Add('cStat : ' + IntToStr(ACBrNFe1.WebServices.Retorno.cStat));
     if (ACBrNFe1.WebServices.Retorno.cStat = 100) then
     begin
@@ -281,6 +278,16 @@ begin
       Recibo := ACBrNFe1.WebServices.Retorno.Recibo;
       GravarDadosNF(protocolo, recibo);
     end;
+  end;
+  Except
+    on E:Exception do
+    begin
+      ver_var := IntToStr(ACBrNFe1.WebServices.Retorno.cStat);
+      ShowMessage('Erro para Enviar a NFCe, erro : ' + ver_var + ' MSG : ' + e.Message);
+    end;
+  end;
+
+    {
     if ((ACBrNFe1.WebServices.Retorno.cStat = 204)
       or (ACBrNFe1.WebServices.Retorno.cStat = 539)) then
     begin
@@ -327,7 +334,7 @@ begin
         GravarDadosNF(protocolo, recibo);
       end;
     end;
-  end;
+  end; }
 
   MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetWS);
   MemoDados.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetornoWS);
@@ -482,6 +489,7 @@ begin
   edtCaminho.Text := dmPdv.CaminhoCert;
   edtSenha.Text   := dmPdv.SenhaCert;
   edtNumSerie.Text:= dmPdv.NumSerieCert;
+  edCertificado.Text := dmPdv.NumSerieCert;
 
   { coloquei no botão NFCE
   ACBrNFe1.Configuracoes.Certificados.ArquivoPFX  := dmPdv.CaminhoCert;
@@ -522,6 +530,13 @@ begin
   if (Trim(dmPdv.sqEmpresaTIPO.AsString) = '1') then
     StatusBar1.Panels[0].Text := 'NFCe PRODUCAO';
   //ACBrNFe1.Integrador := ACBrIntegrador1;
+  if(dmPdv.sqEmpresaTIPO.AsInteger = 1 ) then
+  begin
+    rgAmbiente.ItemIndex := 0;
+  end
+  else begin
+    rgAmbiente.ItemIndex := 1;
+  end;
   ACBrNFeDANFeESCPOS1.ACBrNFe := ACBrNFe1;
   ACBrNFeDANFeESCPOS1.PosPrinter := ACBrPosPrinter1;
   ACBrPosPrinter1.Porta := dmPdv.portaImp;
@@ -718,6 +733,10 @@ begin
   end;
   with ACBrNFe1.NotasFiscais.Add.NFe do
   begin
+    infRespTec.CNPJ := '08382545000111';
+    infRespTec.email:= 'carlos@atsti.com.br';
+    infRespTec.xContato := 'Carlos R. Silveira';
+    infRespTec.fone := '19992159534';
     //02/09/2019 troquei a linha abaixa
     //Ide.cNF       := num_nfce; //Caso não seja preenchido será gerado um número aleatório pelo componente
     Ide.cNF       := GerarCodigoNumerico(num_nfce);
@@ -759,7 +778,8 @@ begin
       Ide.cUF       := 35; // SP
     if (dmpdv.sqEmpresaUF.AsString = 'BA') then
       Ide.cUF       := 29;
-
+    if (Trim(dmpdv.sqEmpresaUF.AsString) = 'MS') then
+      Ide.cUF       := 50;
     Ide.cMunFG    := StrToInt(RemoveChar(dmPdv.sqEmpresaCD_IBGE.AsString));
     Ide.finNFe    := fnNormal;
     Ide.tpImp     := tiNFCe;
@@ -1720,9 +1740,10 @@ begin
 end;
 
 procedure TfNfce.carregaAcbr;
+var ver_strc: String;
 begin
   ACBrNFe1.SSL.DescarregarCertificado;
-  if (dmPdv.CaminhoCert <> '') then
+  if (edtCaminho.Text <> '') then
   begin
     ACBrNFe1.Configuracoes.Certificados.ArquivoPFX  := dmPdv.CaminhoCert;
     ACBrNFe1.Configuracoes.Certificados.Senha       := dmPdv.SenhaCert;
@@ -1732,7 +1753,17 @@ begin
     edCertificado.Text := edtNumSerie.Text;
     ACBrNFe1.Configuracoes.Certificados.NumeroSerie := edCertificado.Text;
   end;
-  ACBrNFe1.Configuracoes.WebServices.UF := Trim(dmPdv.sqEmpresaUF.AsString);
+  Try
+    ACBrNFe1.SSL.CarregarCertificado;
+  except
+    on e:Exception do
+    begin
+      ShowMessage('Erro carregar certificado ' + e.Message );
+      Exit;
+    end;
+  end;
+  ver_strc := Trim(dmPdv.sqEmpresaUF.AsString);
+  ACBrNFe1.Configuracoes.WebServices.UF := ver_strc;
 
   if (dmPdv.sqEmpresaDIVERSOS3.AsString <> '') then
   begin
@@ -1764,7 +1795,6 @@ begin
     ACBrNFe1.Configuracoes.WebServices.Ambiente := taHomologacao;
 
   //edtPathSchemas.Text  := Ini.ReadString( 'Geral','PathSchemas'  ,PathWithDelim(ExtractFilePath(Application.ExeName))+'Schemas\') ;
-  ACBrNFe1.SSL.CarregarCertificado;
 
   with ACBrNFe1.Configuracoes.Geral do
   begin
@@ -1773,6 +1803,7 @@ begin
     SSLHttpLib   := TSSLHttpLib(cbHttpLib.ItemIndex);
     SSLXmlSignLib:= TSSLXmlSignLib(cbXmlSignLib.ItemIndex);
   end;
+  ACBrNFe1.SSL.CarregarCertificado;
 end;
 
 procedure TfNfce.BitBtn1Click(Sender: TObject);
@@ -1976,6 +2007,11 @@ end;
 procedure TfNfce.BitBtn7Click(Sender: TObject);
 begin
   pnCancelamento.Visible:=False;
+end;
+
+procedure TfNfce.BitBtn8Click(Sender: TObject);
+begin
+  ACBrNFe1.SSL.CarregarCertificado;;
 end;
 
 procedure TfNfce.btnFecharClick(Sender: TObject);
