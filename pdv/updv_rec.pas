@@ -30,7 +30,11 @@ type
     acNfce: TAction;
     acVoltarVenda: TAction;
     ActionListFechamento: TActionList;
+    BitBtn1: TBitBtn;
     BitBtn19: TBitBtn;
+    BitBtn2: TBitBtn;
+    BitBtn4: TBitBtn;
+    BitBtn5: TBitBtn;
     btnCupom: TBitBtn;
     BitBtn16: TBitBtn;
     BitBtn17: TBitBtn;
@@ -48,11 +52,11 @@ type
     DBGrid1: TDBGrid;
     dsPag: TDataSource;
     edCupom: TEdit;
+    edDesconto: TMaskEdit;
     edParcela: TEdit;
     edRestante: TMaskEdit;
     edTroco: TMaskEdit;
     edValorTotal: TMaskEdit;
-    edDesconto: TMaskEdit;
     edValorVendaTotal: TMaskEdit;
     edVDesconto: TMaskEdit;
     edVendedor: TMaskEdit;
@@ -82,6 +86,7 @@ type
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
     Panel1: TPanel;
+    pnCartoes: TPanel;
     Panel3: TPanel;
     Panel4: TPanel;
     PopupMenu1: TPopupMenu;
@@ -115,10 +120,14 @@ type
     procedure BitBtn17Click(Sender: TObject);
     procedure BitBtn18Click(Sender: TObject);
     procedure BitBtn19Click(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn20Click(Sender: TObject);
     procedure BitBtn21Click(Sender: TObject);
     procedure BitBtn22Click(Sender: TObject);
     procedure BitBtn26Click(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
+    procedure BitBtn4Click(Sender: TObject);
+    procedure BitBtn5Click(Sender: TObject);
     procedure btnCadeiraClick(Sender: TObject);
     procedure btnCupomClick(Sender: TObject);
     procedure btnDescontoPercentClick(Sender: TObject);
@@ -160,6 +169,7 @@ type
       vlr_tot_rec: Double; via_rec: Integer; n_doc_rec: String; forma_rec: String;
       vlr_via_rec: Double);
   public
+    OutrosCartoes: String;
     vStatus : Integer;
     vVendedor: Integer;
     vUsuario: Integer;
@@ -1014,19 +1024,20 @@ begin
   ACBrPosPrinter1.Ativar;
 
   ACBrPosPrinter1.Buffer.Text := MemoImp.Lines.Text;
-  if (dmPdv.imp_vias = 1) then
-    ACBrPosPrinter1.Imprimir;
+  ACBrPosPrinter1.Imprimir;
   if (dmPdv.imp_vias = 2) then
   begin
-    ACBrPosPrinter1.Imprimir;
+    ACBrPosPrinter1.Desativar;
+    ACBrPosPrinter1.Ativar;
+    ACBrPosPrinter1.Buffer.Text := MemoImp.Lines.Text;
     ACBrPosPrinter1.Imprimir;
   end;
-  if (dmPdv.imp_vias = 3) then
+  {if (dmPdv.imp_vias = 3) then
   begin
     ACBrPosPrinter1.Imprimir;
     ACBrPosPrinter1.Imprimir;
     ACBrPosPrinter1.Imprimir;
-  end;
+  end;}
 
 end;
 
@@ -1331,6 +1342,13 @@ begin
 
 end;
 
+procedure TfPDV_Rec.BitBtn1Click(Sender: TObject);
+begin
+  lblForma.Caption:='7-Sianet';
+  pnCartoes.Visible:=False;
+  edPagamento.SetFocus;
+end;
+
 procedure TfPDV_Rec.BitBtn17Click(Sender: TObject);
 begin
 
@@ -1510,8 +1528,15 @@ end;
 
 procedure TfPDV_Rec.acCartaoCreditoExecute(Sender: TObject);
 begin
-  lblForma.Caption:='3-Cartao Credito';
-  edPagamento.SetFocus;
+  if (OutrosCartoes = 'S') then
+  begin
+    pnCartoes.Visible:=True;
+    BitBtn1.SetFocus;
+  end
+  else begin
+    lblForma.Caption:='3-Cartao Credito';
+    edPagamento.SetFocus;
+  end;
 end;
 
 procedure TfPDV_Rec.acCancelaFechamentoExecute(Sender: TObject);
@@ -1565,6 +1590,25 @@ end;
 
 procedure TfPDV_Rec.BitBtn26Click(Sender: TObject);
 begin
+end;
+
+procedure TfPDV_Rec.BitBtn2Click(Sender: TObject);
+begin
+  lblForma.Caption:='8-Brasil Card';
+  pnCartoes.Visible:=False;
+  edPagamento.SetFocus;
+end;
+
+procedure TfPDV_Rec.BitBtn4Click(Sender: TObject);
+begin
+  lblForma.Caption:='3-Cartao Credito';
+  pnCartoes.Visible:=False;
+  edPagamento.SetFocus;
+end;
+
+procedure TfPDV_Rec.BitBtn5Click(Sender: TObject);
+begin
+  pnCartoes.Visible:=False;
 end;
 
 procedure TfPDV_Rec.btnCadeiraClick(Sender: TObject);

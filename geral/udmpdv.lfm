@@ -7,7 +7,7 @@ object dmPdv: TdmPdv
   Width = 473
   PPI = 96
   object IbCon: TIBConnection
-    Connected = True
+    Connected = False
     LoginPrompt = False
     DatabaseName = 'c:\home\bd\sge_debora.fdb'
     KeepConnection = True
@@ -24,7 +24,7 @@ object dmPdv: TdmPdv
     top = 18
   end
   object sTrans: TSQLTransaction
-    Active = True
+    Active = False
     Database = IbCon
     left = 136
     top = 16

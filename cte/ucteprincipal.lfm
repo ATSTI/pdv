@@ -684,9 +684,9 @@ object fCTePrincipal: TfCTePrincipal
     Height = 633
     Top = 0
     Width = 1305
-    ActivePage = TabCte
+    ActivePage = TabCteGeradas
     Align = alClient
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 1
     object TabCteGeradas: TTabSheet
       Caption = 'CT-e Geradas'
@@ -1563,9 +1563,9 @@ object fCTePrincipal: TfCTePrincipal
         Height = 605
         Top = 0
         Width = 1297
-        ActivePage = TabDados
+        ActivePage = TabSheet3
         Align = alClient
-        TabIndex = 0
+        TabIndex = 1
         TabOrder = 0
         object TabDados: TTabSheet
           Cursor = crHandPoint
@@ -8377,7 +8377,6 @@ object fCTePrincipal: TfCTePrincipal
             Height = 23
             Top = 136
             Width = 224
-            OnChange = dbValInfCargaChange
             TabOrder = 16
           end
           object StaticText25: TStaticText
@@ -8393,7 +8392,6 @@ object fCTePrincipal: TfCTePrincipal
             Height = 23
             Top = 200
             Width = 224
-            OnChange = dbValInfCargaChange
             TabOrder = 18
           end
           object StaticText26: TStaticText
@@ -8409,7 +8407,6 @@ object fCTePrincipal: TfCTePrincipal
             Height = 23
             Top = 232
             Width = 224
-            OnChange = dbValInfCargaChange
             TabOrder = 20
           end
           object StaticText27: TStaticText
@@ -8425,7 +8422,6 @@ object fCTePrincipal: TfCTePrincipal
             Height = 23
             Top = 264
             Width = 224
-            OnChange = dbValInfCargaChange
             TabOrder = 22
           end
           object StaticText22: TStaticText
@@ -8450,7 +8446,6 @@ object fCTePrincipal: TfCTePrincipal
             Height = 23
             Top = 104
             Width = 224
-            OnChange = dbValInfCargaChange
             TabOrder = 25
           end
           object valICMSPartI: TEdit
@@ -8458,7 +8453,6 @@ object fCTePrincipal: TfCTePrincipal
             Height = 23
             Top = 168
             Width = 224
-            OnChange = dbValInfCargaChange
             TabOrder = 26
           end
           object StaticText28: TStaticText
@@ -13544,6 +13538,7 @@ object fCTePrincipal: TfCTePrincipal
     top = 208
   end
   object ACBrCTeDACTeRL1: TACBrCTeDACTeRL
+    UsaSeparadorPathPDF = True
     Sistema = 'Projeto ACBr - www.projetoacbr.com.br'
     MargemInferior = 0.8
     MargemSuperior = 0.8

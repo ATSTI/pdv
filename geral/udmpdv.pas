@@ -513,6 +513,9 @@ begin
         sTrans.Rollback;
       end;
     end;
+    IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.4') +
+      ' WHERE CODATUALIZA = 5000');
+    sTrans.Commit;
   end;
 end;
 

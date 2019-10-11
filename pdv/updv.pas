@@ -1116,6 +1116,13 @@ begin
   DBGrid2.Columns[2].FieldName:='UNIDADEMEDIDA';
   DBGrid2.Columns[3].FieldName:='VALOR_PRAZO';
   DBGrid2.Columns[3].DisplayFormat:=',##0.00';
+  fPDV_Rec.OutrosCartoes:='N';
+  sqlP := 'SELECT * FROM PARAMETRO WHERE PARAMETRO = ' + QuotedStr('OUTROSCARTOES');
+  dmPdv.busca_sql(sqlP);
+  if (not dmPdv.sqBusca.IsEmpty) then
+  begin
+    fPDV_Rec.OutrosCartoes:='S';
+  end;
 
   sqlP := 'SELECT CODCAIXA, NOMECAIXA ';
   sqlP += ' FROM CAIXA_CONTROLE  ';

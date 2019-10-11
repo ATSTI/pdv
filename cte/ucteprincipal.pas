@@ -696,7 +696,6 @@ type
     procedure cbSSLTypeChange(Sender: TObject);
     procedure cbXmlSignLibChange(Sender: TObject);
     procedure comboEmpresaChange(Sender: TObject);
-    procedure dbValInfCargaChange(Sender: TObject);
     procedure dbValTotPrestExit(Sender: TObject);
     procedure dgGridCTEDblClick(Sender: TObject);
     procedure edtBuscaTomadorExit(Sender: TObject);
@@ -736,7 +735,6 @@ type
     procedure sbtnPathSalvarClick(Sender: TObject);
     procedure StaticText13Click(Sender: TObject);
     procedure StaticText22Click(Sender: TObject);
-    procedure StaticText6Click(Sender: TObject);
     procedure StaticText7Click(Sender: TObject);
     procedure TabCteGeradasShow(Sender: TObject);
     procedure TabDadosComplementaresShow(Sender: TObject);
@@ -2220,11 +2218,13 @@ begin
 end;
 
 procedure TfCTePrincipal.CarregarCte(NumCte: String);
+var v_str_c: String;
 begin
   FormatSettings.DecimalSeparator := '.';
   val_genCte := dmCte.cdsCTECOD_CTE.AsInteger;
   if (dmCte.cdsCTE.Active) then
     dmCte.cdsCTE.Edit;
+  v_str_c := dmCte.cdsCTECTE_CFOP.AsString;
   edtCFOP.Text            := dmCte.cdsCTECTE_CFOP.AsString;
   edtNatOpe.Text          := dmCte.cdsCTECTE_NATOP.AsString;
   edtModelo.Text          := dmCte.cdsCTEMODELO.AsString;
@@ -2232,7 +2232,8 @@ begin
   edtNumCte.Text          := dmCte.cdsCTECTE_NUMERO.AsString;
   dataGerarCte.DateTime   := dmCte.cdsCTEDHEMI.AsDateTime;
   edtEmitenteCte.Text     := dmCte.cdsCTEE_FANTASIA.AsString;
-  rgModal.ItemIndex       := StrToInt(Trim(dmCte.cdsCTEMODAL.AsString));
+  v_str_c  := Trim(dmCte.cdsCTEMODAL.AsString);
+  rgModal.ItemIndex       := StrToInt(v_str_c);
   rgTipoServico.ItemIndex := dmCte.cdsCTETIPOSERVICO.AsInteger;
   rgTiposCte.ItemIndex    := dmCte.cdsCTETIPOCTE.AsInteger;
   rgFormaEmissao.ItemIndex := dmCte.cdsCTETPOEMISSAO.AsInteger;
@@ -2355,10 +2356,10 @@ begin
   rgRetira.ItemIndex   := dmCte.cdsCTERETIRA.AsInteger;
   memDetRetira.Text    := dmCte.cdsCTEDET_RETIRA.AsString;
 
-  if(dmCte.cdsCTENPROT.AsString = '')then
-  begin
-    dbValInfCarga.Text := FloatToStr(dmCte.cdsCTEVALINFCARGA.Value);
-  end;
+  //if(dmCte.cdsCTENPROT.AsString = '')then
+  //begin
+  //  dbValInfCarga.Text := FloatToStr(dmCte.cdsCTEVALINFCARGA.Value);
+  //end;
   edtProPred.Text      := dmCte.cdsCTEPROPRED.AsString;
   edtOutCat.Text       := dmCte.cdsCTEOUTCAT.AsString;
 
@@ -2529,7 +2530,11 @@ begin
      if (edtLogoMarca.Text <> '') then
        ACBrCTe1.DACTe.Logo := edtLogoMarca.Text;
      if (edtPathLogs.Text <> '') then
+     begin
        ACBrCTe1.DACTe.PathPDF := edtPathLogs.Text;
+       ACBrCTeDACTeRL1.PathPDF := edtPathLogs.Text;
+
+     end;
      ACBrCTe1.DACTe.TamanhoPapel := tpA4_2vias;
      ACBrCTe1.DACTE.NomeDocumento:= edtNumCte.Text;
    end;
@@ -3333,16 +3338,6 @@ begin
  cbXmlSignLib.ItemIndex := Integer( ACBrNFe1.Configuracoes.Geral.SSLXmlSignLib );
 
  cbSSLType.Enabled := (ACBrNFe1.Configuracoes.Geral.SSLHttpLib in [httpWinHttp, httpOpenSSL]) ;
-end;
-
-procedure TfCTePrincipal.StaticText6Click(Sender: TObject);
-begin
-
-end;
-
-procedure TfCTePrincipal.dbValInfCargaChange(Sender: TObject);
-begin
-
 end;
 
 procedure TfCTePrincipal.dbValTotPrestExit(Sender: TObject);
@@ -5111,7 +5106,7 @@ begin
           vCteStr += ', NULL';
         vCteStr += ')';
         DecimalSeparator := ',';
-        dmPdv.executaSql(vCteStr);
+        dmPdv.IbCon.ExecuteDirect(vCteStr);
         dmCte.sqSeg.post;
       end;
       dmPdv.sTrans.Commit;
@@ -5129,11 +5124,14 @@ begin
     end;
   end
   else begin
-    if (dmCte.cdsCTENPROT.AsString <> '') then
-    begin
-      MessageDlg('CTe Ja Enviada. Não Pode ser Editada', mtInformation, [mbOK], 0);
-      exit;
-    end;
+    try
+      vCteStr:= edtCodEmitente.Text;
+      vCteStr:= edtNumCte.Text;
+      if (dmCte.cdsCTENPROT.AsString <> '') then
+      begin
+        MessageDlg('CTe Ja Enviada. Não Pode ser Editada', mtInformation, [mbOK], 0);
+        exit;
+      end;
       if (dmCte.dsSeguro.State in [dsInsert]) then
       begin
         DecimalSeparator := '.';
@@ -5154,29 +5152,29 @@ begin
           vCteStr += ', NULL';
         vCteStr += ')';
         DecimalSeparator := ',';
-        dmPdv.executaSql(vCteStr);
+        dmPdv.IbCon.ExecuteDirect(vCteStr);
         dmCte.sqSeg.post;
       end;
 
-    if (dmCte.dsSeguro.State in [dsEdit]) then
-    begin
-      dmCte.sqSegRESP.AsInteger := rgSeguroResp.ItemIndex;
-      DecimalSeparator := '.';
-      vCteStr := 'UPDATE CTE_SEGURO SET ';
-      vCteStr += ' RESP = ' + IntToStr(rgSeguroResp.ItemIndex);
-      vCteStr += ', NOME_SEGURADORA = ' +  QuotedStr(dmCte.sqSegNOME_SEGURADORA.AsString);
-      if (dmCte.sqSegNUMERO_APOLICE.AsString <> '') then
-        vCteStr += ', NUMERO_APOLICE = ' +  QuotedStr(dmCte.sqSegNUMERO_APOLICE.AsString);
-      vCteStr += ', VALOR = ' +  FloatToStr(dmCte.sqSegVALOR.AsFloat);
-      if (dmCte.sqSegNUMERO_AVERBACAO.AsString <> '') then
-        vCteStr += ', NUMERO_AVERBACAO = ' +  QuotedStr(dmCte.sqSegNUMERO_AVERBACAO.AsString);
-      vCteStr +=  ' WHERE COD_CTE_SEGURO = ' +
+      if (dmCte.dsSeguro.State in [dsEdit]) then
+      begin
+        dmCte.sqSegRESP.AsInteger := rgSeguroResp.ItemIndex;
+        DecimalSeparator := '.';
+        vCteStr := 'UPDATE CTE_SEGURO SET ';
+        vCteStr += ' RESP = ' + IntToStr(rgSeguroResp.ItemIndex);
+        vCteStr += ', NOME_SEGURADORA = ' +  QuotedStr(dmCte.sqSegNOME_SEGURADORA.AsString);
+        if (dmCte.sqSegNUMERO_APOLICE.AsString <> '') then
+          vCteStr += ', NUMERO_APOLICE = ' +  QuotedStr(dmCte.sqSegNUMERO_APOLICE.AsString);
+        vCteStr += ', VALOR = ' +  FloatToStr(dmCte.sqSegVALOR.AsFloat);
+        if (dmCte.sqSegNUMERO_AVERBACAO.AsString <> '') then
+          vCteStr += ', NUMERO_AVERBACAO = ' +  QuotedStr(dmCte.sqSegNUMERO_AVERBACAO.AsString);
+        vCteStr +=  ' WHERE COD_CTE_SEGURO = ' +
          IntToStr(dmCte.sqSegCOD_CTE_SEGURO.AsInteger);
-      DecimalSeparator := ',';
-      dmPdv.executaSql(vCteStr);
-      dmCte.sqSeg.post;
-    end;
-    try
+        DecimalSeparator := ',';
+        dmPdv.IbCon.ExecuteDirect(vCteStr);
+        dmCte.sqSeg.post;
+      end;
+
       FormatSettings.DecimalSeparator := '.';
       EditarA; //
       EditarB; // Aba Dados Complementares
@@ -5202,17 +5200,22 @@ begin
       end;
     end;
   end;
+  vCteStr:= edtNumCte.Text;
+  vCteStr:= edtCodEmitente.Text;
   btnGravarCTe.Caption := 'Gravar CTE';
   btnPreVisu.Enabled := True;
   modoGravacao := 'CONSULTAR';
+  vCteStr:= edtCodEmitente.Text;
+  vCteStr:= edtNumCte.Text;
   if (dmCTe.cdsCTE.Active)then
     dmCTe.cdsCTE.Close;
   dmCTe.cdsCTE.Params[0].AsInteger := StrToInt(edtCodEmitente.Text);
   dmCTe.cdsCTE.Params[1].AsInteger := StrToInt(edtNumCte.Text);
-  dmCte.cdsCTE.Params[2].AsDate := DateTimePicker1.Date;
-  dmCte.cdsCTE.Params[3].AsDate := DateTimePicker2.Date;
+  dmCte.cdsCTE.Params[2].AsDate := DateTimePicker1.DateTime;
+  dmCte.cdsCTE.Params[3].AsDate := DateTimePicker2.DateTime;
   dmCTe.cdsCTE.Open;
 
+  //CarregarCte(IntToStr(val_genCte));
   dmCte.sqNFe.Open;
   dmCte.sqVeic.Open;
   dmCte.sqComp.Open;

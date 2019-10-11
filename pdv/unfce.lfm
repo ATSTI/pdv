@@ -136,8 +136,8 @@ object fNfce: TfNfce
     Height = 408
     Top = 72
     Width = 646
-    ActivePage = TabSheet5
-    TabIndex = 1
+    ActivePage = TabSheet4
+    TabIndex = 0
     TabOrder = 5
     object TabSheet4: TTabSheet
       Caption = 'NFCe'
@@ -3598,8 +3598,6 @@ object fNfce: TfNfce
     Configuracoes.WebServices.QuebradeLinha = '|'
     Configuracoes.WebServices.TimeZoneConf.ModoDeteccao = tzManual
     Configuracoes.WebServices.TimeZoneConf.TimeZoneStr = '-03:00'
-    Configuracoes.Certificados.ArquivoPFX = 'C:\Home\mais_flores_2019.pfx'
-    Configuracoes.Certificados.DadosPFX = '1234'
     Configuracoes.RespTec.IdCSRT = 0
     DANFE = ACBrNFeDANFeESCPOS1
     left = 49
