@@ -4141,6 +4141,11 @@ end;
 
 procedure TfCTePrincipal.btnEditarCompClick(Sender: TObject);
 begin
+  if (dmCte.sqComp.IsEmpty) then
+  begin
+    ShowMessage('Não existe item pra ser editado.');
+    Exit;
+  end;
   if (dmCte.cdsCTENPROT.AsString <> '') then
   begin
     MessageDlg('CTe Ja Enviada.', mtInformation, [mbOK], 0);
@@ -4891,6 +4896,11 @@ end;
 
 procedure TfCTePrincipal.btnEditarNFeClick(Sender: TObject);
 begin
+ if (dmCte.sqNFe.IsEmpty) then
+ begin
+   ShowMessage('Não existe item pra ser editado.');
+   Exit;
+ end;
   if (dmCte.cdsCTENPROT.AsString <> '') then
   begin
     MessageDlg('CTe Ja Enviada.', mtInformation, [mbOK], 0);
@@ -4990,6 +5000,12 @@ end;
 
 procedure TfCTePrincipal.btnInfCargaEditaClick(Sender: TObject);
 begin
+  if (dmCte.sqQC.IsEmpty) then
+  begin
+    ShowMessage('Não existe item pra ser editado.');
+    Exit;
+  end;
+
   if (dmCte.cdsCTENPROT.AsString <> '') then
   begin
     MessageDlg('CTe Ja Enviada.', mtInformation, [mbOK], 0);

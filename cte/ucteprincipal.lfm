@@ -684,9 +684,9 @@ object fCTePrincipal: TfCTePrincipal
     Height = 633
     Top = 0
     Width = 1305
-    ActivePage = TabCteGeradas
+    ActivePage = TabCte
     Align = alClient
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 1
     object TabCteGeradas: TTabSheet
       Caption = 'CT-e Geradas'
@@ -1563,9 +1563,9 @@ object fCTePrincipal: TfCTePrincipal
         Height = 605
         Top = 0
         Width = 1297
-        ActivePage = TabSheet3
+        ActivePage = TabDados
         Align = alClient
-        TabIndex = 1
+        TabIndex = 0
         TabOrder = 0
         object TabDados: TTabSheet
           Cursor = crHandPoint
