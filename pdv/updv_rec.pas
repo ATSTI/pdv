@@ -1004,6 +1004,9 @@ begin
   ACBrPosPrinter1.LinhasEntreCupons := 0;
   ACBrPosPrinter1.EspacoEntreLinhas := dmpdv.espacoEntreLinhas;
   ACBrPosPrinter1.ColunasFonteNormal := dmpdv.imp_ColunaFonteNormal;
+  ACBrPosPrinter1.Device.SendBytesCount:=1024;
+  ACBrPosPrinter1.Device.SendBytesInterval := dmpdv.imp_Interval;
+  ACBrPosPrinter1.ControlePorta :=  dmpdv.imp_controle_porta;
   ACBrPosPrinter1.Porta  := dmPdv.portaImp;
   //ACBrPosPrinter1.ControlePorta := cbControlePorta.Checked;
   ACBrPosPrinter1.CortaPapel := True;
@@ -1027,6 +1030,7 @@ begin
   ACBrPosPrinter1.Imprimir;
   if (dmPdv.imp_vias = 2) then
   begin
+    Sleep(1000);
     ACBrPosPrinter1.Desativar;
     ACBrPosPrinter1.Ativar;
     ACBrPosPrinter1.Buffer.Text := MemoImp.Lines.Text;
@@ -1413,6 +1417,11 @@ begin
   if (dmPdv.CupomImp = 'Texto') then
   begin
     imprimirTxt();
+    if (dmPdv.imp_vias = 2) then
+    begin
+      Sleep(300);
+      imprimirTxt();
+    end;
   end
   else begin
     imprimirTxt();

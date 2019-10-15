@@ -1,0 +1,8 @@
+object fProdutoCadastro: TfProdutoCadastro
+  Left = 313
+  Height = 240
+  Top = 127
+  Width = 320
+  Caption = 'Cadastro de Produtos'
+  LCLVersion = '2.0.4.0'
+end

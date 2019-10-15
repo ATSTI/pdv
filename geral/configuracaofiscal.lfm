@@ -1,14 +1,14 @@
 object fConfiguracaoFiscal: TfConfiguracaoFiscal
-  Left = 266
+  Left = 199
   Height = 705
-  Top = 124
+  Top = 37
   Width = 1027
   Caption = 'Configuração Fiscal'
   ClientHeight = 705
   ClientWidth = 1027
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '2.0.2.0'
+  LCLVersion = '2.0.4.0'
   object Panel1: TPanel
     Left = 0
     Height = 72
@@ -26,20 +26,20 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       Top = 0
       Width = 667
       Caption = 'Filtro'
-      ClientHeight = 39
-      ClientWidth = 665
+      ClientHeight = 41
+      ClientWidth = 663
       TabOrder = 0
       object Label1: TLabel
         Left = 16
-        Height = 21
+        Height = 15
         Top = 0
-        Width = 37
+        Width = 30
         Caption = 'CFOP'
         ParentColor = False
       end
       object edCfopF: TEdit
         Left = 65
-        Height = 31
+        Height = 22
         Top = 0
         Width = 79
         Font.Height = -11
@@ -49,15 +49,15 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
       object Label2: TLabel
         Left = 152
-        Height = 21
+        Height = 15
         Top = 0
-        Width = 19
+        Width = 14
         Caption = 'UF'
         ParentColor = False
       end
       object edUFF: TEdit
         Left = 178
-        Height = 31
+        Height = 22
         Top = 0
         Width = 52
         Font.Height = -11
@@ -67,20 +67,20 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
       object Label3: TLabel
         Left = 240
-        Height = 21
+        Height = 15
         Top = 0
-        Width = 72
+        Width = 55
         Caption = 'Tipo Fiscal'
         ParentColor = False
       end
       object cbTipoFiscalF: TComboBox
         Left = 323
-        Height = 31
+        Height = 22
         Top = 0
         Width = 277
         Font.Height = -11
         Font.Name = 'Sans'
-        ItemHeight = 0
+        ItemHeight = 14
         ItemIndex = 7
         Items.Strings = (
           'Consumidor Final'
@@ -246,25 +246,25 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       Top = 48
       Width = 235
       Caption = 'ICMS Regime Normal'
-      ClientHeight = 133
-      ClientWidth = 233
+      ClientHeight = 135
+      ClientWidth = 231
       TabOrder = 4
       object Label7: TLabel
         Left = 8
-        Height = 21
+        Height = 15
         Top = 0
-        Width = 25
+        Width = 20
         Caption = 'CST'
         ParentColor = False
       end
       object cbCST: TComboBox
         Left = 42
-        Height = 31
+        Height = 22
         Top = 0
         Width = 188
         Font.Height = -11
         Font.Name = 'Sans'
-        ItemHeight = 0
+        ItemHeight = 14
         Items.Strings = (
           '00-Tributada integralmente'
           '10-Tributada cobrança ICMS por S.T.'
@@ -284,15 +284,15 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
       object Label8: TLabel
         Left = 8
-        Height = 21
+        Height = 15
         Top = 37
-        Width = 57
+        Width = 45
         Caption = 'Aliquota'
         ParentColor = False
       end
       object edAliquota: TMaskEdit
         Left = 112
-        Height = 38
+        Height = 23
         Top = 37
         Width = 118
         CharCase = ecNormal
@@ -302,10 +302,10 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
       object Label9: TLabel
         Left = 8
-        Height = 21
+        Height = 15
         Hint = 'Redução da Base de Cálculo'
         Top = 74
-        Width = 94
+        Width = 73
         Caption = 'Redução B. C.'
         ParentColor = False
         ParentShowHint = False
@@ -313,7 +313,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
       object edRBC: TMaskEdit
         Left = 112
-        Height = 38
+        Height = 23
         Top = 74
         Width = 118
         CharCase = ecNormal
@@ -324,15 +324,15 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
     end
     object Label4: TLabel
       Left = 6
-      Height = 21
+      Height = 15
       Top = 8
-      Width = 37
+      Width = 30
       Caption = 'CFOP'
       ParentColor = False
     end
     object edCfop: TEdit
       Left = 48
-      Height = 31
+      Height = 22
       Top = 8
       Width = 70
       Font.Height = -11
@@ -343,15 +343,15 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
     end
     object Label5: TLabel
       Left = 120
-      Height = 21
+      Height = 15
       Top = 8
-      Width = 19
+      Width = 14
       Caption = 'UF'
       ParentColor = False
     end
     object edUF: TEdit
       Left = 144
-      Height = 31
+      Height = 22
       Top = 8
       Width = 40
       Font.Height = -11
@@ -362,20 +362,20 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
     end
     object Label6: TLabel
       Left = 192
-      Height = 21
+      Height = 15
       Top = 8
-      Width = 72
+      Width = 55
       Caption = 'Tipo Fiscal'
       ParentColor = False
     end
     object cbTipoFiscal: TComboBox
       Left = 272
-      Height = 31
+      Height = 22
       Top = 8
       Width = 209
       Font.Height = -11
       Font.Name = 'Sans'
-      ItemHeight = 0
+      ItemHeight = 14
       ItemIndex = 7
       Items.Strings = (
         'Consumidor Final'
@@ -393,9 +393,9 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
     end
     object cbNaoGeraFatura: TCheckBox
       Left = 847
-      Height = 25
+      Height = 19
       Top = 8
-      Width = 137
+      Width = 104
       Caption = 'Não gera Fatura'
       TabOrder = 17
     end
@@ -405,25 +405,25 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       Top = 48
       Width = 234
       Caption = 'ICMS Simples Nacional'
-      ClientHeight = 86
-      ClientWidth = 232
+      ClientHeight = 88
+      ClientWidth = 230
       TabOrder = 5
       object Label10: TLabel
         Left = 8
-        Height = 21
+        Height = 15
         Top = 12
-        Width = 47
+        Width = 38
         Caption = 'CSOSN'
         ParentColor = False
       end
       object cbCSOSN: TComboBox
         Left = 8
-        Height = 31
+        Height = 22
         Top = 35
         Width = 214
         Font.Height = -11
         Font.Name = 'Sans'
-        ItemHeight = 0
+        ItemHeight = 14
         Items.Strings = (
           '101-Trib. Simples com perm. crédito'
           '102-Trib. Simples SEM perm. crédito'
@@ -447,32 +447,32 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       Top = 48
       Width = 158
       Caption = 'DIFAL'
-      ClientHeight = 133
-      ClientWidth = 156
+      ClientHeight = 135
+      ClientWidth = 154
       TabOrder = 7
       Visible = False
       object Label11: TLabel
         Left = 8
-        Height = 21
+        Height = 15
         Top = -2
-        Width = 26
+        Width = 21
         Caption = 'FCP'
         ParentColor = False
       end
       object Label12: TLabel
         Left = 81
-        Height = 21
+        Height = 15
         Top = -2
-        Width = 58
+        Width = 45
         Caption = 'ICMS UF'
         ParentColor = False
       end
       object Label13: TLabel
         Left = 8
-        Height = 21
+        Height = 15
         Hint = 'Aliquota de Icms Interestadual'
         Top = 54
-        Width = 70
+        Width = 54
         Caption = 'Aliq. Inter.'
         ParentColor = False
         ParentShowHint = False
@@ -480,9 +480,9 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
       object Label14: TLabel
         Left = 81
-        Height = 21
+        Height = 15
         Top = 54
-        Width = 70
+        Width = 53
         Caption = 'Perc. Part.'
         ParentColor = False
         ParentShowHint = False
@@ -490,7 +490,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
       object edFCP: TMaskEdit
         Left = 8
-        Height = 38
+        Height = 23
         Hint = 'Percentual do ICMS relativo ao Fundo de Combate ''#224'' Pobreza (FCP) '#10'na UF de destino.'
         Top = 18
         Width = 67
@@ -503,7 +503,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
       object edPIcmsUfDest: TMaskEdit
         Left = 79
-        Height = 38
+        Height = 23
         Hint = 'Aliquota definida pelo Estado Destino'
         Top = 18
         Width = 74
@@ -516,7 +516,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
       object edPIcmsInter: TMaskEdit
         Left = 8
-        Height = 38
+        Height = 23
         Hint = 'Aliquota definida pelo Estado Destino'
         Top = 74
         Width = 67
@@ -529,7 +529,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
       object edPIcmsPart: TMaskEdit
         Left = 79
-        Height = 38
+        Height = 23
         Hint = 'Aliquota definida pelo Estado Destino'
         Top = 74
         Width = 74
@@ -547,28 +547,28 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       Top = 48
       Width = 240
       Caption = 'IPI'
-      ClientHeight = 133
-      ClientWidth = 238
+      ClientHeight = 135
+      ClientWidth = 236
       TabOrder = 8
       object Label19: TLabel
         Left = 10
-        Height = 21
+        Height = 15
         Top = 35
-        Width = 57
+        Width = 45
         Caption = 'Aliquota'
         ParentColor = False
       end
       object Label20: TLabel
         Left = 96
-        Height = 21
+        Height = 15
         Top = 37
-        Width = 30
+        Width = 23
         Caption = 'Enq.'
         ParentColor = False
       end
       object edIPIAliq: TMaskEdit
         Left = 10
-        Height = 38
+        Height = 23
         Hint = 'Aliquota definida pelo Estado Destino'
         Top = 58
         Width = 81
@@ -581,7 +581,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
       object edIPIEnq: TMaskEdit
         Left = 96
-        Height = 38
+        Height = 23
         Hint = 'Aliquota definida pelo Estado Destino'
         Top = 58
         Width = 72
@@ -595,9 +595,9 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       object Label27: TLabel
         Cursor = crHelp
         Left = 131
-        Height = 21
+        Height = 15
         Top = 35
-        Width = 14
+        Width = 13
         Caption = '(&?)'
         ParentColor = False
         WordWrap = True
@@ -605,12 +605,12 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
       object cbIpiCst: TComboBox
         Left = 10
-        Height = 31
+        Height = 22
         Top = 0
         Width = 223
         Font.Height = -11
         Font.Name = 'Sans'
-        ItemHeight = 0
+        ItemHeight = 14
         Items.Strings = (
           '00-Entrada Recuperação Crédito'
           '01-Entrada Tributada Alíq. Zero'
@@ -638,12 +638,12 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       Top = 117
       Width = 232
       Caption = 'Pis'
-      ClientHeight = 64
-      ClientWidth = 230
+      ClientHeight = 66
+      ClientWidth = 228
       TabOrder = 10
       object edPisAliq: TMaskEdit
         Left = 157
-        Height = 31
+        Height = 22
         Hint = 'Aliquota definida pelo Estado Destino'
         Top = 25
         Width = 70
@@ -659,12 +659,12 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
       object cbCSTPis: TComboBox
         Left = 2
-        Height = 31
+        Height = 22
         Top = -5
         Width = 225
         Font.Height = -11
         Font.Name = 'Sans'
-        ItemHeight = 0
+        ItemHeight = 14
         Items.Strings = (
           '01-Oper. Trib. Alíq. Básica'
           '02-Oper. Trib. Alíq. Diferenciada'
@@ -706,9 +706,9 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
       object Label21: TLabel
         Left = 96
-        Height = 21
+        Height = 15
         Top = 25
-        Width = 57
+        Width = 45
         Caption = 'Aliquota'
         ParentColor = False
       end
@@ -719,12 +719,12 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       Top = 41
       Width = 232
       Caption = 'Cofins'
-      ClientHeight = 59
-      ClientWidth = 230
+      ClientHeight = 61
+      ClientWidth = 228
       TabOrder = 9
       object edCofinsAliq: TMaskEdit
         Left = 157
-        Height = 31
+        Height = 22
         Hint = 'Aliquota definida pelo Estado Destino'
         Top = 28
         Width = 70
@@ -740,12 +740,12 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
       object cbCSTCofins: TComboBox
         Left = 2
-        Height = 31
+        Height = 22
         Top = -2
         Width = 225
         Font.Height = -11
         Font.Name = 'Sans'
-        ItemHeight = 0
+        ItemHeight = 14
         Items.Strings = (
           '01-Oper. Trib. Alíq. Básica'
           '02-Oper. Trib. Alíq. Diferenciada'
@@ -787,9 +787,9 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
       object Label22: TLabel
         Left = 96
-        Height = 21
+        Height = 15
         Top = 27
-        Width = 57
+        Width = 45
         Caption = 'Aliquota'
         ParentColor = False
       end
@@ -800,20 +800,20 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       Top = 204
       Width = 188
       Caption = 'Usar para o NCM'
-      ClientHeight = 38
-      ClientWidth = 186
+      ClientHeight = 40
+      ClientWidth = 184
       TabOrder = 11
       object Label25: TLabel
         Left = 12
-        Height = 21
+        Height = 15
         Top = 3
-        Width = 33
+        Width = 28
         Caption = 'NCM'
         ParentColor = False
       end
       object edNCM: TEdit
         Left = 54
-        Height = 38
+        Height = 23
         Top = 0
         Width = 128
         TabOrder = 0
@@ -826,20 +826,20 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       Top = 204
       Width = 640
       Caption = 'Usar para o Produto'
-      ClientHeight = 38
-      ClientWidth = 638
+      ClientHeight = 40
+      ClientWidth = 636
       TabOrder = 12
       object Label26: TLabel
         Left = 12
-        Height = 21
+        Height = 15
         Top = 3
-        Width = 56
+        Width = 43
         Caption = 'Produto'
         ParentColor = False
       end
       object edProduto: TEdit
         Left = 80
-        Height = 38
+        Height = 23
         Top = 0
         Width = 112
         OnChange = edProdutoChange
@@ -864,12 +864,12 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
     end
     object cbOrigemProd: TComboBox
       Left = 608
-      Height = 31
+      Height = 22
       Top = 8
       Width = 209
       Font.Height = -11
       Font.Name = 'Sans'
-      ItemHeight = 0
+      ItemHeight = 14
       Items.Strings = (
         '0-Nacional, exceto 3 a 5;'
         '1-Estrangeira - Importação direta, exceto 6;'
@@ -886,9 +886,9 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
     end
     object Label18: TLabel
       Left = 488
-      Height = 21
+      Height = 15
       Top = 8
-      Width = 112
+      Width = 86
       Caption = 'Origem Produto'
       ParentColor = False
     end
@@ -898,36 +898,36 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       Top = 48
       Width = 121
       Caption = 'ICMS ST'
-      ClientHeight = 133
-      ClientWidth = 119
+      ClientHeight = 135
+      ClientWidth = 117
       TabOrder = 6
       object Label15: TLabel
         Left = 2
-        Height = 21
+        Height = 15
         Top = 0
-        Width = 30
+        Width = 25
         Caption = 'MVA'
         ParentColor = False
       end
       object Label16: TLabel
         Left = 0
-        Height = 21
+        Height = 15
         Top = 37
-        Width = 52
+        Width = 40
         Caption = 'Origem'
         ParentColor = False
       end
       object Label17: TLabel
         Left = 0
-        Height = 21
+        Height = 15
         Top = 74
-        Width = 35
+        Width = 26
         Caption = 'Dest.'
         ParentColor = False
       end
       object edMva: TMaskEdit
         Left = 55
-        Height = 38
+        Height = 23
         Hint = 'Aliquota definida pelo Estado Destino'
         Top = 0
         Width = 62
@@ -940,7 +940,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
       object edOrigem: TMaskEdit
         Left = 55
-        Height = 38
+        Height = 23
         Hint = 'Aliquota definida pelo Estado Destino'
         Top = 37
         Width = 62
@@ -953,7 +953,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       end
       object edDest: TMaskEdit
         Left = 55
-        Height = 38
+        Height = 23
         Hint = 'Aliquota definida pelo Estado Destino'
         Top = 74
         Width = 62
@@ -967,7 +967,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
     end
     object edDA1: TEdit
       Left = 6
-      Height = 31
+      Height = 22
       Top = 271
       Width = 485
       Font.Height = -11
@@ -977,15 +977,15 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
     end
     object Label23: TLabel
       Left = 8
-      Height = 21
+      Height = 15
       Top = 243
-      Width = 126
+      Width = 97
       Caption = 'Dados Adicionais :'
       ParentColor = False
     end
     object edDA2: TEdit
       Left = 496
-      Height = 31
+      Height = 22
       Top = 271
       Width = 520
       Font.Height = -11
@@ -995,7 +995,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
     end
     object edDA3: TEdit
       Left = 6
-      Height = 31
+      Height = 22
       Top = 304
       Width = 485
       Font.Height = -11
@@ -1005,7 +1005,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
     end
     object edDA4: TEdit
       Left = 496
-      Height = 31
+      Height = 22
       Top = 304
       Width = 520
       Font.Height = -11

@@ -1,0 +1,8 @@
+object fMDFeBusca: TfMDFeBusca
+  Left = 458
+  Height = 393
+  Top = 210
+  Width = 594
+  Caption = 'MDFe Geradas'
+  LCLVersion = '2.0.4.0'
+end
