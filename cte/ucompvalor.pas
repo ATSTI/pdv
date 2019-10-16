@@ -22,6 +22,7 @@ type
     procedure BitBtn1Click(Sender: TObject);
     procedure btnEditaClick(Sender: TObject);
     procedure btnOkClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
 
   public
@@ -72,6 +73,11 @@ begin
   if (vstr_sql <> '') then
     dmPdv.Ibcon.ExecuteDirect(vstr_sql);
   Close;
+end;
+
+procedure TfCompValor.FormShow(Sender: TObject);
+begin
+  dbCompNome.SetFocus;
 end;
 
 procedure TfCompValor.btnEditaClick(Sender: TObject);

@@ -20,7 +20,7 @@ object fCTePrincipal: TfCTePrincipal
     Align = alBottom
     ClientHeight = 66
     ClientWidth = 1305
-    TabOrder = 0
+    TabOrder = 1
     object BitBtn8: TBitBtn
       Left = 536
       Height = 30
@@ -687,11 +687,13 @@ object fCTePrincipal: TfCTePrincipal
     ActivePage = TabCte
     Align = alClient
     TabIndex = 1
-    TabOrder = 1
+    TabOrder = 0
+    OnChange = pcPrincipalChange
     object TabCteGeradas: TTabSheet
       Caption = 'CT-e Geradas'
       ClientHeight = 605
       ClientWidth = 1297
+      OnContextPopup = TabCteGeradasContextPopup
       OnShow = TabCteGeradasShow
       object Panel2: TPanel
         Left = 0
@@ -1567,6 +1569,8 @@ object fCTePrincipal: TfCTePrincipal
         Align = alClient
         TabIndex = 0
         TabOrder = 0
+        OnChange = pcCteChange
+        OnChanging = pcCteChanging
         object TabDados: TTabSheet
           Cursor = crHandPoint
           BorderWidth = 1
@@ -5397,7 +5401,7 @@ object fCTePrincipal: TfCTePrincipal
             Left = 8
             Height = 45
             Top = 16
-            Width = 1272
+            Width = 520
             AutoFill = True
             Caption = 'Tomador do Serviço'
             ChildSizing.LeftRightSpacing = 6
@@ -5408,8 +5412,15 @@ object fCTePrincipal: TfCTePrincipal
             ChildSizing.Layout = cclLeftToRightThenTopToBottom
             ChildSizing.ControlsPerLine = 5
             ClientHeight = 25
-            ClientWidth = 1268
+            ClientWidth = 516
             Columns = 5
+            Font.CharSet = ANSI_CHARSET
+            Font.Color = clBlack
+            Font.Height = -12
+            Font.Name = 'Segoe UI'
+            Font.Pitch = fpVariable
+            Font.Quality = fqDraft
+            Font.Style = [fsBold]
             Items.Strings = (
               'Remetente'
               'Expedidor'
@@ -5418,6 +5429,7 @@ object fCTePrincipal: TfCTePrincipal
               'Outros'
             )
             OnClick = rgTomadorClick
+            ParentFont = False
             TabOrder = 0
           end
           object GroupBoxTomador: TGroupBox
@@ -5985,8 +5997,8 @@ object fCTePrincipal: TfCTePrincipal
           object rgRem: TRadioGroup
             Left = 8
             Height = 45
-            Top = 16
-            Width = 1272
+            Top = 8
+            Width = 712
             AutoFill = True
             Caption = 'Tomador do Serviço'
             ChildSizing.LeftRightSpacing = 6
@@ -5997,14 +6009,16 @@ object fCTePrincipal: TfCTePrincipal
             ChildSizing.Layout = cclLeftToRightThenTopToBottom
             ChildSizing.ControlsPerLine = 3
             ClientHeight = 25
-            ClientWidth = 1268
+            ClientWidth = 708
             Columns = 3
+            Font.Style = [fsBold]
             Items.Strings = (
               'Com Remetente'
               'Sem Remetente (Redespacho Intermediário)'
               'Sem Remetente (Serviço Vinculado a Multimodal)'
             )
             OnClick = rgRemClick
+            ParentFont = False
             TabOrder = 0
           end
           object GroupBoxRemetente: TGroupBox
@@ -6558,7 +6572,7 @@ object fCTePrincipal: TfCTePrincipal
             Left = 8
             Height = 45
             Top = 16
-            Width = 1272
+            Width = 272
             AutoFill = True
             Caption = 'Expedidor'
             ChildSizing.LeftRightSpacing = 6
@@ -6569,13 +6583,15 @@ object fCTePrincipal: TfCTePrincipal
             ChildSizing.Layout = cclLeftToRightThenTopToBottom
             ChildSizing.ControlsPerLine = 2
             ClientHeight = 25
-            ClientWidth = 1268
+            ClientWidth = 268
             Columns = 2
+            Font.Style = [fsBold]
             Items.Strings = (
               'Com Expedidor'
               'Sem Expedidor'
             )
             OnClick = rgExpClick
+            ParentFont = False
             TabOrder = 0
           end
           object GroupBoxExpeditor: TGroupBox
@@ -6990,7 +7006,7 @@ object fCTePrincipal: TfCTePrincipal
               Left = 880
               Height = 15
               Top = 264
-              Width = 45
+              Width = 44
               Align = alCustom
               Caption = 'Telefone'
               ParentColor = False
@@ -7120,7 +7136,7 @@ object fCTePrincipal: TfCTePrincipal
             Left = 8
             Height = 45
             Top = 16
-            Width = 1272
+            Width = 264
             AutoFill = True
             Caption = 'Recebedor'
             ChildSizing.LeftRightSpacing = 6
@@ -7131,13 +7147,17 @@ object fCTePrincipal: TfCTePrincipal
             ChildSizing.Layout = cclLeftToRightThenTopToBottom
             ChildSizing.ControlsPerLine = 2
             ClientHeight = 25
-            ClientWidth = 1268
+            ClientWidth = 260
+            Color = clInactiveCaption
             Columns = 2
+            Font.Style = [fsBold]
             Items.Strings = (
               'Com Recebedor'
               'Sem Recebedor'
             )
             OnClick = rgRecClick
+            ParentFont = False
+            ParentColor = False
             TabOrder = 0
           end
           object GroupBoxRecebedor: TGroupBox
@@ -7589,7 +7609,7 @@ object fCTePrincipal: TfCTePrincipal
               Left = 880
               Height = 15
               Top = 264
-              Width = 45
+              Width = 44
               Align = alCustom
               Caption = 'Telefone'
               ParentColor = False
@@ -7682,7 +7702,7 @@ object fCTePrincipal: TfCTePrincipal
             Left = 8
             Height = 45
             Top = 16
-            Width = 1272
+            Width = 640
             AutoFill = True
             Caption = 'Destinatário'
             ChildSizing.LeftRightSpacing = 6
@@ -7693,14 +7713,16 @@ object fCTePrincipal: TfCTePrincipal
             ChildSizing.Layout = cclLeftToRightThenTopToBottom
             ChildSizing.ControlsPerLine = 3
             ClientHeight = 25
-            ClientWidth = 1268
+            ClientWidth = 636
             Columns = 3
+            Font.Style = [fsBold]
             Items.Strings = (
               'Com Destino'
               'Sem Destino: Redespacho Intermediário'
               'Sem Destino: Serviço Vinculado a Multimodal'
             )
             OnClick = rgDestClick
+            ParentFont = False
             TabOrder = 0
           end
           object GroupBoxDestinatario: TGroupBox
@@ -8248,6 +8270,7 @@ object fCTePrincipal: TfCTePrincipal
           Caption = 'Serviços e Impostos'
           ClientHeight = 577
           ClientWidth = 1289
+          OnContextPopup = TabServicosImpostosContextPopup
           OnShow = TabServicosImpostosShow
           object dbGridComp: TDBGrid
             Left = 32
@@ -8274,6 +8297,7 @@ object fCTePrincipal: TfCTePrincipal
             DataSource = dmCte.dsComp
             Scrollbars = ssVertical
             TabOrder = 3
+            OnCellClick = dbGridCompCellClick
           end
           object StaticText10: TStaticText
             Left = 32
@@ -9088,6 +9112,7 @@ object fCTePrincipal: TfCTePrincipal
           Caption = 'Documentação Carga'
           ClientHeight = 577
           ClientWidth = 1289
+          OnShow = TabSheet11Show
           object PageControl4: TPageControl
             Left = 0
             Height = 577
@@ -9517,6 +9542,7 @@ object fCTePrincipal: TfCTePrincipal
                     DataSource = dmCte.dsQC
                     Scrollbars = ssVertical
                     TabOrder = 0
+                    OnCellClick = dbGridQCCellClick
                   end
                 end
                 object Panel11: TPanel

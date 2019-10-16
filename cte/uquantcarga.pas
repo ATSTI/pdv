@@ -104,6 +104,7 @@ begin
     cbTipoUN.ItemIndex := 4;
   if(dmCte.sqQCUNID.AsString = '05') then
     cbTipoUN.ItemIndex := 5;
+  dbQCtpMed.SetFocus;
 end;
 
 end.

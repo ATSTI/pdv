@@ -696,6 +696,8 @@ type
     procedure cbSSLTypeChange(Sender: TObject);
     procedure cbXmlSignLibChange(Sender: TObject);
     procedure comboEmpresaChange(Sender: TObject);
+    procedure dbGridCompCellClick(Column: TColumn);
+    procedure dbGridQCCellClick(Column: TColumn);
     procedure dbValTotPrestExit(Sender: TObject);
     procedure dgGridCTEDblClick(Sender: TObject);
     procedure edtBuscaTomadorExit(Sender: TObject);
@@ -721,6 +723,9 @@ type
     procedure mmEmailMsgChange(Sender: TObject);
     procedure PageControl2Exit(Sender: TObject);
     procedure Panel3Click(Sender: TObject);
+    procedure pcCteChange(Sender: TObject);
+    procedure pcCteChanging(Sender: TObject; var AllowChange: Boolean);
+    procedure pcPrincipalChange(Sender: TObject);
     procedure rgDestClick(Sender: TObject);
     procedure rgExpClick(Sender: TObject);
     procedure rgFormaEmissaoClick(Sender: TObject);
@@ -736,6 +741,8 @@ type
     procedure StaticText13Click(Sender: TObject);
     procedure StaticText22Click(Sender: TObject);
     procedure StaticText7Click(Sender: TObject);
+    procedure TabCteGeradasContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
     procedure TabCteGeradasShow(Sender: TObject);
     procedure TabDadosComplementaresShow(Sender: TObject);
     procedure TabDadosCteShow(Sender: TObject);
@@ -744,7 +751,10 @@ type
     procedure TabNfeShow(Sender: TObject);
     procedure TabRecebedorShow(Sender: TObject);
     procedure TabRodoviarioShow(Sender: TObject);
+    procedure TabServicosImpostosContextPopup(Sender: TObject;
+      MousePos: TPoint; var Handled: Boolean);
     procedure TabServicosImpostosShow(Sender: TObject);
+    procedure TabSheet11Show(Sender: TObject);
     procedure TabSheet12ContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
     procedure TabInfoCargaContextPopup(Sender: TObject; MousePos: TPoint;
@@ -767,6 +777,10 @@ type
     cfop_padrao: String;
     nat_padrao: String;
     rntrc_padrao: String;
+    carga_prodpre: String;
+    carga_desc: String;
+    carga_un : String;
+    componente_nome: String;
     procedure GravarConfiguracao;
     procedure DadosBasicos;
     procedure LerConfiguracao;
@@ -792,6 +806,10 @@ type
     procedure EditarREC;
     procedure cadastraClientes(camposCliente, camposEnd: String);
     procedure buscaDestinatario;
+    procedure buscaTomador;
+    procedure buscaRemetente;
+    procedure buscaExpedidor;
+    procedure buscaRecebedor;
     function LimparString(ATExto, ACaracteres: string): string;
     function GravarCTe: String;
     procedure AtualizaSSLLibsCombo;
@@ -814,10 +832,13 @@ uses udmpdv, ufrmStatus, uDmCte, uNFe, uCompValor, uQuantCarga, uVeiculoCte,
 { TfCTePrincipal }
 
 
-
-
-
 procedure TfCTePrincipal.StaticText7Click(Sender: TObject);
+begin
+
+end;
+
+procedure TfCTePrincipal.TabCteGeradasContextPopup(Sender: TObject;
+  MousePos: TPoint; var Handled: Boolean);
 begin
 
 end;
@@ -833,7 +854,7 @@ end;
 
 procedure TfCTePrincipal.TabDadosCteShow(Sender: TObject);
 begin
-  //edtSerieCte.SetFocus;
+
 end;
 
 procedure TfCTePrincipal.TabExpedidorShow(Sender: TObject);
@@ -882,6 +903,12 @@ begin
   //edtRodRNTRC.SetFocus;
 end;
 
+procedure TfCTePrincipal.TabServicosImpostosContextPopup(Sender: TObject;
+  MousePos: TPoint; var Handled: Boolean);
+begin
+
+end;
+
 procedure TfCTePrincipal.TabServicosImpostosShow(Sender: TObject);
 begin
   {
@@ -909,6 +936,11 @@ begin
  //valCombIni.Enabled := False;
  //valCombFim.Enabled := False;
  }
+end;
+
+procedure TfCTePrincipal.TabSheet11Show(Sender: TObject);
+begin
+
 end;
 
 procedure TfCTePrincipal.TabSheet12ContextPopup(Sender: TObject;
@@ -971,6 +1003,11 @@ begin
     Ini.WriteBool(   'Geral','Salvar'      ,ckSalvar.Checked);
     Ini.WriteString( 'Geral','PathSalvar'  ,edtPathLogs.Text);
     Ini.WriteString( 'Geral','PathCTe'  ,edtCteImportar.Text);
+
+    Ini.WriteString( 'Carga','ProdutoPredominante', edtProPred.Text);
+    Ini.WriteString( 'Carga','DescricaoQuantidade', carga_desc);
+    Ini.WriteString( 'Carga','UnidadeMedida', carga_un);
+    Ini.WriteString( 'Componente','Descricao', componente_nome);
 
     Ini.WriteString( 'WebService','UF'        ,Trim(cbUF.Text));
     Ini.WriteInteger( 'WebService','Ambiente'  ,rgTipoAmb.ItemIndex);
@@ -1155,6 +1192,11 @@ begin
   edtSmtpPass.Text      := Ini.ReadString( 'Email','Pass'   ,'');
   edtEmailAssunto.Text  := Ini.ReadString( 'Email','Assunto','');
   cbEmailSSL.Checked    := Ini.ReadBool(   'Email','SSL'    ,False);
+
+  carga_prodpre         := Ini.ReadString( 'Carga','ProdutoPredominante', '');
+  carga_desc            := Ini.ReadString( 'Carga','DescricaoQuantidade', '');
+  carga_un              := Ini.ReadString( 'Carga','UnidadeMedida', '');
+  componente_nome       := Ini.ReadString( 'Componente','Descricao', '');
 
   vModeloCte := Ini.ReadInteger('Geral','ModeloCTe' ,57);
   {StreamMemo := TMemoryStream.Create;
@@ -3077,12 +3119,142 @@ begin
     edtDestBairro.Text := dmPdv.sqBusca.FieldByName('BAIRRO').AsString;
     edtDestCep.TExt := dmPdv.sqBusca.FieldByName('CEP').AsString;
     edtDestUF.Text := dmPdv.sqBusca.FieldByName('UF').AsString;
-    if (edtFimUF.Text = '') then
+    if (Trim(edtFimUF.Text) = '') then
     begin
       edtFimUF.Text := edtDestUF.Text;
       edtFimCidade.Text := edtDestCidade.Text;
       edtFimCodCidade.TExt := edtDestCodCidade.Text;
     end;
+  end;
+end;
+
+procedure TfCTePrincipal.buscaTomador;
+begin
+  if (edtBuscaTomador.Text <> '') then
+  begin
+    dmPdv.busca_sql('SELECT c.NOMECLIENTE, c.RAZAOSOCIAL, c.CNPJ, ' +
+      ' c.INSCESTADUAL, d.LOGRADOURO, d.NUMERO, d.CIDADE, d.BAIRRO, ' +
+      ' d.CEP, d.UF, d.CD_IBGE, d.DDD , d.TELEFONE  ' +
+      ' FROM CLIENTES c, ENDERECOCLIENTE d ' +
+      ' WHERE c.CODCLIENTE = d.CODCLIENTE ' +
+      ' AND d.TIPOEND = 0 AND c.CODCLIENTE = ' + edtBuscaTomador.Text);
+    if (dmPdv.sqBusca.IsEmpty) then
+    begin
+      ShowMessage('Código do Cliente não existe.');
+      Exit;
+    end;
+    edtTomadorCodCidade.Text := dmPdv.sqBusca.FieldByName('CD_IBGE').AsString;
+    edtTomadorCidade.Text := dmPdv.sqBusca.FieldByName('CIDADE').AsString;
+    edtTomadorUF.Text := dmPdv.sqBusca.FieldByName('UF').AsString;
+    edtNomeTomador.Text := dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString;
+    edtRazaoTomador.Text := dmPdv.sqBusca.FieldByName('RAZAOSOCIAL').AsString;
+    edtCNPJTomador.Text := dmPdv.sqBusca.FieldByName('CNPJ').AsString;
+    edtIETomador.Text := dmPdv.sqBusca.FieldByName('INSCESTADUAL').AsString;
+    edtFoneTomador.Text := dmPdv.sqBusca.FieldByName('DDD').AsString +
+      '-' + dmPdv.sqBusca.FieldByName('TELEFONE').AsString;
+    edtEndTomador.Text := dmPdv.sqBusca.FieldByName('LOGRADOURO').AsString;
+    edtNumTomador.Text := dmPdv.sqBusca.FieldByName('NUMERO').AsString;
+    edtBairroTomador.Text := dmPdv.sqBusca.FieldByName('BAIRRO').AsString;
+    edtCepTomador.TExt := dmPdv.sqBusca.FieldByName('CEP').AsString;
+  end;
+end;
+
+procedure TfCTePrincipal.buscaRemetente;
+begin
+  if (edtRemBusca.Text <> '') then
+  begin
+    dmPdv.busca_sql('SELECT c.NOMECLIENTE, c.RAZAOSOCIAL, c.CNPJ, ' +
+      ' c.INSCESTADUAL, d.LOGRADOURO, d.NUMERO, d.CIDADE, d.BAIRRO, ' +
+      ' d.CEP, d.UF, d.CD_IBGE, d.DDD , d.TELEFONE  ' +
+      ' FROM CLIENTES c, ENDERECOCLIENTE d ' +
+      ' WHERE c.CODCLIENTE = d.CODCLIENTE ' +
+      ' AND d.TIPOEND = 0 AND c.CODCLIENTE = ' + edtRemBusca.Text);
+    if (dmPdv.sqBusca.IsEmpty) then
+    begin
+      ShowMessage('Código do Cliente não existe.');
+      Exit;
+    end;
+    edtRemCodCidade.Text := dmPdv.sqBusca.FieldByName('CD_IBGE').AsString;
+    edtRemCidade.Text := dmPdv.sqBusca.FieldByName('CIDADE').AsString;
+    edtRemUF.Text := dmPdv.sqBusca.FieldByName('UF').AsString;
+    edtRemNome.Text := dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString;
+    edtRemRazao.Text := dmPdv.sqBusca.FieldByName('RAZAOSOCIAL').AsString;
+    edtRemCNPJ.Text := dmPdv.sqBusca.FieldByName('CNPJ').AsString;
+    edtRemIE.Text := dmPdv.sqBusca.FieldByName('INSCESTADUAL').AsString;
+    edtRemFone.Text := dmPdv.sqBusca.FieldByName('DDD').AsString +
+      '-' + dmPdv.sqBusca.FieldByName('TELEFONE').AsString;
+    edtRemEnd.Text := dmPdv.sqBusca.FieldByName('LOGRADOURO').AsString;
+    edtRemNum.Text := dmPdv.sqBusca.FieldByName('NUMERO').AsString;
+    edtRemBairro.Text := dmPdv.sqBusca.FieldByName('BAIRRO').AsString;
+    edtRemCep.TExt := dmPdv.sqBusca.FieldByName('CEP').AsString;
+    if (Trim(edtIniUf.Text) = '') then
+    begin
+      edtIniUf.Text := edtRemUF.Text;
+      edtIniCidade.Text := edtRemCidade.Text;
+      edtIniCodCidade.TExt := edtRemCodCidade.Text;
+    end;
+  end;
+end;
+
+procedure TfCTePrincipal.buscaExpedidor;
+begin
+  if (edtExpBusca.Text <> '') then
+  begin
+    dmPdv.busca_sql('SELECT c.NOMECLIENTE, c.RAZAOSOCIAL, c.CNPJ, ' +
+      ' c.INSCESTADUAL, d.LOGRADOURO, d.NUMERO, d.CIDADE, d.BAIRRO, ' +
+      ' d.CEP, d.UF, d.CD_IBGE, d.DDD , d.TELEFONE  ' +
+      ' FROM CLIENTES c, ENDERECOCLIENTE d ' +
+      ' WHERE c.CODCLIENTE = d.CODCLIENTE ' +
+      ' AND d.TIPOEND = 0 AND c.CODCLIENTE = ' + edtExpBusca.Text);
+    if (dmPdv.sqBusca.IsEmpty) then
+    begin
+      ShowMessage('Código do Cliente não existe.');
+      Exit;
+    end;
+    edtExpCodCidade.Text := LimparString(dmPdv.sqBusca.FieldByName('CD_IBGE').AsString,'-');
+    edtExpCidade.Text := dmPdv.sqBusca.FieldByName('CIDADE').AsString;
+    edtExpUF.Text := dmPdv.sqBusca.FieldByName('UF').AsString;
+    edtExpNome.Text := dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString;
+    edtExpRazao.Text := dmPdv.sqBusca.FieldByName('RAZAOSOCIAL').AsString;
+    edtExpCNPJ.Text := dmPdv.sqBusca.FieldByName('CNPJ').AsString;
+    edtExpIE.Text := dmPdv.sqBusca.FieldByName('INSCESTADUAL').AsString;
+    edtExpFone.Text := dmPdv.sqBusca.FieldByName('DDD').AsString +
+      '-' + dmPdv.sqBusca.FieldByName('TELEFONE').AsString;
+    edtExpEnd.Text := dmPdv.sqBusca.FieldByName('LOGRADOURO').AsString;
+    edtExpNum.Text := dmPdv.sqBusca.FieldByName('NUMERO').AsString;
+    edtExpBairro.Text := dmPdv.sqBusca.FieldByName('BAIRRO').AsString;
+    edtExpCep.TExt := dmPdv.sqBusca.FieldByName('CEP').AsString;
+  end;
+end;
+
+procedure TfCTePrincipal.buscaRecebedor;
+begin
+  if (edtRecBusca.Text <> '') then
+  begin
+    dmPdv.busca_sql('SELECT c.NOMECLIENTE, c.RAZAOSOCIAL, c.CNPJ, ' +
+      ' c.INSCESTADUAL, d.LOGRADOURO, d.NUMERO, d.CIDADE, d.BAIRRO, ' +
+      ' d.CEP, d.UF, d.CD_IBGE, d.DDD , d.TELEFONE  ' +
+      ' FROM CLIENTES c, ENDERECOCLIENTE d ' +
+      ' WHERE c.CODCLIENTE = d.CODCLIENTE ' +
+      ' AND d.TIPOEND = 0 AND c.CODCLIENTE = ' + edtRecBusca.Text);
+    if (dmPdv.sqBusca.IsEmpty) then
+    begin
+      ShowMessage('Código do Cliente não existe.');
+      Exit;
+    end;
+    edtRecCodCidade.Text := LimparString(dmPdv.sqBusca.FieldByName('CD_IBGE').AsString,'-');
+    edtRecCidade.Text := dmPdv.sqBusca.FieldByName('CIDADE').AsString;
+    edtRecUF.Text := dmPdv.sqBusca.FieldByName('UF').AsString;
+    edtRecNome.Text := dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString;
+    edtRecRazao.Text := dmPdv.sqBusca.FieldByName('RAZAOSOCIAL').AsString;
+    edtRecCNPJ.Text := dmPdv.sqBusca.FieldByName('CNPJ').AsString;
+    edtRecIE.Text := dmPdv.sqBusca.FieldByName('INSCESTADUAL').AsString;
+    edtRecFone.Text := dmPdv.sqBusca.FieldByName('DDD').AsString +
+      '-' + dmPdv.sqBusca.FieldByName('TELEFONE').AsString;
+    edtRecEnd.Text := dmPdv.sqBusca.FieldByName('LOGRADOURO').AsString;
+    edtRecNum.Text := dmPdv.sqBusca.FieldByName('NUMERO').AsString;
+    edtRecBairro.Text := dmPdv.sqBusca.FieldByName('BAIRRO').AsString;
+    edtRecCep.TExt := dmPdv.sqBusca.FieldByName('CEP').AsString;
   end;
 end;
 
@@ -3154,15 +3326,15 @@ begin
     strInsere := strInsere + ', ' + IntToStr(rgForPag.ItemIndex);       // IFORPAG
     strInsere := strInsere + ', ' + IntToStr(rgTipoDACTe.ItemIndex);    // TPIMP
 
-    strInsere := strInsere + ', ' + QuotedStr(edtEnvCodCidade.Text);  // ENV_CODCIDADE
-    strInsere := strInsere + ', ' + QuotedStr(edtEnvCidade.Text);   // ENV_CIDADE
-    strInsere := strInsere + ', ' + QuotedStr(edtEnvUF.Text);     // ENV_ESTADO
-    strInsere := strInsere + ', ' + QuotedStr(edtIniCodCidade.Text); // INI_CODCIDADE
-    strInsere := strInsere + ', ' + QuotedStr(edtIniCidade.Text); // INI_CIDADE
-    strInsere := strInsere + ', ' + QuotedStr(edtIniUF.Text);    // INI_ESTADO
-    strInsere := strInsere + ', ' + QuotedStr(edtFimCodCidade.Text);  // FIM_CODCIDADE
-    strInsere := strInsere + ', ' + QuotedStr(edtFimCidade.Text); // FIM_CIDADE
-    strInsere := strInsere + ', ' + QuotedStr(edtFimUF.Text);  // FIM_ESTADO
+    strInsere := strInsere + ', ' + QuotedStr(Trim(edtEnvCodCidade.Text));  // ENV_CODCIDADE
+    strInsere := strInsere + ', ' + QuotedStr(Trim(edtEnvCidade.Text));   // ENV_CIDADE
+    strInsere := strInsere + ', ' + QuotedStr(Trim(edtEnvUF.Text));     // ENV_ESTADO
+    strInsere := strInsere + ', ' + QuotedStr(Trim(edtIniCodCidade.Text)); // INI_CODCIDADE
+    strInsere := strInsere + ', ' + QuotedStr(Trim(edtIniCidade.Text)); // INI_CIDADE
+    strInsere := strInsere + ', ' + QuotedStr(Trim(edtIniUF.Text));    // INI_ESTADO
+    strInsere := strInsere + ', ' + QuotedStr(Trim(edtFimCodCidade.Text));  // FIM_CODCIDADE
+    strInsere := strInsere + ', ' + QuotedStr(Trim(edtFimCidade.Text)); // FIM_CIDADE
+    strInsere := strInsere + ', ' + QuotedStr(Trim(edtFimUF.Text));  // FIM_ESTADO
 
     // EMITENTE
     // E_RG
@@ -3355,33 +3527,7 @@ end;
 
 procedure TfCTePrincipal.edtBuscaTomadorExit(Sender: TObject);
 begin
-  if (edtBuscaTomador.Text <> '') then
-  begin
-    dmPdv.busca_sql('SELECT c.NOMECLIENTE, c.RAZAOSOCIAL, c.CNPJ, ' +
-      ' c.INSCESTADUAL, d.LOGRADOURO, d.NUMERO, d.CIDADE, d.BAIRRO, ' +
-      ' d.CEP, d.UF, d.CD_IBGE, d.DDD , d.TELEFONE  ' +
-      ' FROM CLIENTES c, ENDERECOCLIENTE d ' +
-      ' WHERE c.CODCLIENTE = d.CODCLIENTE ' +
-      ' AND d.TIPOEND = 0 AND c.CODCLIENTE = ' + edtBuscaTomador.Text);
-    if (dmPdv.sqBusca.IsEmpty) then
-    begin
-      ShowMessage('Código do Cliente não existe.');
-      Exit;
-    end;
-    edtTomadorCodCidade.Text := dmPdv.sqBusca.FieldByName('CD_IBGE').AsString;
-    edtTomadorCidade.Text := dmPdv.sqBusca.FieldByName('CIDADE').AsString;
-    edtTomadorUF.Text := dmPdv.sqBusca.FieldByName('UF').AsString;
-    edtNomeTomador.Text := dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString;
-    edtRazaoTomador.Text := dmPdv.sqBusca.FieldByName('RAZAOSOCIAL').AsString;
-    edtCNPJTomador.Text := dmPdv.sqBusca.FieldByName('CNPJ').AsString;
-    edtIETomador.Text := dmPdv.sqBusca.FieldByName('INSCESTADUAL').AsString;
-    edtFoneTomador.Text := dmPdv.sqBusca.FieldByName('DDD').AsString +
-      '-' + dmPdv.sqBusca.FieldByName('TELEFONE').AsString;
-    edtEndTomador.Text := dmPdv.sqBusca.FieldByName('LOGRADOURO').AsString;
-    edtNumTomador.Text := dmPdv.sqBusca.FieldByName('NUMERO').AsString;
-    edtBairroTomador.Text := dmPdv.sqBusca.FieldByName('BAIRRO').AsString;
-    edtCepTomador.TExt := dmPdv.sqBusca.FieldByName('CEP').AsString;
-  end;
+  buscaTomador;
 end;
 
 
@@ -3407,7 +3553,7 @@ end;
 
 procedure TfCTePrincipal.edtDestBuscaExit(Sender: TObject);
 begin
-  buscaDestinatario;
+
 end;
 
 procedure TfCTePrincipal.edtDestNome1Change(Sender: TObject);
@@ -3437,103 +3583,18 @@ end;
 
 procedure TfCTePrincipal.edtExpBuscaExit(Sender: TObject);
 begin
-  if (edtExpBusca.Text <> '') then
-  begin
-    dmPdv.busca_sql('SELECT c.NOMECLIENTE, c.RAZAOSOCIAL, c.CNPJ, ' +
-      ' c.INSCESTADUAL, d.LOGRADOURO, d.NUMERO, d.CIDADE, d.BAIRRO, ' +
-      ' d.CEP, d.UF, d.CD_IBGE, d.DDD , d.TELEFONE  ' +
-      ' FROM CLIENTES c, ENDERECOCLIENTE d ' +
-      ' WHERE c.CODCLIENTE = d.CODCLIENTE ' +
-      ' AND d.TIPOEND = 0 AND c.CODCLIENTE = ' + edtExpBusca.Text);
-    if (dmPdv.sqBusca.IsEmpty) then
-    begin
-      ShowMessage('Código do Cliente não existe.');
-      Exit;
-    end;
-    edtExpCodCidade.Text := LimparString(dmPdv.sqBusca.FieldByName('CD_IBGE').AsString,'-');
-    edtExpCidade.Text := dmPdv.sqBusca.FieldByName('CIDADE').AsString;
-    edtExpUF.Text := dmPdv.sqBusca.FieldByName('UF').AsString;
-    edtExpNome.Text := dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString;
-    edtExpRazao.Text := dmPdv.sqBusca.FieldByName('RAZAOSOCIAL').AsString;
-    edtExpCNPJ.Text := dmPdv.sqBusca.FieldByName('CNPJ').AsString;
-    edtExpIE.Text := dmPdv.sqBusca.FieldByName('INSCESTADUAL').AsString;
-    edtExpFone.Text := dmPdv.sqBusca.FieldByName('DDD').AsString +
-      '-' + dmPdv.sqBusca.FieldByName('TELEFONE').AsString;
-    edtExpEnd.Text := dmPdv.sqBusca.FieldByName('LOGRADOURO').AsString;
-    edtExpNum.Text := dmPdv.sqBusca.FieldByName('NUMERO').AsString;
-    edtExpBairro.Text := dmPdv.sqBusca.FieldByName('BAIRRO').AsString;
-    edtExpCep.TExt := dmPdv.sqBusca.FieldByName('CEP').AsString;
-  end;
-
+  buscaExpedidor;
 end;
 
 
 procedure TfCTePrincipal.edtRecBuscaExit(Sender: TObject);
 begin
-  if (edtRecBusca.Text <> '') then
-  begin
-    dmPdv.busca_sql('SELECT c.NOMECLIENTE, c.RAZAOSOCIAL, c.CNPJ, ' +
-      ' c.INSCESTADUAL, d.LOGRADOURO, d.NUMERO, d.CIDADE, d.BAIRRO, ' +
-      ' d.CEP, d.UF, d.CD_IBGE, d.DDD , d.TELEFONE  ' +
-      ' FROM CLIENTES c, ENDERECOCLIENTE d ' +
-      ' WHERE c.CODCLIENTE = d.CODCLIENTE ' +
-      ' AND d.TIPOEND = 0 AND c.CODCLIENTE = ' + edtRecBusca.Text);
-    if (dmPdv.sqBusca.IsEmpty) then
-    begin
-      ShowMessage('Código do Cliente não existe.');
-      Exit;
-    end;
-    edtRecCodCidade.Text := LimparString(dmPdv.sqBusca.FieldByName('CD_IBGE').AsString,'-');
-    edtRecCidade.Text := dmPdv.sqBusca.FieldByName('CIDADE').AsString;
-    edtRecUF.Text := dmPdv.sqBusca.FieldByName('UF').AsString;
-    edtRecNome.Text := dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString;
-    edtRecRazao.Text := dmPdv.sqBusca.FieldByName('RAZAOSOCIAL').AsString;
-    edtRecCNPJ.Text := dmPdv.sqBusca.FieldByName('CNPJ').AsString;
-    edtRecIE.Text := dmPdv.sqBusca.FieldByName('INSCESTADUAL').AsString;
-    edtRecFone.Text := dmPdv.sqBusca.FieldByName('DDD').AsString +
-      '-' + dmPdv.sqBusca.FieldByName('TELEFONE').AsString;
-    edtRecEnd.Text := dmPdv.sqBusca.FieldByName('LOGRADOURO').AsString;
-    edtRecNum.Text := dmPdv.sqBusca.FieldByName('NUMERO').AsString;
-    edtRecBairro.Text := dmPdv.sqBusca.FieldByName('BAIRRO').AsString;
-    edtRecCep.TExt := dmPdv.sqBusca.FieldByName('CEP').AsString;
-  end;
+  buscaRecebedor;
 end;
 
 procedure TfCTePrincipal.edtRemBuscaExit(Sender: TObject);
 begin
-  if (edtRemBusca.Text <> '') then
-  begin
-    dmPdv.busca_sql('SELECT c.NOMECLIENTE, c.RAZAOSOCIAL, c.CNPJ, ' +
-      ' c.INSCESTADUAL, d.LOGRADOURO, d.NUMERO, d.CIDADE, d.BAIRRO, ' +
-      ' d.CEP, d.UF, d.CD_IBGE, d.DDD , d.TELEFONE  ' +
-      ' FROM CLIENTES c, ENDERECOCLIENTE d ' +
-      ' WHERE c.CODCLIENTE = d.CODCLIENTE ' +
-      ' AND d.TIPOEND = 0 AND c.CODCLIENTE = ' + edtRemBusca.Text);
-    if (dmPdv.sqBusca.IsEmpty) then
-    begin
-      ShowMessage('Código do Cliente não existe.');
-      Exit;
-    end;
-    edtRemCodCidade.Text := dmPdv.sqBusca.FieldByName('CD_IBGE').AsString;
-    edtRemCidade.Text := dmPdv.sqBusca.FieldByName('CIDADE').AsString;
-    edtRemUF.Text := dmPdv.sqBusca.FieldByName('UF').AsString;
-    edtRemNome.Text := dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString;
-    edtRemRazao.Text := dmPdv.sqBusca.FieldByName('RAZAOSOCIAL').AsString;
-    edtRemCNPJ.Text := dmPdv.sqBusca.FieldByName('CNPJ').AsString;
-    edtRemIE.Text := dmPdv.sqBusca.FieldByName('INSCESTADUAL').AsString;
-    edtRemFone.Text := dmPdv.sqBusca.FieldByName('DDD').AsString +
-      '-' + dmPdv.sqBusca.FieldByName('TELEFONE').AsString;
-    edtRemEnd.Text := dmPdv.sqBusca.FieldByName('LOGRADOURO').AsString;
-    edtRemNum.Text := dmPdv.sqBusca.FieldByName('NUMERO').AsString;
-    edtRemBairro.Text := dmPdv.sqBusca.FieldByName('BAIRRO').AsString;
-    edtRemCep.TExt := dmPdv.sqBusca.FieldByName('CEP').AsString;
-    if (edtIniUf.Text = '') then
-    begin
-      edtIniUf.Text := edtRemUF.Text;
-      edtIniCidade.Text := edtRemCidade.Text;
-      edtIniCodCidade.TExt := edtRemCodCidade.Text;
-    end;
-  end;
+  buscaRemetente;
 end;
 
 procedure TfCTePrincipal.BitBtn20Click(Sender: TObject);
@@ -4201,6 +4262,7 @@ begin
   btnGerarCte.Enabled := True;
   sbtnLerXmlCte.Enabled := True;
   sbtnLerXmlCte1.Enabled := True;
+  edtCfop.SetFocus;
 end;
 
 procedure TfCTePrincipal.btnGerarClick(Sender: TObject);
@@ -4500,7 +4562,7 @@ begin
     edtExpBusca.Text := IntToStr(fClienteBusca.cCodCliente);
     edtExpNome.Text := fClienteBusca.cNomeCliente;
   end;
-  edtExpBuscaExit(Nil);
+  buscaExpedidor;
 end;
 
 procedure TfCTePrincipal.BitBtn11Click(Sender: TObject);
@@ -4523,7 +4585,7 @@ begin
     edtRecBusca.Text := IntToStr(fClienteBusca.cCodCliente);
     edtRecNome.Text := fClienteBusca.cNomeCliente;
   end;
-  edtRecBuscaExit(Nil);
+  buscaRecebedor;
 end;
 
 procedure TfCTePrincipal.BitBtn12Click(Sender: TObject);
@@ -4552,7 +4614,8 @@ begin
   if (rgTipoAmb.ItemIndex = 1) then
     lblCteAtual1.Font.Color:=clRed;
   lblCteAtual1.Caption := lblCteAtual.Caption;
-  edtDestBuscaExit(Nil);
+  //edtDestBuscaExit(Nil);
+  buscaDestinatario;
 end;
 
 procedure TfCTePrincipal.BitBtn13Click(Sender: TObject);
@@ -4715,10 +4778,13 @@ begin
 
   dmCte.sqComp.Append;
   dmCte.sqCompCOD_CTE.AsInteger := val_genCte;
+  if (componente_nome <> '') then
+    dmCte.sqCompCOMP_NOME.AsString := componente_nome;
   fCompValor.ShowModal;
   dmCte.sqComp.Close;
   dmCte.sqComp.Params[0].AsInteger := val_genCte;
   dmCte.sqComp.Open;
+  componente_nome := dmCte.sqCompCOMP_NOME.AsString;
 end;
 
 procedure TfCTePrincipal.BitBtn19Click(Sender: TObject);
@@ -4868,7 +4934,7 @@ begin
     edtBuscaTomador.Text := IntToStr(fClienteBusca.cCodCliente);
     edtNomeTomador.Text := fClienteBusca.cNomeCliente;
   end;
-  edtBuscaTomadorExit(Nil);
+  buscaTomador;
 end;
 
 procedure TfCTePrincipal.BitBtn9Click(Sender: TObject);
@@ -4891,7 +4957,7 @@ begin
    edtRemBusca.Text := IntToStr(fClienteBusca.cCodCliente);
    edtRemNome.Text := fClienteBusca.cNomeCliente;
  end;
- edtRemBuscaExit(Nil);
+ buscaRemetente;
 end;
 
 procedure TfCTePrincipal.btnEditarNFeClick(Sender: TObject);
@@ -5013,6 +5079,8 @@ begin
   end;
   dmCte.sqQC.Edit;
   fQuantCarga.ShowModal;
+  carga_un := dmCte.sqQCUNID.AsString;
+  carga_desc := dmCte.sqQCMEDIDA.AsString;
 end;
 
 procedure TfCTePrincipal.btnInfCargaExcluiClick(Sender: TObject);
@@ -5064,11 +5132,17 @@ begin
     btnGravarCTe.Click;
 
   dmCte.sqQC.Append;
+  if (carga_desc <> '') then
+    dmCte.sqQCMEDIDA.AsString := carga_desc;
+  if (carga_un <> '') then
+    dmCte.sqQCUNID.AsString := carga_un;
   dmCte.sqQCCOD_CTE.AsInteger := val_genCte;
   fQuantCarga.ShowModal;
   dmCte.sqQC.Close;
   dmCte.sqQC.Params[0].AsInteger := val_genCte;
   dmCte.sqQC.Open;
+  carga_un := dmCte.sqQCUNID.AsString;
+  carga_desc := dmCte.sqQCMEDIDA.AsString;
 end;
 
 procedure TfCTePrincipal.btnGravarCTeClick(Sender: TObject);
@@ -5397,6 +5471,7 @@ begin
 
   buscaEmpresa(comboEmpresa.Text);
   LerConfiguracao;
+  edtProPred.Text := carga_prodpre;
 
   //dataOutrosEmi.Date := StrToDate('01/01/01');
   //dataRodPrev.Date := StrToDate('01/01/01');
@@ -5478,6 +5553,7 @@ begin
   dmCte.cdsCteVALPICMS.AsFloat := percent_icms;
   pcPrincipal.ActivePageIndex := 1;
   pcCte.ActivePageIndex := 0;
+  edtCfop.SetFocus;
 
   btnGravarCTe.Enabled := True;
   btnCancelarEdicaoCTe.Enabled := True;
@@ -5745,6 +5821,17 @@ begin
   buscaEmpresa(comboEmpresa.Text);
 end;
 
+procedure TfCTePrincipal.dbGridCompCellClick(Column: TColumn);
+begin
+  componente_nome := dmCte.sqCompCOMP_NOME.AsString;
+end;
+
+procedure TfCTePrincipal.dbGridQCCellClick(Column: TColumn);
+begin
+  carga_un := dmCte.sqQCUNID.AsString;
+  carga_desc := dmCte.sqQCMEDIDA.AsString;
+end;
+
 procedure TfCTePrincipal.edtXMLCodChange(Sender: TObject);
 begin
 
@@ -5916,6 +6003,36 @@ end;
 procedure TfCTePrincipal.Panel3Click(Sender: TObject);
 begin
 
+end;
+
+procedure TfCTePrincipal.pcCteChange(Sender: TObject);
+begin
+  Case pcCte.ActivePageIndex of
+    0: edtCfop.SetFocus;
+    1: edtCodEmitente.SetFocus;
+    2: edtBuscaTomador.SetFocus;
+    3: if rgRem.ItemIndex = 0 then edtRemBusca.SetFocus;
+    4: if rgExp.ItemIndex = 0 then edtExpBusca.SetFocus;
+    5: if rgRec.ItemIndex = 0 then edtRecBusca.SetFocus;
+    6: if rgDest.ItemIndex = 0 then edtDestBusca.SetFocus;
+    7: dbValTotPrest.SetFocus;
+    8: dbValInfCarga.SetFocus;
+    9: edtRodRNTRC.SetFocus;
+  end;
+end;
+
+procedure TfCTePrincipal.pcCteChanging(Sender: TObject; var AllowChange: Boolean
+  );
+begin
+  {Case pcCte.ActivePageIndex of
+    0: edtCfop.SetFocus;
+    7: dbValTotPrest.SetFocus;
+    8: dbValInfCarga.SetFocus;
+  end;}
+end;
+
+procedure TfCTePrincipal.pcPrincipalChange(Sender: TObject);
+begin
 end;
 
 procedure TfCTePrincipal.rgDestClick(Sender: TObject);
@@ -6301,12 +6418,12 @@ begin
          end;
        end;
      end; // fim do xml
-     edtEnvUF.Text := edtEmitUF.Text;
-     edtEnvCidade.Text := edtEmitCidade.Text;
-     edtEnvCodCidade.Text := edtEmitCodCidade.Text;
-     edtFimUF.Text := edtDestUF.Text;
-     edtFimCidade.Text := edtDestCidade.Text;
-     edtFimCodCidade.Text := edtDestCodCidade.Text;
+     edtEnvUF.Text := Trim(edtEmitUF.Text);
+     edtEnvCidade.Text := Trim(edtEmitCidade.Text);
+     edtEnvCodCidade.Text := Trim(edtEmitCodCidade.Text);
+     edtFimUF.Text := Trim(edtDestUF.Text);
+     edtFimCidade.Text := Trim(edtDestCidade.Text);
+     edtFimCodCidade.Text := Trim(edtDestCodCidade.Text);
      edtIniUF.Text := edtRemUF.Text;
      edtIniCidade.Text := edtRemCidade.Text;
      edtIniCodCidade.Text := edtRemCodCidade.Text;
