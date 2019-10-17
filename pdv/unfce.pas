@@ -134,6 +134,7 @@ type
     procedure RadioGroup2Click(Sender: TObject);
   private
     //ACBrNFe1 : TACBrNFe;
+    tipoEmissaoNFCe: String;
     total_tributos: Double;
     serie_nfce: Integer;
     num_nfce: Integer;
@@ -522,6 +523,7 @@ var msg_ncm: String;
  t: string;
  serie : String;
 begin
+  tipoEmissaoNFCe := 'teNormal';
   if (dmPdv.sqEmpresa.Active) then
    dmPdv.sqEmpresa.Close;
   ////dmPdv.sqEmpresa.Params[0].AsInteger := dm.CCustoPadrao; //Buscar de parametro
@@ -752,7 +754,15 @@ begin
     Ide.dSaiEnt   := now;
     Ide.hSaiEnt   := now;
     Ide.tpNF      := tnSaida;
-    Ide.tpEmis    := teNormal;
+    if (tipoEmissaoNFCe = 'teNormal') then
+      Ide.tpEmis    := teNormal;
+    if (tipoEmissaoNFCe = 'teOffLine') then
+    begin
+      Ide.tpEmis := teOffLine;
+      Ide.dhCont := Now;
+      Ide.xJust  := 'Emissao em contigencia , falha conexao.';
+    end;
+
     ////Ide.tpEmis    := TpcnTipoEmissao(cbFormaEmissao.ItemIndex); ;
     if(dmPdv.sqEmpresaTIPO.IsNull) then
     begin
@@ -2192,11 +2202,9 @@ begin
   memoLog.Lines.Add('Gerando NFCe');
   ACBrNFe1.NotasFiscais.Clear;
   carregaAcbr;
-  ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.tpEmis:=teOffLine;
   ACBrNFe1.Configuracoes.Geral.FormaEmissao:=teOffLine;
-  ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.dhCont:=Now;
-  ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.xJust:='Emissao em contigencia , falha conexao.';
-
+  tipoEmissaoNFCe := 'teOffLine';
+  ShowMessage('Modo Offline.');
     if (notaEmitida = 'S') then
     begin
       ShowMessage('Nota Fiscal já emitida.');
@@ -2257,8 +2265,10 @@ begin
     AcbrNfe1.Configuracoes.Arquivos.PathSalvar := dmpdv.path_xml + '\NFce\';
     AcbrNfe1.Configuracoes.Arquivos.PathEvento := dmpdv.path_xml + '\Eventos\';
     memoLog.Lines.Add('Gerando XML');
+    ShowMessage('Gerando XML.');
     GerarNFCe(vAux);
     memoLog.Lines.Add('Assinando XML');
+    ShowMessage('Assinando.');
     ACBrNFe1.NotasFiscais.Assinar;
 
     // Gravando a nota aqui pois se der erro no validar ja gravei
@@ -2268,10 +2278,13 @@ begin
     //ACBrNFe1.NotasFiscais.Items[0].GravarXML();
     ACBrNFe1.NotasFiscais.GravarXML();
     memoLog.Lines.Add('Validando');
+    ShowMessage('Validando.');
     ACBrNFe1.NotasFiscais.Validar;
     //LoadXML(ACBrNFe1.NotasFiscais.Items[0].XML,  mRecebido);
 
     // TODO
+    //offile não envia
+    {
     if (dmPdv.NFE_Teste = 'N') then
     begin
       memoLog.Lines.Add('Enviando ...');
@@ -2310,7 +2323,9 @@ begin
     ShowMessage('Nº do Recibo de envio ' + ACBrNFe1.WebServices.Retorno.Recibo);
 
     //LoadXML(ACBrNFe1.NotasFiscais.Items[0].XML,  mRecebido);
-    //ACBrNFe1.NotasFiscais.Imprimir;
+    }
+    ShowMessage('Imprimindo.');
+    ACBrNFe1.NotasFiscais.Imprimir;
     memoLog.Lines.Add('Enviado gravando retorno');
     memoLog.Lines.Add('');
     memoLog.Lines.Add('Nota Fiscal Consumidor, gerada com sucesso.');
@@ -2332,7 +2347,23 @@ begin
     ACBrNFe1.NotasFiscais.Clear;
     carregaAcbr;
     ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
-    ACBrNFe1.NotasFiscais.GerarNFe;
+    //ACBrNFe1.NotasFiscais.GerarNFe;
+    try
+      ACBrNFe1.Enviar(1,True,False);
+      memoLog.Lines.Add('cStat : ' + IntToStr(ACBrNFe1.WebServices.Retorno.cStat));
+      if (ACBrNFe1.WebServices.Retorno.cStat = 100) then
+      begin
+        GravarDadosNF(ACBrNFe1.WebServices.Retorno.Protocolo,
+          ACBrNFe1.WebServices.Retorno.Recibo);
+      end;
+    Except
+      on E:Exception do
+      begin
+        ShowMessage('Erro para Enviar a NFCe, erro : ' +
+          IntToStr(ACBrNFe1.WebServices.Retorno.cStat) + ' MSG : ' + e.Message);
+      end;
+    end;
+    ShowMessage('Nota de Contigência enviada com sucesso');
   end;
 end;
 
