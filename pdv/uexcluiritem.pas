@@ -76,6 +76,7 @@ begin
         dmPdv.sqBusca.FieldByName('CODDETALHE').AsInteger);
       dmPdv.IbCon.ExecuteDirect(dsqlAltera);
       dmPdv.sTrans.Commit;
+      Close;
     end
     else
     begin
@@ -108,6 +109,7 @@ begin
       psqlAltera := psqlAltera + ' WHERE CODMOVIMENTO = ' + IntToStr(excCodMov);
       dmPdv.IbCon.ExecuteDirect(psqlAltera);
       dmPdv.sTrans.Commit;
+      close;
     end
     else
     begin

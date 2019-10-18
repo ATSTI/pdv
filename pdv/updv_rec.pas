@@ -502,15 +502,22 @@ begin
       ' , DATA_FECHOU = ' + QuotedStr(FormatDateTime('mm/dd/yyyy hh:MM:ss', Now)) +
       ' WHERE CODMOVIMENTO  = ' +
       IntToStr(vCodMovimento) + ' AND STATUS = 0');
+    dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTODETALHE SET BAIXA = 1 ' +
+      ' WHERE CODMOVIMENTO  = ' + IntToStr(vCodMovimento) +
+      ' AND BAIXA IS NULL AND STATUS = 0');
+    dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTODETALHE SET BAIXA = NULL ' +
+      ' WHERE CODMOVIMENTO  = ' + IntToStr(vCodMovimento) +
+      ' AND BAIXA = 1 AND STATUS = 2');
   except
-    dmPdv.IbCon.ExecuteDirect('ALTER TABLE MOVIMENTO ' +
+    {dmPdv.IbCon.ExecuteDirect('ALTER TABLE MOVIMENTO ' +
       ' ADD DATA_FECHOU TIMESTAMP');
     dmPdv.sTrans.Commit;
     dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET STATUS = 1 ' +
       ' , CODCLIENTE = ' + IntToStr(vCliente) +
       ' , DATA_FECHOU = ' + QuotedStr(FormatDateTime('mm/dd/yyyy hh:MM:ss', Now)) +
       ' WHERE CODMOVIMENTO  = ' +
-      IntToStr(vCodMovimento) + ' AND STATUS = 0');
+      IntToStr(vCodMovimento) + ' AND STATUS = 0');}
+    ShowMessage('Erro para baixar venda');
   end;
 
   vStatus := 1;
@@ -1395,6 +1402,8 @@ begin
       dmPdv.IbCon.ExecuteDirect('UPDATE FORMA_ENTRADA SET STATE = 2 ' +
         ' WHERE CODFORMA = ' + IntToStr(sqPagamentoCODFORMA.AsInteger));
       //sqPagamento.ApplyUpdates;
+      dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTODETALHE SET BAIXA = NULL ' +
+        ' WHERE CODMOVIMENTO  = ' + IntToStr(vCodMovimento));
       sqPagamento.Active:=False;
       dmPdv.sTrans.Commit;
       sqPagamento.Active:=True;
@@ -1565,6 +1574,8 @@ begin
   if (edValorPago.Text = '0,00') then
   begin
     dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET STATUS = 0 ' +
+      ' WHERE CODMOVIMENTO  = ' + IntToStr(vCodMovimento));
+    dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTODETALHE SET BAIXA = NULL ' +
       ' WHERE CODMOVIMENTO  = ' + IntToStr(vCodMovimento));
     dmPdv.sTrans.Commit;
     vStatus := 0;

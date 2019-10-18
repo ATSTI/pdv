@@ -8,19 +8,13 @@ object fExclusao: TfExclusao
   ClientWidth = 592
   OnCreate = FormCreate
   OnShow = FormShow
-  LCLVersion = '1.8.4.0'
+  LCLVersion = '2.0.4.0'
   object edItemExcluir: TLabeledEdit
     Left = 128
     Height = 23
     Top = 56
     Width = 170
-    EditLabel.AnchorSideLeft.Control = edItemExcluir
-    EditLabel.AnchorSideRight.Control = edItemExcluir
-    EditLabel.AnchorSideRight.Side = asrBottom
-    EditLabel.AnchorSideBottom.Control = edItemExcluir
-    EditLabel.Left = 128
     EditLabel.Height = 15
-    EditLabel.Top = 38
     EditLabel.Width = 170
     EditLabel.Caption = 'Cód. Item Excluir'
     EditLabel.ParentColor = False
@@ -33,13 +27,7 @@ object fExclusao: TfExclusao
     Height = 23
     Top = 160
     Width = 168
-    EditLabel.AnchorSideLeft.Control = edPedidoExcluir
-    EditLabel.AnchorSideRight.Control = edPedidoExcluir
-    EditLabel.AnchorSideRight.Side = asrBottom
-    EditLabel.AnchorSideBottom.Control = edPedidoExcluir
-    EditLabel.Left = 130
     EditLabel.Height = 15
-    EditLabel.Top = 142
     EditLabel.Width = 168
     EditLabel.Caption = 'Número do Pedido a Excluir'
     EditLabel.ParentColor = False

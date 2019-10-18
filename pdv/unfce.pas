@@ -2265,10 +2265,10 @@ begin
     AcbrNfe1.Configuracoes.Arquivos.PathSalvar := dmpdv.path_xml + '\NFce\';
     AcbrNfe1.Configuracoes.Arquivos.PathEvento := dmpdv.path_xml + '\Eventos\';
     memoLog.Lines.Add('Gerando XML');
-    ShowMessage('Gerando XML.');
+    //ShowMessage('Gerando XML.');
     GerarNFCe(vAux);
     memoLog.Lines.Add('Assinando XML');
-    ShowMessage('Assinando.');
+    //ShowMessage('Assinando.');
     ACBrNFe1.NotasFiscais.Assinar;
 
     // Gravando a nota aqui pois se der erro no validar ja gravei
@@ -2278,7 +2278,7 @@ begin
     //ACBrNFe1.NotasFiscais.Items[0].GravarXML();
     ACBrNFe1.NotasFiscais.GravarXML();
     memoLog.Lines.Add('Validando');
-    ShowMessage('Validando.');
+    //ShowMessage('Validando.');
     ACBrNFe1.NotasFiscais.Validar;
     //LoadXML(ACBrNFe1.NotasFiscais.Items[0].XML,  mRecebido);
 
@@ -2324,7 +2324,7 @@ begin
 
     //LoadXML(ACBrNFe1.NotasFiscais.Items[0].XML,  mRecebido);
     }
-    ShowMessage('Imprimindo.');
+    //ShowMessage('Imprimindo.');
     ACBrNFe1.NotasFiscais.Imprimir;
     memoLog.Lines.Add('Enviado gravando retorno');
     memoLog.Lines.Add('');
