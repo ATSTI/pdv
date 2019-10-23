@@ -2982,8 +2982,8 @@ object fNfce: TfNfce
         Height = 280
         Top = 104
         Width = 641
-        ActivePage = TabSheet3
-        TabIndex = 2
+        ActivePage = TabSheet2
+        TabIndex = 1
         TabOrder = 4
         object TabSheet1: TTabSheet
           Caption = 'Retorno'
@@ -2999,7 +2999,7 @@ object fNfce: TfNfce
         end
         object TabSheet2: TTabSheet
           Caption = 'Envio'
-          ClientHeight = 167
+          ClientHeight = 252
           ClientWidth = 633
           object MemoDados: TMemo
             Left = 8
@@ -3219,9 +3219,9 @@ object fNfce: TfNfce
         TabOrder = 5
       end
       object Panel1: TPanel
-        Left = 24
+        Left = 72
         Height = 251
-        Top = 104
+        Top = 120
         Width = 456
         ClientHeight = 251
         ClientWidth = 456
@@ -3592,7 +3592,7 @@ object fNfce: TfNfce
     Configuracoes.Arquivos.SalvarEvento = True
     Configuracoes.Arquivos.SalvarApenasNFeProcessadas = True
     Configuracoes.WebServices.Visualizar = True
-    Configuracoes.WebServices.UF = 'MS'
+    Configuracoes.WebServices.UF = 'SP'
     Configuracoes.WebServices.AguardarConsultaRet = 0
     Configuracoes.WebServices.Salvar = True
     Configuracoes.WebServices.QuebradeLinha = '|'

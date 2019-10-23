@@ -19,7 +19,6 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCtePrincipal"/>
-        <IsVisibleTab Value="True"/>
         <TopLine Value="6405"/>
         <CursorPos X="14" Y="6427"/>
         <UsageCount Value="200"/>
@@ -43,8 +42,9 @@
         <ComponentName Value="dmPdv"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="6"/>
-        <TopLine Value="497"/>
+        <TopLine Value="496"/>
         <CursorPos X="43" Y="491"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
