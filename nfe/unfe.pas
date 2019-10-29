@@ -6,11 +6,11 @@ interface
 
 uses
   Windows, Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  ComCtrls, StdCtrls, DBGrids, Buttons, EditBtn, DateTimePicker, ACBrNFe,
+  ComCtrls, StdCtrls, DBGrids, Buttons, EditBtn, ACBrNFe,
   ACBrNFeDANFeRLClass, ACBrDANFCeFortesFr, ACBrValidador, db, Grids, IniFiles,
   ACBrUtil, pcnConversao, ACBrMail, ACBrIntegrador, pcnConversaoNFe, math,
-  MaskUtils, StrUtils, DOM, XMLRead, XMLWrite, FileUtil, ListFilterEdit,
-  SynMemo, SynHighlighterXML, FileCtrl, ACBrBase, ACBrDFe;
+  MaskUtils, StrUtils, DOM, FileUtil,
+  SynMemo, SynHighlighterXML;
 
 
 type
@@ -85,6 +85,7 @@ type
     DateEdit1: TDateEdit;
     DateEdit2: TDateEdit;
     DBGrid1: TDBGrid;
+    DBGrid2: TDBGrid;
     edDadosXml: TEdit;
     Edit1: TEdit;
     Edit2: TEdit;
@@ -299,6 +300,7 @@ type
     procedure AtualizaSSLLibsCombo;
     procedure GravarConfiguracao;
     procedure LoadXML(MyMemo: TMemo; MyWebBrowser: TSynMemo);
+    procedure GerarNFe;
   public
     danfe_larg_codprod: integer;
     imprimeDetalhamentoEspecifico: Boolean;
@@ -310,6 +312,13 @@ type
     diretorio_schema : String;
     numCertificado : String;
     mascaraProduto : String;
+
+    i: integer;
+    valida, codFisc , pCNPJ_CPF: String;
+    tipoNota: Char;
+    codnf: integer;
+    Protocolo, Recibo, str, vAux : String;
+
     function GetVersion :  string;
   end;
 
@@ -540,25 +549,124 @@ begin
 end;
 
 procedure TfNFe.btnImprimeClick(Sender: TObject);
-var
-   carregarMais: boolean;
+var strAtualizaNota, nProtCanc: String;
+arquivx: String;
+  atualiza_nf: String;
 begin
-  carregarMais := true;
-  OpenDialog1.Title := 'Selecione a NFE';
-  OpenDialog1.DefaultExt := '*-nfe.XML';
-  OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
-  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
+  atualiza_nf := '';
+  if (not dmPdv.qcds_ccusto.Active) then
+    dmPdv.qcds_ccusto.Open;
 
-  ACBrNFe1.NotasFiscais.Clear;
-  while carregarMais  do
+  if (PageControl1.ActivePageIndex = 0) then
   begin
-    if OpenDialog1.Execute then
-      ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName,False);
-    carregarMais := MessageDlg('Carregar mais XML?', mtConfirmation, mbYesNo,0)= mrYes;
+    dmPdv.qcds_ccusto.Locate('NOME', ComboBox1.Text,[loCaseInsensitive]);
+    if(ComboBox1.Text = '') then
+    begin
+      MessageDlg('Centro de custo não selecionado', mtError, [mbOK], 0);
+      exit;
+    end;
   end;
+   //Seleciona Empresa de acordo com o CCusto selecionado
+  if (dmPdv.qsEmpresa.Active) then
+    dmPdv.qsEmpresa.Close;
+  dmPdv.qsEmpresa.Params[0].AsInteger := dmPdv.qcds_ccustoCODIGO.AsInteger;
+  dmPdv.qsEmpresa.Open;
 
-  if ACBrNFe1.NotasFiscais.Count > 0 then
-     ACBrNFe1.NotasFiscais.Imprimir;
+   //verifica se o CC foi selecionado caso não da mensagem avisando
+   if(dmPdv.qsEmpresa.IsEmpty) then
+     MessageDlg('Centro de custo não selecionado', mtError, [mbOK], 0);
+
+  ACBrNFe1.Configuracoes.WebServices.UF := dmPdv.qsEmpresaUF.AsString;
+  dmPdv.qcdsNF.First;
+  while not dmPdv.qcdsNF.Eof do
+  begin
+    if (trim(dmPdv.qcdsNFSELECIONOU.AsString) = 'S') then
+    begin
+      nfe_carregalogo;
+      ACBrNFe1.NotasFiscais.Clear;
+      if (dmPdv.qcdsNFXMLNFE.AsString <> '') then
+      begin
+        ACBrNFe1.NotasFiscais.LoadFromString(dmPdv.qcdsNFXMLNFE.AsString);
+      end
+      else begin
+
+        if FileExists(ACBrNFe1.Configuracoes.Arquivos.PathNFe+'\' + dmPdv.qcdsNFNOMEXML.AsString) then
+        begin
+          arquivx := ACBrNFe1.Configuracoes.Arquivos.PathNFe+'\' + dmPdv.qcdsNFNOMEXML.AsString;
+        end
+        else begin
+          OpenDialog1.Title := 'Selecione a NFE';
+          OpenDialog1.DefaultExt := '*-nfe.XML';
+          OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+          OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathNFe;
+          if OpenDialog1.Execute then
+          begin
+            arquivx := OpenDialog1.FileName;
+          end;
+        end;
+        ACBrNFe1.NotasFiscais.LoadFromFile(arquivx);
+
+      end;
+      if (ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.nNF <> StrToInt(dmPdv.qcdsNFNOTASERIE.AsString)) then
+      begin
+        ShowMessage('Nota Selecionada diferente do Xml');
+        Exit;
+      end;
+      ACBrNFe1.Consultar;
+
+      if ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.tpEmis = teDPEC then
+      begin
+
+      end
+      else begin
+        strAtualizaNota := 'UPDATE NOTAFISCAL SET STATUS = ' + QuotedStr('E');
+        if ((dmPdv.qcdsNFPROTOCOLOENV.IsNull) or (dmPdv.qcdsNFPROTOCOLOENV.AsString = '')) then
+        begin
+          atualiza_nf := ' ,PROTOCOLOENV = ' +
+            QuotedStr(ACBrNFe1.WebServices.Consulta.protNFe.nProt);
+        end;
+        if ((dmPdv.qcdsNFNUMRECIBO.AsString = '') or (dmPdv.qcdsNFNUMRECIBO.IsNull)) then
+        begin
+          atualiza_nf := ' ,NUMRECIBO = ' +
+            QuotedStr(ACBrNFe1.WebServices.Recibo.Recibo);
+        end;
+        if ((dmPdv.qcdsNFNOMEXML.AsString = '') or (dmPdv.qcdsNFNOMEXML.IsNull)) then
+        begin
+          atualiza_nf :=  atualiza_nf + ' , NOMEXML = ' +
+            QuotedStr(copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
+        end;
+        if (dmPdv.qcdsNFXMLNFE.IsNull) then
+        begin
+          atualiza_nf := atualiza_nf + ' ,XMLNFE = ' + quotedStr(ACBrNFe1.NotasFiscais.Items[0].XML);
+        end;
+        if (atualiza_nf <> '') then
+        begin
+          strAtualizaNota :=  strAtualizaNota + atualiza_nf +
+            ' WHERE NUMNF = ' + IntToStr(dmPdv.qcdsNFNUMNF.AsInteger) +
+            ' AND ((PROTOCOLOENV IS NULL) OR (PROTOCOLOENV = ' + QuotedStr('') + '))';
+          dmPdv.IbCon.StartTransaction;
+          try
+             dmPdv.IbCon.ExecuteDirect(strAtualizaNota);
+             dmPdv.sTrans.Commit;
+          except
+             on E : Exception do
+             begin
+               ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
+               dmPdv.sTrans.Rollback; //on failure, undo the changes}
+             end;
+          end;
+        end;
+        nProtCanc := '';
+        nProtCanc := ACBrNFe1.WebServices.Consulta.retCancNFe.nProt;
+
+
+      end;
+      ACBrNFe1.NotasFiscais.Imprimir;
+      if (AcbrNfe1.WebServices.Consulta.Protocolo <> '') then
+        ACBrNFe1.NotasFiscais.Items[0].GravarXML;
+    end;
+    dmPdv.qcdsNf.Next;
+  end;
 
 end;
 
@@ -596,7 +704,7 @@ begin
 end;
 
 procedure TfNFe.btnInutilizarClick(Sender: TObject);
-var nfInutilizar, str: String;
+//var nfInutilizar, str: String;
 begin
   {
   ACBrNFe1.SSL.SelecionarCertificado;
@@ -698,11 +806,11 @@ begin
 end;
 
 procedure TfNFe.btnCancelaNFeClick(Sender: TObject);
-var
-  vXMLDoc: TXMLDocument;
-  vAux, Protocolo, caminho, str : String;
-  NumeroLote : Integer;
-  notaFCancela: String;
+//var
+ // vXMLDoc: TXMLDocument;
+ // vAux, Protocolo, caminho, str : String;
+ // NumeroLote : Integer;
+ // notaFCancela: String;
   //numnf : WideString;
 begin
    {
@@ -911,7 +1019,7 @@ begin
 end;
 
 procedure TfNFe.BitBtn7Click(Sender: TObject);
-var nfDenegada, str: String;
+var nfDenegada : String;
 begin
   nfDenegada := '';
   dmPdv.qcdsNF.First;
@@ -966,8 +1074,8 @@ begin
 end;
 
 procedure TfNFe.btnConnDpecClick(Sender: TObject);
-var
- vAux : String;
+//var
+// vAux : String;
 begin
   if not(InputQuery('WebServices DPEC', 'Informe o Numero do Registro do DPEC ou a Chave da NFe', vAux)) then
     exit;
@@ -1113,7 +1221,7 @@ begin
 end;
 
 procedure TfNFe.BtnCCeClick(Sender: TObject);
-var protocolo, str, xCond :string;
+var   xCond :string;
     envio :TDateTime;
     NumeroLote : Integer;
     tamanho: Integer;
@@ -1322,1016 +1430,101 @@ begin
 end;
 
 procedure TfNFe.btnGeraNFeClick(Sender: TObject);
-var
-  i: integer;
-  valida, codFisc , pCNPJ_CPF: String;
-  tipoNota: Char;
-  codnf: integer;
-  Protocolo, Recibo, str, vAux : String;
-
 begin
 
-  ///*
-  codnf := 0;
-  if (edtNumSerie.Text = '1111') then
+  GerarNFe;
+
+  //Gera Envio da Nota
+
+  lblMsgNfe.Caption := 'Enviando arquivo para a Receita Federal';
+
+
+  if ((tp_amb = 2) or (tp_amb = 5)) then
   begin
-    MessageDlg('Selecione o Certificado!',mtWarning,[mbOk],0);
-    exit;
-  end;
-
-  if (tp_amb = 3) then
-  begin
-    if (validaNumNfeScan = false) then
-    begin
-      MessageDlg('Número da Nota Fiscal errado.', mtError, [mbOK], 0);
-      exit;
-    end;
-  end;
-  lblMsgNfe.Caption := 'Gerando o arquivo da Nota';
-
-  ///*
-
-  if (not dmPdv.qcds_ccusto.Active) then
-    dmPdv.qcds_ccusto.Open;
-  dmPdv.qcds_ccusto.Locate('NOME', ComboBox1.Text,[loCaseInsensitive]);
-
-  ///*
-   if (PageControl1.ActivePageIndex = 0) then
-   begin
-     dmPdv.qcds_ccusto.Locate('NOME', ComboBox1.Text,[loCaseInsensitive]);
-     if(ComboBox1.Text = '') then
-     begin
-       MessageDlg('Centro de custo não selecionado', mtError, [mbOK], 0);
-       exit;
-     end;
-   end;
-
-
-   if (PageControl1.ActivePageIndex = 1) then
-   begin
-     dmPdv.qcds_ccusto.Locate('NOME', ComboBox2.Text,[loCaseInsensitive]);
-     if(ComboBox2.Text = '') then
-     begin
-       MessageDlg('Centro de custo não selecionado', mtError, [mbOK], 0);
-       exit;
-     end;
-   end;
-  ///
-
-
-  //Seleciona Empresa de acordo com o CCusto selecionado
-  if (dmPdv.qsEmpresa.Active) then
-    dmPdv.qsEmpresa.Close;
-  dmPdv.qsEmpresa.Params[0].AsInteger :=  dmPdv.qcds_ccustoCODIGO.AsInteger;
-  dmPdv.qsEmpresa.Open;
-
-  if(dmPdv.qsEmpresaCONTADOR_CPF.AsString <> '')then
-  begin
-     pCNPJ_CPF := dmPdv.qsEmpresaCONTADOR_CPF.AsString;
-  end;
-
-  if(dmPdv.qsEmpresaCONTADOR_CNPJ.AsString <> '')then
-  begin
-     pCNPJ_CPF := dmPdv.qsEmpresaCONTADOR_CNPJ.AsString;
-  end;
-
-  ///
-   ACBrNFe1.Configuracoes.WebServices.UF := dmPdv.qsEmpresaUF.AsString;
-  ///
-  nfe_carregalogo;
-
-  //verifica se o CC foi selecionado caso não da mensagem avisando
-  if(dmPdv.qsEmpresa.IsEmpty) then
-    MessageDlg('Centro de custo não selecionado', mtError, [mbOK], 0);
-
- dmPdv.qcdsNF.First;
- while not dmPdv.qcdsNF.Eof do
- begin
-  if (trim(dmPdv.qcdsNFSELECIONOU.AsString) = 'S') then
-  begin
-      ///
-        if (dmPdv.qcdsNFSTATUS.AsString = 'E') then
-        begin
-          MessageDlg('Nota com Status ENVIADO, altere o Status na aba OUTROS para reenviar.',mtWarning,[mbOk],0);
-          exit;
-        end;
-        if(not dmPdv.qcdsNFPROTOCOLOENV.IsNull) then
-        begin
-          if (dmPdv.qcdsNFPROTOCOLOENV.AsString <> '') then
-          begin
-            MessageDlg('Nota com Protocolo de Envio(já enviada, portanto), use o botão Imprimir Danfe.',mtWarning,[mbOk],0);
-            exit;
-          end
-        end;
-      ///
-
-    tipoNota := trim(dmPdv.qcdsNFCFOP.AsString)[1];
-    if (tipoNota in ['1','2','3']) then
-
-      tpNFe := 0;
-    if (tipoNota in ['5','6','7']) then
-      tpNFe := 1;
-
-   if (cbTipoNota.ItemIndex = 1) then
-   begin
-     if (dmPdv.qsFornec.Active) then
-       dmPdv.qsFornec.Close;
-
-     if (dmPdv.qsCliente.Active) then
-       dmPdv.qsCliente.Close;
-     dmPdv.qsCliente.Params[0].AsInteger := dmPdv.qcdsNFCODCLIENTE.AsInteger;
-     dmPdv.qsCliente.Open;
-
-	///
-		   if ((dmPdv.qsClienteUF.AsString = 'EX') and (dmPdv.qcdsNFCFOP.AsString <> '3202'))  then
-           begin
-             if (edUfEmbarque.Text = '') then
-             begin
-               MessageDlg('Preencha o UF e Local de Embarque.', mtWarning, [mbOK], 0);
-               PageControl2.ActivePage := TabSheet7;
-               edUfEmbarque.SetFocus;
-               exit;
-             end;
-           end;
-         end
-         else
-         begin
-           if (dmPdv.qsCliente.Active) then
-             dmPdv.qsCliente.Close;
-
-           if (dmPdv.qsFornec.Active) then
-             dmPdv.qsFornec.Close;
-           dmPdv.qsFornec.Params[0].AsInteger := dmPdv.qcdsNFCODCLIENTE.AsInteger;
-           dmPdv.qsFornec.Open;
-         end;
-
-	///
-
-
-	codFisc := dmPdv.qsClienteCODFISCAL.AsString;
-     if (dmPdv.qsClienteCODFISCAL.AsString = '') then
-     begin
-       MessageDlg(dmPdv.qsClienteNOMECLIENTE.AsString + ' - informe o CODIGO FISCAL no cadastro do cliente.', mtWarning, [mbOK], 0);
-       exit;
-     end;
-   end
-   else
-   begin
-     if (dmPdv.qsCliente.Active) then
-       dmPdv.qsCliente.Close;
-
-     if (dmPdv.qsFornec.Active) then
-       dmPdv.qsFornec.Close;
-     dmPdv.qsFornec.Params[0].AsInteger := dmPdv.qcdsNFCODCLIENTE.AsInteger;
-     dmPdv.qsFornec.Open;
-     codFisc := dmPdv.qsFornecCODFISCAL.AsString;
-     if (dmPdv.qsFornecCODFISCAL.AsString = '') then
-     begin
-       MessageDlg(dmPdv.qsFornecNOMECLIENTE.AsString + ' - informe o CODIGO FISCAL no cadastro do fornecedor.', mtWarning, [mbOK], 0);
-       exit;
-     end;
-   end;
-
-     ///
-    	if (dmPdv.qsCFOP.Active) then
-           dmPdv.qsCFOP.Close;
-         dmPdv.qsCFOP.Params[0].AsString := dmPdv.qcdsNFCFOP.AsString;
-         if (cbTipoNota.ItemIndex = 1) then
-         begin
-          dmPdv.qsCFOP.Params[1].AsString := dmPdv.qsClienteUF.AsString;
-          dmPdv.qsCFOP.Params[2].AsString := dmPdv.qcdsNFCFOP.AsString;
-          ufDest := dmPdv.qsClienteUF.AsString;
-         end
-         else
-         begin
-          dmPdv.qsCFOP.Params[1].AsString := dmPdv.qsFornecUF.AsString;
-          dmPdv.qsCFOP.Params[2].AsString := dmPdv.qcdsNFCFOP.AsString;
-          ufDest := dmPdv.qsFornecUF.AsString;
-         end;
-         dmPdv.qsCFOP.Open;
-         if (dmPdv.qsCFOP.IsEmpty) then
-         begin
-           MessageDlg('Não existe este CFOP cadastrado para este ESTADO.'+#13+#10+'(Cadastros -> CFOP-ESTADO).', mtWarning, [mbOK], 0);
-           exit;
-         end;
-     ///
-
-
-   ACBrNFe1.NotasFiscais.Clear;
-   with ACBrNFe1.NotasFiscais.Add.NFe do
-   begin
-    //infNFe.ID := 0    // Chave de acesso da NF-e precedida do literal NFe acrescentado a validação do formato 2.0
-    if (dmPdv.qsEstado.Active) then
-      dmPdv.qsEstado.Close;
-    dmPdv.qsEstado.Params[0].AsString := dmPdv.qsEmpresaUF.asString;
-    dmPdv.qsEstado.Open;
-    Ide.cUF       := dmPdv.qsEstadoCODIGO.AsInteger;   // Codigo do UF do Emitente do documento fiscal
-    Ide.cNF       := (dmPdv.qcdsNFNUMNF.AsInteger*99) ; //Para não ser o mesmo numero
-
-    Ide.natOp     := copy(dmPdv.qsCFOPCFNOME.AsString,0,59);
-         //Verifica tipo de Pagamento
-    getPagamento;
-    try
-      Ide.cMunFG    := StrToInt(RemoveChar(dmPdv.qsEmpresaCD_IBGE.AsString));
-    except
-      MessageDlg('Codigo do IBGE do Emitente não informado(Cadastro Empresa)', mtError, [mbOK], 0);
-    end;
-    Ide.modelo    := 55;
-    if (tp_amb = 1) then
-    begin
-      Ide.serie     := nfe_serie_receita;
-      Ide.tpEmis    := teNormal;
-    end
-    else if (tp_amb = 2) then
-    begin
-      Ide.tpEmis    := teContingencia;
-      Ide.serie     := nfe_serie_receita;
-    end
-    else if (tp_amb = 3) then
-    begin
-      Ide.tpEmis    := teSCAN;
-      Ide.serie     := 900;
-    end
-    else if (tp_amb = 4) then
-    begin
-      Ide.tpEmis    := teDPEC;
-      Ide.serie     := nfe_serie_receita;
-    end
-    else if (tp_amb = 5) then
-    begin
-      Ide.tpEmis    := teFSDA;
-      Ide.serie     := nfe_serie_receita;
-    end
-    else if (tp_amb = 6) then
-    begin
-      Ide.tpEmis    := teSVCAN;
-      Ide.serie     := nfe_serie_receita;
-    end;
-
-
-
-  //Carrega os itens da NF
-    pegaItens(cbTipoNota.ItemIndex);
-
-    if((dmPdv.qcdsNFIDCOMPLEMENTAR.IsNull) or (dmPdv.qcdsNFIDCOMPLEMENTAR.AsString = '')) then
-      ide.finNFe    := fnNormal
-    else
-    begin
-      ide.finNFe    := fnComplementar;
-      // Se naõ tiver a Chave para GERAR Nota de Devolução usar isso abaixo
-      if (length(dmPdv.qcdsNFIDCOMPLEMENTAR.AsString) < 20) then
-      begin
-        ide.finNFe    := fnDevolucao;
-        with ide.NFref.New.RefNF do
-        begin
-          nNF    := 11742;
-          cUF    := 35;
-          AAMM   := '0408';
-          CNPJ   := '60886413006692';
-          modelo := 1;
-          serie  := 1;
-        end;
-      end;
-      if (length(dmPdv.qcdsNFIDCOMPLEMENTAR.AsString) > 20) then
-      begin
-        ide.NFref.Add.refNFe := dmPdv.qcdsNFIDCOMPLEMENTAR.AsString;
-      end;
-    end;
-
-    Ide.nNF       := StrToInt(dmPdv.qcdsNFNOTASERIE.AsString);
-    Ide.dEmi      := dmPdv.qcdsNFDTAEMISSAO.AsDateTime;
-    Ide.dSaiEnt   := dmPdv.qcdsNFDTASAIDA.AsDateTime;
-    Ide.hSaiEnt   := dmPdv.qcdsNFHORASAIDA.AsDateTime;
-    infCplTrib := '';
-
-    if (dmPdv.qcdsNFVLRTOT_TRIB.AsFloat > 0)  then
-    begin
-      pegaTributos(dmPdv.cdsItensNFCODMOVIMENTO.AsInteger, 0);
-      infCplTrib := 'Trib aprox R$:' +
-        format('%8.2n', [dmPdv.sqlTotal_tributos.Fields[0].AsFloat]) + '-Fed, ' +
-        format('%8.2n', [dmPdv.sqlTotal_tributos.Fields[1].AsFloat]) + '-Est e ' +
-        format('%8.2n', [dmPdv.sqlTotal_tributos.Fields[2].AsFloat]) + '-Mun ';
-      infCplTrib := infCplTrib + 'Fonte: IBPT';//Fonte: IBPT/FECOMERCIO RJ Xe67eQ
-    end;
-    infCplTrib := dmPdv.qcdsNFCORPONF1.AsString + ' ' + dmPdv.qcdsNFCORPONF2.AsString + ' ' +
-      dmPdv.qcdsNFCORPONF3.AsString + ' ' + dmPdv.qcdsNFCORPONF4.AsString + ' ' +
-      dmPdv.qcdsNFCORPONF5.AsString + infCplTrib; // + ' ' + cdsNFCORPONF6.AsString;(usando para codigo pedido de compra)
-
-    InfAdic.infCpl := infCplTrib;
-
-    ///
-            if (dmPdv.qcdsNFNFE_FINNFE.AsString = 'fnAjuste') then
-            begin
-              InputQuery('Justificativa do estorno nas Informações Adicionais de Interesse do Fisco', 'Justificativa', vAux);
-              infAdic.infAdFisco := vAux;
-            end;
-
-    ///
-
-    if (dmPdv.qcdsNFCORPONF6.AsString <> '') then
-    begin
-      compra.xPed := dmPdv.qcdsNFCORPONF6.AsString;
-    end;
-
-    // Tipo de movimentação 0 entrada 1 saida
-    if (tpNFe = 0) then
-      Ide.tpNF   := tnEntrada;
-
-    if (tpNFe = 1) then
-      Ide.tpNF   := tnSaida;
-
-    if (tipoNota in ['1','5']) then
-      ide.idDest := doInterna;
-
-    if (tipoNota in ['2','6']) then
-      ide.idDest := doInterestadual;
-
-    ///
-    		if (tipoNota in ['3', '7']) then
-            begin
-              ide.idDest := doExterior;
-              if (cbTipoNota.ItemIndex = 0) then
-                 Dest.idEstrangeiro := dmPdv.qsFornecINSCESTADUAL.AsString
-              else
-                 Dest.idEstrangeiro := dmPdv.qsClienteINSCESTADUAL.AsString;
-              Dest.indIEDest := inNaoContribuinte;
-            end;
-
-    ///
-
-    {Ide.tpAmb     := tn2;                           // 1 - Produção // 2 Homologação}
-    Ide.verProc   := '1.0.0.0';
-
-    // Responsavel Tecnico
-    ACBrNFe1.NotasFiscais.Items[0].NFe.infRespTec.CNPJ := '08382545000111';
-    ACBrNFe1.NotasFiscais.Items[0].NFe.infRespTec.xContato := 'CARLOS RODRIGUES SILVEIRA';
-    ACBrNFe1.NotasFiscais.Items[0].NFe.infRespTec.email := 'ats@atsti.com.br';
-    ACBrNFe1.NotasFiscais.Items[0].NFe.infRespTec.fone :='19974014694';
-
-
-
-    if((dmPdv.qsEmpresaCONTADOR_CNPJ.AsString <> '') or (dmPdv.qsEmpresaCONTADOR_CPF.AsString <> '')) then
-    begin
-      with autXML.Add do
-      begin
-         CNPJCPF := pCNPJ_CPF;
-      end;
-    end;
-
-    ///
-            if (dmPdv.qcdsNFNFE_FINNFE.AsString = 'fnNormal') then
-              Ide.finNFe := fnNormal;
-
-            if (dmPdv.qcdsNFNFE_FINNFE.AsString = 'fnDevolucao') then
-              Ide.finNFe := fnDevolucao;
-
-            if (dmPdv.qcdsNFNFE_FINNFE.AsString = 'fnAjuste') then
-              Ide.finNFe := fnAjuste;
-
-            if (dmPdv.qcdsNFNFE_FINNFE.AsString = 'fnComplementar') then
-              ide.finNFe    := fnComplementar;
-
-    ///
-
-
-    if (dmPdv.sTabIBGE.Active) then
-      dmPdv.sTabIBGE.Close;
-    dmPdv.sTabIBGE.Params[0].AsString := dmPdv.qsEmpresaCIDADE.AsString;
-    dmPdv.sTabIBGE.Open;
-    //Carrega dados do Emitente
-    //VERIFICA SE CODIGO IBGE ESTÁ PREENCHIDO NA EMPRESA
-    if ( (dmPdv.qsEmpresaCD_IBGE.IsNull) or (dmPdv.qsEmpresaCD_IBGE.AsString = '') ) then
-    begin
-      MessageDlg('Codigo do IBGE da empresa não definido', mtError, [mbOK], 0);
-      valida := 'N';
-    end;
-	if (valida = 'N') then
-    exit;
-
-    getEmpresa();
-    //CARREGA OS DADOS DO DESTINATARIO CLIENTE/FORNECEDOR
-    if( dmPdv.qsFornec.Active) then
-      if ((dmPdv.qsFornecCD_IBGE.IsNull) or (dmPdv.qsFornecCD_IBGE.AsString = '') ) then
-      begin
-        MessageDlg('Codigo do IBGE do Fornecedor não definido', mtError, [mbOK], 0);
-        valida := 'N';
-      end;
-    if(dmPdv.qsCliente.Active) then
-      if ((dmPdv.qsClienteCD_IBGE.IsNull) or (dmPdv.qsClienteCD_IBGE.AsString = '') ) then
-      begin
-        MessageDlg('Codigo do IBGE do Cliente não definido', mtError, [mbOK], 0);
-        valida := 'N';
-      end;
-      if (valida = 'N') then
-        exit;
-    getCLi_Fornec();
-
-	///
-            ide.indFinal := cfNao;
-            if (vTipoFiscal = '9') then
-              ide.indFinal  := cfConsumidorFinal; //(cfNao, cfConsumidorFinal);
-
-            pegaItens(cbTipoNota.ItemIndex);
-            tot1 := 0;
-            tot2 := 0;
-            tot3 := 0;
-            infCplTrib := '';
-            //if ((cdsNFVLRTOT_TRIB.AsFloat > 0) and (dm.vTipoFiscal = '9'))  then
-            if (dmPdv.qcdsNFVLRTOT_TRIB.AsFloat > 0)  then
-            begin
-              pegaTributos(dmPdv.cdsItensNFCODMOVIMENTO.AsInteger, 0);
-              infCplTrib := 'Trib aprox R$:' +
-                format('%8.2n', [dmPdv.sqlTotal_tributos.Fields[0].AsFloat]) + '-Fed, ' +
-                format('%8.2n', [dmPdv.sqlTotal_tributos.Fields[1].AsFloat]) + '-Est e ' +
-                format('%8.2n', [dmPdv.sqlTotal_tributos.Fields[2].AsFloat]) + '-Mun ';
-              infCplTrib := infCplTrib + 'Fonte: IBPT';//Fonte: IBPT/FECOMERCIO RJ Xe67eQ
-            end;
-            infCplTrib := dmPdv.qcdsNFCORPONF1.AsString + ' ' + dmPdv.qcdsNFCORPONF2.AsString + ' ' +
-              dmPdv.qcdsNFCORPONF3.AsString + ' ' + dmPdv.qcdsNFCORPONF4.AsString + ' ' +
-              dmPdv.qcdsNFCORPONF5.AsString + infCplTrib; // + ' ' + cdsNFCORPONF6.AsString;(usando para codigo pedido de compra)
-
-            InfAdic.infCpl := infCplTrib;
-
-      ///
-
-
-
-    //Carrega os itens da NF
-    //pegaItens(cbTipoNota.ItemIndex);
-
-    i := 1;
-    while not dmPdv.cdsItensNF.Eof do // Escrevo os itens
-    begin
-     if (dmPdv.qsProdutos.Active) then
-       dmPdv.qsProdutos.Close;
-     dmPdv.qsProdutos.Params[0].AsInteger := dmPdv.cdsItensNFCODPRODUTO.AsInteger;
-     try
-       dmPdv.qsProdutos.Open;
-     finally
-       if ((dmPdv.qsProdutosUNIDADEMEDIDA.AsString = '') or (dmPdv.qsProdutosUNIDADEMEDIDA.IsNull) or (dmPdv.qsProdutosUNIDADEMEDIDA.AsString = ' ')) then
-       begin
-         MessageDlg('Produto ' + dmPdv.cdsItensNFDESCPRODUTO.AsString + ' sem Unidade de Medida', mtError, [mbOK], 0);
-         valida := 'N';
-       end;
-       if ((dmPdv.qsProdutosNCM.AsString = '00000000') or (dmPdv.qsProdutosNCM.IsNull) ) then
-       begin
-         MessageDlg('Produto ' + dmPdv.cdsItensNFDESCPRODUTO.AsString + ' com NCM Nulo ou Inválido', mtError, [mbOK], 0);
-         valida := 'N';
-       end;
-       if ((dmPdv.qsProdutosORIGEM.IsNull) ) then
-       begin
-         MessageDlg('Produto ' + dmPdv.cdsItensNFDESCPRODUTO.AsString + ' com Origem Nula', mtError, [mbOK], 0);
-         valida := 'N';
-       end;
-       if (((dmPdv.cdsItensNFCSOSN.IsNull) or (dmPdv.cdsItensNFCSOSN.AsString = '')) and ((dmPdv.cdsItensNFCST.IsNull) or (dmPdv.cdsItensNFCST.AsString = ''))) then
-       begin
-         MessageDlg('Produto ' + dmPdv.cdsItensNFDESCPRODUTO.AsString + ' sem CST ou CSOSN', mtError, [mbOK], 0);
-         valida := 'N';
-       end;
-     end;
-     if (valida = 'N') then
-       exit;
-      // DADOS DOS PRODUTOS DA NOTA
-      getItens(i);
-      i := i + 1;
-      dmPdv.cdsItensNF.Next;
-    end;
-    getTransportadora();
-    //VALOR TORAL
-    if not ((ACBrNFe1.NotasFiscais.Items[0].NFe.Emit.CRT = crtSimplesNacional) and (dmPdv.cdsItensNFCSOSN.AsString <> '900')) then
-    begin
-      if ((cstSuframa = '00') OR ( pSuframa = '')) then
-      begin
-        Total.ICMSTot.vBC   := dmPdv.qcdsNFBASE_ICMS.AsVariant;
-        Total.ICMSTot.vICMS   := dmPdv.qcdsNFVALOR_ICMS.AsVariant;
-      end;
-    end;
-    Total.ICMSTot.vBCST := dmPdv.qcdsNFBASE_ICMS_SUBST.AsVariant;
-    Total.ICMSTot.vST   := dmPdv.qcdsNFVALOR_ICMS_SUBST.AsVariant;
-    Total.ICMSTot.vProd := dmPdv.qcdsNFVALOR_PRODUTO.AsVariant;
-    try
-      Total.ICMSTot.vFrete := dmPdv.qcdsNFVALOR_FRETE.AsVariant;
-    except
-      Total.ICMSTot.vFrete := 0;
-    end;
-    try
-      Total.ICMSTot.vSeg := dmPdv.qcdsNFVALOR_SEGURO.AsVariant;
-    except
-      Total.ICMSTot.vSeg := 0;
-    end;
-
-    try
-      if (dmPdv.qcdsNFVALOR_DESCONTO.AsVariant > 0) then
-
-      Total.ICMSTot.vDesc := (dmPdv.qcdsNFVALOR_DESCONTO.AsVariant);
-    except
-      Total.ICMSTot.vDesc := roundto(0,-2);
-    end;
-    Total.ICMSTot.vIPI := dmPdv.qcdsNFVALOR_IPI.AsVariant;
-    if ((dmPdv.qcdsNFVALOR_PIS.AsFloat <> 0 )or (dmPdv.qcdsNFVALOR_PIS.AsFloat <> null )) then
-      Total.ICMSTot.vPIS := dmPdv.qcdsNFVALOR_PIS.AsFloat;
-    if ((dmPdv.qcdsNFVALOR_COFINS.AsFloat <> 0) or (dmPdv.qcdsNFVALOR_COFINS.AsFloat <> null )) then
-      Total.ICMSTot.vCOFINS := dmPdv.qcdsNFVALOR_COFINS.AsFloat;
-    Total.ICMSTot.vOutro := dmPdv.qcdsNFOUTRAS_DESP.AsVariant;
-    Total.ICMSTot.vNF   := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant;
-    Total.ICMSTot.vTotTrib := dmPdv.qcdsNFVLRTOT_TRIB.AsVariant;
-
-    if ((cstSuframa <> '00') and ( pSuframa <> '')) then
-     begin
-      Total.ICMSTot.vICMSDeson := dmPdv.qcdsNFVALOR_ICMS.AsVariant;
-     end;
-
-
-    dmPdv.qcdsNF.Next;
-   end;
- end;
-
-
-///
-
-   AcbrNfe1.Configuracoes.Arquivos.PathNFe := Edit1.Text;
-
-   ACBrNFe1.NotasFiscais.Items[0].GravarXML;
-
-   //MemoResp.Lines.LoadFromFile(ACBrNFe1.Configuracoes.Arquivos.PathSalvar+'\' +copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
-
-   MessageDlg('Arquivo gerado com sucesso.', mtInformation, [mbOK], 0);
-
-   lblMsgNfe.Caption := 'Enviando arquivo para a Receita Federal';
-   //Gera Envio da Nota
-
-   if ( (tp_amb = 2) or (tp_amb = 5)) then
-   begin
-
-       ACBrNFe1.NotasFiscais.Assinar;
-       ACBrNFe1.NotasFiscais.Validar;
-       //Try
-
-        //SALVA NFe e NOMEXML no BD
-     //DecimalSeparator := ',';
+    ACBrNFe1.NotasFiscais.Assinar;
+    ACBrNFe1.NotasFiscais.Validar;
      ACBrNFe1.NotasFiscais.Imprimir;
-   end
-   else if (tp_amb = 4) then
-   begin
-     MessageDlg('Este ambiente não existe mais.', mtWarning, [mbOK], 0);
-     // 29/12/2015
+  end
+  else if (tp_amb = 4) then
+  begin
+    MessageDlg('Este ambiente não existe mais.', mtWarning, [mbOK], 0);
+  end
+  else
+  begin
+    // ACBrNFe1.Enviar(vNumLote,True);
+    ACBrNFe1.Enviar(0);
+    AcbrNfe1.Configuracoes.Arquivos.PathNFe := Edit1.Text;
+
+    ShowMessage('Nº do Protocolo de envio ' + ACBrNFe1.WebServices.Retorno.Protocolo);
+    ShowMessage('Nº do Recibo de envio ' + ACBrNFe1.WebServices.Retorno.Recibo);
+
+    Protocolo := ACBrNFe1.WebServices.Retorno.Protocolo;
+    Recibo := ACBrNFe1.WebServices.Retorno.Recibo;
+
+    //PEGA A RESPOSTA
+    dmPdv.IbCon.StartTransaction;
+
+    //SALVA NFe, PROTOCOLOS e NOMEXML no BD
+    str := 'UPDATE NOTAFISCAL SET ';
+    str := str + '  XMLNFE = ' + quotedStr(ACBrNFe1.NotasFiscais.Items[0].XML);
+    str := str + ', NOMEXML = ' + QuotedStr(copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
+    str := str + ', NFE_VERSAO = ' + QuotedStr('4.0');
+    str := str + ', STATUS = ' + QuotedStr('E');
+    if (Protocolo <> '') then
+     str := str + ', PROTOCOLOENV = ' + quotedStr(Protocolo);
+    if (Recibo <> '') then
+     str := str + ', NUMRECIBO = ' + QuotedStr(Recibo);
+    str := str + ' WHERE NUMNF = ' + IntToStr(codnf);
+    dmPdv.IbCon.ExecuteDirect(str);
+    dmPdv.sTrans.Commit;
 
 
+    FormatSettings.DecimalSeparator := ',';
+    if (envemail = 'S') then
+    begin
+      lblMsgNfe.Caption := 'Enviando o email para o Cliente';
+      if (cbTipoNota.ItemIndex = 1) then
+      begin
+      if (not dmPdv.qsClienteE_MAIL.IsNull) then
+      begin
+        dmPdv.qcdsNF.close;
+        dmPdv.qcdsNF.Open;
+        EnviaEmail;
+      end
+      else
+        MessageDlg('Não foi possivel Enviar o Email, pois o cliente não possui email em seu cadastro.', mtError, [mbOK], 0);
+      end;
+    end;
 
-   end
-   else
-   begin
-     //try  -- Retirei pois, alguns lugares estava dando erro e nao aparecia
-       // ACBrNFe1.Enviar(vNumLote,True);
-       ACBrNFe1.Enviar(0);
-       AcbrNfe1.Configuracoes.Arquivos.PathNFe := Edit1.Text;
+  end;
 
-       ShowMessage('Nº do Protocolo de envio ' + ACBrNFe1.WebServices.Retorno.Protocolo);
-       ShowMessage('Nº do Recibo de envio ' + ACBrNFe1.WebServices.Retorno.Recibo);
+  btnListar.Click;
+  ACBrNFe1.NotasFiscais.Items[0].GravarXML;
+  acbrnfe1.NotasFiscais.ImprimirPDF;
 
-       Protocolo := ACBrNFe1.WebServices.Retorno.Protocolo;
-       Recibo := ACBrNFe1.WebServices.Retorno.Recibo;
-
-      //PEGA A RESPOSTA
-       dmPdv.IbCon.StartTransaction;
-       //try
-         //SALVA NFe, PROTOCOLOS e NOMEXML no BD
-         str := 'UPDATE NOTAFISCAL SET ';
-         str := str + '  XMLNFE = ' + quotedStr(ACBrNFe1.NotasFiscais.Items[0].XML);
-         str := str + ', NOMEXML = ' + QuotedStr(copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
-         str := str + ', NFE_VERSAO = ' + QuotedStr('4.0');
-         str := str + ', STATUS = ' + QuotedStr('E');
-         if (Protocolo <> '') then
-           str := str + ', PROTOCOLOENV = ' + quotedStr(Protocolo);
-         if (Recibo <> '') then
-           str := str + ', NUMRECIBO = ' + QuotedStr(Recibo);
-         str := str + ' WHERE NUMNF = ' + IntToStr(codnf);
-         dmPdv.IbCon.ExecuteDirect(str);
-         dmPdv.sTrans.Commit;
+  dmPdv.qcdsNF.Refresh;
 
 
-       FormatSettings.DecimalSeparator := ',';
+  ACBrNFeDANFCeFortes1.Site := dmPdv.qsEmpresaWEB.AsString;
+  ACBrNFeDANFCeFortes1.Email := dmPdv.qsEmpresaE_MAIL.AsString;
+  ACBrNFeDANFCeFortes1.CasasDecimais.vUnCom := danfeDec;
 
-       if (envemail = 'S') then
-       begin
-         lblMsgNfe.Caption := 'Enviando o email para o Cliente';
-         if (cbTipoNota.ItemIndex = 1) then
-         begin
-           if (not dmPdv.qsClienteE_MAIL.IsNull) then
-           begin
-             dmPdv.qcdsNF.close;
-             dmPdv.qcdsNF.Open;
-             EnviaEmail;
-           end
-           else
-             MessageDlg('Não foi possivel Enviar o Email, pois o cliente não possui email em seu cadastro.', mtError, [mbOK], 0);
-         end;
-       end;
+  ACBrNFeDANFeRL1.Site := dmPdv.qsEmpresaWEB.AsString;
+  ACBrNFeDANFeRL1.Email := dmPdv.qsEmpresaE_MAIL.AsString;
+  ACBrNFeDANFeRL1.CasasDecimais.vUnCom := danfeDec;
 
-
-
-
-   end;
-
-   btnListar.Click;
-   ACBrNFe1.NotasFiscais.Items[0].GravarXML;
-   acbrnfe1.NotasFiscais.ImprimirPDF;
-
-   dmPdv.qcdsNF.Refresh;
-
-
-///
-
-
-
-
-
- ACBrNFeDANFCeFortes1.Site := dmPdv.qsEmpresaWEB.AsString;
- ACBrNFeDANFCeFortes1.Email := dmPdv.qsEmpresaE_MAIL.AsString;
- ACBrNFeDANFCeFortes1.CasasDecimais.vUnCom := danfeDec;
-
- ACBrNFeDANFeRL1.Site := dmPdv.qsEmpresaWEB.AsString;
- ACBrNFeDANFeRL1.Email := dmPdv.qsEmpresaE_MAIL.AsString;
- ACBrNFeDANFeRL1.CasasDecimais.vUnCom := danfeDec;
-
- ACBrNFe1.NotasFiscais.Items[0].GravarXML;
- MessageDlg('Arquivo gerado com sucesso.', mtInformation, [mbOK], 0);
- ACBrNFe1.NotasFiscais.Imprimir;
-
-
+  ACBrNFe1.NotasFiscais.Items[0].GravarXML;
+  MessageDlg('Arquivo gerado com sucesso.', mtInformation, [mbOK], 0);
+  ACBrNFe1.NotasFiscais.Imprimir;
 
 
 end;
 
 procedure TfNFe.BtnPreVisClick(Sender: TObject);
-var
-  i: integer;
-  valida, codFisc , pCNPJ_CPF: String;
-  tipoNota: Char;
-
 begin
 
-  if (not dmPdv.qcds_ccusto.Active) then
-    dmPdv.qcds_ccusto.Open;
-  dmPdv.qcds_ccusto.Locate('NOME', ComboBox1.Text,[loCaseInsensitive]);
-
-  //Seleciona Empresa de acordo com o CCusto selecionado
-  if (dmPdv.qsEmpresa.Active) then
-    dmPdv.qsEmpresa.Close;
-  dmPdv.qsEmpresa.Params[0].AsInteger :=  dmPdv.qcds_ccustoCODIGO.AsInteger;
-  dmPdv.qsEmpresa.Open;
-
-  if(dmPdv.qsEmpresaCONTADOR_CPF.AsString <> '')then
-  begin
-     pCNPJ_CPF := dmPdv.qsEmpresaCONTADOR_CPF.AsString;
-  end;
-
-  if(dmPdv.qsEmpresaCONTADOR_CNPJ.AsString <> '')then
-  begin
-     pCNPJ_CPF := dmPdv.qsEmpresaCONTADOR_CNPJ.AsString;
-  end;
-
-  nfe_carregalogo;
-
-  //verifica se o CC foi selecionado caso não da mensagem avisando
-  if(dmPdv.qsEmpresa.IsEmpty) then
-    MessageDlg('Centro de custo não selecionado', mtError, [mbOK], 0);
-
- dmPdv.qcdsNF.First;
- while not dmPdv.qcdsNF.Eof do
- begin
-  if (trim(dmPdv.qcdsNFSELECIONOU.AsString) = 'S') then
-  begin
-    tipoNota := trim(dmPdv.qcdsNFCFOP.AsString)[1];
-    if (tipoNota in ['1','2','3']) then
-
-      tpNFe := 0;
-    if (tipoNota in ['5','6','7']) then
-      tpNFe := 1;
-
-   if (cbTipoNota.ItemIndex = 1) then
-   begin
-     if (dmPdv.qsFornec.Active) then
-       dmPdv.qsFornec.Close;
-
-     if (dmPdv.qsCliente.Active) then
-       dmPdv.qsCliente.Close;
-     dmPdv.qsCliente.Params[0].AsInteger := dmPdv.qcdsNFCODCLIENTE.AsInteger;
-     dmPdv.qsCliente.Open;
-     codFisc := dmPdv.qsClienteCODFISCAL.AsString;
-     if (dmPdv.qsClienteCODFISCAL.AsString = '') then
-     begin
-       MessageDlg(dmPdv.qsClienteNOMECLIENTE.AsString + ' - informe o CODIGO FISCAL no cadastro do cliente.', mtWarning, [mbOK], 0);
-       exit;
-     end;
-   end
-   else
-   begin
-     if (dmPdv.qsCliente.Active) then
-       dmPdv.qsCliente.Close;
-
-     if (dmPdv.qsFornec.Active) then
-       dmPdv.qsFornec.Close;
-     dmPdv.qsFornec.Params[0].AsInteger := dmPdv.qcdsNFCODCLIENTE.AsInteger;
-     dmPdv.qsFornec.Open;
-     codFisc := dmPdv.qsFornecCODFISCAL.AsString;
-     if (dmPdv.qsFornecCODFISCAL.AsString = '') then
-     begin
-       MessageDlg(dmPdv.qsFornecNOMECLIENTE.AsString + ' - informe o CODIGO FISCAL no cadastro do fornecedor.', mtWarning, [mbOK], 0);
-       exit;
-     end;
-   end;
-
-   if (dmPdv.qsCFOP.Active) then
-     dmPdv.qsCFOP.Close;
-   dmPdv.qsCFOP.Params[0].AsString := dmPdv.qcdsNFCFOP.AsString;
-   if (cbTipoNota.ItemIndex = 1) then
-   begin
-    dmPdv.qsCFOP.Params[1].AsString := dmPdv.qsClienteUF.AsString;
-    dmPdv.qsCFOP.Params[2].AsString := dmPdv.qcdsNFCFOP.AsString;
-   end
-   else
-   begin
-    dmPdv.qsCFOP.Params[1].AsString := dmPdv.qsFornecUF.AsString;
-    dmPdv.qsCFOP.Params[2].AsString := dmPdv.qcdsNFCFOP.AsString;
-   end;
-   dmPdv.qsCFOP.Open;
-
-   ACBrNFe1.NotasFiscais.Clear;
-   with ACBrNFe1.NotasFiscais.Add.NFe do
-   begin
-    //infNFe.ID := 0    // Chave de acesso da NF-e precedida do literal NFe acrescentado a validação do formato 2.0
-    if (dmPdv.qsEstado.Active) then
-      dmPdv.qsEstado.Close;
-    dmPdv.qsEstado.Params[0].AsString := dmPdv.qsEmpresaUF.asString;
-    dmPdv.qsEstado.Open;
-    Ide.cUF       := dmPdv.qsEstadoCODIGO.AsInteger;   // Codigo do UF do Emitente do documento fiscal
-    Ide.cNF       := (dmPdv.qcdsNFNUMNF.AsInteger*99) ; //Para não ser o mesmo numero
-
-    Ide.natOp     := copy(dmPdv.qsCFOPCFNOME.AsString,0,59);
-         //Verifica tipo de Pagamento
-    getPagamento;
-    try
-      Ide.cMunFG    := StrToInt(RemoveChar(dmPdv.qsEmpresaCD_IBGE.AsString));
-    except
-      MessageDlg('Codigo do IBGE do Emitente não informado(Cadastro Empresa)', mtError, [mbOK], 0);
-    end;
-    Ide.modelo    := 55;
-    if (tp_amb = 1) then
-    begin
-      Ide.serie     := nfe_serie_receita;
-      Ide.tpEmis    := teNormal;
-    end
-    else if (tp_amb = 2) then
-    begin
-      Ide.tpEmis    := teContingencia;
-      Ide.serie     := nfe_serie_receita;
-    end
-    else if (tp_amb = 3) then
-    begin
-      Ide.tpEmis    := teSCAN;
-      Ide.serie     := 900;
-    end
-    else if (tp_amb = 4) then
-    begin
-      Ide.tpEmis    := teDPEC;
-      Ide.serie     := nfe_serie_receita;
-    end
-    else if (tp_amb = 5) then
-    begin
-      Ide.tpEmis    := teFSDA;
-      Ide.serie     := nfe_serie_receita;
-    end
-    else if (tp_amb = 6) then
-    begin
-      Ide.tpEmis    := teSVCAN;
-      Ide.serie     := nfe_serie_receita;
-    end;
-    //Carrega os itens da NF
-    pegaItens(cbTipoNota.ItemIndex);
-
-    if((dmPdv.qcdsNFIDCOMPLEMENTAR.IsNull) or (dmPdv.qcdsNFIDCOMPLEMENTAR.AsString = '')) then
-      ide.finNFe    := fnNormal
-    else
-    begin
-      ide.finNFe    := fnComplementar;
-      // Se naõ tiver a Chave para GERAR Nota de Devolução usar isso abaixo
-      if (length(dmPdv.qcdsNFIDCOMPLEMENTAR.AsString) < 20) then
-      begin
-        ide.finNFe    := fnDevolucao;
-        with ide.NFref.New.RefNF do
-        begin
-          nNF    := 11742;
-          cUF    := 35;
-          AAMM   := '0408';
-          CNPJ   := '60886413006692';
-          modelo := 1;
-          serie  := 1;
-        end;
-      end;
-      if (length(dmPdv.qcdsNFIDCOMPLEMENTAR.AsString) > 20) then
-      begin
-        ide.NFref.Add.refNFe := dmPdv.qcdsNFIDCOMPLEMENTAR.AsString;
-      end;
-    end;
-
-    Ide.nNF       := StrToInt(dmPdv.qcdsNFNOTASERIE.AsString);
-    Ide.dEmi      := dmPdv.qcdsNFDTAEMISSAO.AsDateTime;
-    Ide.dSaiEnt   := dmPdv.qcdsNFDTASAIDA.AsDateTime;
-    Ide.hSaiEnt   := dmPdv.qcdsNFHORASAIDA.AsDateTime;
-    infCplTrib := '';
-
-    if (dmPdv.qcdsNFVLRTOT_TRIB.AsFloat > 0)  then
-    begin
-      pegaTributos(dmPdv.cdsItensNFCODMOVIMENTO.AsInteger, 0);
-      infCplTrib := 'Trib aprox R$:' +
-        format('%8.2n', [dmPdv.sqlTotal_tributos.Fields[0].AsFloat]) + '-Fed, ' +
-        format('%8.2n', [dmPdv.sqlTotal_tributos.Fields[1].AsFloat]) + '-Est e ' +
-        format('%8.2n', [dmPdv.sqlTotal_tributos.Fields[2].AsFloat]) + '-Mun ';
-      infCplTrib := infCplTrib + 'Fonte: IBPT';//Fonte: IBPT/FECOMERCIO RJ Xe67eQ
-    end;
-    infCplTrib := dmPdv.qcdsNFCORPONF1.AsString + ' ' + dmPdv.qcdsNFCORPONF2.AsString + ' ' +
-      dmPdv.qcdsNFCORPONF3.AsString + ' ' + dmPdv.qcdsNFCORPONF4.AsString + ' ' +
-      dmPdv.qcdsNFCORPONF5.AsString + infCplTrib; // + ' ' + cdsNFCORPONF6.AsString;(usando para codigo pedido de compra)
-
-    InfAdic.infCpl := infCplTrib;
-
-    if (dmPdv.qcdsNFCORPONF6.AsString <> '') then
-    begin
-      compra.xPed := dmPdv.qcdsNFCORPONF6.AsString;
-    end;
-
-    // Tipo de movimentação 0 entrada 1 saida
-    if (tpNFe = 0) then
-      Ide.tpNF   := tnEntrada;
-
-    if (tpNFe = 1) then
-      Ide.tpNF   := tnSaida;
-
-    if (tipoNota in ['1','5']) then
-      ide.idDest := doInterna;
-
-    if (tipoNota in ['2','6']) then
-      ide.idDest := doInterestadual;
-
-    if (tipoNota in ['3', '7']) then
-      ide.idDest := doExterior;
-
-    //Ide.tpAmb     := tn2;                           // 1 - Produção // 2 Homologação
-    Ide.verProc   := '1.0.0.0';
-
-    // Responsavel Tecnico
-    ACBrNFe1.NotasFiscais.Items[0].NFe.infRespTec.CNPJ := '08382545000111';
-    ACBrNFe1.NotasFiscais.Items[0].NFe.infRespTec.xContato := 'CARLOS RODRIGUES SILVEIRA';
-    ACBrNFe1.NotasFiscais.Items[0].NFe.infRespTec.email := 'ats@atsti.com.br';
-    ACBrNFe1.NotasFiscais.Items[0].NFe.infRespTec.fone :='19974014694';
-
-
-
-    if((dmPdv.qsEmpresaCONTADOR_CNPJ.AsString <> '') or (dmPdv.qsEmpresaCONTADOR_CPF.AsString <> '')) then
-    begin
-      with autXML.Add do
-      begin
-         CNPJCPF := pCNPJ_CPF;
-      end;
-    end;
-
-
-    if (dmPdv.sTabIBGE.Active) then
-      dmPdv.sTabIBGE.Close;
-    dmPdv.sTabIBGE.Params[0].AsString := dmPdv.qsEmpresaCIDADE.AsString;
-    dmPdv.sTabIBGE.Open;
-    //Carrega dados do Emitente
-    //VERIFICA SE CODIGO IBGE ESTÁ PREENCHIDO NA EMPRESA
-    if ( (dmPdv.qsEmpresaCD_IBGE.IsNull) or (dmPdv.qsEmpresaCD_IBGE.AsString = '') ) then
-    begin
-      MessageDlg('Codigo do IBGE da empresa não definido', mtError, [mbOK], 0);
-      valida := 'N';
-    end;
-    getEmpresa();
-    //CARREGA OS DADOS DO DESTINATARIO CLIENTE/FORNECEDOR
-    if( dmPdv.qsFornec.Active) then
-      if ((dmPdv.qsFornecCD_IBGE.IsNull) or (dmPdv.qsFornecCD_IBGE.AsString = '') ) then
-      begin
-        MessageDlg('Codigo do IBGE do Fornecedor não definido', mtError, [mbOK], 0);
-        valida := 'N';
-      end;
-    if(dmPdv.qsCliente.Active) then
-      if ((dmPdv.qsClienteCD_IBGE.IsNull) or (dmPdv.qsClienteCD_IBGE.AsString = '') ) then
-      begin
-        MessageDlg('Codigo do IBGE do Cliente não definido', mtError, [mbOK], 0);
-        valida := 'N';
-      end;
-      if (valida = 'N') then
-        exit;
-    getCLi_Fornec();
-
-    //Carrega os itens da NF
-    //pegaItens(cbTipoNota.ItemIndex);
-
-    i := 1;
-    while not dmPdv.cdsItensNF.Eof do // Escrevo os itens
-    begin
-     if (dmPdv.qsProdutos.Active) then
-       dmPdv.qsProdutos.Close;
-     dmPdv.qsProdutos.Params[0].AsInteger := dmPdv.cdsItensNFCODPRODUTO.AsInteger;
-     try
-       dmPdv.qsProdutos.Open;
-     finally
-       if ((dmPdv.qsProdutosUNIDADEMEDIDA.AsString = '') or (dmPdv.qsProdutosUNIDADEMEDIDA.IsNull) or (dmPdv.qsProdutosUNIDADEMEDIDA.AsString = ' ')) then
-       begin
-         MessageDlg('Produto ' + dmPdv.cdsItensNFDESCPRODUTO.AsString + ' sem Unidade de Medida', mtError, [mbOK], 0);
-         valida := 'N';
-       end;
-       if ((dmPdv.qsProdutosNCM.AsString = '00000000') or (dmPdv.qsProdutosNCM.IsNull) ) then
-       begin
-         MessageDlg('Produto ' + dmPdv.cdsItensNFDESCPRODUTO.AsString + ' com NCM Nulo ou Inválido', mtError, [mbOK], 0);
-         valida := 'N';
-       end;
-       if ((dmPdv.qsProdutosORIGEM.IsNull) ) then
-       begin
-         MessageDlg('Produto ' + dmPdv.cdsItensNFDESCPRODUTO.AsString + ' com Origem Nula', mtError, [mbOK], 0);
-         valida := 'N';
-       end;
-       if (((dmPdv.cdsItensNFCSOSN.IsNull) or (dmPdv.cdsItensNFCSOSN.AsString = '')) and ((dmPdv.cdsItensNFCST.IsNull) or (dmPdv.cdsItensNFCST.AsString = ''))) then
-       begin
-         MessageDlg('Produto ' + dmPdv.cdsItensNFDESCPRODUTO.AsString + ' sem CST ou CSOSN', mtError, [mbOK], 0);
-         valida := 'N';
-       end;
-     end;
-     if (valida = 'N') then
-       exit;
-      // DADOS DOS PRODUTOS DA NOTA
-      getItens(i);
-      i := i + 1;
-      dmPdv.cdsItensNF.Next;
-    end;
-    getTransportadora();
-    //VALOR TORAL
-    if not ((ACBrNFe1.NotasFiscais.Items[0].NFe.Emit.CRT = crtSimplesNacional) and (dmPdv.cdsItensNFCSOSN.AsString <> '900')) then
-    begin
-      if ((cstSuframa = '00') OR ( pSuframa = '')) then
-      begin
-        Total.ICMSTot.vBC   := dmPdv.qcdsNFBASE_ICMS.AsVariant;
-        Total.ICMSTot.vICMS   := dmPdv.qcdsNFVALOR_ICMS.AsVariant;
-      end;
-    end;
-    Total.ICMSTot.vBCST := dmPdv.qcdsNFBASE_ICMS_SUBST.AsVariant;
-    Total.ICMSTot.vST   := dmPdv.qcdsNFVALOR_ICMS_SUBST.AsVariant;
-    Total.ICMSTot.vProd := dmPdv.qcdsNFVALOR_PRODUTO.AsVariant;
-    try
-      Total.ICMSTot.vFrete := dmPdv.qcdsNFVALOR_FRETE.AsVariant;
-    except
-      Total.ICMSTot.vFrete := 0;
-    end;
-    try
-      Total.ICMSTot.vSeg := dmPdv.qcdsNFVALOR_SEGURO.AsVariant;
-    except
-      Total.ICMSTot.vSeg := 0;
-    end;
-
-    try
-      if (dmPdv.qcdsNFVALOR_DESCONTO.AsVariant > 0) then
-
-      Total.ICMSTot.vDesc := (dmPdv.qcdsNFVALOR_DESCONTO.AsVariant);
-    except
-      Total.ICMSTot.vDesc := roundto(0,-2);
-    end;
-    Total.ICMSTot.vIPI := dmPdv.qcdsNFVALOR_IPI.AsVariant;
-    if ((dmPdv.qcdsNFVALOR_PIS.AsFloat <> 0 )or (dmPdv.qcdsNFVALOR_PIS.AsFloat <> null )) then
-      Total.ICMSTot.vPIS := dmPdv.qcdsNFVALOR_PIS.AsFloat;
-    if ((dmPdv.qcdsNFVALOR_COFINS.AsFloat <> 0) or (dmPdv.qcdsNFVALOR_COFINS.AsFloat <> null )) then
-      Total.ICMSTot.vCOFINS := dmPdv.qcdsNFVALOR_COFINS.AsFloat;
-    Total.ICMSTot.vOutro := dmPdv.qcdsNFOUTRAS_DESP.AsVariant;
-    Total.ICMSTot.vNF   := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant;
-    Total.ICMSTot.vTotTrib := dmPdv.qcdsNFVLRTOT_TRIB.AsVariant;
-
-    if ((cstSuframa <> '00') and ( pSuframa <> '')) then
-     begin
-      Total.ICMSTot.vICMSDeson := dmPdv.qcdsNFVALOR_ICMS.AsVariant;
-     end;
-
-    end;
-  end;
-  dmPdv.qcdsNF.Next;
- end;
-
-
-
- ACBrNFeDANFCeFortes1.Site := dmPdv.qsEmpresaWEB.AsString;
- ACBrNFeDANFCeFortes1.Email := dmPdv.qsEmpresaE_MAIL.AsString;
- ACBrNFeDANFCeFortes1.CasasDecimais.vUnCom := danfeDec;
-
- ACBrNFeDANFeRL1.Site := dmPdv.qsEmpresaWEB.AsString;
- ACBrNFeDANFeRL1.Email := dmPdv.qsEmpresaE_MAIL.AsString;
- ACBrNFeDANFeRL1.CasasDecimais.vUnCom := danfeDec;
-
- ACBrNFe1.NotasFiscais.Items[0].GravarXML;
- MessageDlg('Arquivo gerado com sucesso.', mtInformation, [mbOK], 0);
- ACBrNFe1.NotasFiscais.Imprimir;
-
-
-
+  GerarNFe;
+  ACBrNFe1.NotasFiscais.Imprimir;
 
 end;
 
@@ -2598,7 +1791,6 @@ begin
 end;
 
 procedure TfNFe.Button3Click(Sender: TObject);
-  var str : string;
 begin
   if (edtNumSerieABA.Text <> '') then
     begin
@@ -2619,7 +1811,6 @@ begin
 end;
 
 procedure TfNFe.Button4Click(Sender: TObject);
-  var str : string;
 begin
 
   dmPdv.IbCon.StartTransaction;
@@ -2868,9 +2059,9 @@ begin
   Edit3.Text := dmPdv.qsEmpresa1DIVERSOS1.AsString;
   Edit6.Text := dmPdv.qsEmpresa1DIVERSOS1.AsString;
 
-  onde       := dmPdv.qsEmpresa1DIVERSOS1.AsString;
+  onde       := dmPdv.qsEmpresa1TIPO.AsString;
 
-  if (dmPdv.qsEmpresa1TIPO.AsString = '1') then
+  if (trim(dmPdv.qsEmpresa1TIPO.AsString) = '1') then
   begin
     ACBrNFe1.Configuracoes.WebServices.Ambiente := taProducao;
     label5.Font.Color := clBlue;
@@ -2956,9 +2147,9 @@ begin
   label26.caption := Trim(GetComputerNameFunc);
 
   lblSerieNfe.Caption := IntToStr(nfe_serie_receita);
-  if (DateEdit1.Text = '  /  /    ') then
+  if (DateEdit1.Text = '') then
     DateEdit1.Text := DateToStr(Now);
-  if (DateEdit2.Text = '  /  /    ') then
+  if (DateEdit2.Text = '') then
     DateEdit2.Text := DateToStr(Now);
 
   begin
@@ -3048,6 +2239,8 @@ begin
 end;
 
 
+
+
 procedure TfNFe.nfe_carregalogo;
 var tem_logo: String;
 begin
@@ -3070,7 +2263,7 @@ end;
 
 procedure TfNFe.EnviaEmail;
 var
- IDNFE, RAZAO, CNPJ, TRANSP, Protocolo, Assunto, caminho : String;
+ IDNFE, RAZAO, CNPJ, TRANSP, Assunto, caminho : String;
  enumnf ,serie : Integer;
  CC, Texto: Tstrings;
 begin
@@ -3236,7 +2429,7 @@ end;
 
 procedure TfNFe.TestEmailClick(Sender: TObject);
 var
- IDNFE, RAZAO, CNPJ, TRANSP, Protocolo, Assunto, caminho , ttl, ssl, email : String;
+ IDNFE, RAZAO, CNPJ, TRANSP, Assunto, caminho , ttl, ssl, email : String;
  numnfemail, serie : Integer;
  CC, Texto: Tstrings;
 begin
@@ -4891,6 +4084,538 @@ begin
 
   // exibe resposta
   MyWebBrowser.Text := Trim(vText);
+
+end;
+
+procedure TfNFe.GerarNFe;
+
+begin
+
+    ///*
+    codnf := 0;
+    if (edtNumSerie.Text = '') then
+    begin
+      MessageDlg('Selecione o Certificado!',mtWarning,[mbOk],0);
+      exit;
+    end;
+
+    if (tp_amb = 3) then
+    begin
+      if (validaNumNfeScan = false) then
+      begin
+        MessageDlg('Número da Nota Fiscal errado.', mtError, [mbOK], 0);
+        exit;
+      end;
+    end;
+    lblMsgNfe.Caption := 'Gerando o arquivo da Nota';
+
+    ///*
+
+    if (not dmPdv.qcds_ccusto.Active) then
+      dmPdv.qcds_ccusto.Open;
+    dmPdv.qcds_ccusto.Locate('NOME', ComboBox1.Text,[loCaseInsensitive]);
+
+    ///*
+    if (PageControl1.ActivePageIndex = 0) then
+    begin
+      dmPdv.qcds_ccusto.Locate('NOME', ComboBox1.Text,[loCaseInsensitive]);
+      if(ComboBox1.Text = '') then
+      begin
+        MessageDlg('Centro de custo não selecionado', mtError, [mbOK], 0);
+        exit;
+      end;
+    end;
+
+
+    if (PageControl1.ActivePageIndex = 1) then
+    begin
+      dmPdv.qcds_ccusto.Locate('NOME', ComboBox2.Text,[loCaseInsensitive]);
+      if(ComboBox2.Text = '') then
+      begin
+        MessageDlg('Centro de custo não selecionado', mtError, [mbOK], 0);
+        exit;
+      end;
+    end;
+    ///
+
+
+    //Seleciona Empresa de acordo com o CCusto selecionado
+    if (dmPdv.qsEmpresa.Active) then
+      dmPdv.qsEmpresa.Close;
+    dmPdv.qsEmpresa.Params[0].AsInteger :=  dmPdv.qcds_ccustoCODIGO.AsInteger;
+    dmPdv.qsEmpresa.Open;
+
+    if(dmPdv.qsEmpresaCONTADOR_CPF.AsString <> '')then
+    begin
+       pCNPJ_CPF := dmPdv.qsEmpresaCONTADOR_CPF.AsString;
+    end;
+
+    if(dmPdv.qsEmpresaCONTADOR_CNPJ.AsString <> '')then
+    begin
+       pCNPJ_CPF := dmPdv.qsEmpresaCONTADOR_CNPJ.AsString;
+    end;
+
+    ///
+    ACBrNFe1.Configuracoes.WebServices.UF := dmPdv.qsEmpresaUF.AsString;
+    ///
+
+    nfe_carregalogo;
+
+    //verifica se o CC foi selecionado caso não da mensagem avisando
+    if(dmPdv.qsEmpresa.IsEmpty) then
+      MessageDlg('Centro de custo não selecionado', mtError, [mbOK], 0);
+
+    dmPdv.qcdsNF.First;
+    while not dmPdv.qcdsNF.Eof do
+    begin
+    if (trim(dmPdv.qcdsNFSELECIONOU.AsString) = 'S') then
+      begin
+        ///
+        if (dmPdv.qcdsNFSTATUS.AsString = 'E') then
+        begin
+          MessageDlg('Nota com Status ENVIADO, altere o Status na aba OUTROS para reenviar.',mtWarning,[mbOk],0);
+          exit;
+        end;
+        if(not dmPdv.qcdsNFPROTOCOLOENV.IsNull) then
+        begin
+          if (trim(dmPdv.qcdsNFPROTOCOLOENV.AsString) <> '') then
+          begin
+            MessageDlg('Nota com Protocolo de Envio(já enviada, portanto), use o botão Imprimir Danfe.',mtWarning,[mbOk],0);
+            exit;
+          end
+        end;
+        ///
+
+        tipoNota := trim(dmPdv.qcdsNFCFOP.AsString)[1];
+        if (tipoNota in ['1','2','3']) then
+
+        tpNFe := 0;
+        if (tipoNota in ['5','6','7']) then
+        tpNFe := 1;
+
+        if (cbTipoNota.ItemIndex = 1) then
+        begin
+          if (dmPdv.qsFornec.Active) then
+          dmPdv.qsFornec.Close;
+
+          if (dmPdv.qsCliente.Active) then
+            dmPdv.qsCliente.Close;
+          dmPdv.qsCliente.Params[0].AsInteger := dmPdv.qcdsNFCODCLIENTE.AsInteger;
+          dmPdv.qsCliente.Open;
+
+
+          if ((trim(dmPdv.qsClienteUF.AsString) = 'EX') and (trim(dmPdv.qcdsNFCFOP.AsString) <> '3202'))  then
+          begin
+            if (edUfEmbarque.Text = '') then
+            begin
+              MessageDlg('Preencha o UF e Local de Embarque.', mtWarning, [mbOK], 0);
+              PageControl2.ActivePage := TabSheet7;
+              edUfEmbarque.SetFocus;
+              exit;
+            end;
+          end;
+        end
+        else
+          begin
+            if (dmPdv.qsCliente.Active) then
+              dmPdv.qsCliente.Close;
+
+            if (dmPdv.qsFornec.Active) then
+              dmPdv.qsFornec.Close;
+            dmPdv.qsFornec.Params[0].AsInteger := dmPdv.qcdsNFCODCLIENTE.AsInteger;
+            dmPdv.qsFornec.Open;
+          end;
+
+  	///
+
+          codFisc := dmPdv.qsClienteCODFISCAL.AsString;
+          if (dmPdv.qsClienteCODFISCAL.AsString = '') then
+          begin
+            MessageDlg(dmPdv.qsClienteNOMECLIENTE.AsString + ' - informe o CODIGO FISCAL no cadastro do cliente.', mtWarning, [mbOK], 0);
+          exit;
+          end;
+      end
+      else
+      begin
+        if (dmPdv.qsCliente.Active) then
+          dmPdv.qsCliente.Close;
+
+        if (dmPdv.qsFornec.Active) then
+          dmPdv.qsFornec.Close;
+        dmPdv.qsFornec.Params[0].AsInteger := dmPdv.qcdsNFCODCLIENTE.AsInteger;
+        dmPdv.qsFornec.Open;
+        codFisc := dmPdv.qsFornecCODFISCAL.AsString;
+        if (dmPdv.qsFornecCODFISCAL.AsString = '') then
+        begin
+          MessageDlg(dmPdv.qsFornecNOMECLIENTE.AsString + ' - informe o CODIGO FISCAL no cadastro do fornecedor.', mtWarning, [mbOK], 0);
+        exit;
+        end;
+      end;
+
+       ///
+      if (dmPdv.qsCFOP.Active) then
+        dmPdv.qsCFOP.Close;
+      dmPdv.qsCFOP.Params[0].AsString := dmPdv.qcdsNFCFOP.AsString;
+      if (cbTipoNota.ItemIndex = 1) then
+      begin
+        dmPdv.qsCFOP.Params[1].AsString := dmPdv.qsClienteUF.AsString;
+        dmPdv.qsCFOP.Params[2].AsString := dmPdv.qcdsNFCFOP.AsString;
+        ufDest := dmPdv.qsClienteUF.AsString;
+      end
+      else
+        begin
+          dmPdv.qsCFOP.Params[1].AsString := dmPdv.qsFornecUF.AsString;
+          dmPdv.qsCFOP.Params[2].AsString := dmPdv.qcdsNFCFOP.AsString;
+          ufDest := dmPdv.qsFornecUF.AsString;
+        end;
+        dmPdv.qsCFOP.Open;
+        if (dmPdv.qsCFOP.IsEmpty) then
+        begin
+          MessageDlg('Não existe este CFOP cadastrado para este ESTADO.'+#13+#10+'(Cadastros -> CFOP-ESTADO).', mtWarning, [mbOK], 0);
+          exit;
+        end;
+       ///
+
+
+        ACBrNFe1.NotasFiscais.Clear;
+        with ACBrNFe1.NotasFiscais.Add.NFe do
+        begin
+        //infNFe.ID := 0    // Chave de acesso da NF-e precedida do literal NFe acrescentado a validação do formato 2.0
+        if (dmPdv.qsEstado.Active) then
+          dmPdv.qsEstado.Close;
+        dmPdv.qsEstado.Params[0].AsString := dmPdv.qsEmpresaUF.asString;
+        dmPdv.qsEstado.Open;
+        Ide.cUF       := dmPdv.qsEstadoCODIGO.AsInteger;   // Codigo do UF do Emitente do documento fiscal
+        Ide.cNF       := (dmPdv.qcdsNFNUMNF.AsInteger*99) ; //Para não ser o mesmo numero
+
+        Ide.natOp     := copy(dmPdv.qsCFOPCFNOME.AsString,0,59);
+           //Verifica tipo de Pagamento
+        getPagamento;
+        try
+          Ide.cMunFG    := StrToInt(RemoveChar(dmPdv.qsEmpresaCD_IBGE.AsString));
+        except
+          MessageDlg('Codigo do IBGE do Emitente não informado(Cadastro Empresa)', mtError, [mbOK], 0);
+        end;
+        Ide.modelo    := 55;
+        if (tp_amb = 1) then
+        begin
+          Ide.serie     := nfe_serie_receita;
+          Ide.tpEmis    := teNormal;
+        end
+        else if (tp_amb = 2) then
+        begin
+          Ide.tpEmis    := teContingencia;
+          Ide.serie     := nfe_serie_receita;
+        end
+        else if (tp_amb = 3) then
+        begin
+          Ide.tpEmis    := teSCAN;
+          Ide.serie     := 900;
+        end
+        else if (tp_amb = 4) then
+        begin
+          Ide.tpEmis    := teDPEC;
+          Ide.serie     := nfe_serie_receita;
+        end
+        else if (tp_amb = 5) then
+        begin
+          Ide.tpEmis    := teFSDA;
+          Ide.serie     := nfe_serie_receita;
+        end
+        else if (tp_amb = 6) then
+        begin
+          Ide.tpEmis    := teSVCAN;
+          Ide.serie     := nfe_serie_receita;
+        end;
+
+
+
+       //Carrega os itens da NF
+       pegaItens(cbTipoNota.ItemIndex);
+
+       if((dmPdv.qcdsNFIDCOMPLEMENTAR.IsNull) or (dmPdv.qcdsNFIDCOMPLEMENTAR.AsString = '')) then
+         ide.finNFe    := fnNormal
+       else
+       begin
+         ide.finNFe    := fnComplementar;
+         // Se naõ tiver a Chave para GERAR Nota de Devolução usar isso abaixo
+         if (length(dmPdv.qcdsNFIDCOMPLEMENTAR.AsString) < 20) then
+         begin
+           ide.finNFe    := fnDevolucao;
+           with ide.NFref.New.RefNF do
+           begin
+             nNF    := 11742;
+             cUF    := 35;
+             AAMM   := '0408';
+             CNPJ   := '60886413006692';
+             modelo := 1;
+             serie  := 1;
+           end;
+         end;
+         if (length(dmPdv.qcdsNFIDCOMPLEMENTAR.AsString) > 20) then
+         begin
+           ide.NFref.Add.refNFe := dmPdv.qcdsNFIDCOMPLEMENTAR.AsString;
+         end;
+       end;
+
+      Ide.nNF       := StrToInt(dmPdv.qcdsNFNOTASERIE.AsString);
+      Ide.dEmi      := dmPdv.qcdsNFDTAEMISSAO.AsDateTime;
+      Ide.dSaiEnt   := dmPdv.qcdsNFDTASAIDA.AsDateTime;
+      Ide.hSaiEnt   := dmPdv.qcdsNFHORASAIDA.AsDateTime;
+      infCplTrib := '';
+
+      if (dmPdv.qcdsNFVLRTOT_TRIB.AsFloat > 0)  then
+      begin
+        pegaTributos(dmPdv.cdsItensNFCODMOVIMENTO.AsInteger, 0);
+        infCplTrib := 'Trib aprox R$:' +
+          format('%8.2n', [dmPdv.sqlTotal_tributos.Fields[0].AsFloat]) + '-Fed, ' +
+          format('%8.2n', [dmPdv.sqlTotal_tributos.Fields[1].AsFloat]) + '-Est e ' +
+          format('%8.2n', [dmPdv.sqlTotal_tributos.Fields[2].AsFloat]) + '-Mun ';
+        infCplTrib := infCplTrib + 'Fonte: IBPT';//Fonte: IBPT/FECOMERCIO RJ Xe67eQ
+      end;
+      infCplTrib := dmPdv.qcdsNFCORPONF1.AsString + ' ' + dmPdv.qcdsNFCORPONF2.AsString + ' ' +
+        dmPdv.qcdsNFCORPONF3.AsString + ' ' + dmPdv.qcdsNFCORPONF4.AsString + ' ' +
+        dmPdv.qcdsNFCORPONF5.AsString + infCplTrib; // + ' ' + cdsNFCORPONF6.AsString;(usando para codigo pedido de compra)
+
+      InfAdic.infCpl := infCplTrib;
+
+      ///
+      if (dmPdv.qcdsNFNFE_FINNFE.AsString = 'fnAjuste') then
+      begin
+        InputQuery('Justificativa do estorno nas Informações Adicionais de Interesse do Fisco', 'Justificativa', vAux);
+        infAdic.infAdFisco := vAux;
+      end;
+
+      ///
+
+      if (dmPdv.qcdsNFCORPONF6.AsString <> '') then
+      begin
+        compra.xPed := dmPdv.qcdsNFCORPONF6.AsString;
+      end;
+
+      // Tipo de movimentação 0 entrada 1 saida
+      if (tpNFe = 0) then
+        Ide.tpNF   := tnEntrada;
+
+      if (tpNFe = 1) then
+        Ide.tpNF   := tnSaida;
+
+      if (tipoNota in ['1','5']) then
+        ide.idDest := doInterna;
+
+      if (tipoNota in ['2','6']) then
+        ide.idDest := doInterestadual;
+
+      ///
+      	if (tipoNota in ['3', '7']) then
+      begin
+        ide.idDest := doExterior;
+        if (cbTipoNota.ItemIndex = 0) then
+           Dest.idEstrangeiro := dmPdv.qsFornecINSCESTADUAL.AsString
+        else
+           Dest.idEstrangeiro := dmPdv.qsClienteINSCESTADUAL.AsString;
+        Dest.indIEDest := inNaoContribuinte;
+      end;
+
+      ///
+
+      {Ide.tpAmb     := tn2;                           // 1 - Produção // 2 Homologação}
+      Ide.verProc   := '1.0.0.0';
+
+      // Responsavel Tecnico
+      ACBrNFe1.NotasFiscais.Items[0].NFe.infRespTec.CNPJ := '08382545000111';
+      ACBrNFe1.NotasFiscais.Items[0].NFe.infRespTec.xContato := 'CARLOS RODRIGUES SILVEIRA';
+      ACBrNFe1.NotasFiscais.Items[0].NFe.infRespTec.email := 'ats@atsti.com.br';
+      ACBrNFe1.NotasFiscais.Items[0].NFe.infRespTec.fone :='19974014694';
+
+
+
+      if((dmPdv.qsEmpresaCONTADOR_CNPJ.AsString <> '') or (dmPdv.qsEmpresaCONTADOR_CPF.AsString <> '')) then
+      begin
+        with autXML.Add do
+        begin
+           CNPJCPF := pCNPJ_CPF;
+        end;
+      end;
+
+      ///
+      if (dmPdv.qcdsNFNFE_FINNFE.AsString = 'fnNormal') then
+        Ide.finNFe := fnNormal;
+
+      if (dmPdv.qcdsNFNFE_FINNFE.AsString = 'fnDevolucao') then
+        Ide.finNFe := fnDevolucao;
+
+      if (dmPdv.qcdsNFNFE_FINNFE.AsString = 'fnAjuste') then
+        Ide.finNFe := fnAjuste;
+
+      if (dmPdv.qcdsNFNFE_FINNFE.AsString = 'fnComplementar') then
+        ide.finNFe    := fnComplementar;
+
+      ///
+
+
+      if (dmPdv.sTabIBGE.Active) then
+        dmPdv.sTabIBGE.Close;
+      dmPdv.sTabIBGE.Params[0].AsString := dmPdv.qsEmpresaCIDADE.AsString;
+      dmPdv.sTabIBGE.Open;
+      //Carrega dados do Emitente
+      //VERIFICA SE CODIGO IBGE ESTÁ PREENCHIDO NA EMPRESA
+      if ( (dmPdv.qsEmpresaCD_IBGE.IsNull) or (dmPdv.qsEmpresaCD_IBGE.AsString = '') ) then
+      begin
+        MessageDlg('Codigo do IBGE da empresa não definido', mtError, [mbOK], 0);
+        valida := 'N';
+      end;
+  	if (valida = 'N') then
+      exit;
+
+      getEmpresa();
+      //CARREGA OS DADOS DO DESTINATARIO CLIENTE/FORNECEDOR
+      if( dmPdv.qsFornec.Active) then
+        if ((dmPdv.qsFornecCD_IBGE.IsNull) or (dmPdv.qsFornecCD_IBGE.AsString = '') ) then
+        begin
+          MessageDlg('Codigo do IBGE do Fornecedor não definido', mtError, [mbOK], 0);
+          valida := 'N';
+        end;
+      if(dmPdv.qsCliente.Active) then
+        if ((dmPdv.qsClienteCD_IBGE.IsNull) or (dmPdv.qsClienteCD_IBGE.AsString = '') ) then
+        begin
+          MessageDlg('Codigo do IBGE do Cliente não definido', mtError, [mbOK], 0);
+          valida := 'N';
+        end;
+        if (valida = 'N') then
+          exit;
+      getCLi_Fornec();
+
+      ///
+      ide.indFinal := cfNao;
+      if (vTipoFiscal = '9') then
+        ide.indFinal  := cfConsumidorFinal; //(cfNao, cfConsumidorFinal);
+
+      pegaItens(cbTipoNota.ItemIndex);
+      tot1 := 0;
+      tot2 := 0;
+      tot3 := 0;
+      infCplTrib := '';
+      //if ((cdsNFVLRTOT_TRIB.AsFloat > 0) and (dm.vTipoFiscal = '9'))  then
+      if (dmPdv.qcdsNFVLRTOT_TRIB.AsFloat > 0)  then
+      begin
+        pegaTributos(dmPdv.cdsItensNFCODMOVIMENTO.AsInteger, 0);
+        infCplTrib := 'Trib aprox R$:' +
+          format('%8.2n', [dmPdv.sqlTotal_tributos.Fields[0].AsFloat]) + '-Fed, ' +
+          format('%8.2n', [dmPdv.sqlTotal_tributos.Fields[1].AsFloat]) + '-Est e ' +
+          format('%8.2n', [dmPdv.sqlTotal_tributos.Fields[2].AsFloat]) + '-Mun ';
+        infCplTrib := infCplTrib + 'Fonte: IBPT';//Fonte: IBPT/FECOMERCIO RJ Xe67eQ
+      end;
+      infCplTrib := dmPdv.qcdsNFCORPONF1.AsString + ' ' + dmPdv.qcdsNFCORPONF2.AsString + ' ' +
+        dmPdv.qcdsNFCORPONF3.AsString + ' ' + dmPdv.qcdsNFCORPONF4.AsString + ' ' +
+        dmPdv.qcdsNFCORPONF5.AsString + infCplTrib; // + ' ' + cdsNFCORPONF6.AsString;(usando para codigo pedido de compra)
+
+      InfAdic.infCpl := infCplTrib;
+
+      ///
+
+
+
+      //Carrega os itens da NF
+      //pegaItens(cbTipoNota.ItemIndex);
+
+      i := 1;
+      while not dmPdv.cdsItensNF.Eof do // Escrevo os itens
+      begin
+       if (dmPdv.qsProdutos.Active) then
+         dmPdv.qsProdutos.Close;
+       dmPdv.qsProdutos.Params[0].AsInteger := dmPdv.cdsItensNFCODPRODUTO.AsInteger;
+       try
+         dmPdv.qsProdutos.Open;
+       finally
+         if ((dmPdv.qsProdutosUNIDADEMEDIDA.AsString = '') or (dmPdv.qsProdutosUNIDADEMEDIDA.IsNull) or (dmPdv.qsProdutosUNIDADEMEDIDA.AsString = ' ')) then
+         begin
+           MessageDlg('Produto ' + dmPdv.cdsItensNFDESCPRODUTO.AsString + ' sem Unidade de Medida', mtError, [mbOK], 0);
+           valida := 'N';
+         end;
+         if ((trim(dmPdv.qsProdutosNCM.AsString) = '00000000') or (dmPdv.qsProdutosNCM.IsNull) ) then
+         begin
+           MessageDlg('Produto ' + dmPdv.cdsItensNFDESCPRODUTO.AsString + ' com NCM Nulo ou Inválido', mtError, [mbOK], 0);
+           valida := 'N';
+         end;
+         if ((dmPdv.qsProdutosORIGEM.IsNull) ) then
+         begin
+           MessageDlg('Produto ' + dmPdv.cdsItensNFDESCPRODUTO.AsString + ' com Origem Nula', mtError, [mbOK], 0);
+           valida := 'N';
+         end;
+         if (((dmPdv.cdsItensNFCSOSN.IsNull) or (dmPdv.cdsItensNFCSOSN.AsString = '')) and ((dmPdv.cdsItensNFCST.IsNull) or (dmPdv.cdsItensNFCST.AsString = ''))) then
+         begin
+           MessageDlg('Produto ' + dmPdv.cdsItensNFDESCPRODUTO.AsString + ' sem CST ou CSOSN', mtError, [mbOK], 0);
+           valida := 'N';
+         end;
+       end;
+       if (valida = 'N') then
+         exit;
+        // DADOS DOS PRODUTOS DA NOTA
+        getItens(i);
+        i := i + 1;
+        dmPdv.cdsItensNF.Next;
+      end;
+      getTransportadora();
+      //VALOR TORAL
+      if not ((ACBrNFe1.NotasFiscais.Items[0].NFe.Emit.CRT = crtSimplesNacional) and (dmPdv.cdsItensNFCSOSN.AsString <> '900')) then
+      begin
+        if ((cstSuframa = '00') OR ( pSuframa = '')) then
+        begin
+          Total.ICMSTot.vBC   := dmPdv.qcdsNFBASE_ICMS.AsVariant;
+          Total.ICMSTot.vICMS   := dmPdv.qcdsNFVALOR_ICMS.AsVariant;
+        end;
+      end;
+      Total.ICMSTot.vBCST := dmPdv.qcdsNFBASE_ICMS_SUBST.AsVariant;
+      Total.ICMSTot.vST   := dmPdv.qcdsNFVALOR_ICMS_SUBST.AsVariant;
+      Total.ICMSTot.vProd := dmPdv.qcdsNFVALOR_PRODUTO.AsVariant;
+      try
+        Total.ICMSTot.vFrete := dmPdv.qcdsNFVALOR_FRETE.AsVariant;
+      except
+        Total.ICMSTot.vFrete := 0;
+      end;
+      try
+        Total.ICMSTot.vSeg := dmPdv.qcdsNFVALOR_SEGURO.AsVariant;
+      except
+        Total.ICMSTot.vSeg := 0;
+      end;
+
+      try
+        if (dmPdv.qcdsNFVALOR_DESCONTO.AsVariant > 0) then
+
+        Total.ICMSTot.vDesc := (dmPdv.qcdsNFVALOR_DESCONTO.AsVariant);
+      except
+        Total.ICMSTot.vDesc := roundto(0,-2);
+      end;
+      Total.ICMSTot.vIPI := dmPdv.qcdsNFVALOR_IPI.AsVariant;
+      if ((dmPdv.qcdsNFVALOR_PIS.AsFloat <> 0 )or (dmPdv.qcdsNFVALOR_PIS.AsFloat <> null )) then
+        Total.ICMSTot.vPIS := dmPdv.qcdsNFVALOR_PIS.AsFloat;
+      if ((dmPdv.qcdsNFVALOR_COFINS.AsFloat <> 0) or (dmPdv.qcdsNFVALOR_COFINS.AsFloat <> null )) then
+        Total.ICMSTot.vCOFINS := dmPdv.qcdsNFVALOR_COFINS.AsFloat;
+      Total.ICMSTot.vOutro := dmPdv.qcdsNFOUTRAS_DESP.AsVariant;
+      Total.ICMSTot.vNF   := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant;
+      Total.ICMSTot.vTotTrib := dmPdv.qcdsNFVLRTOT_TRIB.AsVariant;
+
+      if ((cstSuframa <> '00') and ( pSuframa <> '')) then
+       begin
+        Total.ICMSTot.vICMSDeson := dmPdv.qcdsNFVALOR_ICMS.AsVariant;
+       end;
+
+
+      dmPdv.qcdsNF.Next;
+      end;
+    end;
+
+
+    ///
+
+     AcbrNfe1.Configuracoes.Arquivos.PathNFe := Edit1.Text;
+
+     ACBrNFe1.NotasFiscais.Items[0].GravarXML;
+
+     //MemoResp.Lines.LoadFromFile(ACBrNFe1.Configuracoes.Arquivos.PathSalvar+'\' +copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
+
+     MessageDlg('Arquivo gerado com sucesso.', mtInformation, [mbOK], 0);
 
 end;
 

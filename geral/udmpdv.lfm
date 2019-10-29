@@ -12531,6 +12531,7 @@ object dmPdv: TdmPdv
     end
   end
   object qsCCE: TSQLQuery
+    IndexName = 'DEFAULT_ORDER'
     FieldDefs = <    
       item
         Name = 'CHAVE'
@@ -14003,5 +14004,10 @@ object dmPdv: TdmPdv
       Required = False
       Size = 4
     end
+  end
+  object dsCCE: TDataSource
+    DataSet = qsCCE
+    left = 372
+    top = 640
   end
 end

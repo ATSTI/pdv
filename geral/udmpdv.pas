@@ -89,6 +89,7 @@ type
     cdsItensNFV_FCPST: TFloatField;
     cdsItensNFV_FCPSTRET: TFloatField;
     DataSource1: TDataSource;
+    dsCCE: TDataSource;
     IbCon: TIBConnection;
     qcdsFaturaDATAFATURA: TDateField;
     qcdsFaturaFORMAPAGAMENTO: TStringField;

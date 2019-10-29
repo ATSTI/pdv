@@ -508,19 +508,6 @@ object fNFe: TfNFe
             ItemHeight = 13
             TabOrder = 1
           end
-          object DateEdit1: TDateEdit
-            Left = 88
-            Height = 21
-            Top = 31
-            Width = 103
-            CalendarDisplaySettings = [dsShowHeadings, dsShowDayNames]
-            DateOrder = doNone
-            ButtonWidth = 23
-            NumGlyphs = 1
-            MaxLength = 0
-            TabOrder = 3
-            Text = '01/01/2018'
-          end
           object DateEdit2: TDateEdit
             Left = 272
             Height = 21
@@ -531,8 +518,21 @@ object fNFe: TfNFe
             ButtonWidth = 23
             NumGlyphs = 1
             MaxLength = 0
-            TabOrder = 4
+            TabOrder = 3
             Text = '15/10/2019'
+          end
+          object DateEdit1: TDateEdit
+            Left = 88
+            Height = 21
+            Top = 31
+            Width = 103
+            CalendarDisplaySettings = [dsShowHeadings, dsShowDayNames]
+            DateOrder = doNone
+            ButtonWidth = 23
+            NumGlyphs = 1
+            MaxLength = 0
+            TabOrder = 4
+            Text = '01/01/2018'
           end
         end
         object btnSairVenda: TBitBtn
@@ -802,8 +802,8 @@ object fNFe: TfNFe
         Height = 200
         Top = 24
         Width = 438
-        ActivePage = TabSheet6
-        TabIndex = 6
+        ActivePage = TabSheet1
+        TabIndex = 0
         TabOrder = 2
         OnChange = PageControl2Change
         object TabSheet1: TTabSheet
@@ -813,7 +813,7 @@ object fNFe: TfNFe
           object GroupBox2: TGroupBox
             Left = 24
             Height = 156
-            Top = 2
+            Top = 0
             Width = 403
             Caption = 'Normal'
             ClientHeight = 138
@@ -883,7 +883,7 @@ object fNFe: TfNFe
               object btnImprime: TBitBtn
                 Left = 8
                 Height = 36
-                Top = 0
+                Top = 1
                 Width = 93
                 Caption = 'Imprimir DANFe'
                 OnClick = btnImprimeClick
@@ -1887,6 +1887,57 @@ object fNFe: TfNFe
           OnClick = btnImprimirCCeClick
           TabOrder = 5
         end
+      end
+      object DBGrid2: TDBGrid
+        Left = 0
+        Height = 496
+        Top = 152
+        Width = 960
+        AutoEdit = False
+        Color = clWindow
+        Columns = <        
+          item
+            Title.Caption = 'SELECIONOU'
+            Width = 40
+            FieldName = 'SELECIONOU'
+          end        
+          item
+            Title.Caption = 'CHAVE'
+            Width = 300
+            FieldName = 'CHAVE'
+          end        
+          item
+            Title.Caption = 'ORGAO'
+            FieldName = 'ORGAO'
+          end        
+          item
+            Title.Caption = 'CNPJ'
+            Width = 110
+            FieldName = 'CNPJ'
+          end        
+          item
+            Title.Caption = 'DHENVIO'
+            Width = 150
+            FieldName = 'DHENVIO'
+          end        
+          item
+            Title.Caption = 'CORRECAO'
+            FieldName = 'CORRECAO'
+          end        
+          item
+            Title.Caption = 'PROTOCOLO'
+            FieldName = 'PROTOCOLO'
+          end        
+          item
+            Title.Caption = 'CONDICAO'
+            FieldName = 'CONDICAO'
+          end>
+        DataSource = dmPdv.dsCCE
+        Flat = True
+        TabOrder = 1
+        OnCellClick = DBGrid1CellClick
+        OnColEnter = DBGrid1ColEnter
+        OnDrawColumnCell = DBGrid1DrawColumnCell
       end
     end
     object Certificado: TTabSheet
