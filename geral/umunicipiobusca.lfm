@@ -1,15 +1,22 @@
 inherited fMunicipioBusca: TfMunicipioBusca
+  Left = 303
+  Top = 35
   OnClose = FormClose
   OnShow = FormShow
   inherited Panel1: TPanel
     inherited Edit1: TEdit
       TabOrder = 1
     end
+    inherited Label1: TLabel
+      Height = 21
+      Width = 41
+    end
     inherited Edit2: TEdit
       OnChange = Edit2Change
       TabOrder = 0
     end
     inherited chInativo: TCheckBox
+      Width = 60
       Visible = False
     end
   end

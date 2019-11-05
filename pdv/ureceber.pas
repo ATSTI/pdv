@@ -59,6 +59,7 @@ type
     procedure btnProcurarClick(Sender: TObject);
     procedure btnSairClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure edCodClienteExit(Sender: TObject);
     procedure edCodClienteKeyPress(Sender: TObject; var Key: char);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -86,6 +87,17 @@ begin
   edNomeCliente.Text := fClienteBusca.cNomeCliente;
   codClienteR := fClienteBusca.cCodCliente;
   edCodCliente.Text := IntToStr(codClienteR);
+end;
+
+procedure TfRecebimento.edCodClienteExit(Sender: TObject);
+begin
+  if (edCodCliente.Text <> '') then
+  begin
+    fClienteBusca.cCodCliente := StrToInt(edCodCliente.Text);
+    fClienteBusca.BuscaCliente;
+    edNomeCliente.Text := fClienteBusca.cNomeCliente;
+    btnProcurar.SetFocus;
+  end;
 end;
 
 procedure TfRecebimento.edCodClienteKeyPress(Sender: TObject; var Key: char);

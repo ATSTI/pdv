@@ -684,9 +684,9 @@ object fCTePrincipal: TfCTePrincipal
     Height = 633
     Top = 0
     Width = 1305
-    ActivePage = TabCte
+    ActivePage = TabSheet20
     Align = alClient
-    TabIndex = 1
+    TabIndex = 5
     TabOrder = 0
     OnChange = pcPrincipalChange
     object TabCteGeradas: TTabSheet
@@ -8811,6 +8811,7 @@ object fCTePrincipal: TfCTePrincipal
             CharCase = ecNormal
             MaxLength = 0
             TabOrder = 0
+            OnChange = dbValTotPrestChange
             OnExit = dbValTotPrestExit
           end
           object dbValReceber: TDBEdit
@@ -8823,6 +8824,7 @@ object fCTePrincipal: TfCTePrincipal
             CharCase = ecNormal
             MaxLength = 0
             TabOrder = 1
+            OnChange = dbValReceberChange
           end
           object dbValTotTri: TDBEdit
             Left = 364
@@ -8834,6 +8836,7 @@ object fCTePrincipal: TfCTePrincipal
             CharCase = ecNormal
             MaxLength = 0
             TabOrder = 2
+            OnChange = dbValTotTriChange
           end
           object dbValpRedBC: TDBEdit
             Left = 364
@@ -9469,6 +9472,7 @@ object fCTePrincipal: TfCTePrincipal
                     CharCase = ecNormal
                     MaxLength = 0
                     TabOrder = 1
+                    OnChange = dbValInfCargaChange
                   end
                   object StaticText7: TStaticText
                     Left = 32

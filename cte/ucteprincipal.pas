@@ -62,7 +62,7 @@ type
     btnEnviarEventoEmail: TBitBtn;
     btnExcluirComp: TBitBtn;
     btnExcluirNFe: TBitBtn;
-    btnGerarCte1: TBitBtn;
+    btnSair: TBitBtn;
     BitBtn2: TBitBtn;
     btnGravarCTe: TBitBtn;
     btnCancelarEdicaoCTe: TBitBtn;
@@ -621,6 +621,7 @@ type
     procedure BitBtn13Click(Sender: TObject);
     procedure btnEditarNFe1Click(Sender: TObject);
     procedure btnExcluirNFe1Click(Sender: TObject);
+    procedure btnGerarCte1Click(Sender: TObject);
     procedure btnGravarCTe1Click(Sender: TObject);
     procedure btnImportarXML1Click(Sender: TObject);
     procedure btnIncluirNFe1Click(Sender: TObject);
@@ -648,7 +649,7 @@ type
     procedure BitBtn9Click(Sender: TObject);
     procedure btnEditarNFeClick(Sender: TObject);
     procedure btnExcluirNFeClick(Sender: TObject);
-    procedure btnGerarCte1Click(Sender: TObject);
+    procedure btnSairClick(Sender: TObject);
     procedure btnGerarPDFInutClick(Sender: TObject);
     procedure btnCancelarEdicaoCTeClick(Sender: TObject);
     procedure btnImprimirInutClick(Sender: TObject);
@@ -698,7 +699,11 @@ type
     procedure comboEmpresaChange(Sender: TObject);
     procedure dbGridCompCellClick(Column: TColumn);
     procedure dbGridQCCellClick(Column: TColumn);
+    procedure dbValInfCargaChange(Sender: TObject);
+    procedure dbValReceberChange(Sender: TObject);
+    procedure dbValTotPrestChange(Sender: TObject);
     procedure dbValTotPrestExit(Sender: TObject);
+    procedure dbValTotTriChange(Sender: TObject);
     procedure dgGridCTEDblClick(Sender: TObject);
     procedure edtBuscaTomadorExit(Sender: TObject);
     procedure edtCfopExit(Sender: TObject);
@@ -1172,19 +1177,19 @@ begin
   rgTipoServico.ItemIndex := Ini.ReadInteger('Geral','TipoServico' ,0);
   edtLogoMarca.Text       := Ini.ReadString ('Geral','LogoMarca'   ,'');
 
-  edtEmitCNPJ.Text       := Ini.ReadString( 'Emitente','CNPJ'       ,'');
-  edtEmitIE.Text         := Ini.ReadString( 'Emitente','IE'         ,'');
-  edtEmitRazao.Text      := Ini.ReadString( 'Emitente','RazaoSocial','');
-  edtEmitFantasia.Text   := Ini.ReadString( 'Emitente','Fantasia'   ,'');
-  edtEmitFone.Text       := Ini.ReadString( 'Emitente','Fone'       ,'');
-  edtEmitCEP.Text        := Ini.ReadString( 'Emitente','CEP'        ,'');
-  edtEmitLogradouro.Text := Ini.ReadString( 'Emitente','Logradouro' ,'');
-  edtEmitNumero.Text     := Ini.ReadString( 'Emitente','Numero'     ,'');
-  edtEmitComp.Text       := Ini.ReadString( 'Emitente','Complemento','');
-  edtEmitBairro.Text     := Ini.ReadString( 'Emitente','Bairro'     ,'');
-  edtEmitCodCidade.Text  := Ini.ReadString( 'Emitente','CodCidade'  ,'');
-  edtEmitCidade.Text     := Ini.ReadString( 'Emitente','Cidade'     ,'');
-  edtEmitUF.Text         := Ini.ReadString( 'Emitente','UF'         ,'');
+  //edtEmitCNPJ.Text       := Ini.ReadString( 'Emitente','CNPJ'       ,'');
+  //edtEmitIE.Text         := Ini.ReadString( 'Emitente','IE'         ,'');
+  //edtEmitRazao.Text      := Ini.ReadString( 'Emitente','RazaoSocial','');
+  //edtEmitFantasia.Text   := Ini.ReadString( 'Emitente','Fantasia'   ,'');
+  //edtEmitFone.Text       := Ini.ReadString( 'Emitente','Fone'       ,'');
+  //edtEmitCEP.Text        := Ini.ReadString( 'Emitente','CEP'        ,'');
+  //edtEmitLogradouro.Text := Ini.ReadString( 'Emitente','Logradouro' ,'');
+  //edtEmitNumero.Text     := Ini.ReadString( 'Emitente','Numero'     ,'');
+  //edtEmitComp.Text       := Ini.ReadString( 'Emitente','Complemento','');
+  //edtEmitBairro.Text     := Ini.ReadString( 'Emitente','Bairro'     ,'');
+  //edtEmitCodCidade.Text  := Ini.ReadString( 'Emitente','CodCidade'  ,'');
+  //edtEmitCidade.Text     := Ini.ReadString( 'Emitente','Cidade'     ,'');
+  //edtEmitUF.Text         := Ini.ReadString( 'Emitente','UF'         ,'');
 
   edtSmtpHost.Text      := Ini.ReadString( 'Email','Host'   ,'');
   edtSmtpPort.Text      := Ini.ReadString( 'Email','Port'   ,'');
@@ -2658,8 +2663,9 @@ begin
     vCteStr := vCteStr + QuotedStr(edtCaracAdServ.Text); // CARAC_SERV
     vCteStr := vCteStr +  ',FUNC_EMI = ';
     vCteStr := vCteStr + QuotedStr(edtFuncEmi.Text); // FUNC_EMI
-
-    vCteStr := vCteStr +' where COD_CTE = ' ;
+    vCteStr := vCteStr +  ',CTE_NUMERO = ';
+    vCteStr := vCteStr +  edtNumCte.Text;
+    vCteStr := vCteStr + ' where COD_CTE = ' ;
     vCteStr := vCteStr +  IntToStr(val_genCte);
     MemoDados.Text := vCteStr;
     dmPdv.IbCon.ExecuteDirect(vCteStr);
@@ -3514,10 +3520,20 @@ end;
 
 procedure TfCTePrincipal.dbValTotPrestExit(Sender: TObject);
 begin
-  dmCte.cdsCteVREC.AsFloat := dmCte.cdsCteVPREST.AsFloat;
-  dmCte.cdsCteVALVBC.AsFloat := dmCte.cdsCteVPREST.AsFloat;
-  dmCte.cdsCteVALVICMS.AsFloat := dmCte.cdsCteVPREST.AsFloat *
-    (dmCte.cdsCteVALPICMS.AsFloat/100);
+  if ((modoGravacao = 'EDITAR') or (modoGravacao = 'INSERIR')) then
+  begin
+    dmCte.cdsCteVREC.AsFloat := dmCte.cdsCteVPREST.AsFloat;
+    dmCte.cdsCteVALVBC.AsFloat := dmCte.cdsCteVPREST.AsFloat;
+    dmCte.cdsCteVALVICMS.AsFloat := dmCte.cdsCteVPREST.AsFloat *
+      (dmCte.cdsCteVALPICMS.AsFloat/100);
+  end;
+end;
+
+procedure TfCTePrincipal.dbValTotTriChange(Sender: TObject);
+begin
+  if (dmCte.cdsCteVALTOTTRI.NewValue <> dmCte.cdsCteVALTOTTRI.OldValue) then
+    if ((modoGravacao <> 'EDITAR') or (modoGravacao <> 'INSERIR')) then
+      modoGravacao := 'EDITAR';
 end;
 
 procedure TfCTePrincipal.dgGridCTEDblClick(Sender: TObject);
@@ -3725,10 +3741,10 @@ end;
 procedure TfCTePrincipal.btnCorrigirSerieClick(Sender: TObject);
 begin
   vCteStr := 'UPDATE SERIES SET ULTIMO_NUMERO = ';
-  vCteStr += QuotedStr(edUltimoAtualiza.Text);
+  vCteStr += edUltimoAtualiza.Text;
   vCteStr += ' WHERE MODELO = ';
   vCteStr += QuotedStr(edModeloAtualiza.Text);
-  vCteStr += ' and CODSERIE = ';
+  vCteStr += ' AND SERIE_CTE = ';
   vCteStr += QuotedStr(edSerieAtualiza.Text);
 
   dmPdv.IbCon.ExecuteDirect(vCteStr);
@@ -4668,6 +4684,11 @@ begin
   end;
 end;
 
+procedure TfCTePrincipal.btnGerarCte1Click(Sender: TObject);
+begin
+  Close;
+end;
+
 procedure TfCTePrincipal.btnGravarCTe1Click(Sender: TObject);
 begin
   GravarConfiguracao;
@@ -5009,7 +5030,7 @@ begin
   end;
 end;
 
-procedure TfCTePrincipal.btnGerarCte1Click(Sender: TObject);
+procedure TfCTePrincipal.btnSairClick(Sender: TObject);
 begin
   if (dmCte.cdsCTENPROT.AsString  = '') then
   begin
@@ -5424,6 +5445,7 @@ end;
 procedure TfCTePrincipal.btnImprimirClick(Sender: TObject);
 begin
   CarregarXML(dmCte.cdsCteCHCTE.AsString);
+  ACBrCTe1.Consultar;
   ACBrCTe1.Conhecimentos.Imprimir;
 end;
 
@@ -5468,7 +5490,7 @@ begin
   end;
 
   edtModelo.Text := IntToStr(vModeloCte);
-
+  edModeloAtualiza.Text := 'CT';
   buscaEmpresa(comboEmpresa.Text);
   LerConfiguracao;
   edtProPred.Text := carga_prodpre;
@@ -5832,6 +5854,25 @@ begin
   carga_desc := dmCte.sqQCMEDIDA.AsString;
 end;
 
+procedure TfCTePrincipal.dbValInfCargaChange(Sender: TObject);
+begin
+  if (dmCte.cdsCteVPREST.NewValue <> dmCte.cdsCteVPREST.OldValue) then
+    if ((modoGravacao <> 'EDITAR') or (modoGravacao <> 'INSERIR')) then
+      modoGravacao := 'EDITAR';
+end;
+
+procedure TfCTePrincipal.dbValReceberChange(Sender: TObject);
+begin
+
+end;
+
+procedure TfCTePrincipal.dbValTotPrestChange(Sender: TObject);
+begin
+  if (dmCte.cdsCteVALINFCARGA.NewValue <> dmCte.cdsCteVALINFCARGA.OldValue) then
+    if ((modoGravacao <> 'EDITAR') or (modoGravacao <> 'INSERIR')) then
+      modoGravacao := 'EDITAR';
+end;
+
 procedure TfCTePrincipal.edtXMLCodChange(Sender: TObject);
 begin
 
@@ -5854,7 +5895,20 @@ var
  V: TSSLHttpLib;
  X: TSSLXmlSignLib;
  Y: TSSLType;
+ vlr_dpi: Integer;
+ conf: TIniFile;
 begin
+  if FileExists(dmPdv.path_exe  + 'conf.ini') then
+  begin
+    conf := TIniFile.Create(dmPdv.path_exe + 'conf.ini');
+    try
+      vlr_dpi := conf.ReadInteger('OUTROS', 'Dpi', 96);
+    finally
+      conf.free;
+    end;
+  end;
+ self.DesignTimePPI := vlr_dpi;
+ self.AutoAdjustLayout(lapAutoAdjustForDPI, vlr_dpi, Screen.PixelsPerInch, Self.Width, ScaleX(Self.Width, vlr_dpi));
  cbSSLLib.Items.Clear ;
  For T := Low(TSSLLib) to High(TSSLLib) do
    cbSSLLib.Items.Add( GetEnumName(TypeInfo(TSSLLib), integer(T) ) ) ;
@@ -5895,6 +5949,8 @@ var
    emp,nomexeC ,nomexebd : string ;
    vDate1 , vDate2 : TdateTime;
 begin
+  //fCTePrincipal.Caption := 'CTe - Conhecimento de Transporte Eletrônico, versão ' +
+
   dmPdv.sqEmpresa.Open;
   while not dmPdv.sqEmpresa.Eof do
   begin
@@ -6016,7 +6072,7 @@ begin
     5: if rgRec.ItemIndex = 0 then edtRecBusca.SetFocus;
     6: if rgDest.ItemIndex = 0 then edtDestBusca.SetFocus;
     7: dbValTotPrest.SetFocus;
-    8: dbValInfCarga.SetFocus;
+    8: if PageControl4.ActivePageIndex = 0 then dbValInfCarga.SetFocus;
     9: edtRodRNTRC.SetFocus;
   end;
 end;

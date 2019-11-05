@@ -3,7 +3,7 @@ object dmPdv: TdmPdv
   OldCreateOrder = False
   Height = 433
   HorizontalOffset = 686
-  VerticalOffset = 210
+  VerticalOffset = 135
   Width = 473
   PPI = 96
   object IbCon: TIBConnection
@@ -2784,7 +2784,6 @@ object dmPdv: TdmPdv
     top = 18
   end
   object sqCliente: TSQLQuery
-    IndexName = 'DEFAULT_ORDER'
     FieldDefs = <    
       item
         Name = 'CODCLIENTE'

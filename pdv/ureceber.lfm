@@ -22,7 +22,7 @@ object fRecebimento: TfRecebimento
       Left = 592
       Height = 15
       Top = 15
-      Width = 55
+      Width = 54
       Caption = 'Valor Total'
       ParentColor = False
     end
@@ -567,6 +567,7 @@ object fRecebimento: TfRecebimento
       Height = 23
       Top = 8
       Width = 80
+      OnExit = edCodClienteExit
       OnKeyPress = edCodClienteKeyPress
       TabOrder = 3
     end

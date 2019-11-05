@@ -1,5 +1,5 @@
 object fQuantCarga: TfQuantCarga
-  Left = 427
+  Left = 428
   Height = 240
   Top = 250
   Width = 320

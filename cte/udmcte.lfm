@@ -1,8 +1,8 @@
 object dmCte: TdmCte
   OldCreateOrder = False
   Height = 512
-  HorizontalOffset = 435
-  VerticalOffset = 206
+  HorizontalOffset = 343
+  VerticalOffset = 36
   Width = 808
   PPI = 96
   object cdsCte: TSQLQuery
