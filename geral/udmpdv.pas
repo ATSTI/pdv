@@ -889,7 +889,6 @@ type
     sqLancamentosVLR_BASEICMS: TFloatField;
     SQLQuery1: TSQLQuery;
     sqEmpresa: TSQLQuery;
-<<<<<<< HEAD
     qcds_ccusto: TSQLQuery;
     qsEmpresa: TSQLQuery;
     qsMenorData: TSQLQuery;

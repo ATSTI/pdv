@@ -8,7 +8,7 @@
       <Unit0>
         <Filename Value="prjCTe.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="8"/>
         <CursorPos X="59" Y="17"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
@@ -20,10 +20,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCtePrincipal"/>
-        <IsVisibleTab Value="True"/>
         <TopLine Value="3107"/>
         <CursorPos X="37" Y="3119"/>
-        <ComponentState Value="1"/>
         <UsageCount Value="200"/>
         <Bookmarks Count="9">
           <Item0 X="20" Y="3485" ID="2"/>
@@ -45,7 +43,8 @@
         <ComponentName Value="dmPdv"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <EditorIndex Value="4"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="6"/>
         <TopLine Value="326"/>
         <CursorPos X="37" Y="336"/>
         <UsageCount Value="200"/>
@@ -59,7 +58,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="uDmCte"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="7"/>
         <CursorPos X="51" Y="180"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
@@ -72,7 +71,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uNFe"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="9"/>
         <TopLine Value="69"/>
         <CursorPos Y="75"/>
         <UsageCount Value="198"/>
@@ -95,7 +94,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCompValor"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="4"/>
         <TopLine Value="42"/>
         <CursorPos Y="65"/>
         <UsageCount Value="156"/>
@@ -123,7 +122,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uClienteBusca"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="5"/>
         <TopLine Value="120"/>
         <CursorPos X="43" Y="131"/>
         <UsageCount Value="108"/>
@@ -148,7 +147,7 @@
         <ComponentName Value="fMunicipioBusca"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="2"/>
         <TopLine Value="78"/>
         <CursorPos X="40" Y="50"/>
         <UsageCount Value="180"/>
@@ -173,7 +172,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uVeiculoCte"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="10"/>
         <TopLine Value="157"/>
         <CursorPos X="29" Y="137"/>
         <UsageCount Value="177"/>
@@ -327,7 +326,7 @@
       </Unit29>
       <Unit30>
         <Filename Value="C:\lazarus20\lcl\include\customform.inc"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="3"/>
         <TopLine Value="446"/>
         <CursorPos Y="460"/>
         <UsageCount Value="16"/>
