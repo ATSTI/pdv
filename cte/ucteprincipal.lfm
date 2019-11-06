@@ -20,7 +20,7 @@ object fCTePrincipal: TfCTePrincipal
     Align = alBottom
     ClientHeight = 66
     ClientWidth = 1305
-    TabOrder = 0
+    TabOrder = 1
     object BitBtn8: TBitBtn
       Left = 536
       Height = 30
@@ -637,6 +637,38 @@ object fCTePrincipal: TfCTePrincipal
       OnClick = btnCancelarEdicaoCTeClick
       TabOrder = 7
     end
+    object Label161: TLabel
+      Left = 14
+      Height = 19
+      Top = 8
+      Width = 73
+      Caption = 'CTe atual :'
+      Font.CharSet = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Comic Sans MS'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+    end
+    object lblCteAtual1: TLabel
+      Left = 96
+      Height = 19
+      Top = 8
+      Width = 18
+      Caption = '...'
+      Font.CharSet = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Comic Sans MS'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+    end
   end
   object Label18: TLabel
     Left = 568
@@ -652,14 +684,16 @@ object fCTePrincipal: TfCTePrincipal
     Height = 633
     Top = 0
     Width = 1305
-    ActivePage = TabCteGeradas
+    ActivePage = TabSheet20
     Align = alClient
-    TabIndex = 0
-    TabOrder = 1
+    TabIndex = 5
+    TabOrder = 0
+    OnChange = pcPrincipalChange
     object TabCteGeradas: TTabSheet
       Caption = 'CT-e Geradas'
       ClientHeight = 605
       ClientWidth = 1297
+      OnContextPopup = TabCteGeradasContextPopup
       OnShow = TabCteGeradasShow
       object Panel2: TPanel
         Left = 0
@@ -686,7 +720,7 @@ object fCTePrincipal: TfCTePrincipal
             end          
             item
               Title.Caption = 'Data Emissão'
-              Width = 100
+              Width = 120
               FieldName = 'DHEMI'
             end          
             item
@@ -706,7 +740,7 @@ object fCTePrincipal: TfCTePrincipal
             end          
             item
               Title.Caption = 'Valor Recebimento'
-              Width = 80
+              Width = 120
               FieldName = 'VREC'
               DisplayFormat = ',##0.00'
             end>
@@ -757,16 +791,17 @@ object fCTePrincipal: TfCTePrincipal
         object DateTimePicker1: TDateTimePicker
           Left = 608
           Height = 23
-          Top = 36
-          Width = 83
+          Top = 32
+          Width = 152
           CenturyFrom = 1941
           MaxDate = 2958465
           MinDate = -53780
+          AutoSize = False
           TabOrder = 1
           TrailingSeparator = False
           TextForNullDate = 'NULL'
           LeadingZeros = True
-          Kind = dtkDate
+          Kind = dtkDateTime
           TimeFormat = tf24
           TimeDisplay = tdHMS
           DateMode = dmComboBox
@@ -777,18 +812,19 @@ object fCTePrincipal: TfCTePrincipal
           MonthNames = 'Long'
         end
         object DateTimePicker2: TDateTimePicker
-          Left = 704
+          Left = 608
           Height = 23
-          Top = 36
-          Width = 83
+          Top = 64
+          Width = 152
           CenturyFrom = 1941
           MaxDate = 2958465
           MinDate = -53780
+          AutoSize = False
           TabOrder = 2
           TrailingSeparator = False
           TextForNullDate = 'NULL'
           LeadingZeros = True
-          Kind = dtkDate
+          Kind = dtkDateTime
           TimeFormat = tf24
           TimeDisplay = tdHMS
           DateMode = dmComboBox
@@ -797,15 +833,6 @@ object fCTePrincipal: TfCTePrincipal
           UseDefaultSeparators = True
           HideDateTimeParts = []
           MonthNames = 'Long'
-        end
-        object Label122: TLabel
-          Left = 696
-          Height = 15
-          Top = 40
-          Width = 5
-          Align = alCustom
-          Caption = '/'
-          ParentColor = False
         end
         object btnListarCte: TBitBtn
           Left = 800
@@ -1542,6 +1569,8 @@ object fCTePrincipal: TfCTePrincipal
         Align = alClient
         TabIndex = 0
         TabOrder = 0
+        OnChange = pcCteChange
+        OnChanging = pcCteChanging
         object TabDados: TTabSheet
           Cursor = crHandPoint
           BorderWidth = 1
@@ -1553,9 +1582,9 @@ object fCTePrincipal: TfCTePrincipal
             Height = 577
             Top = 0
             Width = 1289
-            ActivePage = TabDadosComplementares
+            ActivePage = TabDadosCte
             Align = alClient
-            TabIndex = 1
+            TabIndex = 0
             TabOrder = 0
             object TabDadosCte: TTabSheet
               Caption = 'Dados CT-e'
@@ -1643,7 +1672,7 @@ object fCTePrincipal: TfCTePrincipal
                   Left = 440
                   Height = 23
                   Top = 68
-                  Width = 128
+                  Width = 136
                   CenturyFrom = 1941
                   MaxDate = 2958465
                   MinDate = -53780
@@ -1652,7 +1681,7 @@ object fCTePrincipal: TfCTePrincipal
                   TrailingSeparator = False
                   TextForNullDate = 'NULL'
                   LeadingZeros = True
-                  Kind = dtkDate
+                  Kind = dtkDateTime
                   TimeFormat = tf24
                   TimeDisplay = tdHMS
                   DateMode = dmComboBox
@@ -1710,6 +1739,7 @@ object fCTePrincipal: TfCTePrincipal
                   ClientHeight = 25
                   ClientWidth = 177
                   Columns = 2
+                  ItemIndex = 0
                   Items.Strings = (
                     'Rodoviário'
                     'Áereo'
@@ -1759,6 +1789,7 @@ object fCTePrincipal: TfCTePrincipal
                   ClientHeight = 25
                   ClientWidth = 148
                   Columns = 2
+                  ItemIndex = 1
                   Items.Strings = (
                     'Sim'
                     'Não'
@@ -1782,6 +1813,7 @@ object fCTePrincipal: TfCTePrincipal
                   ClientHeight = 25
                   ClientWidth = 268
                   Columns = 3
+                  ItemIndex = 0
                   Items.Strings = (
                     'Pago'
                     'A Pagar'
@@ -1790,25 +1822,25 @@ object fCTePrincipal: TfCTePrincipal
                   TabOrder = 10
                 end
                 object StaticText1: TStaticText
-                  Left = 129
+                  Left = 248
                   Height = 17
-                  Top = 260
+                  Top = 264
                   Width = 248
                   Caption = 'Chave de Acesso CT-e Referenciada'
                   TabOrder = 11
                 end
                 object edtCteReferenciada: TEdit
-                  Left = 129
+                  Left = 248
                   Height = 23
                   Top = 286
-                  Width = 621
+                  Width = 502
                   TabOrder = 12
                 end
                 object Label6: TLabel
                   Left = 129
                   Height = 15
                   Top = 332
-                  Width = 136
+                  Width = 135
                   Align = alCustom
                   Caption = 'Local de Emissão do CT-e'
                   ParentColor = False
@@ -2308,7 +2340,7 @@ object fCTePrincipal: TfCTePrincipal
                   Left = 144
                   Height = 15
                   Top = 439
-                  Width = 162
+                  Width = 161
                   Align = alCustom
                   Caption = 'Local do Término da Prestação'
                   ParentColor = False
@@ -2564,10 +2596,10 @@ object fCTePrincipal: TfCTePrincipal
                   ParentColor = False
                 end
                 object sbtnLerXmlCte1: TSpeedButton
-                  Left = 8
-                  Height = 31
+                  Left = 129
+                  Height = 23
                   Hint = 'Importar CTe , em Configurações , '#13#10'coloque o Caminho das CTes a serem '#13#10'importadas.'
-                  Top = 352
+                  Top = 286
                   Width = 104
                   Caption = 'Importar CTe'
                   Enabled = False
@@ -5049,7 +5081,7 @@ object fCTePrincipal: TfCTePrincipal
             Left = 970
             Height = 15
             Top = 272
-            Width = 45
+            Width = 44
             Align = alCustom
             Caption = 'Telefone'
             ParentColor = False
@@ -5369,7 +5401,7 @@ object fCTePrincipal: TfCTePrincipal
             Left = 8
             Height = 45
             Top = 16
-            Width = 1272
+            Width = 520
             AutoFill = True
             Caption = 'Tomador do Serviço'
             ChildSizing.LeftRightSpacing = 6
@@ -5380,8 +5412,15 @@ object fCTePrincipal: TfCTePrincipal
             ChildSizing.Layout = cclLeftToRightThenTopToBottom
             ChildSizing.ControlsPerLine = 5
             ClientHeight = 25
-            ClientWidth = 1268
+            ClientWidth = 516
             Columns = 5
+            Font.CharSet = ANSI_CHARSET
+            Font.Color = clBlack
+            Font.Height = -12
+            Font.Name = 'Segoe UI'
+            Font.Pitch = fpVariable
+            Font.Quality = fqDraft
+            Font.Style = [fsBold]
             Items.Strings = (
               'Remetente'
               'Expedidor'
@@ -5390,6 +5429,7 @@ object fCTePrincipal: TfCTePrincipal
               'Outros'
             )
             OnClick = rgTomadorClick
+            ParentFont = False
             TabOrder = 0
           end
           object GroupBoxTomador: TGroupBox
@@ -5745,7 +5785,7 @@ object fCTePrincipal: TfCTePrincipal
               Left = 880
               Height = 15
               Top = 264
-              Width = 45
+              Width = 44
               Align = alCustom
               Caption = 'Telefone'
               ParentColor = False
@@ -5846,6 +5886,31 @@ object fCTePrincipal: TfCTePrincipal
               Caption = 'Complemento'
               ParentColor = False
             end
+            object RadioGroup3: TRadioGroup
+              Left = 24
+              Height = 57
+              Top = 343
+              Width = 556
+              AutoFill = True
+              Caption = 'Indicador da IE do Tomador quando Destinatário ou Outros'
+              ChildSizing.LeftRightSpacing = 6
+              ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+              ChildSizing.EnlargeVertical = crsHomogenousChildResize
+              ChildSizing.ShrinkHorizontal = crsScaleChilds
+              ChildSizing.ShrinkVertical = crsScaleChilds
+              ChildSizing.Layout = cclLeftToRightThenTopToBottom
+              ChildSizing.ControlsPerLine = 3
+              ClientHeight = 37
+              ClientWidth = 552
+              Columns = 3
+              ItemIndex = 0
+              Items.Strings = (
+                'Contribuinte ICMS'
+                'Contribuinte Isento de Inscrição'
+                'Não Contribuinte'
+              )
+              TabOrder = 15
+            end
           end
           object btnProximo2: TBitBtn
             Left = 896
@@ -5932,8 +5997,8 @@ object fCTePrincipal: TfCTePrincipal
           object rgRem: TRadioGroup
             Left = 8
             Height = 45
-            Top = 16
-            Width = 1272
+            Top = 8
+            Width = 712
             AutoFill = True
             Caption = 'Tomador do Serviço'
             ChildSizing.LeftRightSpacing = 6
@@ -5944,14 +6009,16 @@ object fCTePrincipal: TfCTePrincipal
             ChildSizing.Layout = cclLeftToRightThenTopToBottom
             ChildSizing.ControlsPerLine = 3
             ClientHeight = 25
-            ClientWidth = 1268
+            ClientWidth = 708
             Columns = 3
+            Font.Style = [fsBold]
             Items.Strings = (
               'Com Remetente'
               'Sem Remetente (Redespacho Intermediário)'
               'Sem Remetente (Serviço Vinculado a Multimodal)'
             )
             OnClick = rgRemClick
+            ParentFont = False
             TabOrder = 0
           end
           object GroupBoxRemetente: TGroupBox
@@ -5974,7 +6041,7 @@ object fCTePrincipal: TfCTePrincipal
               Left = 880
               Height = 15
               Top = 264
-              Width = 45
+              Width = 44
               Align = alCustom
               Caption = 'Telefone'
               ParentColor = False
@@ -6505,7 +6572,7 @@ object fCTePrincipal: TfCTePrincipal
             Left = 8
             Height = 45
             Top = 16
-            Width = 1272
+            Width = 272
             AutoFill = True
             Caption = 'Expedidor'
             ChildSizing.LeftRightSpacing = 6
@@ -6516,13 +6583,15 @@ object fCTePrincipal: TfCTePrincipal
             ChildSizing.Layout = cclLeftToRightThenTopToBottom
             ChildSizing.ControlsPerLine = 2
             ClientHeight = 25
-            ClientWidth = 1268
+            ClientWidth = 268
             Columns = 2
+            Font.Style = [fsBold]
             Items.Strings = (
               'Com Expedidor'
               'Sem Expedidor'
             )
             OnClick = rgExpClick
+            ParentFont = False
             TabOrder = 0
           end
           object GroupBoxExpeditor: TGroupBox
@@ -6937,7 +7006,7 @@ object fCTePrincipal: TfCTePrincipal
               Left = 880
               Height = 15
               Top = 264
-              Width = 45
+              Width = 44
               Align = alCustom
               Caption = 'Telefone'
               ParentColor = False
@@ -7067,7 +7136,7 @@ object fCTePrincipal: TfCTePrincipal
             Left = 8
             Height = 45
             Top = 16
-            Width = 1272
+            Width = 264
             AutoFill = True
             Caption = 'Recebedor'
             ChildSizing.LeftRightSpacing = 6
@@ -7078,13 +7147,17 @@ object fCTePrincipal: TfCTePrincipal
             ChildSizing.Layout = cclLeftToRightThenTopToBottom
             ChildSizing.ControlsPerLine = 2
             ClientHeight = 25
-            ClientWidth = 1268
+            ClientWidth = 260
+            Color = clInactiveCaption
             Columns = 2
+            Font.Style = [fsBold]
             Items.Strings = (
               'Com Recebedor'
               'Sem Recebedor'
             )
             OnClick = rgRecClick
+            ParentFont = False
+            ParentColor = False
             TabOrder = 0
           end
           object GroupBoxRecebedor: TGroupBox
@@ -7536,7 +7609,7 @@ object fCTePrincipal: TfCTePrincipal
               Left = 880
               Height = 15
               Top = 264
-              Width = 45
+              Width = 44
               Align = alCustom
               Caption = 'Telefone'
               ParentColor = False
@@ -7629,7 +7702,7 @@ object fCTePrincipal: TfCTePrincipal
             Left = 8
             Height = 45
             Top = 16
-            Width = 1272
+            Width = 640
             AutoFill = True
             Caption = 'Destinatário'
             ChildSizing.LeftRightSpacing = 6
@@ -7640,14 +7713,16 @@ object fCTePrincipal: TfCTePrincipal
             ChildSizing.Layout = cclLeftToRightThenTopToBottom
             ChildSizing.ControlsPerLine = 3
             ClientHeight = 25
-            ClientWidth = 1268
+            ClientWidth = 636
             Columns = 3
+            Font.Style = [fsBold]
             Items.Strings = (
               'Com Destino'
               'Sem Destino: Redespacho Intermediário'
               'Sem Destino: Serviço Vinculado a Multimodal'
             )
             OnClick = rgDestClick
+            ParentFont = False
             TabOrder = 0
           end
           object GroupBoxDestinatario: TGroupBox
@@ -8099,7 +8174,7 @@ object fCTePrincipal: TfCTePrincipal
               Left = 880
               Height = 15
               Top = 264
-              Width = 45
+              Width = 44
               Align = alCustom
               Caption = 'Telefone'
               ParentColor = False
@@ -8195,11 +8270,12 @@ object fCTePrincipal: TfCTePrincipal
           Caption = 'Serviços e Impostos'
           ClientHeight = 577
           ClientWidth = 1289
+          OnContextPopup = TabServicosImpostosContextPopup
           OnShow = TabServicosImpostosShow
           object dbGridComp: TDBGrid
             Left = 32
             Height = 136
-            Top = 143
+            Top = 128
             Width = 531
             Align = alCustom
             AutoFillColumns = True
@@ -8221,6 +8297,7 @@ object fCTePrincipal: TfCTePrincipal
             DataSource = dmCte.dsComp
             Scrollbars = ssVertical
             TabOrder = 3
+            OnCellClick = dbGridCompCellClick
           end
           object StaticText10: TStaticText
             Left = 32
@@ -8249,7 +8326,7 @@ object fCTePrincipal: TfCTePrincipal
           object StaticText13: TStaticText
             Left = 32
             Height = 21
-            Top = 115
+            Top = 104
             Width = 216
             Caption = 'Componente do Valor da Prestação'
             OnClick = StaticText13Click
@@ -8258,7 +8335,7 @@ object fCTePrincipal: TfCTePrincipal
           object StaticText14: TStaticText
             Left = 32
             Height = 19
-            Top = 329
+            Top = 306
             Width = 216
             Caption = 'CST - ICMS'
             TabOrder = 8
@@ -8266,7 +8343,7 @@ object fCTePrincipal: TfCTePrincipal
           object StaticText15: TStaticText
             Left = 32
             Height = 19
-            Top = 360
+            Top = 345
             Width = 216
             Caption = 'Percentual Redução BC'
             TabOrder = 9
@@ -8274,7 +8351,7 @@ object fCTePrincipal: TfCTePrincipal
           object StaticText16: TStaticText
             Left = 32
             Height = 18
-            Top = 393
+            Top = 376
             Width = 216
             Caption = 'Valor BC ICMS'
             TabOrder = 10
@@ -8282,7 +8359,7 @@ object fCTePrincipal: TfCTePrincipal
           object StaticText18: TStaticText
             Left = 32
             Height = 18
-            Top = 457
+            Top = 439
             Width = 128
             Caption = 'Valor ICMS'
             TabOrder = 11
@@ -8290,7 +8367,7 @@ object fCTePrincipal: TfCTePrincipal
           object StaticText19: TStaticText
             Left = 32
             Height = 18
-            Top = 488
+            Top = 471
             Width = 264
             Caption = 'Valor Crédito Outorgado/Presumido'
             TabOrder = 12
@@ -8324,7 +8401,6 @@ object fCTePrincipal: TfCTePrincipal
             Height = 23
             Top = 136
             Width = 224
-            OnChange = dbValInfCargaChange
             TabOrder = 16
           end
           object StaticText25: TStaticText
@@ -8340,7 +8416,6 @@ object fCTePrincipal: TfCTePrincipal
             Height = 23
             Top = 200
             Width = 224
-            OnChange = dbValInfCargaChange
             TabOrder = 18
           end
           object StaticText26: TStaticText
@@ -8356,7 +8431,6 @@ object fCTePrincipal: TfCTePrincipal
             Height = 23
             Top = 232
             Width = 224
-            OnChange = dbValInfCargaChange
             TabOrder = 20
           end
           object StaticText27: TStaticText
@@ -8372,13 +8446,12 @@ object fCTePrincipal: TfCTePrincipal
             Height = 23
             Top = 264
             Width = 224
-            OnChange = dbValInfCargaChange
             TabOrder = 22
           end
           object StaticText22: TStaticText
             Left = 32
             Height = 18
-            Top = 424
+            Top = 408
             Width = 128
             Caption = '% Aliquota ICMS'
             OnClick = StaticText22Click
@@ -8397,7 +8470,6 @@ object fCTePrincipal: TfCTePrincipal
             Height = 23
             Top = 104
             Width = 224
-            OnChange = dbValInfCargaChange
             TabOrder = 25
           end
           object valICMSPartI: TEdit
@@ -8405,7 +8477,6 @@ object fCTePrincipal: TfCTePrincipal
             Height = 23
             Top = 168
             Width = 224
-            OnChange = dbValInfCargaChange
             TabOrder = 26
           end
           object StaticText28: TStaticText
@@ -8416,9 +8487,9 @@ object fCTePrincipal: TfCTePrincipal
             Caption = 'Valor ICMS de Partilha UF Início'
             TabOrder = 27
           end
-          object memDetRetira1: TMemo
+          object memInfAdFisco: TMemo
             Left = 616
-            Height = 166
+            Height = 148
             Top = 346
             Width = 600
             TabOrder = 28
@@ -8434,7 +8505,7 @@ object fCTePrincipal: TfCTePrincipal
           object combCodSitTrib: TComboBox
             Left = 120
             Height = 23
-            Top = 329
+            Top = 306
             Width = 440
             ItemHeight = 15
             Items.Strings = (
@@ -8468,7 +8539,7 @@ object fCTePrincipal: TfCTePrincipal
           object BitBtn15: TBitBtn
             Left = 32
             Height = 34
-            Top = 280
+            Top = 264
             Width = 130
             Caption = 'Novo'
             Glyph.Data = {
@@ -8547,7 +8618,7 @@ object fCTePrincipal: TfCTePrincipal
           object btnEditarComp: TBitBtn
             Left = 160
             Height = 34
-            Top = 280
+            Top = 264
             Width = 130
             Caption = 'Editar'
             Glyph.Data = {
@@ -8642,7 +8713,7 @@ object fCTePrincipal: TfCTePrincipal
           object btnExcluirComp: TBitBtn
             Left = 288
             Height = 34
-            Top = 280
+            Top = 264
             Width = 130
             Caption = 'Excluir'
             Glyph.Data = {
@@ -8740,6 +8811,8 @@ object fCTePrincipal: TfCTePrincipal
             CharCase = ecNormal
             MaxLength = 0
             TabOrder = 0
+            OnChange = dbValTotPrestChange
+            OnExit = dbValTotPrestExit
           end
           object dbValReceber: TDBEdit
             Left = 364
@@ -8751,6 +8824,7 @@ object fCTePrincipal: TfCTePrincipal
             CharCase = ecNormal
             MaxLength = 0
             TabOrder = 1
+            OnChange = dbValReceberChange
           end
           object dbValTotTri: TDBEdit
             Left = 364
@@ -8762,11 +8836,12 @@ object fCTePrincipal: TfCTePrincipal
             CharCase = ecNormal
             MaxLength = 0
             TabOrder = 2
+            OnChange = dbValTotTriChange
           end
           object dbValpRedBC: TDBEdit
             Left = 364
             Height = 23
-            Top = 368
+            Top = 343
             Width = 196
             DataField = 'VALPREDBC'
             DataSource = dmCte.dsCte
@@ -8777,7 +8852,7 @@ object fCTePrincipal: TfCTePrincipal
           object dbValvBC: TDBEdit
             Left = 364
             Height = 23
-            Top = 403
+            Top = 376
             Width = 196
             DataField = 'VALVBC'
             DataSource = dmCte.dsCte
@@ -8788,7 +8863,7 @@ object fCTePrincipal: TfCTePrincipal
           object dbValPIcms: TDBEdit
             Left = 364
             Height = 23
-            Top = 432
+            Top = 408
             Width = 196
             DataField = 'VALPICMS'
             DataSource = dmCte.dsCte
@@ -8799,7 +8874,7 @@ object fCTePrincipal: TfCTePrincipal
           object dbValVICMS: TDBEdit
             Left = 364
             Height = 23
-            Top = 464
+            Top = 439
             Width = 196
             DataField = 'VALVICMS'
             DataSource = dmCte.dsCte
@@ -8810,7 +8885,7 @@ object fCTePrincipal: TfCTePrincipal
           object dbValVCred: TDBEdit
             Left = 364
             Height = 23
-            Top = 496
+            Top = 471
             Width = 196
             DataField = 'VALVCRED'
             DataSource = dmCte.dsCte
@@ -8930,11 +9005,117 @@ object fCTePrincipal: TfCTePrincipal
             ParentBidiMode = False
             TabOrder = 44
           end
+          object GroupBox20: TGroupBox
+            Left = 33
+            Height = 59
+            Top = 513
+            Width = 831
+            Caption = 'Informações dos Tributos Federais (Prestações interestaduais para Consumidor Final, não contribuinte.'
+            ClientHeight = 39
+            ClientWidth = 827
+            TabOrder = 45
+            object DBEdit1: TDBEdit
+              Left = 64
+              Height = 23
+              Top = 11
+              Width = 80
+              DataField = 'VPIS'
+              DataSource = dmCte.dsCte
+              CharCase = ecNormal
+              MaxLength = 0
+              TabOrder = 0
+            end
+            object DBEdit2: TDBEdit
+              Left = 248
+              Height = 23
+              Top = 11
+              Width = 80
+              DataField = 'VCOFINS'
+              DataSource = dmCte.dsCte
+              CharCase = ecNormal
+              MaxLength = 0
+              TabOrder = 1
+            end
+            object DBEdit3: TDBEdit
+              Left = 408
+              Height = 23
+              Top = 11
+              Width = 80
+              DataField = 'VIR'
+              DataSource = dmCte.dsCte
+              CharCase = ecNormal
+              MaxLength = 0
+              TabOrder = 2
+            end
+            object DBEdit4: TDBEdit
+              Left = 576
+              Height = 23
+              Top = 11
+              Width = 80
+              DataField = 'VINSS'
+              DataSource = dmCte.dsCte
+              CharCase = ecNormal
+              MaxLength = 0
+              TabOrder = 3
+            end
+            object DBEdit5: TDBEdit
+              Left = 736
+              Height = 23
+              Top = 11
+              Width = 80
+              DataField = 'VCSLL'
+              DataSource = dmCte.dsCte
+              CharCase = ecNormal
+              MaxLength = 0
+              TabOrder = 4
+            end
+            object Label162: TLabel
+              Left = 5
+              Height = 15
+              Top = 9
+              Width = 45
+              Caption = 'Valor PIS'
+              ParentColor = False
+            end
+            object Label163: TLabel
+              Left = 172
+              Height = 15
+              Top = 11
+              Width = 70
+              Caption = 'Valor COFINS'
+              ParentColor = False
+            end
+            object Label164: TLabel
+              Left = 360
+              Height = 15
+              Top = 11
+              Width = 39
+              Caption = 'Valor IR'
+              ParentColor = False
+            end
+            object Label165: TLabel
+              Left = 517
+              Height = 15
+              Top = 11
+              Width = 53
+              Caption = 'Valor INSS'
+              ParentColor = False
+            end
+            object Label166: TLabel
+              Left = 677
+              Height = 15
+              Top = 11
+              Width = 55
+              Caption = 'Valor CSLL'
+              ParentColor = False
+            end
+          end
         end
         object TabSheet11: TTabSheet
           Caption = 'Documentação Carga'
           ClientHeight = 577
           ClientWidth = 1289
+          OnShow = TabSheet11Show
           object PageControl4: TPageControl
             Left = 0
             Height = 577
@@ -9291,6 +9472,7 @@ object fCTePrincipal: TfCTePrincipal
                     CharCase = ecNormal
                     MaxLength = 0
                     TabOrder = 1
+                    OnChange = dbValInfCargaChange
                   end
                   object StaticText7: TStaticText
                     Left = 32
@@ -9364,6 +9546,7 @@ object fCTePrincipal: TfCTePrincipal
                     DataSource = dmCte.dsQC
                     Scrollbars = ssVertical
                     TabOrder = 0
+                    OnCellClick = dbGridQCCellClick
                   end
                 end
                 object Panel11: TPanel
@@ -9799,7 +9982,7 @@ object fCTePrincipal: TfCTePrincipal
                 Left = 32
                 Height = 15
                 Top = 160
-                Width = 181
+                Width = 180
                 Align = alCustom
                 Caption = 'Chave de Acesso do CT-e Anterior'
                 ParentColor = False
@@ -10280,6 +10463,8 @@ object fCTePrincipal: TfCTePrincipal
                 Height = 23
                 Top = 440
                 Width = 143
+                ShowCheckBox = True
+                Checked = False
                 CenturyFrom = 1941
                 MaxDate = 47848
                 MinDate = 37165
@@ -10292,8 +10477,8 @@ object fCTePrincipal: TfCTePrincipal
                 TimeFormat = tf24
                 TimeDisplay = tdHMS
                 DateMode = dmComboBox
-                Date = 43718
-                Time = 0.720899467589334
+                Date = 1.7E308
+                Time = 1.7E308
                 UseDefaultSeparators = True
                 HideDateTimeParts = []
                 MonthNames = 'Long'
@@ -10387,6 +10572,381 @@ object fCTePrincipal: TfCTePrincipal
                 TabOrder = 9
               end
             end
+            object tabSeguro: TTabSheet
+              Caption = 'Seguro'
+              ClientHeight = 549
+              ClientWidth = 1281
+              TabVisible = False
+              object rgSeguroResp: TRadioGroup
+                Left = 192
+                Height = 62
+                Top = 64
+                Width = 857
+                AutoFill = True
+                Caption = 'Responsável'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclLeftToRightThenTopToBottom
+                ChildSizing.ControlsPerLine = 6
+                ClientHeight = 42
+                ClientWidth = 853
+                Columns = 6
+                ItemIndex = 0
+                Items.Strings = (
+                  'Remetente'
+                  'Expedidor'
+                  'Recebedor'
+                  'Destinatário'
+                  'Emitente'
+                  'Tomador'
+                )
+                TabOrder = 0
+              end
+              object Label155: TLabel
+                Left = 192
+                Height = 15
+                Top = 166
+                Width = 33
+                Caption = 'Nome'
+                ParentColor = False
+              end
+              object Label157: TLabel
+                Left = 192
+                Height = 15
+                Top = 200
+                Width = 40
+                Caption = 'Apolice'
+                ParentColor = False
+              end
+              object Label158: TLabel
+                Left = 192
+                Height = 15
+                Top = 232
+                Width = 56
+                Caption = 'Averbação'
+                ParentColor = False
+              end
+              object Label159: TLabel
+                Left = 192
+                Height = 15
+                Top = 279
+                Width = 26
+                Caption = 'Valor'
+                ParentColor = False
+              end
+              object dbSeguroNome: TDBEdit
+                Left = 280
+                Height = 23
+                Top = 167
+                Width = 432
+                DataField = 'NOME_SEGURADORA'
+                DataSource = dmCte.dsSeguro
+                CharCase = ecNormal
+                MaxLength = 0
+                TabOrder = 1
+              end
+              object dbSeguroApolice: TDBEdit
+                Left = 281
+                Height = 23
+                Top = 200
+                Width = 432
+                DataField = 'NUMERO_APOLICE'
+                DataSource = dmCte.dsSeguro
+                CharCase = ecNormal
+                MaxLength = 0
+                TabOrder = 2
+              end
+              object dbSeguroAverbacao: TDBEdit
+                Left = 280
+                Height = 23
+                Top = 236
+                Width = 433
+                DataField = 'NUMERO_AVERBACAO'
+                DataSource = dmCte.dsSeguro
+                CharCase = ecNormal
+                MaxLength = 0
+                TabOrder = 3
+              end
+              object dbSeguroValor: TDBEdit
+                Left = 280
+                Height = 23
+                Top = 279
+                Width = 139
+                DataField = 'VALOR'
+                DataSource = dmCte.dsSeguro
+                CharCase = ecNormal
+                MaxLength = 0
+                TabOrder = 4
+              end
+              object btnIncluirNFe1: TBitBtn
+                Left = 192
+                Height = 34
+                Top = 328
+                Width = 130
+                Caption = 'Novo'
+                Glyph.Data = {
+                  7A080000424D7A08000000000000360000002800000017000000170000000100
+                  2000000000004408000064000000640000000000000000000000FBFFFEFFF5FF
+                  F6FFE9FEE8FFDDF8DEFFE0F9DFFFDFFBDDFFD7F8D3FFE2FFDEFFE3F4DFFFE9F6
+                  E8FFE3F0E0FFE5F2E2FFEEFAEEFFF6FFF5FFEFFFF0FFBAECBCFF4A9E4CFF1977
+                  18FF2F832AFF83C57DFFD1FCD1FFF1FFF4FFF8FDFEFFEBFFF2FF8CB393FF1754
+                  1CFF064A09FF104C10FF134D12FF134E11FF0A4A09FF094C0EFF0B4B10FF1247
+                  15FF2B572EFFBFDEC1FFE8FFEAFF5E9D5FFF004E00FF026A0BFF03700AFF0D6F
+                  0BFF085C03FF11580FFF97C896FFEFFFF4FFB0E6B7FF0A4610FF357C3AFF65AC
+                  69FF73AF73FF70A76EFF7AB178FF75B076FF70B375FF70B074FF74AC79FFADDC
+                  AEFFE5FFE5FF78AF78FF06590AFF107015FF12731DFF65C36EFF4AA248FF1C70
+                  17FF0F630BFF145B12FFCEFCD1FF3D9240FF1C661EFFACDEAEFFECFFEBFFECFF
+                  EBFFEEFFECFFF0FFF1FFEEFFEFFFF2FFF0FFF1FFEFFFEFFFEDFFF0FFECFFC7F6
+                  C5FF216421FF166A18FF136518FF2B6A32FFCCFFD2FFB3EAB1FF20621BFF166D
+                  13FF055D03FF79C279FF1C851EFF2F8331FFD0F7D1FFF4FFF3FFFDFFF9FFFCFD
+                  F9FFFDFFFFFFFEFDFFFFFFFEFFFFFFFDFCFFFFFFFEFFF4FFF2FF99CB95FF1963
+                  17FF1B6D1AFF8ED78FFFC3F0C5FFE4FFE5FFDFFFDCFFB4EBB2FF46A046FF096F
+                  0AFF2E862CFF118214FF2E8430FFD2F1D0FFFFFFF9FFFFFFF7FFFFFFFBFFFAFE
+                  FFFFFAFFFFFFFAFFFDFFFCFFFBFFFBFFFFFFF1FFF4FF9FD79CFF196514FF1D6B
+                  17FFBEFFB8FFDCFFD5FFF1FFEBFFE7FFE5FFD1FFD3FF64C16CFF03700AFF1879
+                  19FF138514FF328933FFD2F1D0FFFCFEF8FFFFFFF9FFFFFFFBFFFAFFFFFFF5FE
+                  FFFFF8FFFEFFFAFFFCFFFDFFFFFFF4FFF3FFA7D8A2FF21671AFF186912FF2571
+                  20FF487B41FFDEFFD7FFC2EEBFFF316E34FF126F1AFF05680CFF4EA34FFF1282
+                  14FF338A34FFD0F5D3FFFBFFFBFFFFFFFCFFFFFFFEFFF9FEFFFFF6FFFFFFF8FF
+                  FFFFFBFFFFFFFFFCFBFFFFFFF5FFECFFDFFF477F3EFF116810FF0E6F11FF2271
+                  22FFBAFFB8FF87DA85FF146B13FF17701AFF004B01FFB5E8B6FF138014FF3389
+                  35FFD0F5D3FFFAFFFBFFFFFFFCFFFFFEFFFFFAFDFFFFF8FEFFFFF8FDFEFFFDFF
+                  FFFFFFFEFDFFFFFFF8FFF9FFECFFCDF2C4FF0E5B11FF04620BFF156B17FF1168
+                  12FF147213FF0E690CFF0D580CFF69A069FFEFFFF0FF157E17FF368738FFD4F4
+                  D5FFFDFFFBFFFFFFFCFFFFFEFFFFFCFCFFFFFAFEFFFFFBFFFFFFFDFFFEFFFFFF
+                  FEFFFBFAF6FFFFFFF9FFF6FFF2FFC9F4C9FF468448FF1C651DFF166417FF1B66
+                  1AFF286B28FF77AA78FFECFFEDFFF3FFF6FF157D18FF368639FFD6F4D7FFFDFF
+                  FCFFFFFFFBFFFFFFFCFFFCFEFFFFFDFFFFFFFBFDFDFFFFFFFEFFFEFEFEFFFFFF
+                  FFFFFFFEFFFFF7FEF7FFF1FFEEFFE0FFE0FFAAE3ACFF9DD89EFF9ED29DFFC5ED
+                  C4FFEFFFF0FFF6FFF7FFFBFFFEFF157C1AFF37863CFFD5F2DBFFFBFFFFFFFAFF
+                  FAFFFDFFF9FFFCFFFAFFFDFFFEFFFFFFFFFFFFFEFFFFFEFDFFFFFAF9FDFFFFFD
+                  FFFFFFFFFCFFECFFE8FFAECFACFFCFF4D2FFE8FFEAFFF2FFF1FFF9FFF6FFFCFF
+                  F8FFFFFFFCFFFDFFFEFF147D16FF37873AFFD6F2DBFFFBFFFFFFFAFFFBFFFBFF
+                  F9FFFFFFF9FFFFFFFBFFFFFEFEFFFCFBFDFFFBFEFFFFFBFCFFFFFFFDFFFFFAFE
+                  F9FFE7FFE4FF4A6E4AFF4C6E4FFFDBF7E0FFFAFFF9FFFFFFFEFFFFFEFFFFFFFE
+                  FFFFFDFFFFFF16800FFF398936FFD9F3DBFFFFFEFFFFFEFFFDFFFFFFFBFFFFFF
+                  FBFFFFFFFCFFFFFEFFFFFAFEFFFFF5FFFEFFF8FFFFFFFDFFFFFFF6FEF7FFDDFF
+                  E0FF3C6D41FF25582CFFCDF6D1FFF4FFF7FFFBFEFCFFFFFDFFFFFFFDFFFFFBFD
+                  FEFF16810DFF3B8A33FFDBF4D8FFFFFFFEFFFEFFFDFFFFFFFCFFFFFFFCFFFFFF
+                  FCFFFDFFFFFFF8FFFCFFEFFFF8FFEDFFF5FFF0FFF4FFEDFFF0FFDBFFDFFF3777
+                  3CFF29652FFFCEFCD2FFEEFFF1FFFBFFFCFFFFFCFEFFFFFDFFFFFCFEFEFF1982
+                  13FF388632FFD7F2D0FFFFFFF9FFFAFFFBFFFBFFFCFFFBFFFAFFFBFFFCFFFAFF
+                  FBFFEFFFF3FFBFEBC4FFA4DBAAFFABDFAFFFA7E4AAFF82D187FF18671DFF2765
+                  29FFCFFBD2FFEFFFF0FFF8FFF7FFFDFFFEFFFFFFFFFFFCFFFDFF137D12FF3688
+                  35FFD6F4D1FFFDFFF9FFF8FFFAFFF5FBFAFFFDFFFFFFF9FEFCFFF8FFF9FFCFEC
+                  D2FF367438FF126314FF106210FF146B15FF086608FF106210FF528651FFDBFA
+                  DBFFF6FFF5FFFBFFFBFFFDFEFCFFFFFFFEFFFFFFFCFF128117FF338836FFCFF0
+                  CEFFFAFFFAFFFBFFFFFFFDFDFFFFFFFCFFFFFFFDFFFFFBFFFEFFC6E5C6FF216D
+                  1FFF066E03FF0D7C08FF0E7A09FF10700BFF266B22FFC2DEC0FFFAFFF8FFFDFE
+                  FAFFFFFFFEFFFFFFFEFFFFFFFCFFFFFFFBFF107E18FF2C8333FFCAF0CCFFF8FF
+                  F9FFFAFEFFFFFFFDFFFFFEF7FEFFFFFEFFFFFAFFFCFFC1E5C1FF1B7119FF0877
+                  03FF0C8005FF036B00FF206D19FFB3E4AEFFF7FFF3FFFFFFFEFFFFFEFEFFFFFF
+                  FFFFFFFFFFFFFFFEFDFFFFFEFDFF167D1BFF328536FFC9F4C9FFF6FFF4FFF8FE
+                  F9FFFFFFFFFFFFFFFCFFFDFFF7FFF3FFF4FFC1EFC5FF166F19FF097308FF0F70
+                  08FF246E1CFFBFE5BBFFF6FFF4FFF7FFF4FFFBFFF7FFFBFFFCFFF9FEFDFFFEFD
+                  FFFFFFFCFFFFFFFAFFFF5EAF60FF0D560EFF91C58FFFD3F9CFFFD4F5D3FFD2EE
+                  D0FFDEF7D5FFDCFBD4FFD1FFD4FF92D499FF0F6A15FF0A670CFF2C7428FFAEDE
+                  AAFFF5FFF6FFFFFFFFFFFFFFFCFFFDFFFBFFFAFFFCFFF5FBFAFFFDFEFFFFFFFD
+                  FFFFFFFBFFFFD0FDD2FF144813FF135611FF358133FF318435FF328634FF3A8E
+                  36FF31872FFF35903AFF1A7623FF065D0DFF276E2BFFB1DCB1FFF1FFEFFFFAFF
+                  FCFFFEFDFFFFFFFCFFFFFFFBFFFFFAFFFEFFFAFFFFFFFBFFFFFFFAFCFCFFFFFE
+                  FEFFEFFFF0FFD1FCD1FF66B163FF1B7C1BFF147E19FF108014FF0F7F0FFF1283
+                  11FF0F7E14FF188120FF59AF61FFC4FFC9FFEDFFF0FFF8FFF9FFFBFFFFFFFFFD
+                  FFFFFFFBFFFFFFFBFFFFFCFEFFFFF9FFFEFFFBFFFFFFFAFFFDFFFFFFFCFF
+                }
+                OnClick = btnIncluirNFe1Click
+                TabOrder = 5
+              end
+              object btnEditarNFe1: TBitBtn
+                Left = 320
+                Height = 34
+                Top = 328
+                Width = 130
+                Caption = 'Editar'
+                Glyph.Data = {
+                  5E0A0000424D5E0A0000000000003600000028000000190000001A0000000100
+                  200000000000280A000064000000640000000000000000000000F7FBFCFFF6FB
+                  FAFFF8FAF4FFFCFFF6FFF8FCF7FFF7FCF3FFFBFFF5FFFFFFE4FFFFFFDCFFFFFF
+                  CDFFFFFFBEFFFFFAA4FFFFED95FFFFF9A5FFFFFFC7FFFFFFD3FFFFFFE9FFFFFF
+                  F0FFFCF9F1FFFFFFFAFFF7FBF6FFF4F6F6FFFFFDFFFFFCF7FFFFF6FAFBFFF9FB
+                  FCFFF7F9F9FFFBFCF8FFFFFFF7FFFDFBF0FFFFFFEEFFFFFFDFFFFFEEB5FFCBAE
+                  64FFA17C27FFA98023FFAF8522FFB28523FFB68626FFAB7B23FFA77D32FFD3B6
+                  7DFFFFFFD6FFFFFFE6FFFFFFE8FFFFFFF6FFF3F8F7FFFCF9FFFFFBF6FFFFFAF9
+                  FBFFF9F9F9FFFEFEFEFFFEFCFCFFFCF6EFFFFFFFEEFFFFFFD4FFBF9139FFC387
+                  15FFD09013FFD19311FFCF9317FFCD9116FFCF9016FFD29117FFCD8D17FFCD8E
+                  1BFFC78917FFBD8520FFD8AD5CFFFFFFD5FFFFFFEFFFF6FBFCFFF4F3FDFFFEF8
+                  FFFFFEF9FBFFF4F5F3FFF8F5F0FFFFFAF0FFFFFFEBFFF6DBA8FFA77B28FFD08E
+                  17FFDF930BFFDC950FFFE4A31FFFDB9D21FFDB9E26FFD9941FFFE19C27FFE2A3
+                  2BFFD69619FFDC9410FFD79310FFC38A16FFAE862DFFFFFFCDFFFFFFEFFFFFFB
+                  FAFFF4EDF4FFFDF5F6FFFCFBF7FFFEF9EAFFFFFFE4FFF4D493FFB5831FFFCF90
+                  16FFDD9512FFD28E13FFB98520FFCA9E43FFCEA146FFD9A74DFFE7AE58FFE6AC
+                  53FFDFAC50FFC99832FFBE8911FFCE9613FFCE940CFFCD9617FFAE811AFFFFFF
+                  C2FFFFFFEDFFFFFBF8FFFFF8F5FFFBF6F3FFFFFFE9FFFFFFBFFFAB7D18FFD395
+                  13FFDB970EFFC4840EFFEDB550FFFFE38CFFFFFAABFFFFEC9AFFFED487FFDBAF
+                  6FFFE8BD7EFFDAB16CFFFFF9A7FFFFE281FFC79622FFD49810FFD59507FFD696
+                  12FFB2801CFFFFFFDCFFFFFBEDFFFFF8F4FFFFF7F5FFFFFFE4FFB28222FFD193
+                  0FFFDB9708FFC98C0CFFE8BC68FFFFFFC5FFF7C872FFFECB6BFFFDC96BFFCA9F
+                  50FFFFFFD9FFFFFFDEFFBA9C65FFC9A968FFF8D48EFFFFFFBCFFC78C18FFD894
+                  0DFFE19709FFCD8E16FFCDA362FFFFFFE8FFFFF9F2FFFFFFF0FFE8C893FFC189
+                  12FFDD9801FFE29D06FFC1870AFFFFFFC5FFC1A265FFB1832BFFB78221FFB885
+                  29FFE2BA6FFFFFFFD8FF9D8C6BFFFFFFDAFFFFFFD2FF856A38FFFFDF9AFFFFDB
+                  72FFD28E0BFFE39708FFD9940FFFAF7C20FFFFFAC5FFFFFFF2FFFFFFD6FFA67D
+                  2EFFD29914FFDF9C00FFDE9700FFC6890BFFFFFFC1FFAB8B44FFB48E36FFD7AF
+                  56FFCCA85CFFBF9E5FFFCBAA78FFFFF8D4FFFFFFF0FFFFFFEDFFFFF3D2FFC2A3
+                  66FFFFEE85FFCB8F0DFFD8950AFFD8970CFFCE9216FFD7AC55FFFFFFEDFFFFFF
+                  B2FFAD7E1CFFD5980CFFE09B00FFE09804FFC48709FFFFFFC0FFB19148FFD8B4
+                  5CFFFFFFB1FFFFFCB5FFFFF7BBFFC29D61FFFFFFDCFFFFFFF2FFFFFFFBFFFFFF
+                  F0FFFFF0C2FFBD933AFFC69119FFD2930DFFD99709FFD89909FFAE8112FFFFFF
+                  E0FFFFD879FFBF8A1CFFDA970CFFE49B03FFDC9603FFC1860BFFFFFFC2FFB192
+                  4DFFAA842CFFA87F23FFA1792EFFA27934FFA3782FFF997840FFFFFFEAFFFDFF
+                  F9FFFFFEFBFFFFFFEDFFFFF5B4FFAB7A16FFD49215FFDC9809FFD49804FFB68B
+                  12FFFFFDBEFFF7C65AFFC58E1BFFE29E1DFFDE960DFFE49F1AFFBE8615FFFFFF
+                  C7FFB69857FFDCB45BFFFFFFAFFFFFFFB1FFFFFFAEFFFFFFB2FFFFFFBBFFCCB4
+                  80FFFFFFE7FFFFFFF3FFFFFFF0FFB19A6DFFFFFFB5FFC88D1FFFE4A11CFFD89C
+                  0DFFB8890FFFF5DC92FFF5BE45FFC9911AFFE0A335FFE8A83CFFE6A434FFC891
+                  30FFFFFFCCFFC0A366FFCBA043FFE0AF41FFDFA93EFFE5AD42FFDDA83AFFE4B0
+                  46FFD9A443FFAB7E2DFFFFFFD9FFAE9B7AFFFFFFE3FFFFFFDAFFE4B760FFE0A4
+                  32FFE19F22FFC78D1CFFF2CB86FFEEB940FFC48E19FFF0B547FFECAE42FFFDBB
+                  4BFFDBA443FFFFFFCCFFD2B473FFCCA043FFE0AA3FFFE4AE43FFE1AB40FFDBAA
+                  3EFFE1AD42FFE8AD3FFFDFA944FFC79E4FFFFFFFD0FFFFFFDFFFEDD8A1FFCA9E
+                  43FFF5B947FFE29C20FFCC8D1FFFF4CA89FFF4C65BFFC4911DFFD99B17FFDD99
+                  10FFD7940FFFB37C09FFFFFFC3FFB5944BFFDFAD55FFFFFFB6FFFFFFAEFFFFFF
+                  B3FFFFFFB6FFFFFFB2FFFFFFAEFFFFFFB6FFB68A25FFD6AC49FFE3BE64FFAC85
+                  23FFC99618FFD4970BFFDF960CFFC78717FFFAD89CFFFFD97EFFB9881CFFD698
+                  0CFFE09C03FFD99603FFC68C0FFFFFFFB9FFBB964CFFB6822FFFB37D2AFFA378
+                  2FFF9E7935FF9A7733FF95742FFF987D33FF9F7E28FFB68A1FFFFFE270FFFFE1
+                  73FFC18D15FFCC9407FFDB9C06FFE09707FFC28517FFFFF9C5FFFFFEB3FFAC7C
+                  1CFFD39911FFDC9C02FFDD9B06FFBF8406FFFFFFBDFFB88E47FFE1B062FFFFFE
+                  B0FFFFF9B5FFFFF7B8FFFFF8B9FFFFFDBEFFFFF8B5FFFFFFB9FFAE8326FFFFD7
+                  71FFFFE47CFFC48B17FFD2940AFFDD9A07FFDC940AFFB57E16FFFFFFE0FFFFFF
+                  D4FFAE8332FFCD9311FFDD9A01FFDA9901FFC28709FFFFFFC0FFB58B48FFB98C
+                  3BFFDBAF5CFFCBA75BFFCAA960FFCAA45CFFCBA55DFFCCA862FFD4AD62FFA97F
+                  2CFFFFD87CFFFFE37BFFC88B15FFDA980AFFD69405FFD29216FFDEB15AFFFFFF
+                  E9FFFFFFE6FFE7C889FFCB9114FFDC9600FFE09B04FFC48A0DFFFFFFC7FFC19E
+                  5FFFAE842BFFB38520FFB78826FFB78624FFBA8524FFB68224FFB8822DFFB281
+                  31FFA57C2DFFFFE58CFFFFDC70FFCA8F11FFDD9805FFD8970DFFB2801CFFFFFB
+                  BEFFFFFFECFFFFFDEEFFFFFFDFFFB2801CFFD99813FFDE9707FFD08F0EFFE4B6
+                  5EFFFFFFC6FFF7CB70FFF9CB66FFFECD69FFFBCA64FFFFCD6AFFFFCF6EFFFFC9
+                  70FFF8C56FFFFFD581FFFFFFB6FFC9951DFFCF920CFFDE990CFFC78B13FFC7A3
+                  5DFFFFFFE4FFFFFCEFFFF8F6F6FFFFFBE9FFFFFFC7FFAE7B1DFFD8900CFFE69A
+                  0CFFCD8D10FFE8B345FFFFEC91FFFFE190FFFFE593FFFFE18FFFFFE394FFFFE0
+                  8FFFFFDD8BFFFFE68EFFFFE37FFFCE9C26FFCD9207FFD49406FFD4961AFFB283
+                  28FFFFFFE2FFFFF8EFFFFBF8F4FFF8F8FEFFFDF9F4FFFFFFE9FFFADA9FFFBA7F
+                  18FFD69211FFDA990EFFCC900EFFB9811CFFD1A149FFCDA54CFFC9A44AFFD3AA
+                  4EFFD6AA4DFFE1AF4FFFC9942CFFC38E16FFC78D0BFFD6980EFFCC9214FFAC7B
+                  1FFFFFFFCBFFFFFFEFFFF6F6F6FFF7F7F7FFF7F7F7FFFEFDF9FFFCFAF0FFFFFF
+                  E6FFFFE6ADFFAB7F24FFC5910EFFD49809FFD39015FFF1B13BFFDBA72BFFDBAA
+                  2AFFDBA320FFCF940FFFE4AA28FFD29410FFD9980DFFD5950EFFC9911AFFAE82
+                  29FFFFFECFFFFFFFEEFFFFFFF2FFF8F9F0FFF8FBF2FFFDFCF8FFF9FAF8FFFCFC
+                  FCFFFFFDF5FFFFFFE8FFFFFFCCFFB89736FFB98A16FFCC901FFFC98A17FFC892
+                  15FFC5910EFFCC940DFFD09510FFCE9416FFCD9217FFCA8E16FFBA8419FFD4AA
+                  57FFFFFFD3FFFFFFF0FFFDFAF6FFFCFAF2FFFFFFF6FFF9FDF2FFFEFBF7FFFEFA
+                  F9FFFEF9FBFFFDF7F8FFFFFDF6FFFFFFEFFFFFFFE4FFFEE9B5FFD1A968FFAC7C
+                  2EFFB18227FFAE811FFFB58624FFB68829FFA67723FFA97E35FFDCB67CFFFFFD
+                  D0FFFFFFE6FFFFFFEDFFFCFCF6FFFBFDFDFFFEFCFBFFFBF8F4FFFEFCF4FFFEF9
+                  F6FFFFFBFAFFFFF7FAFFFFFCFFFFF8F7F9FFF8FAFAFFFCFCF6FFFFFFEEFFFFFF
+                  DEFFFFFFCEFFFFFFBCFFFFF8A7FFFFED9BFFFFF4A9FFFFFFCEFFFFFFD8FFFFFF
+                  E9FFFFFFF3FFFDFAF2FFF6FBF9FFF6FAFBFFF5F9FAFFFAF9FBFFFCFAF9FFFFFC
+                  F4FF
+                }
+                OnClick = btnEditarNFe1Click
+                TabOrder = 6
+              end
+              object btnExcluirNFe1: TBitBtn
+                Left = 448
+                Height = 34
+                Top = 328
+                Width = 130
+                Caption = 'Excluir'
+                Glyph.Data = {
+                  FA090000424DFA09000000000000360000002800000019000000190000000100
+                  200000000000C409000064000000640000000000000000000000FEFEFEFFF3F3
+                  F5FFA5A5B5FF4D4C83FF0B0979FF0B097AFF0B087AFF0B087AFF0A097AFF0B09
+                  7AFF0B087AFF0B087AFF0B097AFF0B097AFF0B087AFF0B087AFF0B097AFF0B08
+                  77FF77768FFFC0C0C0FFF7F7F7FFFEFEFEFFFEFEFEFFFEFEFEFFFEFEFEFFF5F5
+                  F7FF616187FF030194FF0301ADFF0201AEFF0201AEFF0201AEFF0201AEFF0201
+                  AEFF0201AEFF0201AEFF0201AEFF0201AEFF0201AEFF0201AEFF0201AEFF0201
+                  AEFF0301A7FF8989A0FFBCBCBCFFC1C1C1FFF9F9F9FFFEFEFEFFFEFEFEFFFEFE
+                  FEFFAEAEBDFF030193FF0201AEFF0101ADFF0101ADFF0101ADFF0101ADFF0101
+                  ADFF0101ADFF0101ADFF0101ADFF0101ADFF0101ADFF0101ADFF0101ADFF0101
+                  ADFF0101ADFF0402ABFF9C9CAFFFD9D9D9FFBABABAFFC5C5C5FFFAFAFAFFFEFE
+                  FEFFFEFEFEFF727295FF0301ADFF0201AEFF0101ADFF0101ADFF0101ADFF0101
+                  ADFF0201AEFF0201AEFF0201AEFF0201AEFF0201AEFF0201AEFF0201AEFF0201
+                  AEFF0201AEFF0201AEFF0301AEFF8787A3FFF3F2F3FFD7D7D7FFB8B8B8FFC8C8
+                  C8FFFBFBFBFFFEFEFEFF5B5B94FF0301AFFF0201AEFF0101ADFF0101ADFF0101
+                  ADFF0201AEFF0301AFFF4B4BB5FF7F7FC1FF7F7FC1FF7F7FC1FF7F7FC1FF7F7F
+                  C1FF7F7FC1FF5C5CB9FF0301AFFF0301AFFF212085FFE3E3E7FFF1F1F1FFD5D5
+                  D5FFB6B6B6FFCECECEFFFCFCFCFF5B5B93FF0301AFFF0201AEFF0101ADFF0101
+                  ADFF0101ADFF0201AEFF0301AFFFC8C9E0FFFDFEFDFFFEFEFEFFFEFEFDFFFEFE
+                  FDFFFEFEFEFFFEFEFDFFE1E1EDFF0301AFFF0301AFFF0402A6FF76759AFFEBEB
+                  EDFFF0F0F0FFD3D3D3FFB5B5B5FFD6D6D6FF5B5B93FF0301AFFF0201AEFF0101
+                  ADFF0101ADFF0101ADFF0201AEFF0301AFFFDFE0EEFFACADD5FFD2D2E7FFC2C2
+                  DEFFBCBCDBFFD6D7E9FFA2A3D0FFF2F2F8FF0301AFFF0301AFFF0301AFFF0302
+                  A8FF4E4E9AFFB6B6C9FFBFBFCDFFA7A7BDFFACACB6FF5B5B93FF0301AFFF0201
+                  AEFF0101ADFF0101ADFF0101ADFF0201AEFF0301AFFFEFF0F5FF7C7CC1FFCDCD
+                  E3FFAEADD2FFA9A9D2FFD3D3E6FF7675C1FFFDFDFEFF2221AFFF0301AFFF0301
+                  AFFF0301AFFF0301AFFF0301AFFF0301AFFF0301AFFF75759DFF5B5B93FF0301
+                  AFFF0201AEFF0101ADFF0101ADFF0101ADFF0201AEFF2624AFFFFDFDFEFF5355
+                  BAFFE1E1EFFFADADD3FFA9A9D2FFE5E5EFFF3736B3FFFDFEFDFF6E6EC0FF0101
+                  ADFF0101ADFF0101ADFF0101ADFF0101ADFF0101ADFF0201AEFF75759DFF5B5B
+                  93FF0301AFFF0201AEFF0101ADFF0101ADFF0101ADFF0201AEFF7273C0FFFCFC
+                  FEFF0704AEFFECEDF4FFADADD3FFA9A9D2FFF3F4F9FF0402AEFFF7F8FBFF8A8A
+                  C7FF0101ADFF0101ADFF0101ADFF0101ADFF0101ADFF0101ADFF0201AEFF7575
+                  9DFF5B5B93FF0301AFFF0201AEFF0101ADFF0101ADFF0101ADFF0201AEFF9595
+                  CCFFEAEBF3FF0907ADFFFCFCFEFFACACD3FFA9A9D2FFFDFEFEFF2121AEFFE6E7
+                  EFFFA7A8D2FF0301AFFF0301AFFF1D1CAFFF0402AFFF0201AEFF0101ADFF0201
+                  AEFF75759DFF5B5B93FF0301AFFF0201AEFF0101ADFF0101ADFF0101ADFF0201
+                  AEFFAEAED5FFDFE0EEFF595ABBFFFEFEFEFFACACD3FFA9A9D2FFFDFEFDFF6E6E
+                  C0FFD8D9EAFFBFBFDEFF0301AFFF2A2BB2FFE9E9F1FF8C8CC9FF0201AEFF0101
+                  ADFF0201AEFF75759DFF5B5B93FF0404AEFF0504AEFF0505ADFF0606AEFF0808
+                  AFFF0C0BB1FFC7C9E2FFDCDDECFF9797CCFFFDFEFDFFBEBEDCFFBABADAFFFEFE
+                  FEFF9C9CCCFFD8D8E8FFCECFE4FF0301AFFFB7B8D9FFE4E5F0FF1413AFFF0201
+                  AEFF0101ADFF0201AEFF75759DFF5B5B93FF0707ADFF0707ADFF0707ADFF0909
+                  AFFF0C0DB1FF0F0FB3FFDBDBEDFFFEFEFDFFFEFEFDFFFEFEFEFFFEFEFEFFFEFE
+                  FDFFFEFEFEFFFEFEFEFFFEFEFEFFE3E3F0FF6A6BBFFFF8F8FBFF7676C0FF0301
+                  AFFF0201AEFF0101ADFF0201AEFF75759DFF5B5B93FF0707ADFF0707ADFF0808
+                  AEFF0B0BB0FF0E0EB2FF1110B3FF5F5FBCFF7F7FC5FF7F80C5FF8080C6FF8180
+                  C7FF8181C8FF8182CAFF8282CBFF8383CCFF6969C9FFDEDFEFFFDEDEEFFF302F
+                  BFFF1D1DB7FF0402AFFF0201AEFF0301AFFF75759DFF5B5B93FF0909AEFF0707
+                  ADFF0909AFFF0D0DB1FF0F0FB3FF1412B2FF1615B5FF1819B8FF1B1DB8FF7C7C
+                  C9FFD3D3E8FF9A9AD4FF2726BFFF2A28C1FF2D2CC2FFA5A5D9FFFEFEFEFFFEFE
+                  FEFF9696D9FF3A3ACAFF3A3BC9FF2C2DC0FF110FB2FF75759DFF5B5B93FF1D1D
+                  B4FF0808AEFF0C0BB1FF0F0FB2FF1111B3FF1514B4FF1817B7FF1A1BB8FFA5A5
+                  D4FFFCFCFDFFFEFEFEFFD6D7EBFF2927C0FF2C2AC2FF5757C7FFF4F5F9FFD0D0
+                  E9FFD6D7ECFF3B3AC9FF3C3DCBFF3E3FCBFF4041CEFF4143CEFF7777A2FF5B5B
+                  93FF3D3CBEFF0A0AB0FF0D0EB2FF1010B3FF1412B3FF1716B6FF1919B8FF1B1D
+                  B9FF2A2ABAFFEDEDF5FFFEFEFEFFFAFAFCFF5050C4FF2D2CC2FFCECFE9FFD6D7
+                  ECFF3535C6FF3838C8FF3B3BCAFF3D3ECBFF3F40CCFF4243CFFF4447CEFF7778
+                  A3FF5B5B93FF6362CAFF0C0DB1FF0E0FB3FF1311B3FF1614B4FF1818B8FF1A1C
+                  B8FF1E1EB9FFBDBEE0FFFEFEFEFFEFEFF6FF6C6BC8FF6464C8FF8787D2FFF7F7
+                  FAFF6666CCFF3737C7FF3939C9FF3D3DCBFF3E3FCCFF4142CEFF4345CEFF4548
+                  CFFF7778A4FF5B5B94FF8D8BD7FF0E0EB2FF1110B3FF2D2CB5FFA1A2D3FFACAD
+                  D7FFACADD7FFDCDCEDFFFDFEFDFFF1F1F7FF7B7BCDFF2B29C1FF2E2DC2FF6B6C
+                  CBFF8F8ED4FF3635C7FF3838C8FF3B3CCAFF3E3FCBFF4041CDFF4244CFFF4447
+                  CEFF4649D0FF7878A4FF5C5B94FFB4B4DCFF0F0FB3FF1312B2FF1615B5FF1919
+                  B8FF8D8DCDFFC5C6E2FFCBCCE4FFB1B1DCFF4E4EC3FF2A28C1FF2D2CC2FF2F2F
+                  C3FF3231C3FF3534C6FF3737C8FF3A3ACAFF3D3ECBFF3F40CDFF4143CEFF4346
+                  CEFF4649D0FF4649D0FF7778A2FF737395FFACADD4FF7B7CC4FF1513B4FF1717
+                  B7FF1A1BB8FF1D1EB9FF2120BAFF2322BCFF2524BEFF2927C0FF2B2AC2FF2E2E
+                  C3FF3130C3FF3433C5FF3636C7FF3939C9FF3C3CCBFF3E3FCBFF4041CDFF4245
+                  CEFF4548CFFF4649D0FF4547CCFF7C7C99FFB2B2C0FF303097FFCFCFE3FF7A7A
+                  C5FF1919B8FF1B1DB8FF201FBAFF2321BBFF2424BEFF2726BFFF2A28C1FF2D2C
+                  C2FF3030C2FF3332C4FF3534C6FF3838C8FF3A3BCAFF3D3ECBFF3F40CCFF4243
+                  CFFF4447CEFF4649D0FF4649D0FF3132A4FFBAB9C6FFF7F7F9FF68688CFF3434
+                  98FFAFB0D6FFBDBEE0FFA09FDEFF7775D4FF2928BEFF2625BFFF2927C0FF2C2A
+                  C2FF2F2FC3FF3131C3FF3433C5FF3736C8FF3939C9FF3C3DCAFF3E3FCBFF4142
+                  CEFF4345CEFF4548CFFF4547CDFF3234A6FF737393FFF9F9FAFFFEFEFEFFF7F6
+                  F8FFAFAFBEFF6A6991FF4C4C8DFF4C4C8FFF4D4C8FFF4D4C8FFF4D4C90FF4D4D
+                  90FF4E4D91FF4E4D91FF4E4E91FF4E4E92FF4F4E92FF4F4F93FF504F94FF5050
+                  94FF515095FF515195FF515194FF6C6C92FFB2B2C0FFF8F8F9FFFEFEFEFF
+                }
+                OnClick = btnExcluirNFe1Click
+                TabOrder = 7
+              end
+            end
           end
         end
         object TabRodoviario: TTabSheet
@@ -10408,7 +10968,7 @@ object fCTePrincipal: TfCTePrincipal
               Left = 48
               Height = 15
               Top = 32
-              Width = 38
+              Width = 37
               Align = alCustom
               Caption = 'RNTRC'
               ParentColor = False
@@ -10428,12 +10988,15 @@ object fCTePrincipal: TfCTePrincipal
               Align = alCustom
               Caption = 'Data Prevista de Entrega'
               ParentColor = False
+              Visible = False
             end
             object dataRodPrev: TDateTimePicker
               Left = 251
               Height = 23
               Top = 48
               Width = 123
+              ShowCheckBox = True
+              Checked = False
               CenturyFrom = 1941
               MaxDate = 2958465
               MinDate = -53780
@@ -10442,12 +11005,13 @@ object fCTePrincipal: TfCTePrincipal
               TrailingSeparator = False
               TextForNullDate = 'NULL'
               LeadingZeros = True
+              Visible = False
               Kind = dtkDate
               TimeFormat = tf24
               TimeDisplay = tdHMS
               DateMode = dmComboBox
-              Date = 43714
-              Time = 0.656639814813389
+              Date = 1.7E308
+              Time = 1.7E308
               UseDefaultSeparators = True
               HideDateTimeParts = []
               MonthNames = 'Long'
@@ -11071,6 +11635,59 @@ object fCTePrincipal: TfCTePrincipal
             end
           end
         end
+        object TabSheet1: TTabSheet
+          Caption = 'OS Serviço'
+          ClientHeight = 577
+          ClientWidth = 1289
+          object RadioGroup1: TRadioGroup
+            Left = 65
+            Height = 50
+            Top = 64
+            Width = 399
+            AutoFill = True
+            Caption = 'Tipo Fretamento'
+            ChildSizing.LeftRightSpacing = 6
+            ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+            ChildSizing.EnlargeVertical = crsHomogenousChildResize
+            ChildSizing.ShrinkHorizontal = crsScaleChilds
+            ChildSizing.ShrinkVertical = crsScaleChilds
+            ChildSizing.Layout = cclLeftToRightThenTopToBottom
+            ChildSizing.ControlsPerLine = 3
+            ClientHeight = 30
+            ClientWidth = 395
+            Columns = 3
+            Items.Strings = (
+              'Nenhum'
+              'Eventual'
+              'Continuo'
+            )
+            TabOrder = 0
+          end
+          object RadioGroup2: TRadioGroup
+            Left = 64
+            Height = 70
+            Top = 120
+            Width = 517
+            AutoFill = True
+            Caption = 'Tipo de Serviço'
+            ChildSizing.LeftRightSpacing = 6
+            ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+            ChildSizing.EnlargeVertical = crsHomogenousChildResize
+            ChildSizing.ShrinkHorizontal = crsScaleChilds
+            ChildSizing.ShrinkVertical = crsScaleChilds
+            ChildSizing.Layout = cclLeftToRightThenTopToBottom
+            ChildSizing.ControlsPerLine = 3
+            ClientHeight = 50
+            ClientWidth = 513
+            Columns = 3
+            Items.Strings = (
+              'Transporte Pessoas'
+              'Transporte Valores'
+              'Excesso de Bagagem'
+            )
+            TabOrder = 1
+          end
+        end
       end
     end
     object TabSheet12: TTabSheet
@@ -11289,7 +11906,7 @@ object fCTePrincipal: TfCTePrincipal
         Left = 967
         Height = 15
         Top = 352
-        Width = 45
+        Width = 44
         Align = alCustom
         Caption = 'Telefone'
         ParentColor = False
@@ -11535,7 +12152,7 @@ object fCTePrincipal: TfCTePrincipal
       object GroupBox14: TGroupBox
         Left = 336
         Height = 70
-        Top = 8
+        Top = 64
         Width = 290
         Caption = 'Cancelar CTe'
         ClientHeight = 50
@@ -11647,7 +12264,7 @@ object fCTePrincipal: TfCTePrincipal
       object GroupBox15: TGroupBox
         Left = 336
         Height = 200
-        Top = 96
+        Top = 166
         Width = 335
         Caption = 'Inutilizar Numeração'
         ClientHeight = 180
@@ -11878,7 +12495,7 @@ object fCTePrincipal: TfCTePrincipal
       object GroupBox16: TGroupBox
         Left = 37
         Height = 160
-        Top = 328
+        Top = 383
         Width = 634
         Caption = 'Outros Serviços Servidor'
         ClientHeight = 140
@@ -11942,7 +12559,7 @@ object fCTePrincipal: TfCTePrincipal
       object GroupBox17: TGroupBox
         Left = 37
         Height = 182
-        Top = 10
+        Top = 64
         Width = 275
         Caption = 'Opções CTe'
         ClientHeight = 162
@@ -12071,7 +12688,7 @@ object fCTePrincipal: TfCTePrincipal
       object GroupBox18: TGroupBox
         Left = 37
         Height = 110
-        Top = 203
+        Top = 256
         Width = 289
         Caption = 'Outros Eventos CTe'
         ClientHeight = 90
@@ -12096,6 +12713,38 @@ object fCTePrincipal: TfCTePrincipal
           TabOrder = 1
         end
       end
+      object lblCteAtual: TLabel
+        Left = 144
+        Height = 35
+        Top = 8
+        Width = 30
+        Caption = '...'
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -24
+        Font.Name = 'Comic Sans MS'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+      object Label160: TLabel
+        Left = 48
+        Height = 19
+        Top = 8
+        Width = 73
+        Caption = 'CTe atual :'
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Comic Sans MS'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
     end
     object TabSheet20: TTabSheet
       Caption = 'Configurações'
@@ -12114,8 +12763,8 @@ object fCTePrincipal: TfCTePrincipal
         TabOrder = 0
         object sbtnGetCert: TSpeedButton
           Left = 430
-          Height = 24
-          Top = 7
+          Height = 23
+          Top = 8
           Width = 23
           Glyph.Data = {
             76010000424D7601000000000000760000002800000020000000100000000100
@@ -12139,7 +12788,6 @@ object fCTePrincipal: TfCTePrincipal
           Height = 23
           Top = 8
           Width = 304
-          OnChange = edtNumSerieChange
           TabOrder = 0
         end
         object Label142: TLabel
@@ -12177,7 +12825,7 @@ object fCTePrincipal: TfCTePrincipal
           end
           object sbtnCaminhoCert: TSpeedButton
             Left = 424
-            Height = 24
+            Height = 23
             Top = 0
             Width = 23
             Glyph.Data = {
@@ -12195,6 +12843,7 @@ object fCTePrincipal: TfCTePrincipal
               3BB33773333773333773B333333B3333333B7333333733333337
             }
             NumGlyphs = 2
+            OnClick = sbtnCaminhoCertClick
           end
           object Label144: TLabel
             Left = 8
@@ -12263,6 +12912,7 @@ object fCTePrincipal: TfCTePrincipal
             'SP'
             'MS'
             'MG'
+            'RS'
           )
           TabOrder = 0
         end
@@ -12278,7 +12928,7 @@ object fCTePrincipal: TfCTePrincipal
         TabOrder = 3
         object sbtnLogoMarca: TSpeedButton
           Left = 428
-          Height = 24
+          Height = 23
           Top = 8
           Width = 23
           Glyph.Data = {
@@ -12309,8 +12959,8 @@ object fCTePrincipal: TfCTePrincipal
           Left = 6
           Height = 15
           Top = 8
-          Width = 79
-          Caption = 'Caminho Logo'
+          Width = 112
+          Caption = 'Caminho Logo(bmp)'
           ParentColor = False
         end
       end
@@ -12404,7 +13054,7 @@ object fCTePrincipal: TfCTePrincipal
           Left = 49
           Height = 15
           Top = 8
-          Width = 31
+          Width = 30
           Align = alCustom
           Caption = 'SMTP'
           ParentColor = False
@@ -12463,7 +13113,7 @@ object fCTePrincipal: TfCTePrincipal
           Left = 51
           Height = 19
           Top = 288
-          Width = 169
+          Width = 170
           Caption = 'SMTP Exige Conexão Segura'
           TabOrder = 2
         end
@@ -12601,7 +13251,7 @@ object fCTePrincipal: TfCTePrincipal
           Left = 30
           Height = 15
           Top = 136
-          Width = 42
+          Width = 41
           Alignment = taRightJustify
           Caption = 'SSLType'
           ParentColor = False
@@ -12636,7 +13286,7 @@ object fCTePrincipal: TfCTePrincipal
           Left = 88
           Height = 15
           Top = 1
-          Width = 65
+          Width = 64
           Align = alCustom
           Caption = 'Último CT-e'
           ParentColor = False
@@ -12738,8 +13388,8 @@ object fCTePrincipal: TfCTePrincipal
           Left = 7
           Height = 15
           Top = 24
-          Width = 93
-          Caption = 'Caminho Eventos'
+          Width = 76
+          Caption = 'Caminho XML'
           ParentColor = False
         end
       end
@@ -12754,7 +13404,7 @@ object fCTePrincipal: TfCTePrincipal
         TabOrder = 11
         object sbtnCteImportar: TSpeedButton
           Left = 428
-          Height = 24
+          Height = 23
           Top = 8
           Width = 23
           Glyph.Data = {
@@ -12785,10 +13435,95 @@ object fCTePrincipal: TfCTePrincipal
           Left = 6
           Height = 15
           Top = 8
-          Width = 72
+          Width = 71
           Caption = 'Caminho CTe'
           ParentColor = False
         end
+      end
+      object btnGravarCTe1: TBitBtn
+        Left = 576
+        Height = 34
+        Top = 416
+        Width = 194
+        Caption = 'Gravar Conf. Padrão'
+        Glyph.Data = {
+          32090000424D3209000000000000360000002800000019000000170000000100
+          200000000000FC08000064000000640000000000000000000000FFFFFFFFF9F9
+          F9FF737373FF919191FFEEEEEEFFECECECFFDBDBDBFFC8C8C8FFB4B4B4FFA1A1
+          A1FF8E8E8EFF7D7D7DFF636363FF535353FF595959FF5F5F5FFF656565FF6464
+          64FF646464FF6C6C6CFF6C6C6CFF656565FF646464FFF3F3F3FFFFFFFFFFF6F6
+          F6FF020202FF040404FF1E1E1EFF010101FF2E2E2EFF666666FF666666FF6F6F
+          6FFF787878FF808080FF8C8C8CFF989898FF9F9F9FFF9D9D9DFF929292FF5859
+          57FF4C4D4BFF4C4D4BFF373836FF2A2A2AFF3E3E3EFF252525FF000000FFFEFE
+          FEFF757575FF050505FFA6A6A6FF8F8F8FFF919191FF9E9E9EFFA0A0A0FF9696
+          96FF8C8C8CFFA8A8A8FFB4B4B4FFADADADFFA7A7A7FFAAAAAAFFADADADFFA9A9
+          A9FF9B9C9AFFACADABFFA3A4A2FF8C8D8BFF868686FF7C7C7CFFB8B8B8FF0404
+          04FFABABABFF656362FF333130FF908E8DFF666463FF686967FF868785FF9293
+          91FF8D8E8CFF848583FF999A98FFA0A19FFF9E9F9DFF9DA09EFF9EA19FFF9DA0
+          9EFF9A9D9BFF8A8B89FF929391FF7F807EFF6F706EFF70716FFF757674FF9393
+          93FF000000FFB0B0B0FF6F6D6CFF282625FF8A8887FF6C6A69FF757674FF8586
+          84FF939492FF8D8E8CFF888987FF9D9E9CFFA3A4A2FFA0A19FFF9EA19FFFA1A4
+          A2FFA1A4A2FF9B9E9CFF898A88FF8F908EFF8F908EFF6E6F6DFF7C7D7BFF7E7F
+          7DFF949494FF040404FFB5B5B5FF737170FF2C2A29FF8C8A89FF6C6A69FF6F70
+          6EFF8B8C8AFF999A98FF8F908EFF898A88FF9FA09EFFA8A9A7FFA5A6A4FFA3A6
+          A4FFA7AAA8FFA6A9A7FF9B9E9CFF8D8E8CFF929391FF8C8D8BFF737472FF6B6C
+          6AFF6F706EFF9A9A9AFF000000FFB4B4B4FF706E6EFF282625FF8D8B8AFF6D6B
+          6AFF6B6C6AFF858684FF9B9C9AFF939492FF949593FF9D9E9CFFA1A2A0FFA1A2
+          A0FF9DA09EFF9B9E9CFF9DA09EFF9C9F9DFF8D8E8CFF939492FF898A88FF7374
+          72FF6E6F6DFF6A6B69FF949494FF000000FFB4B4B4FF706F71FF272727FF8B8B
+          8BFF6B6B6BFF70716FFF70716FFF7A7B79FF787977FF787975FF787975FF767A
+          75FF767A75FF767977FF767977FF767977FF767977FF747873FF7A7E79FF767A
+          75FF6A6E69FF6D716CFF696D68FF949795FF000000FFB4B4B4FF6E6E6EFF2525
+          25FF8B8C8AFF6B6C6AFF6C6D6BFF686967FF6D6E6CFF6D6E6CFF6B6C6AFF6B6C
+          6AFF696C6AFF696C6AFF696B6BFF696B6BFF696B6BFF696B6BFF696C6AFF676B
+          66FF686C67FF686C67FF6C706BFF686C67FF969997FF000100FFB4B3B5FF6D71
+          6BFF232721FF888C87FF6A6E69FF70746FFF6F736EFF6E6F6DFF6A6B69FF6E6F
+          6DFF6E6E6EFF6E6E6EFF6E6E6EFF6E6D6FFF6E6D6FFF6C6D71FF6C6E6FFF6B6B
+          6BFF6E6F6DFF6D6E6CFF717270FF767775FF696A68FF919290FF020301FFB4B3
+          B5FF6B726BFF1D241DFF888E89FF787E79FF8B8E8CFF8E918FFF8A8C8CFF9090
+          90FF8D8D8DFF8D8C8EFF8D8C8EFF8D8C8EFF8D8C8EFF8D8C8EFF8D8C90FF8D8C
+          90FF8C8B8DFF8F8C8EFF8D8B8BFF919191FF8D8B8AFF747573FF969795FF0304
+          02FFB4B4B4FF6B726FFF242B28FF848A89FF6A706FFFA2A6A7FFEAEEEFFFFBFF
+          FFFFF7F9FAFFFAFCFDFFFAFCFDFFFCFBFDFFFCFCFCFFFCFCFCFFFCFCFCFFFCFD
+          FBFFFEFCFCFFFEF8FDFFFFF9FFFFFFFDFFFFE7E4E6FF9D9899FF6F6D6DFF9C9A
+          99FF020000FFB4B4B4FF6D7172FF202425FF838586FF737576FFAFB1B2FFEFF1
+          F2FFEBEDEEFFDCDEDFFFDEE0E1FFDEE0E0FFE0E0E0FFE0E1DFFFE0E1DFFFE0E1
+          DFFFE0E1DFFFE0E1DFFFE6E3E5FFDDDADCFFEEEBEDFFF5F3F3FFAAA8A8FF6A68
+          67FF959392FF040202FFB4B4B4FF716A6FFF2B2427FF90898CFF777073FFAEA9
+          AAFFF6F4F4FFFEFCFBFFFAF8F7FFF8F9F5FFF8F9F5FFF6FAF5FFF6F9F7FFF6F9
+          F7FFF6F9F7FFF6F9F7FFF4F9F7FFF1F7F2FFF7FEF7FFFAFFFAFFE9EFEAFF9EA2
+          9DFF686C67FF969795FF000000FFB6B3B5FF786F72FF2E2528FF90878AFF756F
+          70FFADA9A8FFF7F3F2FFF6F4F3FFEEEDE9FFECEDE9FFECEDE9FFEAEDEBFFEAED
+          EBFFEAEDEBFFEAECECFFEAECECFFE8EDEBFFE9F0EBFFE6EEE7FFEFF6EFFFEBF2
+          EBFF9EA29DFF676B66FF969795FF000000FFB6B2B7FF716F6EFF2A2827FF8A88
+          87FF777574FFA8A9A7FFEAEBE9FFEAEBE9FFDBDCDAFFDBDEDCFFDBDEDCFFDDDD
+          DDFFDDDDDDFFDDDDDDFFDDDCDEFFDDDCDEFFDDDCDEFFDCDEDEFFDBDDDDFFE4E6
+          E6FFEBEDEDFFA3A4A2FF6B6C6AFF949292FF020000FFB4B3B7FF6E6F6DFF292A
+          28FF848583FF70716FFFADB0AEFFF2F5F3FFEAEDEBFFE9ECEAFFEAEDEBFFEAED
+          EBFFECECECFFECECECFFEEECECFFEEECECFFEEECECFFEEECECFFECE9EBFFEDEC
+          EEFFF2F1F3FFEEEDEFFFA8A6A6FF686666FF969494FF020001FFB3B2B6FF7271
+          73FF232224FF8E9091FF6F7171FFA6A9A7FFEFF2F0FFF3F6F4FFEDF1ECFFEDEE
+          EAFFEDEEEAFFEFEEEAFFEFEEEAFFF1EEEAFFF1EEEAFFF1EEEAFFF1EDECFFEFED
+          EDFFEEECECFFF5F3F3FFEFEDEDFFA09E9EFF727070FF979496FF030002FFB5B4
+          B8FF706F71FF1E2021FF78797DFF717479FFAAACB4FFF8FAFFFFF5F6FFFFEDED
+          FDFFF2F2FFFFF2F2FFFFF2F2FFFFF2F2FFFFF2F2FFFFF2F3FFFFF3F3FFFFF3F3
+          FFFFF3F1FFFFF7F5FFFFF9F6FFFFF1EEFDFFA7A6B0FF6A686EFF88878BFF0000
+          01FFB5B5B5FF686C67FF2D302EFF989BA0FF646474FFA09EBBFFD5D4FCFFDEDB
+          FFFFD5D1FFFFD2CEFFFFD0CDFFFFCFCEFFFFCDCFFFFFCDD1FFFFCDD2FFFFCBD4
+          FFFFCFD3FFFFCFCDFFFFD5CFFFFFDAD5FFFFDAD6FFFF9391AEFF626272FFA3A6
+          ABFF000000FFAEAFABFF545852FF282B29FFE4E7ECFF8E8E9EFFA19FBDFF9391
+          BBFF908BC2FF8E8BC9FF8D8ACFFF8C89D1FF8A8AD0FF888BCFFF888CCDFF888D
+          CAFF888FC8FF8A8EC8FF8D8CCCFF938ECCFF8F8AC1FF9391BBFFA0A0BEFF9494
+          A6FFDFE1E9FF000202FFAEAFABFFE1E2E0FF000000FF000203FF000008FF0404
+          12FF0B0B1DFF0B0C21FF070620FF050523FF050424FF050424FF050424FF0505
+          23FF050523FF050622FF050622FF080826FF040220FF05041EFF0A091DFF0000
+          0EFF00010BFF000003FF000102FFFFFFFFFFFEFEFEFFF1F1F1FF949395FFADAC
+          AEFFA9A9AFFFA7A7ADFFA9ABB3FFA8AAB2FFA8A8B4FFA8A8B4FFA8A8B4FFA8A8
+          B4FFAAA7B6FFAAA7B6FFACA7B6FFAAA7B6FFA9A9B7FFA5A7B2FFABABB7FFA5A7
+          AFFFABAAB3FFA9AAAEFF9A9B9FFFF1F3F4FFFFFEFFFF
+        }
+        OnClick = btnGravarCTe1Click
+        TabOrder = 12
       end
     end
   end
@@ -12807,6 +13542,7 @@ object fCTePrincipal: TfCTePrincipal
     Configuracoes.WebServices.UF = 'SP'
     Configuracoes.WebServices.AguardarConsultaRet = 0
     Configuracoes.WebServices.QuebradeLinha = '|'
+    Configuracoes.RespTec.IdCSRT = 0
     left = 728
     top = 256
   end
@@ -12817,14 +13553,22 @@ object fCTePrincipal: TfCTePrincipal
     Configuracoes.Geral.SSLXmlSignLib = xsLibXml2
     Configuracoes.Geral.FormatoAlerta = 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.'
     Configuracoes.Arquivos.OrdenacaoPath = <>
+    Configuracoes.Arquivos.SepararPorMes = True
+    Configuracoes.WebServices.Visualizar = True
     Configuracoes.WebServices.UF = 'SP'
     Configuracoes.WebServices.AguardarConsultaRet = 0
+    Configuracoes.WebServices.Salvar = True
     Configuracoes.WebServices.QuebradeLinha = '|'
+    Configuracoes.WebServices.TimeZoneConf.ModoDeteccao = tzManual
+    Configuracoes.WebServices.TimeZoneConf.TimeZoneStr = '-03:00'
+    Configuracoes.WebServices.SSLType = LT_TLSv1_2
+    Configuracoes.RespTec.IdCSRT = 0
     DACTE = ACBrCTeDACTeRL1
-    left = 424
-    top = 256
+    left = 304
+    top = 208
   end
   object ACBrCTeDACTeRL1: TACBrCTeDACTeRL
+    UsaSeparadorPathPDF = True
     Sistema = 'Projeto ACBr - www.projetoacbr.com.br'
     MargemInferior = 0.8
     MargemSuperior = 0.8
@@ -12844,8 +13588,8 @@ object fCTePrincipal: TfCTePrincipal
     EPECEnviado = False
     ImprimeDescPorc = False
     PrintDialog = True
-    left = 512
-    top = 256
+    left = 552
+    top = 192
   end
   object ACBrCTe2: TACBrCTe
     Configuracoes.Geral.SSLLib = libNone
@@ -12857,6 +13601,7 @@ object fCTePrincipal: TfCTePrincipal
     Configuracoes.WebServices.UF = 'SP'
     Configuracoes.WebServices.AguardarConsultaRet = 0
     Configuracoes.WebServices.QuebradeLinha = '|'
+    Configuracoes.RespTec.IdCSRT = 0
     left = 808
     top = 256
   end

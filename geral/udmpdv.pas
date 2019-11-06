@@ -612,6 +612,125 @@ type
     sdsProd_CombVALIQPROD: TFloatField;
     sqBusca: TSQLQuery;
     sqBusca1: TSQLQuery;
+    sqClienteANOLETIVO: TStringField;
+    sqClienteANUIDADE: TFloatField;
+    sqClienteBANDA_DOWLOAD: TStringField;
+    sqClienteBANDA_UPLOAD: TStringField;
+    sqClienteBASE_ICMS: TSmallintField;
+    sqClienteBLOQUEADO: TStringField;
+    sqClienteBLOQUEIO: TStringField;
+    sqClienteCARGOFUNCAO: TLongintField;
+    sqClienteCARTEIRAVACINACAO: TStringField;
+    sqClienteCELULARMAE: TStringField;
+    sqClienteCELULARPAI: TStringField;
+    sqClienteCERTIDAONASCNUM: TStringField;
+    sqClienteCERT_NAS_COMARCA: TStringField;
+    sqClienteCERT_NAS_DISTRITO: TStringField;
+    sqClienteCERT_NAS_MUNICIPIO: TStringField;
+    sqClienteCERT_NAS_SUBDISTRITO: TStringField;
+    sqClienteCERT_NAS_UF: TStringField;
+    sqClienteCFOP: TStringField;
+    sqClienteCIDADENASC: TStringField;
+    sqClienteCNPJ: TStringField;
+    sqClienteCODBANCO: TSmallintField;
+    sqClienteCODCLIENTE: TLongintField;
+    sqClienteCODFISCAL: TStringField;
+    sqClienteCODFORNECEDOR: TLongintField;
+    sqClienteCODINCLUCANC: TLongintField;
+    sqClienteCODRESPONSAVEL: TLongintField;
+    sqClienteCODUSUARIO: TLongintField;
+    sqClienteCOD_CLI: TStringField;
+    sqClienteCOD_FAIXA: TLongintField;
+    sqClienteCOD_TRANPORTADORA: TLongintField;
+    sqClienteCOMUNICAALUNO: TStringField;
+    sqClienteCOMUNICAMAE: TStringField;
+    sqClienteCOMUNICAPAI: TStringField;
+    sqClienteCONTATO: TStringField;
+    sqClienteCONTA_CLIENTE: TStringField;
+    sqClienteCORTESIA: TStringField;
+    sqClienteCOR_RACA: TStringField;
+    sqClienteCPF: TStringField;
+    sqClienteCPFMAE: TStringField;
+    sqClienteCPFPAI: TStringField;
+    sqClienteCURSO: TStringField;
+    sqClienteDATACADASTRO: TDateField;
+    sqClienteDATAEMISSAORG: TDateField;
+    sqClienteDATANASC: TDateField;
+    sqClienteDATANASCIMENTO: TDateTimeField;
+    sqClienteDATAREINC: TDateField;
+    sqClienteDATARESC: TDateField;
+    sqClienteDATATRANSF: TDateField;
+    sqClienteDATA_MATRICULA: TDateTimeField;
+    sqClienteDESCONTO: TFloatField;
+    sqClienteDIVERSO1: TStringField;
+    sqClienteDIVERSO2: TStringField;
+    sqClienteDTAALTERA: TDateField;
+    sqClienteEMVIAGEM: TStringField;
+    sqClienteESTADORG: TStringField;
+    sqClienteEXISTCOPART: TStringField;
+    sqClienteEXIST_COBERT: TStringField;
+    sqClienteE_FORNECEDOR: TStringField;
+    sqClienteFLLIVRONASC: TStringField;
+    sqClienteFONEMAE: TStringField;
+    sqClienteFONEPAI: TStringField;
+    sqClienteFORMA_CORRESPOND: TStringField;
+    sqClienteFOTO: TStringField;
+    sqClienteGERAAVISO: TStringField;
+    sqClienteGERABOL: TStringField;
+    sqClienteGERAENV: TStringField;
+    sqClienteGRUPO_CLIENTE: TStringField;
+    sqClienteHOMEPAGE: TStringField;
+    sqClienteID_COB: TLongintField;
+    sqClienteINFONECESSARIAS: TStringField;
+    sqClienteINSCESTADUAL: TStringField;
+    sqClienteIP: TStringField;
+    sqClienteLANCADOCLASSE: TLongintField;
+    sqClienteLIMITECREDITO: TFloatField;
+    sqClienteLIVRONASC: TStringField;
+    sqClienteLOCALTRABALUNO: TStringField;
+    sqClienteLOCALTRABMAE: TStringField;
+    sqClienteLOCALTRABPAI: TStringField;
+    sqClienteMAC: TStringField;
+    sqClienteMARCA: TStringField;
+    sqClienteMENSALIDADE: TFloatField;
+    sqClienteNACIONALIDADE: TStringField;
+    sqClienteNOMECLIENTE: TStringField;
+    sqClienteNOMEMAE: TStringField;
+    sqClienteNUMERO: TLongintField;
+    sqClienteN_CONTRATO: TStringField;
+    sqClienteOBS: TStringField;
+    sqClientePAI: TStringField;
+    sqClientePARCELA: TLongintField;
+    sqClientePARCELAGERADAS: TLongintField;
+    sqClientePERIODO: TStringField;
+    sqClientePRAZOENTREGA: TSmallintField;
+    sqClientePRAZORECEBIMENTO: TSmallintField;
+    sqClienteRA: TStringField;
+    sqClienteRAPROD: TStringField;
+    sqClienteRAPRODESP: TStringField;
+    sqClienteRAZAOSOCIAL: TStringField;
+    sqClienteREGIAO: TSmallintField;
+    sqClienteRG: TStringField;
+    sqClienteRGMAE: TStringField;
+    sqClienteRGPAI: TStringField;
+    sqClienteSEGMENTO: TSmallintField;
+    sqClienteSERIE: TStringField;
+    sqClienteSERIELETRA: TStringField;
+    sqClienteSEXO: TStringField;
+    sqClienteSITUACAOESCOLAR: TStringField;
+    sqClienteSTATUS: TSmallintField;
+    sqClienteSUFRAMA: TStringField;
+    sqClienteTELTRABALUNO: TStringField;
+    sqClienteTELTRABMAE: TStringField;
+    sqClienteTELTRABPAI: TStringField;
+    sqClienteTEM_IE: TStringField;
+    sqClienteTIPOFIRMA: TSmallintField;
+    sqClienteTORRE_CONECCAO: TStringField;
+    sqClienteTRANSPORTE: TStringField;
+    sqClienteUFNASC: TStringField;
+    sqClienteVALOR_CONSUMO: TFloatField;
+    sqClienteVALOR_CORTESIA: TFloatField;
+    sqClienteVALOR_MATRICULA: TFloatField;
     sqEmpresaANOLETIVO: TLongintField;
     sqEmpresaBAIRRO: TStringField;
     sqEmpresaBASECALCULOCREDITO: TSmallintField;
@@ -770,6 +889,7 @@ type
     sqLancamentosVLR_BASEICMS: TFloatField;
     SQLQuery1: TSQLQuery;
     sqEmpresa: TSQLQuery;
+<<<<<<< HEAD
     qcds_ccusto: TSQLQuery;
     qsEmpresa: TSQLQuery;
     qsMenorData: TSQLQuery;
@@ -858,6 +978,7 @@ type
     qsCCESEQUENCIA: TLongintField;
     sTabIBGE: TSQLQuery;
     sqlTotal_tributos: TSQLQuery;
+    sqCliente: TSQLQuery;
     sqUpdate: TSQLQuery;
     sqParametro: TSQLQuery;
     sqParametroCONFIGURADO: TStringField;
@@ -886,7 +1007,7 @@ type
     procedure IbConAfterDisconnect(Sender: TObject);
     procedure IbConBeforeConnect(Sender: TObject);
   private
-    procedure atualiza_bd();
+    procedure atualiza_bd(sistema: String);
   public
     modoDesenvolvedor: String;
     usosistema : string;
@@ -934,6 +1055,7 @@ type
     vendedor_padrao: Integer;
     imp_controle_porta: Boolean;
     imp_Interval: Integer;
+    imp_vias: Integer;
     imp_LinhasBuffer: Integer;
     imp_ColunaFonteNormal: Integer;
     function executaSql(strSql: String): Boolean;
@@ -1000,8 +1122,9 @@ begin
       margemCodBarra := conf.ReadInteger('IMPRESSORA', 'MargemCodBarra', 50);
       tamanhoLinha := conf.ReadInteger('IMPRESSORA', 'TamanhoLinha', 36);
       imp_controle_porta := conf.ReadBool('IMPRESSORA', 'ControlaPorta', False);
-      imp_Interval := conf.ReadInteger('IMPRESSORA', 'SendBytesInterval', 0);
-      imp_LinhasBuffer:= conf.ReadInteger('IMPRESSORA', 'LinhasBuffer', 0);
+      imp_Interval := conf.ReadInteger('IMPRESSORA', 'SendBytesInterval', 100);
+      imp_vias := conf.ReadInteger('IMPRESSORA', 'NumeroVias', 1);
+      imp_LinhasBuffer:= conf.ReadInteger('IMPRESSORA', 'LinhasBuffer', 10);
       //snh:= EncodeStringBase64(snh); // Ver a senha Encryptada
       snh:= DecodeStringBase64(snh);
       IBCon.Password := snh;
@@ -1086,15 +1209,31 @@ begin
     end;
     sqParametro.Next;
   end;
-  sqBusca.Active := False;
-  sqBusca.SQL.Clear;
-  sqBusca.SQL.Add('SELECT r.VERSAO FROM ATUALIZA r WHERE r.CODATUALIZA = 5000');
-  sqBusca.Active:=True;
-  versao_sistema:=sqBusca.FieldByName('VERSAO').AsString;
-  if (versao_sistema <> '1.2') then
+  versao_sistema := ApplicationName;
+  if (ApplicationName = 'ATS Conhecimento Transportes (CTe)') then
   begin
-    atualiza_bd();
+    busca_sql('SELECT r.VERSAO FROM ATUALIZA r WHERE r.CODATUALIZA = 5001');
+    if (sqBusca.IsEmpty) then
+    begin
+      executaSql('INSERT INTO ATUALIZA (CODATUALIZA, SCRIPT, VERSAO) VALUES ('+
+        '5001, ' + QuotedStr('CTe') + ', ' + QuotedStr('1.0') + ')');
+      versao_sistema := '1.0';
+      atualiza_bd('CTe');
+    end
+    else begin
+      versao_sistema := sqBusca.FieldByName('VERSAO').AsString;
+      atualiza_bd('CTe');
+    end;
+  end
+  else begin
+     busca_sql('SELECT r.VERSAO FROM ATUALIZA r WHERE r.CODATUALIZA = 5000');
+     versao_sistema := sqBusca.FieldByName('VERSAO').AsString;
+     atualiza_bd('ATS');
   end;
+  //if (versao_sistema <> '1.2') then
+  //begin
+
+  //end;
 end;
 
 procedure TdmPdv.IbConAfterDisconnect(Sender: TObject);
@@ -1107,71 +1246,109 @@ begin
 
 end;
 
-procedure TdmPdv.atualiza_bd();
+procedure TdmPdv.atualiza_bd(sistema: String);
 begin
-  Try
-    IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD STATE SMALLINT');
-  Except
-  end;
-  Try
-    IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD troco double precision');
-  Except
-  end;
+  if (sistema = 'CTe') then
+  begin
+    if (versao_sistema = '1.0') then
+      versao_sistema := '1.1';
+    if (versao_sistema = '1.1') then
+    begin
+    Try
+      IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD STATE SMALLINT');
+    Except
+    end;
+    Try
+      IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD troco double precision');
+    Except
+    end;
 
-  Try
-    IbCon.ExecuteDirect('ALTER TABLE USUARIO ADD SENHA VARCHAR(50)');
-  Except
-  end;
-  Try
-    IbCon.ExecuteDirect('ALTER TABLE USUARIO ADD CODBARRA VARCHAR(13)');
-  Except
-  end;
-  Try
-    IbCon.ExecuteDirect('ALTER TABLE PRODUTOS ADD PRECOATACADO DOUBLE PRECISION');
-    IbCon.ExecuteDirect('ALTER TABLE PRODUTOS ADD QTDEATACADO DOUBLE PRECISION');
-  Except
-  end;
-  Try
-    IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD CODFORMA INTEGER NOT NULL');
-    IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD PRIMARY KEY (CODFORMA)');
-  Except
-  end;
-  sTrans.Commit;
-  Try
-    IbCon.ExecuteDirect('CREATE SEQUENCE GEN_FORMA');
-  Except
-  end;
+    Try
+      IbCon.ExecuteDirect('ALTER TABLE USUARIO ADD SENHA VARCHAR(50)');
+    Except
+    end;
+    Try
+      IbCon.ExecuteDirect('ALTER TABLE USUARIO ADD CODBARRA VARCHAR(13)');
+    Except
+    end;
+    Try
+      IbCon.ExecuteDirect('ALTER TABLE PRODUTOS ADD PRECOATACADO DOUBLE PRECISION');
+      IbCon.ExecuteDirect('ALTER TABLE PRODUTOS ADD QTDEATACADO DOUBLE PRECISION');
+    Except
+    end;
+    Try
+      IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD CODFORMA INTEGER NOT NULL');
+      IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD PRIMARY KEY (CODFORMA)');
+    Except
+    end;
+    sTrans.Commit;
+    Try
+      IbCon.ExecuteDirect('CREATE SEQUENCE GEN_FORMA');
+    Except
+    end;
 
-  Try
-    IbCon.ExecuteDirect('ALTER TABLE MOVIMENTO ADD DESCONTO DOUBLE PRECISION');
-  Except
-  end;
-  Try
-    IbCon.ExecuteDirect('alter table venda add XMLNFE BLOB SUB_TYPE 0');
-    IbCon.ExecuteDirect('alter table venda add NOMEXML VARCHAR( 60 )');
-    IbCon.ExecuteDirect('alter table venda add PROTOCOLOENV VARCHAR( 20 )');
-    IbCon.ExecuteDirect('alter table venda add NUMRECIBO VARCHAR( 20 )');
-  Except
-  end;
-  Try
-    IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD DESCONTO double precision');
-  Except
-  end;
-
-  {
-  Try
-    IbCon.ExecuteDirect('ALTER TABLE USUARIO ADD PODE_EXCLUIR CHAR(1)');
-  Except
-  end;
-  Try
-    IbCon.ExecuteDirect('ALTER TABLE USUARIO ADD PODE_DESCONTO CHAR(1)');
-  Except
-  end;}
-
-
-  IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.2') +
-    ' WHERE CODATUALIZA = 5000');
-  sTrans.Commit;
+    Try
+      IbCon.ExecuteDirect('ALTER TABLE MOVIMENTO ADD DESCONTO DOUBLE PRECISION');
+    Except
+    end;
+    Try
+      IbCon.ExecuteDirect('alter table venda add XMLNFE BLOB SUB_TYPE 0');
+      IbCon.ExecuteDirect('alter table venda add NOMEXML VARCHAR( 60 )');
+      IbCon.ExecuteDirect('alter table venda add PROTOCOLOENV VARCHAR( 20 )');
+      IbCon.ExecuteDirect('alter table venda add NUMRECIBO VARCHAR( 20 )');
+    Except
+    end;
+    Try
+      IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD DESCONTO double precision');
+    Except
+    end;
+      IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.2') +
+      ' WHERE CODATUALIZA = 5001');
+      sTrans.Commit;
+    end;
+    if (versao_sistema = '1.2') then
+    begin
+      Try
+        IbCon.ExecuteDirect('ALTER TABLE MOVIMENTO ADD DATA_FECHOU TIMESTAMP');
+      Except
+      end;
+      IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.3') +
+      ' WHERE CODATUALIZA = 5001');
+      sTrans.Commit;
+    end;
+    if (versao_sistema = '1.3') then
+    begin
+      Try
+        IbCon.ExecuteDirect('ALTER TABLE CTE ADD UFPER VARCHAR( 2 ) ' +
+          ', ADD INFADFISCO VARCHAR( 500 ), ADD VPIS DOUBLE PRECISION ' +
+          ', ADD VCOFINS DOUBLE PRECISION, ADD VIR DOUBLE PRECISION ' +
+          ', ADD VINSS DOUBLE PRECISION, ADD VCSLL DOUBLE PRECISION ' +
+          ', ADD XDESCSERV VARCHAR( 30 ), ADD QCARGA DOUBLE PRECISION ' +
+          ', ADD TPSERV INTEGER, ADD TAF VARCHAR( 12 ) ' +
+          ', ADD NROREGESTADUAL VARCHAR( 25 ), ADD VEICRENAVAM VARCHAR( 11 ) ' +
+          ', ADD VEICPLACA VARCHAR( 7 ), ADD VEIUF VARCHAR( 2 ) ' +
+          ', ADD OBSCONT VARCHAR( 400 ), ADD TCPF VARCHAR( 11 ) ' +
+          ', ADD TCNPJ VARCHAR( 14 ) , ADD TTAF VARCHAR( 12 ) ' +
+          ', ADD TNROREGESTADUAL VARCHAR( 25 ), ADD TXNOME VARCHAR( 60 ) ' +
+          ', ADD TIE VARCHAR( 14 ), ADD TUF VARCHAR( 2 ) ' +
+          ', ADD TTPPROP VARCHAR( 14 ), ADD TUFT VARCHAR( 2 ) ' +
+          ', ADD OBSFISCO  VARCHAR( 300 )');
+          IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.4') +
+          ' WHERE CODATUALIZA = 5001');
+          sTrans.Commit;
+      Except
+        on dmPdv: EDatabaseError do
+        begin
+          MessageDlg('Error','Erro na atualização banco de dados : ' +
+            dmPdv.Message,mtError,[mbOK],0);
+          sTrans.Rollback;
+        end;
+      end;
+      IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.4') +
+        ' WHERE CODATUALIZA = 5001');
+      sTrans.Commit;
+    end;
+  end;  // fim atualiza CTe
 end;
 
 procedure TdmPdv.gravaLog(DataLog: TDateTime; usuario: String;
@@ -1274,4 +1451,3 @@ begin
 end;
 
 end.
-

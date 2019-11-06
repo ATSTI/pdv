@@ -1,0 +1,90 @@
+object Form1: TForm1
+  Left = 295
+  Height = 547
+  Top = 105
+  Width = 957
+  Caption = 'Form1'
+  ClientHeight = 547
+  ClientWidth = 957
+  LCLVersion = '2.0.4.0'
+  object Panel1: TPanel
+    Left = 11
+    Height = 63
+    Top = 8
+    Width = 921
+    Caption = 'Panel1'
+    ClientHeight = 63
+    ClientWidth = 921
+    TabOrder = 0
+    object btnCliente: TBitBtn
+      Left = 72
+      Height = 30
+      Top = 12
+      Width = 113
+      Caption = 'Cliente'
+      OnClick = btnClienteClick
+      TabOrder = 0
+    end
+    object btnFornecedor: TBitBtn
+      Left = 192
+      Height = 30
+      Top = 12
+      Width = 113
+      Caption = 'Fornecedor'
+      OnClick = btnFornecedorClick
+      TabOrder = 1
+    end
+    object btnEmpresa: TBitBtn
+      Left = 312
+      Height = 30
+      Top = 12
+      Width = 113
+      Caption = 'Empresa'
+      OnClick = btnEmpresaClick
+      TabOrder = 2
+    end
+    object btnProduto: TBitBtn
+      Left = 432
+      Height = 30
+      Top = 12
+      Width = 113
+      Caption = 'Produto'
+      OnClick = btnProdutoClick
+      TabOrder = 3
+    end
+    object btnUsuario: TBitBtn
+      Left = 552
+      Height = 30
+      Top = 12
+      Width = 113
+      Caption = 'Usuario'
+      OnClick = btnUsuarioClick
+      TabOrder = 4
+    end
+    object btnConfiguracaoFiscal: TBitBtn
+      Left = 672
+      Height = 30
+      Top = 12
+      Width = 113
+      Caption = 'Configuração Fiscal'
+      OnClick = btnConfiguracaoFiscalClick
+      TabOrder = 5
+    end
+  end
+  object Panel2: TPanel
+    Left = 12
+    Height = 420
+    Top = 88
+    Width = 158
+    Caption = 'Panel2'
+    TabOrder = 1
+  end
+  object Panel3: TPanel
+    Left = 181
+    Height = 459
+    Top = 76
+    Width = 762
+    Caption = 'Panel3'
+    TabOrder = 2
+  end
+end

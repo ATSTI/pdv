@@ -30,7 +30,11 @@ type
     acNfce: TAction;
     acVoltarVenda: TAction;
     ActionListFechamento: TActionList;
+    BitBtn1: TBitBtn;
     BitBtn19: TBitBtn;
+    BitBtn2: TBitBtn;
+    BitBtn4: TBitBtn;
+    BitBtn5: TBitBtn;
     btnCupom: TBitBtn;
     BitBtn16: TBitBtn;
     BitBtn17: TBitBtn;
@@ -48,11 +52,11 @@ type
     DBGrid1: TDBGrid;
     dsPag: TDataSource;
     edCupom: TEdit;
+    edDesconto: TMaskEdit;
     edParcela: TEdit;
     edRestante: TMaskEdit;
     edTroco: TMaskEdit;
     edValorTotal: TMaskEdit;
-    edDesconto: TMaskEdit;
     edValorVendaTotal: TMaskEdit;
     edVDesconto: TMaskEdit;
     edVendedor: TMaskEdit;
@@ -82,6 +86,7 @@ type
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
     Panel1: TPanel;
+    pnCartoes: TPanel;
     Panel3: TPanel;
     Panel4: TPanel;
     PopupMenu1: TPopupMenu;
@@ -115,10 +120,14 @@ type
     procedure BitBtn17Click(Sender: TObject);
     procedure BitBtn18Click(Sender: TObject);
     procedure BitBtn19Click(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn20Click(Sender: TObject);
     procedure BitBtn21Click(Sender: TObject);
     procedure BitBtn22Click(Sender: TObject);
     procedure BitBtn26Click(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
+    procedure BitBtn4Click(Sender: TObject);
+    procedure BitBtn5Click(Sender: TObject);
     procedure btnCadeiraClick(Sender: TObject);
     procedure btnCupomClick(Sender: TObject);
     procedure btnDescontoPercentClick(Sender: TObject);
@@ -160,6 +169,7 @@ type
       vlr_tot_rec: Double; via_rec: Integer; n_doc_rec: String; forma_rec: String;
       vlr_via_rec: Double);
   public
+    OutrosCartoes: String;
     vStatus : Integer;
     vVendedor: Integer;
     vUsuario: Integer;
@@ -492,15 +502,22 @@ begin
       ' , DATA_FECHOU = ' + QuotedStr(FormatDateTime('mm/dd/yyyy hh:MM:ss', Now)) +
       ' WHERE CODMOVIMENTO  = ' +
       IntToStr(vCodMovimento) + ' AND STATUS = 0');
+    dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTODETALHE SET BAIXA = 1 ' +
+      ' WHERE CODMOVIMENTO  = ' + IntToStr(vCodMovimento) +
+      ' AND BAIXA IS NULL AND STATUS = 0');
+    dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTODETALHE SET BAIXA = NULL ' +
+      ' WHERE CODMOVIMENTO  = ' + IntToStr(vCodMovimento) +
+      ' AND BAIXA = 1 AND STATUS = 2');
   except
-    dmPdv.IbCon.ExecuteDirect('ALTER TABLE MOVIMENTO ' +
+    {dmPdv.IbCon.ExecuteDirect('ALTER TABLE MOVIMENTO ' +
       ' ADD DATA_FECHOU TIMESTAMP');
     dmPdv.sTrans.Commit;
     dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET STATUS = 1 ' +
       ' , CODCLIENTE = ' + IntToStr(vCliente) +
       ' , DATA_FECHOU = ' + QuotedStr(FormatDateTime('mm/dd/yyyy hh:MM:ss', Now)) +
       ' WHERE CODMOVIMENTO  = ' +
-      IntToStr(vCodMovimento) + ' AND STATUS = 0');
+      IntToStr(vCodMovimento) + ' AND STATUS = 0');}
+    ShowMessage('Erro para baixar venda');
   end;
 
   vStatus := 1;
@@ -994,6 +1011,9 @@ begin
   ACBrPosPrinter1.LinhasEntreCupons := 0;
   ACBrPosPrinter1.EspacoEntreLinhas := dmpdv.espacoEntreLinhas;
   ACBrPosPrinter1.ColunasFonteNormal := dmpdv.imp_ColunaFonteNormal;
+  ACBrPosPrinter1.Device.SendBytesCount:=1024;
+  ACBrPosPrinter1.Device.SendBytesInterval := dmpdv.imp_Interval;
+  ACBrPosPrinter1.ControlePorta :=  dmpdv.imp_controle_porta;
   ACBrPosPrinter1.Porta  := dmPdv.portaImp;
   //ACBrPosPrinter1.ControlePorta := cbControlePorta.Checked;
   ACBrPosPrinter1.CortaPapel := True;
@@ -1015,6 +1035,20 @@ begin
 
   ACBrPosPrinter1.Buffer.Text := MemoImp.Lines.Text;
   ACBrPosPrinter1.Imprimir;
+  if (dmPdv.imp_vias = 2) then
+  begin
+    Sleep(1000);
+    ACBrPosPrinter1.Desativar;
+    ACBrPosPrinter1.Ativar;
+    ACBrPosPrinter1.Buffer.Text := MemoImp.Lines.Text;
+    ACBrPosPrinter1.Imprimir;
+  end;
+  {if (dmPdv.imp_vias = 3) then
+  begin
+    ACBrPosPrinter1.Imprimir;
+    ACBrPosPrinter1.Imprimir;
+    ACBrPosPrinter1.Imprimir;
+  end;}
 
 end;
 
@@ -1319,6 +1353,13 @@ begin
 
 end;
 
+procedure TfPDV_Rec.BitBtn1Click(Sender: TObject);
+begin
+  lblForma.Caption:='7-Sianet';
+  pnCartoes.Visible:=False;
+  edPagamento.SetFocus;
+end;
+
 procedure TfPDV_Rec.BitBtn17Click(Sender: TObject);
 begin
 
@@ -1361,6 +1402,8 @@ begin
       dmPdv.IbCon.ExecuteDirect('UPDATE FORMA_ENTRADA SET STATE = 2 ' +
         ' WHERE CODFORMA = ' + IntToStr(sqPagamentoCODFORMA.AsInteger));
       //sqPagamento.ApplyUpdates;
+      dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTODETALHE SET BAIXA = NULL ' +
+        ' WHERE CODMOVIMENTO  = ' + IntToStr(vCodMovimento));
       sqPagamento.Active:=False;
       dmPdv.sTrans.Commit;
       sqPagamento.Active:=True;
@@ -1383,6 +1426,11 @@ begin
   if (dmPdv.CupomImp = 'Texto') then
   begin
     imprimirTxt();
+    if (dmPdv.imp_vias = 2) then
+    begin
+      Sleep(300);
+      imprimirTxt();
+    end;
   end
   else begin
     imprimirTxt();
@@ -1498,8 +1546,15 @@ end;
 
 procedure TfPDV_Rec.acCartaoCreditoExecute(Sender: TObject);
 begin
-  lblForma.Caption:='3-Cartao Credito';
-  edPagamento.SetFocus;
+  if (OutrosCartoes = 'S') then
+  begin
+    pnCartoes.Visible:=True;
+    BitBtn1.SetFocus;
+  end
+  else begin
+    lblForma.Caption:='3-Cartao Credito';
+    edPagamento.SetFocus;
+  end;
 end;
 
 procedure TfPDV_Rec.acCancelaFechamentoExecute(Sender: TObject);
@@ -1519,6 +1574,8 @@ begin
   if (edValorPago.Text = '0,00') then
   begin
     dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET STATUS = 0 ' +
+      ' WHERE CODMOVIMENTO  = ' + IntToStr(vCodMovimento));
+    dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTODETALHE SET BAIXA = NULL ' +
       ' WHERE CODMOVIMENTO  = ' + IntToStr(vCodMovimento));
     dmPdv.sTrans.Commit;
     vStatus := 0;
@@ -1553,6 +1610,25 @@ end;
 
 procedure TfPDV_Rec.BitBtn26Click(Sender: TObject);
 begin
+end;
+
+procedure TfPDV_Rec.BitBtn2Click(Sender: TObject);
+begin
+  lblForma.Caption:='8-Brasil Card';
+  pnCartoes.Visible:=False;
+  edPagamento.SetFocus;
+end;
+
+procedure TfPDV_Rec.BitBtn4Click(Sender: TObject);
+begin
+  lblForma.Caption:='3-Cartao Credito';
+  pnCartoes.Visible:=False;
+  edPagamento.SetFocus;
+end;
+
+procedure TfPDV_Rec.BitBtn5Click(Sender: TObject);
+begin
+  pnCartoes.Visible:=False;
 end;
 
 procedure TfPDV_Rec.btnCadeiraClick(Sender: TObject);

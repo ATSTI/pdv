@@ -12,7 +12,7 @@ object fPdv: TfPdv
   OnShow = FormShow
   PopupMenu = PopupMenu1
   Position = poWorkAreaCenter
-  LCLVersion = '2.0.0.4'
+  LCLVersion = '2.0.4.0'
   WindowState = wsMaximized
   object Panel1: TPanel
     Left = 0
@@ -12381,7 +12381,7 @@ object fPdv: TfPdv
         Left = 184
         Height = 15
         Top = 40
-        Width = 119
+        Width = 118
         Caption = 'TROCA / DEVOLUÇÃO'
         ParentColor = False
       end

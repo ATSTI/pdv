@@ -1,0 +1,108 @@
+object fClienteCadastro: TfClienteCadastro
+  Left = 230
+  Height = 558
+  Top = 129
+  Width = 971
+  Caption = 'Cadastro de Clientes'
+  ClientHeight = 558
+  ClientWidth = 971
+  LCLVersion = '2.0.4.0'
+  object Panel1: TPanel
+    Left = 8
+    Height = 73
+    Top = 9
+    Width = 957
+    Caption = 'Panel1'
+    TabOrder = 0
+  end
+  object Panel2: TPanel
+    Left = 11
+    Height = 424
+    Top = 104
+    Width = 930
+    Caption = 'Panel2'
+    ClientHeight = 424
+    ClientWidth = 930
+    TabOrder = 1
+    object DBEdit1: TDBEdit
+      Left = 80
+      Height = 23
+      Top = 8
+      Width = 112
+      DataField = 'CODCLIENTE'
+      DataSource = dsCliente
+      Alignment = taRightJustify
+      CharCase = ecNormal
+      MaxLength = 0
+      TabOrder = 0
+    end
+    object DBEdit2: TDBEdit
+      Left = 80
+      Height = 23
+      Top = 40
+      Width = 235
+      DataField = 'NOMECLIENTE'
+      DataSource = dsCliente
+      CharCase = ecNormal
+      MaxLength = 240
+      TabOrder = 1
+    end
+    object DBEdit3: TDBEdit
+      Left = 80
+      Height = 23
+      Top = 72
+      Width = 208
+      DataField = 'RAZAOSOCIAL'
+      DataSource = dsCliente
+      CharCase = ecNormal
+      MaxLength = 240
+      TabOrder = 2
+    end
+    object DBEdit4: TDBEdit
+      Left = 120
+      Height = 23
+      Top = 114
+      Width = 165
+      DataField = 'CNPJ'
+      DataSource = dsCliente
+      CharCase = ecNormal
+      MaxLength = 72
+      TabOrder = 3
+    end
+    object DBEdit5: TDBEdit
+      Left = 233
+      Height = 23
+      Top = 142
+      Width = 80
+      DataSource = dsCliente
+      CharCase = ecNormal
+      MaxLength = 0
+      TabOrder = 4
+    end
+    object DBEdit6: TDBEdit
+      Left = 261
+      Height = 23
+      Top = 170
+      Width = 80
+      DataSource = dsCliente
+      CharCase = ecNormal
+      MaxLength = 0
+      TabOrder = 5
+    end
+    object DBEdit7: TDBEdit
+      Left = 289
+      Height = 23
+      Top = 198
+      Width = 80
+      DataSource = dsCliente
+      CharCase = ecNormal
+      MaxLength = 0
+      TabOrder = 6
+    end
+  end
+  object dsCliente: TDataSource
+    DataSet = dmPdv.sqCliente
+    left = 223
+    top = 26
+  end
+end

@@ -1,0 +1,8 @@
+object fFornecedorCadastro: TfFornecedorCadastro
+  Left = 313
+  Height = 240
+  Top = 127
+  Width = 320
+  Caption = 'Cadastro Fornecedor'
+  LCLVersion = '2.0.4.0'
+end

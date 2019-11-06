@@ -1,5 +1,5 @@
 object fQuantCarga: TfQuantCarga
-  Left = 427
+  Left = 428
   Height = 240
   Top = 250
   Width = 320
@@ -10,18 +10,18 @@ object fQuantCarga: TfQuantCarga
   LCLVersion = '2.0.4.0'
   object Label1: TLabel
     Left = 74
-    Height = 17
+    Height = 15
     Top = 78
-    Width = 178
+    Width = 169
     Caption = '* Código da Unidade de Medida'
     ParentColor = False
   end
   object cbTipoUN: TComboBox
     Left = 75
-    Height = 27
+    Height = 23
     Top = 96
     Width = 205
-    ItemHeight = 0
+    ItemHeight = 15
     Items.Strings = (
       '00 - M3'
       '01 - KG'
@@ -55,15 +55,15 @@ object fQuantCarga: TfQuantCarga
   end
   object Label2: TLabel
     Left = 75
-    Height = 17
+    Height = 15
     Top = 134
-    Width = 75
+    Width = 70
     Caption = '* Quantidade'
     ParentColor = False
   end
   object dbQCtpMed: TDBEdit
     Left = 75
-    Height = 27
+    Height = 23
     Top = 32
     Width = 205
     DataField = 'MEDIDA'
@@ -74,7 +74,7 @@ object fQuantCarga: TfQuantCarga
   end
   object dbQCQuant: TDBEdit
     Left = 75
-    Height = 27
+    Height = 23
     Top = 160
     Width = 80
     DataField = 'QUANT'
@@ -82,5 +82,16 @@ object fQuantCarga: TfQuantCarga
     CharCase = ecNormal
     MaxLength = 0
     TabOrder = 2
+  end
+  object Label3: TLabel
+    Left = 75
+    Height = 15
+    Hint = 'PESO DECLARADO, PESO CUBADO, PESO AFORADO, PESO AFERIDO, PESO BASE DE CÁLCULO, LITRAGEM, CAIXAS'
+    Top = 16
+    Width = 193
+    Caption = 'Descrição (PESO BRUTO, CAIXAS, ...) '
+    ParentColor = False
+    ParentShowHint = False
+    ShowHint = True
   end
 end

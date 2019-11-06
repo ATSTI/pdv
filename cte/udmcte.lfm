@@ -1,8 +1,8 @@
 object dmCte: TdmCte
   OldCreateOrder = False
   Height = 512
-  HorizontalOffset = 435
-  VerticalOffset = 206
+  HorizontalOffset = 343
+  VerticalOffset = 36
   Width = 808
   PPI = 96
   object cdsCte: TSQLQuery
@@ -937,64 +937,153 @@ object dmCte: TdmCte
         Precision = -1
       end    
       item
-        Name = 'ANT_CNPJ'
-        DataType = ftString
-        Precision = -1
-        Size = 80
-      end    
-      item
-        Name = 'ANT_IE'
-        DataType = ftString
-        Precision = -1
-        Size = 80
-      end    
-      item
-        Name = 'ANT_UF'
+        Name = 'UFPER'
         DataType = ftString
         Precision = -1
         Size = 8
       end    
       item
-        Name = 'ANT_NOME'
+        Name = 'INFADFISCO'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 2000
       end    
       item
-        Name = 'ANT_CHCTE'
+        Name = 'VPIS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VCOFINS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VIR'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VINSS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VCSLL'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'XDESCSERV'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 120
       end    
       item
-        Name = 'IN_IMPOSTOS'
+        Name = 'QCARGA'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'TPSERV'
         DataType = ftInteger
         Precision = -1
       end    
       item
-        Name = 'VALPREDBC'
-        DataType = ftFloat
+        Name = 'TAF'
+        DataType = ftString
         Precision = -1
+        Size = 48
       end    
       item
-        Name = 'VALVBC'
-        DataType = ftFloat
+        Name = 'NROREGESTADUAL'
+        DataType = ftString
         Precision = -1
+        Size = 100
       end    
       item
-        Name = 'VALPICMS'
-        DataType = ftFloat
+        Name = 'VEICRENAVAM'
+        DataType = ftString
         Precision = -1
+        Size = 44
       end    
       item
-        Name = 'VALVICMS'
-        DataType = ftFloat
+        Name = 'VEICPLACA'
+        DataType = ftString
         Precision = -1
+        Size = 28
       end    
       item
-        Name = 'VALVCRED'
-        DataType = ftFloat
+        Name = 'VEIUF'
+        DataType = ftString
         Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'OBSCONT'
+        DataType = ftString
+        Precision = -1
+        Size = 1600
+      end    
+      item
+        Name = 'TCPF'
+        DataType = ftString
+        Precision = -1
+        Size = 44
+      end    
+      item
+        Name = 'TCNPJ'
+        DataType = ftString
+        Precision = -1
+        Size = 56
+      end    
+      item
+        Name = 'TTAF'
+        DataType = ftString
+        Precision = -1
+        Size = 48
+      end    
+      item
+        Name = 'TNROREGESTADUAL'
+        DataType = ftString
+        Precision = -1
+        Size = 100
+      end    
+      item
+        Name = 'TXNOME'
+        DataType = ftString
+        Precision = -1
+        Size = 240
+      end    
+      item
+        Name = 'TIE'
+        DataType = ftString
+        Precision = -1
+        Size = 56
+      end    
+      item
+        Name = 'TUF'
+        DataType = ftString
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'TTPPROP'
+        DataType = ftString
+        Precision = -1
+        Size = 56
+      end    
+      item
+        Name = 'TUFT'
+        DataType = ftString
+        Precision = -1
+        Size = 8
+      end    
+      item
+        Name = 'OBSFISCO'
+        DataType = ftString
+        Precision = -1
+        Size = 1200
       end>
     Database = dmPdv.IbCon
     Transaction = dmPdv.sTrans
@@ -2749,6 +2838,297 @@ object dmCte: TdmCte
       MinValue = 0
       Precision = -1
     end
+    object cdsCteNPROTCANCEL: TStringField
+      FieldKind = fkData
+      FieldName = 'NPROTCANCEL'
+      Index = 172
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 120
+    end
+    object cdsCteSTATUS_CTE: TStringField
+      FieldKind = fkData
+      FieldName = 'STATUS_CTE'
+      Index = 173
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 120
+    end
+    object cdsCteUFPER: TStringField
+      FieldKind = fkData
+      FieldName = 'UFPER'
+      Index = 174
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object cdsCteINFADFISCO: TStringField
+      FieldKind = fkData
+      FieldName = 'INFADFISCO'
+      Index = 175
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 2000
+    end
+    object cdsCteVPIS: TFloatField
+      FieldKind = fkData
+      FieldName = 'VPIS'
+      Index = 176
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object cdsCteVCOFINS: TFloatField
+      FieldKind = fkData
+      FieldName = 'VCOFINS'
+      Index = 177
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object cdsCteVIR: TFloatField
+      FieldKind = fkData
+      FieldName = 'VIR'
+      Index = 178
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object cdsCteVINSS: TFloatField
+      FieldKind = fkData
+      FieldName = 'VINSS'
+      Index = 179
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object cdsCteVCSLL: TFloatField
+      FieldKind = fkData
+      FieldName = 'VCSLL'
+      Index = 180
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object cdsCteXDESCSERV: TStringField
+      FieldKind = fkData
+      FieldName = 'XDESCSERV'
+      Index = 181
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 120
+    end
+    object cdsCteQCARGA: TFloatField
+      FieldKind = fkData
+      FieldName = 'QCARGA'
+      Index = 182
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object cdsCteTPSERV: TLongintField
+      FieldKind = fkData
+      FieldName = 'TPSERV'
+      Index = 183
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object cdsCteTAF: TStringField
+      FieldKind = fkData
+      FieldName = 'TAF'
+      Index = 184
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 48
+    end
+    object cdsCteNROREGESTADUAL: TStringField
+      FieldKind = fkData
+      FieldName = 'NROREGESTADUAL'
+      Index = 185
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 100
+    end
+    object cdsCteVEICRENAVAM: TStringField
+      FieldKind = fkData
+      FieldName = 'VEICRENAVAM'
+      Index = 186
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 44
+    end
+    object cdsCteVEICPLACA: TStringField
+      FieldKind = fkData
+      FieldName = 'VEICPLACA'
+      Index = 187
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 28
+    end
+    object cdsCteVEIUF: TStringField
+      FieldKind = fkData
+      FieldName = 'VEIUF'
+      Index = 188
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object cdsCteOBSCONT: TStringField
+      FieldKind = fkData
+      FieldName = 'OBSCONT'
+      Index = 189
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 1600
+    end
+    object cdsCteTCPF: TStringField
+      FieldKind = fkData
+      FieldName = 'TCPF'
+      Index = 190
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 44
+    end
+    object cdsCteTCNPJ: TStringField
+      FieldKind = fkData
+      FieldName = 'TCNPJ'
+      Index = 191
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 56
+    end
+    object cdsCteTTAF: TStringField
+      FieldKind = fkData
+      FieldName = 'TTAF'
+      Index = 192
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 48
+    end
+    object cdsCteTNROREGESTADUAL: TStringField
+      FieldKind = fkData
+      FieldName = 'TNROREGESTADUAL'
+      Index = 193
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 100
+    end
+    object cdsCteTXNOME: TStringField
+      FieldKind = fkData
+      FieldName = 'TXNOME'
+      Index = 194
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 240
+    end
+    object cdsCteTIE: TStringField
+      FieldKind = fkData
+      FieldName = 'TIE'
+      Index = 195
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 56
+    end
+    object cdsCteTUF: TStringField
+      FieldKind = fkData
+      FieldName = 'TUF'
+      Index = 196
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object cdsCteTTPPROP: TStringField
+      FieldKind = fkData
+      FieldName = 'TTPPROP'
+      Index = 197
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 56
+    end
+    object cdsCteTUFT: TStringField
+      FieldKind = fkData
+      FieldName = 'TUFT'
+      Index = 198
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
+    end
+    object cdsCteOBSFISCO: TStringField
+      FieldKind = fkData
+      FieldName = 'OBSFISCO'
+      Index = 199
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 1200
+    end
   end
   object sqQC: TSQLQuery
     FieldDefs = <    
@@ -3035,11 +3415,49 @@ object dmCte: TdmCte
     end
   end
   object sqSeg: TSQLQuery
-    FieldDefs = <>
+    FieldDefs = <    
+      item
+        Name = 'COD_CTE_SEGURO'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'COD_CTE'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'RESP'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'NOME_SEGURADORA'
+        DataType = ftString
+        Precision = -1
+        Size = 120
+      end    
+      item
+        Name = 'NUMERO_APOLICE'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end    
+      item
+        Name = 'VALOR'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'NUMERO_AVERBACAO'
+        DataType = ftString
+        Precision = -1
+        Size = 80
+      end>
     Database = dmPdv.IbCon
     Transaction = dmPdv.sTrans
     SQL.Strings = (
-      'select * from CTE_SEGURO  where COD_CTE =:pCTE'
+      'select * from CTE_SEGURO  where COD_CTE = :pCTE'
     )
     Params = <    
       item
@@ -3049,6 +3467,75 @@ object dmCte: TdmCte
       end>
     left = 352
     top = 88
+    object sqSegCOD_CTE_SEGURO: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_CTE_SEGURO'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object sqSegCOD_CTE: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_CTE'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqSegRESP: TLongintField
+      FieldKind = fkData
+      FieldName = 'RESP'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqSegNOME_SEGURADORA: TStringField
+      FieldKind = fkData
+      FieldName = 'NOME_SEGURADORA'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 120
+    end
+    object sqSegNUMERO_APOLICE: TStringField
+      FieldKind = fkData
+      FieldName = 'NUMERO_APOLICE'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object sqSegVALOR: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALOR'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = -1
+    end
+    object sqSegNUMERO_AVERBACAO: TStringField
+      FieldKind = fkData
+      FieldName = 'NUMERO_AVERBACAO'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
   end
   object sqVeic: TSQLQuery
     FieldDefs = <    
@@ -3415,5 +3902,10 @@ object dmCte: TdmCte
     DataSet = sqVeic
     left = 415
     top = 154
+  end
+  object dsSeguro: TDataSource
+    DataSet = sqSeg
+    left = 352
+    top = 147
   end
 end

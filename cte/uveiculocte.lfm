@@ -1,6 +1,6 @@
 inherited fVeiculoCte: TfVeiculoCte
-  Left = 387
-  Top = 266
+  Left = 373
+  Top = 69
   Caption = 'Veiculo'
   OnCreate = FormCreate
   OnShow = FormShow
@@ -12,7 +12,7 @@ inherited fVeiculoCte: TfVeiculoCte
   inherited Panel3: TPanel
     object DBEdit1: TDBEdit[0]
       Left = 184
-      Height = 27
+      Height = 23
       Top = 16
       Width = 80
       DataField = 'RENAVAM'
@@ -23,7 +23,7 @@ inherited fVeiculoCte: TfVeiculoCte
     end
     object DBEdit2: TDBEdit[1]
       Left = 184
-      Height = 27
+      Height = 23
       Top = 48
       Width = 80
       DataField = 'PLACA'
@@ -34,7 +34,7 @@ inherited fVeiculoCte: TfVeiculoCte
     end
     object DBEdit3: TDBEdit[2]
       Left = 184
-      Height = 27
+      Height = 23
       Top = 80
       Width = 80
       DataField = 'TARA'
@@ -45,7 +45,7 @@ inherited fVeiculoCte: TfVeiculoCte
     end
     object DBEdit4: TDBEdit[3]
       Left = 184
-      Height = 27
+      Height = 23
       Top = 112
       Width = 80
       DataField = 'CAPKG'
@@ -56,7 +56,7 @@ inherited fVeiculoCte: TfVeiculoCte
     end
     object DBEdit5: TDBEdit[4]
       Left = 184
-      Height = 27
+      Height = 23
       Top = 144
       Width = 80
       DataField = 'CAPM3'
@@ -67,7 +67,7 @@ inherited fVeiculoCte: TfVeiculoCte
     end
     object DBEdit6: TDBEdit[5]
       Left = 400
-      Height = 27
+      Height = 23
       Top = 80
       Width = 80
       DataField = 'VUF'
@@ -78,73 +78,73 @@ inherited fVeiculoCte: TfVeiculoCte
     end
     object Label1: TLabel[6]
       Left = 35
-      Height = 17
+      Height = 15
       Top = 16
-      Width = 52
+      Width = 49
       Caption = 'Renavam'
       ParentColor = False
     end
     object Label2: TLabel[7]
       Left = 35
-      Height = 17
+      Height = 15
       Top = 48
-      Width = 30
+      Width = 28
       Caption = 'Placa'
       ParentColor = False
     end
     object Label3: TLabel[8]
       Left = 35
-      Height = 17
+      Height = 15
       Top = 80
-      Width = 49
+      Width = 45
       Caption = 'Tara (kg)'
       ParentColor = False
     end
     object Label4: TLabel[9]
       Left = 35
-      Height = 17
+      Height = 15
       Top = 112
-      Width = 90
+      Width = 86
       Caption = 'Capacidade (kg)'
       ParentColor = False
     end
     object Label5: TLabel[10]
       Left = 35
-      Height = 17
+      Height = 15
       Top = 144
-      Width = 95
+      Width = 90
       Caption = 'Capacidade (M3)'
       ParentColor = False
     end
     object Label6: TLabel[11]
       Left = 35
-      Height = 17
+      Height = 15
       Top = 176
-      Width = 86
+      Width = 83
       Caption = 'Tipo de Rodado'
       ParentColor = False
     end
     object Label7: TLabel[12]
       Left = 352
-      Height = 17
+      Height = 15
       Top = 176
-      Width = 104
+      Width = 96
       Caption = 'Tipo de Carroceria'
       ParentColor = False
     end
     object Label8: TLabel[13]
       Left = 352
-      Height = 17
+      Height = 15
       Top = 129
-      Width = 84
+      Width = 80
       Caption = 'Tipo de Veiculo'
       ParentColor = False
     end
     object Label16: TLabel[14]
       Left = 344
-      Height = 17
+      Height = 15
       Top = 80
-      Width = 44
+      Width = 41
       Caption = 'UF Veic.'
       ParentColor = False
     end
@@ -154,21 +154,21 @@ inherited fVeiculoCte: TfVeiculoCte
       Top = 272
       Width = 632
       Caption = 'Proprietário (Quando o Veículo não for do emitente do CT-e)'
-      ClientHeight = 120
+      ClientHeight = 119
       ClientWidth = 628
       TabOrder = 6
       Visible = False
       object Label11: TLabel
         Left = 8
-        Height = 17
+        Height = 15
         Top = 1
-        Width = 58
+        Width = 59
         Caption = 'CPF / CNPJ'
         ParentColor = False
       end
       object DBEdit7: TDBEdit
         Left = 88
-        Height = 27
+        Height = 23
         Top = 0
         Width = 144
         DataField = 'CNPJ'
@@ -179,15 +179,15 @@ inherited fVeiculoCte: TfVeiculoCte
       end
       object Label14: TLabel
         Left = 8
-        Height = 17
+        Height = 15
         Top = 56
-        Width = 72
+        Width = 69
         Caption = 'Razão/Nome'
         ParentColor = False
       end
       object DBEdit8: TDBEdit
         Left = 88
-        Height = 27
+        Height = 23
         Top = 56
         Width = 312
         DataField = 'NOME'
@@ -198,15 +198,15 @@ inherited fVeiculoCte: TfVeiculoCte
       end
       object Label15: TLabel
         Left = 8
-        Height = 17
+        Height = 15
         Top = 28
-        Width = 77
+        Width = 71
         Caption = 'Insc. Estadual'
         ParentColor = False
       end
       object DBEdit9: TDBEdit
         Left = 88
-        Height = 27
+        Height = 23
         Top = 28
         Width = 144
         DataField = 'IE'
@@ -226,15 +226,15 @@ inherited fVeiculoCte: TfVeiculoCte
       end
       object Label10: TLabel
         Left = 8
-        Height = 17
+        Height = 15
         Top = 96
-        Width = 15
+        Width = 14
         Caption = 'UF'
         ParentColor = False
       end
       object DBEdit12: TDBEdit
         Left = 88
-        Height = 27
+        Height = 23
         Top = 86
         Width = 56
         DataField = 'UF'
@@ -246,7 +246,7 @@ inherited fVeiculoCte: TfVeiculoCte
     end
     object DBEdit10: TDBEdit[16]
       Left = 400
-      Height = 27
+      Height = 23
       Hint = 'Código interno de uso da transportadora'
       Top = 16
       Width = 216
@@ -260,26 +260,26 @@ inherited fVeiculoCte: TfVeiculoCte
     end
     object Label17: TLabel[17]
       Left = 360
-      Height = 17
+      Height = 15
       Top = 16
-      Width = 28
+      Width = 26
       Caption = 'CINT'
       ParentColor = False
     end
     object Label18: TLabel[18]
       Left = 350
-      Height = 17
+      Height = 15
       Top = 46
-      Width = 38
+      Width = 37
       Caption = 'RNTRC'
       ParentColor = False
     end
     object cbTpVeic: TComboBox[19]
       Left = 352
-      Height = 27
+      Height = 23
       Top = 148
       Width = 320
-      ItemHeight = 0
+      ItemHeight = 15
       Items.Strings = (
         '0-Tração'
         '1-Reboque'
@@ -288,10 +288,10 @@ inherited fVeiculoCte: TfVeiculoCte
     end
     object cbTpRodado: TComboBox[20]
       Left = 35
-      Height = 27
+      Height = 23
       Top = 200
       Width = 301
-      ItemHeight = 0
+      ItemHeight = 15
       Items.Strings = (
         '00 - não aplicável'
         '01 - Truck'
@@ -306,7 +306,7 @@ inherited fVeiculoCte: TfVeiculoCte
     end
     object DBEdit11: TDBEdit[21]
       Left = 400
-      Height = 27
+      Height = 23
       Hint = 'Código interno de uso da transportadora'
       Top = 46
       Width = 216
@@ -320,10 +320,10 @@ inherited fVeiculoCte: TfVeiculoCte
     end
     object cbTpCarroceria: TComboBox[22]
       Left = 352
-      Height = 27
+      Height = 23
       Top = 200
       Width = 320
-      ItemHeight = 0
+      ItemHeight = 15
       Items.Strings = (
         '00 - não aplicável'
         '01 - Aberta'
@@ -337,18 +337,18 @@ inherited fVeiculoCte: TfVeiculoCte
     end
     object Label13: TLabel[23]
       Left = 40
-      Height = 17
+      Height = 15
       Top = 240
-      Width = 111
+      Width = 104
       Caption = 'Tipo de Proprietario'
       ParentColor = False
     end
     object cbProprietario: TComboBox[24]
       Left = 176
-      Height = 27
+      Height = 23
       Top = 240
       Width = 276
-      ItemHeight = 0
+      ItemHeight = 15
       Items.Strings = (
         'Próprio'
         'Terceiro'

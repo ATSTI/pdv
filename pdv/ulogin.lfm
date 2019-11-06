@@ -8,7 +8,7 @@ object fLogin: TfLogin
   ClientWidth = 550
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '2.0.0.4'
+  LCLVersion = '2.0.4.0'
   object pnInfo: TPanel
     Left = 29
     Height = 306
@@ -39,6 +39,8 @@ object fLogin: TfLogin
         'cadastramento da empresa para emissao da NFCe no site da Receita) e o '
         'Campo D4 , o idCSC .'
         ''
+        'Parametro OUTROSCARTOES, exibe SiaNet e BrasilCard'
+        ''
         'Vendedor Padrao : Colocar no conf.ini:'
         ''
         '  [Outros]'
@@ -48,6 +50,7 @@ object fLogin: TfLogin
         ''
         ' [IMPRESSORA]'
         '  Cupom=Texto ou ACBR'
+        '  NumeroVias=2'
         ''
         'Fazer a Busca pelo Código Produto (CODPRO)'
         '''Outros'',''BuscaProduto'',''NORMAL'''
@@ -146,7 +149,7 @@ object fLogin: TfLogin
     Left = 26
     Height = 15
     Top = 330
-    Width = 118
+    Width = 116
     Caption = 'ATS Ti Sistemas , v. 4.3'
     ParentColor = False
   end

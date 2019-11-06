@@ -1,6 +1,6 @@
 inherited fClienteBusca: TfClienteBusca
   Left = 410
-  Top = 117
+  Top = 35
   Width = 696
   Caption = 'Busca Clientes'
   ClientWidth = 696
@@ -16,8 +16,9 @@ inherited fClienteBusca: TfClienteBusca
     end
     inherited Label1: TLabel
       Left = 24
+      Height = 21
       Top = 8
-      Width = 55
+      Width = 54
       Caption = 'Código'
     end
     inherited Edit2: TEdit
@@ -27,13 +28,14 @@ inherited fClienteBusca: TfClienteBusca
       TabOrder = 0
     end
     inherited chInativo: TCheckBox
+      Width = 60
       OnChange = chInativoChange
     end
     object Label2: TLabel[4]
       Left = 208
-      Height = 19
+      Height = 21
       Top = 8
-      Width = 48
+      Width = 45
       Caption = 'Nome'
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
@@ -47,7 +49,7 @@ inherited fClienteBusca: TfClienteBusca
       Left = 88
       Height = 21
       Top = 40
-      Width = 110
+      Width = 100
       Caption = 'Cliente Curso'
       Checked = True
       Font.CharSet = ANSI_CHARSET

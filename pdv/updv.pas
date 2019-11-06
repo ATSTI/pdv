@@ -479,7 +479,7 @@ procedure TfPdv.btnProdutoProcClick(Sender: TObject);
 begin
   if (statusPedido > 0) then
   begin
-    ShowMessage('Pedido ja finalizado.');
+    ShowMessage('Pedido ja finalizado/cancelado.');
     Exit;
   end;
   fProdutoProc.ShowModal;
@@ -507,7 +507,7 @@ procedure TfPdv.BitBtn2Click(Sender: TObject);
 begin
   if (statusPedido > 0) then
   begin
-    ShowMessage('Pedido ja finalizado.');
+    ShowMessage('Pedido ja finalizado/cancelado.');
     Exit;
   end;
   if (edCliente.Text <> '') then
@@ -522,7 +522,7 @@ procedure TfPdv.BitBtn3Click(Sender: TObject);
 begin
   if (statusPedido > 0) then
   begin
-    ShowMessage('Pedido ja finalizado.');
+    ShowMessage('Pedido ja finalizado/cancelado.');
     Exit;
   end;
   if (edVendedor.Text <> '') then
@@ -591,6 +591,7 @@ begin
       btnNovo.Click
     else
       btnVnd1.Click;} //03/09/22019
+    statusPedido:=9;
     dmPdv.sqLancamentos.Close;
     btnNovo.SetFocus;
   end;
@@ -936,7 +937,7 @@ begin
     Key := #0;
     if ((statusPedido > 0) and (dmPdv.usaComanda = 0)) then
     begin
-      ShowMessage('Pedido ja finalizado.');
+      ShowMessage('Pedido ja finalizado. Clique no Incluir para novo pedido.');
       Exit;
     end;
     if (edProduto.Text <> '') then
@@ -1116,6 +1117,13 @@ begin
   DBGrid2.Columns[2].FieldName:='UNIDADEMEDIDA';
   DBGrid2.Columns[3].FieldName:='VALOR_PRAZO';
   DBGrid2.Columns[3].DisplayFormat:=',##0.00';
+  fPDV_Rec.OutrosCartoes:='N';
+  sqlP := 'SELECT * FROM PARAMETRO WHERE PARAMETRO = ' + QuotedStr('OUTROSCARTOES');
+  dmPdv.busca_sql(sqlP);
+  if (not dmPdv.sqBusca.IsEmpty) then
+  begin
+    fPDV_Rec.OutrosCartoes:='S';
+  end;
 
   sqlP := 'SELECT CODCAIXA, NOMECAIXA ';
   sqlP += ' FROM CAIXA_CONTROLE  ';
@@ -1300,6 +1308,10 @@ begin
     edClienteNome.Text := dmpdv.sqLancamentosNOMECLIENTE.AsString;
     //edProdutoDescX.Text:= dmPdv.sqLancamentosDESCPRODUTO.AsString;
     //controlaPedidos(codMov, 0, 0);
+    if (dmPdv.sqLancamentosSTATUS.AsInteger = 2) then
+    begin
+      statusPedido:=2;
+    end;
   end;
   lblMSG.Caption:='Abrindo Pedido-3';
   Writeln(logs, 'Abrindo Pedido-3');

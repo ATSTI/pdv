@@ -1,0 +1,8 @@
+object fMDFe: TfMDFe
+  Left = 313
+  Height = 414
+  Top = 127
+  Width = 685
+  Caption = 'Manifesto de Documentos Eletrônicos'
+  LCLVersion = '2.0.4.0'
+end
