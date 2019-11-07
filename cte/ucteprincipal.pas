@@ -703,6 +703,7 @@ type
     procedure dbValReceberChange(Sender: TObject);
     procedure dbValTotPrestChange(Sender: TObject);
     procedure dbValTotPrestExit(Sender: TObject);
+    procedure dbValTotPrestKeyPress(Sender: TObject; var Key: char);
     procedure dbValTotTriChange(Sender: TObject);
     procedure dgGridCTEDblClick(Sender: TObject);
     procedure edtBuscaTomadorExit(Sender: TObject);
@@ -3529,6 +3530,11 @@ begin
   end;
 end;
 
+procedure TfCTePrincipal.dbValTotPrestKeyPress(Sender: TObject; var Key: char);
+begin
+
+end;
+
 procedure TfCTePrincipal.dbValTotTriChange(Sender: TObject);
 begin
   if (dmCte.cdsCteVALTOTTRI.NewValue <> dmCte.cdsCteVALTOTTRI.OldValue) then
@@ -5868,7 +5874,7 @@ end;
 
 procedure TfCTePrincipal.dbValTotPrestChange(Sender: TObject);
 begin
-  if (dmCte.cdsCteVALINFCARGA.NewValue <> dmCte.cdsCteVALINFCARGA.OldValue) then
+  if (dmCte.cdsCteVPREST.NewValue <> dmCte.cdsCteVPREST.OldValue) then
     if ((modoGravacao <> 'EDITAR') or (modoGravacao <> 'INSERIR')) then
       modoGravacao := 'EDITAR';
 end;

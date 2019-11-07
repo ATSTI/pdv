@@ -684,9 +684,9 @@ object fCTePrincipal: TfCTePrincipal
     Height = 633
     Top = 0
     Width = 1305
-    ActivePage = TabSheet20
+    ActivePage = TabCteGeradas
     Align = alClient
-    TabIndex = 5
+    TabIndex = 0
     TabOrder = 0
     OnChange = pcPrincipalChange
     object TabCteGeradas: TTabSheet
@@ -8813,6 +8813,7 @@ object fCTePrincipal: TfCTePrincipal
             TabOrder = 0
             OnChange = dbValTotPrestChange
             OnExit = dbValTotPrestExit
+            OnKeyPress = dbValTotPrestKeyPress
           end
           object dbValReceber: TDBEdit
             Left = 364
