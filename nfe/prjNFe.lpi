@@ -66,7 +66,7 @@
         <PackageName Value="LCL"/>
       </Item10>
     </RequiredPackages>
-    <Units Count="3">
+    <Units Count="4">
       <Unit0>
         <Filename Value="prjNFe.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -86,6 +86,14 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
       </Unit2>
+      <Unit3>
+        <Filename Value="..\geral\ucertificadoler.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frSelecionarCertificado"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uCertificadoLer"/>
+      </Unit3>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

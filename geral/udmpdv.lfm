@@ -3,7 +3,7 @@ object dmPdv: TdmPdv
   OldCreateOrder = False
   Height = 694
   HorizontalOffset = 686
-  VerticalOffset = 24
+  VerticalOffset = 0
   Width = 473
   PPI = 96
   object IbCon: TIBConnection
@@ -3344,7 +3344,7 @@ object dmPdv: TdmPdv
     Transaction = sTrans
     SQL.Strings = (
       'select e.*, p.NOME CENTROCUSTO from EMPRESA e,  PLANO p'
-      'where p.codigo = :pcusto and p.CODEMPRESA = e.CODIGO'
+      'where ((p.codigo = :pcusto) or (:pCusto = 0)) and (p.CODEMPRESA = e.CODIGO)'
     )
     Params = <    
       item

@@ -21,7 +21,6 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uPdv"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <TopLine Value="573"/>
         <CursorPos X="31" Y="594"/>
@@ -202,9 +201,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uNfce"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="1933"/>
-        <CursorPos X="36" Y="1924"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="1841"/>
+        <CursorPos Y="1866"/>
         <UsageCount Value="200"/>
         <Bookmarks Count="8">
           <Item0 X="3" Y="647" ID="8"/>
@@ -216,6 +216,8 @@
           <Item6 X="6" Y="2137" ID="5"/>
           <Item7 Y="1901" ID="7"/>
         </Bookmarks>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit17>
       <Unit18>
         <Filename Value="..\geral\ucertificadoler.pas"/>
@@ -349,7 +351,7 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="39" Y="13"/>
-        <UsageCount Value="146"/>
+        <UsageCount Value="149"/>
       </Unit29>
       <Unit30>
         <Filename Value="..\geral\upadraobusca.pas"/>
@@ -359,7 +361,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uPadraoBusca"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="60"/>
+        <UsageCount Value="63"/>
       </Unit30>
       <Unit31>
         <Filename Value="..\upadraobusca.pas"/>
@@ -523,7 +525,12 @@
         <UsageCount Value="10"/>
       </Unit51>
     </Units>
-    <JumpHistory HistoryIndex="-1"/>
+    <JumpHistory Count="1">
+      <Position1>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="1924" Column="36" TopLine="1932"/>
+      </Position1>
+    </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
       <Modes Count="0" ActiveMode="default"/>

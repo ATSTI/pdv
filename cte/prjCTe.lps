@@ -43,12 +43,10 @@
         <ComponentName Value="dmPdv"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="326"/>
         <CursorPos X="58" Y="334"/>
         <UsageCount Value="200"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit2>
       <Unit3>
         <Filename Value="udmcte.pas"/>
@@ -57,11 +55,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="uDmCte"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="-1"/>
         <CursorPos X="51" Y="180"/>
         <UsageCount Value="200"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit3>
       <Unit4>
         <Filename Value="unfe.pas"/>
@@ -70,12 +66,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uNFe"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="69"/>
         <CursorPos Y="75"/>
         <UsageCount Value="198"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit4>
       <Unit5>
         <Filename Value="..\geral\ufrmStatus.pas"/>
@@ -93,12 +87,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCompValor"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="42"/>
         <CursorPos Y="65"/>
         <UsageCount Value="156"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit6>
       <Unit7>
         <Filename Value="uquantcarga.pas"/>
@@ -121,12 +113,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uClienteBusca"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="120"/>
         <CursorPos X="43" Y="131"/>
         <UsageCount Value="108"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit8>
       <Unit9>
         <Filename Value="..\geral\upadraobusca.pas"/>
@@ -146,12 +136,10 @@
         <ComponentName Value="fMunicipioBusca"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="77"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="76"/>
         <CursorPos X="40" Y="50"/>
         <UsageCount Value="180"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit10>
       <Unit11>
         <Filename Value="..\geral\upadrao.pas"/>
@@ -171,12 +159,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uVeiculoCte"/>
-        <EditorIndex Value="8"/>
-        <TopLine Value="156"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="155"/>
         <CursorPos X="29" Y="137"/>
         <UsageCount Value="177"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit12>
       <Unit13>
         <Filename Value="..\geral\ucertificadoler.pas"/>
@@ -331,7 +317,7 @@
         <UsageCount Value="16"/>
       </Unit30>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="24" HistoryIndex="23">
       <Position1>
         <Filename Value="ucteprincipal.pas"/>
         <Caret Line="5492" Column="40" TopLine="5469"/>
@@ -357,101 +343,77 @@
         <Caret Line="3743" TopLine="3740"/>
       </Position6>
       <Position7>
-        <Filename Value="..\geral\udmpdv.pas"/>
-        <Caret Line="560" TopLine="546"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="3743" TopLine="3738"/>
       </Position7>
       <Position8>
-        <Filename Value="..\geral\udmpdv.pas"/>
-        <Caret Line="562" TopLine="546"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="3744" TopLine="3738"/>
       </Position8>
       <Position9>
-        <Filename Value="..\geral\udmpdv.pas"/>
-        <Caret Line="564" TopLine="546"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="3745" TopLine="3738"/>
       </Position9>
       <Position10>
-        <Filename Value="..\geral\udmpdv.pas"/>
-        <Caret Line="618" TopLine="605"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="3746" TopLine="3738"/>
       </Position10>
       <Position11>
-        <Filename Value="..\geral\udmpdv.pas"/>
-        <Caret Line="628" TopLine="606"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="3747" TopLine="3738"/>
       </Position11>
       <Position12>
-        <Filename Value="..\geral\udmpdv.pas"/>
-        <Caret Line="661" TopLine="648"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="3748" TopLine="3738"/>
       </Position12>
       <Position13>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3743" TopLine="3738"/>
+        <Caret Line="3750" Column="53" TopLine="3738"/>
       </Position13>
       <Position14>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3744" TopLine="3738"/>
+        <Caret Line="5172" Column="3" TopLine="5169"/>
       </Position14>
       <Position15>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3745" TopLine="3738"/>
+        <Caret Line="3748" Column="39" TopLine="3741"/>
       </Position15>
       <Position16>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3746" TopLine="3738"/>
+        <Caret Line="5984" Column="20" TopLine="5962"/>
       </Position16>
       <Position17>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3747" TopLine="3738"/>
+        <Caret Line="137" Column="20" TopLine="124"/>
       </Position17>
       <Position18>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3748" TopLine="3738"/>
+        <Caret Line="2051" Column="19" TopLine="2029"/>
       </Position18>
       <Position19>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3750" Column="53" TopLine="3738"/>
+        <Caret Line="3119" Column="37" TopLine="3107"/>
       </Position19>
       <Position20>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="5172" Column="3" TopLine="5169"/>
+        <Caret Line="5871" Column="3" TopLine="5868"/>
       </Position20>
       <Position21>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3748" Column="39" TopLine="3741"/>
+        <Caret Line="3524" Column="3" TopLine="3522"/>
       </Position21>
       <Position22>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="5984" Column="20" TopLine="5962"/>
+        <Caret Line="3535" Column="3" TopLine="3522"/>
       </Position22>
       <Position23>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="137" Column="20" TopLine="124"/>
+        <Caret Line="5877" Column="56" TopLine="5875"/>
       </Position23>
       <Position24>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="2051" Column="19" TopLine="2029"/>
-      </Position24>
-      <Position25>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3119" Column="37" TopLine="3107"/>
-      </Position25>
-      <Position26>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="5871" Column="3" TopLine="5868"/>
-      </Position26>
-      <Position27>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3524" Column="3" TopLine="3522"/>
-      </Position27>
-      <Position28>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3535" Column="3" TopLine="3522"/>
-      </Position28>
-      <Position29>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="5877" Column="56" TopLine="5875"/>
-      </Position29>
-      <Position30>
-        <Filename Value="ucteprincipal.pas"/>
         <Caret Line="5872" Column="3" TopLine="5870"/>
-      </Position30>
+      </Position24>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>

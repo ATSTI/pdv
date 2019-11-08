@@ -12759,7 +12759,7 @@ object fCTePrincipal: TfCTePrincipal
         Caption = 'Certificado Digital'
         ClientHeight = 140
         ClientWidth = 468
-        Color = clMenuHighlight
+        Color = clWindow
         ParentColor = False
         TabOrder = 0
         object sbtnGetCert: TSpeedButton
@@ -13048,7 +13048,7 @@ object fCTePrincipal: TfCTePrincipal
         Caption = 'Email - Configuração Servidor saída'
         ClientHeight = 316
         ClientWidth = 416
-        Color = clMenuHighlight
+        Color = clWindow
         ParentColor = False
         TabOrder = 7
         object Label133: TLabel
