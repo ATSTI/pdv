@@ -2670,6 +2670,7 @@ var
  c : integer;
  vlr_total: double;
  num_fat: Integer;
+ forma_pag: String;
 begin
   num_fat := 1;
   with ACBrNFe1.NotasFiscais.Items[0].NFe do
@@ -2704,8 +2705,8 @@ begin
         vlr_total := 0;
 
         // 03/07/18
-        if ((trim(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString) <> '') and
-          (trim(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString) <> 'R')) then   // 13/06/2018
+        forma_pag := trim(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString);
+        if ((forma_pag <> '') and (forma_pag <> 'R')) then
         begin
           while not dmPdv.qcdsFatura.eof do
           begin
@@ -2747,7 +2748,7 @@ begin
 
         end;
 
-    if(trim(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString) = '' )then
+    if(forma_pag = '' )then
     begin
       ShowMessage('Falta a Forma de Pagamento!');
       Exit
@@ -2759,66 +2760,66 @@ begin
       begin
         tPag := fpDinheiro;            // 0
       end;
-      if((dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = '2' )or(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = '3' )or(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = 'F' )) then
+      if((forma_pag = '2' )or(forma_pag = '3' )or(forma_pag = 'F' )) then
       begin
         tPag := fpCheque;              // 1
       end;
-      if((dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = '6' )or(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = 'I' )or
-         (dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = 'K' )or(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = 'M' ))
+      if((forma_pag = '6' )or(forma_pag = 'I' )or
+         (forma_pag = 'K' )or(forma_pag = 'M' ))
       then
       begin
         tPag := fpCartaoCredito;       // 2
       end;
-      if((dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = '7' )or(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = 'J' )or(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = 'L' )) then
+      if((forma_pag = '7' )or(forma_pag = 'J' )or(forma_pag = 'L' )) then
       begin
         tPag := fpCartaoDebito;        // 3
       end;
-      if(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = 'N' )then  // ?
+      if(forma_pag = 'N' )then  // ?
       begin
         tPag := fpCreditoLoja;         // 4
       end;
-      if(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = 'O' )then  // ?
+      if(forma_pag = 'O' )then  // ?
       begin
         tPag := fpValeAlimentacao;     // 5
       end;
-      if(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = 'P' )then  // ?
+      if(forma_pag = 'P' )then  // ?
       begin
         tPag := fpValeRefeicao;        // 6
       end;
-      if(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = 'G' )then  // ?
+      if(forma_pag = 'G' )then  // ?
       begin
         tPag := fpValePresente;        // 7
       end;
-      if(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = 'Q' )then  // ?
+      if(forma_pag = 'Q' )then  // ?
       begin
         tPag := fpValeCombustivel;     // 8
       end;
-      if(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = '5' )then
+      if(forma_pag = '5' )then
       begin
         tPag := fpDuplicataMercantil;  // 9
       end;
-      if(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = '4' )then
+      if(forma_pag = '4' )then
       begin
         tPag := fpBoletoBancario;      //10
       end;
-      if(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = 'R' )then  // ?
+      if(forma_pag = 'R' )then  // ?
       begin
         tPag := fpSemPagamento;        //11
       end;
 
-      if((dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = '8') or
-         (dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = '9') or
-         (dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = 'A') or
-         (dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = 'B') or
-         (dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = 'C') or
-         (dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = 'D') or
-         (dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = 'E') or
-         (dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = 'H')
+      if((forma_pag = '8') or
+         (forma_pag = '9') or
+         (forma_pag = 'A') or
+         (forma_pag = 'B') or
+         (forma_pag = 'C') or
+         (forma_pag = 'D') or
+         (forma_pag = 'E') or
+         (forma_pag = 'H')
       )then
       begin
         tPag := fpOutro;               //12
       end;
-      if (dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString <> 'R' )then
+      if (forma_pag <> 'R' )then
         vPag := vlr_total;
 
     end;
@@ -4410,7 +4411,7 @@ begin
         else begin
           ide.finNFe    := fnComplementar;
         end;
-        // Se naõ tiver a Chave para GERAR Nota de Devolução usar isso abaixo
+        {// Se naõ tiver a Chave para GERAR Nota de Devolução usar isso abaixo
         if (length(dmPdv.qcdsNFIDCOMPLEMENTAR.AsString) < 20) then
         begin
           ide.finNFe    := fnDevolucao;
@@ -4423,7 +4424,7 @@ begin
             modelo := 1;
             serie  := 1;
           end;
-        end;
+        end;}
         if (length(dmPdv.qcdsNFIDCOMPLEMENTAR.AsString) > 20) then
         begin
            ide.NFref.Add.refNFe := dmPdv.qcdsNFIDCOMPLEMENTAR.AsString;
@@ -4595,11 +4596,11 @@ begin
             MessageDlg('Produto ' + dmPdv.cdsItensNFDESCPRODUTO.AsString + ' sem CST ou CSOSN', mtError, [mbOK], 0);
             Result := False;
           end;
+          // DADOS DOS PRODUTOS DA NOTA
+          getItens(i);
+          i := i + 1;
           dmPdv.cdsItensNF.Next;
         end;
-        // DADOS DOS PRODUTOS DA NOTA
-        getItens(i);
-        i := i + 1;
         //end; // fim with nfe
         getTransportadora();
         //VALOR TORAL
