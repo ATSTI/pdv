@@ -23,48 +23,52 @@ type
     ACBrNFeDANFCeFortes1: TACBrNFeDANFCeFortes;
     ACBrNFeDANFeRL1: TACBrNFeDANFeRL;
     ACBrValidador1: TACBrValidador;
+    BitBtn8: TBitBtn;
+    btnAbaPrincipal1: TBitBtn;
+    BtnCCe1: TBitBtn;
+    BtnEnvEmail: TBitBtn;
+    btnGeraNFe1: TBitBtn;
+    BtnCCe: TBitBtn;
+    btnGeraPDF: TBitBtn;
+    btnCancelaNFe: TBitBtn;
+    btnGravArqNFEini: TButton;
+    btnImprimirCCe: TBitBtn;
+    btnImprimirCCe1: TBitBtn;
+    btnListarCCe: TBitBtn;
+    BtnPreVis: TBitBtn;
+    btnListar: TBitBtn;
     BitBtn2: TBitBtn;
     BitBtn3: TBitBtn;
     BitBtn4: TBitBtn;
     BitBtn5: TBitBtn;
     BitBtn6: TBitBtn;
     BitBtn7: TBitBtn;
-    BitBtn8: TBitBtn;
-    BitBtn9: TBitBtn;
     btnAbaPrincipal: TBitBtn;
     btnAlteraStatus: TBitBtn;
-    btnCancelaNFe: TBitBtn;
-    BtnCCe: TBitBtn;
     btnConnDpec: TBitBtn;
     btnConsulta: TBitBtn;
     btnContingencia: TBitBtn;
     btnDpec: TBitBtn;
-    BtnEnvEmail: TBitBtn;
     btnFSDA: TBitBtn;
-    btnGeraNFe: TBitBtn;
-    btnGeraPDF: TBitBtn;
-    btnImprime: TBitBtn;
-    btnImprimirCCe: TBitBtn;
     btnInutilizar: TBitBtn;
-    btnListar: TBitBtn;
-    btnListarCCe: TBitBtn;
-    BtnPreVis: TBitBtn;
+    btnGeraNFe: TBitBtn;
+    btnImprime: TBitBtn;
+    BtnPreVis1: TBitBtn;
     btnPreVisCont: TBitBtn;
     btnPreVisDPEC: TBitBtn;
     btnPreVisFSDA: TBitBtn;
     btnPreVisSped: TBitBtn;
     btnSair: TBitBtn;
-    btnSairVenda: TBitBtn;
+    btnSair1: TBitBtn;
     btnSPED: TBitBtn;
     btnStatus: TBitBtn;
+    btnStatusMenMemo: TButton;
     btnStatusNaoEnviada: TBitBtn;
     btnSVCAN: TBitBtn;
     btnSvcanGera: TBitBtn;
     btnValidaNFe: TBitBtn;
     btnValidarRegrasNegocio: TButton;
     btnValidarXML: TButton;
-    btnGravArqNFEini: TButton;
-    btnStatusMenMemo: TButton;
     btnValidaXML: TBitBtn;
     Button3: TButton;
     Button4: TButton;
@@ -124,11 +128,9 @@ type
     GroupBox6: TGroupBox;
     GroupBox7: TGroupBox;
     GroupBox8: TGroupBox;
-    GroupBox9: TGroupBox;
     ImageList1: TImageList;
     ImageList2: TImageList;
     Label1: TLabel;
-    Label10: TLabel;
     Label11: TLabel;
     Label12: TLabel;
     Label13: TLabel;
@@ -161,16 +163,16 @@ type
     Label38: TLabel;
     Label39: TLabel;
     Label4: TLabel;
+    Label40: TLabel;
     Label41: TLabel;
     Label42: TLabel;
     Label43: TLabel;
     Label44: TLabel;
     Label45: TLabel;
-    Label46: TLabel;
     Label47: TLabel;
     Label48: TLabel;
-    Label49: TLabel;
     Label5: TLabel;
+    Label50: TLabel;
     Label6: TLabel;
     Label7: TLabel;
     Label8: TLabel;
@@ -190,21 +192,25 @@ type
     OpenDialog1: TOpenDialog;
     PageControl1: TPageControl;
     PageControl2: TPageControl;
+    PageControl3: TPageControl;
     Panel1: TPanel;
     Panel2: TPanel;
+    Panel3: TPanel;
+    Panel4: TPanel;
+    Panel5: TPanel;
     rgViaTransp: TRadioGroup;
     sbtnGetCert: TSpeedButton;
-    SpeedButton1: TSpeedButton;
-    SpeedButton2: TSpeedButton;
+    sbtnGetCert1: TSpeedButton;
+    sbtnGetCert3: TSpeedButton;
     SpeedButton3: TSpeedButton;
     StatusBar1: TStatusBar;
     SynXMLSyn1: TSynXMLSyn;
     TabSheet1: TTabSheet;
     TabSheet10: TTabSheet;
+    TabSheet11: TTabSheet;
     TabSheet2: TTabSheet;
     TabSheet3: TTabSheet;
     TabSheet4: TTabSheet;
-    TabSheet5: TTabSheet;
     TabSheet6: TTabSheet;
     TabSheet7: TTabSheet;
     TabSheet8: TTabSheet;
@@ -265,10 +271,11 @@ type
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure Label5Click(Sender: TObject);
     procedure nfe_carregalogo;
     procedure EnviaEmail;
     procedure PageControl2Change(Sender: TObject);
-    procedure sbtnGetCertClick(Sender: TObject);
+    procedure sbtnGetCert1Click(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
     procedure TestEmailClick(Sender: TObject);
@@ -2242,6 +2249,11 @@ begin
 
 end;
 
+procedure TfNFe.Label5Click(Sender: TObject);
+begin
+
+end;
+
 
 
 
@@ -2384,7 +2396,7 @@ begin
 
 end;
 
-procedure TfNFe.sbtnGetCertClick(Sender: TObject);
+procedure TfNFe.sbtnGetCert1Click(Sender: TObject);
 var
   I: Integer;
 begin
