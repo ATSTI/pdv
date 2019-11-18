@@ -601,6 +601,7 @@ object fRecebimento: TfRecebimento
         'Pagas'
         'Todas'
       )
+      OnClick = rgSituacaoClick
       TabOrder = 5
     end
     object Button1: TButton

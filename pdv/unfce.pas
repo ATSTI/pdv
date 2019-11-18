@@ -980,6 +980,7 @@ var contaItens :integer;
   totalNFCe: Double;
   cod_barra: String;
   desconto_rateio: double;
+  vlr_itemnf: double;
   desc_rateado: double;
   ncm_str: String;
   num_itens: Integer;
@@ -1019,8 +1020,10 @@ begin
         Prod.xProd    := LeftStr(dmPdv.sqLancamentosDESCPRODUTO.AsString, 99);
         Prod.CFOP     := dmPdv.sqLancamentosCFOP.AsString;
         Prod.uCom     := dmPdv.sqLancamentosUNIDADEMEDIDA.AsString;
-        Prod.qCom     := dmPdv.sqLancamentosQUANTIDADE.AsFloat;
-        Prod.vUnCom   := dmPdv.sqLancamentosPRECO.AsFloat;
+        vlr_itemnf := dmPdv.sqLancamentosQUANTIDADE.AsFloat;
+        Prod.qCom     := vlr_itemnf;
+        vlr_itemnf := dmPdv.sqLancamentosPRECO.AsFloat;
+        Prod.vUnCom   := vlr_itemnf;
         Prod.uTrib    := dmPdv.sqLancamentosUNIDADEMEDIDA.AsString;
         Prod.qTrib    := dmPdv.sqLancamentosQUANTIDADE.AsFloat;
         Prod.vUnTrib  := dmPdv.sqLancamentosPRECO.AsFloat;
@@ -1055,8 +1058,8 @@ begin
                            dmPdv.sqLancamentosOBS.AsString
         else
           infAdProd     := dmPdv.sqLancamentosOBS.AsString;
-
-        Prod.vProd    := dmPdv.sqLancamentosTOTALITEM.AsFloat;
+        vlr_itemnf := dmPdv.sqLancamentosTOTALITEM.AsFloat;
+        Prod.vProd :=  vlr_itemnf;
         Prod.vFrete   := 0 ; //dmPdv.sqLancamentosFRETE.AsCurrency;
         Prod.vDesc    := dmPdv.sqLancamentosVALOR_DESCONTO.AsCurrency;
         if ((nfce_desconto > 0) and (num_itens = 0)) then
@@ -1356,6 +1359,7 @@ Var
   ncm_str: String;
   desc: String;
   vr: String;
+  vlr_itemnf: Double;
 begin
   // CARREGANDO TODOS OS DADOS DO ARQUIVO INI,
   // PARA GRAVAR ELE USA O PARAMETRO SAT
@@ -1523,7 +1527,8 @@ begin
         desconto_rateio := dmPdv.sqLancamentosTOTALITEM.AsFloat * desconto_rateio;
         Prod.vDesc      := RoundTo(desconto_rateio, -2);
       end;
-      Prod.vProd := (Prod.qCom*Prod.vUnCom)-Prod.vDesc;
+      vlr_itemnf := (Prod.qCom*Prod.vUnCom)-Prod.vDesc;
+      Prod.vProd := vlr_itemnf;
       with Imposto do
       begin
         TotalItem := RoundABNT((Prod.qCom * Prod.vUnCom) + Prod.vOutro - Prod.vDesc, -2);

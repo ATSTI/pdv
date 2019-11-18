@@ -3520,8 +3520,8 @@ object fNfce: TfNfce
     MargemEsquerda = 0.6
     MargemDireita = 0.51
     CasasDecimais.Formato = tdetInteger
-    CasasDecimais.qCom = 2
-    CasasDecimais.vUnCom = 2
+    CasasDecimais.qCom = 4
+    CasasDecimais.vUnCom = 4
     CasasDecimais.MaskqCom = ',0.00'
     CasasDecimais.MaskvUnCom = ',0.00'
     ACBrNFe = ACBrNFe1

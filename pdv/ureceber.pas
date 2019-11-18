@@ -63,6 +63,7 @@ type
     procedure edCodClienteKeyPress(Sender: TObject; var Key: char);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure rgSituacaoClick(Sender: TObject);
   private
     codClienteR : Integer;
     procedure enviar_caixa(valor_pago: Double; codRec: Integer);
@@ -141,6 +142,11 @@ begin
   lblForma.Caption := '...';
 end;
 
+procedure TfRecebimento.rgSituacaoClick(Sender: TObject);
+begin
+  btnProcurar.Click;
+end;
+
 procedure TfRecebimento.enviar_caixa(valor_pago: Double; codRec: Integer);
 var rv_codForma: Integer;
 begin
@@ -172,9 +178,10 @@ begin
   total_rec := 0;
   sql_rec := 'SELECT r.CODCLIENTE, r.CODRECEBIMENTO, r.TITULO, r.EMISSAO';
   sql_rec += ', r.DATAVENCIMENTO, r.DATARECEBIMENTO ';
-  sql_rec += ', (CASE WHEN r.STATUS = ' + QuotedStr('5-') + ' THEN r.VALOR_RESTO';
-  sql_rec += ' ELSE 0 END) AS VALOR_RESTO, r.VALORTITULO';
-  sql_rec += ', c.NOMECLIENTE FROM RECEBIMENTO r, CLIENTES c ';
+  //sql_rec += ', (CASE WHEN r.STATUS = ' + QuotedStr('5-') + ' THEN r.VALOR_RESTO';
+  //sql_rec += ' ELSE 0 END) AS VALOR_RESTO, (r.VALORTITULO - COALESCE(r.VALORRECEBIDO,0)) ';
+  sql_rec += ' ,(r.VALOR_RESTO  - COALESCE(r.VALORRECEBIDO,0))  AS VALOR_RESTO, r.VALORTITULO ';
+  sql_rec += ' AS VALORTITULO, c.NOMECLIENTE FROM RECEBIMENTO r, CLIENTES c ';
   sql_rec += ' WHERE r.CODCLIENTE = c.CODCLIENTE AND r.VALOR_RESTO > 0';
   if (edCodCliente.Text <> '') then
   begin
@@ -206,6 +213,12 @@ var
   vr_formaRec: String;
 begin
   // baixar pagamentos
+  if (rgSituacao.ItemIndex > 0) then
+  begin
+    ShowMessage('Selecione títulos  a Pagar.');
+    Exit;
+  end;
+
   if (lblForma.Caption = '...') then
   begin
     ShowMessage('Informe a FORMA de pagamento.');
@@ -288,6 +301,7 @@ begin
   end;
   DecimalSeparator:=',';
   dmPdv.sTrans.Commit;
+  btnProcurar.Click;
 end;
 
 procedure TfRecebimento.BitBtn1Click(Sender: TObject);
