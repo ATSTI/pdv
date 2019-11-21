@@ -10,7 +10,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="2"/>
         <CursorPos Y="22"/>
-        <UsageCount Value="185"/>
+        <UsageCount Value="191"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
@@ -22,17 +22,17 @@
         <UnitName Value="uNFe"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="522"/>
-        <CursorPos X="5" Y="535"/>
-        <FoldState Value=" T0jvPBH0C1'"/>
-        <UsageCount Value="185"/>
+        <TopLine Value="4078"/>
+        <CursorPos X="16" Y="4101"/>
+        <FoldState Value=" T0jw9BH0C1E"/>
+        <UsageCount Value="191"/>
         <Bookmarks Count="6">
-          <Item0 X="43" Y="3168" ID="2"/>
-          <Item1 X="13" Y="4659" ID="5"/>
-          <Item2 X="30" Y="4561" ID="4"/>
-          <Item3 Y="4450" ID="3"/>
-          <Item4 X="37" Y="4616" ID="7"/>
-          <Item5 X="19" Y="2159" ID="1"/>
+          <Item0 X="43" Y="3192" ID="2"/>
+          <Item1 X="13" Y="4686" ID="5"/>
+          <Item2 X="30" Y="4588" ID="4"/>
+          <Item3 Y="4477" ID="3"/>
+          <Item4 X="37" Y="4643" ID="7"/>
+          <Item5 X="20" Y="2436" ID="1"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -43,9 +43,9 @@
         <ComponentName Value="dmPdv"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <TopLine Value="957"/>
-        <CursorPos X="52" Y="965"/>
-        <UsageCount Value="185"/>
+        <TopLine Value="1117"/>
+        <CursorPos Y="1140"/>
+        <UsageCount Value="191"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit2>
@@ -57,7 +57,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCertificadoLer"/>
         <EditorIndex Value="3"/>
-        <UsageCount Value="39"/>
+        <UsageCount Value="45"/>
         <Loaded Value="True"/>
       </Unit3>
       <Unit4>
@@ -278,123 +278,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="unfe.pas"/>
-        <Caret Line="531" Column="5" TopLine="518"/>
+        <Caret Line="2436" Column="20" TopLine="2421"/>
       </Position1>
       <Position2>
         <Filename Value="unfe.pas"/>
-        <Caret Line="530" Column="5" TopLine="517"/>
+        <Caret Line="2438" Column="43" TopLine="2421"/>
       </Position2>
       <Position3>
         <Filename Value="unfe.pas"/>
-        <Caret Line="531" Column="5" TopLine="518"/>
+        <Caret Line="2490" Column="18" TopLine="2468"/>
       </Position3>
       <Position4>
         <Filename Value="unfe.pas"/>
-        <Caret Line="530" Column="5" TopLine="517"/>
+        <Caret Line="2492" Column="41" TopLine="2470"/>
       </Position4>
       <Position5>
         <Filename Value="unfe.pas"/>
-        <Caret Line="531" Column="5" TopLine="518"/>
+        <Caret Line="2537" Column="20" TopLine="2515"/>
       </Position5>
       <Position6>
         <Filename Value="unfe.pas"/>
-        <Caret Line="530" Column="5" TopLine="517"/>
+        <Caret Line="2539" Column="43" TopLine="2517"/>
       </Position6>
       <Position7>
         <Filename Value="unfe.pas"/>
-        <Caret Line="531" Column="5" TopLine="518"/>
+        <Caret Line="4104" Column="21" TopLine="4081"/>
       </Position7>
       <Position8>
         <Filename Value="unfe.pas"/>
-        <Caret Line="530" Column="5" TopLine="517"/>
+        <Caret Line="4105" Column="20" TopLine="4082"/>
       </Position8>
       <Position9>
         <Filename Value="unfe.pas"/>
-        <Caret Line="531" Column="5" TopLine="518"/>
+        <Caret Line="4107" Column="21" TopLine="4084"/>
       </Position9>
       <Position10>
         <Filename Value="unfe.pas"/>
-        <Caret Line="530" Column="5" TopLine="517"/>
+        <Caret Line="4108" Column="20" TopLine="4086"/>
       </Position10>
       <Position11>
         <Filename Value="unfe.pas"/>
-        <Caret Line="531" Column="5" TopLine="518"/>
+        <Caret Line="4112" Column="78" TopLine="4090"/>
       </Position11>
       <Position12>
         <Filename Value="unfe.pas"/>
-        <Caret Line="530" Column="5" TopLine="517"/>
+        <Caret Line="4164" Column="58" TopLine="4141"/>
       </Position12>
       <Position13>
         <Filename Value="unfe.pas"/>
-        <Caret Line="531" Column="5" TopLine="518"/>
+        <Caret Line="4223" Column="18" TopLine="4200"/>
       </Position13>
       <Position14>
         <Filename Value="unfe.pas"/>
-        <Caret Line="530" Column="5" TopLine="517"/>
+        <Caret Line="106" Column="16" TopLine="93"/>
       </Position14>
       <Position15>
         <Filename Value="unfe.pas"/>
-        <Caret Line="531" Column="5" TopLine="518"/>
+        <Caret Line="107" Column="16" TopLine="93"/>
       </Position15>
       <Position16>
         <Filename Value="unfe.pas"/>
-        <Caret Line="530" Column="5" TopLine="517"/>
+        <Caret Line="108" Column="16" TopLine="93"/>
       </Position16>
       <Position17>
         <Filename Value="unfe.pas"/>
-        <Caret Line="531" Column="5" TopLine="518"/>
+        <Caret Line="808" Column="18" TopLine="794"/>
       </Position17>
       <Position18>
         <Filename Value="unfe.pas"/>
-        <Caret Line="532" Column="5" TopLine="519"/>
+        <Caret Line="1244" Column="18" TopLine="1221"/>
       </Position18>
       <Position19>
         <Filename Value="unfe.pas"/>
-        <Caret Line="533" Column="5" TopLine="520"/>
+        <Caret Line="1819" Column="18" TopLine="1796"/>
       </Position19>
       <Position20>
         <Filename Value="unfe.pas"/>
-        <Caret Line="532" Column="5" TopLine="519"/>
+        <Caret Line="1823" Column="77" TopLine="1800"/>
       </Position20>
       <Position21>
         <Filename Value="unfe.pas"/>
-        <Caret Line="531" Column="5" TopLine="518"/>
+        <Caret Line="2017" Column="16" TopLine="1995"/>
       </Position21>
       <Position22>
         <Filename Value="unfe.pas"/>
-        <Caret Line="532" Column="5" TopLine="519"/>
+        <Caret Line="2208" Column="20" TopLine="2186"/>
       </Position22>
       <Position23>
         <Filename Value="unfe.pas"/>
-        <Caret Line="533" Column="5" TopLine="520"/>
+        <Caret Line="2432" TopLine="2420"/>
       </Position23>
       <Position24>
         <Filename Value="unfe.pas"/>
-        <Caret Line="532" Column="5" TopLine="519"/>
+        <Caret Line="2712" TopLine="2698"/>
       </Position24>
       <Position25>
         <Filename Value="unfe.pas"/>
-        <Caret Line="533" Column="5" TopLine="520"/>
+        <Caret Line="2714" TopLine="2698"/>
       </Position25>
       <Position26>
         <Filename Value="unfe.pas"/>
-        <Caret Line="532" Column="5" TopLine="519"/>
+        <Caret Line="2793" TopLine="2780"/>
       </Position26>
       <Position27>
         <Filename Value="unfe.pas"/>
-        <Caret Line="533" Column="5" TopLine="520"/>
+        <Caret Line="188" Column="32" TopLine="181"/>
       </Position27>
       <Position28>
         <Filename Value="unfe.pas"/>
-        <Caret Line="534" Column="5" TopLine="521"/>
+        <Caret Line="1985" Column="12" TopLine="1963"/>
       </Position28>
       <Position29>
         <Filename Value="unfe.pas"/>
-        <Caret Line="535" Column="5" TopLine="522"/>
+        <Caret Line="1987" Column="14" TopLine="1965"/>
       </Position29>
       <Position30>
         <Filename Value="unfe.pas"/>
-        <Caret Line="534" Column="5" TopLine="521"/>
+        <Caret Line="1988" Column="12" TopLine="1966"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -403,22 +403,6 @@
     </RunParams>
   </ProjectSession>
   <Debugging>
-    <BreakPoints Count="2">
-      <Item1>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="unfe.pas"/>
-        <Line Value="2688"/>
-      </Item1>
-      <Item2>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="unfe.pas"/>
-        <Line Value="2769"/>
-      </Item2>
-    </BreakPoints>
     <Watches Count="2">
       <Item1>
         <Expression Value="dmPdv.qcds_ccustoCODIGO.AsInteger"/>

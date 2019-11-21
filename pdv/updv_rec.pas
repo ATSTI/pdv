@@ -170,6 +170,7 @@ type
       vlr_via_rec: Double);
   public
     OutrosCartoes: String;
+    v_log: String;
     vStatus : Integer;
     vVendedor: Integer;
     vUsuario: Integer;
@@ -730,8 +731,10 @@ var
   totalD: Double;
   totalR: Double;
 begin
+  v_log := 'Log de impressão - ';
   if (not sqPagamento.Active) then
      sqPagamento.Open;
+  v_log := 'Log de impressão 1 ';
   prazo := 'N';
   totalP := 0;
   totalD := 0;
@@ -745,9 +748,11 @@ begin
       prazo := 'S';
     sqPagamento.Next;
   end;
+  v_log := 'Log de impressão 2 ';
   totalP := totalR + totalD;
   if (not dmPdv.sqEmpresa.Active) then
     dmPdv.sqEmpresa.Open;
+  v_log := 'Log de impressão 3 ';
   {----- aqui monto o endereço-----}
   logradouro := '  ' + dmPdv.sqEmpresaENDERECO.Value +
      ', ' + dmPdv.sqEmpresaBAIRRO.Value;
@@ -761,20 +766,24 @@ begin
   dmPdv.sqLancamentos.Params.ParamByName('PMOV').AsInteger := vCodMovimento;
   dmPdv.sqLancamentos.Open;
   // leio um arquivo txt e imprimo
+  v_log := 'Log de impressão - criando lFile ';
   lFile := TStringList.Create;
-  if (dmPdv.CupomImp = 'Texto') then
+  if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
   begin
+    v_log := 'Log portaImp - ' + dmPdv.portaIMP;
     AssignFile(IMPRESSORA, dmPdv.portaIMP);
   end
   else begin
+    v_log := 'Log path_imp - ' + dmPdv.path_imp;
     AssignFile(IMPRESSORA, dmPdv.path_imp);
   end;
-
+  v_log := 'Log abrindo cupom.txt ' + dmpdv.path_exe + 'cupom.txt';
   try
     Rewrite(IMPRESSORA);
-    lFile.LoadFromFile('cupom.txt');
+    lFile.LoadFromFile(dmpdv.path_exe + 'cupom.txt');
     for i:=0 to lFile.Count-1 do
     begin
+      v_log := 'Log lendo cupom.txt ';
       linhaTxt := Copy(lFile[i],0,1);
       if lFile[i] = 'empresa' then
         Writeln(Impressora, RemoveAcento(Format('  %-36s',[dmPdv.sqEmpresaRAZAO.Value])))
@@ -992,7 +1001,33 @@ begin
     CloseFile(IMPRESSORA);
     lFile.Free;
   end;
-
+  v_log := 'Log Impressao: ';
+  v_log += 'conf Cupom: ' + dmPdv.CupomImp;
+  if (dmPdv.CupomImp = 'BD') then
+  begin
+    lFile := TStringList.Create;
+    try
+      v_log += ', PathIMP: ' + dmPdv.path_imp;
+      lFile.LoadFromFile(dmPdv.path_imp);
+      texto6 := lFile.Text;
+    finally
+      lFile.Free;
+    end;
+    try
+      texto6 := 'INSERT INTO AVISOS (CODAVISOS, TIPO, DESCRICAO) VALUES ('+
+        'GEN_ID(GEN_AVISOS, 1), ' + QuotedStr(dmPdv.MICRO) + ', ' +
+        QuotedStr(texto6) + ')';
+      dmPdv.IbCon.ExecuteDirect(texto6);
+      v_log += ', SQL: ' +texto6;
+      dmPdv.sTrans.Commit;
+    except
+      on dmPdv: EDatabaseError do
+      begin
+        MessageDlg('Error','Erro na conexao com a base de dados, erro : ' +
+          dmPdv.Message,mtError,[mbOK],0);
+      end;
+    end;
+  end;
 end;
 
 procedure TfPDV_Rec.imprimiAcbr();
@@ -1434,15 +1469,15 @@ begin
   end
   else begin
     imprimirTxt();
-    //if (dmPdv.path_imp = 'imp.txt') then
-    imprimiAcbr();
+    if (dmPdv.CupomImp <> 'BD') then
+      imprimiAcbr();
   end;
   if (btnCadeira.Visible = True) then
   begin
     btnCadeira.Enabled := True;
   end
   else begin
-    Close;
+    //Close;
   end;
 end;
 

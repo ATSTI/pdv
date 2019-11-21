@@ -8,8 +8,8 @@ uses
   Classes, SysUtils, db, FileUtil, SynEdit, RTTICtrls, Forms, Controls,
   Graphics, Dialogs, ExtCtrls, StdCtrls, Buttons, MaskEdit, DBGrids, ActnList,
   Menus, dateutils, uMovimento, uCompraCls, uUtil, uVendedorBusca,
-  uClienteBusca, uPermissao, uComandaJuntar, uReceber, Grids, ACBrPosPrinter,
-  MTProcs, strutils;
+  uClienteBusca, uPermissao, uComandaJuntar, uReceber, Grids, ComCtrls,
+  ACBrPosPrinter, MTProcs, strutils;
 
 type
 
@@ -101,6 +101,7 @@ type
     Label5: TLabel;
     lblSenha: TLabel;
     Memo1: TMemo;
+    Memo2: TMemo;
     memoImp: TMemo;
     MemoIntegra: TMemo;
     MenuItem1: TMenuItem;
@@ -111,6 +112,7 @@ type
     MenuItem6: TMenuItem;
     MenuItem7: TMenuItem;
     MenuItem8: TMenuItem;
+    PageControl1: TPageControl;
     Panel1: TPanel;
     Panel10: TPanel;
     Panel11: TPanel;
@@ -135,6 +137,8 @@ type
     pnQtde: TPanel;
     pnTroca: TPanel;
     PopupMenu1: TPopupMenu;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
     TIButton2: TTIButton;
     procedure acComandaJuntarExecute(Sender: TObject);
     procedure acConsultaItemExecute(Sender: TObject);
@@ -601,6 +605,7 @@ begin
      abrePedido(0);
      statusPedido:=9;
   end;
+  Memo2.Text := fPDV_Rec.v_log;
 end;
 
 procedure TfPdv.BitBtn10Click(Sender: TObject);

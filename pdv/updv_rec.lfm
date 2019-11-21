@@ -4299,7 +4299,7 @@ object fPDV_Rec: TfPDV_Rec
     end
   end
   object ACBrPosPrinter1: TACBrPosPrinter
-    Modelo = ppEscBematech
+    Modelo = ppEscPosEpson
     ConfigBarras.MostrarCodigo = False
     ConfigBarras.LarguraLinha = 0
     ConfigBarras.Altura = 0

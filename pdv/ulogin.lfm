@@ -49,8 +49,11 @@ object fLogin: TfLogin
         '  NomeLogin=adm'
         ''
         ' [IMPRESSORA]'
-        '  Cupom=Texto ou ACBR'
+        '  Cupom=Texto , ACBR, DB  *'
         '  NumeroVias=2'
+        ''
+        '* Texto , imprime modo texto sem usar o driver impressora'
+        '  DB : Salva a impressao no banco de dados, tem q usar o prjImprime para imprimir'
         ''
         'Fazer a Busca pelo Código Produto (CODPRO)'
         '''Outros'',''BuscaProduto'',''NORMAL'''
@@ -149,8 +152,9 @@ object fLogin: TfLogin
     Left = 26
     Height = 15
     Top = 330
-    Width = 116
-    Caption = 'ATS Ti Sistemas , v. 4.3'
+    Width = 172
+    AutoSize = False
+    Caption = 'ATS Ti Sistemas , v. 4.4'
     ParentColor = False
   end
   object LHelpConnector1: TLHelpConnector

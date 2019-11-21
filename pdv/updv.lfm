@@ -11884,92 +11884,6 @@ object fPdv: TfPdv
       OnCellClick = DBGrid1CellClick
       OnDrawColumnCell = DBGrid1DrawColumnCell
     end
-    object pnInfo: TPanel
-      Left = 35
-      Height = 322
-      Top = 102
-      Width = 540
-      ClientHeight = 322
-      ClientWidth = 540
-      Color = 9453095
-      ParentColor = False
-      TabOrder = 1
-      Visible = False
-      object lblSenha: TLabel
-        Left = 32
-        Height = 15
-        Top = 297
-        Width = 12
-        Caption = '....'
-        Font.Color = clWhite
-        ParentColor = False
-        ParentFont = False
-      end
-      object BitBtn9: TBitBtn
-        Left = 480
-        Height = 40
-        Top = 272
-        Width = 51
-        Glyph.Data = {
-          76020000424D7602000000000000760000002800000020000000200000000100
-          0400000000000002000000000000000000001000000000000000000000000000
-          8000008000000080800080000000800080008080000080808000C0C0C0000000
-          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00888887788877
-          88877888000887788888888788877888778887780EE088877888888877888778
-          887788870EE607888778877888778887788877880EE660778887888778887788
-          877888770EE666007788878887788877888778880EE666600077800000000000
-          008887780EE666660000888888888888807788870EE666660778888888888888
-          800077880EE666660778888888888887800000000EE666660778888888888807
-          707777770EE666660778888888888800707777770EE666660778888888888806
-          007777770EE666660778888888888806607777770EE60066077888888777770E
-          660777770EE07066077888887777770EE66077770EE0F066077888800000000E
-          EE6607770EE60066077888066666666EEEE660770EE666660778880EEEEEEEEE
-          EEEE66070EE666660778880EEFFFFFFFFFFEE6070EE666660778880EEEEEEEEE
-          EFEE60770EE66666077888800000000EFEE607770EE66666077888888888880E
-          EE6077770EE66666077888888888880EE60777770EE66666077888888888880E
-          607777770EE6666607788888888888060077777770EE66660778888888888800
-          80777777770EE6660778888888888888807777777770EE660778888888888888
-          8077777777770EE6077888888888888880777777777770EE0788888888888888
-          8000000000000000088888888888888888888888888888888888
-        }
-        OnClick = BitBtn9Click
-        TabOrder = 0
-      end
-      object Label13: TLabel
-        Left = 35
-        Height = 15
-        Top = 23
-        Width = 152
-        Caption = 'PDV Versão : 1.0 - 01/08/2018'
-        Font.Color = clWhite
-        ParentColor = False
-        ParentFont = False
-      end
-      object Memo1: TMemo
-        Left = 35
-        Height = 269
-        Top = 51
-        Width = 429
-        Lines.Strings = (
-          'NFCe : Cadastrar em Séries o Cod. Usuário no Campo'
-          'CodSerie, esta série será usada para Gerar as NFCes.'
-          ''
-          'Impressão Cupom:'
-          'V = Pedido n. ..'
-          'usuario = Usuario X'
-          '                 Vendedor Y'
-          'doc = Data , n. pedido'
-          'empresa = Nome Empresa'
-          'logradouro = Endereco'
-          'cep = Cep'
-          'fone = Fone'
-          'T = Troco'
-          'P = Pagamento'
-          'linha = linha vazia'
-        )
-        TabOrder = 1
-      end
-    end
     object pnProdBusca: TPanel
       Left = -1
       Height = 542
@@ -12609,6 +12523,120 @@ object fPdv: TfPdv
         }
         OnClick = BitBtn10Click
         TabOrder = 4
+      end
+    end
+    object pnInfo: TPanel
+      Left = 35
+      Height = 362
+      Top = 102
+      Width = 565
+      ClientHeight = 362
+      ClientWidth = 565
+      Color = 9453095
+      ParentColor = False
+      TabOrder = 1
+      Visible = False
+      object lblSenha: TLabel
+        Left = 32
+        Height = 15
+        Top = 297
+        Width = 12
+        Caption = '....'
+        Font.Color = clWhite
+        ParentColor = False
+        ParentFont = False
+      end
+      object BitBtn9: TBitBtn
+        Left = 488
+        Height = 37
+        Top = 323
+        Width = 51
+        Glyph.Data = {
+          76020000424D7602000000000000760000002800000020000000200000000100
+          0400000000000002000000000000000000001000000000000000000000000000
+          8000008000000080800080000000800080008080000080808000C0C0C0000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00888887788877
+          88877888000887788888888788877888778887780EE088877888888877888778
+          887788870EE607888778877888778887788877880EE660778887888778887788
+          877888770EE666007788878887788877888778880EE666600077800000000000
+          008887780EE666660000888888888888807788870EE666660778888888888888
+          800077880EE666660778888888888887800000000EE666660778888888888807
+          707777770EE666660778888888888800707777770EE666660778888888888806
+          007777770EE666660778888888888806607777770EE60066077888888777770E
+          660777770EE07066077888887777770EE66077770EE0F066077888800000000E
+          EE6607770EE60066077888066666666EEEE660770EE666660778880EEEEEEEEE
+          EEEE66070EE666660778880EEFFFFFFFFFFEE6070EE666660778880EEEEEEEEE
+          EFEE60770EE66666077888800000000EFEE607770EE66666077888888888880E
+          EE6077770EE66666077888888888880EE60777770EE66666077888888888880E
+          607777770EE6666607788888888888060077777770EE66660778888888888800
+          80777777770EE6660778888888888888807777777770EE660778888888888888
+          8077777777770EE6077888888888888880777777777770EE0788888888888888
+          8000000000000000088888888888888888888888888888888888
+        }
+        OnClick = BitBtn9Click
+        TabOrder = 0
+      end
+      object Label13: TLabel
+        Left = 21
+        Height = 15
+        Top = 5
+        Width = 152
+        Caption = 'PDV Versão : 1.0 - 20/11/2019'
+        Font.Color = clWhite
+        ParentColor = False
+        ParentFont = False
+      end
+      object PageControl1: TPageControl
+        Left = 19
+        Height = 297
+        Top = 23
+        Width = 504
+        ActivePage = TabSheet1
+        TabIndex = 0
+        TabOrder = 1
+        object TabSheet1: TTabSheet
+          Caption = 'Info'
+          ClientHeight = 269
+          ClientWidth = 496
+          object Memo1: TMemo
+            Left = 0
+            Height = 269
+            Top = 0
+            Width = 496
+            Align = alClient
+            Lines.Strings = (
+              'NFCe : Cadastrar em Séries o Cod. Usuário no Campo'
+              'CodSerie, esta série será usada para Gerar as NFCes.'
+              ''
+              'Impressão Cupom:'
+              'V = Pedido n. ..'
+              'usuario = Usuario X'
+              '                 Vendedor Y'
+              'doc = Data , n. pedido'
+              'empresa = Nome Empresa'
+              'logradouro = Endereco'
+              'cep = Cep'
+              'fone = Fone'
+              'T = Troco'
+              'P = Pagamento'
+              'linha = linha vazia'
+            )
+            TabOrder = 0
+          end
+        end
+        object TabSheet2: TTabSheet
+          Caption = 'Logs'
+          ClientHeight = 269
+          ClientWidth = 496
+          object Memo2: TMemo
+            Left = 0
+            Height = 269
+            Top = 0
+            Width = 496
+            Align = alClient
+            TabOrder = 0
+          end
+        end
       end
     end
   end

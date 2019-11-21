@@ -4289,7 +4289,7 @@ object dmPdv: TdmPdv
       Required = False
     end
   end
-  object DataSource1: TDataSource
+  object dsNF: TDataSource
     DataSet = qcdsNF
     left = 120
     top = 336

@@ -77,6 +77,7 @@ type
     cbSSLLib: TComboBox;
     cbTipoNota: TRadioGroup;
     cbXmlSignLib: TComboBox;
+    cbSSLType: TComboBox;
     CCe: TTabSheet;
     Certificado: TTabSheet;
     CheckBox1: TCheckBox;
@@ -183,6 +184,7 @@ type
     lHttpLib: TLabel;
     lSSLLib: TLabel;
     lXmlSign: TLabel;
+    cbSSLTypeLbl: TLabel;
     Memo1: TMemo;
     memoDados: TMemo;
     memoLog: TMemo;
@@ -249,6 +251,8 @@ type
     procedure btnPreVisDPECClick(Sender: TObject);
     procedure btnPreVisFSDAClick(Sender: TObject);
     procedure btnPreVisSpedClick(Sender: TObject);
+    procedure btnSair1Click(Sender: TObject);
+    procedure btnSairClick(Sender: TObject);
     procedure btnSPEDClick(Sender: TObject);
     procedure btnStatusClick(Sender: TObject);
     procedure btnStatusNaoEnviadaClick(Sender: TObject);
@@ -276,8 +280,11 @@ type
     procedure EnviaEmail;
     procedure PageControl2Change(Sender: TObject);
     procedure sbtnGetCert1Click(Sender: TObject);
+    procedure sbtnGetCert3Click(Sender: TObject);
+    procedure sbtnGetCertClick(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
+    procedure SpeedButton3Click(Sender: TObject);
     procedure TestEmailClick(Sender: TObject);
     procedure ACBrNFe1GerarLog(const Mensagem: String);
     procedure ACBrNFe1TransmitError(const HttpError, InternalError: Integer;
@@ -334,7 +341,7 @@ var
   tp_amb : integer;
 implementation
 
-uses udmpdv , ACBrDFeSSL,TypInfo,ufrmStatus;
+uses udmpdv , ACBrDFeSSL,TypInfo,ufrmStatus, blcksock;
 
 function GetComputerNameFunc : string;
 var ipbuffer : string;
@@ -1564,6 +1571,16 @@ begin
   end;
 end;
 
+procedure TfNFe.btnSair1Click(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfNFe.btnSairClick(Sender: TObject);
+begin
+  Close;
+end;
+
 procedure TfNFe.btnSPEDClick(Sender: TObject);
 begin
   if (tp_amb = 1) then
@@ -1905,8 +1922,6 @@ begin
   dmPdv.qsEmpresa.Params[0].AsInteger := dmPdv.qcdsNFCCUSTO.AsInteger;
   dmPdv.qsEmpresa.Open;
   fNFe.Caption := dmPdv.qsEmpresaEMPRESA.AsString;
-
-
 end;
 
 procedure TfNFe.DBGrid1ColEnter(Sender: TObject);
@@ -1942,7 +1957,7 @@ var Ini: TIniFile;
     U: TSSLCryptLib;
     V: TSSLHttpLib;
     X: TSSLXmlSignLib;
-
+    Y: TSSLType;
 begin
   micro := Trim(GetComputerNameFunc);
   ACBrNFe1.DANFE := ACBrNFeDANFeRL1;
@@ -1966,6 +1981,11 @@ begin
   For X := Low(TSSLXmlSignLib) to High(TSSLXmlSignLib) do
     cbXmlSignLib.Items.Add( GetEnumName(TypeInfo(TSSLXmlSignLib), integer(X) ) ) ;
   cbXmlSignLib.ItemIndex := 0 ;
+
+  cbSSLType.Items.Clear ;
+  For Y := Low(TSSLType) to High(TSSLType) do
+    cbSSLType.Items.Add( GetEnumName(TypeInfo(TSSLType), integer(Y) ) ) ;
+  cbSSLType.ItemIndex := 0 ;
 
  begin
   Ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'dbxconnections.ini');
@@ -1994,7 +2014,7 @@ begin
     nfe_serie_receita  := ImpressoraDet.ReadInteger('SISTEMA','SERIERECEITA',1);
     email_tls          := ImpressoraDet.ReadString('EMAIL','TLS','');
     email_ssl          := ImpressoraDet.ReadString('EMAIL','SSL','');
-
+    edtNumSerie.Text  := Ini.ReadString('Certificado', 'NumSerie', '');
   finally
     ImpressoraDet.Free;
   end;
@@ -2049,19 +2069,6 @@ begin
     ComboBox1.ItemIndex := 0;
     ComboBox2.ItemIndex := 0;
   end;
-  begin
-    Ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'NFe.ini');
-  try
-    edtNumSerie.Text  := Ini.ReadString('Certificado', 'NumSerie', '');
-  except
-  on E:Exception do
-  MessageDlg('Carregar Nº Certificado !'#13'Erro: ' + e.Message, mtError, [mbOK], 0);
-  end;
-    Ini.Free;
-  end;
-
-  //cds_ccusto.Locate('NOME', ComboBox1.Text,[loCaseInsensitive]);
-  //cds_ccusto.Locate('NOME', ComboBox2.Text,[loCaseInsensitive]);
 
   if (dmPdv.qsEmpresa1.Active) then
     dmPdv.qsEmpresa1.Close;
@@ -2107,7 +2114,6 @@ begin
   if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathNFe)) then
   CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathNFe);
 
-
   tp_amb := 1;
 
   diretorio := GetCurrentDir;
@@ -2130,7 +2136,7 @@ begin
   ACBrNFeDANFeRL1.LarguraCodProd := danfe_larg_codprod;
 
   ACBrNFe1.NotasFiscais.Add.NFe.Ide.tpEmis    := teNormal;
-  ACBrNFe1.Configuracoes.Arquivos.PathSchemas := diretorio + '\Schemas';
+  ACBrNFe1.Configuracoes.Arquivos.PathSchemas := diretorio_schema;
 
 
   dmPdv.qsEmpresa1.Close;
@@ -2144,8 +2150,6 @@ begin
   else
     envemail := 'N';
   dmPdv.qcds_parametro.Close;
-
-
 
 end;
 
@@ -2400,6 +2404,7 @@ procedure TfNFe.sbtnGetCert1Click(Sender: TObject);
 var
   I: Integer;
 begin
+
   //edCertificado.Text := ACBrNFe1.SSL.SelecionarCertificado;
     frSelecionarCertificado := TfrSelecionarCertificado.Create(Self);
     try
@@ -2431,6 +2436,7 @@ begin
         edtNumSerie.Text := frSelecionarCertificado.StringGrid1.Cells[ 0,
                               frSelecionarCertificado.StringGrid1.Row];
         edtNumSerieABA.Text := edtNumSerie.Text;
+        ACBrNFe1.Configuracoes.Certificados.NumeroSerie := edtNumSerie.Text;
       end;
     finally
        frSelecionarCertificado.Free;
@@ -2440,48 +2446,61 @@ begin
 
 end;
 
-procedure TfNFe.SpeedButton1Click(Sender: TObject);
+procedure TfNFe.sbtnGetCert3Click(Sender: TObject);
+begin
+
+end;
+
+procedure TfNFe.sbtnGetCertClick(Sender: TObject);
 var
   I: Integer;
 begin
+  with ACBrNFe1.Configuracoes.Geral do
+  begin
+    SSLLib                := TSSLLib(cbSSLLib.ItemIndex);
+    SSLCryptLib           := TSSLCryptLib(cbCryptLib.ItemIndex);
+    SSLHttpLib            := TSSLHttpLib(cbHttpLib.ItemIndex);
+    SSLXmlSignLib         := TSSLXmlSignLib(cbXmlSignLib.ItemIndex);
+    AtualizaSSLLibsCombo;
+  end;
   //edCertificado.Text := ACBrNFe1.SSL.SelecionarCertificado;
-    frSelecionarCertificado := TfrSelecionarCertificado.Create(Self);
-    try
-      ACBrNFe1.SSL.LerCertificadosStore;
-
-      For I := 0 to ACBrNFe1.SSL.ListaCertificados.Count-1 do
+  frSelecionarCertificado := TfrSelecionarCertificado.Create(Self);
+  try
+    ACBrNFe1.SSL.LerCertificadosStore;
+    For I := 0 to ACBrNFe1.SSL.ListaCertificados.Count-1 do
+    begin
+      with ACBrNFe1.SSL.ListaCertificados[I] do
       begin
-        with ACBrNFe1.SSL.ListaCertificados[I] do
+        if (CNPJ <> '') then
         begin
-          if (CNPJ <> '') then
+          with frSelecionarCertificado.StringGrid1 do
           begin
-            with frSelecionarCertificado.StringGrid1 do
-            begin
-              RowCount := RowCount + 1;
-              Cells[ 0, RowCount-1] := NumeroSerie;
-              Cells[ 1, RowCount-1] := RazaoSocial;
-              Cells[ 2, RowCount-1] := CNPJ;
-              Cells[ 3, RowCount-1] := FormatDateBr(DataVenc);
-              Cells[ 4, RowCount-1] := Certificadora;
-            end;
+            RowCount := RowCount + 1;
+            Cells[ 0, RowCount-1] := NumeroSerie;
+            Cells[ 1, RowCount-1] := RazaoSocial;
+            Cells[ 2, RowCount-1] := CNPJ;
+            Cells[ 3, RowCount-1] := FormatDateBr(DataVenc);
+            Cells[ 4, RowCount-1] := Certificadora;
           end;
         end;
       end;
-
-      frSelecionarCertificado.ShowModal;
-
-      if frSelecionarCertificado.ModalResult = mrOK then
-      begin
-        edtNumSerie.Text := frSelecionarCertificado.StringGrid1.Cells[ 0,
-                              frSelecionarCertificado.StringGrid1.Row];
-        edtNumSerieABA.Text := edtNumSerie.Text;
-      end;
-    finally
-       frSelecionarCertificado.Free;
     end;
-   if ( ((ACBrNFe1.SSL.CertDataVenc - Now) < 30) and ((ACBrNFe1.SSL.CertDataVenc - Now) > 0)) then
+    frSelecionarCertificado.ShowModal;
+    if frSelecionarCertificado.ModalResult = mrOK then
+    begin
+      edtNumSerie.Text := frSelecionarCertificado.StringGrid1.Cells[ 0,
+        frSelecionarCertificado.StringGrid1.Row];
+      edtNumSerieABA.Text := edtNumSerie.Text;
+    end;
+  finally
+    frSelecionarCertificado.Free;
+  end;
+  if ( ((ACBrNFe1.SSL.CertDataVenc - Now) < 30) and ((ACBrNFe1.SSL.CertDataVenc - Now) > 0)) then
      MessageDlg( 'Seu certificado expira dia ' + DateToStr(ACBrNFe1.SSL.CertDataVenc) , mtInformation, [mbOK], 0);
+end;
 
+procedure TfNFe.SpeedButton1Click(Sender: TObject);
+begin
 end;
 
 procedure TfNFe.SpeedButton2Click(Sender: TObject);
@@ -2525,6 +2544,11 @@ begin
     end;
   if ( ((ACBrNFe1.SSL.CertDataVenc - Now) < 30) and ((ACBrNFe1.SSL.CertDataVenc - Now) > 0)) then
     MessageDlg( 'Seu certificado expira dia ' + DateToStr(ACBrNFe1.SSL.CertDataVenc) , mtInformation, [mbOK], 0);
+
+end;
+
+procedure TfNFe.SpeedButton3Click(Sender: TObject);
+begin
 
 end;
 
@@ -4074,6 +4098,7 @@ begin
       cbXmlSignLib.ItemIndex := Ini.ReadInteger( 'Certificado','XmlSignLib' , 0) ;
       edtCaminho.Text  := Ini.ReadString( 'Certificado','Caminho' ,'') ;
       edtSenha.Text    := Ini.ReadString( 'Certificado','Senha'   ,'') ;
+      cbSSLType.ItemIndex  := Ini.ReadInteger( 'WebService','SSLType' , 0) ;
      // cbCriaPasta.ItemIndex := Ini.ReadInteger ('Certificado','Criar Pasta', -1) ;
       ComboBox3.ItemIndex := Ini.ReadInteger ('Certificado','Pasta NFe', 0);
 
@@ -4092,14 +4117,14 @@ begin
       ACBrNFe1.SSL.DescarregarCertificado;
 
       with ACBrNFe1.Configuracoes.Geral do
-       begin
-         SSLLib                := TSSLLib(cbSSLLib.ItemIndex);
-         SSLCryptLib           := TSSLCryptLib(cbCryptLib.ItemIndex);
-         SSLHttpLib            := TSSLHttpLib(cbHttpLib.ItemIndex);
-         SSLXmlSignLib         := TSSLXmlSignLib(cbXmlSignLib.ItemIndex);
-         AtualizaSSLLibsCombo;
-       end;
-
+      begin
+        SSLLib                := TSSLLib(cbSSLLib.ItemIndex);
+        SSLCryptLib           := TSSLCryptLib(cbCryptLib.ItemIndex);
+        SSLHttpLib            := TSSLHttpLib(cbHttpLib.ItemIndex);
+        SSLXmlSignLib         := TSSLXmlSignLib(cbXmlSignLib.ItemIndex);
+        cbSSLType.Enabled := (ACBrNFe1.Configuracoes.Geral.SSLHttpLib in [httpWinHttp, httpOpenSSL]);
+        AtualizaSSLLibsCombo;
+      end;
 
       with ACBrNFe1.Configuracoes.Arquivos do
       begin
@@ -4120,6 +4145,7 @@ begin
   cbCryptLib.ItemIndex := Integer( ACBrNFe1.Configuracoes.Geral.SSLCryptLib );
   cbHttpLib.ItemIndex := Integer( ACBrNFe1.Configuracoes.Geral.SSLHttpLib );
   cbXmlSignLib.ItemIndex := Integer( ACBrNFe1.Configuracoes.Geral.SSLXmlSignLib );
+  cbSSLTypeLbl.Enabled := (ACBrNFe1.Configuracoes.Geral.SSLHttpLib in [httpWinHttp, httpOpenSSL]) ;
 end;
 
 procedure TfNFe.GravarConfiguracao;
@@ -4144,6 +4170,7 @@ begin
     Ini.WriteInteger( 'Certificado','CryptLib' , cbCryptLib.ItemIndex) ;
     Ini.WriteInteger( 'Certificado','HttpLib' , cbHttpLib.ItemIndex) ;
     Ini.WriteInteger( 'Certificado','XmlSignLib' , cbXmlSignLib.ItemIndex) ;
+    Ini.WriteInteger( 'WebService','SSLType' , cbSSLType.ItemIndex) ;
     Ini.WriteInteger( 'Certificado','Pasta NFe' , ComboBox3.ItemIndex) ;
    // Ini.WriteString( 'Geral','PathSchemas'  ,PathWithDelim(ExtractFilePath(Application.ExeName))+'Schemas\') ;
 
@@ -4158,7 +4185,7 @@ begin
      AtualizaSSLLibsCombo;
     end;
        // manoel
-    // cbSSLType.ItemIndex    := Ini.ReadInteger('WebService','SSLType' , 0) ;
+    // cbSSLTypeLbl.ItemIndex    := Ini.ReadInteger('WebService','SSLType' , 0) ;
 
     StreamMemo := TMemoryStream.Create;
 

@@ -20,6 +20,8 @@ type
     ACBrEnterTab1: TACBrEnterTab;
     ACBrIntegrador1: TACBrIntegrador;
     ACBrNFe1: TACBrNFe;
+    ACBrNFe2: TACBrNFe;
+    ACBrNFeDANFCeFortes1: TACBrNFeDANFCeFortes;
     ACBrNFeDANFeESCPOS1: TACBrNFeDANFeESCPOS;
     ACBrPosPrinter1: TACBrPosPrinter;
     ACBrSAT1: TACBrSAT;
@@ -102,6 +104,8 @@ type
     procedure ACBrNFe1TransmitError(const HttpError, InternalError: Integer;
       const URL, DadosEnviados, SoapAction: String; var Retentar: Boolean;
       var Tratado: Boolean);
+    procedure ACBrPosPrinter1EnviarStringDevice(const ALogLine: String;
+      var Tratado: Boolean);
     procedure ACBrSAT1GetcodigoDeAtivacao(var Chave: AnsiString);
     procedure ACBrSAT1GetsignAC(var Chave: AnsiString);
     procedure acFecharExecute(Sender: TObject);
@@ -146,6 +150,7 @@ type
     nomeXml : String;
     function RemoveChar(Const Texto:String):String;
     function validaCpfCnpj():Boolean;
+    procedure CarregarXML(ChaveNFCe: String);
     procedure GerarNFCe(Num: String);
     procedure prepararImpressao();
     procedure pegaTributos(codMov: Integer; codProd: Integer);
@@ -555,14 +560,16 @@ begin
   edCPF.Text := '';
   dmPdv.sqBusca.Close;
   dmPdv.sqBusca.SQL.Clear;
-  dmPdv.sqBusca.SQL.Text:='SELECT NOTAFISCAL , NOMEXML, PROTOCOLOENV, SERIE FROM VENDA ' +
-    'WHERE CODVENDA = ' + IntToStr(nfce_codVenda);
+  dmPdv.sqBusca.SQL.Text:='SELECT NOTAFISCAL , NOMEXML, PROTOCOLOENV, SERIE, ' +
+    ' XMLNFE FROM VENDA WHERE CODVENDA = ' + IntToStr(nfce_codVenda);
   dmPdv.sqBusca.Open;
   if (not dmpdv.sqBusca.IsEmpty) then
   begin
+    //ACBrNFe2.NotasFiscais.Clear;
+    //ACBrNFe2.NotasFiscais.LoadFromString(dmPdv.sqBusca.Fields[5].AsString);
     t := dmPdv.sqBusca.Fields[1].AsString;
     serie := copy(dmPdv.sqBusca.Fields[3].AsString,0,4);
-    nomeXml := dmPdv.sqBusca.Fields[2].AsString;
+    nomeXml := Copy(dmPdv.sqBusca.Fields[1].AsString,0,44);
     if (serie = 'NFCE') then
     begin
       edNFce.text := IntToStr(dmPdv.sqBusca.Fields[0].AsInteger);
@@ -716,6 +723,41 @@ begin
     end;
   end;
   result := True;
+end;
+
+procedure TfNfce.CarregarXML(ChaveNFCe: String);
+var Dia, Mes, Ano: Word;
+  path_dosxml: String;
+begin
+  DecodeDate(Now, Ano, Mes, Dia);
+  OpenDialog1.Title := 'Selecione a NFCe';
+  OpenDialog1.DefaultExt := '*-nfe.xml';
+  OpenDialog1.Filter := 'Arquivos NFCe (*-nfe.xml)|*-nfe.xml|Arquivos XML (*.xml)|*.xml|Todos os Arquivos (*.*)|*.*';
+  path_dosxml := ACBrNFe1.Configuracoes.Arquivos.PathSalvar +
+    IntToStr(Ano) + IntToStr(mes);// + '\';
+  OpenDialog1.InitialDir := path_dosxml;
+  ACBrNFe1.NotasFiscais.Clear;
+  if (Length(ChaveNFCe) > 30) then
+  begin
+    if (FileExists(path_dosxml + '\' +
+      ChaveNFCe + '-nfe.xml')) then
+    begin
+      ACBrNFe1.NotasFiscais.LoadFromFile(path_dosxml + '\' + ChaveNFCe + '-nfe.xml');
+    end
+    else begin
+      if OpenDialog1.Execute then
+      begin
+        ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+      end;
+    end;
+  end
+  else begin
+    if OpenDialog1.Execute then
+    begin
+      ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+    end;
+  end;
+
 end;
 
 procedure TfNfce.GerarNFCe(Num: String);
@@ -1827,6 +1869,8 @@ begin
     SSLXmlSignLib:= TSSLXmlSignLib(cbXmlSignLib.ItemIndex);
   end;
   ACBrNFe1.SSL.CarregarCertificado;
+  ACBrNFe1.DANFE := ACBrNFeDANFeESCPOS1;
+  ACBrNFeDANFeESCPOS1.PosPrinter := ACBrPosPrinter1;
 end;
 
 procedure TfNfce.BitBtn1Click(Sender: TObject);
@@ -2046,6 +2090,9 @@ procedure TfNfce.btnNFce1Click(Sender: TObject);
 //var carregarMais : Boolean;
 begin
   //carregarMais := true;
+  carregaAcbr;
+  CarregarXML(nomeXml);
+  {
   OpenDialog1.Title := 'Selecione a NFE';
   OpenDialog1.DefaultExt := '*-nfe.XML';
   OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
@@ -2057,11 +2104,16 @@ begin
     if OpenDialog1.Execute then
       ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName,False);
     //carregarMais := MessageDlg('Carregar mais XML?', mtConfirmation, mbYesNo,0)= mrYes;
+  end;}
+  ACBrNFe1.DANFE := ACBrNFeDANFeESCPOS1;
+  ACBrNFeDANFeESCPOS1.PosPrinter := ACBrPosPrinter1;
+  ACBrPosPrinter1.Device.Ativar;
+  try
+    if ACBrNFe1.NotasFiscais.Count > 0 then
+       ACBrNFe1.NotasFiscais.Imprimir;
+  finally
+    ACBrPosPrinter1.Device.Desativar;
   end;
-
-  if ACBrNFe1.NotasFiscais.Count > 0 then
-     ACBrNFe1.NotasFiscais.Imprimir;
-
 end;
 
 procedure TfNfce.btnNFce2Click(Sender: TObject);
@@ -2501,6 +2553,12 @@ begin
               'InternalError: '+IntToStr(InternalError)  );
 
   //TryAgain := False;
+end;
+
+procedure TfNfce.ACBrPosPrinter1EnviarStringDevice(const ALogLine: String;
+  var Tratado: Boolean);
+begin
+
 end;
 
 procedure TfNfce.ACBrSAT1GetcodigoDeAtivacao(var Chave: AnsiString);

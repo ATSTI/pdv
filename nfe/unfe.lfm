@@ -1,7 +1,7 @@
 object fNFe: TfNFe
-  Left = 88
+  Left = 120
   Height = 662
-  Top = 115
+  Top = 32
   Width = 1069
   Caption = 'ATS-NFe'
   ClientHeight = 662
@@ -21,9 +21,9 @@ object fNFe: TfNFe
     Height = 639
     Top = 0
     Width = 1069
-    ActivePage = NFe
+    ActivePage = Certificado
     Align = alClient
-    TabIndex = 0
+    TabIndex = 2
     TabOrder = 1
     object NFe: TTabSheet
       Caption = 'NFe'
@@ -93,8 +93,9 @@ object fNFe: TfNFe
             Width = 100
             FieldName = 'PROTOCOLOCANC'
           end>
-        DataSource = dmPdv.DataSource1
+        DataSource = dmPdv.dsNF
         Flat = True
+        Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
         TabOrder = 4
         OnCellClick = DBGrid1CellClick
         OnColEnter = DBGrid1ColEnter
@@ -522,6 +523,7 @@ object fNFe: TfNFe
                   CBFFB7B3BEFFC1BDC3FFC5C0BFFFBFB9B4FFD0C8C1FFFFFCF7FFD2D7D5FFFAFF
                   FFFFDEDDE1FFE1DDE2FFFFFCFFFFCFD0D4FFEFF6F1FFE3EAE3FFDAD7D9FF
                 }
+                OnClick = BtnPreVisClick
                 ParentFont = False
                 TabOrder = 1
               end
@@ -665,6 +667,7 @@ object fNFe: TfNFe
                   F3FFEFEFEFFFEBF0EFFFEFF5F0FFF8F8F2FFF6F3EFFFF2EEF3FFEFEDF3FFEEF3
                   F6FFEBF1F0FFECF1F0FFEFF2F0FFF1F1F1FF
                 }
+                OnClick = btnGeraNFeClick
                 ParentFont = False
                 TabOrder = 2
               end
@@ -1218,8 +1221,8 @@ object fNFe: TfNFe
               Height = 80
               Top = 88
               Width = 552
-              ActivePage = TabSheet11
-              TabIndex = 0
+              ActivePage = TabSheet2
+              TabIndex = 2
               TabOrder = 2
               object TabSheet11: TTabSheet
                 Caption = 'SVCAN'
@@ -1404,7 +1407,7 @@ object fNFe: TfNFe
         object Label7: TLabel
           Left = 77
           Height = 15
-          Top = 85
+          Top = 82
           Width = 81
           Caption = 'Salvar na Pasta:'
           Font.CharSet = ANSI_CHARSET
@@ -1515,6 +1518,7 @@ object fNFe: TfNFe
           }
           NumGlyphs = 2
           Visible = False
+          OnClick = SpeedButton3Click
         end
         object cbTipoNota: TRadioGroup
           Left = 208
@@ -1642,7 +1646,7 @@ object fNFe: TfNFe
             Left = 376
             Height = 19
             Top = 0
-            Width = 52
+            Width = 51
             Caption = 'Todas'
             TabOrder = 2
           end
@@ -1663,7 +1667,7 @@ object fNFe: TfNFe
             DateOrder = doNone
             ButtonWidth = 23
             NumGlyphs = 1
-            FocusOnButtonClick = True
+            Flat = True
             MaxLength = 0
             TabOrder = 1
             Text = '15/10/2019'
@@ -1677,7 +1681,7 @@ object fNFe: TfNFe
             DateOrder = doNone
             ButtonWidth = 23
             NumGlyphs = 1
-            FocusOnButtonClick = True
+            Flat = True
             MaxLength = 0
             TabOrder = 0
             Text = '01/01/2018'
@@ -1735,6 +1739,7 @@ object fNFe: TfNFe
               FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
               FFFFFFFFFFFFFFFFFFFF
             }
+            OnClick = btnListarClick
             TabOrder = 4
           end
         end
@@ -1746,10 +1751,10 @@ object fNFe: TfNFe
           TabOrder = 3
         end
         object sbtnGetCert: TSpeedButton
-          Left = 424
-          Height = 22
-          Top = 99
-          Width = 32
+          Left = 422
+          Height = 24
+          Top = 98
+          Width = 34
           Glyph.Data = {
             D20F0000424DD20F0000000000003600000028000000250000001B0000000100
             2000000000009C0F000064000000640000000000000000000000FFFFFFFFFFFF
@@ -1879,6 +1884,7 @@ object fNFe: TfNFe
             FFFFFEFEFEFFFFFFFFFFFDFDFDFFFFFFFFFFFFFFFFFFFDFDFDFFFFFFFFFFFDFD
             FDFFFEFEFEFFFFFFFFFFFCFCFCFFFEFEFEFFFFFFFFFF
           }
+          OnClick = sbtnGetCertClick
         end
       end
       object GroupBox11: TGroupBox
@@ -2068,6 +2074,7 @@ object fNFe: TfNFe
             C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
           }
           Layout = blGlyphTop
+          OnClick = btnSairClick
           TabOrder = 0
         end
         object BtnPreVis1: TBitBtn
@@ -2177,6 +2184,7 @@ object fNFe: TfNFe
             CBFFB7B3BEFFC1BDC3FFC5C0BFFFBFB9B4FFD0C8C1FFFFFCF7FFD2D7D5FFFAFF
             FFFFDEDDE1FFE1DDE2FFFFFCFFFFCFD0D4FFEFF6F1FFE3EAE3FFDAD7D9FF
           }
+          OnClick = BtnPreVisClick
           ParentFont = False
           TabOrder = 1
         end
@@ -2320,6 +2328,7 @@ object fNFe: TfNFe
             F3FFEFEFEFFFEBF0EFFFEFF5F0FFF8F8F2FFF6F3EFFFF2EEF3FFEFEDF3FFEEF3
             F6FFEBF1F0FFECF1F0FFEFF2F0FFF1F1F1FF
           }
+          OnClick = btnGeraNFeClick
           ParentFont = False
           TabOrder = 2
         end
@@ -3547,14 +3556,14 @@ object fNFe: TfNFe
           Left = 8
           Height = 21
           Top = 104
-          Width = 225
+          Width = 215
           TabOrder = 2
         end
         object sbtnGetCert3: TSpeedButton
-          Left = 232
+          Left = 224
           Height = 22
-          Top = 104
-          Width = 32
+          Top = 103
+          Width = 33
           Glyph.Data = {
             D20F0000424DD20F0000000000003600000028000000250000001B0000000100
             2000000000009C0F000064000000640000000000000000000000FFFFFFFFFFFF
@@ -3684,6 +3693,7 @@ object fNFe: TfNFe
             FFFFFEFEFEFFFFFFFFFFFDFDFDFFFFFFFFFFFFFFFFFFFDFDFDFFFFFFFFFFFDFD
             FDFFFEFEFEFFFFFFFFFFFCFCFCFFFEFEFEFFFFFFFFFF
           }
+          OnClick = sbtnGetCert1Click
         end
       end
       object edtPathSchemas: TEdit
@@ -4269,7 +4279,7 @@ object fNFe: TfNFe
           Left = 745
           Height = 13
           Top = 328
-          Width = 27
+          Width = 28
           Caption = 'SMTP'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -4387,7 +4397,7 @@ object fNFe: TfNFe
           Left = 58
           Height = 13
           Top = 200
-          Width = 16
+          Width = 17
           Caption = 'TLS'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -4433,7 +4443,7 @@ object fNFe: TfNFe
           Left = 129
           Height = 13
           Top = 8
-          Width = 27
+          Width = 28
           Caption = 'SMTP'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -4572,7 +4582,7 @@ object fNFe: TfNFe
         object lCryptLib: TLabel
           Left = 41
           Height = 13
-          Top = 43
+          Top = 33
           Width = 42
           Alignment = taRightJustify
           Caption = 'CryptLib'
@@ -4600,7 +4610,7 @@ object fNFe: TfNFe
         object lXmlSign: TLabel
           Left = 24
           Height = 13
-          Top = 92
+          Top = 82
           Width = 59
           Alignment = taRightJustify
           Caption = 'XMLSignLib'
@@ -4628,7 +4638,7 @@ object fNFe: TfNFe
         object lHttpLib: TLabel
           Left = 45
           Height = 13
-          Top = 67
+          Top = 57
           Width = 38
           Alignment = taRightJustify
           Caption = 'HttpLib'
@@ -4656,10 +4666,38 @@ object fNFe: TfNFe
         object lSSLLib: TLabel
           Left = 51
           Height = 13
-          Top = 18
+          Top = 9
           Width = 32
           Alignment = taRightJustify
           Caption = 'SSLLib'
+          Color = clBtnFace
+          Font.CharSet = ANSI_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Segoe UI'
+          Font.Pitch = fpVariable
+          Font.Quality = fqDraft
+          ParentColor = False
+          ParentFont = False
+          Transparent = False
+        end
+        object cbSSLType: TComboBox
+          Left = 88
+          Height = 23
+          Top = 107
+          Width = 160
+          ItemHeight = 15
+          OnChange = cbXmlSignLibChange
+          Style = csDropDownList
+          TabOrder = 4
+        end
+        object cbSSLTypeLbl: TLabel
+          Left = 40
+          Height = 13
+          Top = 107
+          Width = 43
+          Alignment = taRightJustify
+          Caption = 'Tipo SSL'
           Color = clBtnFace
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -4797,6 +4835,7 @@ object fNFe: TfNFe
             C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
           }
           Layout = blGlyphTop
+          OnClick = btnSair1Click
           TabOrder = 1
         end
       end

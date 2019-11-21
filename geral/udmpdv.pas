@@ -88,7 +88,7 @@ type
     cdsItensNFV_FCP: TFloatField;
     cdsItensNFV_FCPST: TFloatField;
     cdsItensNFV_FCPSTRET: TFloatField;
-    DataSource1: TDataSource;
+    dsNF: TDataSource;
     dsCCE: TDataSource;
     IbCon: TIBConnection;
     qcdsFaturaDATAFATURA: TDateField;
@@ -1101,6 +1101,63 @@ begin
   sTrans.Params.Text := 'isc_tpb_read_committed';
   //IBCon.CharSet:='WIN1252';
   //path_exe := path_exe;
+  if FileExists(path_exe  + 'dbxconnections.ini') then
+  begin
+    conf := TIniFile.Create(path_exe + 'dbxconnections.ini');
+    try
+      vstr := conf.ReadString('nfe', 'Database', '');
+      IBCon.DatabaseName := vstr;
+      vstr := conf.ReadString('nfe', 'Hostname', '');
+      IBCon.HostName := vstr;
+      snh := conf.ReadString('nfe', 'Password', '');
+      //snh:= EncodeStringBase64(snh); // Ver a senha Encryptada
+      //snh:= DecodeStringBase64(snh);
+      IBCon.Password := snh;
+      vstr := IntToStr(conf.ReadInteger('nfe', 'Port', 3050));
+      IbCon.Params.Add('port=' + vstr)
+    finally
+      conf.free;
+    end;
+  end;
+  if FileExists(path_exe  + 'nfe.ini') then
+  begin
+    conf := TIniFile.Create(path_exe + 'nfe.ini');
+    try
+      portaImp := conf.ReadString('IMPRESSORA', 'porta', '');
+      ModeloImp := conf.ReadInteger('IMPRESSORA', 'Modelo', 0);
+      CupomImp := conf.ReadString('IMPRESSORA', 'Cupom', 'Texto');
+      espacoEntreLinhas := conf.ReadInteger('IMPRESSORA', 'EspacoEntreLinhas', 10);
+      margemCodBarra := conf.ReadInteger('IMPRESSORA', 'MargemCodBarra', 50);
+      tamanhoLinha := conf.ReadInteger('IMPRESSORA', 'TamanhoLinha', 36);
+      imp_controle_porta := conf.ReadBool('IMPRESSORA', 'ControlaPorta', False);
+      imp_Interval := conf.ReadInteger('IMPRESSORA', 'SendBytesInterval', 100);
+      imp_vias := conf.ReadInteger('IMPRESSORA', 'NumeroVias', 1);
+      imp_LinhasBuffer:= conf.ReadInteger('IMPRESSORA', 'LinhasBuffer', 10);
+      SSLLib     := conf.ReadInteger( 'Certificado','SSLLib' ,0) ;
+      CryptLib   := conf.ReadInteger( 'Certificado','CryptLib' , 0) ;
+      HttpLib    := conf.ReadInteger( 'Certificado','HttpLib' , 0) ;
+      XmlSignLib := conf.ReadInteger( 'Certificado','XmlSignLib' , 0) ;
+      CaminhoCert:= conf.ReadString( 'Certificado','Caminho' ,'') ;
+      SenhaCert  := conf.ReadString( 'Certificado','Senha'   ,'') ;
+      NumSerieCert:= conf.ReadString( 'Certificado','NumSerie','');
+      NFE_Teste:= conf.ReadString( 'Certificado','NFE_Teste','N');
+      vendedor_padrao := conf.ReadInteger( 'Outros','Vendedor',0);
+      senhaLogin := conf.ReadString( 'Outros','SenhaLogin','');
+      nomeLogado := conf.ReadString( 'Outros','NomeLogin','');
+      tipo_buscaProd := conf.ReadString( 'Outros','BuscaProduto','NORMAL');
+      tipo_CodBarra := conf.ReadString( 'Outros','TipoCodBarra','PRECO');
+      tamanhoDescProd := conf.ReadInteger( 'Outros','TamanhoDescProd',400);
+      tamanhoCodProd := conf.ReadInteger( 'Outros','TamanhoCodProd',140);
+      usoSistema := conf.ReadString( 'Outros','TipoUso','ATS');
+      usaComanda := conf.ReadInteger( 'Outros','UsaComanda',0);
+      usaCurso := conf.ReadInteger( 'Outros','UsaCurso',0);
+      NfceSat := conf.ReadString( 'Outros','NfceSat','NFCE');
+      ccusto := conf.ReadString( 'Outros','CentroCusto','');
+      modoDesenvolvedor := conf.ReadString( 'Outros','modoDesenvolvedor','N');
+    finally
+      conf.free;
+    end;
+  end;
   if FileExists(path_exe  + 'conf.ini') then
   begin
     conf := TIniFile.Create(path_exe + 'conf.ini');
