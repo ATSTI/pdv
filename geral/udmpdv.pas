@@ -1007,6 +1007,8 @@ type
     procedure IbConBeforeConnect(Sender: TObject);
   private
     procedure atualiza_bd(sistema: String);
+    procedure campo_novo(tabela, campo, tipo: String);
+    function existe_campo(tabela, campo: String): Boolean;
   public
     modoDesenvolvedor: String;
     usosistema : string;
@@ -1057,6 +1059,7 @@ type
     imp_vias: Integer;
     imp_LinhasBuffer: Integer;
     imp_ColunaFonteNormal: Integer;
+    imp_larguraBobina: Integer;
     function executaSql(strSql: String): Boolean;
     procedure executaDSQL(strDSQL: String); // criei pra executar o atualiza Bd
     procedure gravaLog(DataLog: TDateTime; usuario: String; tipoMovimento: String;
@@ -1133,6 +1136,7 @@ begin
       imp_Interval := conf.ReadInteger('IMPRESSORA', 'SendBytesInterval', 100);
       imp_vias := conf.ReadInteger('IMPRESSORA', 'NumeroVias', 1);
       imp_LinhasBuffer:= conf.ReadInteger('IMPRESSORA', 'LinhasBuffer', 10);
+      imp_larguraBobina:= conf.ReadInteger('IMPRESSORA', 'LarguraBobina', 302);
       SSLLib     := conf.ReadInteger( 'Certificado','SSLLib' ,0) ;
       CryptLib   := conf.ReadInteger( 'Certificado','CryptLib' , 0) ;
       HttpLib    := conf.ReadInteger( 'Certificado','HttpLib' , 0) ;
@@ -1181,6 +1185,7 @@ begin
       imp_Interval := conf.ReadInteger('IMPRESSORA', 'SendBytesInterval', 100);
       imp_vias := conf.ReadInteger('IMPRESSORA', 'NumeroVias', 1);
       imp_LinhasBuffer:= conf.ReadInteger('IMPRESSORA', 'LinhasBuffer', 10);
+      imp_larguraBobina:= conf.ReadInteger('IMPRESSORA', 'LarguraBobina', 10);
       //snh:= EncodeStringBase64(snh); // Ver a senha Encryptada
       snh:= DecodeStringBase64(snh);
       IBCon.Password := snh;
@@ -1304,74 +1309,45 @@ end;
 
 procedure TdmPdv.atualiza_bd(sistema: String);
 begin
-  if (sistema = 'CTe') then
+  if (sistema = 'PDV') then
   begin
-    if (versao_sistema = '1.0') then
-      versao_sistema := '1.1';
     if (versao_sistema = '1.1') then
     begin
-    Try
-      IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD STATE SMALLINT');
-    Except
-    end;
-    Try
-      IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD troco double precision');
-    Except
-    end;
-
-    Try
-      IbCon.ExecuteDirect('ALTER TABLE USUARIO ADD SENHA VARCHAR(50)');
-    Except
-    end;
-    Try
-      IbCon.ExecuteDirect('ALTER TABLE USUARIO ADD CODBARRA VARCHAR(13)');
-    Except
-    end;
-    Try
-      IbCon.ExecuteDirect('ALTER TABLE PRODUTOS ADD PRECOATACADO DOUBLE PRECISION');
-      IbCon.ExecuteDirect('ALTER TABLE PRODUTOS ADD QTDEATACADO DOUBLE PRECISION');
-    Except
-    end;
-    Try
-      IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD CODFORMA INTEGER NOT NULL');
-      IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD PRIMARY KEY (CODFORMA)');
-    Except
-    end;
-    sTrans.Commit;
-    Try
-      IbCon.ExecuteDirect('CREATE SEQUENCE GEN_FORMA');
-    Except
-    end;
-
-    Try
-      IbCon.ExecuteDirect('ALTER TABLE MOVIMENTO ADD DESCONTO DOUBLE PRECISION');
-    Except
-    end;
-    Try
-      IbCon.ExecuteDirect('alter table venda add XMLNFE BLOB SUB_TYPE 0');
-      IbCon.ExecuteDirect('alter table venda add NOMEXML VARCHAR( 60 )');
-      IbCon.ExecuteDirect('alter table venda add PROTOCOLOENV VARCHAR( 20 )');
-      IbCon.ExecuteDirect('alter table venda add NUMRECIBO VARCHAR( 20 )');
-    Except
-    end;
-    Try
-      IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA  ADD DESCONTO double precision');
-    Except
-    end;
-      IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.2') +
-      ' WHERE CODATUALIZA = 5001');
+      IbCon.ExecuteDirect('INSERT INTO ATUALIZA (CODATUALIZA, SCRIPT, VERSAO' +
+        ') VALUES (5002, ' + QuotedStr('PDV') + ', '  + QuotedStr('1.2') + ')');
+      campo_novo('FORMA_ENTRADA', 'STATE', 'SMALLINT');
+      campo_novo('FORMA_ENTRADA', 'TROCO', 'double precision');
+      campo_novo('USUARIO', 'SENHA', 'VARCHAR(50)');
+      campo_novo('USUARIO', 'CODBARRA', 'VARCHAR(13)');
+      campo_novo('PRODUTOS', 'PRECOATACADO', 'DOUBLE PRECISION');
+      campo_novo('PRODUTOS', 'QTDEATACADO', 'DOUBLE PRECISION');
+      campo_novo('FORMA_ENTRADA', 'CODFORMA', 'INTEGER NOT NULL');
+      campo_novo('FORMA_ENTRADA', 'PRIMARY KEY', '(CODFORMA)');
+      Try
+        IbCon.ExecuteDirect('CREATE SEQUENCE GEN_FORMA');
+      Except
+      end;
+      campo_novo('MOVIMENTO', 'DESCONTO', 'DOUBLE PRECISION');
+      campo_novo('venda', 'XMLNFE', 'BLOB SUB_TYPE 0');
+      campo_novo('venda', 'NOMEXML', 'VARCHAR( 60 )');
+      campo_novo('venda', 'PROTOCOLOENV', 'VARCHAR( 20 )');
+      campo_novo('venda', 'NUMRECIBO', 'VARCHAR( 20 )');
+      campo_novo('FORMA_ENTRADA', 'DESCONTO', 'double precision');
       sTrans.Commit;
     end;
     if (versao_sistema = '1.2') then
     begin
-      Try
-        IbCon.ExecuteDirect('ALTER TABLE MOVIMENTO ADD DATA_FECHOU TIMESTAMP');
-      Except
-      end;
+      campo_novo('MOVIMENTO', 'DATA_FECHOU', 'TIMESTAMP');
       IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.3') +
-      ' WHERE CODATUALIZA = 5001');
+      ' WHERE CODATUALIZA = 5002');
       sTrans.Commit;
     end;
+  end;
+  if (sistema = 'CTe') then
+  begin
+    if (versao_sistema = '1.0') then
+      versao_sistema := '1.1';
+
     if (versao_sistema = '1.3') then
     begin
       Try
@@ -1400,11 +1376,69 @@ begin
           sTrans.Rollback;
         end;
       end;
-      IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.4') +
+    end;
+    if (versao_sistema = '1.4') then
+    begin
+      campo_novo('CTE', 'ANT_CNPJ', 'VARCHAR(20)');
+      campo_novo('CTE', 'ANT_IE',  'VARCHAR(20)');
+      campo_novo('CTE', 'ANT_UF', 'VARCHAR(2)');
+      campo_novo('CTE', 'ANT_NOME', 'VARCHAR(60)');
+      campo_novo('CTE', 'ANT_CHCTE', 'VARCHAR(60)');
+      IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.5') +
         ' WHERE CODATUALIZA = 5001');
       sTrans.Commit;
     end;
+    if (versao_sistema = '1.5') then
+    begin
+      campo_novo('CTE', 'IN_IMPOSTOS', 'INTEGER');
+      IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.6') +
+        ' WHERE CODATUALIZA = 5001');
+      sTrans.Commit;
+    end;
+    if (versao_sistema = '1.6') then
+    begin
+      campo_novo('CTE', 'NPROTCANCEL', 'VARCHAR(30)');
+      IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.7') +
+        ' WHERE CODATUALIZA = 5001');
+      sTrans.Commit;
+    end;
+    if (versao_sistema = '1.7') then
+    begin
+      campo_novo('CTE', 'VALPREDBC', 'DOUBLE PRECISION');
+      campo_novo('CTE', 'VALVBC', 'DOUBLE PRECISION');
+      campo_novo('CTE', 'VALPICMS', 'DOUBLE PRECISION');
+      campo_novo('CTE', 'VALVICMS', 'DOUBLE PRECISION');
+      campo_novo('CTE', 'VALVCRED', 'DOUBLE PRECISION');
+      campo_novo('CTE', 'STATUS_CTE', 'VARCHAR(30)');
+      IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.8') +
+        ' WHERE CODATUALIZA = 5001');
+      sTrans.Commit;
+    end;
+
   end;  // fim atualiza CTe
+end;
+
+procedure TdmPdv.campo_novo(tabela, campo, tipo: String);
+begin
+  if (existe_campo(tabela, campo) = False) then
+  begin
+    Try
+      tabela := 'ALTER TABLE ' + tabela + ' ADD ' + campo + ' ' + tipo;
+      IbCon.ExecuteDirect(tabela);
+    Except
+    end;
+  end;
+end;
+
+function TdmPdv.existe_campo(tabela, campo: String): Boolean;
+begin
+  busca_sql('SELECT * FROM rdb$relation_fields ' +
+    ' WHERE rdb$relation_name = ' + QuotedStr(tabela) +
+    '   AND rdb$relation_fields.rdb$field_name = ' + QuotedStr(campo));
+  if (sqBusca.IsEmpty) then
+    result := False
+  else
+    result := True;
 end;
 
 procedure TdmPdv.gravaLog(DataLog: TDateTime; usuario: String;

@@ -551,6 +551,7 @@ begin
   ACBrPosPrinter1.Porta := dmPdv.portaImp;
   ACBrPosPrinter1.Modelo:= TACBrPosPrinterModelo(cbxModeloPosPrinter.ItemIndex);
   ACBrPosPrinter1.LinhasEntreCupons := dmPdv.espacoEntreLinhas;
+  ACBrNFeDANFeESCPOS1.LarguraBobina := dmPdv.imp_larguraBobina;
   if (cbxModeloPosPrinter.ItemIndex = 4) then
   begin
     ACBrPosPrinter1.ConfigQRCode.LarguraModulo:=3;
@@ -1023,6 +1024,7 @@ var contaItens :integer;
   cod_barra: String;
   desconto_rateio: double;
   vlr_itemnf: double;
+  qt_itemnf: double;
   desc_rateado: double;
   ncm_str: String;
   num_itens: Integer;
@@ -1050,7 +1052,9 @@ begin
     while not dmPdv.sqLancamentos.Eof do
     begin
       num_itens -= 1;
-      totalNFCe := totalNFCe + dmPdv.sqLancamentosTOTALITEM.AsFloat;
+      qt_itemnf := dmPdv.sqLancamentosQUANTIDADE.AsFloat;
+      vlr_itemnf := dmPdv.sqLancamentosPRECO.AsFloat;
+      totalNFCe := totalNFCe + RoundABNT(((vlr_itemnf*qt_itemnf)-dmPdv.sqLancamentosVALOR_DESCONTO.AsFloat),2);
       contaItens := contaItens + 1;
       vBC += dmPdv.sqLancamentosVLR_BASEICMS.AsVariant;
       vICMS += dmPdv.sqLancamentosVALOR_ICMS.AsVariant;
@@ -1062,14 +1066,10 @@ begin
         Prod.xProd    := LeftStr(dmPdv.sqLancamentosDESCPRODUTO.AsString, 99);
         Prod.CFOP     := dmPdv.sqLancamentosCFOP.AsString;
         Prod.uCom     := dmPdv.sqLancamentosUNIDADEMEDIDA.AsString;
-        vlr_itemnf := dmPdv.sqLancamentosQUANTIDADE.AsFloat;
-        Prod.qCom     := vlr_itemnf;
-        vlr_itemnf := dmPdv.sqLancamentosPRECO.AsFloat;
-        Prod.vUnCom   := vlr_itemnf;
+        //vlr_itemnf := dmPdv.sqLancamentosQUANTIDADE.AsFloat;
+        Prod.qCom     := qt_itemnf;
         Prod.uTrib    := dmPdv.sqLancamentosUNIDADEMEDIDA.AsString;
-        Prod.qTrib    := dmPdv.sqLancamentosQUANTIDADE.AsFloat;
-        Prod.vUnTrib  := dmPdv.sqLancamentosPRECO.AsFloat;
-
+        Prod.qTrib    := qt_itemnf;
         ncm_str := dmPdv.sqLancamentosNCM.AsString;
         ncm_str  := StringReplace(ncm_str,'.','',[rfReplaceAll]);
         if Length(ncm_str) < 8then
@@ -1100,20 +1100,25 @@ begin
                            dmPdv.sqLancamentosOBS.AsString
         else
           infAdProd     := dmPdv.sqLancamentosOBS.AsString;
-        vlr_itemnf := dmPdv.sqLancamentosTOTALITEM.AsFloat;
-        Prod.vProd :=  vlr_itemnf;
+        //if (nfce_desconto > 0) then
+        //  vlr_itemnf := RoundABNT((dmPdv.sqLancamentosTOTALITEM.AsFloat+dmPdv.sqLancamentosVALOR_DESCONTO.AsCurrency),2)
+        //else
+        //  vlr_itemnf := RoundABNT(dmPdv.sqLancamentosTOTALITEM.AsFloat,2);
+        Prod.vProd := RoundABNT(((vlr_itemnf*qt_itemnf)-dmPdv.sqLancamentosVALOR_DESCONTO.AsFloat),2);
+        Prod.vUnTrib  := RoundABNT((Prod.vProd/qt_itemnf),2);
+        Prod.vUnCom   := RoundABNT((Prod.vProd/qt_itemnf),2);
         Prod.vFrete   := 0 ; //dmPdv.sqLancamentosFRETE.AsCurrency;
-        Prod.vDesc    := dmPdv.sqLancamentosVALOR_DESCONTO.AsCurrency;
+        //Prod.vDesc    := dmPdv.sqLancamentosVALOR_DESCONTO.AsCurrency;
         if ((nfce_desconto > 0) and (num_itens = 0)) then
         begin
           // jogar diferenca rateio desconto no ultimo item
-          Prod.vDesc      := RoundTo(nfce_desconto - desc_rateado, -2);
+          Prod.vDesc      := RoundABNT((nfce_desconto - desc_rateado), 2);
         end;
         if ((nfce_desconto > 0) and (num_itens > 0)) then
         begin
           desconto_rateio := nfce_desconto/nfce_valor;
           desconto_rateio := dmPdv.sqLancamentosTOTALITEM.AsFloat * desconto_rateio;
-          Prod.vDesc      := RoundTo(desconto_rateio, -2);
+          Prod.vDesc      := RoundAbnt(desconto_rateio, 2);
           desc_rateado += Prod.vDesc;
         end;
 
@@ -1123,8 +1128,8 @@ begin
         with Imposto do
         begin
           // lei da transparencia nos impostos
-          vTotTrib := RoundTo(dmPdv.sqLancamentosVLRTOT_TRIB.AsFloat,-2);
-          total_tributos:= total_tributos + RoundTo(dmPdv.sqLancamentosVLRTOT_TRIB.AsFloat,-2);
+          vTotTrib := RoundAbnt(dmPdv.sqLancamentosVLRTOT_TRIB.AsFloat,2);
+          total_tributos:= total_tributos + RoundAbnt(dmPdv.sqLancamentosVLRTOT_TRIB.AsFloat,2);
           // ***********************  ICMS ********************************
           with ICMS do
           begin
@@ -1328,7 +1333,7 @@ begin
       end; // fim add item
       dmPdv.sqLancamentos.Next;
     end; // fim do while
-
+    nfce_valor := totalNFCe;
   end;
 
 

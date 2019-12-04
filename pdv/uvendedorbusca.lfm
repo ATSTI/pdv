@@ -1,6 +1,15 @@
 inherited fVendedorBusca: TfVendedorBusca
   Caption = 'Busca Vendedor'
   OnShow = FormShow
+  inherited Panel1: TPanel
+    inherited Label1: TLabel
+      Height = 21
+      Width = 41
+    end
+    inherited chInativo: TCheckBox
+      Width = 60
+    end
+  end
   inherited Panel2: TPanel
     inherited btnProcurar: TBitBtn
       OnClick = btnProcurarClick

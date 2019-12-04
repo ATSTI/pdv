@@ -25,8 +25,17 @@ type
     BitBtn11: TBitBtn;
     BitBtn12: TBitBtn;
     BitBtn13: TBitBtn;
+    BitBtn14: TBitBtn;
+    BitBtn16: TBitBtn;
+    BitBtn17: TBitBtn;
+    BitBtn18: TBitBtn;
+    BitBtn19: TBitBtn;
+    BitBtn20: TBitBtn;
+    BitBtn21: TBitBtn;
+    BitBtn22: TBitBtn;
     btnEditarNFe1: TBitBtn;
     btnExcluirNFe1: TBitBtn;
+    btnGerarCte1: TBitBtn;
     btnGravarCTe1: TBitBtn;
     btnIncluirNFe1: TBitBtn;
     btnLimpaBusca: TBitBtn;
@@ -136,10 +145,22 @@ type
     edModeloAtualiza: TEdit;
     edSerieAtualiza: TEdit;
     edtCaminho: TEdit;
+    edtCfop1: TEdit;
     edtDestNome1: TEdit;
     edtEmailAssunto: TEdit;
+    edtEnvCidade1: TEdit;
+    edtEnvCodCidade1: TEdit;
+    edtEnvUF1: TEdit;
+    edtFimCidade1: TEdit;
+    edtFimCodCidade1: TEdit;
+    edtFimUF1: TEdit;
+    edtIniCidade1: TEdit;
+    edtIniCodCidade1: TEdit;
+    edtIniUF1: TEdit;
     edtLogoMarca: TEdit;
     edtCteImportar: TEdit;
+    edtNatOpe1: TEdit;
+    edtNumCte1: TEdit;
     edtPathLogs: TEdit;
     edtSenha: TEdit;
     edtSmtpHost: TEdit;
@@ -314,6 +335,7 @@ type
     GroupBox19: TGroupBox;
     GroupBox2: TGroupBox;
     GroupBox20: TGroupBox;
+    GroupBox21: TGroupBox;
     GroupBox3: TGroupBox;
     GroupBox4: TGroupBox;
     GroupBox5: TGroupBox;
@@ -355,6 +377,7 @@ type
     Label12: TLabel;
     Label120: TLabel;
     Label121: TLabel;
+    Label122: TLabel;
     Label123: TLabel;
     Label124: TLabel;
     Label125: TLabel;
@@ -403,6 +426,12 @@ type
     Label164: TLabel;
     Label165: TLabel;
     Label166: TLabel;
+    Label167: TLabel;
+    Label168: TLabel;
+    Label169: TLabel;
+    Label170: TLabel;
+    Label171: TLabel;
+    Label172: TLabel;
     lblCteAtual: TLabel;
     Label17: TLabel;
     Label19: TLabel;
@@ -533,6 +562,7 @@ type
     RadioGroup1: TRadioGroup;
     RadioGroup2: TRadioGroup;
     RadioGroup3: TRadioGroup;
+    rgForPag1: TRadioGroup;
     rgSeguroResp: TRadioGroup;
     rgDest: TRadioGroup;
     rgExp: TRadioGroup;
@@ -548,6 +578,7 @@ type
     rgTipoDACTe: TRadioGroup;
     rgTiposCte: TRadioGroup;
     rgTipoServico: TRadioGroup;
+    rgTipoServico1: TRadioGroup;
     rgTomador: TRadioGroup;
     sbtnCaminhoCert: TSpeedButton;
     sbtnLerXmlCte: TSpeedButton;
@@ -605,6 +636,7 @@ type
     TabSheet17: TTabSheet;
     TabSheet18: TTabSheet;
     TabSheet19: TTabSheet;
+    TabSheet2: TTabSheet;
     TabSheet20: TTabSheet;
     TabSheet3: TTabSheet;
     TabSheet6: TTabSheet;
@@ -766,12 +798,15 @@ type
     procedure TabInfoCargaContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
     procedure TabDestinatarioShow(Sender: TObject);
+    procedure TabSheet2ContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
     procedure TabTomadorShow(Sender: TObject);
   private
     vModeloCTe : integer;
     ver_cod_cte: Integer;
     vCteStr: String;
     modoGravacao : string;
+    modoInicio: String;
     val_genCte : integer;
     val0 , val1, val2 : Double;
     valC :string;
@@ -964,6 +999,12 @@ end;
 procedure TfCTePrincipal.TabDestinatarioShow(Sender: TObject);
 begin
   //edtDestBusca.SetFocus;
+end;
+
+procedure TfCTePrincipal.TabSheet2ContextPopup(Sender: TObject;
+  MousePos: TPoint; var Handled: Boolean);
+begin
+
 end;
 
 procedure TfCTePrincipal.TabTomadorShow(Sender: TObject);
@@ -1360,13 +1401,26 @@ begin
 
 
    // TpcteTipoServico = (tsNormal, tsSubcontratacao, tsRedespacho, tsIntermediario);
-    case rgTipoServico.ItemIndex of
-      0: Ide.tpServ:=tsNormal;
-      1: Ide.tpServ:=tsSubcontratacao;
-      2: Ide.tpServ:=tsRedespacho;
-      3: Ide.tpServ:=tsIntermediario;
+    if (Trim(edtModelo.Text) = '57') then
+    begin
+      case rgTipoServico.ItemIndex of
+        0: Ide.tpServ := tsNormal;
+        1: Ide.tpServ := tsSubcontratacao;
+        2: Ide.tpServ := tsRedespacho;
+        3: Ide.tpServ := tsIntermediario;
+        4: Ide.tpServ := tsMultimodal;
+      end;
     end;
-                               // incluir na aba Dados
+    if (Trim(edtModelo.Text) = '67') then
+    begin
+      case rgTipoServico.ItemIndex of
+        0: Ide.tpServ:=tsTranspPessoas;
+        1: Ide.tpServ:=tsTranspValores;
+        2: Ide.tpServ:=tsExcessoBagagem;
+      end;
+    end;
+
+    // incluir na aba Dados
 
     // Emissão
     Ide.cMunEnv := StrToInt(LimparString(edtEnvCodCidade.Text, '-'));
@@ -2282,6 +2336,24 @@ begin
   edtEmitenteCte.Text     := dmCte.cdsCTEE_FANTASIA.AsString;
   v_str_c  := Trim(dmCte.cdsCTEMODAL.AsString);
   rgModal.ItemIndex       := StrToInt(v_str_c);
+
+  if (Trim(edtModelo.Text) = '57') then
+  begin
+    rgTipoServico.Items.Clear;
+    rgTipoServico.Items.Add('Normal');
+    rgTipoServico.Items.Add('SubContratação');
+    rgTipoServico.Items.Add('Redespacho');
+    rgTipoServico.Items.Add('Red. Intermediário');
+    rgTipoServico.Items.Add('Serv. Multimodal');
+  end;
+  if (Trim(edtModelo.Text) = '67') then
+  begin
+   rgTipoServico.Items.Clear;
+   rgTipoServico.Items.Add('Trasporte de pessoas');
+   rgTipoServico.Items.Add('Transporte de Valores');
+   rgTipoServico.Items.Add('Excesso de Bagagem');
+  end;
+
   rgTipoServico.ItemIndex := dmCte.cdsCTETIPOSERVICO.AsInteger;
   rgTiposCte.ItemIndex    := dmCte.cdsCTETIPOCTE.AsInteger;
   rgFormaEmissao.ItemIndex := dmCte.cdsCTETPOEMISSAO.AsInteger;
@@ -3537,9 +3609,22 @@ end;
 
 procedure TfCTePrincipal.dbValTotTriChange(Sender: TObject);
 begin
-  if (dmCte.cdsCteVALTOTTRI.NewValue <> dmCte.cdsCteVALTOTTRI.OldValue) then
-    if ((modoGravacao <> 'EDITAR') or (modoGravacao <> 'INSERIR')) then
-      modoGravacao := 'EDITAR';
+  if (dmCte.cdsCte.State in [dsInactive, dsBrowse]) then
+  begin
+    if (dmCte.cdsCteVALTOTTRI.NewValue <> dmCte.cdsCteVALTOTTRI.OldValue) then
+    begin
+      if (Trim(dmCte.cdsCTENPROT.AsString) = '') then
+      begin
+        if (modoInicio = 'ALTERAR') then
+          if ((modoGravacao <> 'EDITAR') and (modoGravacao <> 'INCLUIR')) then
+             modoGravacao := 'EDITAR';
+        if (modoInicio = 'NOVO') then
+          if ((modoGravacao <> 'EDITAR') and (modoGravacao <> 'INCLUIR')) then
+             modoGravacao := 'INCLUIR';
+      end;
+    end;
+  end;
+
 end;
 
 procedure TfCTePrincipal.dgGridCTEDblClick(Sender: TObject);
@@ -3700,10 +3785,22 @@ begin
     edCteCancelar.SetFocus;
     exit;
   end;
+
   if not(InputQuery('WebServices Cancelamento', 'Justificativa', vAux))
     then exit;
-
-  ACBrCTe1.Cancelamento(vAux);
+  {
+  with ACBrCTe1.EventoCTe.Evento.Add do
+  begin
+    InfEvento.nSeqEvento := 1;
+    InfEvento.chCTe := dmCte.cdsCteCHCTE.AsString;
+    InfEvento.CNPJ :=  dmpdv.sqEmpresaCNPJ_CPF.AsString;
+    InfEvento.dhEvento := Now;
+    infEvento.tpEvento := teCancelamento;
+    infEvento.detEvento.xJust := vAux;
+    InfEvento.detEvento.UF := Trim(dmPdv.sqEmpresaUF.AsString);
+    infEvento.detEvento.nProt := dmCte.cdsCteNPROT.AsString;
+  end;}
+  ACBrCTe1.Cancelamento(vAux, 1);
   MemoResp.Lines.Text := UTF8Encode(ACBrCTe1.WebServices.EnvEvento.RetWS);
   memoRespWS.Lines.Text := UTF8Encode(ACBrCTe1.WebServices.EnvEvento.RetWS);
   MemoDados.Lines.Add('');
@@ -4245,6 +4342,7 @@ begin
     ShowMessage('Selecione a CTe a editar.');
     Exit;
   end;
+  modoInicio := 'ALTERAR';
   lblCteAtual.Caption := IntToStr(dmCte.cdsCteCTE_NUMERO.AsInteger) +
     '-' + dmCte.cdsCteD_FANTASIA.AsString;
   lblCteAtual1.Font.Color:=clBlack;
@@ -4259,6 +4357,7 @@ begin
     MessageDlg('CTe já enviada. Não é possível GRAVAR alterações.', mtInformation, [mbOK], 0);
     StatusBar1.SimpleText := 'Consultando CTe : ' +
       IntToStr(dmCte.cdsCTECOD_CTE.AsInteger) + ' já enviada.';
+    btnGravarCTe.Caption := 'Não Grava';
   end;
   CarregarCte(IntToStr(dmCte.cdsCTECOD_CTE.AsInteger));
   // vai pra primeira ABA
@@ -5494,8 +5593,24 @@ begin
     if fCTePrincipal.Components[i] is TEdit then
       TEdit(fCTePrincipal.Components[i]).Clear;
   end;
-
+  modoInicio := 'NOVO';
   edtModelo.Text := IntToStr(vModeloCte);
+  if (Trim(edtModelo.Text) = '57') then
+  begin
+    rgTipoServico.Items.Clear;
+    rgTipoServico.Items.Add('Normal');
+    rgTipoServico.Items.Add('SubContratação');
+    rgTipoServico.Items.Add('Redespacho');
+    rgTipoServico.Items.Add('Red. Intermediário');
+    rgTipoServico.Items.Add('Serv. Multimodal');
+  end;
+  if (Trim(edtModelo.Text) = '67') then
+  begin
+   rgTipoServico.Items.Clear;
+   rgTipoServico.Items.Add('Trasporte de pessoas');
+   rgTipoServico.Items.Add('Transporte de Valores');
+   rgTipoServico.Items.Add('Excesso de Bagagem');
+  end;
   edModeloAtualiza.Text := 'CT';
   buscaEmpresa(comboEmpresa.Text);
   LerConfiguracao;
@@ -5646,8 +5761,9 @@ end;
 
 procedure TfCTePrincipal.btnListarCteClick(Sender: TObject);
 begin
- lblCteAtual.Caption := '';
- lblCteAtual1.Caption := '';
+  lblCteAtual.Caption := '';
+  lblCteAtual1.Caption := '';
+  modoInicio := 'CONSULTAR';
   modoGravacao := 'CONSULTAR';
   btnGravarCTe.Enabled := False;
   btnCancelarEdicaoCTe.Enabled := False;
@@ -5862,9 +5978,14 @@ end;
 
 procedure TfCTePrincipal.dbValInfCargaChange(Sender: TObject);
 begin
-  if (dmCte.cdsCteVPREST.NewValue <> dmCte.cdsCteVPREST.OldValue) then
-    if ((modoGravacao <> 'EDITAR') or (modoGravacao <> 'INSERIR')) then
-      modoGravacao := 'EDITAR';
+  //if (dmCte.cdsCteVPREST.NewValue <> dmCte.cdsCteVPREST.OldValue) then
+  //begin
+  //  if (Trim(dmCte.cdsCTENPROT.AsString) = '') then
+  //  begin
+  //    if ((modoGravacao <> 'EDITAR') and (modoGravacao <> 'INCLUIR')) then
+  //      modoGravacao := 'EDITAR';
+  //  end;
+  //end;
 end;
 
 procedure TfCTePrincipal.dbValReceberChange(Sender: TObject);
@@ -5874,9 +5995,21 @@ end;
 
 procedure TfCTePrincipal.dbValTotPrestChange(Sender: TObject);
 begin
-  if (dmCte.cdsCteVPREST.NewValue <> dmCte.cdsCteVPREST.OldValue) then
-    if ((modoGravacao <> 'EDITAR') or (modoGravacao <> 'INSERIR')) then
-      modoGravacao := 'EDITAR';
+  if (dmCte.cdsCte.State in [dsInactive, dsBrowse]) then
+  begin
+    if (dmCte.cdsCteVPREST.NewValue <> dmCte.cdsCteVPREST.OldValue) then
+    begin
+      if (Trim(dmCte.cdsCTENPROT.AsString) = '') then
+      begin
+        if (modoInicio = 'ALTERAR') then
+          if ((modoGravacao <> 'EDITAR') and (modoGravacao <> 'INCLUIR')) then
+             modoGravacao := 'EDITAR';
+        if (modoInicio = 'NOVO') then
+          if ((modoGravacao <> 'EDITAR') and (modoGravacao <> 'INCLUIR')) then
+             modoGravacao := 'INCLUIR';
+      end;
+    end;
+  end;
 end;
 
 procedure TfCTePrincipal.edtXMLCodChange(Sender: TObject);
@@ -6024,6 +6157,7 @@ begin
         CarregarUF;
       end;
     end;
+    dmPdv.sqParametro.Next;
   end;
   vDate1 := StartOfTheMonth(today);
   DateTimePicker1.Date := vDate1 ;

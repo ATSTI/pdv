@@ -136,8 +136,8 @@ object fNfce: TfNfce
     Height = 408
     Top = 72
     Width = 646
-    ActivePage = TabSheet5
-    TabIndex = 1
+    ActivePage = TabSheet4
+    TabIndex = 0
     TabOrder = 5
     object TabSheet4: TTabSheet
       Caption = 'NFCe'
@@ -3489,6 +3489,7 @@ object fNfce: TfNfce
   end
   object ACBrPosPrinter1: TACBrPosPrinter
     Modelo = ppEscPosEpson
+    ColunasFonteNormal = 80
     ConfigBarras.MostrarCodigo = False
     ConfigBarras.LarguraLinha = 0
     ConfigBarras.Altura = 0
@@ -3497,7 +3498,6 @@ object fNfce: TfNfce
     ConfigQRCode.LarguraModulo = 4
     ConfigQRCode.ErrorLevel = 0
     LinhasEntreCupons = 0
-    OnEnviarStringDevice = ACBrPosPrinter1EnviarStringDevice
     left = 525
     top = 152
   end
@@ -3517,10 +3517,10 @@ object fNfce: TfNfce
   end
   object ACBrNFeDANFeESCPOS1: TACBrNFeDANFeESCPOS
     Sistema = 'Projeto ACBr - www.projetoacbr.com.br'
-    MargemInferior = 0.8
-    MargemSuperior = 0.8
-    MargemEsquerda = 0.6
-    MargemDireita = 0.51
+    MargemInferior = 0.2
+    MargemSuperior = 0.2
+    MargemEsquerda = 0.2
+    MargemDireita = 0.2
     CasasDecimais.Formato = tdetInteger
     CasasDecimais.qCom = 4
     CasasDecimais.vUnCom = 4
@@ -3528,8 +3528,10 @@ object fNfce: TfNfce
     CasasDecimais.MaskvUnCom = ',0.00'
     ACBrNFe = ACBrNFe1
     TipoDANFE = tiNFCe
-    LarguraBobina = 80
+    ImprimeEmUmaLinha = True
+    LarguraBobina = 280
     ImprimeQRCodeLateral = True
+    EspacoFinal = 0
     PosPrinter = ACBrPosPrinter1
     left = 325
     top = 45
@@ -3635,6 +3637,7 @@ object fNfce: TfNfce
     CasasDecimais.vUnCom = 2
     CasasDecimais.MaskqCom = ',0.00'
     CasasDecimais.MaskvUnCom = ',0.00'
+    LarguraBobina = 280
     FonteLinhaItem.Height = -9
     FonteLinhaItem.Name = 'Lucida Console'
     left = 152

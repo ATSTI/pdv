@@ -42,17 +42,24 @@ begin
   if (dmPdv.sqBusca.Active) then
     dmPdv.sqBusca.Close;
   dmPdv.sqBusca.SQL.Clear;
-
+  sql := sql + ' WHERE STATUS = 1 ';
   if edit1.Text <> '' then
   begin
-    sql := sql + ' WHERE CODUSUARIO = ' + Edit1.Text;
+    if (chInativo.Checked) then
+      sql := sql + ' WHERE STATUS = 0 AND  CODUSUARIO = ' + Edit1.Text
+    else
+      sql := sql + ' WHERE STATUS = 1 AND  CODUSUARIO = ' + Edit1.Text;
   end;
   if edit2.Text <> '' then
   begin
     if sql <> '' then
       sql := sql + ' AND '
-    else
-      sql := sql + ' WHERE ';
+    else begin
+      if (chInativo.Checked) then
+        sql := sql + ' WHERE STATUS = 0 AND '
+      else
+        sql := sql + ' WHERE  STATUS = 1 AND ';
+    end;
     sql := sql + '  NOMEUSUARIO LIKE ' + QuotedStr(Edit2.Text + '%');
   end;
   sql := 'SELECT * FROM USUARIO' + sql;
@@ -84,7 +91,7 @@ begin
   dmPdv.sqBusca.SQL.Clear;
 
   sql := 'SELECT * FROM USUARIO';
-  sql := sql + ' WHERE CODUSUARIO = ' + IntToStr(uCodVendedor);
+  sql := sql + ' WHERE STATUS = 1 AND CODUSUARIO = ' + IntToStr(uCodVendedor);
   dmPdv.sqBusca.SQL.Text := sql;
   dmPdv.sqBusca.Open;
   if not dmPdv.sqBusca.IsEmpty then

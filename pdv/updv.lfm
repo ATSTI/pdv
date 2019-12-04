@@ -12591,8 +12591,8 @@ object fPdv: TfPdv
         Height = 297
         Top = 23
         Width = 504
-        ActivePage = TabSheet1
-        TabIndex = 0
+        ActivePage = TabSheet2
+        TabIndex = 1
         TabOrder = 1
         object TabSheet1: TTabSheet
           Caption = 'Info'
