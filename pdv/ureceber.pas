@@ -288,6 +288,7 @@ begin
           ' , DATARECEBIMENTO = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now)) +
           ' , DATABAIXA = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now)) +
           ' , CAIXA = ' + dmPdv.idcaixa +
+          ' , CODALMOXARIFADO = ' + dmPdv.ccusto +
           ' , CODUSUARIO = ' + dmPdv.varLogado +
           ' , HISTORICO = ' + QuotedStr('Pagamento Caixa PDV : ' +
             dmPdv.nomeLogado + ', ' + dmPdv.nomeCaixa) +

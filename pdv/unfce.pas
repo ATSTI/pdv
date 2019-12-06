@@ -765,6 +765,10 @@ procedure TfNfce.GerarNFCe(Num: String);
 var
  tributos :string;
  vlr : Double;
+ vlr_pg: Double;
+ vlr_pg_acum: Double;
+ num_parc: Integer;
+ conta_parc: Integer;
 begin
   // gerar nfce
   if (dmPdv.sqEmpresa.Active) then
@@ -900,31 +904,56 @@ begin
     ' FROM FORMA_ENTRADA WHERE STATE < 2 AND ID_ENTRADA = ' +
     InttoStr(dmPdv.sqLancamentosCODMOVIMENTO.AsInteger);
   dmPdv.sqBusca.Open;
-
-    while not dmPdv.sqBusca.EOF do
+  //num_parc := dmPdv.sqBusca.RecNo;
+  num_parc := dmPdv.sqBusca.RecordCount;
+  conta_parc := 1;
+  vlr_pg_acum := 0;
+  while not dmPdv.sqBusca.EOF do
+  begin
+    with pag.Add do
     begin
-      with pag.Add do
+      tPag := fpCreditoLoja;
+      if (trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString) = '1') then
+        tPag := fpDinheiro
+      else if (trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString) = '3') then
       begin
-        tPag := fpCreditoLoja;
-        if (trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString) = '1') then
-          tPag := fpDinheiro
-        else if (trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString) = '3') then
+        tPag := fpCartaoCredito;
+        tpIntegra := tiPagNaoIntegrado;
+      end
+      else if trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString) = '2' then
+      begin
+        tPag := fpCartaoDebito;
+        tpIntegra := tiPagNaoIntegrado;
+      end
+      else
+        tPag := fpOutro;
+      vlr_pg := RoundABNT(dmPdv.sqBusca.FieldByName('VALOR_PAGO').AsFloat,2);
+      if (num_parc = 1) then
+      begin
+        vlr_pg := RoundABNT((nfce_valor - nfce_desconto),2);
+      end
+      else begin
+        vlr_pg_acum := vlr_pg_acum + vlr_pg;
+        if (RoundABNT(vlr_pg_acum,2) > RoundABNT((nfce_valor - nfce_desconto),2)) then
         begin
-          tPag := fpCartaoCredito;
-          tpIntegra := tiPagNaoIntegrado;
+          vlr_pg := vlr_pg - (RoundABNT(vlr_pg_acum,2) - RoundABNT((nfce_valor - nfce_desconto),2));
         end
-        else if trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString) = '2' then
-        begin
-          tPag := fpCartaoDebito;
-          tpIntegra := tiPagNaoIntegrado;
-        end
-        else
-          tPag := fpOutro;
-
-        vPag := RoundTo(dmPdv.sqBusca.FieldByName('VALOR_PAGO').AsFloat, -2);
+        else begin
+          if (num_parc = conta_parc) then
+          begin
+            // e a ultima entao tem q zerar
+            if (RoundABNT(vlr_pg_acum,2) < RoundABNT((nfce_valor - nfce_desconto),2)) then
+            begin
+              vlr_pg := vlr_pg - (RoundABNT((nfce_valor - nfce_desconto),2) - RoundABNT(vlr_pg_acum,2));
+            end;
+          end;
+        end;
       end;
-      dmPdv.sqBusca.Next;
+      vPag := vlr_pg;
     end;
+    conta_parc += 1;
+    dmPdv.sqBusca.Next;
+  end;
 
 
 
