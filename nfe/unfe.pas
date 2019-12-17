@@ -20,9 +20,11 @@ type
     ACBrIntegrador1: TACBrIntegrador;
     ACBrMail1: TACBrMail;
     ACBrNFe1: TACBrNFe;
+    ACBrNFe2: TACBrNFe;
     ACBrNFeDANFCeFortes1: TACBrNFeDANFCeFortes;
     ACBrNFeDANFeRL1: TACBrNFeDANFeRL;
     ACBrValidador1: TACBrValidador;
+    BitBtn1: TBitBtn;
     BitBtn8: TBitBtn;
     btnAbaPrincipal1: TBitBtn;
     BtnCCe1: TBitBtn;
@@ -86,6 +88,7 @@ type
     ComboBox1: TComboBox;
     ComboBox2: TComboBox;
     ComboBox3: TComboBox;
+    cbEmpresa: TComboBox;
     DateEdit1: TDateEdit;
     DateEdit2: TDateEdit;
     DBGrid1: TDBGrid;
@@ -104,6 +107,7 @@ type
     edtCaminho: TEdit;
     edtEmailCliente: TEdit;
     edtNumSerie: TEdit;
+    edtNumSerie1: TEdit;
     edtNumSerie2: TEdit;
     edtNumSerieABA: TEdit;
     edtPathSchemas: TEdit;
@@ -132,6 +136,7 @@ type
     ImageList1: TImageList;
     ImageList2: TImageList;
     Label1: TLabel;
+    Label10: TLabel;
     Label11: TLabel;
     Label12: TLabel;
     Label13: TLabel;
@@ -170,6 +175,7 @@ type
     Label43: TLabel;
     Label44: TLabel;
     Label45: TLabel;
+    Label46: TLabel;
     Label47: TLabel;
     Label48: TLabel;
     Label5: TLabel;
@@ -186,6 +192,7 @@ type
     lXmlSign: TLabel;
     cbSSLTypeLbl: TLabel;
     Memo1: TMemo;
+    mDFe: TMemo;
     memoDados: TMemo;
     memoLog: TMemo;
     MemoResp: TMemo;
@@ -200,9 +207,11 @@ type
     Panel3: TPanel;
     Panel4: TPanel;
     Panel5: TPanel;
+    Panel6: TPanel;
     rgViaTransp: TRadioGroup;
     sbtnGetCert: TSpeedButton;
     sbtnGetCert1: TSpeedButton;
+    sbtnGetCert2: TSpeedButton;
     sbtnGetCert3: TSpeedButton;
     SpeedButton3: TSpeedButton;
     StatusBar1: TStatusBar;
@@ -213,6 +222,7 @@ type
     TabSheet2: TTabSheet;
     TabSheet3: TTabSheet;
     TabSheet4: TTabSheet;
+    TabSheet5: TTabSheet;
     TabSheet6: TTabSheet;
     TabSheet7: TTabSheet;
     TabSheet8: TTabSheet;
@@ -221,6 +231,7 @@ type
     WBResposta: TSynMemo;
 
     procedure ACBrNFe1StatusChange(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
     procedure BitBtn8Click(Sender: TObject);
     procedure btnAbaPrincipalClick(Sender: TObject);
@@ -308,6 +319,7 @@ type
     procedure pegaItens(tpNf: integer);
     procedure pegaTributos(codMov: Integer;codProd: Integer);
     procedure getEmpresa;
+    procedure abrirEmpresa;
     procedure getCli_Fornec;
     procedure getItens(contador : integer);
     procedure getTransportadora;
@@ -315,7 +327,6 @@ type
     procedure AtualizaSSLLibsCombo;
     procedure GravarConfiguracao;
     procedure LoadXML(MyMemo: TMemo; MyWebBrowser: TSynMemo);
-
   public
     danfe_larg_codprod: integer;
     imprimeDetalhamentoEspecifico: Boolean;
@@ -1213,6 +1224,171 @@ begin
   Application.ProcessMessages;
 end;
 
+procedure TfNFe.BitBtn1Click(Sender: TObject);
+var
+  cUFAutor, CNPJ, ultNSU, ANSU, sStat, sMotivo: string;
+  IniFile  : String ;
+  Ini     : TIniFile ;
+  Ok : Boolean;
+  StreamMemo : TMemoryStream;
+  sChave, sEmissao, sCNPJ, sNome, sNumero, sSerie,
+  sIEst, sNSU, sTipoNFe: String;
+  Valor: Double;
+  i, j, k: integer;
+begin
+  mDFe.Lines.Clear;
+  mDFe.Lines.Add('------------------------------------------------------');
+  mDFe.Lines.Add(' =>  Consultando NFe Destinadas');
+  mDFe.Lines.Add('------------------------------------------------------');
+
+  IniFile := ChangeFileExt( Application.ExeName, '.ini') ;
+  Ini := TIniFile.Create( IniFile );
+  try
+    cbSSLLib.ItemIndex:= Ini.ReadInteger( 'Certificado','SSLLib' ,0) ;
+    cbCryptLib.ItemIndex := Ini.ReadInteger( 'Certificado','CryptLib' , 0) ;
+    cbHttpLib.ItemIndex := Ini.ReadInteger( 'Certificado','HttpLib' , 0) ;
+    cbXmlSignLib.ItemIndex := Ini.ReadInteger( 'Certificado','XmlSignLib' , 0) ;
+    edtCaminho.Text  := Ini.ReadString( 'Certificado','Caminho' ,'') ;
+    edtSenha.Text    := Ini.ReadString( 'Certificado','Senha'   ,'') ;
+    cbSSLType.ItemIndex  := Ini.ReadInteger( 'WebService','SSLType' , 0) ;
+    // cbCriaPasta.ItemIndex := Ini.ReadInteger ('Certificado','Criar Pasta', -1) ;
+    ComboBox3.ItemIndex := Ini.ReadInteger ('Certificado','Pasta NFe', 0);
+    if(edtNumSerie1.Text = '') then
+      edtNumSerie1.Text := Ini.ReadString( 'Certificado','NumSerie','');
+    ACBrNFe2.Configuracoes.Certificados.ArquivoPFX  := edtCaminho.Text;
+    ACBrNFe2.Configuracoes.Certificados.Senha       := edtSenha.Text;
+    ACBrNFe2.Configuracoes.Certificados.NumeroSerie := edtNumSerie1.Text;
+
+    //  edtPathSchemas.Text  := Ini.ReadString( 'Certificado','PathSchemas'  ,PathWithDelim(ExtractFilePath(Application.ExeName))+'Schemas\') ;
+
+    ACBrNFe2.SSL.DescarregarCertificado;
+
+    with ACBrNFe2.Configuracoes.Geral do
+    begin
+      SSLLib                := TSSLLib(cbSSLLib.ItemIndex);
+      SSLCryptLib           := TSSLCryptLib(cbCryptLib.ItemIndex);
+      SSLHttpLib            := TSSLHttpLib(cbHttpLib.ItemIndex);
+      SSLXmlSignLib         := TSSLXmlSignLib(cbXmlSignLib.ItemIndex);
+      cbSSLType.Enabled := (ACBrNFe2.Configuracoes.Geral.SSLHttpLib in [httpWinHttp, httpOpenSSL]);
+      AtualizaSSLLibsCombo;
+    end;
+  finally
+    Ini.Free ;
+  end;
+  abrirEmpresa;
+  ACBrNFe2.Configuracoes.WebServices.Ambiente := taProducao;
+  ACBrNFe2.Configuracoes.Arquivos.PathNFe := dmPdv.qsEmpresaDIVERSOS1.AsString + 'Fornecedor\';
+  if ( not DirectoryExists(ACBrNFe2.Configuracoes.Arquivos.PathNFe)) then
+    CreateDir(ACBrNFe2.Configuracoes.Arquivos.PathNFe);
+  ACBrNFe2.Configuracoes.Arquivos.PathEvento := dmPdv.qsEmpresa1DIVERSOS1.AsString + 'Diversos\';
+  if ( not DirectoryExists(ACBrNFe2.Configuracoes.Arquivos.PathEvento)) then
+    CreateDir(ACBrNFe2.Configuracoes.Arquivos.PathEvento);
+
+  diretorio := GetCurrentDir;
+  diretorio_schema := diretorio + '\Schemas';
+
+  ACBrNFe2.Configuracoes.Arquivos.PathSchemas := diretorio_schema;
+
+  cUFAutor := Trim(dmPdv.qsEmpresaUF.AsString);
+  ACBrNFe2.Configuracoes.WebServices.UF := Trim(dmPdv.qsEmpresaUF.AsString);
+
+  //if not(InputQuery('WebServices Distribuição Documentos Fiscais', 'Código da UF do Autor', cUFAutor)) then
+  //   exit;
+  CNPJ := Trim(dmPdv.qsEmpresaCNPJ_CPF.AsString);;
+  //if not(InputQuery('WebServices Distribuição Documentos Fiscais', 'CNPJ/CPF do interessado no DF-e', CNPJ)) then
+  //   exit;
+  dmpdv.busca_sql('SELECT DADOS FROM PARAMETRO WHERE PARAMETRO = ' + QuotedStr('NSU'));
+  if (dmPdv.sqBusca.IsEmpty) then
+    ultNSU := '0'
+  else
+    ultNSU := Trim(dmPdv.sqBusca.FieldByName('DADOS').AsString;
+  //if not(InputQuery('WebServices Distribuição Documentos Fiscais', 'Último NSU recebido pelo ator', ultNSU)) then
+  //  exit;
+  ANSU := '';
+  //if not(InputQuery('WebServices Distribuição Documentos Fiscais', 'NSU específico', ANSU)) then
+  //  exit;
+
+  ACBrNFe2.DistribuicaoDFe(StrToInt(cUFAutor),CNPJ,ultNSU,ANSU);
+  sStat   := IntToStr(ACBrNFe2.DistribuicaoDFe.retDistDFeInt.cStat);
+  sMotivo := ACBrNFe2.DistribuicaoDFe.retDistDFeInt.xMotivo;
+  ultNSU := ACBrNFe2.DistribuicaoDFe.retDistDFeInt.ultNSU;
+  dmpdv.executaSql('UPDATE PARAMETRO SET DADOS = ' + QuotedStr(IntToStr(ultNSU)) +
+    ' WHERE PARAMETRO = ' + QuotedStr('NSU'));
+
+  if (ACBrNFe2.DistribuicaoDFe.retDistDFeInt.cStat = 138) then
+  begin
+    mDFe.Lines.Add(' Documento Localizado para o Destinatário');
+    mDFe.Lines.Add(' Utilizar o número que esta no campo: Último NSU');
+    mDFe.Lines.Add(' Para uma nova pesquisa.');
+    mDFe.Lines.Add(' ');
+
+    j := ACBrNFe2.DistribuicaoDFe.retDistDFeInt.docZip.Count - 1;
+
+    for i := 0 to j do
+     begin
+      sSerie   := '';
+      sNumero  := '';
+      sCNPJ    := '';
+      sNome    := '';
+      sIEst    := '';
+      sNSU     := '';
+      sEmissao := '';
+      sTipoNFe := '';
+      Valor    := 0.0;
+      Impresso := ' ';
+
+      if (ACBrNFe2.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].resNFe.chNFe <> '') then
+      begin
+        // Conjunto de informações resumo da NF-e localizadas.
+        // Este conjunto de informação será gerado quando a NF-e for autorizada ou denegada.
+
+        sChave := ACBrNFe2.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].resNFe.chNFe;
+
+        sSerie  := Copy(sChave, 23, 3);
+        sNumero := Copy(sChave, 26, 9);
+        sCNPJ := ACBrNFe2.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].resNFe.CNPJCPF;
+        sNome := ACBrNFe2.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].resNFe.xNome;
+        sIEst := ACBrNFe2.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].resNFe.IE;
+        case ACBrNFe2.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].resNFe.tpNF of
+          tnEntrada: sTipoNFe := 'E';
+          tnSaida:   sTipoNFe := 'S';
+        end;
+        sNSU  := ACBrNFe2.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].NSU;
+        sEmissao := DateToStr(ACBrNFe2.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].resNFe.dhEmi);
+        Valor := ACBrNFe2.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].resNFe.vNF;
+
+        {case ACBrNFe2.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].resNFe.cSitNFe of
+          snAutorizado: Impresso := 'A';
+          snDenegado:   Impresso := 'D';
+          snCancelada:  Impresso := 'C';
+        end;}
+      end;
+     end; // Fim do For
+   end
+   else begin
+     // Nenhum Documento Localizado para o Destinatário
+     if (ACBrNFe2.DistribuicaoDFe.retDistDFeInt.cStat = 137) then
+     begin
+       mDFe.Lines.Add(' Nenhum Documento Localizado para o Destinatário');
+       mDFe.Lines.Add(' Utilizar o número que esta no campo: Último NSU');
+       mDFe.Lines.Add(' Para uma nova pesquisa ('+edtUltNSU.Text+').');
+       mDFe.Lines.Add(' ');
+     end
+     else begin
+       mDFe.Lines.Add(' Falha ao realizar a consulta.');
+       mDFe.Lines.Add('  ' + sStat + ' - ' + sMotivo);
+       mDFe.Lines.Add(' ');
+     end;
+   end;
+
+  //MemoResp.Lines.Text := ACBrNFe2.WebServices.DistribuicaoDFe.RetWS;
+  //memoRespWS.Lines.Text := ACBrNFe2.WebServices.DistribuicaoDFe.RetornoWS;
+
+  //LoadXML(MemoResp, WBResposta);
+
+  ACBrNFe2.Free;
+end;
+
 
 
 
@@ -2062,6 +2238,7 @@ begin
   begin
     ComboBox1.Items.Add(dmPdv.qcds_ccustoNOME.AsString);
     ComboBox2.Items.Add(dmPdv.qcds_ccustoNOME.AsString);
+    cbEmpresa.Items.Add(dmPdv.qcds_ccustoNOME.AsString);
     dmPdv.qcds_ccusto.Next;
   end;
   if (dmPdv.qcds_ccusto.RecNo = 1) then
@@ -2491,6 +2668,7 @@ begin
       edtNumSerie.Text := frSelecionarCertificado.StringGrid1.Cells[ 0,
         frSelecionarCertificado.StringGrid1.Row];
       edtNumSerieABA.Text := edtNumSerie.Text;
+      edtNumSerie1.Text := edtNumSerie.Text;
     end;
   finally
     frSelecionarCertificado.Free;
@@ -3053,6 +3231,59 @@ begin
     else if (dmPdv.qsEmpresaCRT.AsInteger = 2) Then
       Emit.CRT               := crtRegimeNormal;
   end;
+end;
+
+procedure TfNFe.abrirEmpresa;
+var v_semp: String;
+begin
+  if (dmPdv.qcds_ccusto.Active) then
+    dmPdv.qcds_ccusto.Close;
+  dmPdv.qcds_ccusto.sql.Clear;
+  v_semp := 'select CODIGO, CONTA, NOME from PLANO ' +
+    ' WHERE CONTAPAI = ' + QuotedStr(Trim(conta_local)) + ' +
+    '   AND CONSOLIDA = ' + QuotedStr('S');
+  dmPdv.qcds_ccusto.Open;
+
+  ///*
+  if (PageControl1.ActivePageIndex = 0) then
+  begin
+    if(ComboBox1.Text = '') then
+    begin
+      MessageDlg('Centro de custo não selecionado', mtError, [mbOK], 0);
+    end;
+    v_semp += ' AND NOME = ' + QuotedStr(Trim(ComboBox1.Text));
+  end;
+
+  if (PageControl1.ActivePageIndex = 1) then
+  begin
+    if(ComboBox2.Text = '') then
+    begin
+      MessageDlg('Centro de custo não selecionado', mtError, [mbOK], 0);
+    end;
+    v_semp += ' AND NOME = ' + QuotedStr(Trim(ComboBox2.Text));
+  end;
+
+  if (PageControl1.ActivePageIndex = 3) then
+  begin
+    if(cbEmpresa.Text = '') then
+    begin
+      MessageDlg('Centro de custo não selecionado', mtError, [mbOK], 0);
+    end;
+    v_semp += ' AND NOME = ' + QuotedStr(Trim(cbEmpresa.Text));
+  end;
+
+  ///
+  dmPdv.qcds_ccusto.SQL.Add(v_semp);
+
+  //Seleciona Empresa de acordo com o CCusto selecionado
+  if (dmPdv.qsEmpresa.Active) then
+    dmPdv.qsEmpresa.Close;
+  if (dmPdv.qcds_ccusto.IsEmpty) then
+    dmPdv.qsEmpresa.Params[0].AsInteger := 0
+  else
+    dmPdv.qsEmpresa.Params[0].AsInteger := dmPdv.qcds_ccustoCODIGO.AsInteger;
+  dmPdv.qsEmpresa.Open;
+
 end;
 
 procedure TfNFe.getCli_Fornec;
@@ -4135,8 +4366,6 @@ begin
      Ini.Free ;
   end;
 
-
-
 end;
 
 procedure TfNFe.AtualizaSSLLibsCombo;
@@ -4238,39 +4467,7 @@ begin
 
   ///*
 
-  if (not dmPdv.qcds_ccusto.Active) then
-    dmPdv.qcds_ccusto.Open;
-  dmPdv.qcds_ccusto.Locate('NOME', ComboBox1.Text,[loCaseInsensitive]);
-
-  ///*
-  if (PageControl1.ActivePageIndex = 0) then
-  begin
-    dmPdv.qcds_ccusto.Locate('NOME', ComboBox1.Text,[loCaseInsensitive]);
-    if(ComboBox1.Text = '') then
-    begin
-       MessageDlg('Centro de custo não selecionado', mtError, [mbOK], 0);
-        Result := False;
-    end;
-  end;
-
-
-  if (PageControl1.ActivePageIndex = 1) then
-  begin
-      dmPdv.qcds_ccusto.Locate('NOME', ComboBox2.Text,[loCaseInsensitive]);
-      if(ComboBox2.Text = '') then
-      begin
-        MessageDlg('Centro de custo não selecionado', mtError, [mbOK], 0);
-        Result := False;
-      end;
-  end;
-  ///
-
-
-  //Seleciona Empresa de acordo com o CCusto selecionado
-  if (dmPdv.qsEmpresa.Active) then
-    dmPdv.qsEmpresa.Close;
-  dmPdv.qsEmpresa.Params[0].AsInteger :=  dmPdv.qcds_ccustoCODIGO.AsInteger;
-  dmPdv.qsEmpresa.Open;
+  abrirEmpresa;
 
   if(dmPdv.qsEmpresaCONTADOR_CPF.AsString <> '')then
   begin

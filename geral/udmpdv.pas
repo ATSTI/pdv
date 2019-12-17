@@ -1285,8 +1285,18 @@ begin
       versao_sistema := sqBusca.FieldByName('VERSAO').AsString;
       atualiza_bd('CTe');
     end;
-  end
-  else begin
+  end;
+  if (ApplicationName = 'ATS-PDV') then
+  begin
+    busca_sql('SELECT r.VERSAO FROM ATUALIZA r WHERE r.CODATUALIZA = 5002');
+    if (sqBusca.IsEmpty) then
+      versao_sistema := '1.1'
+    else
+      versao_sistema := sqBusca.FieldByName('VERSAO').AsString;
+    atualiza_bd('PDV');
+  end;
+  if (ApplicationName = 'ATS-Admin') then
+  begin
      busca_sql('SELECT r.VERSAO FROM ATUALIZA r WHERE r.CODATUALIZA = 5000');
      versao_sistema := sqBusca.FieldByName('VERSAO').AsString;
      atualiza_bd('ATS');
@@ -1309,6 +1319,16 @@ end;
 
 procedure TdmPdv.atualiza_bd(sistema: String);
 begin
+  if (sistema = 'NFe') then
+  begin
+    if (versao_sistema = '1.0') then
+      versao_sistema := '1.3';
+      IbCon.ExecuteDirect('CREATE TABLE NOTAFISCAL_MANIFESTO(CHAVE VARCHAR(50)' +
+         ' NOT NULL PRIMARY KEY, EMPRESA VARCHAR(80), CNPJ VARCHAR(18)' +
+         ' , NOME VARCHAR(80), IE VARCHAR(20), EMISSAO DATETIME, TIPO CHAR(1)' +
+         ' , VALOR DOUBLE PRECISION, CONFIRMACAO INTEGER, NSU VARCHAR(10)' +
+         ' , DATAEVENTO DATETIME, PROTOCOLO VARCHAR(20))');
+  end;
   if (sistema = 'PDV') then
   begin
     if (versao_sistema = '1.1') then
@@ -1334,6 +1354,7 @@ begin
       campo_novo('venda', 'NUMRECIBO', 'VARCHAR( 20 )');
       campo_novo('FORMA_ENTRADA', 'DESCONTO', 'double precision');
       sTrans.Commit;
+      versao_sistema := '1.2';
     end;
     if (versao_sistema = '1.2') then
     begin
@@ -1346,7 +1367,7 @@ begin
   if (sistema = 'CTe') then
   begin
     if (versao_sistema = '1.0') then
-      versao_sistema := '1.1';
+      versao_sistema := '1.3';
 
     if (versao_sistema = '1.3') then
     begin
@@ -1368,6 +1389,7 @@ begin
           IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.4') +
           ' WHERE CODATUALIZA = 5001');
           sTrans.Commit;
+          versao_sistema := '1.4';
       Except
         on dmPdv: EDatabaseError do
         begin
@@ -1387,6 +1409,7 @@ begin
       IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.5') +
         ' WHERE CODATUALIZA = 5001');
       sTrans.Commit;
+      versao_sistema := '1.5';
     end;
     if (versao_sistema = '1.5') then
     begin
@@ -1394,6 +1417,7 @@ begin
       IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.6') +
         ' WHERE CODATUALIZA = 5001');
       sTrans.Commit;
+      versao_sistema := '1.6';
     end;
     if (versao_sistema = '1.6') then
     begin
@@ -1401,6 +1425,7 @@ begin
       IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.7') +
         ' WHERE CODATUALIZA = 5001');
       sTrans.Commit;
+      versao_sistema := '1.7';
     end;
     if (versao_sistema = '1.7') then
     begin
@@ -1413,6 +1438,7 @@ begin
       IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.8') +
         ' WHERE CODATUALIZA = 5001');
       sTrans.Commit;
+      versao_sistema := '1.8';
     end;
 
   end;  // fim atualiza CTe
