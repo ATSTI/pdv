@@ -6037,6 +6037,7 @@ var
  vlr_dpi: Integer;
  conf: TIniFile;
 begin
+  fCTePrincipal.Caption := 'CTe - Conhecimento de Transporte Eletrônico ';
   if FileExists(dmPdv.path_exe  + 'conf.ini') then
   begin
     conf := TIniFile.Create(dmPdv.path_exe + 'conf.ini');
@@ -6414,9 +6415,9 @@ begin
          nome += ', 1, 1';
 
          strEndereco := QuotedStr(dest.enderDest.xLgr);
-         strEndereco += ', ' + QuotedStr(dest.enderDest.xBairro);
-         strEndereco += ', ' + QuotedStr(dest.enderDest.xCpl);
-         strEndereco += ', ' + QuotedStr(dest.enderDest.xMun);
+         strEndereco += ', ' + QuotedStr(Copy(dest.enderDest.xBairro,0,29));
+         strEndereco += ', ' + QuotedStr(Copy(dest.enderDest.xCpl,0,29));
+         strEndereco += ', ' + QuotedStr(Copy(dest.enderDest.xMun,0,39));
          strEndereco += ', ' + QuotedStr(dest.enderDest.UF);
          strEndereco += ', ' + QuotedStr(IntToStr(dest.enderDest.CEP));
          strEndereco += ', ' + QuotedStr(Copy(dest.fone,2,12));

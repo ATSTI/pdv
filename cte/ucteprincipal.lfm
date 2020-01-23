@@ -14467,6 +14467,7 @@ object fCTePrincipal: TfCTePrincipal
     Configuracoes.Arquivos.SepararPorMes = True
     Configuracoes.WebServices.Visualizar = True
     Configuracoes.WebServices.UF = 'SP'
+    Configuracoes.WebServices.Ambiente = taProducao
     Configuracoes.WebServices.AguardarConsultaRet = 0
     Configuracoes.WebServices.Salvar = True
     Configuracoes.WebServices.QuebradeLinha = '|'
