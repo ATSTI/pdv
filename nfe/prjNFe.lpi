@@ -6,12 +6,14 @@
     <General>
       <SessionStorage Value="InProjectDir"/>
       <MainUnit Value="0"/>
-      <Title Value="prjNFe"/>
+      <Title Value="ATS-NFe Nota Fiscal Eletrônica"/>
       <Scaled Value="True"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
       <XPManifest>
         <DpiAware Value="True"/>
+        <TextName Value="ATSTi.ATSAdmin.NFe"/>
+        <TextDesc Value="Solução para nota fiscal eletrônica."/>
       </XPManifest>
       <Icon Value="0"/>
     </General>
@@ -19,9 +21,8 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
-      <MinorVersionNr Value="9"/>
-      <RevisionNr Value="9"/>
-      <BuildNr Value="9"/>
+      <Language Value="0416"/>
+      <StringTable Comments="Nota Fiscal Eletrônica" CompanyName="ATS Ti Soluções" FileDescription="Envio de Nota Fiscal Eletrônica" LegalCopyright="ATS Soluções"/>
     </VersionInfo>
     <BuildModes Count="1">
       <Item1 Name="Default" Default="True"/>
@@ -100,7 +101,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="C:\home\publico\tmp\prjNFe"/>
+      <Filename Value="C:\home\publico\tmp\NFe"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>

@@ -21,9 +21,9 @@ object fNFe: TfNFe
     Height = 639
     Top = 0
     Width = 1069
-    ActivePage = TabSheet5
+    ActivePage = NFe
     Align = alClient
-    TabIndex = 3
+    TabIndex = 0
     TabOrder = 1
     object NFe: TTabSheet
       Caption = 'NFe'
@@ -302,6 +302,7 @@ object fNFe: TfNFe
                     FBFFFFFFFFFFFDFDFDFFFFFFFFFFFCFCFCFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
                     FFFFFFFFFFFFFFFFFFFF
                   }
+                  OnClick = btnImprimeClick
                   ParentFont = False
                   TabOrder = 0
                 end
@@ -412,6 +413,7 @@ object fNFe: TfNFe
                     FFFFE7E7E8FFD3D0D2FFD7D5D4FFD9D9D5FFD6D3D0FFF6F5F1FFFBFAF7FFFAF9
                     F6FFFAF9F6FFF8F7F6FFEBEAEBFFFFFFFFFFABABABFFFFFFFFFF
                   }
+                  OnClick = btnGeraPDFClick
                   ParentFont = False
                   TabOrder = 1
                 end
@@ -421,7 +423,7 @@ object fNFe: TfNFe
                 Height = 40
                 Top = 8
                 Width = 139
-                Caption = 'Pré-Vizualizar'
+                Caption = 'Pré-visualizar'
                 Font.CharSet = ANSI_CHARSET
                 Font.Color = clBlack
                 Font.Height = -11
@@ -803,6 +805,7 @@ object fNFe: TfNFe
                   F5FFFFFFF4FFFFFFF2FFFFFFF5FFFFFFF8FFFFFFF6FFFFFFF7FFFFFFF8FFFFFF
                   F5FFFFFFF1FFFFFFF2FFFFFFFBFFFFFCFDFFFFFDFFFFFFFBFFFF
                 }
+                OnClick = BtnEnvEmailClick
                 ParentFont = False
                 TabOrder = 3
               end
@@ -1031,6 +1034,7 @@ object fNFe: TfNFe
                 FFFFE0E1FFFFEAE7FFFFE7E4FFFFE7E4FFFFEAE7FFFFE2E1FFFFE7E5FFFFE4E4
                 FFFFE6E8FFFFE8EEFFFFE8EEFFFFEAF1FFFFF7F6FFFFFFFDFFFF
               }
+              OnClick = btnCancelaNFeClick
               ParentFont = False
               TabOrder = 7
             end
@@ -1405,9 +1409,9 @@ object fNFe: TfNFe
         ClientWidth = 474
         TabOrder = 1
         object Label7: TLabel
-          Left = 77
+          Left = 75
           Height = 15
-          Top = 82
+          Top = 85
           Width = 81
           Caption = 'Salvar na Pasta:'
           Font.CharSet = ANSI_CHARSET
@@ -2082,7 +2086,7 @@ object fNFe: TfNFe
           Height = 40
           Top = 5
           Width = 139
-          Caption = 'Pré-Vizualizar'
+          Caption = 'Pré-visualizar'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
           Font.Height = -11
@@ -2414,7 +2418,7 @@ object fNFe: TfNFe
             Left = 368
             Height = 19
             Top = 0
-            Width = 52
+            Width = 51
             Caption = 'Todas'
             TabOrder = 0
           end
@@ -5075,6 +5079,7 @@ object fNFe: TfNFe
     Configuracoes.Geral.FormatoAlerta = 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.'
     Configuracoes.Geral.AtualizarXMLCancelado = True
     Configuracoes.Geral.VersaoQRCode = veqr000
+    Configuracoes.Geral.ForcarGerarTagRejeicao938 = fgtSempre
     Configuracoes.Arquivos.OrdenacaoPath = <>
     Configuracoes.Arquivos.SepararPorMes = True
     Configuracoes.Arquivos.SalvarEvento = True

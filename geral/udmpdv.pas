@@ -1068,7 +1068,6 @@ type
     function busca_serie(Serie: String): integer;
     procedure busca_sql(sql_txt: String);
   end;
-
 var
   dmPdv: TdmPdv;
 
@@ -1271,6 +1270,21 @@ begin
     sqParametro.Next;
   end;
   versao_sistema := ApplicationName;
+  if (ApplicationName = 'ATS-NFe Nota Fiscal Eletrônica') then
+  begin
+    busca_sql('SELECT r.VERSAO FROM ATUALIZA r WHERE r.CODATUALIZA = 5003');
+    if (sqBusca.IsEmpty) then
+    begin
+      executaSql('INSERT INTO ATUALIZA (CODATUALIZA, SCRIPT, VERSAO) VALUES ('+
+        '5003, ' + QuotedStr('NFe') + ', ' + QuotedStr('1.0') + ')');
+      versao_sistema := '1.0';
+      atualiza_bd('NFe');
+    end
+    else begin
+      versao_sistema := sqBusca.FieldByName('VERSAO').AsString;
+      atualiza_bd('NFe');
+    end;
+  end;
   if (ApplicationName = 'ATS Conhecimento Transportes (CTe)') then
   begin
     busca_sql('SELECT r.VERSAO FROM ATUALIZA r WHERE r.CODATUALIZA = 5001');
@@ -1322,19 +1336,32 @@ begin
   if (sistema = 'NFe') then
   begin
     if (versao_sistema = '1.0') then
-      versao_sistema := '1.3';
-      IbCon.ExecuteDirect('CREATE TABLE NOTAFISCAL_MANIFESTO(CHAVE VARCHAR(50)' +
-         ' NOT NULL PRIMARY KEY, EMPRESA VARCHAR(80), CNPJ VARCHAR(18)' +
-         ' , NOME VARCHAR(80), IE VARCHAR(20), EMISSAO DATETIME, TIPO CHAR(1)' +
-         ' , VALOR DOUBLE PRECISION, CONFIRMACAO INTEGER, NSU VARCHAR(10)' +
-         ' , DATAEVENTO DATETIME, PROTOCOLO VARCHAR(20))');
+    begin
+      versao_sistema := '1.1';
+      Try
+        IbCon.ExecuteDirect('CREATE TABLE NOTAFISCAL_MANIFESTO(CHAVE VARCHAR(50)' +
+           ' NOT NULL PRIMARY KEY, CODEMPRESA INTEGER, CNPJ VARCHAR(18)' +
+           ' , NOME VARCHAR(80), IE VARCHAR(20), EMISSAO TIMESTAMP, TIPO CHAR(1)' +
+           ' , VALOR DOUBLE PRECISION, CONFIRMACAO INTEGER, NSU VARCHAR(10)' +
+           ' , DATAEVENTO TIMESTAMP, PROTOCOLO VARCHAR(20))');
+        IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.1') +
+          ' WHERE CODATUALIZA = 5003');
+        sTrans.Commit;
+      except
+      end;
+    end;
   end;
   if (sistema = 'PDV') then
   begin
     if (versao_sistema = '1.1') then
     begin
+      Try
+        IbCon.ExecuteDirect('ALTER TABLE FORMA_ENTRADA DROP CONSTRAINT INTEG_448');
+      Except
+      end;
       IbCon.ExecuteDirect('INSERT INTO ATUALIZA (CODATUALIZA, SCRIPT, VERSAO' +
         ') VALUES (5002, ' + QuotedStr('PDV') + ', '  + QuotedStr('1.2') + ')');
+
       campo_novo('FORMA_ENTRADA', 'STATE', 'SMALLINT');
       campo_novo('FORMA_ENTRADA', 'TROCO', 'double precision');
       campo_novo('USUARIO', 'SENHA', 'VARCHAR(50)');
@@ -1367,13 +1394,16 @@ begin
   if (sistema = 'CTe') then
   begin
     if (versao_sistema = '1.0') then
+    begin
+      campo_novo('CTE', 'UFPER', 'VARCHAR( 2 )');
       versao_sistema := '1.3';
+    end;
 
     if (versao_sistema = '1.3') then
     begin
       Try
-        IbCon.ExecuteDirect('ALTER TABLE CTE ADD UFPER VARCHAR( 2 ) ' +
-          ', ADD INFADFISCO VARCHAR( 500 ), ADD VPIS DOUBLE PRECISION ' +
+        IbCon.ExecuteDirect('ALTER TABLE CTE  ' +
+          ' ADD INFADFISCO VARCHAR( 500 ), ADD VPIS DOUBLE PRECISION ' +
           ', ADD VCOFINS DOUBLE PRECISION, ADD VIR DOUBLE PRECISION ' +
           ', ADD VINSS DOUBLE PRECISION, ADD VCSLL DOUBLE PRECISION ' +
           ', ADD XDESCSERV VARCHAR( 30 ), ADD QCARGA DOUBLE PRECISION ' +

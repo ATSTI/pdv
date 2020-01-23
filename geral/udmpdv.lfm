@@ -6798,14 +6798,9 @@ object dmPdv: TdmPdv
       '        ,esta.CODFISCAL'
       'from ESTADO_ICMS esta'
       'inner join CFOP cf on cf.CFCOD = esta.CFOP'
-      'where CFCOD = :id and esta.UF = :ESTADO and esta.CFOP = :codcfop'
+      'where esta.UF = :ESTADO and cf.CFCOD = :id'
     )
     Params = <    
-      item
-        DataType = ftInteger
-        Name = 'id'
-        ParamType = ptInput
-      end    
       item
         DataType = ftString
         Name = 'ESTADO'
@@ -6813,7 +6808,7 @@ object dmPdv: TdmPdv
       end    
       item
         DataType = ftString
-        Name = 'codcfop'
+        Name = 'id'
         ParamType = ptInput
       end>
     left = 368

@@ -14,6 +14,7 @@ uses
 
 begin
   RequireDerivedFormResource:=True;
+  Application.Title:='ATS-NFe Nota Fiscal Eletrônica';
   Application.Scaled:=True;
   Application.Initialize;
   Application.CreateForm(TdmPdv, dmPdv);
