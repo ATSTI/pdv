@@ -628,7 +628,6 @@ begin
           strAtualizaNota :=  strAtualizaNota + atualiza_nf +
             ' WHERE NUMNF = ' + IntToStr(dmPdv.qcdsNFNUMNF.AsInteger) +
             ' AND ((PROTOCOLOENV IS NULL) OR (PROTOCOLOENV = ' + QuotedStr('') + '))';
-          dmPdv.IbCon.StartTransaction;
           try
              dmPdv.IbCon.ExecuteDirect(strAtualizaNota);
              dmPdv.sTrans.Commit;
@@ -642,8 +641,6 @@ begin
         end;
         nProtCanc := '';
         nProtCanc := ACBrNFe1.WebServices.Consulta.retCancNFe.nProt;
-
-
       end;
       ACBrNFe1.NotasFiscais.Imprimir;
       if (AcbrNfe1.WebServices.Consulta.Protocolo <> '') then
@@ -837,7 +834,6 @@ begin
     AcbrNfe1.Configuracoes.Geral.Salvar := True;
   end;
 
-  dmPdv.IbCon.StartTransaction;
   try
     str := 'UPDATE NOTAFISCAL SET ';
     str := str + ' STATUS = ' + QuotedStr('C');
@@ -936,7 +932,6 @@ begin
               ' WHERE NUMNF = ' + IntToStr(dmPdv.qcdsNFNUMNF.AsInteger) +
               ' AND ((PROTOCOLOCANC IS NULL) OR (PROTOCOLOCANC = ' + QuotedStr('') + '))';
           end;
-          dmPdv.IbCon.StartTransaction;
           try
              dmPdv.IbCon.ExecuteDirect(strAtualizaNota);
              dmPdv.sTrans.Commit;
@@ -992,7 +987,6 @@ begin
 
   if (nfDenegada <> '') then
   begin
-    dmPdv.IbCon.StartTransaction;
     try
       str := 'UPDATE NOTAFISCAL SET ';
       str := str + ' STATUS = ' + QuotedStr('D');
@@ -1490,8 +1484,6 @@ begin
     begin
       FormatSettings.DecimalSeparator := '.';
       //SALVA OS PROTOCOLOS
-        dmPdv.IbCon.StartTransaction;
-        ///dm.sqlsisAdimin.StartTransaction(TD);
         try
           str := 'UPDATE CCE SET PROTOCOLO = ' + quotedStr(protocolo)
           + ', DHENVIO = ' + QuotedStr(FormatDateTime('dd.mm.yyyy hh:mm:ss', envio))
@@ -1626,9 +1618,6 @@ begin
 
     Protocolo := ACBrNFe1.WebServices.Retorno.Protocolo;
     Recibo := ACBrNFe1.WebServices.Retorno.Recibo;
-
-    //PEGA A RESPOSTA
-    dmPdv.IbCon.StartTransaction;
 
     //SALVA NFe, PROTOCOLOS e NOMEXML no BD
     str := 'UPDATE NOTAFISCAL SET ';
@@ -1798,7 +1787,6 @@ begin
   strNEnv := 'UPDATE NOTAFISCAL SET STATUS = Null, PROTOCOLOENV = Null ' +
   ' WHERE NUMNF = ' + IntToStr(dmPdv.qcdsNFNUMNF.AsInteger);
 
-  dmPdv.IbCon.StartTransaction;
   try
     dmPdv.IbCon.ExecuteDirect(strNEnv);
     dmPdv.sTrans.Commit;
@@ -1967,27 +1955,24 @@ end;
 procedure TfNFe.Button3Click(Sender: TObject);
 begin
   if (edtNumSerieABA.Text <> '') then
-    begin
-      dmPdv.IbCon.StartTransaction;
-        try
-          str := 'UPDATE EMPRESA SET CERTIFICADO = ' + quotedStr(edtNumSerieABA.Text)
-          + ' WHERE CCUSTO = ' + quotedStr(IntToStr(dmPdv.qcds_ccustoCODIGO.AsInteger));
-          dmPdv.IbCon.ExecuteDirect(str);
-          dmPdv.sTrans.Commit;
-        except
-          on E : Exception do
-          begin
-            ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-            dmPdv.sTrans.Rollback; //on failure, undo the changes}
-          end;
-        end;
+  begin
+    try
+      str := 'UPDATE EMPRESA SET CERTIFICADO = ' + quotedStr(edtNumSerieABA.Text)
+        + ' WHERE CCUSTO = ' + quotedStr(IntToStr(dmPdv.qcds_ccustoCODIGO.AsInteger));
+        dmPdv.IbCon.ExecuteDirect(str);
+        dmPdv.sTrans.Commit;
+    except
+      on E : Exception do
+      begin
+        ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
+        dmPdv.sTrans.Rollback; //on failure, undo the changes}
+      end;
     end;
+  end;
 end;
 
 procedure TfNFe.Button4Click(Sender: TObject);
 begin
-
-  dmPdv.IbCon.StartTransaction;
   try
     str := 'UPDATE EMPRESA SET CERTIFICADO = ' + 'NULL'
     + ' WHERE CCUSTO = ' + quotedStr(IntToStr(dmPdv.qcds_ccustoCODIGO.AsInteger));
