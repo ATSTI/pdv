@@ -1,5 +1,5 @@
 object fPadrao: TfPadrao
-  Left = 278
+  Left = 211
   Height = 486
   Top = 42
   Width = 784

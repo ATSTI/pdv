@@ -1,11 +1,11 @@
 object fConfiguracaoFiscal: TfConfiguracaoFiscal
-  Left = 199
-  Height = 705
-  Top = 37
-  Width = 1027
+  Left = 1
+  Height = 688
+  Top = 1
+  Width = 1006
   Caption = 'Configuração Fiscal'
-  ClientHeight = 705
-  ClientWidth = 1027
+  ClientHeight = 688
+  ClientWidth = 1006
   OnShow = FormShow
   Position = poScreenCenter
   LCLVersion = '2.0.4.0'
@@ -13,10 +13,10 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
     Left = 0
     Height = 72
     Top = 0
-    Width = 1027
+    Width = 1006
     Align = alTop
     ClientHeight = 72
-    ClientWidth = 1027
+    ClientWidth = 1006
     Color = cl3DLight
     ParentColor = False
     TabOrder = 0
@@ -69,7 +69,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
         Left = 240
         Height = 15
         Top = 0
-        Width = 55
+        Width = 56
         Caption = 'Tipo Fiscal'
         ParentColor = False
       end
@@ -235,10 +235,10 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
     Left = 0
     Height = 352
     Top = 72
-    Width = 1027
+    Width = 1006
     Align = alTop
     ClientHeight = 352
-    ClientWidth = 1027
+    ClientWidth = 1006
     TabOrder = 1
     object gbICMSNormal: TGroupBox
       Left = 8
@@ -253,7 +253,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
         Left = 8
         Height = 15
         Top = 0
-        Width = 20
+        Width = 21
         Caption = 'CST'
         ParentColor = False
       end
@@ -364,7 +364,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
       Left = 192
       Height = 15
       Top = 8
-      Width = 55
+      Width = 56
       Caption = 'Tipo Fiscal'
       ParentColor = False
     end
@@ -905,7 +905,7 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
         Left = 2
         Height = 15
         Top = 0
-        Width = 25
+        Width = 26
         Caption = 'MVA'
         ParentColor = False
       end
@@ -1017,11 +1017,11 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
   object Panel3: TPanel
     Left = 0
     Height = 57
-    Top = 648
-    Width = 1027
+    Top = 631
+    Width = 1006
     Align = alBottom
     ClientHeight = 57
-    ClientWidth = 1027
+    ClientWidth = 1006
     Color = cl3DLight
     ParentColor = False
     TabOrder = 4
@@ -1154,18 +1154,18 @@ object fConfiguracaoFiscal: TfConfiguracaoFiscal
   end
   object Panel4: TPanel
     Left = 0
-    Height = 224
+    Height = 207
     Top = 424
-    Width = 1027
+    Width = 1006
     Align = alClient
-    ClientHeight = 224
-    ClientWidth = 1027
+    ClientHeight = 207
+    ClientWidth = 1006
     TabOrder = 2
     object DBGrid1: TDBGrid
       Left = 1
-      Height = 222
+      Height = 205
       Top = 1
-      Width = 1025
+      Width = 1004
       Align = alClient
       Color = clWindow
       Columns = <>

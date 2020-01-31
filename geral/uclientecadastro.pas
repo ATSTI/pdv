@@ -6,23 +6,19 @@ interface
 
 uses
   Classes, SysUtils, db, Forms, Controls, Graphics, Dialogs, ExtCtrls, DBCtrls,
-  udmpdv;
+  StdCtrls, ComCtrls, Buttons, udmpdv, Types;
 
 type
 
   { TfClienteCadastro }
 
   TfClienteCadastro = class(TForm)
-    DBEdit2: TDBEdit;
-    DBEdit3: TDBEdit;
-    DBEdit4: TDBEdit;
-    DBEdit5: TDBEdit;
-    DBEdit6: TDBEdit;
-    DBEdit7: TDBEdit;
-    dsCliente: TDataSource;
-    DBEdit1: TDBEdit;
-    Panel1: TPanel;
-    Panel2: TPanel;
+    procedure PageControl1Change(Sender: TObject);
+    procedure Panel2Click(Sender: TObject);
+    procedure TabSheet1ContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
+    procedure TabSheet5ContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
   private
 
   public
@@ -35,6 +31,30 @@ var
 implementation
 
 {$R *.lfm}
+
+{ TfClienteCadastro }
+
+procedure TfClienteCadastro.TabSheet1ContextPopup(Sender: TObject;
+  MousePos: TPoint; var Handled: Boolean);
+begin
+
+end;
+
+procedure TfClienteCadastro.TabSheet5ContextPopup(Sender: TObject;
+  MousePos: TPoint; var Handled: Boolean);
+begin
+
+end;
+
+procedure TfClienteCadastro.Panel2Click(Sender: TObject);
+begin
+
+end;
+
+procedure TfClienteCadastro.PageControl1Change(Sender: TObject);
+begin
+
+end;
 
 end.
 

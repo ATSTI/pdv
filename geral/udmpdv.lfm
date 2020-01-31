@@ -2,14 +2,14 @@ object dmPdv: TdmPdv
   OnCreate = DataModuleCreate
   OldCreateOrder = False
   Height = 433
-  HorizontalOffset = 686
-  VerticalOffset = 210
+  HorizontalOffset = 512
+  VerticalOffset = 151
   Width = 473
   PPI = 96
   object IbCon: TIBConnection
-    Connected = True
+    Connected = False
     LoginPrompt = False
-    DatabaseName = 'c:\home\bd\sge_debora.fdb'
+    DatabaseName = 'C:\Home\sisadmin\bd\sge_agroselect.fdb'
     KeepConnection = True
     Params.Strings = (
       'port=3050'
@@ -24,7 +24,7 @@ object dmPdv: TdmPdv
     top = 18
   end
   object sTrans: TSQLTransaction
-    Active = True
+    Active = False
     Database = IbCon
     left = 136
     top = 16
@@ -2784,7 +2784,6 @@ object dmPdv: TdmPdv
     top = 18
   end
   object sqCliente: TSQLQuery
-    IndexName = 'DEFAULT_ORDER'
     FieldDefs = <    
       item
         Name = 'CODCLIENTE'
@@ -3463,7 +3462,6 @@ object dmPdv: TdmPdv
         Precision = -1
         Size = 36
       end>
-    Active = True
     Database = IbCon
     Transaction = sTrans
     SQL.Strings = (
