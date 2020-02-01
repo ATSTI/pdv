@@ -1774,6 +1774,7 @@ end;
 
 procedure TfPdv.buscaPedidosAbertoCaixa(bpCodMov: Integer);
 var bCodMov: Integer;
+   ver_str: String;
 begin
   if (dmPdv.IbCon.Connected = False) then
     dmPdv.IbCon.Connected := True;
@@ -1799,9 +1800,10 @@ begin
   dmPdv.sqBusca.SQL.Clear;
   //if (dmPdv.usaComanda > 0) then
   //begin
-  //  dmPdv.sqBusca.SQL.Text := 'SELECT CODMOVIMENTO FROM MOVIMENTO ' +
+  //  ver_str := 'SELECT CODMOVIMENTO FROM MOVIMENTO ' +
   //    ' WHERE STATUS = 0 AND CODALMOXARIFADO = ' + dmPdv.ccusto +
   //    '   AND CODCLIENTE = ' + edProduto.Text;
+  //  dmPdv.sqBusca.SQL.Text := ver_str;
   //end
   begin
     dmPdv.sqBusca.SQL.Text := 'SELECT CODMOVIMENTO FROM MOVIMENTO ' +
@@ -1963,7 +1965,7 @@ begin
         edClienteNome.Text :=  'Comanda ' + codComanda;
         pnComanda.Caption := 'Comanda ' + codComanda;
         //btnNovo.Click;
-        //iniciarVenda(); // 03/09/2019
+        iniciarVenda(); // 03/09/2019  // 27/01/2020
         buscaPedidosAbertoCaixa(codMov);
         //controlaPedidos(codMov, 0, 0);
         lblPedido.Caption:=IntToStr(codMov);

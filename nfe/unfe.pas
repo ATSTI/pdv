@@ -2373,7 +2373,7 @@ begin
       ACBrNFe1.Configuracoes.Arquivos.PathEvento := dmPdv.qsEmpresaDIVERSOS1.AsString + 'Inutilizadas\';
       if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathEvento)) then
         CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathEvento);
-      ACBrNFe1.Configuracoes.Arquivos.PathNFe := dmPdv.qsEmpresaDIVERSOS1.AsString;
+      //ACBrNFe1.Configuracoes.Arquivos.PathNFe := dmPdv.qsEmpresaDIVERSOS1.AsString;
 
       if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathNFe)) then
         CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathNFe);

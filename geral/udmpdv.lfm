@@ -714,6 +714,7 @@ object dmPdv: TdmPdv
       '  LEFT OUTER JOIN PRODUTOS P ON a.CODPRODUTO = P.CODPRODUTO'
       'WHERE ((a.STATUS = ''0'') or (a.STATUS is null))'
       '  AND M.CODMOVIMENTO = :PMOV'
+      '  ORDER BY a.NITEMPED'
     )
     Params = <    
       item
