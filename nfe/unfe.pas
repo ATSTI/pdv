@@ -7,9 +7,9 @@ interface
 uses
   Windows, Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls,
   ComCtrls, StdCtrls, DBGrids, Buttons, EditBtn, ACBrNFe, ACBrNFeDANFeRLClass,
-  ACBrDANFCeFortesFr, ACBrValidador, db, Grids, uCertificadoLer, IniFiles,
-  ACBrUtil, pcnConversao, ACBrMail, ACBrIntegrador, pcnConversaoNFe, math,
-  MaskUtils, StrUtils, DOM, FileUtil, SynMemo, SynHighlighterXML;
+  ACBrDANFCeFortesFr, ACBrValidador, db, Grids, uCertificadoLer, uInutilizar,
+  IniFiles, ACBrUtil, pcnConversao, ACBrMail, ACBrIntegrador, pcnConversaoNFe,
+  math, MaskUtils, StrUtils, DOM, FileUtil, SynMemo, SynHighlighterXML;
 
 
 type
@@ -109,6 +109,7 @@ type
     edtNumSerie: TEdit;
     edtNumSerie1: TEdit;
     edtNumSerie2: TEdit;
+    edtChaveNfeCCe: TEdit;
     edtNumSerieABA: TEdit;
     edtPathSchemas: TEdit;
     edtPorta: TEdit;
@@ -178,6 +179,7 @@ type
     Label46: TLabel;
     Label47: TLabel;
     Label48: TLabel;
+    Label49: TLabel;
     Label5: TLabel;
     Label50: TLabel;
     Label6: TLabel;
@@ -283,6 +285,11 @@ type
     procedure DBGrid1ColEnter(Sender: TObject);
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure DBGrid2CellClick(Column: TColumn);
+    procedure DBGrid2CellClick(Sender: TObject);
+    procedure DBGrid2ColEnter(Sender: TObject);
+    procedure DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Label5Click(Sender: TObject);
@@ -326,6 +333,8 @@ type
     procedure AtualizaSSLLibsCombo;
     procedure GravarConfiguracao;
     procedure CarregarXML(ChaveNFCe: String);
+    procedure gravaRetornoEnvio(Protocolo: String; Recibo: String);
+    procedure gravaRetornoCancelada(Protocolo: String);
     //procedure LoadXML(MyMemo: TMemo; MyWebBrowser: TSynMemo);
   public
     danfe_larg_codprod: integer;
@@ -388,10 +397,13 @@ end;
 procedure TfNFe.btnListarClick(Sender: TObject);
 var str_nf: string;
 begin
+  dmPdv.IbCon.ExecuteDirect('ALTER TRIGGER PROIBE_ALT_DEL_NF INACTIVE');
+  dmPdv.sTrans.Commit;
   dmPdv.executaSql('UPDATE NOTAFISCAL SET SELECIONOU = Null WHERE SELECIONOU = ' +
     QuotedStr('S'));
+  dmPdv.IbCon.ExecuteDirect('ALTER TRIGGER PROIBE_ALT_DEL_NF ACTIVE');
   if(not dmPdv.qcds_ccusto.Active) then
-  dmPdv.qcds_ccusto.Open;
+    dmPdv.qcds_ccusto.Open;
 
   if (dmPdv.qcdsNF.Active) then
     dmPdv.qcdsNF.Close;
@@ -446,8 +458,6 @@ begin
       dmPdv.qcds_ccusto.Locate('NOME', ComboBox1.Text,[loCaseInsensitive]);
       str_nf := str_nf + ' and (nf.CCUSTO = ' + IntToStr(dmPdv.qcds_ccustoCODIGO.AsInteger) + ')';
     end;
-    str_nf := str_nf + ' order by nf.NOTASERIE DESC';
-    dmPdv.qcdsNF.SQL.Text := str_nf;
   end
   else
   begin
@@ -481,31 +491,34 @@ begin
     ', nf.V_IPI_DEVOL ' +
     '  from NOTAFISCAL nf ' +
     ' inner join CLIENTES c on c.CODCLIENTE = nf.CODCLIENTE ' +
-    ' inner join ENDERECOCLIENTE ec on ec.CODCLIENTE = c.CODCLIENTE '+
-    '  left outer join VENDA co on co.CODVENDA = nf.CODVENDA  ';
+    ' left outer join ENDERECOCLIENTE ec on ec.CODCLIENTE = c.CODCLIENTE '+
+    ' left outer join VENDA co on co.CODVENDA = nf.CODVENDA  ';
     str_nf := str_nf + ' where (nf.DTAEMISSAO between ' +
       QuotedStr(formatdatetime('mm/dd/yy', DateEdit1.Date)) +
       ' and ' + QuotedStr(formatdatetime('mm/dd/yy', DateEdit2.Date)) +') ';
     if (edSerie.Text <> '') then
       str_nf := str_nf + ' and (nf.SERIE = ' + QuotedStr(edSerie.text) + ')';
-    str_nf := str_nf + ' and (ec.TIPOEND = 0) ';
+    str_nf := str_nf + ' and ((ec.TIPOEND = 0) or (ec.TIPOEND IS NULL)) ';
     str_nf := str_nf + ' and ((NF.NATUREZA = 15) or (NF.NATUREZA = 12) or (NF.NATUREZA = 16))';
     if (chkTodas.Checked = False) then
     begin
       str_nf := str_nf + ' and (nf.PROTOCOLOENV IS NULL)';
-      str_nf := str_nf + ' and ((nf.STATUS IS NULL) or (nf.STATUS = ' + QuotedStr('E') + ')) ';
+      str_nf := str_nf + ' and ((nf.STATUS IS NULL) ' +
+        ' or (nf.STATUS = ' + QuotedStr('E') + ') or (nf.STATUS = ' + QuotedStr('I') + ')) ';
     end;
     if (ComboBox1.Text <> '') then
     begin
       dmPdv.qcds_ccusto.Locate('NOME', ComboBox1.Text,[loCaseInsensitive]);
       str_nf := str_nf + ' and (nf.CCUSTO = ' + IntToStr(dmPdv.qcds_ccustoCODIGO.AsInteger) + ')';
     end;
-    str_nf := str_nf + ' order by nf.NOTASERIE DESC';
-
-    dmPdv.qcdsNF.SQL.Text := str_nf;
-
-
   end;
+  if (edtChaveNfeCCe.Text <> '') then
+  begin
+    str_nf := str_nf + 'AND nf.NOMEXML = ' + QuotedStr(edtChaveNfeCCe.Text +
+      '-NFe.xml');
+  end;
+  str_nf := str_nf + ' order by nf.NOTASERIE DESC';
+  dmPdv.qcdsNF.SQL.Text := str_nf;
   dmPdv.qcdsNF.Open;
 
   //Seleciona Empresa de acordo com o CCusto selecionado
@@ -574,12 +587,9 @@ begin
 end;
 
 procedure TfNFe.btnImprimeClick(Sender: TObject);
-var strAtualizaNota, nProtCanc: String;
-  atualiza_nf: String;
 begin
-  atualiza_nf := '';
+  Protocolo := '';
   abrirEmpresa;
-
   ACBrNFe1.Configuracoes.WebServices.UF := dmPdv.qsEmpresaUF.AsString;
   dmPdv.qcdsNF.First;
   while not dmPdv.qcdsNF.Eof do
@@ -587,6 +597,7 @@ begin
     if (trim(dmPdv.qcdsNFSELECIONOU.AsString) = 'S') then
     begin
       nfe_carregalogo;
+      codnf := dmPdv.qcdsNFNUMNF.AsInteger;
       ACBrNFe1.NotasFiscais.Clear;
 
       CarregarXML(Copy(dmPdv.qcdsNFNOMEXML.AsString,0,44));
@@ -597,50 +608,12 @@ begin
         Exit;
       end;
       ACBrNFe1.Consultar;
-
       if ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.tpEmis = teDPEC then
       begin
 
       end
       else begin
-        strAtualizaNota := 'UPDATE NOTAFISCAL SET STATUS = ' + QuotedStr('E');
-        if ((dmPdv.qcdsNFPROTOCOLOENV.IsNull) or (dmPdv.qcdsNFPROTOCOLOENV.AsString = '')) then
-        begin
-          atualiza_nf := ' ,PROTOCOLOENV = ' +
-            QuotedStr(ACBrNFe1.WebServices.Consulta.protNFe.nProt);
-        end;
-        if ((dmPdv.qcdsNFNUMRECIBO.AsString = '') or (dmPdv.qcdsNFNUMRECIBO.IsNull)) then
-        begin
-          atualiza_nf := ' ,NUMRECIBO = ' +
-            QuotedStr(ACBrNFe1.WebServices.Recibo.Recibo);
-        end;
-        if ((dmPdv.qcdsNFNOMEXML.AsString = '') or (dmPdv.qcdsNFNOMEXML.IsNull)) then
-        begin
-          atualiza_nf :=  atualiza_nf + ' , NOMEXML = ' +
-            QuotedStr(copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
-        end;
-        if (dmPdv.qcdsNFXMLNFE.IsNull) then
-        begin
-          atualiza_nf := atualiza_nf + ' ,XMLNFE = ' + quotedStr(ACBrNFe1.NotasFiscais.Items[0].XML);
-        end;
-        if (atualiza_nf <> '') then
-        begin
-          strAtualizaNota :=  strAtualizaNota + atualiza_nf +
-            ' WHERE NUMNF = ' + IntToStr(dmPdv.qcdsNFNUMNF.AsInteger) +
-            ' AND ((PROTOCOLOENV IS NULL) OR (PROTOCOLOENV = ' + QuotedStr('') + '))';
-          try
-             dmPdv.IbCon.ExecuteDirect(strAtualizaNota);
-             dmPdv.sTrans.Commit;
-          except
-             on E : Exception do
-             begin
-               ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-               dmPdv.sTrans.Rollback; //on failure, undo the changes}
-             end;
-          end;
-        end;
-        nProtCanc := '';
-        nProtCanc := ACBrNFe1.WebServices.Consulta.retCancNFe.nProt;
+        Protocolo := ACBrNFe1.WebServices.Consulta.protNFe.nProt;
       end;
       ACBrNFe1.NotasFiscais.Imprimir;
       if (AcbrNfe1.WebServices.Consulta.Protocolo <> '') then
@@ -648,7 +621,16 @@ begin
     end;
     dmPdv.qcdsNf.Next;
   end;
-
+  if (Protocolo <> '') then
+  begin
+    gravaRetornoEnvio(Protocolo, '');
+    Protocolo := '';
+    Protocolo := ACBrNFe1.WebServices.Consulta.retCancNFe.nProt;
+    if ( Protocolo <> '' ) then
+    begin
+      gravaRetornoCancelada(Protocolo);
+    end;
+  end;
 end;
 
 procedure TfNFe.btnImprimirCCeClick(Sender: TObject);
@@ -685,18 +667,77 @@ begin
 end;
 
 procedure TfNFe.btnInutilizarClick(Sender: TObject);
-//var nfInutilizar, str: String;
+var str_sql: String;
+  i : Integer;
 begin
-  {
-  ACBrNFe1.SSL.SelecionarCertificado;
-  fNFeInutilizar:=TfNFeInutilizar.Create(Application);
-  try
-    fNFeInutilizar.nfeaInutilizar := nfInutilizar;
-    fNFeInutilizar.ShowModal;
-  finally
-    fNFeInutilizar.Free;
+  fInutlizar.ShowModal;
+  abrirEmpresa;
+  if (edtNumSerie.Text = '') then
+  begin
+    MessageDlg('Selecione o Certificado!',mtWarning,[mbOk],0);
   end;
-  }
+
+  ACBrNFe1.NotasFiscais.Clear;
+  str_sql := Trim(dmPdv.qsEmpresaUF.AsString);
+  ACBrNFe1.Configuracoes.WebServices.UF := str_sql;
+
+  if (fInutlizar.inu_justificativa = '') then
+  begin
+    ShowMessage('Inutilização Cancelada.');
+    Exit;
+  end;
+  str_sql := Trim(dmPdv.qsEmpresaCNPJ_CPF.AsString);
+  ACBrNFe1.WebServices.Inutiliza(str_sql,
+    fInutlizar.inu_justificativa,
+    StrToInt(fInutlizar.inu_ano),
+    StrToInt(fInutlizar.inu_modelo),
+    StrToInt(fInutlizar.inu_serie),
+    StrToInt(fInutlizar.inu_ini),
+    StrToInt(fInutlizar.inu_fim));
+  memoLog.Lines.Text :=  ACBrNFe1.WebServices.Inutilizacao.RetWS;
+  memoLog.Lines.Text :=  ACBrNFe1.WebServices.Inutilizacao.RetornoWS;
+
+  memoLog.Lines.Add('');
+  memoLog.Lines.Add('Inutilização');
+  memoLog.Lines.Add('tpAmb: '    +TpAmbToStr(ACBrNFe1.WebServices.Inutilizacao.tpAmb));
+  memoLog.Lines.Add('verAplic: ' +ACBrNFe1.WebServices.Inutilizacao.verAplic);
+  memoLog.Lines.Add('cStat: '    +IntToStr(ACBrNFe1.WebServices.Inutilizacao.cStat));
+  memoLog.Lines.Add('xMotivo: '  +ACBrNFe1.WebServices.Inutilizacao.xMotivo);
+  memoLog.Lines.Add('cUF: '      +IntToStr(ACBrNFe1.WebServices.Inutilizacao.cUF));
+  memoLog.Lines.Add('Ano: '      +IntToStr(ACBrNFe1.WebServices.Inutilizacao.Ano));
+  memoLog.Lines.Add('CNPJ: '      +ACBrNFe1.WebServices.Inutilizacao.CNPJ);
+  memoLog.Lines.Add('Modelo: '      +IntToStr(ACBrNFe1.WebServices.Inutilizacao.Modelo));
+  memoLog.Lines.Add('Serie: '      +IntToStr(ACBrNFe1.WebServices.Inutilizacao.Serie));
+  memoLog.Lines.Add('NumeroInicial: '      +IntToStr(ACBrNFe1.WebServices.Inutilizacao.NumeroInicial));
+  memoLog.Lines.Add('NumeroInicial: '      +IntToStr(ACBrNFe1.WebServices.Inutilizacao.NumeroFinal));
+  memoLog.Lines.Add('dhRecbto: ' +DateTimeToStr(ACBrNFe1.WebServices.Inutilizacao.dhRecbto));
+  memoLog.Lines.Add('Protocolo: '      +ACBrNFe1.WebServices.Inutilizacao.Protocolo);
+  for i := strtoInt(fInutlizar.inu_ini) to StrToInt(fInutlizar.inu_fim) do
+  begin
+    dmPdv.busca_sql('select GEN_ID(GEN_NF, 1) as GENID from RDB$DATABASE');
+    str_sql := 'INSERT INTO NOTAFISCAL (NOTASERIE, NUMNF, NOTAFISCAL , SERIE, ' +
+       'STATUS, DATA_SISTEMA, DTAEMISSAO, CORPONF1, CORPONF2, PROTOCOLOENV, NFE_FINNFE, ' +
+       ' NATUREZA, CODCLIENTE, CFOP, CCUSTO) VALUES( ';
+    str_sql := str_sql + QuotedStr(IntToStr(i)) + ', ';
+    str_sql := str_sql + IntToStr(dmPdv.sqBusca.FieldByName('GENID').AsInteger) + ', ';
+    str_sql := str_sql + IntToStr(i) + ', ';
+    str_sql := str_sql + QuotedStr(fInutlizar.inu_serie) + ', ';
+    str_sql := str_sql + QuotedStr('I') + ', ';
+    str_sql := str_sql + QuotedStr(formatdatetime('mm/dd/yyyy', Now)) + ', ';
+    str_sql := str_sql + QuotedStr(formatdatetime('mm/dd/yyyy', Now)) + ', ';
+    str_sql := str_sql + QuotedStr('Usuário : ' + dmPdv.varLogado) + ', ';
+    str_sql := str_sql + QuotedStr('Justificativa : ' + fInutlizar.inu_justificativa) + ', ';
+    str_sql := str_sql + QuotedStr(ACBrNFe1.WebServices.Inutilizacao.Protocolo) + ', ';
+    str_sql := str_sql + QuotedStr('fnInutilizado') + ', ';
+    str_sql := str_sql + '12, 0,';  // Natureza , codcliente
+    str_sql := str_sql + QuotedStr('INUTILIZADA') + ', ';
+    dmPdv.qcds_ccusto.Locate('NOME', ComboBox1.Text,[loCaseInsensitive]);
+    str_sql := str_sql + IntToStr(dmPdv.qcds_ccustoCODIGO.AsInteger) + ')';
+    dmPdv.executaSql(str_sql);
+  end;
+  dmPdv.strans.Commit;
+  ShowMessage('Inutilização efetuada com sucesso, Protocolo : ' +
+    ACBrNFe1.WebServices.Inutilizacao.Protocolo);
 end;
 
 procedure TfNFe.btnListarCCeClick(Sender: TObject);
@@ -704,6 +745,7 @@ procedure TfNFe.btnListarCCeClick(Sender: TObject);
 begin
   if (dmPdv.qsCCE.Active) then
     dmPdv.qsCCE.Close;
+  dmPdv.qsCCE.SQL.Clear;
   if (CheckBox1.Checked) then
   begin
     str_cce := 'select * FROM CCE order by DHENVIO desc ';
@@ -715,6 +757,7 @@ begin
     dmPdv.qsCCE.SQL.Text := str_cce;
   end;
   dmPdv.qsCCE.Open;
+
   BtnCCe.Enabled := True;
   btnImprimirCCe.Enabled := True;
 end;
@@ -776,80 +819,68 @@ begin
   dmPdv.qcdsNF.First;
   while not dmPdv.qcdsNF.Eof do
   begin
-    if (dmPdv.qcdsNFSELECIONOU.AsString = 'S') then
+    if (trim(dmPdv.qcdsNFSELECIONOU.AsString) = 'S') then
     begin
       notaFCancela := dmPdv.qcdsNFNOTASERIE.AsString;
+      codnf := dmPdv.qcdsNFNUMNF.AsInteger;
+
+      if (edNFCancelar.Text <> notaFCancela) then
+      begin
+        MessageDlg('Nota selecionada é diferente do número da Nota informada.', mtWarning, [mbOK], 0);
+        exit;
+      end;
+      CarregarXML(Copy(dmPdv.qcdsNFNOMEXML.AsString,0,44));
+
+      if not(InputQuery('WebServices Cancelamento', 'Justificativa (mais que 15 letras)', vAux)) then
+         exit;
+      if (Length(vAux) < 15) then
+      begin
+        MessageDlg('Justificativa deve ter no mínimo 15 caracteres.', mtWarning, [mbOK], 0);
+        exit;
+      end;
+      NumeroLote := StrToInt(FormatDateTime('yymmddhhmm', NOW));
+      ACBrNFe1.EventoNFe.Evento.Clear;
+      ACBrNFe1.EventoNFe.idLote := NumeroLote;
+      with ACBrNFe1.EventoNFe.Evento.Add do
+      begin
+        InfEvento.tpAmb := ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.tpAmb;
+        infEvento.CNPJ := ACBrNFe1.NotasFiscais.Items[0].NFe.Emit.CNPJCPF;
+        InfEvento.cOrgao := ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.cUF;
+        InfEvento.nSeqEvento := 1;
+        InfEvento.chNFe := Copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, 4, 44);
+        InfEvento.dhEvento := Now;
+        InfEvento.tpEvento := teCancelamento;
+        infEvento.detEvento.xJust := vAux;
+        InfEvento.detEvento.nProt := ACBrNFe1.NotasFiscais.Items[0].NFe.procNFe.nProt;
+      end;
+      //ACBrNFe1.WebServices.EnvEvento.Executar;
+      if ACBrNFe1.EnviarEvento(NumeroLote) then
+      begin
+        with ACBrNFe1.WebServices.EnvEvento do
+        begin
+          if EventoRetorno.retEvento.Items[0].RetInfEvento.cStat <> 135 then
+          begin
+            raise Exception.CreateFmt(
+               'Ocorreu o seguinte erro ao cancelar a nota fiscal eletrônica:'  + sLineBreak +
+               'Código:%d' + sLineBreak +
+               'Motivo: %s', [
+               EventoRetorno.retEvento.Items[0].RetInfEvento.cStat,
+                  EventoRetorno.retEvento.Items[0].RetInfEvento.xMotivo
+                ]);
+          end;
+        end;
+        MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.EnvEvento.RetWS);
+        ShowMessage('Nº do Protocolo de Cancelamento ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.nProt);
+        Protocolo := ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.nProt;
+        gravaRetornoCancelada(Protocolo);
+        AcbrNfe1.Configuracoes.Geral.Salvar := True;
+      end;
+
+
     end;
     dmPdv.qcdsNF.Next;
   end;
 
-  if (edNFCancelar.Text <> notaFCancela) then
-  begin
-    MessageDlg('Nota selecionada é diferente do número da Nota informada.', mtWarning, [mbOK], 0);
-    exit;
-  end;
-  CarregarXML(Copy(dmPdv.qcdsNFNOMEXML.AsString,0,44));
-
-  if not(InputQuery('WebServices Cancelamento', 'Justificativa (mais que 15 letras)', vAux)) then
-     exit;
-  if (Length(vAux) < 15) then
-  begin
-    MessageDlg('Justificativa deve ter no mínimo 15 caracteres.', mtWarning, [mbOK], 0);
-    exit;
-  end;
-  NumeroLote := StrToInt(FormatDateTime('yymmddhhmm', NOW));
-  ACBrNFe1.EventoNFe.Evento.Clear;
-  ACBrNFe1.EventoNFe.idLote := NumeroLote;
-  with ACBrNFe1.EventoNFe.Evento.Add do
-  begin
-    InfEvento.tpAmb := ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.tpAmb;
-    infEvento.CNPJ := ACBrNFe1.NotasFiscais.Items[0].NFe.Emit.CNPJCPF;
-    InfEvento.cOrgao := ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.cUF;
-    InfEvento.nSeqEvento := 1;
-    InfEvento.chNFe := Copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, 4, 44);
-    InfEvento.dhEvento := Now;
-    InfEvento.tpEvento := teCancelamento;
-    infEvento.detEvento.xJust := vAux;
-    InfEvento.detEvento.nProt := ACBrNFe1.NotasFiscais.Items[0].NFe.procNFe.nProt;
-  end;
-  //ACBrNFe1.WebServices.EnvEvento.Executar;
-  if ACBrNFe1.EnviarEvento(NumeroLote) then
-  begin
-    with ACBrNFe1.WebServices.EnvEvento do
-    begin
-      if EventoRetorno.retEvento.Items[0].RetInfEvento.cStat <> 135 then
-      begin
-        raise Exception.CreateFmt(
-           'Ocorreu o seguinte erro ao cancelar a nota fiscal eletrônica:'  + sLineBreak +
-           'Código:%d' + sLineBreak +
-           'Motivo: %s', [
-           EventoRetorno.retEvento.Items[0].RetInfEvento.cStat,
-              EventoRetorno.retEvento.Items[0].RetInfEvento.xMotivo
-            ]);
-      end;
-    end;
-    MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.EnvEvento.RetWS);
-    ShowMessage('Nº do Protocolo de Cancelamento ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.nProt);
-    Protocolo := ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.nProt;
-    AcbrNfe1.Configuracoes.Geral.Salvar := True;
-  end;
-
-  try
-    str := 'UPDATE NOTAFISCAL SET ';
-    str := str + ' STATUS = ' + QuotedStr('C');
-    if (protocolo <> '') then
-        str := str + ' ,PROTOCOLOCANC = ' + quotedstr(Protocolo);
-    str := str + ' ,NFE_FINNFE = ' + quotedstr('fnCancelado');
-    str := str + ' WHERE NOTASERIE = ' + numnf;
-    dmPdv.IbCon.ExecuteDirect(str);
-    dmPdv.sTrans.Commit;
-  except
-    on E : Exception do
-    begin
-      ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-      dmPdv.sTrans.Rollback; //on failure, undo the changes}
-    end;
-  end;
   FormatSettings.DecimalSeparator := ',';
   chkTodas.Checked := True;
   btnListar.Click;
@@ -873,7 +904,7 @@ begin
     begin
       nfe_carregalogo;
       ACBrNFe1.NotasFiscais.Clear;
-
+      codnf := dmPdv.qcdsNFNUMNF.AsInteger;
       CarregarXML(Copy(dmPdv.qcdsNFNOMEXML.AsString,0,44));
 
       if (ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.nNF <> StrToInt(dmPdv.qcdsNFNOTASERIE.AsString)) then
@@ -888,6 +919,10 @@ begin
 
       end
       else begin
+        gravaRetornoEnvio(ACBrNFe1.WebServices.Consulta.protNFe.nProt, '');
+        if (ACBrNFe1.WebServices.Consulta.retCancNFe.nProt <> '') then
+          gravaRetornoCancelada(ACBrNFe1.WebServices.Consulta.retCancNFe.nProt);
+        {
         strAtualizaNota := 'UPDATE NOTAFISCAL SET STATUS = ' + QuotedStr('E');
         if ((ACBrNFe1.WebServices.Consulta.protNFe.nProt <> '') and
            ((dmPdv.qcdsNFPROTOCOLOENV.IsNull) or
@@ -939,10 +974,11 @@ begin
              on E : Exception do
              begin
                ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-               dmPdv.sTrans.Rollback; //on failure, undo the changes}
+               dmPdv.sTrans.Rollback;
              end;
           end;
         end;
+        }
       end;
       //ACBrNFe1.NotasFiscais.Imprimir;
       //if (AcbrNfe1.WebServices.Consulta.Protocolo <> '') then
@@ -1405,40 +1441,27 @@ begin
   dmPdv.qsEmpresa.Open;
 
   ACBrNFe1.Configuracoes.WebServices.UF := dmPdv.qsEmpresaUF.AsString;
-  nfe_carregalogo;
-  envio := Now;
-  AcbrNfe1.Configuracoes.Arquivos.PathNFe := edit3.Text;
-  AcbrNfe1.Configuracoes.Arquivos.PathEvento := edit3.Text + '\Eventos';
-  nfe_arquivo := FormatDateTime('yyyymm', NOW);
-  //try
-  nfe_arquivo := AcbrNfe1.Configuracoes.Arquivos.PathNFe + '\nfe\' + nfe_arquivo +
-    '\' + dmPdv.qsCCECHAVE.AsString + '-NFe.xml';
 
-  NumeroLote := StrToInt(FormatDateTime('yymmddhhmm', NOW));
-  if (not FilesExists(nfe_arquivo)) then
+  dmPdv.qsCCE.First;
+  While not dmPdv.qsCCE.EOF do
   begin
-    //    MessageDlg('Arquivo XML não localizado.', mtWarning, [mbOK], 0);
-    OpenDialog1.InitialDir := edit3.Text;
-    if OpenDialog1.Execute then
+    if (Trim(dmPdv.qsCCESELECIONOU.AsString) = 'S') then
     begin
-      nfe_arquivo := OpenDialog1.FileName;
-    end;
-  end;
-  ACBrNFe1.NotasFiscais.LoadFromFile(nfe_arquivo);
-  //tamanho := Length(edit3.Text);
-  //  nfe_arquivo := RemoveChar(copy(nfe_arquivo, tamanho+1, length(nfe_arquivo)));
-  nfe_arquivo := ExtractFileName(nfe_arquivo);
-  ACBrNFe1.EventoNFe.Evento.Clear;
-  Label28.Caption := diretorio_schema;
-  ACBrNFe1.Configuracoes.Arquivos.PathSchemas := diretorio_schema;
-  //  ACBrNFe1.EnvEvento.EnvEventoNFe..idLote := StrToInt(NumeroLote) ;
-  xCond := 'A Carta de Correcao e disciplinada pelo paragrafo 1o-A do art. 7o do Convenio S/N, de 15 de dezembro de 1970 e pode ser utilizada para regularizacao de erro ocorrido na emissao ';
-  xCond := xCond + 'de documento fiscal, desde que o erro nao esteja relacionado com: I - as variaveis que determinam o valor do imposto tais como: base de calculo, aliquota, diferenca de preco, quantidade, valor da operacao ou da prestacao; II - a correcao de ';
-  xCond := xCond + 'dados cadastrais que implique mudanca do remetente ou do destinatario; III - a data de emissao ou de saida';
-
-  with ACBrNFe1.EventoNFe.Evento.Add do
-  begin
-      InfEvento.chNFe     := dmPdv.qsCCECHAVE.AsString ;
+      nfe_carregalogo;
+      CarregarXML(Copy(dmPdv.qsCCECHAVE.AsString,0,44));
+      envio := Now;
+      AcbrNfe1.Configuracoes.Arquivos.PathNFe := edit3.Text;
+      AcbrNfe1.Configuracoes.Arquivos.PathEvento := edit3.Text + '\Eventos';
+      NumeroLote := StrToInt(FormatDateTime('yymmddhhmm', NOW));
+      ACBrNFe1.EventoNFe.Evento.Clear;
+      Label28.Caption := diretorio_schema;
+      ACBrNFe1.Configuracoes.Arquivos.PathSchemas := diretorio_schema;
+      xCond := 'A Carta de Correcao e disciplinada pelo paragrafo 1o-A do art. 7o do Convenio S/N, de 15 de dezembro de 1970 e pode ser utilizada para regularizacao de erro ocorrido na emissao ';
+      xCond := xCond + 'de documento fiscal, desde que o erro nao esteja relacionado com: I - as variaveis que determinam o valor do imposto tais como: base de calculo, aliquota, diferenca de preco, quantidade, valor da operacao ou da prestacao; II - a correcao de ';
+      xCond := xCond + 'dados cadastrais que implique mudanca do remetente ou do destinatario; III - a data de emissao ou de saida';
+      with ACBrNFe1.EventoNFe.Evento.Add do
+      begin
+      InfEvento.chNFe     := dmPdv.qsCCECHAVE.AsString;
       InfEvento.CNPJ      := RemoveChar(Copy(dmPdv.qsCCECHAVE.AsString , 7, 14));
       InfEvento.cOrgao    := dmPdv.qsCCeORGAO.AsInteger;
       //InfEvento.versaoEvento := '1.0.00';
@@ -1447,7 +1470,7 @@ begin
       InfEvento.nSeqEvento := dmPdv.qsCCeSEQUENCIA.AsInteger;
       InfEvento.detEvento.xCorrecao := dmPdv.qsCCeCORRECAO.AsString;
       //InfEvento.detEvento.xCondUso := xCond;
-    end;
+      end;
 
     if ACBrNFe1.EnviarEvento(NumeroLote) then
     begin
@@ -1477,7 +1500,7 @@ begin
       end;
     end;
 
-  //finally
+    //finally
     protocolo := AcbrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.nProt;
     //cce_arquivo := AcbrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.XML
     if (protocolo <> '') then
@@ -1499,8 +1522,9 @@ begin
             dmPdv.sTrans.Rollback; //on failure, undo the changes}
           end;
         end;
-
     end;
+    end;
+  end;
   //end;
   ACBrNFe1.ImprimirEvento;
   ACBrNFe1.Configuracoes.Arquivos.SalvarEvento := False;
@@ -1593,6 +1617,13 @@ begin
   end;
 
   //Gera Envio da Nota
+  ACBrNFeDANFCeFortes1.Site := dmPdv.qsEmpresaWEB.AsString;
+  ACBrNFeDANFCeFortes1.Email := dmPdv.qsEmpresaE_MAIL.AsString;
+  ACBrNFeDANFCeFortes1.CasasDecimais.vUnCom := danfeDec;
+
+  ACBrNFeDANFeRL1.Site := dmPdv.qsEmpresaWEB.AsString;
+  ACBrNFeDANFeRL1.Email := dmPdv.qsEmpresaE_MAIL.AsString;
+  ACBrNFeDANFeRL1.CasasDecimais.vUnCom := danfeDec;
 
   lblMsgNfe.Caption := 'Enviando arquivo para a Receita Federal';
 
@@ -1615,24 +1646,9 @@ begin
 
     ShowMessage('Nº do Protocolo de envio ' + ACBrNFe1.WebServices.Retorno.Protocolo);
     ShowMessage('Nº do Recibo de envio ' + ACBrNFe1.WebServices.Retorno.Recibo);
-
-    Protocolo := ACBrNFe1.WebServices.Retorno.Protocolo;
     Recibo := ACBrNFe1.WebServices.Retorno.Recibo;
-
-    //SALVA NFe, PROTOCOLOS e NOMEXML no BD
-    str := 'UPDATE NOTAFISCAL SET ';
-    str := str + '  XMLNFE = ' + quotedStr(ACBrNFe1.NotasFiscais.Items[0].XML);
-    str := str + ', NOMEXML = ' + QuotedStr(copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
-    str := str + ', NFE_VERSAO = ' + QuotedStr('4.0');
-    str := str + ', STATUS = ' + QuotedStr('E');
-    if (Protocolo <> '') then
-     str := str + ', PROTOCOLOENV = ' + quotedStr(Protocolo);
-    if (Recibo <> '') then
-     str := str + ', NUMRECIBO = ' + QuotedStr(Recibo);
-    str := str + ' WHERE NUMNF = ' + IntToStr(codnf);
-    dmPdv.IbCon.ExecuteDirect(str);
-    dmPdv.sTrans.Commit;
-
+    Protocolo := ACBrNFe1.WebServices.Retorno.Protocolo;
+    gravaRetornoEnvio(Protocolo, Recibo);
 
     FormatSettings.DecimalSeparator := ',';
     if (envemail = 'S') then
@@ -1659,20 +1675,8 @@ begin
 
   dmPdv.qcdsNF.Refresh;
 
-
-  ACBrNFeDANFCeFortes1.Site := dmPdv.qsEmpresaWEB.AsString;
-  ACBrNFeDANFCeFortes1.Email := dmPdv.qsEmpresaE_MAIL.AsString;
-  ACBrNFeDANFCeFortes1.CasasDecimais.vUnCom := danfeDec;
-
-  ACBrNFeDANFeRL1.Site := dmPdv.qsEmpresaWEB.AsString;
-  ACBrNFeDANFeRL1.Email := dmPdv.qsEmpresaE_MAIL.AsString;
-  ACBrNFeDANFeRL1.CasasDecimais.vUnCom := danfeDec;
-
-  ACBrNFe1.NotasFiscais.Items[0].GravarXML;
   MessageDlg('Arquivo gerado com sucesso.', mtInformation, [mbOK], 0);
-  ACBrNFe1.NotasFiscais.Imprimir;
-
-
+  //ACBrNFe1.NotasFiscais.Imprimir;
 end;
 
 procedure TfNFe.BtnPreVisClick(Sender: TObject);
@@ -2033,12 +2037,12 @@ begin
   if (trim(dmPdv.qcdsNFSELECIONOU.AsString) = '') then
   begin
     dmPdv.IbCon.ExecuteDirect('UPDATE NOTAFISCAL SET SELECIONOU = '
-    + QuotedStr('S') + ' WHERE NOTASERIE = ' + QuotedStr(dmPdv.qcdsNF.FieldByName('NOTASERIE').AsString));
+    + QuotedStr('S') + ' WHERE NUMNF = ' + QuotedStr(dmPdv.qcdsNF.FieldByName('NUMNF').AsString));
     dmPdv.sTrans.Commit;
   end else
   begin
     dmPdv.IbCon.ExecuteDirect('UPDATE NOTAFISCAL SET SELECIONOU = '
-    + QuotedStr('') + ' WHERE NOTASERIE = ' + QuotedStr(dmPdv.qcdsNF.FieldByName('NOTASERIE').AsString)); //QuotedStr('2386'));
+    + QuotedStr('') + ' WHERE NUMNF = ' + QuotedStr(dmPdv.qcdsNF.FieldByName('NUMNF').AsString)); //QuotedStr('2386'));
     dmPdv.sTrans.Commit;
   end;
   // corrigir para ficar na mesma linha 21/09/19
@@ -2079,6 +2083,67 @@ begin
     else
       ImageList2.Draw(DBGrid1.Canvas,Rect.Left+10,Rect.top, 0);
   end;
+end;
+
+procedure TfNFe.DBGrid2CellClick(Column: TColumn);
+begin
+  if (trim(dmPdv.qsCCESELECIONOU.AsString) = '') then
+  begin
+    dmPdv.IbCon.ExecuteDirect('UPDATE CCE SET SELECIONOU = ' + QuotedStr('S') +
+      ' WHERE CHAVE = ' + QuotedStr(dmPdv.qsCCE.FieldByName('CHAVE').AsString) +
+      ' AND SEQUENCIA = ' + IntToStr(dmPdv.qsCCE.FieldByName('SEQUENCIA').AsInteger));
+    edtChaveNfeCCe.Text := dmPdv.qsCCE.FieldByName('CHAVE').AsString;
+    dmPdv.sTrans.Commit;
+  end else
+  begin
+    dmPdv.IbCon.ExecuteDirect('UPDATE CCE SET SELECIONOU = NULL '  +
+      ' WHERE CHAVE = ' + QuotedStr(dmPdv.qsCCE.FieldByName('CHAVE').AsString) +
+      ' AND SEQUENCIA = ' + IntToStr(dmPdv.qsCCE.FieldByName('SEQUENCIA').AsInteger));
+    edtChaveNfeCCe.Text := '';
+    dmPdv.sTrans.Commit;
+  end;
+  btnListarCCe.Click;
+  if (edtChaveNfeCCe.Text <> '') then
+  begin
+    btnListar.Click;
+    StatusBar1.SimpleText := dmPdv.qcdsnfNFE_FINNFE.AsString + '-' + dmPdv.qcdsnfNFE_MODELO.AsString + '-' + dmPdv.qcdsnfNFE_VERSAO.AsString + '-' +
+    dmPdv.qcdsnfNFE_DESTOPERACAO.AsString + '-' + dmPdv.qcdsnfNFE_FORMATODANFE.AsString + '-' + dmPdv.qcdsnfNFE_TIPOEMISSAO.AsString + '-' +
+    dmPdv.qcdsnfNFE_INDFINAL.AsString + '-' + dmPdv.qcdsnfNFE_INDPRES.AsString + '-' + dmPdv.qcdsNFIND_IEDEST.AsString;
+
+    if (dmPdv.qsEmpresa.Active) then
+      dmPdv.qsEmpresa.Close;
+    dmPdv.qsEmpresa.Params[0].AsInteger := dmPdv.qcdsNFCCUSTO.AsInteger;
+    dmPdv.qsEmpresa.Open;
+    fNFe.Caption := dmPdv.qsEmpresaEMPRESA.AsString;
+  end;
+end;
+
+procedure TfNFe.DBGrid2CellClick(Sender: TObject);
+begin
+
+end;
+
+procedure TfNFe.DBGrid2ColEnter(Sender: TObject);
+begin
+  if DBGrid2.SelectedField = dmPdv.qsCCESELECIONOU then
+    DBGrid2.Options := DBGrid2.Options - [dgEditing]
+  else
+    DBGrid2.Options := DBGrid2.Options + [dgEditing];
+end;
+
+procedure TfNFe.DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
+  DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+  if Column.Field = dmPdv.qsCCESELECIONOU then
+  begin
+    DBGrid2.Canvas.FillRect(Rect);
+    ImageList2.Draw(DBGrid2.Canvas,Rect.Left+10,Rect.top, 1);
+    if (trim(dmPdv.qsCCESELECIONOU.AsString) = 'S') then
+      ImageList2.Draw(DBGrid2.Canvas,Rect.Left+10,Rect.top, 2)
+    else
+      ImageList2.Draw(DBGrid2.Canvas,Rect.Left+10,Rect.top, 0);
+  end;
+
 end;
 
 procedure TfNFe.FormCreate(Sender: TObject);
@@ -2152,8 +2217,13 @@ begin
   finally
     ImpressoraDet.Free;
   end;
+  dmPdv.IbCon.ExecuteDirect('ALTER TRIGGER PROIBE_ALT_DEL_NF INACTIVE');
+  dmPdv.sTrans.Commit;
   dmPdv.IbCon.ExecuteDirect('UPDATE NOTAFISCAL SET SELECIONOU = null '
     + ' WHERE SELECIONOU = ' + QuotedStr('S'));
+  dmPdv.IbCon.ExecuteDirect('UPDATE CCE SET SELECIONOU = null '
+    + ' WHERE SELECIONOU = ' + QuotedStr('S'));
+  dmPdv.IbCon.ExecuteDirect('ALTER TRIGGER PROIBE_ALT_DEL_NF ACTIVE');
   dmPdv.sTrans.Commit;
 
   if dmPdv.sqparametro.Active then
@@ -2170,6 +2240,7 @@ begin
   danfeDec := 2;
   if (dmPdv.qcds_parametroD5.AsString <> '') then
     danfeDec := StrToInt(dmPdv.qcds_parametroD5.AsString);
+
   quebraLinhaDanfe := True;
   if (dmPdv.qcds_parametroD6.AsString <> '') then
     quebraLinhaDanfe := False;
@@ -2185,6 +2256,30 @@ begin
     end;
   end;
   dmPdv.qcds_parametro.Close;
+
+  ACBrNFeDANFCeFortes1.UsaSeparadorPathPDF := True;
+  ACBrNFeDANFeRL1.UsaSeparadorPathPDF := True;
+  ACBrNFeDANFCeFortes1.CasasDecimais.vUnCom := danfeDec;
+  Case danfeDec of
+     2 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.00';
+     3 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.000';
+     4 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.0000';
+     5 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.00000';
+     6 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.000000';
+     7 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.0000000';
+     8 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.00000000';
+  end;
+  ACBrNFeDANFeRL1.CasasDecimais.vUnCom := danfeDec;
+  Case danfeDec of
+     2 : ACBrNFeDANFeRL1.CasasDecimais.MaskvUnCom := ',0.00';
+     3 : ACBrNFeDANFeRL1.CasasDecimais.MaskvUnCom := ',0.000';
+     4 : ACBrNFeDANFeRL1.CasasDecimais.MaskvUnCom := ',0.0000';
+     5 : ACBrNFeDANFeRL1.CasasDecimais.MaskvUnCom := ',0.00000';
+     6 : ACBrNFeDANFeRL1.CasasDecimais.MaskvUnCom := ',0.000000';
+     7 : ACBrNFeDANFeRL1.CasasDecimais.MaskvUnCom := ',0.0000000';
+     8 : ACBrNFeDANFeRL1.CasasDecimais.MaskvUnCom := ',0.00000000';
+  end;
+
 
   if dmPdv.qcds_ccusto.Active then
     dmPdv.qcds_ccusto.Close;
@@ -2253,18 +2348,19 @@ begin
 
   diretorio := GetCurrentDir;
   diretorio_schema := diretorio + '\Schemas';
-
+  envemail := dmPdv.qsEmpresa1DIVERSOS1.AsString;
+  ACBrNFe1.DANFE.PathPDF := dmPdv.qsEmpresa1DIVERSOS1.AsString + '\';
   if (FilesExists(diretorio + '\logo_nfe.jpg')) then
     ACBrNFeDANFCeFortes1.Logo := diretorio + '\logo_nfe.jpg';
   if (FilesExists(diretorio + '\logo.bmp')) then
     ACBrNFeDANFCeFortes1.Logo := diretorio + '\logo.bmp';
-  ACBrNFeDANFCeFortes1.PathPDF := dmPdv.qsEmpresa1DIVERSOS1.AsString;
+  ACBrNFeDANFCeFortes1.PathPDF := dmPdv.qsEmpresa1DIVERSOS1.AsString + '\';
 
   if (FilesExists(diretorio + '\logo.jpg')) then
     ACBrNFeDANFeRL1.Logo := diretorio + '\logo.jpg';
   if (FilesExists(diretorio + '\logo.bmp')) then
     ACBrNFeDANFeRL1.Logo := diretorio + '\logo.bmp';
-  ACBrNFeDANFeRL1.PathPDF := dmPdv.qsEmpresa1DIVERSOS1.AsString;
+  ACBrNFeDANFeRL1.PathPDF := dmPdv.qsEmpresa1DIVERSOS1.AsString + '\';
 
   // tamanho da coluna produto na DANFE
 
@@ -2280,10 +2376,10 @@ begin
     dmPdv.qcds_parametro.Close;
   dmPdv.qcds_parametro.Params[0].AsString := 'EMAILAUTOMATICO';
   dmPdv.qcds_parametro.Open;
+  envemail := 'N';
   if (not dmPdv.qcds_parametro.IsEmpty) then
-    envemail := dmPdv.qcds_parametroCONFIGURADO.AsString
-  else
-    envemail := 'N';
+    envemail := dmPdv.qcds_parametroCONFIGURADO.AsString;
+
   dmPdv.qcds_parametro.Close;
 
 end;
@@ -2293,6 +2389,7 @@ var  CSize: DWORD;
      ccusto_emp : Integer;
      sq : string;
 begin
+  edtChaveNfeCCe.Text := '';
   label48.Caption := GetVersion;
   label26.caption := Trim(GetComputerNameFunc);
 
@@ -2378,9 +2475,9 @@ begin
       if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathNFe)) then
         CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathNFe);
 
-      ACBrNFeDANFCeFortes1.PathPDF := dmPdv.qsEmpresaDIVERSOS1.AsString;
+      ACBrNFeDANFCeFortes1.PathPDF := dmPdv.qsEmpresaDIVERSOS1.AsString  + '\';
 
-      ACBrNFeDANFeRL1.PathPDF := dmPdv.qsEmpresaDIVERSOS1.AsString;
+      ACBrNFeDANFeRL1.PathPDF := dmPdv.qsEmpresaDIVERSOS1.AsString  + '\';
     end;
   end;
   LerConfiguracao;
@@ -2422,6 +2519,7 @@ var
  enumnf ,serie : Integer;
  CC, Texto: Tstrings;
 begin
+  ACBrNFe1.MAIL := ACBrMail1;
   dmPdv.qcdsNF.DisableControls;
   dmPdv.qcdsNF.First;
   while not dmPdv.qcdsNF.Eof do
@@ -2438,79 +2536,80 @@ begin
         dmPdv.qsCliente.Params[0].AsInteger := dmPdv.qcdsNFCODCLIENTE.AsInteger;
         dmPdv.qsCliente.Open;
       end;
+
+      CC := TstringList.Create;
+      try
+      //ABRE A NOTA
+      IDNFE  := ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID;
+      enumnf  := ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.nNF;
+      RAZAO  := ACBrNFe1.NotasFiscais.Items[0].NFe.Dest.xNome;
+      CNPJ   := ACBrNFe1.NotasFiscais.Items[0].NFe.Dest.CNPJCPF;
+      serie  := ACBrNFe1.NotasFiscais.Items[0].NFe.ide.serie;
+      TRANSP := ACBrNFe1.NotasFiscais.Items[0].NFe.Transp.Transporta.xNome;
+
+
+      Protocolo := dmPdv.qcdsNFPROTOCOLOENV.AsString;
+      Texto := TStringList.Create;
+      Texto.Add('Empresa emissora da NF-e: ' + dmPdv.qsEmpresaRAZAO.AsString);
+      Texto.Add('CNPJ/CPF da Empresa Emissora: ' + dmPdv.qsEmpresaCNPJ_CPF.AsString);
+      Texto.Add('Empresa destacada na NF-e: ' + RAZAO);
+      Texto.Add('CNPJ/CPF da Empresa/Cliente destacado: ' + CNPJ);
+      Texto.Add('Número da NF: ' + InttoStr(enumnf) + ' Série ' + IntToStr(serie));
+      Texto.Add('Chave de identificação: ' + IDNFE);
+      Texto.Add('');
+      Texto.Add('');
+      Texto.Add('Consulte no Portal Nacional da NFe: https://www.nfe.fazenda.gov.br/portal/FormularioDePesquisa.aspx?tipoconsulta=completa .');
+      Texto.Add('Ou consulte pela página do SEFAZ do seu estado.');
+
+      CC.Add(dmPdv.qsEmpresaE_MAIL.AsString); //especifique um email válido
+      Assunto := 'Nota Fiscal Eletrônica ' + InttoStr(enumnf);
+
+      //Try
+        begin
+          //try
+            ACBrMail1.Port     := dmPdv.qsEmpresaPORTA.AsString;
+            ACBrMail1.Host     := dmPdv.qsEmpresaSMTP.AsString;
+            ACBrMail1.Username := dmPdv.qsEmpresaE_MAIL.AsString;
+            ACBrMail1.Password := dmPdv.qsEmpresaSENHA.AsString;
+            ACBrMail1.From     := dmPdv.qsEmpresaE_MAIL.AsString;
+            ACBrMail1.FromName := dmPdv.qsEmpresaEMPRESA.AsString;
+            ACBrMail1.AddAddress(dmPdv.qsClienteE_MAIL.AsString);
+
+            if (email_tls = 'S') then
+              ACBrMail1.SetTLS := True;
+            if (email_ssl = 'S') then
+              ACBrMail1.SetSSL := True;
+
+              //sPara, sAssunto: String; sMensagem: TStrings;
+            //       EnviaPDF: Boolean; sCC: TStrings; Anexos: TStrings)
+            ACBrNFe1.NotasFiscais.Items[0].EnviarEmail(dmPdv.qsClienteE_MAIL.AsString
+                                                     , Assunto
+                                                     , Texto
+                                                     , True //Enviar PDF junto
+                                                     , CC //com copia
+                                                     , nil // Lista de anexos - TStrings
+                                                     );
+
+            ShowMessage('Email enviado com sucesso!');
+
+            lblMsgNfe.Caption := '';
+          //except
+          //   on E: Exception do
+          //    begin
+          //      raise Exception.Create('Erro ao enviar email'+sLineBreak+E.Message);
+          //    end;
+          //end;
+        end;
+      finally
+        CC.Clear;
+        CC.Free;
+        Texto.Free;
+        //fNFeletronica.ACBrNFe1.NotasFiscais.Clear;
+      end;
     end;
     dmPdv.qcdsNF.Next;
   end;
   dmPdv.qcdsNF.EnableControls;
-
-  CC := TstringList.Create;
-  //ABRE A NOTA
-  IDNFE  := ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID;
-  enumnf  := ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.nNF;
-  RAZAO  := ACBrNFe1.NotasFiscais.Items[0].NFe.Dest.xNome;
-  CNPJ   := ACBrNFe1.NotasFiscais.Items[0].NFe.Dest.CNPJCPF;
-  serie  := ACBrNFe1.NotasFiscais.Items[0].NFe.ide.serie;
-  TRANSP := ACBrNFe1.NotasFiscais.Items[0].NFe.Transp.Transporta.xNome;
-
-
-  Protocolo := ACBrNFe1.WebServices.Retorno.Protocolo;
-  Texto := TStringList.Create;
-  Texto.Add('Empresa emissora da NF-e: ' + dmPdv.qsEmpresaRAZAO.AsString);
-  Texto.Add('CNPJ/CPF da Empresa Emissora: ' + dmPdv.qsEmpresaCNPJ_CPF.AsString);
-  Texto.Add('Empresa destacada na NF-e: ' + RAZAO);
-  Texto.Add('CNPJ/CPF da Empresa/Cliente destacado: ' + CNPJ);
-  Texto.Add('Número da NF: ' + InttoStr(enumnf) + ' Série ' + IntToStr(serie));
-  Texto.Add('Chave de identificação: ' + IDNFE);
-  Texto.Add('');
-  Texto.Add('');
-  Texto.Add('Consulte no Portal Nacional da NFe: https://www.nfe.fazenda.gov.br/portal/FormularioDePesquisa.aspx?tipoconsulta=completa .');
-  Texto.Add('Ou consulte pela página do SEFAZ do seu estado.');
-
-  CC.Add(dmPdv.qsEmpresaE_MAIL.AsString); //especifique um email válido
-  Assunto := 'Nota Fiscal Eletrônica ' + InttoStr(enumnf);
-
-  Try
-    begin
-      try
-        ACBrMail1.Port     := dmPdv.qsEmpresaPORTA.AsString;
-        ACBrMail1.Host     := dmPdv.qsEmpresaSMTP.AsString;
-        ACBrMail1.Username := dmPdv.qsEmpresaE_MAIL.AsString;
-        ACBrMail1.Password := dmPdv.qsEmpresaSENHA.AsString;
-        ACBrMail1.From     := dmPdv.qsEmpresaE_MAIL.AsString;
-        ACBrMail1.FromName := dmPdv.qsEmpresaEMPRESA.AsString;
-        ACBrMail1.AddAddress(dmPdv.qsClienteE_MAIL.AsString);
-
-        if (email_tls = 'S') then
-          ACBrMail1.SetTLS := True;
-        if (email_ssl = 'S') then
-          ACBrMail1.SetSSL := True;
-
-          //sPara, sAssunto: String; sMensagem: TStrings;
-        //       EnviaPDF: Boolean; sCC: TStrings; Anexos: TStrings)
-        ACBrNFe1.NotasFiscais.Items[0].EnviarEmail(dmPdv.qsClienteE_MAIL.AsString
-                                                 , Assunto
-                                                 , Texto
-                                                 , True //Enviar PDF junto
-                                                 , CC //com copia
-                                                 , nil // Lista de anexos - TStrings
-                                                 );
-
-        ShowMessage('Email enviado com sucesso!');
-
-        lblMsgNfe.Caption := '';
-      except
-         on E: Exception do
-          begin
-            raise Exception.Create('Erro ao enviar email'+sLineBreak+E.Message);
-          end;
-      end;
-    end;
-  finally
-    CC.Clear;
-    CC.Free;
-    Texto.Free;
-    //fNFeletronica.ACBrNFe1.NotasFiscais.Clear;
-  end;
 end;
 
 procedure TfNFe.PageControl2Change(Sender: TObject);
@@ -3179,14 +3278,15 @@ end;
 procedure TfNFe.abrirEmpresa;
 var v_semp: String;
 begin
-  if (dmPdv.qcds_ccusto.Active) then
-    dmPdv.qcds_ccusto.Close;
-  dmPdv.qcds_ccusto.sql.Clear;
+  //if (dmPdv.qcds_ccusto.Active) then
+  //  dmPdv.qcds_ccusto.Close;
+  // dmPdv.qcds_ccusto.Params[0].AsString := conta_local;
+  //dmPdv.qcds_ccusto.sql.Clear;
   v_semp := 'select CODIGO, CONTA, NOME from PLANO ' +
     ' WHERE CONTAPAI = ' + QuotedStr(Trim(conta_local)) +
     '   AND CONSOLIDA = ' + QuotedStr('S');
-  dmPdv.qcds_ccusto.sql.Add(v_semp);
-  dmPdv.qcds_ccusto.Open;
+  //dmPdv.qcds_ccusto.sql.Add(v_semp);
+
 
   ///*
   if (PageControl1.ActivePageIndex = 0) then
@@ -3217,15 +3317,18 @@ begin
   end;
 
   ///
-  dmPdv.qcds_ccusto.SQL.Add(v_semp);
+  //dmPdv.qcds_ccusto.SQL.Add(v_semp);
+  //dmPdv.qcds_ccusto.Open;
+  dmPdv.busca_sql(v_semp);
 
   //Seleciona Empresa de acordo com o CCusto selecionado
   if (dmPdv.qsEmpresa.Active) then
     dmPdv.qsEmpresa.Close;
-  if (dmPdv.qcds_ccusto.IsEmpty) then
+  //if (dmPdv.qcds_ccusto.IsEmpty) then
+  if (dmPdv.sqBusca.IsEmpty) then
     dmPdv.qsEmpresa.Params[0].AsInteger := 0
   else
-    dmPdv.qsEmpresa.Params[0].AsInteger := dmPdv.qcds_ccustoCODIGO.AsInteger;
+    dmPdv.qsEmpresa.Params[0].AsInteger := dmPdv.sqBusca.FieldByName('CODIGO').AsInteger;
   dmPdv.qsEmpresa.Open;
 
 end;
@@ -4378,8 +4481,7 @@ begin
   OpenDialog1.Title := 'Selecione a NFCe';
   OpenDialog1.DefaultExt := '*-nfe.xml';
   OpenDialog1.Filter := 'Arquivos NFCe (*-nfe.xml)|*-nfe.xml|Arquivos XML (*.xml)|*.xml|Todos os Arquivos (*.*)|*.*';
-  path_dosxml := ACBrNFe1.Configuracoes.Arquivos.PathSalvar +
-    IntToStr(Ano) + IntToStr(mes);// + '\';
+  path_dosxml := Edit1.Text + '\' + IntToStr(Ano) + FormatFloat('00', mes);// + '\';
   OpenDialog1.InitialDir := path_dosxml;
   ACBrNFe1.NotasFiscais.Clear;
   if (Length(ChaveNFCe) > 30) then
@@ -4402,6 +4504,76 @@ begin
       ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
     end;
   end;
+end;
+
+procedure TfNFe.gravaRetornoEnvio(Protocolo: String; Recibo: String);
+var strAtualizaNota: String;
+  atualiza_nf: String;
+begin
+  atualiza_nf := '';
+
+  strAtualizaNota := 'UPDATE NOTAFISCAL SET STATUS = ' + QuotedStr('E') +
+    ', NFE_VERSAO = ' + QuotedStr('4.0');
+  if ((dmPdv.qcdsNFPROTOCOLOENV.IsNull) or (dmPdv.qcdsNFPROTOCOLOENV.AsString = '')) then
+  begin
+    if (Protocolo <> '') then
+      atualiza_nf := ' , PROTOCOLOENV = ' + QuotedStr(Protocolo);
+  end;
+  if ((dmPdv.qcdsNFNUMRECIBO.AsString = '') or (dmPdv.qcdsNFNUMRECIBO.IsNull)) then
+  begin
+    if (Recibo <> '') then
+      atualiza_nf += ' , NUMRECIBO = ' + QuotedStr(Recibo);
+  end;
+  if ((dmPdv.qcdsNFNOMEXML.AsString = '') or (dmPdv.qcdsNFNOMEXML.IsNull)) then
+  begin
+    atualiza_nf += ' , NOMEXML = ' +
+      QuotedStr(copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
+  end;
+  if (dmPdv.qcdsNFXMLNFE.IsNull) then
+  begin
+    atualiza_nf += ' , XMLNFE = ' + quotedStr(ACBrNFe1.NotasFiscais.Items[0].XML);
+  end;
+  if (atualiza_nf <> '') then
+  begin
+    strAtualizaNota :=  strAtualizaNota + atualiza_nf;
+  end;
+  strAtualizaNota :=  strAtualizaNota + ' WHERE NUMNF = ' + IntToStr(codnf) +
+    ' AND ((PROTOCOLOENV IS NULL) OR (PROTOCOLOENV = ' + QuotedStr('') + '))';
+  try
+     dmPdv.IbCon.ExecuteDirect(strAtualizaNota);
+     dmPdv.sTrans.Commit;
+     dmPdv.qcdsNF.Open;
+  except
+     on E : Exception do
+     begin
+       ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
+       dmPdv.sTrans.Rollback; //on failure, undo the changes}
+       dmPdv.qcdsNF.Open;
+     end;
+  end;
+end;
+
+procedure TfNFe.gravaRetornoCancelada(protocolo: String);
+begin
+  try
+    str := 'UPDATE NOTAFISCAL SET ';
+    str := str + ' STATUS = ' + QuotedStr('C');
+    if (protocolo <> '') then
+        str := str + ' , PROTOCOLOCANC = ' + quotedstr(Protocolo);
+    str := str + ' , NFE_FINNFE = ' + quotedstr('fnCancelado');
+    str := str + ' WHERE NUMNF = ' + IntToStr(codnf);
+    dmPdv.IbCon.ExecuteDirect(str);
+    dmPdv.sTrans.Commit;
+    dmPdv.qcdsNF.Open;
+  except
+    on E : Exception do
+    begin
+      ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
+      dmPdv.sTrans.Rollback; //on failure, undo the changes}
+      dmPdv.qcdsNF.Open;
+    end;
+  end;
+
 end;
 
 {
@@ -4490,7 +4662,7 @@ begin
         end;
       end;
       ///
-
+      codnf := dmPdv.qcdsNFNUMNF.AsInteger;
       tipoNota := trim(dmPdv.qcdsNFCFOP.AsString)[1];
       if (tipoNota in ['1','2','3']) then
         tpNFe := 0;

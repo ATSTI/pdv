@@ -21,6 +21,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
+      <BuildNr Value="2"/>
       <Language Value="0416"/>
       <StringTable Comments="Nota Fiscal Eletrônica" CompanyName="ATS Ti Soluções" FileDescription="Envio de Nota Fiscal Eletrônica" LegalCopyright="ATS Soluções"/>
     </VersionInfo>
@@ -67,7 +68,7 @@
         <PackageName Value="LCL"/>
       </Item10>
     </RequiredPackages>
-    <Units Count="4">
+    <Units Count="5">
       <Unit0>
         <Filename Value="prjNFe.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -95,6 +96,14 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCertificadoLer"/>
       </Unit3>
+      <Unit4>
+        <Filename Value="uinutilizar.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fInutlizar"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uInutilizar"/>
+      </Unit4>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

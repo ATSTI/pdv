@@ -2605,9 +2605,9 @@ object fNFe: TfNFe
             }
           end
           object btnListarCCe: TBitBtn
-            Left = 432
+            Left = 424
             Height = 24
-            Top = 0
+            Top = 2
             Width = 72
             Caption = 'Listar'
             Glyph.Data = {
@@ -2657,6 +2657,7 @@ object fNFe: TfNFe
               FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
               FFFFFFFFFFFFFFFFFFFF
             }
+            OnClick = btnListarCCeClick
             TabOrder = 5
           end
           object Label40: TLabel
@@ -2688,6 +2689,26 @@ object fNFe: TfNFe
             Font.Quality = fqDraft
             ParentColor = False
             ParentFont = False
+          end
+          object Label49: TLabel
+            Left = 6
+            Height = 16
+            Top = 96
+            Width = 78
+            Caption = 'Chave NFe'
+            Font.Color = clWindowText
+            Font.Height = -15
+            Font.Name = 'MS Sans Serif'
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+          end
+          object edtChaveNfeCCe: TEdit
+            Left = 96
+            Height = 23
+            Top = 89
+            Width = 448
+            TabOrder = 6
           end
         end
         object BtnCCe: TBitBtn
@@ -2851,6 +2872,7 @@ object fNFe: TfNFe
             FDFFFBFCFDFFFDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
             FFFFFFFFFFFFFFFDFDFFFEFEFEFFFCFCFCFFFEFEFEFFFAFAFAFF
           }
+          OnClick = BtnCCeClick
           ParentFont = False
           TabOrder = 3
         end
@@ -2993,16 +3015,17 @@ object fNFe: TfNFe
           end        
           item
             Title.Caption = 'Orgão'
+            Width = 40
             FieldName = 'ORGAO'
           end        
           item
             Title.Caption = 'CNPJ'
-            Width = 150
+            Width = 120
             FieldName = 'CNPJ'
           end        
           item
             Title.Caption = 'DH Envio'
-            Width = 100
+            Width = 120
             FieldName = 'DHENVIO'
           end        
           item
@@ -3023,9 +3046,9 @@ object fNFe: TfNFe
         DataSource = dmPdv.dsCCE
         Flat = True
         TabOrder = 1
-        OnCellClick = DBGrid1CellClick
-        OnColEnter = DBGrid1ColEnter
-        OnDrawColumnCell = DBGrid1DrawColumnCell
+        OnCellClick = DBGrid2CellClick
+        OnColEnter = DBGrid2ColEnter
+        OnDrawColumnCell = DBGrid2DrawColumnCell
       end
       object Panel4: TPanel
         Left = 0
@@ -3039,7 +3062,7 @@ object fNFe: TfNFe
         object BitBtn8: TBitBtn
           Left = 592
           Height = 40
-          Hint = 'Nova Venda'
+          Hint = 'Fechar'
           Top = 0
           Width = 139
           HelpType = htKeyword
@@ -3144,6 +3167,7 @@ object fNFe: TfNFe
             C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
           }
           Layout = blGlyphTop
+          OnClick = BitBtn8Click
           TabOrder = 0
         end
         object BtnCCe1: TBitBtn
@@ -5098,16 +5122,17 @@ object fNFe: TfNFe
     top = 424
   end
   object ACBrNFeDANFCeFortes1: TACBrNFeDANFCeFortes
+    UsaSeparadorPathPDF = True
     Sistema = 'Projeto ACBr - www.projetoacbr.com.br'
     MargemInferior = 0.8
     MargemSuperior = 0.8
     MargemEsquerda = 0.6
     MargemDireita = 0.51
     CasasDecimais.Formato = tdetMascara
-    CasasDecimais.qCom = 2
-    CasasDecimais.vUnCom = 2
-    CasasDecimais.MaskqCom = ',0.00'
-    CasasDecimais.MaskvUnCom = ',0.00'
+    CasasDecimais.qCom = 4
+    CasasDecimais.vUnCom = 4
+    CasasDecimais.MaskqCom = ',0.0000'
+    CasasDecimais.MaskvUnCom = ',0.0000'
     TipoDANFE = tiSemGeracao
     TamanhoLogoHeight = 0
     TamanhoLogoWidth = 0
@@ -5118,16 +5143,17 @@ object fNFe: TfNFe
     top = 424
   end
   object ACBrNFeDANFeRL1: TACBrNFeDANFeRL
+    UsaSeparadorPathPDF = True
     Sistema = 'Projeto ACBr - www.projetoacbr.com.br'
     MargemInferior = 0.7
     MargemSuperior = 0.7
     MargemEsquerda = 0.7
     MargemDireita = 0.7
     CasasDecimais.Formato = tdetMascara
-    CasasDecimais.qCom = 2
-    CasasDecimais.vUnCom = 2
-    CasasDecimais.MaskqCom = ',0.00'
-    CasasDecimais.MaskvUnCom = ',0.00'
+    CasasDecimais.qCom = 4
+    CasasDecimais.vUnCom = 4
+    CasasDecimais.MaskqCom = ',0.0000'
+    CasasDecimais.MaskvUnCom = ',0.0000'
     ACBrNFe = ACBrNFe1
     ExibeCampoFatura = False
     TributosPercentualPersonalizado = 0

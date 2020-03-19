@@ -1350,6 +1350,18 @@ begin
       except
       end;
     end;
+    if (versao_sistema = '1.1') then
+    begin
+      versao_sistema := '1.2';
+      campo_novo('USUARIO', 'SENHA', 'VARCHAR(50)');
+      campo_novo('USUARIO', 'CODBARRA', 'VARCHAR(13)');
+      campo_novo('PRODUTOS', 'PRECOATACADO', 'DOUBLE PRECISION');
+      campo_novo('PRODUTOS', 'QTDEATACADO', 'DOUBLE PRECISION');
+      campo_novo('MOVIMENTO', 'DATA_FECHOU', 'TIMESTAMP');
+      IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.2') +
+        ' WHERE CODATUALIZA = 5003');
+      sTrans.Commit;
+    end;
   end;
   if (sistema = 'PDV') then
   begin
