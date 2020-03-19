@@ -636,6 +636,7 @@ end;
 procedure TfNFe.btnImprimirCCeClick(Sender: TObject);
   var path_eve: String;
     xCond : String;
+    nome_evento: String;
 begin
   AcbrNfe1.Configuracoes.Arquivos.PathEvento := edit3.Text + '\Eventos';
   path_eve := FormatDateTime('yyyymm', NOW);
@@ -650,8 +651,8 @@ begin
       if (not FilesExists(path_eve)) then
       begin
         OpenDialog1.Title := 'Selecione a NFE';
-        OpenDialog1.DefaultExt := '*.XML';
-        OpenDialog1.Filter := 'Arquivos CCe (*-procEventoNFe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+        OpenDialog1.DefaultExt := '*-procEventoNFe.XML';
+        OpenDialog1.Filter := 'Arquivos CCe (*-procEventoNFe.XML)|*-procEventoNFe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
         OpenDialog1.InitialDir := AcbrNfe1.Configuracoes.Arquivos.PathEvento;
         if OpenDialog1.Execute then
         begin
@@ -746,6 +747,11 @@ begin
   if (dmPdv.qsCCE.Active) then
     dmPdv.qsCCE.Close;
   dmPdv.qsCCE.SQL.Clear;
+  //dmPdv.IbCon.ExecuteDirect('UPDATE CCE SET SELECIONOU = NULL '  +
+  //  ' WHERE SELECIONOU = ' + QuotedStr('S'));
+  //edtChaveNfeCCe.Text := '';
+  //dmPdv.sTrans.Commit;
+
   if (CheckBox1.Checked) then
   begin
     str_cce := 'select * FROM CCE order by DHENVIO desc ';
@@ -754,6 +760,12 @@ begin
   else
   begin
     str_cce := 'select * FROM CCE WHERE PROTOCOLO IS NULL';
+    dmPdv.qsCCE.SQL.Text := str_cce;
+  end;
+  if (edtChaveNfeCCe.Text <> '') then
+  begin
+    str_cce := 'select * FROM CCE WHERE CHAVE = ' +
+      QuotedStr(edtChaveNfeCCe.Text);
     dmPdv.qsCCE.SQL.Text := str_cce;
   end;
   dmPdv.qsCCE.Open;
@@ -2102,7 +2114,7 @@ begin
     edtChaveNfeCCe.Text := '';
     dmPdv.sTrans.Commit;
   end;
-  btnListarCCe.Click;
+  dmPdv.qsCCE.Open;
   if (edtChaveNfeCCe.Text <> '') then
   begin
     btnListar.Click;
@@ -2116,6 +2128,7 @@ begin
     dmPdv.qsEmpresa.Open;
     fNFe.Caption := dmPdv.qsEmpresaEMPRESA.AsString;
   end;
+  btnListarCCe.Click;
 end;
 
 procedure TfNFe.DBGrid2CellClick(Sender: TObject);

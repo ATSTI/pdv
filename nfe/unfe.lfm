@@ -2693,7 +2693,7 @@ object fNFe: TfNFe
           object Label49: TLabel
             Left = 6
             Height = 16
-            Top = 96
+            Top = 92
             Width = 78
             Caption = 'Chave NFe'
             Font.Color = clWindowText
@@ -2706,7 +2706,7 @@ object fNFe: TfNFe
           object edtChaveNfeCCe: TEdit
             Left = 96
             Height = 23
-            Top = 89
+            Top = 92
             Width = 448
             TabOrder = 6
           end
@@ -2990,6 +2990,7 @@ object fNFe: TfNFe
             FBFFFFFFFFFFFDFDFDFFFFFFFFFFFCFCFCFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
             FFFFFFFFFFFFFFFFFFFF
           }
+          OnClick = btnImprimirCCeClick
           ParentFont = False
           TabOrder = 4
         end
