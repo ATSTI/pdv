@@ -1362,6 +1362,17 @@ begin
         ' WHERE CODATUALIZA = 5003');
       sTrans.Commit;
     end;
+    if (versao_sistema = '1.2') then
+    begin
+      versao_sistema := '1.3';
+      campo_novo('EMPRESA', 'CERTIFICADO', 'VARCHAR( 50 )');
+      campo_novo('EMPRESA', 'GIAF1', 'CHAR( 1 )');
+      campo_novo('EMPRESA', 'GIAF3', 'CHAR( 1 )');
+      campo_novo('EMPRESA', 'GIAF4', 'CHAR( 1 )');
+      IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.3') +
+        ' WHERE CODATUALIZA = 5003');
+      sTrans.Commit;
+    end;
   end;
   if (sistema = 'PDV') then
   begin

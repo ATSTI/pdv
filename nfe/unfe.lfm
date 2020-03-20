@@ -2708,6 +2708,9 @@ object fNFe: TfNFe
             Height = 23
             Top = 92
             Width = 448
+            Color = clActiveBorder
+            Enabled = False
+            ReadOnly = True
             TabOrder = 6
           end
         end
@@ -5437,7 +5440,7 @@ object fNFe: TfNFe
     Configuracoes.Geral.FormatoAlerta = 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.'
     Configuracoes.Geral.VersaoQRCode = veqr000
     Configuracoes.Arquivos.OrdenacaoPath = <>
-    Configuracoes.WebServices.UF = 'SP'
+    Configuracoes.WebServices.UF = 'MS'
     Configuracoes.WebServices.AguardarConsultaRet = 0
     Configuracoes.WebServices.QuebradeLinha = '|'
     Configuracoes.RespTec.IdCSRT = 0

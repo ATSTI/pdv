@@ -1207,6 +1207,7 @@ var
   i, j, k: integer;
   v_insereMan: String;
   XMLDocument1: TXMLDocument;
+  tipo_retorno: String;
 begin
   mDFe.Lines.Clear;
   mDFe.Lines.Add('------------------------------------------------------');
@@ -1248,7 +1249,10 @@ begin
     Ini.Free ;
   end;
   abrirEmpresa;
-  ACBrNFe2.Configuracoes.WebServices.Ambiente := taProducao;
+  ACBrNFe2.Configuracoes.WebServices.Ambiente := taHomologacao;
+  if (trim(dmPdv.qsEmpresa1TIPO.AsString) = '1') then
+    ACBrNFe2.Configuracoes.WebServices.Ambiente := taProducao;
+
   ACBrNFe2.Configuracoes.Arquivos.PathNFe := dmPdv.qsEmpresaDIVERSOS1.AsString + 'Fornecedor\';
   if ( not DirectoryExists(ACBrNFe2.Configuracoes.Arquivos.PathNFe)) then
     CreateDir(ACBrNFe2.Configuracoes.Arquivos.PathNFe);
@@ -1263,6 +1267,11 @@ begin
 
   cUFAutor := Trim(dmPdv.qsEmpresaUF.AsString);
   ACBrNFe2.Configuracoes.WebServices.UF := Trim(dmPdv.qsEmpresaUF.AsString);
+
+  if (cUFAutor = 'MS') then
+    cUFAutor := '50'
+  else
+    cUFAutor := '35'; // SP
 
   //if not(InputQuery('WebServices Distribuição Documentos Fiscais', 'Código da UF do Autor', cUFAutor)) then
   //   exit;
@@ -1286,7 +1295,7 @@ begin
   ultNSU := ACBrNFe2.WebServices.DistribuicaoDFe.retDistDFeInt.ultNSU;
   dmpdv.executaSql('UPDATE PARAMETRO SET DADOS = ' + QuotedStr(ultNSU) +
     ' WHERE PARAMETRO = ' + QuotedStr('NSU'));
-
+  tipo_retorno := IntToStr(ACBrNFe2.WebServices.DistribuicaoDFe.retDistDFeInt.cStat);
   if (ACBrNFe2.WebServices.DistribuicaoDFe.retDistDFeInt.cStat = 138) then
   begin
     mDFe.Lines.Add(' Documento Localizado para o Destinatário');
@@ -1297,7 +1306,7 @@ begin
     j := ACBrNFe2.WebServices.DistribuicaoDFe.retDistDFeInt.docZip.Count - 1;
 
     for i := 0 to j do
-     begin
+    begin
       sSerie   := '';
       sNumero  := '';
       sCNPJ    := '';
@@ -1307,11 +1316,15 @@ begin
       sEmissao := '';
       sTipoNFe := '';
       Valor    := 0.0;
+      sChave := ACBrNFe2.WebServices.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].resDFe.chDFe;
       // TODO parei aqui
-
+      //tipo_retorno := ACBrNFe2.WebServices.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].resEvento.tpEvento;
+      //sNSU  := ACBrNFe2.WebServices.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].resDFe. NSU;
+      //if (ACBrNFe2.WebServices.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].resEvento.tpEvento .schema = schprocNFe) then
       //if (ACBrNFe2.WebServices.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].resNFe.chNFe <> '') then
-      if (ACBrNFe2.WebServices.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].schema = schprocNFe) then
-      begin
+
+      //if (ACBrNFe2.WebServices.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].schema = schprocNFe) then
+      //begin
         // Conjunto de informações resumo da NF-e localizadas.
         // Este conjunto de informação será gerado quando a NF-e for autorizada ou denegada.
         //ArqXML := TStringStream.Create(ACBrNFe2.WebServices.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].XML);
@@ -1325,8 +1338,8 @@ begin
 
         //sChave := ACBrNFe2.WebServices.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].resNFe.chNFe;
 
-        sSerie  := Copy(sChave, 23, 3);
-        sNumero := Copy(sChave, 26, 9);
+        //sSerie  := Copy(sChave, 23, 3);
+        //sNumero := Copy(sChave, 26, 9);
         //sCNPJ := ACBrNFe2.WebServices.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].resNFe.CNPJCPF;
         //sNome := ACBrNFe2.WebServices.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].resNFe.xNome;
         //sIEst := ACBrNFe2.WebServices.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].resNFe.IE;
@@ -1370,18 +1383,17 @@ begin
         DecimalSeparator := ',';
         v_insereMan += ', Null';
         v_insereMan += ', ' + QuotedStr(sNSU);
-        v_insereMan += ', Null';
-        v_insereMan += ', Null)';
-        dmPdv.executaSql(v_insereMan);
-        {case ACBrNFe2.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].resNFe.cSitNFe of
-          snAutorizado: Impresso := 'A';
-          snDenegado:   Impresso := 'D';
-          snCancelada:  Impresso := 'C';
-        end;}
-      end;
-     end; // Fim do For
-   end
-   else begin
+      v_insereMan += ', Null';
+      v_insereMan += ', Null)';
+      dmPdv.executaSql(v_insereMan);
+      {case ACBrNFe2.DistribuicaoDFe.retDistDFeInt.docZip.Items[i].resNFe.cSitNFe of
+      snAutorizado: Impresso := 'A';
+      snDenegado:   Impresso := 'D';
+      snCancelada:  Impresso := 'C';
+      end;}
+    end;
+  end
+  else begin
      // Nenhum Documento Localizado para o Destinatário
      if (ACBrNFe2.WebServices.DistribuicaoDFe.retDistDFeInt.cStat = 137) then
      begin
@@ -1621,6 +1633,7 @@ begin
 end;
 
 procedure TfNFe.btnGeraNFeClick(Sender: TObject);
+var v_vlr: String;
 begin
   if (GerarNFe = False) then
   begin
@@ -1636,10 +1649,7 @@ begin
   ACBrNFeDANFeRL1.Site := dmPdv.qsEmpresaWEB.AsString;
   ACBrNFeDANFeRL1.Email := dmPdv.qsEmpresaE_MAIL.AsString;
   ACBrNFeDANFeRL1.CasasDecimais.vUnCom := danfeDec;
-
   lblMsgNfe.Caption := 'Enviando arquivo para a Receita Federal';
-
-
   if ((tp_amb = 2) or (tp_amb = 5)) then
   begin
     ACBrNFe1.NotasFiscais.Assinar;
@@ -1652,7 +1662,6 @@ begin
   end
   else
   begin
-    // ACBrNFe1.Enviar(vNumLote,True);
     ACBrNFe1.Enviar(0);
     AcbrNfe1.Configuracoes.Arquivos.PathNFe := Edit1.Text;
 
@@ -1668,27 +1677,28 @@ begin
       lblMsgNfe.Caption := 'Enviando o email para o Cliente';
       if (cbTipoNota.ItemIndex = 1) then
       begin
-      if (not dmPdv.qsClienteE_MAIL.IsNull) then
-      begin
-        dmPdv.qcdsNF.close;
-        dmPdv.qcdsNF.Open;
-        EnviaEmail;
-      end
-      else
-        MessageDlg('Não foi possivel Enviar o Email, pois o cliente não possui email em seu cadastro.', mtError, [mbOK], 0);
+        if not(dmPdv.qsCliente.Active) then
+        begin
+          dmPdv.qsCliente.Params[0].AsInteger := dmPdv.qcdsNFCODCLIENTE.AsInteger;
+          dmPdv.qsCliente.Open;
+        end;
+        v_vlr := dmPdv.qsClienteRAZAOSOCIAL.AsString;
+        v_vlr := dmPdv.qsClienteE_MAIL.AsString;
+        if (not dmPdv.qsClienteE_MAIL.IsNull) then
+        begin
+          EnviaEmail;
+        end
+        else begin
+          MessageDlg('Não foi possivel Enviar o Email, pois o cliente não possui email em seu cadastro.', mtError, [mbOK], 0);
+        end;
       end;
     end;
-
   end;
-
   btnListar.Click;
   ACBrNFe1.NotasFiscais.Items[0].GravarXML;
   acbrnfe1.NotasFiscais.ImprimirPDF;
-
   dmPdv.qcdsNF.Refresh;
-
   MessageDlg('Arquivo gerado com sucesso.', mtInformation, [mbOK], 0);
-  //ACBrNFe1.NotasFiscais.Imprimir;
 end;
 
 procedure TfNFe.BtnPreVisClick(Sender: TObject);
@@ -2361,7 +2371,7 @@ begin
 
   diretorio := GetCurrentDir;
   diretorio_schema := diretorio + '\Schemas';
-  envemail := dmPdv.qsEmpresa1DIVERSOS1.AsString;
+  //envemail := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString);
   ACBrNFe1.DANFE.PathPDF := dmPdv.qsEmpresa1DIVERSOS1.AsString + '\';
   if (FilesExists(diretorio + '\logo_nfe.jpg')) then
     ACBrNFeDANFCeFortes1.Logo := diretorio + '\logo_nfe.jpg';
@@ -2391,7 +2401,7 @@ begin
   dmPdv.qcds_parametro.Open;
   envemail := 'N';
   if (not dmPdv.qcds_parametro.IsEmpty) then
-    envemail := dmPdv.qcds_parametroCONFIGURADO.AsString;
+    envemail := Trim(dmPdv.qcds_parametroCONFIGURADO.AsString);
 
   dmPdv.qcds_parametro.Close;
 
@@ -2424,6 +2434,8 @@ begin
         ComboBox2.ItemIndex := dmPdv.qcds_ccusto.RecNo-1;
         ComboBox1.Text      := dmPdv.qsCentroCustoNOMEEMPRESA.AsString;
         ComboBox2.Text      := dmPdv.qsCentroCustoNOMEEMPRESA.AsString;
+        cbEmpresa.ItemIndex := dmPdv.qcds_ccusto.RecNo-1;
+        cbEmpresa.Text      := dmPdv.qsCentroCustoNOMEEMPRESA.AsString;
       end;
         dmPdv.qcds_ccusto.Next;
     end;
@@ -2451,6 +2463,7 @@ begin
       if(trim(dmPdv.qsEmpresaCERTIFICADO.AsString) <> '')then
       begin
         edtNumSerie.Text := dmPdv.qsEmpresaCERTIFICADO.AsString;
+        edtNumSerie1.Text := dmPdv.qsEmpresaCERTIFICADO.AsString;
       end;
       Edit1.Text     := dmPdv.qsEmpresaDIVERSOS1.AsString;
       Edit3.Text     := dmPdv.qsEmpresaDIVERSOS1.AsString;
@@ -2559,7 +2572,6 @@ begin
       CNPJ   := ACBrNFe1.NotasFiscais.Items[0].NFe.Dest.CNPJCPF;
       serie  := ACBrNFe1.NotasFiscais.Items[0].NFe.ide.serie;
       TRANSP := ACBrNFe1.NotasFiscais.Items[0].NFe.Transp.Transporta.xNome;
-
 
       Protocolo := dmPdv.qcdsNFPROTOCOLOENV.AsString;
       Texto := TStringList.Create;
@@ -4398,6 +4410,9 @@ begin
       if(edtNumSerie2.Text = '') then
         edtNumSerie2.Text := Ini.ReadString( 'Certificado','NumSerie','');
 
+      if(edtNumSerie1.Text = '') then
+        edtNumSerie1.Text := Ini.ReadString( 'Certificado','NumSerie','');
+
       ACBrNFe1.Configuracoes.Certificados.ArquivoPFX  := edtCaminho.Text;
       ACBrNFe1.Configuracoes.Certificados.Senha       := edtSenha.Text;
       ACBrNFe1.Configuracoes.Certificados.NumeroSerie := edtNumSerie.Text;
@@ -4617,6 +4632,7 @@ begin
   begin
     MessageDlg('Selecione o Certificado!',mtWarning,[mbOk],0);
     Result := False;
+    Exit;
   end;
   if (tp_amb = 3) then
   begin
@@ -4653,6 +4669,7 @@ begin
   begin
       MessageDlg('Centro de custo não selecionado', mtError, [mbOK], 0);
       Result := False;
+      Exit;
   end;
 
   dmPdv.qcdsNF.First;
@@ -4660,11 +4677,11 @@ begin
   begin
     if (trim(dmPdv.qcdsNFSELECIONOU.AsString) = 'S') then
     begin
-      ///
       if (dmPdv.qcdsNFSTATUS.AsString = 'E') then
       begin
         MessageDlg('Nota com Status ENVIADO, altere o Status na aba OUTROS para reenviar.',mtWarning,[mbOk],0);
         Result := False;
+        Exit;
       end;
       if(not dmPdv.qcdsNFPROTOCOLOENV.IsNull) then
       begin
@@ -4672,9 +4689,9 @@ begin
         begin
           MessageDlg('Nota com Protocolo de Envio(já enviada, portanto), use o botão Imprimir Danfe.',mtWarning,[mbOk],0);
           Result := False;
+          Exit;
         end;
       end;
-      ///
       codnf := dmPdv.qcdsNFNUMNF.AsInteger;
       tipoNota := trim(dmPdv.qcdsNFCFOP.AsString)[1];
       if (tipoNota in ['1','2','3']) then
@@ -4697,6 +4714,7 @@ begin
             ' - informe o CODIGO FISCAL no cadastro do cliente.',
               mtWarning, [mbOK], 0);
           Result := False;
+          Exit;
         end;
 
         if ((trim(dmPdv.qsClienteUF.AsString) = 'EX') and (trim(dmPdv.qcdsNFCFOP.AsString) <> '3202'))  then
@@ -4707,6 +4725,7 @@ begin
             PageControl2.ActivePage := TabSheet7;
             edUfEmbarque.SetFocus;
             Result := False;
+            Exit;
           end;
         end;
       end
@@ -4726,6 +4745,7 @@ begin
               ' - informe o CODIGO FISCAL no cadastro do fornecedor.',
               mtWarning, [mbOK], 0);
             Result := False;
+            Exit;
           end;
       end;
       ///
@@ -4747,6 +4767,7 @@ begin
       begin
         MessageDlg('Não existe este CFOP cadastrado para este ESTADO.'+#13+#10+'(Cadastros -> CFOP-ESTADO).', mtWarning, [mbOK], 0);
         Result := False;
+        Exit;
       end;
       ///
       ACBrNFe1.NotasFiscais.Clear;
@@ -4768,6 +4789,7 @@ begin
         except
           MessageDlg('Codigo do IBGE do Emitente não informado(Cadastro Empresa)', mtError, [mbOK], 0);
           Result := False;
+          Exit;
         end;
         Ide.modelo    := 55;
         if (tp_amb = 1) then
@@ -4915,6 +4937,7 @@ begin
           MessageDlg('Codigo do IBGE da empresa não definido', mtError, [mbOK], 0);
           valida := 'N';
           Result := False;
+          Exit;
         end;
 
         getEmpresa();
@@ -4924,12 +4947,14 @@ begin
           begin
             MessageDlg('Codigo do IBGE do Fornecedor não definido', mtError, [mbOK], 0);
             Result := False;
+            Exit;
           end;
         if(dmPdv.qsCliente.Active) then
           if ((dmPdv.qsClienteCD_IBGE.IsNull) or (dmPdv.qsClienteCD_IBGE.AsString = '') ) then
           begin
             MessageDlg('Codigo do IBGE do Cliente não definido', mtError, [mbOK], 0);
             Result := False;
+            Exit;
           end;
         getCLi_Fornec();
         ///
@@ -4978,21 +5003,25 @@ begin
           begin
             MessageDlg('Produto ' + dmPdv.cdsItensNFDESCPRODUTO.AsString + ' sem Unidade de Medida', mtError, [mbOK], 0);
             Result := False;
+            Exit;
           end;
           if ((trim(dmPdv.qsProdutosNCM.AsString) = '00000000') or (dmPdv.qsProdutosNCM.IsNull) ) then
           begin
             MessageDlg('Produto ' + dmPdv.cdsItensNFDESCPRODUTO.AsString + ' com NCM Nulo ou Inválido', mtError, [mbOK], 0);
             Result := False;
+            Exit;
           end;
           if ((dmPdv.qsProdutosORIGEM.IsNull) ) then
           begin
             MessageDlg('Produto ' + dmPdv.cdsItensNFDESCPRODUTO.AsString + ' com Origem Nula', mtError, [mbOK], 0);
             Result := False;
+            Exit;
           end;
           if (((dmPdv.cdsItensNFCSOSN.IsNull) or (dmPdv.cdsItensNFCSOSN.AsString = '')) and ((dmPdv.cdsItensNFCST.IsNull) or (dmPdv.cdsItensNFCST.AsString = ''))) then
           begin
             MessageDlg('Produto ' + dmPdv.cdsItensNFDESCPRODUTO.AsString + ' sem CST ou CSOSN', mtError, [mbOK], 0);
             Result := False;
+            Exit;
           end;
           // DADOS DOS PRODUTOS DA NOTA
           getItens(i);
@@ -5043,6 +5072,7 @@ begin
           Total.ICMSTot.vICMSDeson := dmPdv.qcdsNFVALOR_ICMS.AsVariant;
         end;
       end;
+      break; // saio do while se a já peguei a nota selecionada
     end; // fim do if (se nota selecionada)
     dmPdv.qcdsNF.Next;
   end; // fim do 1. while
