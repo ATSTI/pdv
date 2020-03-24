@@ -3373,13 +3373,13 @@ begin
       Dest.CNPJCPF           := RemoveChar(dmPdv.qsFornecCNPJ.AsString);
       Dest.xNome             := dmPdv.qsFornecRAZAOSOCIAL.AsString;
       Dest.EnderDest.xLgr    := dmPdv.qsFornecLOGRADOURO.AsString;
-      if ((dmPdv.qsFornecNUMERO.IsNull) or (dmPdv.qsFornecNUMERO.AsString = '')) then
+      if ((dmPdv.qsFornecNUMERO.IsNull) or (trim(dmPdv.qsFornecNUMERO.AsString) = '')) then
       begin
         Dest.EnderDest.nro     := 'S/N';
       end
       else
         Dest.EnderDest.nro     := dmPdv.qsFornecNUMERO.AsString;
-      if ((not dmPdv.qsFornecCOMPLEMENTO.IsNull) or (dmPdv.qsFornecCOMPLEMENTO.AsString <> '')) then
+      if ((not dmPdv.qsFornecCOMPLEMENTO.IsNull) or (trim(dmPdv.qsFornecCOMPLEMENTO.AsString) <> '')) then
         Dest.EnderDest.xCpl    := dmPdv.qsFornecCOMPLEMENTO.AsString;
       Dest.EnderDest.xBairro := dmPdv.qsFornecBAIRRO.AsString;
       if (trim(dmPdv.qsFornecCD_IBGE.AsString) = '') then
@@ -3410,11 +3410,11 @@ begin
       Dest.EnderDest.Fone    := dmPdv.qsFornecDDD.AsString + dmPdv.qsFornecTELEFONE.AsString;
       IERG := 0;
       IERG := StrLen(PChar(RemoveChar(dmPdv.qsFornecINSCESTADUAL.AsString)));
-      if ((dmPdv.qsFornecTIPOFIRMA.AsInteger = 0) and (dmPdv.qsFornecCODFISCAL.AsString = '9')) then
+      if (dmPdv.qsFornecTIPOFIRMA.AsInteger = 0) and (trim(dmPdv.qsFornecCODFISCAL.AsString) = '9') then
       begin
         IERG := 0;
       end;
-      if (dmPdv.qsFornecCODFISCAL.AsString = '9') then
+      if (trim(dmPdv.qsFornecCODFISCAL.AsString) = '9') then
       begin
         vTipoFiscal := '9';
       end;
@@ -3424,24 +3424,24 @@ begin
         Dest.indIEDest := inNaoContribuinte;
       end
       else begin
-        if (dmPdv.qsFornecINSCESTADUAL.AsString = 'ISENTO') then
+        if (TRIM(dmPdv.qsFornecINSCESTADUAL.AsString) = 'ISENTO') then
         begin
           Dest.indIEDest := inIsento;
         end
         else begin
           Dest.indIEDest := inContribuinte; //, inIsento, inNaoContribuinte
-          if ((dmPdv.qsFornecUF.AsString = 'SP') or (dmPdv.qsFornecUF.AsString = 'MG')) then
+          if (trim(dmPdv.qsFornecUF.AsString) = 'SP') or (trim(dmPdv.qsFornecUF.AsString) = 'MG') then
           begin
             if (IERG > 11) then
             begin
-              Dest.IE := RemoveChar(dmPdv.qsFornecINSCESTADUAL.AsString);
+              Dest.IE := trim(RemoveChar(dmPdv.qsFornecINSCESTADUAL.AsString));
             end;
           end
           else begin
-            if (dmPdv.qsFornecUF.AsString <> 'EX') then
+            if (trim(dmPdv.qsFornecUF.AsString) <> 'EX') then
             begin
               if (IERG >= 5) then
-                Dest.IE := RemoveChar(dmPdv.qsFornecINSCESTADUAL.AsString);
+                Dest.IE := trim(RemoveChar(dmPdv.qsFornecINSCESTADUAL.AsString));
             end;
           end;
         end;
@@ -3451,7 +3451,7 @@ begin
     else
     begin
 
-      if (dmPdv.qsClienteUF.AsString <> 'EX') then
+      if (trim(dmPdv.qsClienteUF.AsString) <> 'EX') then
         Dest.CNPJCPF := RemoveChar(dmPdv.qsClienteCNPJ.AsString);
       Dest.xNome             := dmPdv.qsClienteRAZAOSOCIAL.AsString;
 
@@ -3463,15 +3463,15 @@ begin
       end;
       Dest.EnderDest.xLgr := dmPdv.qsClienteLOGRADOURO.AsString;
 
-      if ((dmPdv.qsClienteNUMERO.IsNull) or (dmPdv.qsClienteNUMERO.AsString = '')) then
+      if ((dmPdv.qsClienteNUMERO.IsNull) or (trim(dmPdv.qsClienteNUMERO.AsString) = '')) then
       begin
-        Dest.EnderDest.nro     := 'S/N';
+        Dest.EnderDest.nro     := trim('S/N');
       end
       else
         Dest.EnderDest.nro     := dmPdv.qsClienteNUMERO.AsString;
-      if ((not dmPdv.qsClienteCOMPLEMENTO.IsNull) or ( dmPdv.qsClienteCOMPLEMENTO.AsString <> '')) then
-        Dest.EnderDest.xCpl    := dmPdv.qsClienteCOMPLEMENTO.AsString;
-      Dest.EnderDest.xBairro := dmPdv.qsClienteBAIRRO.AsString;
+      if ((not dmPdv.qsClienteCOMPLEMENTO.IsNull) or (trim(dmPdv.qsClienteCOMPLEMENTO.AsString) <> '')) then
+        Dest.EnderDest.xCpl    := trim(dmPdv.qsClienteCOMPLEMENTO.AsString);
+      Dest.EnderDest.xBairro := trim(dmPdv.qsClienteBAIRRO.AsString);
 
       if (trim(dmPdv.qsClienteCD_IBGE.AsString) = '') then
       begin
@@ -3481,8 +3481,8 @@ begin
       else
         Dest.EnderDest.cMun    := StrToInt(RemoveChar(dmPdv.qsClienteCD_IBGE.AsString));
 
-      Dest.EnderDest.xMun    := dmPdv.qsClienteCIDADE.AsString;
-      Dest.EnderDest.UF      := dmPdv.qsClienteUF.AsString;
+      Dest.EnderDest.xMun    := trim(dmPdv.qsClienteCIDADE.AsString);
+      Dest.EnderDest.UF      := trim(dmPdv.qsClienteUF.AsString);
 
       if (trim(RemoveChar(dmPdv.qsClienteCEP.AsString)) = '') then
       begin
@@ -3503,12 +3503,12 @@ begin
         IERG := 0;
         IERG := StrLen(PChar(RemoveChar(dmPdv.qsClienteINSCESTADUAL.AsString)));
         if ((dmPdv.qsClienteTIPOFIRMA.AsInteger = 0)
-          and (dmPdv.qsClienteCODFISCAL.AsString = '9')
-          and (dmPdv.qsClienteTEM_IE.AsString <> 'S')) then
+          and (trim(dmPdv.qsClienteCODFISCAL.AsString) = '9')
+          and (trim(dmPdv.qsClienteTEM_IE.AsString) <> 'S')) then
         begin
           IERG := 0;
         end;
-        if (dmPdv.qsClienteCODFISCAL.AsString = '9') then
+        if (trim(dmPdv.qsClienteCODFISCAL.AsString) = '9') then
         begin
           vTipoFiscal := '9';
         end;
@@ -3528,7 +3528,7 @@ begin
           end;
           //Dest.indIEDest := inContribuinte; //, inIsento, inNaoContribuinte
           }
-          if ((dmPdv.qsClienteUF.AsString = 'SP') or (dmPdv.qsClienteUF.AsString = 'MG')) then
+          if ((trim(dmPdv.qsClienteUF.AsString) = 'SP') or (trim(dmPdv.qsClienteUF.AsString) = 'MG')) then
           begin
             if (IERG > 11) then
             begin
@@ -3536,7 +3536,7 @@ begin
             end;
           end
           else begin
-            if (dmPdv.qsClienteUF.AsString <> 'EX') then
+            if (trim(dmPdv.qsClienteUF.AsString) <> 'EX') then
             begin
               if (IERG >= 5) then
                 Dest.IE := RemoveChar(dmPdv.qsClienteINSCESTADUAL.AsString);
@@ -3550,11 +3550,11 @@ begin
       //begin
       //  Dest.indIEDest := inNaoContribuinte;
       //end;
-      if (dmPdv.qcdsNFIND_IEDEST.AsString = 'inNaoContribuinte') then
+      if (trim(dmPdv.qcdsNFIND_IEDEST.AsString) = 'inNaoContribuinte') then
         Dest.indIEDest := inNaoContribuinte
       else
         Dest.indIEDest := inContribuinte;
-      if (dmPdv.qcdsNFIND_IEDEST.AsString = 'inIsento') then
+      if (trim(dmPdv.qcdsNFIND_IEDEST.AsString) = 'inIsento') then
         Dest.indIEDest := inIsento;
 
       // ENDERECO ENTREGA

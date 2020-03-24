@@ -8,7 +8,7 @@ object fNFe: TfNFe
   ClientWidth = 1069
   OnCreate = FormCreate
   OnShow = FormShow
-  LCLVersion = '2.0.4.0'
+  LCLVersion = '2.0.6.0'
   object StatusBar1: TStatusBar
     Left = 0
     Height = 23
@@ -105,7 +105,7 @@ object fNFe: TfNFe
         Left = 360
         Height = 15
         Top = 656
-        Width = 40
+        Width = 41
         Caption = 'Versão :'
         ParentColor = False
       end
@@ -1650,7 +1650,7 @@ object fNFe: TfNFe
             Left = 376
             Height = 19
             Top = 0
-            Width = 51
+            Width = 52
             Caption = 'Todas'
             TabOrder = 2
           end
@@ -5132,12 +5132,19 @@ object fNFe: TfNFe
     MargemSuperior = 0.8
     MargemEsquerda = 0.6
     MargemDireita = 0.51
+    ExpandeLogoMarcaConfig.Altura = 0
+    ExpandeLogoMarcaConfig.Esquerda = 0
+    ExpandeLogoMarcaConfig.Topo = 0
+    ExpandeLogoMarcaConfig.Largura = 0
+    ExpandeLogoMarcaConfig.Dimensionar = False
+    ExpandeLogoMarcaConfig.Esticar = True
     CasasDecimais.Formato = tdetMascara
     CasasDecimais.qCom = 4
     CasasDecimais.vUnCom = 4
     CasasDecimais.MaskqCom = ',0.0000'
     CasasDecimais.MaskvUnCom = ',0.0000'
     TipoDANFE = tiSemGeracao
+    FormularioContinuo = True
     TamanhoLogoHeight = 0
     TamanhoLogoWidth = 0
     FonteLinhaItem.Color = clWindowText
@@ -5153,6 +5160,12 @@ object fNFe: TfNFe
     MargemSuperior = 0.7
     MargemEsquerda = 0.7
     MargemDireita = 0.7
+    ExpandeLogoMarcaConfig.Altura = 0
+    ExpandeLogoMarcaConfig.Esquerda = 0
+    ExpandeLogoMarcaConfig.Topo = 0
+    ExpandeLogoMarcaConfig.Largura = 0
+    ExpandeLogoMarcaConfig.Dimensionar = False
+    ExpandeLogoMarcaConfig.Esticar = True
     CasasDecimais.Formato = tdetMascara
     CasasDecimais.qCom = 4
     CasasDecimais.vUnCom = 4
