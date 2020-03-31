@@ -1,27 +1,27 @@
 object fPdv: TfPdv
   Left = 81
-  Height = 656
+  Height = 664
   Top = 43
-  Width = 1100
+  Width = 1108
   Align = alLeft
   Caption = 'Ponto de Venda - ATS'
-  ClientHeight = 656
-  ClientWidth = 1100
+  ClientHeight = 664
+  ClientWidth = 1108
   Color = clBlack
   OnCreate = FormCreate
   OnShow = FormShow
   PopupMenu = PopupMenu1
   Position = poWorkAreaCenter
-  LCLVersion = '2.0.4.0'
+  LCLVersion = '2.0.6.0'
   WindowState = wsMaximized
   object Panel1: TPanel
     Left = 0
     Height = 48
     Top = 0
-    Width = 1100
+    Width = 1108
     Align = alTop
     ClientHeight = 48
-    ClientWidth = 1100
+    ClientWidth = 1108
     Color = 14803425
     ParentColor = False
     PopupMenu = PopupMenu1
@@ -102,9 +102,9 @@ object fPdv: TfPdv
     end
     object Label3: TLabel
       Left = 272
-      Height = 22
+      Height = 19
       Top = 56
-      Width = 120
+      Width = 115
       Caption = 'Finalizar venda'
       Font.CharSet = ANSI_CHARSET
       Font.Color = clWhite
@@ -119,9 +119,9 @@ object fPdv: TfPdv
     end
     object Label4: TLabel
       Left = 400
-      Height = 22
+      Height = 19
       Top = 57
-      Width = 123
+      Width = 121
       Caption = 'Cancelar Venda'
       Font.CharSet = ANSI_CHARSET
       Font.Color = clWhite
@@ -136,9 +136,9 @@ object fPdv: TfPdv
     end
     object Label5: TLabel
       Left = 549
-      Height = 22
+      Height = 19
       Top = 57
-      Width = 61
+      Width = 59
       Caption = 'Sangria'
       Font.CharSet = ANSI_CHARSET
       Font.Color = clWhite
@@ -778,7 +778,7 @@ object fPdv: TfPdv
       Left = 295
       Height = 46
       Top = 1
-      Width = 804
+      Width = 812
       Align = alClient
       Font.CharSet = ANSI_CHARSET
       Font.Height = -21
@@ -793,11 +793,11 @@ object fPdv: TfPdv
   end
   object Panel2: TPanel
     Left = 0
-    Height = 608
+    Height = 616
     Top = 48
     Width = 296
     Align = alLeft
-    ClientHeight = 608
+    ClientHeight = 616
     ClientWidth = 296
     Color = clWhite
     ParentColor = False
@@ -830,7 +830,7 @@ object fPdv: TfPdv
     object Panel12: TPanel
       Left = 1
       Height = 158
-      Top = 449
+      Top = 457
       Width = 294
       Align = alBottom
       ClientHeight = 158
@@ -1071,16 +1071,16 @@ object fPdv: TfPdv
     end
     object pnLogo: TPanel
       Left = 1
-      Height = 195
+      Height = 203
       Top = 254
       Width = 294
       Align = alClient
-      ClientHeight = 195
+      ClientHeight = 203
       ClientWidth = 294
       TabOrder = 3
       object Image1: TImage
         Left = 1
-        Height = 193
+        Height = 201
         Hint = '300x284'
         Top = 1
         Width = 292
@@ -11755,9 +11755,9 @@ object fPdv: TfPdv
         end
         object Label16: TLabel
           Left = 152
-          Height = 15
+          Height = 13
           Top = 8
-          Width = 53
+          Width = 51
           Caption = 'Desconto:'
           Font.Color = clWhite
           ParentColor = False
@@ -11802,20 +11802,20 @@ object fPdv: TfPdv
   end
   object Panel4: TPanel
     Left = 296
-    Height = 608
+    Height = 616
     Top = 48
-    Width = 804
+    Width = 812
     Align = alClient
-    ClientHeight = 608
-    ClientWidth = 804
+    ClientHeight = 616
+    ClientWidth = 812
     Color = clNone
     ParentColor = False
     TabOrder = 2
     object DBGrid1: TDBGrid
       Left = 1
-      Height = 540
+      Height = 548
       Top = 1
-      Width = 802
+      Width = 810
       Align = alClient
       AlternateColor = cl3DLight
       Color = clWindow
@@ -11895,10 +11895,10 @@ object fPdv: TfPdv
       Visible = False
       object edBuscaDetalhe: TLabeledEdit
         Left = 104
-        Height = 23
+        Height = 21
         Top = 12
         Width = 344
-        EditLabel.Height = 15
+        EditLabel.Height = 13
         EditLabel.Width = 51
         EditLabel.Caption = 'Descrição'
         EditLabel.ParentColor = False
@@ -12026,7 +12026,7 @@ object fPdv: TfPdv
           Left = 24
           Height = 26
           Top = 4
-          Width = 74
+          Width = 75
           Caption = 'Produto:'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clWhite
@@ -12084,7 +12084,7 @@ object fPdv: TfPdv
         Left = 72
         Height = 22
         Top = 72
-        Width = 276
+        Width = 282
         Caption = 'PRODUTO NÃO LOCALIZADO '
         Font.CharSet = ANSI_CHARSET
         Font.Height = -19
@@ -12097,7 +12097,7 @@ object fPdv: TfPdv
       end
       object edProdNao: TEdit
         Left = 65
-        Height = 15
+        Height = 13
         Top = 107
         Width = 80
         BorderStyle = bsNone
@@ -12109,16 +12109,16 @@ object fPdv: TfPdv
     object Panel9: TPanel
       Left = 1
       Height = 66
-      Top = 541
-      Width = 802
+      Top = 549
+      Width = 810
       Align = alBottom
       ClientHeight = 66
-      ClientWidth = 802
+      ClientWidth = 810
       Color = clWhite
       ParentColor = False
       TabOrder = 2
       object Panel10: TPanel
-        Left = 585
+        Left = 316
         Height = 64
         Top = 1
         Width = 216
@@ -12170,7 +12170,7 @@ object fPdv: TfPdv
         end
       end
       object Panel11: TPanel
-        Left = 496
+        Left = 532
         Height = 64
         Top = 1
         Width = 89
@@ -12215,7 +12215,7 @@ object fPdv: TfPdv
       end
       object lblMSG: TLabel
         Left = 10
-        Height = 15
+        Height = 13
         Top = 49
         Width = 9
         Caption = '...'
@@ -12224,7 +12224,7 @@ object fPdv: TfPdv
         ParentFont = False
       end
       object Panel5: TPanel
-        Left = 308
+        Left = 621
         Height = 64
         Top = 1
         Width = 188
@@ -12293,24 +12293,24 @@ object fPdv: TfPdv
       end
       object Label1: TLabel
         Left = 184
-        Height = 15
+        Height = 13
         Top = 40
-        Width = 118
+        Width = 109
         Caption = 'TROCA / DEVOLUÇÃO'
         ParentColor = False
       end
       object edMotivo: TEdit
         Left = 112
-        Height = 23
+        Height = 21
         Top = 88
         Width = 312
         TabOrder = 0
       end
       object Label2: TLabel
         Left = 57
-        Height = 15
+        Height = 13
         Top = 86
-        Width = 38
+        Width = 33
         Caption = 'Motivo'
         ParentColor = False
       end
@@ -12358,6 +12358,120 @@ object fPdv: TfPdv
         ParentShowHint = False
         ShowHint = True
         TabOrder = 2
+      end
+    end
+    object pnInfo: TPanel
+      Left = 35
+      Height = 362
+      Top = 102
+      Width = 565
+      ClientHeight = 362
+      ClientWidth = 565
+      Color = 9453095
+      ParentColor = False
+      TabOrder = 1
+      Visible = False
+      object lblSenha: TLabel
+        Left = 32
+        Height = 13
+        Top = 297
+        Width = 12
+        Caption = '....'
+        Font.Color = clWhite
+        ParentColor = False
+        ParentFont = False
+      end
+      object BitBtn9: TBitBtn
+        Left = 488
+        Height = 37
+        Top = 323
+        Width = 51
+        Glyph.Data = {
+          76020000424D7602000000000000760000002800000020000000200000000100
+          0400000000000002000000000000000000001000000000000000000000000000
+          8000008000000080800080000000800080008080000080808000C0C0C0000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00888887788877
+          88877888000887788888888788877888778887780EE088877888888877888778
+          887788870EE607888778877888778887788877880EE660778887888778887788
+          877888770EE666007788878887788877888778880EE666600077800000000000
+          008887780EE666660000888888888888807788870EE666660778888888888888
+          800077880EE666660778888888888887800000000EE666660778888888888807
+          707777770EE666660778888888888800707777770EE666660778888888888806
+          007777770EE666660778888888888806607777770EE60066077888888777770E
+          660777770EE07066077888887777770EE66077770EE0F066077888800000000E
+          EE6607770EE60066077888066666666EEEE660770EE666660778880EEEEEEEEE
+          EEEE66070EE666660778880EEFFFFFFFFFFEE6070EE666660778880EEEEEEEEE
+          EFEE60770EE66666077888800000000EFEE607770EE66666077888888888880E
+          EE6077770EE66666077888888888880EE60777770EE66666077888888888880E
+          607777770EE6666607788888888888060077777770EE66660778888888888800
+          80777777770EE6660778888888888888807777777770EE660778888888888888
+          8077777777770EE6077888888888888880777777777770EE0788888888888888
+          8000000000000000088888888888888888888888888888888888
+        }
+        OnClick = BitBtn9Click
+        TabOrder = 0
+      end
+      object Label13: TLabel
+        Left = 21
+        Height = 13
+        Top = 5
+        Width = 149
+        Caption = 'PDV Versão : 1.0 - 20/11/2019'
+        Font.Color = clWhite
+        ParentColor = False
+        ParentFont = False
+      end
+      object PageControl1: TPageControl
+        Left = 19
+        Height = 297
+        Top = 23
+        Width = 504
+        ActivePage = TabSheet2
+        TabIndex = 1
+        TabOrder = 1
+        object TabSheet1: TTabSheet
+          Caption = 'Info'
+          ClientHeight = 269
+          ClientWidth = 496
+          object Memo1: TMemo
+            Left = 0
+            Height = 269
+            Top = 0
+            Width = 496
+            Align = alClient
+            Lines.Strings = (
+              'NFCe : Cadastrar em Séries o Cod. Usuário no Campo'
+              'CodSerie, esta série será usada para Gerar as NFCes.'
+              ''
+              'Impressão Cupom:'
+              'V = Pedido n. ..'
+              'usuario = Usuario X'
+              '                 Vendedor Y'
+              'doc = Data , n. pedido'
+              'empresa = Nome Empresa'
+              'logradouro = Endereco'
+              'cep = Cep'
+              'fone = Fone'
+              'T = Troco'
+              'P = Pagamento'
+              'linha = linha vazia'
+            )
+            TabOrder = 0
+          end
+        end
+        object TabSheet2: TTabSheet
+          Caption = 'Logs'
+          ClientHeight = 271
+          ClientWidth = 496
+          object Memo2: TMemo
+            Left = 0
+            Height = 271
+            Top = 0
+            Width = 496
+            Align = alClient
+            TabOrder = 0
+          end
+        end
       end
     end
     object pnAltera: TPanel
@@ -12487,9 +12601,9 @@ object fPdv: TfPdv
       end
       object cbPercentual: TCheckBox
         Left = 293
-        Height = 19
+        Height = 17
         Top = 140
-        Width = 30
+        Width = 32
         Caption = '%'
         OnClick = cbPercentualClick
         TabOrder = 3
@@ -12523,120 +12637,6 @@ object fPdv: TfPdv
         }
         OnClick = BitBtn10Click
         TabOrder = 4
-      end
-    end
-    object pnInfo: TPanel
-      Left = 35
-      Height = 362
-      Top = 102
-      Width = 565
-      ClientHeight = 362
-      ClientWidth = 565
-      Color = 9453095
-      ParentColor = False
-      TabOrder = 1
-      Visible = False
-      object lblSenha: TLabel
-        Left = 32
-        Height = 15
-        Top = 297
-        Width = 12
-        Caption = '....'
-        Font.Color = clWhite
-        ParentColor = False
-        ParentFont = False
-      end
-      object BitBtn9: TBitBtn
-        Left = 488
-        Height = 37
-        Top = 323
-        Width = 51
-        Glyph.Data = {
-          76020000424D7602000000000000760000002800000020000000200000000100
-          0400000000000002000000000000000000001000000000000000000000000000
-          8000008000000080800080000000800080008080000080808000C0C0C0000000
-          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00888887788877
-          88877888000887788888888788877888778887780EE088877888888877888778
-          887788870EE607888778877888778887788877880EE660778887888778887788
-          877888770EE666007788878887788877888778880EE666600077800000000000
-          008887780EE666660000888888888888807788870EE666660778888888888888
-          800077880EE666660778888888888887800000000EE666660778888888888807
-          707777770EE666660778888888888800707777770EE666660778888888888806
-          007777770EE666660778888888888806607777770EE60066077888888777770E
-          660777770EE07066077888887777770EE66077770EE0F066077888800000000E
-          EE6607770EE60066077888066666666EEEE660770EE666660778880EEEEEEEEE
-          EEEE66070EE666660778880EEFFFFFFFFFFEE6070EE666660778880EEEEEEEEE
-          EFEE60770EE66666077888800000000EFEE607770EE66666077888888888880E
-          EE6077770EE66666077888888888880EE60777770EE66666077888888888880E
-          607777770EE6666607788888888888060077777770EE66660778888888888800
-          80777777770EE6660778888888888888807777777770EE660778888888888888
-          8077777777770EE6077888888888888880777777777770EE0788888888888888
-          8000000000000000088888888888888888888888888888888888
-        }
-        OnClick = BitBtn9Click
-        TabOrder = 0
-      end
-      object Label13: TLabel
-        Left = 21
-        Height = 15
-        Top = 5
-        Width = 152
-        Caption = 'PDV Versão : 1.0 - 20/11/2019'
-        Font.Color = clWhite
-        ParentColor = False
-        ParentFont = False
-      end
-      object PageControl1: TPageControl
-        Left = 19
-        Height = 297
-        Top = 23
-        Width = 504
-        ActivePage = TabSheet2
-        TabIndex = 1
-        TabOrder = 1
-        object TabSheet1: TTabSheet
-          Caption = 'Info'
-          ClientHeight = 269
-          ClientWidth = 496
-          object Memo1: TMemo
-            Left = 0
-            Height = 269
-            Top = 0
-            Width = 496
-            Align = alClient
-            Lines.Strings = (
-              'NFCe : Cadastrar em Séries o Cod. Usuário no Campo'
-              'CodSerie, esta série será usada para Gerar as NFCes.'
-              ''
-              'Impressão Cupom:'
-              'V = Pedido n. ..'
-              'usuario = Usuario X'
-              '                 Vendedor Y'
-              'doc = Data , n. pedido'
-              'empresa = Nome Empresa'
-              'logradouro = Endereco'
-              'cep = Cep'
-              'fone = Fone'
-              'T = Troco'
-              'P = Pagamento'
-              'linha = linha vazia'
-            )
-            TabOrder = 0
-          end
-        end
-        object TabSheet2: TTabSheet
-          Caption = 'Logs'
-          ClientHeight = 269
-          ClientWidth = 496
-          object Memo2: TMemo
-            Left = 0
-            Height = 269
-            Top = 0
-            Width = 496
-            Align = alClient
-            TabOrder = 0
-          end
-        end
       end
     end
   end

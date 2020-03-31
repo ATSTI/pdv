@@ -8,7 +8,7 @@ object fLogin: TfLogin
   ClientWidth = 550
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '2.0.4.0'
+  LCLVersion = '2.0.6.0'
   object pnInfo: TPanel
     Left = 29
     Height = 306
@@ -74,6 +74,10 @@ object fLogin: TfLogin
         '  PosicaoVertical=80'
         '  TotalCadeira=60'
         ''
+        'PARAMETRO  PDV_PERMISSAO :'
+        '  DADOS = ''LIVRE'' o usuario pode alterar o PRECO de venda'
+        '  D1 = 5 o Usuario pode dar Até 5% de Desconto, se'
+        'D1 = 0 o usuario pode dar QUAQUER DESCONTO '
       )
       ScrollBars = ssBoth
       TabOrder = 0
@@ -90,10 +94,10 @@ object fLogin: TfLogin
   end
   object edLogin: TLabeledEdit
     Left = 48
-    Height = 23
+    Height = 21
     Top = 24
     Width = 136
-    EditLabel.Height = 15
+    EditLabel.Height = 13
     EditLabel.Width = 136
     EditLabel.Caption = 'Usuário'
     EditLabel.ParentColor = False
@@ -102,11 +106,11 @@ object fLogin: TfLogin
   end
   object edSenha: TLabeledEdit
     Left = 216
-    Height = 23
+    Height = 21
     Top = 24
     Width = 120
     EchoMode = emPassword
-    EditLabel.Height = 15
+    EditLabel.Height = 13
     EditLabel.Width = 120
     EditLabel.Caption = 'Senha'
     EditLabel.ParentColor = False
@@ -119,7 +123,7 @@ object fLogin: TfLogin
     Left = 48
     Height = 16
     Top = 48
-    Width = 115
+    Width = 139
     Caption = 'Cadastrar/Alterar Senha'
     DragCursor = crHandPoint
     Font.CharSet = ANSI_CHARSET

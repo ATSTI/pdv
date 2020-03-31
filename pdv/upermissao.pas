@@ -17,9 +17,11 @@ type
     edSenha: TLabeledEdit;
     procedure btnLoginClick(Sender: TObject);
     procedure edSenhaKeyPress(Sender: TObject; var Key: char);
+    procedure FormShow(Sender: TObject);
   private
-
+    permissao_inicio: String;
   public
+    Permissao_Fazer: String;
     permCodMov : Integer;
     permCodDet : Integer;
     itemExcP: String;
@@ -37,30 +39,39 @@ implementation
 
 procedure TfPermissao.btnLoginClick(Sender: TObject);
 begin
-  dmPdv.sqBusca.Close;
-  dmPdv.sqBusca.SQL.Clear;
-  dmPdv.sqBusca.SQL.Text := 'SELECT CODUSUARIO, NOMEUSUARIO, PERFIL ' +
-      ' FROM USUARIO WHERE CODBARRA = ' + QuotedStr(edSenha.Text);
-  dmPdv.sqBusca.Open;
+  dmPdv.busca_sql('SELECT CODUSUARIO, NOMEUSUARIO, PERFIL ' +
+      ' FROM USUARIO WHERE CODBARRA = ' + QuotedStr(edSenha.Text));
   if (dmPdv.sqBusca.IsEmpty) then
   begin
+    Permissao_Fazer := 'NAO';
     ShowMessage('Sem Cadastro de usuário no sistema');
     Exit;
   end;
-  if (dmPdv.sqBusca.FieldByName('PERFIL').AsString = 'GERENTE') then
+  if ((Trim(dmPdv.sqBusca.FieldByName('PERFIL').AsString) = 'GERENTE') and
+     (permissao_inicio = 'EXCLUIR')) then
   begin
     edSenha.Text:='';
     fExclusao.excCodDet := permCodDet;
     fExclusao.excCodUser := dmPdv.sqBusca.FieldByName('CODUSUARIO').AsInteger;
-    fExclusao.excUser := dmPdv.sqBusca.FieldByName('NOMEUSUARIO').AsString;
+    fExclusao.excUser := Trim(dmPdv.sqBusca.FieldByName('NOMEUSUARIO').AsString);
     fExclusao.excCodMov  :=permCodMov;
     fExclusao.ItemExc := itemExcP;
     fExclusao.ItemExcC:= itemExcC;
     fExclusao.ShowModal;
     Close;
-  end
-  else begin
-    ShowMessage('Usuário não tem permissão.');
+  end;
+  if ((Trim(dmPdv.sqBusca.FieldByName('PERFIL').AsString) <> 'GERENTE') and
+     (permissao_inicio <> 'EXCLUIR')) then
+  begin
+    Permissao_Fazer := 'NAO';
+    ShowMessage('Usuário sem permissão.');
+    Close;
+  end;
+  if ((Trim(dmPdv.sqBusca.FieldByName('PERFIL').AsString) = 'GERENTE') and
+     (permissao_inicio <> 'EXCLUIR')) then
+  begin
+    Permissao_Fazer := 'SIM';
+    Close;
   end;
 end;
 
@@ -71,6 +82,13 @@ begin
     Key := #0;
     btnLogin.Click;
   end;
+end;
+
+procedure TfPermissao.FormShow(Sender: TObject);
+begin
+  edSenha.Text := '';
+  permissao_inicio := Permissao_Fazer;
+  Permissao_Fazer := 'NAO';
 end;
 
 end.

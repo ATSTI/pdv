@@ -1,14 +1,14 @@
 object fRecebimento: TfRecebimento
-  Left = 301
+  Left = 485
   Height = 482
-  Top = 152
+  Top = 110
   Width = 809
   Caption = 'Recebimento'
   ClientHeight = 482
   ClientWidth = 809
   OnCreate = FormCreate
   OnShow = FormShow
-  LCLVersion = '2.0.4.0'
+  LCLVersion = '2.0.6.0'
   object Panel1: TPanel
     Left = 0
     Height = 50
@@ -20,15 +20,15 @@ object fRecebimento: TfRecebimento
     TabOrder = 0
     object Label1: TLabel
       Left = 592
-      Height = 15
+      Height = 13
       Top = 15
-      Width = 54
+      Width = 57
       Caption = 'Valor Total'
       ParentColor = False
     end
     object edTotalGeral: TMaskEdit
       Left = 664
-      Height = 23
+      Height = 21
       Top = 15
       Width = 120
       Alignment = taRightJustify
@@ -40,7 +40,7 @@ object fRecebimento: TfRecebimento
     end
     object edPago: TMaskEdit
       Left = 72
-      Height = 23
+      Height = 21
       Top = 8
       Width = 88
       Alignment = taRightJustify
@@ -52,7 +52,7 @@ object fRecebimento: TfRecebimento
     end
     object Label2: TLabel
       Left = 8
-      Height = 15
+      Height = 13
       Top = 10
       Width = 56
       Caption = 'Valor Pago'
@@ -87,7 +87,7 @@ object fRecebimento: TfRecebimento
     end
     object lblForma: TLabel
       Left = 167
-      Height = 15
+      Height = 13
       Top = 11
       Width = 9
       Caption = '...'
@@ -556,15 +556,15 @@ object fRecebimento: TfRecebimento
     end
     object Cliente: TLabel
       Left = 16
-      Height = 15
+      Height = 13
       Top = 8
-      Width = 37
+      Width = 38
       Caption = 'Cliente'
       ParentColor = False
     end
     object edCodCliente: TEdit
       Left = 64
-      Height = 23
+      Height = 21
       Top = 8
       Width = 80
       OnExit = edCodClienteExit
@@ -573,7 +573,7 @@ object fRecebimento: TfRecebimento
     end
     object edNomeCliente: TEdit
       Left = 175
-      Height = 23
+      Height = 21
       Top = 8
       Width = 384
       TabOrder = 4
@@ -592,7 +592,7 @@ object fRecebimento: TfRecebimento
       ChildSizing.ShrinkVertical = crsScaleChilds
       ChildSizing.Layout = cclLeftToRightThenTopToBottom
       ChildSizing.ControlsPerLine = 3
-      ClientHeight = 17
+      ClientHeight = 19
       ClientWidth = 244
       Columns = 3
       ItemIndex = 0
@@ -705,6 +705,17 @@ object fRecebimento: TfRecebimento
       ParentShowHint = False
       ShowHint = True
       TabOrder = 7
+    end
+    object edLimit: TEdit
+      Left = 320
+      Height = 21
+      Hint = 'Número total de linhas'
+      Top = 40
+      Width = 48
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 8
+      Text = '80'
     end
   end
   object dsRec: TDataSource
@@ -922,5 +933,188 @@ object fRecebimento: TfRecebimento
       Caption = 'F3-Credito'
       OnExecute = acCreditoExecute
     end
+  end
+  object conOdoo: TPQConnection
+    Connected = True
+    LoginPrompt = False
+    DatabaseName = '20_clube'
+    KeepConnection = False
+    Password = 'a2t00s7'
+    Transaction = transODoo
+    UserName = 'odoo'
+    HostName = '127.0.0.1'
+    left = 448
+    top = 200
+  end
+  object sqlOdoo: TSQLQuery
+    IndexName = 'DEFAULT_ORDER'
+    FieldDefs = <    
+      item
+        Name = 'codrecebimento'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'titulo'
+        DataType = ftString
+        Precision = -1
+        Size = 8192
+      end    
+      item
+        Name = 'emissao'
+        DataType = ftDate
+        Precision = -1
+      end    
+      item
+        Name = 'datavencimento'
+        DataType = ftDate
+        Precision = -1
+      end    
+      item
+        Name = 'datarecebimento'
+        DataType = ftMemo
+        Precision = -1
+      end    
+      item
+        Name = 'nomecliente'
+        DataType = ftString
+        Precision = -1
+        Size = 8192
+      end    
+      item
+        Name = 'valortitulo'
+        DataType = ftBCD
+        Precision = -1
+        Size = 4
+      end    
+      item
+        Name = 'valor_resto'
+        DataType = ftBCD
+        Precision = -1
+        Size = 4
+      end    
+      item
+        Name = 'reconciled'
+        DataType = ftBoolean
+        Precision = -1
+      end>
+    Active = True
+    Database = conOdoo
+    Transaction = transODoo
+    SQL.Strings = (
+      'select aml.id as CODRECEBIMENTO, aml.ref as TITULO, aml.date as EMISSAO,'
+      'aml.date_maturity as DATAVENCIMENTO, '''' as DATARECEBIMENTO, rp.name as NOMECLIENTE,'
+      'aml.amount_residual as VALORTITULO, aml.amount_residual as VALOR_RESTO'
+      ', aml.reconciled'
+      'from account_move_line aml, account_account aa, account_account_type aat, res_partner rp'
+      'where aa.id = aml.account_id'
+      '  and aat.id = aa.user_type_id'
+      '  and rp.id = aml.partner_id'
+      '  and aat.type = ''receivable'''
+      '  and aml.boleto_emitido = ''t'''
+    )
+    Params = <>
+    left = 512
+    top = 200
+    object sqlOdoocodrecebimento: TLongintField
+      FieldKind = fkData
+      FieldName = 'codrecebimento'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqlOdootitulo: TStringField
+      FieldKind = fkData
+      FieldName = 'titulo'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8192
+    end
+    object sqlOdooemissao: TDateField
+      FieldKind = fkData
+      FieldName = 'emissao'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqlOdoodatavencimento: TDateField
+      FieldKind = fkData
+      FieldName = 'datavencimento'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqlOdoodatarecebimento: TMemoField
+      FieldKind = fkData
+      FieldName = 'datarecebimento'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      BlobType = ftMemo
+      Transliterate = False
+    end
+    object sqlOdoonomecliente: TStringField
+      FieldKind = fkData
+      FieldName = 'nomecliente'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8192
+    end
+    object sqlOdoovalortitulo: TBCDField
+      FieldKind = fkData
+      FieldName = 'valortitulo'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+    end
+    object sqlOdoovalor_resto: TBCDField
+      FieldKind = fkData
+      FieldName = 'valor_resto'
+      Index = 7
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+    end
+    object sqlOdooreconciled: TBooleanField
+      FieldKind = fkData
+      FieldName = 'reconciled'
+      Index = 8
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      DisplayValues = 'True;False'
+    end
+  end
+  object transODoo: TSQLTransaction
+    Active = True
+    Database = conOdoo
+    left = 584
+    top = 200
   end
 end

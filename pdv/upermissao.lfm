@@ -6,14 +6,15 @@ object fPermissao: TfPermissao
   Caption = 'Administrador'
   ClientHeight = 156
   ClientWidth = 387
-  LCLVersion = '2.0.0.4'
+  OnShow = FormShow
+  LCLVersion = '2.0.6.0'
   object edSenha: TLabeledEdit
     Left = 48
-    Height = 23
+    Height = 21
     Top = 48
     Width = 168
     EchoMode = emPassword
-    EditLabel.Height = 15
+    EditLabel.Height = 13
     EditLabel.Width = 168
     EditLabel.Caption = 'Chave'
     EditLabel.ParentColor = False

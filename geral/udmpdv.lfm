@@ -7,8 +7,9 @@ object dmPdv: TdmPdv
   Width = 473
   PPI = 96
   object IbCon: TIBConnection
-    Connected = False
+    Connected = True
     LoginPrompt = False
+    DatabaseName = 'Z:\home\publico\bd\sge_maisflores.fdb'
     KeepConnection = True
     Params.Strings = (
       'port=3050'
@@ -23,7 +24,7 @@ object dmPdv: TdmPdv
     top = 18
   end
   object sTrans: TSQLTransaction
-    Active = False
+    Active = True
     Database = IbCon
     left = 136
     top = 16

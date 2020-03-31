@@ -314,12 +314,41 @@ begin
 end;
 
 procedure TfPdv.edDescontoKeyPress(Sender: TObject; var Key: char);
+var calc_desc: Double;
 begin
   if Key = #13 then
   begin
     Key := #0;
     // desconto
     //edDesconto.Text:=edDesconto.Text;
+    if (dmPdv.descontoLivre > 0) then
+    begin
+      if (edDesconto.Text <> '0,00') then
+      begin
+        if (cbPercentual.Checked) then
+        begin
+          calc_desc := fPDV_Rec.strParaFloat(edDesconto.Text);
+          if calc_desc > 0 then
+            calc_desc := calc_desc / 100;
+        end
+        else begin
+          calc_desc := fPDV_Rec.strParaFloat(edDesconto.Text);
+          calc_desc := calc_desc / (fPDV_Rec.strParaFloat(edQtde1.Text) * fPDV_Rec.strParaFloat(edPreco1.Text));
+        end;
+        if (calc_desc > dmPdv.descontoLivre) then
+        begin
+          // TODO aqui pedirá senha GERENTE
+          fPermissao.Permissao_Fazer := 'DESCONTO';
+          fPermissao.ShowModal;
+          if (fPermissao.Permissao_Fazer = 'NAO') then
+          begin
+            edDesconto.Text := '0,00';
+            ShowMessage('Sem Permissao para este desconto.');
+            Exit;
+          end;
+        end;
+      end;
+    end;
     alterar_item();
     calculaTotalGeral();
     edProduto.SetFocus;
@@ -334,6 +363,19 @@ begin
   if Key = #13 then
   begin
     Key := #0;
+    if (dmPdv.precoLivre <> 'LIVRE') then
+    begin
+      if (edPreco.Text <> edPreco1.Text) then
+      begin
+        fPermissao.Permissao_Fazer := 'PRECO';
+        fPermissao.ShowModal;
+        if (fPermissao.Permissao_Fazer = 'NAO') then
+        begin
+          ShowMessage('Sem Permissao para alterar o preço.');
+          Exit;
+        end;
+      end;
+    end;
     edPreco.Text := edPreco1.Text;
     preco := fPDV_Rec.strParaFloat(edPreco.Text);
     edDesconto.SetFocus;
@@ -611,7 +653,22 @@ end;
 procedure TfPdv.BitBtn10Click(Sender: TObject);
 begin
   edQtde.Text:=edQtde1.Text;
-  edPreco.Text:=edPreco1.Text;
+  if (edPreco.Text <> edPreco1.Text) then
+  begin
+    if (dmPdv.precoLivre <> 'LIVRE') then
+    begin
+      fPermissao.Permissao_Fazer := 'PRECO';
+      fPermissao.ShowModal;
+      if (fPermissao.Permissao_Fazer <> 'NAO') then
+      begin
+        edPreco.Text:=edPreco1.Text;
+      end;
+    end
+    else begin
+      edPreco.Text := edPreco1.Text;
+    end;
+  end;
+
   edDesconto.Text:=edDesconto.Text;
   alterar_item();
   calculaTotalGeral();
@@ -648,6 +705,7 @@ end;
 
 procedure TfPdv.acExcluirItemPedidoExecute(Sender: TObject);
 begin
+  fPermissao.Permissao_Fazer := 'EXCLUIR';
   fPermissao.permCodMov:=codMov;
   fPermissao.permCodDet:=dmPdv.sqLancamentosCODDETALHE.AsInteger;
   fPermissao.itemExcP := dmPdv.sqLancamentosDESCPRODUTO.AsString;
@@ -2210,6 +2268,7 @@ begin
   ACBrPosPrinter1.Buffer.Text := MemoImp.Lines.Text;
   ACBrPosPrinter1.Imprimir;
 end;
+
 
 end.
 

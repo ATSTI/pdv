@@ -1012,6 +1012,8 @@ type
   public
     modoDesenvolvedor: String;
     usosistema : string;
+    precoLivre : String; // o usuario pode alterar o preco do item
+    descontoLivre : Double; // 0 = pode dar desconto, > 0 e o valor q pode dar sem permissao
     usaComanda : Integer;
     usaCurso : Integer;
     contaCaixa : Integer;
@@ -1098,8 +1100,8 @@ begin
   MICRO := GetEnvironmentVariable('COMPUTERNAME');
   path_exe := ExtractFilePath(ParamStr(0));
   path_xml := path_exe;
-
   IBCon.Connected:=False;
+
   sTrans.Params.Text := 'isc_tpb_read_committed';
   //IBCon.CharSet:='WIN1252';
   //path_exe := path_exe;
@@ -1235,21 +1237,23 @@ begin
   IBCon.Connected:=True;
   sqParametro.Active:=True;
   usaCentroCusto := 'S';
+  precoLivre := 'LIVRE';
+  descontoLivre := 0;
   While not sqParametro.EOF do
   begin
-    if (sqParametroPARAMETRO.AsString = 'CENTROCUSTO') then
+    if (Trim(sqParametroPARAMETRO.AsString) = 'CENTROCUSTO') then
     begin
       if (ccusto = '') then
         ccusto:=sqParametroDADOS.AsString;
 
       ccusto_padrao:=sqParametroD1.AsString;
     end;
-    if (sqParametroPARAMETRO.AsString = 'SERIENFCe') then
+    if (Trim(sqParametroPARAMETRO.AsString) = 'SERIENFCe') then
     begin
       tk := sqParametroDADOS.AsString;
       id_tk := sqParametroD4.AsString;
     end;
-    if (sqParametroPARAMETRO.AsString = 'CONSUMIDOR') then
+    if (Trim(sqParametroPARAMETRO.AsString) = 'CONSUMIDOR') then
     begin
       try
         clientePadrao := StrToInt(sqParametroDADOS.AsString);
@@ -1257,7 +1261,24 @@ begin
         ShowMessage('Parametro Consumidor campo DADOS precisa ser número');
       end;
     end;
-    if (sqParametroPARAMETRO.AsString = 'CAIXA_BANCO') then
+    if (Trim(sqParametroPARAMETRO.AsString) = 'PDV_PERMISSAO') then
+    begin
+      try
+        precoLivre := Trim(sqParametroDADOS.AsString);
+        if (sqParametroD1.AsString <> '') then
+          try
+            descontoLivre := StrToFloat(sqParametroD1.AsString);
+            if descontoLivre > 0 then
+              descontoLivre := descontoLivre / 100;
+          except
+            ShowMessage('Parametro PDV_PERMISSAO campo D1 precisa ser número');
+            descontoLivre := 0;
+          end;
+      Except
+        ShowMessage('Parametro Consumidor campo DADOS precisa ser número');
+      end;
+    end;
+    if (Trim(sqParametroPARAMETRO.AsString) = 'CAIXA_BANCO') then
     begin
       caixaBanco := sqParametroDADOS.AsString;
       busca_sql('SELECT CODIGO FROM PLANO WHERE CONTAPAI = ' +
@@ -1281,7 +1302,7 @@ begin
       atualiza_bd('NFe');
     end
     else begin
-      versao_sistema := sqBusca.FieldByName('VERSAO').AsString;
+      versao_sistema := Trim(sqBusca.FieldByName('VERSAO').AsString);
       atualiza_bd('NFe');
     end;
   end;
@@ -1296,7 +1317,7 @@ begin
       atualiza_bd('CTe');
     end
     else begin
-      versao_sistema := sqBusca.FieldByName('VERSAO').AsString;
+      versao_sistema := Trim(sqBusca.FieldByName('VERSAO').AsString);
       atualiza_bd('CTe');
     end;
   end;
@@ -1306,7 +1327,7 @@ begin
     if (sqBusca.IsEmpty) then
       versao_sistema := '1.1'
     else
-      versao_sistema := sqBusca.FieldByName('VERSAO').AsString;
+      versao_sistema := Trim(sqBusca.FieldByName('VERSAO').AsString);
     atualiza_bd('PDV');
   end;
   if (ApplicationName = 'ATS-Admin') then

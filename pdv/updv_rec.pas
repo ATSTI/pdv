@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, Buttons, DBGrids, MaskEdit, ActnList, Menus, ACBrPosPrinter, udmpdv,
   uvenda, uRecebimento, uClienteBusca, uNfce, sqldb, db, math, StrUtils, IniFiles,
-  uCadeira, typinfo, LConvEncoding;
+  uCadeira, uPermissao, typinfo, LConvEncoding;
 
 type
 
@@ -1317,6 +1317,7 @@ end;
 procedure TfPDV_Rec.btnDscClick(Sender: TObject);
 var percent : Double;
 begin
+  percent := 0;
   if ((btnDsc.Caption = 'R$') and (chkPercent.Checked=False)) then
   begin
     vDesconto := strParaFloat(edVDesconto.Text);
@@ -1327,6 +1328,23 @@ begin
     percent := 1-(percent/100);
     vDesconto:= vValorVenda - (vValorVenda * percent);
     edDesconto.Text := FormatFloat('#,,,0.00',vDesconto);
+  end;
+  if ((dmPdv.descontoLivre > 0) and (vDesconto > 0)) then
+  begin
+    percent := vDesconto / vValorVenda;
+    if (percent > dmPdv.descontoLivre) then
+    begin
+      // TODO aqui pedirá senha GERENTE
+      fPermissao.Permissao_Fazer := 'DESCONTO';
+      fPermissao.ShowModal;
+      if (fPermissao.Permissao_Fazer = 'NAO') then
+      begin
+        edVDesconto.Text := '0,00';
+        edDesconto.Text := '0,00';
+        ShowMessage('Sem Permissao para este desconto.');
+        Exit;
+      end;
+    end;
   end;
   grava_desconto;
   calcula_total;

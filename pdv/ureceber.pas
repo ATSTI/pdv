@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
-  StdCtrls, DBGrids, MaskEdit, ActnList, uClienteBusca, udmpdv, db, sqldb;
+  StdCtrls, DBGrids, MaskEdit, ActnList, uClienteBusca, udmpdv, db, sqldb,
+  pqconnection;
 
 type
 
@@ -28,6 +29,7 @@ type
     dsRec: TDataSource;
     DBGrid1: TDBGrid;
     edCodCliente: TEdit;
+    edLimit: TEdit;
     edNomeCliente: TEdit;
     Cliente: TLabel;
     Label1: TLabel;
@@ -38,7 +40,19 @@ type
     Panel1: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
+    conOdoo: TPQConnection;
     rgSituacao: TRadioGroup;
+    sqlOdoo: TSQLQuery;
+    sqlOdoocodrecebimento: TLongintField;
+    sqlOdoodatarecebimento: TMemoField;
+    sqlOdoodatavencimento: TDateField;
+    sqlOdooemissao: TDateField;
+    sqlOdoonomecliente: TStringField;
+    sqlOdooreconciled: TBooleanField;
+    sqlOdootitulo: TStringField;
+    sqlOdoovalortitulo: TBCDField;
+    sqlOdoovalor_resto: TBCDField;
+    transODoo: TSQLTransaction;
     sqPagamento: TSQLQuery;
     sqPagamentoCAIXA: TSmallintField;
     sqPagamentoCAIXINHA: TFloatField;
@@ -174,34 +188,68 @@ var
   sql_rec: String;
   total_rec : Double;
 begin
-  // buscar contas (recebimento)
-  total_rec := 0;
-  sql_rec := 'SELECT r.CODCLIENTE, r.CODRECEBIMENTO, r.TITULO, r.EMISSAO';
-  sql_rec += ', r.DATAVENCIMENTO, r.DATARECEBIMENTO ';
-  //sql_rec += ', (CASE WHEN r.STATUS = ' + QuotedStr('5-') + ' THEN r.VALOR_RESTO';
-  //sql_rec += ' ELSE 0 END) AS VALOR_RESTO, (r.VALORTITULO - COALESCE(r.VALORRECEBIDO,0)) ';
-  sql_rec += ' ,(r.VALOR_RESTO  - COALESCE(r.VALORRECEBIDO,0))  AS VALOR_RESTO, r.VALORTITULO ';
-  sql_rec += ' AS VALORTITULO, c.NOMECLIENTE FROM RECEBIMENTO r, CLIENTES c ';
-  sql_rec += ' WHERE r.CODCLIENTE = c.CODCLIENTE AND r.VALOR_RESTO > 0';
-  if (edCodCliente.Text <> '') then
+  if (UpperCase(dmpdv.usoSistema) = 'ATS') then
   begin
-    sql_rec += ' AND r.CODCLIENTE = ' + edCodCliente.Text;
+    // buscar contas (recebimento)
+    total_rec := 0;
+    sql_rec := 'SELECT r.CODCLIENTE, r.CODRECEBIMENTO, r.TITULO, r.EMISSAO';
+    sql_rec += ', r.DATAVENCIMENTO, r.DATARECEBIMENTO ';
+    //sql_rec += ', (CASE WHEN r.STATUS = ' + QuotedStr('5-') + ' THEN r.VALOR_RESTO';
+    //sql_rec += ' ELSE 0 END) AS VALOR_RESTO, (r.VALORTITULO - COALESCE(r.VALORRECEBIDO,0)) ';
+    sql_rec += ' ,(r.VALOR_RESTO  - COALESCE(r.VALORRECEBIDO,0))  AS VALOR_RESTO, r.VALORTITULO ';
+    sql_rec += ' AS VALORTITULO, c.NOMECLIENTE FROM RECEBIMENTO r, CLIENTES c ';
+    sql_rec += ' WHERE r.CODCLIENTE = c.CODCLIENTE AND r.VALOR_RESTO > 0';
+    if (edCodCliente.Text <> '') then
+    begin
+      sql_rec += ' AND r.CODCLIENTE = ' + edCodCliente.Text;
+    end;
+    Case rgSituacao.ItemIndex of
+      0 : sql_rec += ' AND r.STATUS  = ' + QuotedStr('5-');
+      1 : sql_rec += ' AND r.STATUS  = ' + QuotedStr('7-');
+      2 : sql_rec += ' AND r.STATUS  IN (' +
+         QuotedStr('5-') + ',' + QuotedStr('7-') + ')';
+    end;
+    sql_rec += ' ORDER BY r.DATAVENCIMENTO, r.EMISSAO, r.TITULO';
+    dmPdv.busca_sql(sql_rec);
+    While not dmPdv.sqBusca.EOF do
+    begin
+      total_rec += dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat;
+      dmPdv.sqBusca.Next;
+    end;
+    dmPdv.sqBusca.First;
+    edTotalGeral.Text := FormatFloat('#,,,0.00',total_rec);
   end;
-  Case rgSituacao.ItemIndex of
-    0 : sql_rec += ' AND r.STATUS  = ' + QuotedStr('5-');
-    1 : sql_rec += ' AND r.STATUS  = ' + QuotedStr('7-');
-    2 : sql_rec += ' AND r.STATUS  IN (' +
-       QuotedStr('5-') + ',' + QuotedStr('7-') + ')';
-  end;
-  sql_rec += ' ORDER BY r.DATAVENCIMENTO, r.EMISSAO, r.TITULO';
-  dmPdv.busca_sql(sql_rec);
-  While not dmPdv.sqBusca.EOF do
+  if (UpperCase(dmpdv.usoSistema) = 'ODOO') then
   begin
-    total_rec += dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat;
-    dmPdv.sqBusca.Next;
+    sqlOdoo.Close;
+    dsRec.DataSet := sqlOdoo;
+    sql_rec := 'select aml.id as CODRECEBIMENTO, aml.ref as TITULO, aml.date as EMISSAO, ';
+    sql_rec += 'aml.date_maturity as DATAVENCIMENTO, NULL as DATARECEBIMENTO, rp.name as NOMECLIENTE,';
+    sql_rec += 'aml.amount_residual as VALORTITULO, aml.amount_residual as VALOR_RESTO,';
+    sql_rec += ' aml.reconciled ';
+    sql_rec += ' FROM account_move_line aml, account_account aa, account_account_type aat, res_partner rp';
+    sql_rec += ' WHERE aa.id = aml.account_id and aat.id = aa.user_type_id ';
+    sql_rec += '   AND rp.id = aml.partner_id and aat.type = ' + QuotedStr('receivable');
+    if (edNomeCliente.Text <> '') then
+    begin
+      sql_rec += ' AND rp.NAME ILIKE ' + QuotedStr('%' + edNomeCliente.Text + '%');
+    end;
+    Case rgSituacao.ItemIndex of
+      0 : sql_rec += ' AND aml.amount_residual > 0.0';
+      1 : sql_rec += ' AND aml.amount_residual = 0.0';
+    end;
+    sql_rec += ' ORDER BY aml.date_maturity, aml.date, aml.ref LIMIT ' + edLimit.Text;
+    sqlOdoo.SQL.Clear;
+    sqlOdoo.SQL.Add(sql_rec);
+    sqlOdoo.Open;
+    While not sqlOdoo.EOF do
+    begin
+      total_rec += sqlOdoo.FieldByName('VALOR_RESTO').AsFloat;
+      sqlOdoo.Next;
+    end;
+    sqlOdoo.First;
+    edTotalGeral.Text := FormatFloat('#,,,0.00',total_rec);
   end;
-  dmPdv.sqBusca.First;
-  edTotalGeral.Text := FormatFloat('#,,,0.00',total_rec);
 end;
 
 procedure TfRecebimento.btnConfirmaClick(Sender: TObject);
@@ -236,69 +284,76 @@ begin
     ShowMessage('Informe o Valor Pago');
     Exit;
   end;
-  dmPdv.sqBusca.First;
-  str_rec := IntToStr(dmPdv.sqBusca.FieldByName('CODCLIENTE').AsInteger);
-  While not dmPdv.sqBusca.EOF do
+  if (dmpdv.usoSistema = 'ATS') then
   begin
-    if (str_rec <> IntToStr(dmPdv.sqBusca.FieldByName('CODCLIENTE').AsInteger)) then
-    begin
-      ShowMessage('Selecione um cliente para fazer a Baixa, não pode ter clientes diferentes');
-      Exit;
-    end;
-    dmPdv.sqBusca.Next;
-  end;
-  vlr_pg := StrToFloat(edPago.Text);
-  vlr_rt := vlr_pg;
-  dmPdv.sqBusca.First;
-  str_rec := '';
-  DecimalSeparator:='.';
-  While vlr_rt > 0 do
-  begin
+    dmPdv.sqBusca.First;
+    str_rec := IntToStr(dmPdv.sqBusca.FieldByName('CODCLIENTE').AsInteger);
     While not dmPdv.sqBusca.EOF do
     begin
-      if (vlr_rt > 0) then
+      if (str_rec <> IntToStr(dmPdv.sqBusca.FieldByName('CODCLIENTE').AsInteger)) then
       begin
-        if (dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat > vlr_rt) then
-        begin
-          // duplico o lancamento na recebimento
-          // este novo item o valor vai ser a diferenca do pago
-          // um vai ficar em aberto o outro como pago
-          str_rec := 'INSERT INTO RECEBIMENTO (  ' +
-            ' CODRECEBIMENTO, TITULO, EMISSAO, CODCLIENTE, DATAVENCIMENTO' +
-            ', CAIXA, STATUS, VIA, CODVENDA, CODALMOXARIFADO, CODVENDEDOR' +
-            ', CODUSUARIO, DATASISTEMA, VALOR_PRIM_VIA, VALOR_RESTO, VALORTITULO' +
-            ', PARCELAS, FORMARECEBIMENTO) SELECT ' +
-            ' GEN_ID(COD_AREC, 1), TITULO, EMISSAO, CODCLIENTE, DATAVENCIMENTO' +
-            ', CAIXA, STATUS, VIA, CODVENDA, CODALMOXARIFADO, CODVENDEDOR' +
-            ', CODUSUARIO, DATASISTEMA, ';
-          vlr_pg := dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat - vlr_rt;
-          str_rec += FloatToStr(vlr_pg) + ', ' + FloatToStr(vlr_pg); //VALOR_PRIM_VIA, VALOR_RESTO
-          str_rec += ', VALORTITULO, PARCELAS, FORMARECEBIMENTO ';
-          str_rec += ' FROM RECEBIMENTO WHERE CODRECEBIMENTO = ';
-          str_rec += IntToStr(dmPdv.sqBusca.FieldByName('CODRECEBIMENTO').AsInteger);
-          dmPdv.executaSql(str_rec);
-          vlr_pg := vlr_rt;
-        end
-        else begin
-          vlr_pg := dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat;
-        end;
-        dmPdv.executaSql('UPDATE RECEBIMENTO SET STATUS = ' +
-          QuotedStr('7-') + ', VALORRECEBIDO = ' + FloattoStr(vlr_pg) +
-          ' , FORMARECEBIMENTO = ' + QuotedStr(vr_formaRec) +
-          ' , DATARECEBIMENTO = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now)) +
-          ' , DATABAIXA = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now)) +
-          ' , CAIXA = ' + dmPdv.idcaixa +
-          ' , CODALMOXARIFADO = ' + dmPdv.ccusto +
-          ' , CODUSUARIO = ' + dmPdv.varLogado +
-          ' , HISTORICO = ' + QuotedStr('Pagamento Caixa PDV : ' +
-            dmPdv.nomeLogado + ', ' + dmPdv.nomeCaixa) +
-          ' WHERE CODRECEBIMENTO = ' +
-          IntToStr(dmPdv.sqBusca.FieldByName('CODRECEBIMENTO').asInteger));
-        enviar_caixa(vlr_pg, dmPdv.sqBusca.FieldByName('CODRECEBIMENTO').AsInteger);
-        vlr_rt -= vlr_pg;
+        ShowMessage('Selecione um cliente para fazer a Baixa, não pode ter clientes diferentes');
+        Exit;
       end;
       dmPdv.sqBusca.Next;
     end;
+    vlr_pg := StrToFloat(edPago.Text);
+    vlr_rt := vlr_pg;
+    dmPdv.sqBusca.First;
+    str_rec := '';
+    DecimalSeparator:='.';
+    While vlr_rt > 0 do
+    begin
+      While not dmPdv.sqBusca.EOF do
+      begin
+        if (vlr_rt > 0) then
+        begin
+          if (dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat > vlr_rt) then
+          begin
+            // duplico o lancamento na recebimento
+            // este novo item o valor vai ser a diferenca do pago
+            // um vai ficar em aberto o outro como pago
+            str_rec := 'INSERT INTO RECEBIMENTO (  ' +
+              ' CODRECEBIMENTO, TITULO, EMISSAO, CODCLIENTE, DATAVENCIMENTO' +
+              ', CAIXA, STATUS, VIA, CODVENDA, CODALMOXARIFADO, CODVENDEDOR' +
+              ', CODUSUARIO, DATASISTEMA, VALOR_PRIM_VIA, VALOR_RESTO, VALORTITULO' +
+              ', PARCELAS, FORMARECEBIMENTO) SELECT ' +
+              ' GEN_ID(COD_AREC, 1), TITULO, EMISSAO, CODCLIENTE, DATAVENCIMENTO' +
+              ', CAIXA, STATUS, VIA, CODVENDA, CODALMOXARIFADO, CODVENDEDOR' +
+              ', CODUSUARIO, DATASISTEMA, ';
+            vlr_pg := dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat - vlr_rt;
+            str_rec += FloatToStr(vlr_pg) + ', ' + FloatToStr(vlr_pg); //VALOR_PRIM_VIA, VALOR_RESTO
+            str_rec += ', VALORTITULO, PARCELAS, FORMARECEBIMENTO ';
+            str_rec += ' FROM RECEBIMENTO WHERE CODRECEBIMENTO = ';
+            str_rec += IntToStr(dmPdv.sqBusca.FieldByName('CODRECEBIMENTO').AsInteger);
+            dmPdv.executaSql(str_rec);
+            vlr_pg := vlr_rt;
+          end
+          else begin
+            vlr_pg := dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat;
+          end;
+          dmPdv.executaSql('UPDATE RECEBIMENTO SET STATUS = ' +
+            QuotedStr('7-') + ', VALORRECEBIDO = ' + FloattoStr(vlr_pg) +
+            ' , FORMARECEBIMENTO = ' + QuotedStr(vr_formaRec) +
+            ' , DATARECEBIMENTO = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now)) +
+            ' , DATABAIXA = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now)) +
+            ' , CAIXA = ' + dmPdv.idcaixa +
+            ' , CODALMOXARIFADO = ' + dmPdv.ccusto +
+            ' , CODUSUARIO = ' + dmPdv.varLogado +
+            ' , HISTORICO = ' + QuotedStr('Pagamento Caixa PDV : ' +
+              dmPdv.nomeLogado + ', ' + dmPdv.nomeCaixa) +
+            ' WHERE CODRECEBIMENTO = ' +
+            IntToStr(dmPdv.sqBusca.FieldByName('CODRECEBIMENTO').asInteger));
+          enviar_caixa(vlr_pg, dmPdv.sqBusca.FieldByName('CODRECEBIMENTO').AsInteger);
+          vlr_rt -= vlr_pg;
+        end;
+        dmPdv.sqBusca.Next;
+      end;
+    end;
+  end;
+  if (UpperCase(dmpdv.usoSistema) = 'ODOO') then
+  begin
+    // inserir dados no Contas_receber odoo a rotina integracao vai fazer o resto no odoo
   end;
   DecimalSeparator:=',';
   dmPdv.sTrans.Commit;
