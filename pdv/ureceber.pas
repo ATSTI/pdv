@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
   StdCtrls, DBGrids, MaskEdit, ActnList, uClienteBusca, udmpdv, db, sqldb,
-  pqconnection;
+  pqconnection, IniFiles;
 
 type
 
@@ -131,7 +131,27 @@ begin
 end;
 
 procedure TfRecebimento.FormCreate(Sender: TObject);
+var
+  conf: TIniFile;
+  vstr: String;
 begin
+  if (UpperCase(dmpdv.usoSistema) = 'ODOO') then
+  begin
+    conOdoo.Connected:=False;
+    if FileExists(dmPdv.path_exe  + 'conf.ini') then
+    begin
+       conf := TIniFile.Create(dmPdv.path_exe + 'conf.ini');
+       try
+         vstr := conf.ReadString('DATABASEPG', 'Name', '');
+         conOdoo.DatabaseName := vstr;
+         vstr := conf.ReadString('DATABASEPG', 'HostName', '');
+         conOdoo.HostName := vstr;
+       finally
+         conf.free;
+       end;
+    end;
+    conOdoo.Connected:=True;
+  end;
   DBGrid1.Columns[0].FieldName:='CODRECEBIMENTO';
   DBGrid1.Columns[1].FieldName:='TITULO';
   DBGrid1.Columns[2].FieldName:='EMISSAO';
@@ -226,7 +246,7 @@ begin
     sql_rec := 'select aml.id as CODRECEBIMENTO, aml.ref as TITULO, aml.date as EMISSAO, ';
     sql_rec += 'aml.date_maturity as DATAVENCIMENTO, NULL as DATARECEBIMENTO, rp.name as NOMECLIENTE,';
     sql_rec += 'aml.amount_residual as VALORTITULO, aml.amount_residual as VALOR_RESTO,';
-    sql_rec += ' aml.reconciled ';
+    sql_rec += ' aml.reconciled, aml.invoice_id ';
     sql_rec += ' FROM account_move_line aml, account_account aa, account_account_type aat, res_partner rp';
     sql_rec += ' WHERE aa.id = aml.account_id and aat.id = aa.user_type_id ';
     sql_rec += '   AND rp.id = aml.partner_id and aat.type = ' + QuotedStr('receivable');
@@ -354,6 +374,39 @@ begin
   if (UpperCase(dmpdv.usoSistema) = 'ODOO') then
   begin
     // inserir dados no Contas_receber odoo a rotina integracao vai fazer o resto no odoo
+    vlr_pg := StrToFloat(edPago.Text);
+    vlr_rt := vlr_pg;
+    sqlOdoo.First;
+    str_rec := '';
+    DecimalSeparator:='.';
+    While vlr_rt > 0 do
+    begin
+      While not sqlOdoo.EOF do
+      begin
+        if (vlr_rt > 0) then
+        begin
+          if (sqlOdoo.FieldByName('VALOR_RESTO').AsFloat > vlr_rt) then
+          begin
+            vlr_pg := sqlOdoo.FieldByName('VALOR_RESTO').AsFloat - vlr_rt;
+          end
+          else begin
+            vlr_pg := sqlOdoo.FieldByName('VALOR_RESTO').AsFloat;
+          end;
+          str_rec := 'INSERT INTO CONTAS_RECEBER (name, invoice_id, valor_titulo,';
+          str_rec += ' valor_recebido, data_recebido, caixa_recebeu) VALUES(';
+          str_rec += QuotedStr(sqlOdoo.FieldByName('TITULO').AsString);
+          str_rec += ', ' + IntToStr(sqlOdoo.FieldByName('invoice_id').AsInteger);
+          str_rec += ', ' + FloattoStr(vlr_pg);
+          str_rec += ', ' + FloattoStr(vlr_pg);
+          str_rec += ', ' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now));
+          str_rec += ', ' + dmPdv.idcaixa + ')';
+          vlr_rt -= vlr_pg;
+          conOdoo.ExecuteDirect(str_rec);
+          enviar_caixa(vlr_pg, sqlOdoo.FieldByName('CODRECEBIMENTO').AsInteger);
+        end;
+        sqlOdoo.Next;
+      end;
+    end;
   end;
   DecimalSeparator:=',';
   dmPdv.sTrans.Commit;

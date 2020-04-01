@@ -935,7 +935,7 @@ object fRecebimento: TfRecebimento
     end
   end
   object conOdoo: TPQConnection
-    Connected = True
+    Connected = False
     LoginPrompt = False
     DatabaseName = '20_clube'
     KeepConnection = False
@@ -998,7 +998,6 @@ object fRecebimento: TfRecebimento
         DataType = ftBoolean
         Precision = -1
       end>
-    Active = True
     Database = conOdoo
     Transaction = transODoo
     SQL.Strings = (
@@ -1112,7 +1111,7 @@ object fRecebimento: TfRecebimento
     end
   end
   object transODoo: TSQLTransaction
-    Active = True
+    Active = False
     Database = conOdoo
     left = 584
     top = 200
