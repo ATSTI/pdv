@@ -1650,7 +1650,7 @@ object fNFe: TfNFe
             Left = 376
             Height = 17
             Top = 0
-            Width = 52
+            Width = 50
             Caption = 'Todas'
             TabOrder = 2
           end
@@ -5126,27 +5126,6 @@ object fNFe: TfNFe
     left = 192
     top = 424
   end
-  object ACBrNFeDANFCeFortes1: TACBrNFeDANFCeFortes
-    UsaSeparadorPathPDF = True
-    Sistema = 'Projeto ACBr - www.projetoacbr.com.br'
-    MargemInferior = 0.8
-    MargemSuperior = 0.8
-    MargemEsquerda = 0.6
-    MargemDireita = 0.51
-    CasasDecimais.Formato = tdetMascara
-    CasasDecimais.qCom = 4
-    CasasDecimais.vUnCom = 4
-    CasasDecimais.MaskqCom = ',0.0000'
-    CasasDecimais.MaskvUnCom = ',0.0000'
-    TipoDANFE = tiSemGeracao
-    TamanhoLogoHeight = 0
-    TamanhoLogoWidth = 0
-    FonteLinhaItem.Color = clWindowText
-    FonteLinhaItem.Height = -9
-    FonteLinhaItem.Name = 'Lucida Console'
-    left = 472
-    top = 424
-  end
   object ACBrNFeDANFeRL1: TACBrNFeDANFeRL
     UsaSeparadorPathPDF = True
     Sistema = 'Projeto ACBr - www.projetoacbr.com.br'
@@ -5154,6 +5133,12 @@ object fNFe: TfNFe
     MargemSuperior = 0.7
     MargemEsquerda = 0.7
     MargemDireita = 0.7
+    ExpandeLogoMarcaConfig.Altura = 0
+    ExpandeLogoMarcaConfig.Esquerda = 0
+    ExpandeLogoMarcaConfig.Topo = 0
+    ExpandeLogoMarcaConfig.Largura = 0
+    ExpandeLogoMarcaConfig.Dimensionar = False
+    ExpandeLogoMarcaConfig.Esticar = True
     CasasDecimais.Formato = tdetMascara
     CasasDecimais.qCom = 4
     CasasDecimais.vUnCom = 4
@@ -5447,5 +5432,28 @@ object fNFe: TfNFe
     Configuracoes.RespTec.IdCSRT = 0
     left = 926
     top = 335
+  end
+  object ACBrNFeDANFCeFortes1: TACBrNFeDANFCeFortes
+    Sistema = 'Projeto ACBr - www.projetoacbr.com.br'
+    MargemInferior = 8
+    MargemSuperior = 8
+    MargemEsquerda = 6
+    MargemDireita = 5.1
+    ExpandeLogoMarcaConfig.Altura = 0
+    ExpandeLogoMarcaConfig.Esquerda = 0
+    ExpandeLogoMarcaConfig.Topo = 0
+    ExpandeLogoMarcaConfig.Largura = 0
+    ExpandeLogoMarcaConfig.Dimensionar = False
+    ExpandeLogoMarcaConfig.Esticar = True
+    CasasDecimais.Formato = tdetInteger
+    CasasDecimais.qCom = 2
+    CasasDecimais.vUnCom = 2
+    CasasDecimais.MaskqCom = ',0.00'
+    CasasDecimais.MaskvUnCom = ',0.00'
+    FormularioContinuo = True
+    FonteLinhaItem.Height = -9
+    FonteLinhaItem.Name = 'Lucida Console'
+    left = 432
+    top = 236
   end
 end

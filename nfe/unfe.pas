@@ -590,7 +590,7 @@ procedure TfNFe.btnImprimeClick(Sender: TObject);
 begin
   Protocolo := '';
   abrirEmpresa;
-  ACBrNFe1.Configuracoes.WebServices.UF := dmPdv.qsEmpresaUF.AsString;
+  ACBrNFe1.Configuracoes.WebServices.UF := Trim(dmPdv.qsEmpresaUF.AsString);
   dmPdv.qcdsNF.First;
   while not dmPdv.qcdsNF.Eof do
   begin
@@ -600,9 +600,9 @@ begin
       codnf := dmPdv.qcdsNFNUMNF.AsInteger;
       ACBrNFe1.NotasFiscais.Clear;
 
-      CarregarXML(Copy(dmPdv.qcdsNFNOMEXML.AsString,0,44));
+      CarregarXML(Copy(Trim(dmPdv.qcdsNFNOMEXML.AsString),0,44));
 
-      if (ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.nNF <> StrToInt(dmPdv.qcdsNFNOTASERIE.AsString)) then
+      if (ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.nNF <> StrToInt(Trim(dmPdv.qcdsNFNOTASERIE.AsString))) then
       begin
         ShowMessage('Nota Selecionada diferente do Xml');
         Exit;
@@ -646,7 +646,7 @@ begin
     if(trim(dmPdv.qsCCESELECIONOU.AsString) = 'S') then
     begin
       path_eve := AcbrNfe1.Configuracoes.Arquivos.PathEvento + '\nfe\' + path_eve +
-         '\110110' + dmPdv.qsCCECHAVE.AsString + '0' + IntToStr(dmPdv.qsCCESEQUENCIA.AsInteger) +
+         '\110110' + Trim(dmPdv.qsCCECHAVE.AsString) + '0' + IntToStr(dmPdv.qsCCESEQUENCIA.AsInteger) +
          '-procEventoNFe.XML';
       if (not FilesExists(path_eve)) then
       begin
@@ -779,7 +779,7 @@ var strAtualizaNota, nProtCanc: String;
 arquivx: String;
 begin
   abrirEmpresa;
-  ACBrNFe1.Configuracoes.WebServices.UF := dmPdv.qsEmpresaUF.AsString;
+  ACBrNFe1.Configuracoes.WebServices.UF := Trim(dmPdv.qsEmpresaUF.AsString);
   dmPdv.qcdsNF.First;
   while not dmPdv.qcdsNF.Eof do
   begin
@@ -787,7 +787,7 @@ begin
     begin
       nfe_carregalogo;
       ACBrNFe1.NotasFiscais.Clear;
-      CarregarXML(Copy(dmPdv.qcdsNFNOMEXML.AsString,0,44));
+      CarregarXML(Copy(Trim(dmPdv.qcdsNFNOMEXML.AsString),0,44));
       ACBrNFe1.NotasFiscais.ImprimirPDF;
     end;
     dmPdv.qcdsNf.Next;
@@ -819,7 +819,7 @@ begin
   abrirEmpresa;
 
   ACBrNFe1.NotasFiscais.Clear;
-  ACBrNFe1.Configuracoes.WebServices.UF := dmPdv.qsEmpresaUF.AsString;
+  ACBrNFe1.Configuracoes.WebServices.UF := Trim(dmPdv.qsEmpresaUF.AsString);
 
   Protocolo := '';
   if (edNFCancelar.Text = '') then
@@ -833,7 +833,7 @@ begin
   begin
     if (trim(dmPdv.qcdsNFSELECIONOU.AsString) = 'S') then
     begin
-      notaFCancela := dmPdv.qcdsNFNOTASERIE.AsString;
+      notaFCancela := Trim(dmPdv.qcdsNFNOTASERIE.AsString);
       codnf := dmPdv.qcdsNFNUMNF.AsInteger;
 
       if (edNFCancelar.Text <> notaFCancela) then
@@ -841,7 +841,7 @@ begin
         MessageDlg('Nota selecionada é diferente do número da Nota informada.', mtWarning, [mbOK], 0);
         exit;
       end;
-      CarregarXML(Copy(dmPdv.qcdsNFNOMEXML.AsString,0,44));
+      CarregarXML(Copy(Trim(dmPdv.qcdsNFNOMEXML.AsString),0,44));
 
       if not(InputQuery('WebServices Cancelamento', 'Justificativa (mais que 15 letras)', vAux)) then
          exit;
@@ -908,7 +908,7 @@ begin
   atualiza_nf := '';
   abrirEmpresa;
 
-  ACBrNFe1.Configuracoes.WebServices.UF := dmPdv.qsEmpresaUF.AsString;
+  ACBrNFe1.Configuracoes.WebServices.UF := Trim(dmPdv.qsEmpresaUF.AsString);
   dmPdv.qcdsNF.First;
   while not dmPdv.qcdsNF.Eof do
   begin
@@ -917,9 +917,9 @@ begin
       nfe_carregalogo;
       ACBrNFe1.NotasFiscais.Clear;
       codnf := dmPdv.qcdsNFNUMNF.AsInteger;
-      CarregarXML(Copy(dmPdv.qcdsNFNOMEXML.AsString,0,44));
+      CarregarXML(Copy(Trim(dmPdv.qcdsNFNOMEXML.AsString),0,44));
 
-      if (ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.nNF <> StrToInt(dmPdv.qcdsNFNOTASERIE.AsString)) then
+      if (ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.nNF <> StrToInt(Trim(dmPdv.qcdsNFNOTASERIE.AsString))) then
       begin
         ShowMessage('Nota Selecionada diferente do Xml');
         Exit;
@@ -1022,7 +1022,7 @@ begin
   begin
     if (trim(dmPdv.qcdsNFSELECIONOU.AsString) = 'S') then
     begin
-      nfDenegada := dmPdv.qcdsNFNOTASERIE.AsString;
+      nfDenegada := Trim(dmPdv.qcdsNFNOTASERIE.AsString);
     end;
     dmPdv.qcdsNF.Next;
   end;
@@ -1253,10 +1253,10 @@ begin
   if (trim(dmPdv.qsEmpresa1TIPO.AsString) = '1') then
     ACBrNFe2.Configuracoes.WebServices.Ambiente := taProducao;
 
-  ACBrNFe2.Configuracoes.Arquivos.PathNFe := dmPdv.qsEmpresaDIVERSOS1.AsString + 'Fornecedor\';
+  ACBrNFe2.Configuracoes.Arquivos.PathNFe := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString) + 'Fornecedor\';
   if ( not DirectoryExists(ACBrNFe2.Configuracoes.Arquivos.PathNFe)) then
     CreateDir(ACBrNFe2.Configuracoes.Arquivos.PathNFe);
-  ACBrNFe2.Configuracoes.Arquivos.PathEvento := dmPdv.qsEmpresa1DIVERSOS1.AsString + 'Diversos\';
+  ACBrNFe2.Configuracoes.Arquivos.PathEvento := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString) + 'Diversos\';
   if ( not DirectoryExists(ACBrNFe2.Configuracoes.Arquivos.PathEvento)) then
     CreateDir(ACBrNFe2.Configuracoes.Arquivos.PathEvento);
 
@@ -1464,7 +1464,7 @@ begin
   dmPdv.qsEmpresa.Params[0].AsInteger := dmPdv.qcds_ccustoCODIGO.AsInteger;
   dmPdv.qsEmpresa.Open;
 
-  ACBrNFe1.Configuracoes.WebServices.UF := dmPdv.qsEmpresaUF.AsString;
+  ACBrNFe1.Configuracoes.WebServices.UF := Trim(dmPdv.qsEmpresaUF.AsString);
 
   dmPdv.qsCCE.First;
   While not dmPdv.qsCCE.EOF do
@@ -1472,7 +1472,7 @@ begin
     if (Trim(dmPdv.qsCCESELECIONOU.AsString) = 'S') then
     begin
       nfe_carregalogo;
-      CarregarXML(Copy(dmPdv.qsCCECHAVE.AsString,0,44));
+      CarregarXML(Copy(Trim(dmPdv.qsCCECHAVE.AsString),0,44));
       envio := Now;
       AcbrNfe1.Configuracoes.Arquivos.PathNFe := edit3.Text;
       AcbrNfe1.Configuracoes.Arquivos.PathEvento := edit3.Text + '\Eventos';
@@ -1485,14 +1485,14 @@ begin
       xCond := xCond + 'dados cadastrais que implique mudanca do remetente ou do destinatario; III - a data de emissao ou de saida';
       with ACBrNFe1.EventoNFe.Evento.Add do
       begin
-      InfEvento.chNFe     := dmPdv.qsCCECHAVE.AsString;
-      InfEvento.CNPJ      := RemoveChar(Copy(dmPdv.qsCCECHAVE.AsString , 7, 14));
+      InfEvento.chNFe     := Trim(dmPdv.qsCCECHAVE.AsString);
+      InfEvento.CNPJ      := RemoveChar(Copy(Trim(dmPdv.qsCCECHAVE.AsString) , 7, 14));
       InfEvento.cOrgao    := dmPdv.qsCCeORGAO.AsInteger;
       //InfEvento.versaoEvento := '1.0.00';
       InfEvento.dhEvento  := envio;
       infEvento.tpEvento := teCCe;
       InfEvento.nSeqEvento := dmPdv.qsCCeSEQUENCIA.AsInteger;
-      InfEvento.detEvento.xCorrecao := dmPdv.qsCCeCORRECAO.AsString;
+      InfEvento.detEvento.xCorrecao := Trim(dmPdv.qsCCeCORRECAO.AsString);
       //InfEvento.detEvento.xCondUso := xCond;
       end;
 
@@ -1535,7 +1535,7 @@ begin
           str := 'UPDATE CCE SET PROTOCOLO = ' + quotedStr(protocolo)
           + ', DHENVIO = ' + QuotedStr(FormatDateTime('dd.mm.yyyy hh:mm:ss', envio))
           + ', CONDICAO = ' + QuotedStr(xCond)
-          + ' WHERE CHAVE = ' + quotedStr(dmPdv.qsCCECHAVE.AsString)
+          + ' WHERE CHAVE = ' + quotedStr(Trim(dmPdv.qsCCECHAVE.AsString))
           + ' AND SEQUENCIA = ' + IntToStr(dmPdv.qsCCESEQUENCIA.AsInteger);
           dmPdv.IbCon.ExecuteDirect(str);
           dmPdv.sTrans.Commit;
@@ -1642,12 +1642,12 @@ begin
   end;
 
   //Gera Envio da Nota
-  ACBrNFeDANFCeFortes1.Site := dmPdv.qsEmpresaWEB.AsString;
-  ACBrNFeDANFCeFortes1.Email := dmPdv.qsEmpresaE_MAIL.AsString;
+  ACBrNFeDANFCeFortes1.Site := Trim(dmPdv.qsEmpresaWEB.AsString);
+  ACBrNFeDANFCeFortes1.Email := Trim(dmPdv.qsEmpresaE_MAIL.AsString);
   ACBrNFeDANFCeFortes1.CasasDecimais.vUnCom := danfeDec;
 
-  ACBrNFeDANFeRL1.Site := dmPdv.qsEmpresaWEB.AsString;
-  ACBrNFeDANFeRL1.Email := dmPdv.qsEmpresaE_MAIL.AsString;
+  ACBrNFeDANFeRL1.Site := Trim(dmPdv.qsEmpresaWEB.AsString);
+  ACBrNFeDANFeRL1.Email := Trim(dmPdv.qsEmpresaE_MAIL.AsString);
   ACBrNFeDANFeRL1.CasasDecimais.vUnCom := danfeDec;
   lblMsgNfe.Caption := 'Enviando arquivo para a Receita Federal';
   if ((tp_amb = 2) or (tp_amb = 5)) then
@@ -1682,8 +1682,8 @@ begin
           dmPdv.qsCliente.Params[0].AsInteger := dmPdv.qcdsNFCODCLIENTE.AsInteger;
           dmPdv.qsCliente.Open;
         end;
-        v_vlr := dmPdv.qsClienteRAZAOSOCIAL.AsString;
-        v_vlr := dmPdv.qsClienteE_MAIL.AsString;
+        v_vlr := Trim(dmPdv.qsClienteRAZAOSOCIAL.AsString);
+        v_vlr := Trim(dmPdv.qsClienteE_MAIL.AsString);
         if (not dmPdv.qsClienteE_MAIL.IsNull) then
         begin
           EnviaEmail;
@@ -1803,9 +1803,11 @@ end;
 procedure TfNFe.btnStatusNaoEnviadaClick(Sender: TObject);
 var strNEnv: String;
 begin
-  if  MessageDlg('Confirma a alteração de Status da NF : ' + dmPdv.qcdsNFNOTASERIE.AsString + ' ?', mtConfirmation, [mbYes, mbNo],0) = mrNo then
+  if  MessageDlg('Confirma a alteração de Status da NF : ' +
+    Trim(dmPdv.qcdsNFNOTASERIE.AsString) + ' ?', mtConfirmation,
+    [mbYes, mbNo],0) = mrNo then
     exit;
-  if (Length(dmPdv.qcdsNFPROTOCOLOENV.AsString) > 5) then
+  if (Length(Trim(dmPdv.qcdsNFPROTOCOLOENV.AsString)) > 5) then
   begin
     MessageDlg('Nota com protocolo de envio, utilize o botão imprimir DANFE.',mtWarning,[mbOk],0);
     exit;
@@ -2059,12 +2061,12 @@ begin
   if (trim(dmPdv.qcdsNFSELECIONOU.AsString) = '') then
   begin
     dmPdv.IbCon.ExecuteDirect('UPDATE NOTAFISCAL SET SELECIONOU = '
-    + QuotedStr('S') + ' WHERE NUMNF = ' + QuotedStr(dmPdv.qcdsNF.FieldByName('NUMNF').AsString));
+    + QuotedStr('S') + ' WHERE NUMNF = ' + QuotedStr(Trim(dmPdv.qcdsNF.FieldByName('NUMNF').AsString)));
     dmPdv.sTrans.Commit;
   end else
   begin
     dmPdv.IbCon.ExecuteDirect('UPDATE NOTAFISCAL SET SELECIONOU = '
-    + QuotedStr('') + ' WHERE NUMNF = ' + QuotedStr(dmPdv.qcdsNF.FieldByName('NUMNF').AsString)); //QuotedStr('2386'));
+    + QuotedStr('') + ' WHERE NUMNF = ' + QuotedStr(Trim(dmPdv.qcdsNF.FieldByName('NUMNF').AsString))); //QuotedStr('2386'));
     dmPdv.sTrans.Commit;
   end;
   // corrigir para ficar na mesma linha 21/09/19
@@ -2112,14 +2114,14 @@ begin
   if (trim(dmPdv.qsCCESELECIONOU.AsString) = '') then
   begin
     dmPdv.IbCon.ExecuteDirect('UPDATE CCE SET SELECIONOU = ' + QuotedStr('S') +
-      ' WHERE CHAVE = ' + QuotedStr(dmPdv.qsCCE.FieldByName('CHAVE').AsString) +
+      ' WHERE CHAVE = ' + QuotedStr(Trim(dmPdv.qsCCE.FieldByName('CHAVE').AsString)) +
       ' AND SEQUENCIA = ' + IntToStr(dmPdv.qsCCE.FieldByName('SEQUENCIA').AsInteger));
-    edtChaveNfeCCe.Text := dmPdv.qsCCE.FieldByName('CHAVE').AsString;
+    edtChaveNfeCCe.Text := Trim(dmPdv.qsCCE.FieldByName('CHAVE').AsString);
     dmPdv.sTrans.Commit;
   end else
   begin
     dmPdv.IbCon.ExecuteDirect('UPDATE CCE SET SELECIONOU = NULL '  +
-      ' WHERE CHAVE = ' + QuotedStr(dmPdv.qsCCE.FieldByName('CHAVE').AsString) +
+      ' WHERE CHAVE = ' + QuotedStr(Trim(dmPdv.qsCCE.FieldByName('CHAVE').AsString)) +
       ' AND SEQUENCIA = ' + IntToStr(dmPdv.qsCCE.FieldByName('SEQUENCIA').AsInteger));
     edtChaveNfeCCe.Text := '';
     dmPdv.sTrans.Commit;
@@ -2253,7 +2255,7 @@ begin
     dmPdv.qcds_parametro.Close;
   dmPdv.qcds_parametro.Params[0].AsString := 'CENTRORECEITA';
   dmPdv.qcds_parametro.Open;
-  conta_local := dmPdv.qcds_parametroDADOS.AsString;
+  conta_local := Trim(dmPdv.qcds_parametroDADOS.AsString);
   dmPdv.qcds_parametro.Close;
 
   if dmPdv.qcds_parametro.Active then
@@ -2261,20 +2263,20 @@ begin
   dmPdv.qcds_parametro.Params[0].AsString := 'EMPRESA';
   dmPdv.qcds_parametro.Open;
   danfeDec := 2;
-  if (dmPdv.qcds_parametroD5.AsString <> '') then
-    danfeDec := StrToInt(dmPdv.qcds_parametroD5.AsString);
+  if (Trim(dmPdv.qcds_parametroD5.AsString) <> '') then
+    danfeDec := StrToInt(Trim(dmPdv.qcds_parametroD5.AsString));
 
   quebraLinhaDanfe := True;
-  if (dmPdv.qcds_parametroD6.AsString <> '') then
+  if (Trim(dmPdv.qcds_parametroD6.AsString) <> '') then
     quebraLinhaDanfe := False;
   imprimeDetalhamentoEspecifico := True;
-  if (dmPdv.qcds_parametroD7.AsString <> '') then
+  if (Trim(dmPdv.qcds_parametroD7.AsString) <> '') then
     imprimeDetalhamentoEspecifico := False;
   danfe_larg_codprod := 46;
-  if (dmPdv.qcds_parametroD2.AsString <> '') then
+  if (Trim(dmPdv.qcds_parametroD2.AsString) <> '') then
   begin
     try
-      danfe_larg_codprod := StrToInt(dmPdv.qcds_parametroD2.AsString);
+      danfe_larg_codprod := StrToInt(Trim(dmPdv.qcds_parametroD2.AsString));
     except
     end;
   end;
@@ -2312,9 +2314,9 @@ begin
   dmPdv.qcds_ccusto.First;
   while not dmPdv.qcds_ccusto.Eof do
   begin
-    ComboBox1.Items.Add(dmPdv.qcds_ccustoNOME.AsString);
-    ComboBox2.Items.Add(dmPdv.qcds_ccustoNOME.AsString);
-    cbEmpresa.Items.Add(dmPdv.qcds_ccustoNOME.AsString);
+    ComboBox1.Items.Add(Trim(dmPdv.qcds_ccustoNOME.AsString));
+    ComboBox2.Items.Add(Trim(dmPdv.qcds_ccustoNOME.AsString));
+    cbEmpresa.Items.Add(Trim(dmPdv.qcds_ccustoNOME.AsString));
     dmPdv.qcds_ccusto.Next;
   end;
   if (dmPdv.qcds_ccusto.RecNo = 1) then
@@ -2327,11 +2329,11 @@ begin
     dmPdv.qsEmpresa1.Close;
   dmPdv.qsEmpresa1.Open;
 
-  Edit1.Text := dmPdv.qsEmpresa1DIVERSOS1.AsString;
-  Edit3.Text := dmPdv.qsEmpresa1DIVERSOS1.AsString;
-  Edit6.Text := dmPdv.qsEmpresa1DIVERSOS1.AsString;
+  Edit1.Text := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString);
+  Edit3.Text := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString);
+  Edit6.Text := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString);
 
-  onde       := dmPdv.qsEmpresa1TIPO.AsString;
+  onde       := Trim(dmPdv.qsEmpresa1TIPO.AsString);
 
   if (trim(dmPdv.qsEmpresa1TIPO.AsString) = '1') then
   begin
@@ -2349,20 +2351,20 @@ begin
     label8.Font.Color := clRed;
     Label8.Caption :=  'HOMOLOGAÇÃO.';
   end;
-  ACBrNFe1.Configuracoes.Arquivos.PathNFe := dmPdv.qsEmpresaDIVERSOS1.AsString;
-  if ( not DirectoryExists(dmPdv.qsEmpresa1DIVERSOS1.AsString)) then
-     CreateDir(dmPdv.qsEmpresa1DIVERSOS1.AsString);
-  ACBrNFe1.Configuracoes.Arquivos.PathEvento := dmPdv.qsEmpresa1DIVERSOS1.AsString + 'Canceladas\';
+  ACBrNFe1.Configuracoes.Arquivos.PathNFe := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString);
+  if ( not DirectoryExists(Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString))) then
+     CreateDir(Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString));
+  ACBrNFe1.Configuracoes.Arquivos.PathEvento := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString) + 'Canceladas\';
   if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathEvento)) then
     CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathEvento);
-  ACBrNFe1.Configuracoes.Arquivos.PathEvento := dmPdv.qsEmpresa1DIVERSOS1.AsString + 'CCe\';
+  ACBrNFe1.Configuracoes.Arquivos.PathEvento := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString) + 'CCe\';
   if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathEvento)) then
     CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathEvento);
 
-  ACBrNFe1.Configuracoes.Arquivos.PathEvento := dmPdv.qsEmpresa1DIVERSOS1.AsString + 'Inutilizadas\';
+  ACBrNFe1.Configuracoes.Arquivos.PathEvento := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString) + 'Inutilizadas\';
   if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathEvento)) then
     CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathEvento);
-  ACBrNFe1.Configuracoes.Arquivos.PathNFe := dmPdv.qsEmpresa1DIVERSOS1.AsString;
+  ACBrNFe1.Configuracoes.Arquivos.PathNFe := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString);
 
   if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathNFe)) then
   CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathNFe);
@@ -2372,18 +2374,18 @@ begin
   diretorio := GetCurrentDir;
   diretorio_schema := diretorio + '\Schemas';
   //envemail := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString);
-  ACBrNFe1.DANFE.PathPDF := dmPdv.qsEmpresa1DIVERSOS1.AsString + '\';
+  ACBrNFe1.DANFE.PathPDF := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString) + '\';
   if (FilesExists(diretorio + '\logo_nfe.jpg')) then
     ACBrNFeDANFCeFortes1.Logo := diretorio + '\logo_nfe.jpg';
   if (FilesExists(diretorio + '\logo.bmp')) then
     ACBrNFeDANFCeFortes1.Logo := diretorio + '\logo.bmp';
-  ACBrNFeDANFCeFortes1.PathPDF := dmPdv.qsEmpresa1DIVERSOS1.AsString + '\';
+  ACBrNFeDANFCeFortes1.PathPDF := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString) + '\';
 
   if (FilesExists(diretorio + '\logo.jpg')) then
     ACBrNFeDANFeRL1.Logo := diretorio + '\logo.jpg';
   if (FilesExists(diretorio + '\logo.bmp')) then
     ACBrNFeDANFeRL1.Logo := diretorio + '\logo.bmp';
-  ACBrNFeDANFeRL1.PathPDF := dmPdv.qsEmpresa1DIVERSOS1.AsString + '\';
+  ACBrNFeDANFeRL1.PathPDF := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString) + '\';
 
   // tamanho da coluna produto na DANFE
 
@@ -2432,15 +2434,15 @@ begin
         ccusto_emp          := dmPdv.qcds_ccustoCODIGO.AsInteger;
         ComboBox1.ItemIndex := dmPdv.qcds_ccusto.RecNo-1;
         ComboBox2.ItemIndex := dmPdv.qcds_ccusto.RecNo-1;
-        ComboBox1.Text      := dmPdv.qsCentroCustoNOMEEMPRESA.AsString;
-        ComboBox2.Text      := dmPdv.qsCentroCustoNOMEEMPRESA.AsString;
+        ComboBox1.Text      := Trim(dmPdv.qsCentroCustoNOMEEMPRESA.AsString);
+        ComboBox2.Text      := Trim(dmPdv.qsCentroCustoNOMEEMPRESA.AsString);
         cbEmpresa.ItemIndex := dmPdv.qcds_ccusto.RecNo-1;
-        cbEmpresa.Text      := dmPdv.qsCentroCustoNOMEEMPRESA.AsString;
+        cbEmpresa.Text      := Trim(dmPdv.qsCentroCustoNOMEEMPRESA.AsString);
       end;
         dmPdv.qcds_ccusto.Next;
     end;
       cbTipoNota.ItemIndex := dmPdv.qsCentroCustoTIPONOTA.AsInteger;
-      Label25.Caption      := dmPdv.qsCentroCustoUCLOGIN.AsString;
+      Label25.Caption      := Trim(dmPdv.qsCentroCustoUCLOGIN.AsString);
   end;
 
   if(trim(dmPdv.qsCentroCustoNOMEEMPRESA.AsString) = '' ) then
@@ -2455,18 +2457,18 @@ begin
       dmPdv.qsEmpresa.Close;
     dmPdv.qsEmpresa.Params[0].AsInteger := ccusto_emp;
     dmPdv.qsEmpresa.Open;
-    ACBrNFe1.Configuracoes.WebServices.UF := dmPdv.qsEmpresaUF.AsString;
+    ACBrNFe1.Configuracoes.WebServices.UF := Trim(dmPdv.qsEmpresaUF.AsString);
 
     //  se e multi empresa carrega estes dados novamente
     if (not dmPdv.qsEmpresa.IsEmpty) then
     begin
       if(trim(dmPdv.qsEmpresaCERTIFICADO.AsString) <> '')then
       begin
-        edtNumSerie.Text := dmPdv.qsEmpresaCERTIFICADO.AsString;
-        edtNumSerie1.Text := dmPdv.qsEmpresaCERTIFICADO.AsString;
+        edtNumSerie.Text := Trim(dmPdv.qsEmpresaCERTIFICADO.AsString);
+        edtNumSerie1.Text := Trim(dmPdv.qsEmpresaCERTIFICADO.AsString);
       end;
-      Edit1.Text     := dmPdv.qsEmpresaDIVERSOS1.AsString;
-      Edit3.Text     := dmPdv.qsEmpresaDIVERSOS1.AsString;
+      Edit1.Text := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString);
+      Edit3.Text := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString);
 
       if (trim(dmPdv.qsEmpresaTIPO.AsString) = '1') then
       begin
@@ -2484,16 +2486,16 @@ begin
         label8.Font.Color := clRed;
         Label8.Caption :=  'HOMOLOGAÇÃO.';
       end;
-      ACBrNFe1.Configuracoes.Arquivos.PathNFe := dmPdv.qsEmpresaDIVERSOS1.AsString;
-      if ( not DirectoryExists(dmPdv.qsEmpresaDIVERSOS1.AsString)) then
-        CreateDir(dmPdv.qsEmpresaDIVERSOS1.AsString);
-      ACBrNFe1.Configuracoes.Arquivos.PathEvento := dmPdv.qsEmpresaDIVERSOS1.AsString + 'Canceladas\';
+      ACBrNFe1.Configuracoes.Arquivos.PathNFe := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString);
+      if ( not DirectoryExists(Trim(dmPdv.qsEmpresaDIVERSOS1.AsString))) then
+        CreateDir(Trim(dmPdv.qsEmpresaDIVERSOS1.AsString));
+      ACBrNFe1.Configuracoes.Arquivos.PathEvento := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString) + 'Canceladas\';
       if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathEvento)) then
         CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathEvento);
-      ACBrNFe1.Configuracoes.Arquivos.PathEvento := dmPdv.qsEmpresaDIVERSOS1.AsString + 'CCe\';
+      ACBrNFe1.Configuracoes.Arquivos.PathEvento := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString) + 'CCe\';
       if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathEvento)) then
         CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathEvento);
-      ACBrNFe1.Configuracoes.Arquivos.PathEvento := dmPdv.qsEmpresaDIVERSOS1.AsString + 'Inutilizadas\';
+      ACBrNFe1.Configuracoes.Arquivos.PathEvento := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString) + 'Inutilizadas\';
       if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathEvento)) then
         CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathEvento);
       //ACBrNFe1.Configuracoes.Arquivos.PathNFe := dmPdv.qsEmpresaDIVERSOS1.AsString;
@@ -2501,9 +2503,9 @@ begin
       if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathNFe)) then
         CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathNFe);
 
-      ACBrNFeDANFCeFortes1.PathPDF := dmPdv.qsEmpresaDIVERSOS1.AsString  + '\';
+      ACBrNFeDANFCeFortes1.PathPDF := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString)  + '\';
 
-      ACBrNFeDANFeRL1.PathPDF := dmPdv.qsEmpresaDIVERSOS1.AsString  + '\';
+      ACBrNFeDANFeRL1.PathPDF := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString)  + '\';
     end;
   end;
   LerConfiguracao;
@@ -2530,10 +2532,10 @@ begin
 
   if (tem_logo = '') then
   begin
-    if (FilesExists(diretorio + '\' +  dmPdv.qsEmpresaDIVERSOS2.AsString)) then
+    if (FilesExists(diretorio + '\' +  Trim(dmPdv.qsEmpresaDIVERSOS2.AsString))) then
     begin
-      ACBrNFeDANFCeFortes1.Logo := diretorio + '\' +  dmPdv.qsEmpresaDIVERSOS2.AsString;
-      ACBrNFeDANFeRL1.Logo := diretorio + '\' + dmPdv.qsEmpresaDIVERSOS2.AsString;
+      ACBrNFeDANFCeFortes1.Logo := diretorio + '\' +  Trim(dmPdv.qsEmpresaDIVERSOS2.AsString);
+      ACBrNFeDANFeRL1.Logo := diretorio + '\' + Trim(dmPdv.qsEmpresaDIVERSOS2.AsString);
     end;
   end;
 
@@ -2554,9 +2556,9 @@ begin
     begin
       nfe_carregalogo;
       ACBrNFe1.NotasFiscais.Clear;
-      CarregarXML(Copy(dmPdv.qcdsNFNOMEXML.AsString,0,44));
-      if (enumnf <> StrToInt(dmPdv.qcdsNFNOTASERIE.AsString)) then
-        enumNF :=  StrToInt(dmPdv.qcdsNFNOTASERIE.AsString);
+      CarregarXML(Copy(Trim(dmPdv.qcdsNFNOMEXML.AsString),0,44));
+      if (enumnf <> StrToInt(Trim(dmPdv.qcdsNFNOTASERIE.AsString))) then
+        enumNF :=  StrToInt(Trim(dmPdv.qcdsNFNOTASERIE.AsString));
       if not(dmPdv.qsCliente.Active) then
       begin
         dmPdv.qsCliente.Params[0].AsInteger := dmPdv.qcdsNFCODCLIENTE.AsInteger;
@@ -2573,10 +2575,10 @@ begin
       serie  := ACBrNFe1.NotasFiscais.Items[0].NFe.ide.serie;
       TRANSP := ACBrNFe1.NotasFiscais.Items[0].NFe.Transp.Transporta.xNome;
 
-      Protocolo := dmPdv.qcdsNFPROTOCOLOENV.AsString;
+      Protocolo := Trim(dmPdv.qcdsNFPROTOCOLOENV.AsString);
       Texto := TStringList.Create;
-      Texto.Add('Empresa emissora da NF-e: ' + dmPdv.qsEmpresaRAZAO.AsString);
-      Texto.Add('CNPJ/CPF da Empresa Emissora: ' + dmPdv.qsEmpresaCNPJ_CPF.AsString);
+      Texto.Add('Empresa emissora da NF-e: ' + Trim(dmPdv.qsEmpresaRAZAO.AsString));
+      Texto.Add('CNPJ/CPF da Empresa Emissora: ' + Trim(dmPdv.qsEmpresaCNPJ_CPF.AsString));
       Texto.Add('Empresa destacada na NF-e: ' + RAZAO);
       Texto.Add('CNPJ/CPF da Empresa/Cliente destacado: ' + CNPJ);
       Texto.Add('Número da NF: ' + InttoStr(enumnf) + ' Série ' + IntToStr(serie));
@@ -2586,19 +2588,19 @@ begin
       Texto.Add('Consulte no Portal Nacional da NFe: https://www.nfe.fazenda.gov.br/portal/FormularioDePesquisa.aspx?tipoconsulta=completa .');
       Texto.Add('Ou consulte pela página do SEFAZ do seu estado.');
 
-      CC.Add(dmPdv.qsEmpresaE_MAIL.AsString); //especifique um email válido
+      CC.Add(Trim(dmPdv.qsEmpresaE_MAIL.AsString)); //especifique um email válido
       Assunto := 'Nota Fiscal Eletrônica ' + InttoStr(enumnf);
 
       //Try
         begin
           //try
-            ACBrMail1.Port     := dmPdv.qsEmpresaPORTA.AsString;
-            ACBrMail1.Host     := dmPdv.qsEmpresaSMTP.AsString;
-            ACBrMail1.Username := dmPdv.qsEmpresaE_MAIL.AsString;
-            ACBrMail1.Password := dmPdv.qsEmpresaSENHA.AsString;
-            ACBrMail1.From     := dmPdv.qsEmpresaE_MAIL.AsString;
-            ACBrMail1.FromName := dmPdv.qsEmpresaEMPRESA.AsString;
-            ACBrMail1.AddAddress(dmPdv.qsClienteE_MAIL.AsString);
+            ACBrMail1.Port     := Trim(dmPdv.qsEmpresaPORTA.AsString);
+            ACBrMail1.Host     := Trim(dmPdv.qsEmpresaSMTP.AsString);
+            ACBrMail1.Username := Trim(dmPdv.qsEmpresaE_MAIL.AsString);
+            ACBrMail1.Password := Trim(dmPdv.qsEmpresaSENHA.AsString);
+            ACBrMail1.From     := Trim(dmPdv.qsEmpresaE_MAIL.AsString);
+            ACBrMail1.FromName := Trim(dmPdv.qsEmpresaEMPRESA.AsString);
+            ACBrMail1.AddAddress(Trim(dmPdv.qsClienteE_MAIL.AsString));
 
             if (email_tls = 'S') then
               ACBrMail1.SetTLS := True;
@@ -2607,7 +2609,7 @@ begin
 
               //sPara, sAssunto: String; sMensagem: TStrings;
             //       EnviaPDF: Boolean; sCC: TStrings; Anexos: TStrings)
-            ACBrNFe1.NotasFiscais.Items[0].EnviarEmail(dmPdv.qsClienteE_MAIL.AsString
+            ACBrNFe1.NotasFiscais.Items[0].EnviarEmail(Trim(dmPdv.qsClienteE_MAIL.AsString)
                                                      , Assunto
                                                      , Texto
                                                      , True //Enviar PDF junto
@@ -2809,10 +2811,10 @@ begin
   begin
     if (trim(dmPdv.qcdsNFSELECIONOU.AsString) = 'S') then
     begin
-      if (dmPdv.qcdsNFXMLNFE.AsString <> '') then
+      if (Trim(dmPdv.qcdsNFXMLNFE.AsString) <> '') then
       begin
         ACBrNFe1.NotasFiscais.Clear;
-        ACBrNFe1.NotasFiscais.LoadFromString(dmPdv.qcdsNFXMLNFE.AsString);
+        ACBrNFe1.NotasFiscais.LoadFromString(Trim(dmPdv.qcdsNFXMLNFE.AsString));
       end
       else begin
          OpenDialog1.Title := 'Selecione a NFE';
@@ -2826,8 +2828,8 @@ begin
            ACBrNFe1.NotasFiscais.LoadFromFile(caminho);
          end;
       end;
-      if (numnfemail <> StrToInt(dmPdv.qcdsNFNOTASERIE.AsString)) then
-        numnfemail :=  StrToInt(dmPdv.qcdsNFNOTASERIE.AsString);
+      if (numnfemail <> StrToInt(Trim(dmPdv.qcdsNFNOTASERIE.AsString))) then
+        numnfemail :=  StrToInt(Trim(dmPdv.qcdsNFNOTASERIE.AsString));
       if not(dmPdv.qsCliente.Active) then
       begin
         dmPdv.qsCliente.Params[0].AsInteger := dmPdv.qcdsNFCODCLIENTE.AsInteger;
@@ -2861,7 +2863,7 @@ begin
   Texto.Add('Consulte no Portal Nacional da NFe: https://www.nfe.fazenda.gov.br/portal/FormularioDePesquisa.aspx?tipoconsulta=completa .');
   Texto.Add('Ou consulte pela página do SEFAZ do seu estado.');
 
-  CC.Add(dmPdv.qsEmpresaE_MAIL.AsString); //especifique um email válido
+  CC.Add(Trim(dmPdv.qsEmpresaE_MAIL.AsString)); //especifique um email válido
   Assunto := 'Nota Fiscal Eletrônica ' + InttoStr(numnfemail);
 
   email := edtSeuEmail.Text;
@@ -2900,7 +2902,7 @@ begin
 
         //sPara, sAssunto: String; sMensagem: TStrings;
         //       EnviaPDF: Boolean; sCC: TStrings; Anexos: TStrings)
-        ACBrNFe1.NotasFiscais.Items[0].EnviarEmail(dmPdv.qsClienteE_MAIL.AsString
+        ACBrNFe1.NotasFiscais.Items[0].EnviarEmail(Trim(dmPdv.qsClienteE_MAIL.AsString)
                                                  , Assunto
                                                  , Texto
                                                  , True //Enviar PDF junto
@@ -2969,7 +2971,7 @@ begin
       else
         Ide.indPag    := ipPrazo;
       //pesquisa pagamento
-      if ((dmPdv.qcdsNFFATURA.IsNull) or (dmPdv.qcdsNFFATURA.AsString = '')) then
+      if ((dmPdv.qcdsNFFATURA.IsNull) or (Trim(dmPdv.qcdsNFFATURA.AsString) = '')) then
       begin
         if(dmPdv.qcdsFatura.Active) then
           dmPdv.qcdsFatura.Close;
@@ -3016,7 +3018,7 @@ begin
 
         if (dmPdv.qcdsFaturaVALOR.AsFloat > 0) then
         begin
-          cobr.Fat.nFat  := dmPdv.qcdsNFNOTASERIE.ASSTRING;
+          cobr.Fat.nFat  := Trim(dmPdv.qcdsNFNOTASERIE.ASSTRING);
           cobr.Fat.vOrig := vlr_total;
 
           cobr.Fat.vDesc := RoundTo(0.00, -2);
@@ -3037,7 +3039,7 @@ begin
 
     with pag.Add do
     begin
-      if(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString = '1' )then
+      if (Trim(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString) = '1' )then
       begin
         tPag := fpDinheiro;            // 0
       end;
@@ -3274,23 +3276,23 @@ procedure TfNFe.getEmpresa;
 begin
  with ACBrNFe1.NotasFiscais.Items[0].NFe do
   begin
-    Emit.CNPJCPF           := RemoveChar(dmPdv.qsEmpresaCNPJ_CPF.AsString);
-    Emit.xNome             := dmPdv.qsEmpresaRAZAO.AsString;
-    Emit.xFant             := dmPdv.qsEmpresaEMPRESA.AsString;
-    Emit.EnderEmit.xLgr    := dmPdv.qsEmpresaENDERECO.AsString;
-    Emit.EnderEmit.nro     := dmPdv.qsEmpresaNUMERO.AsString;
-    if ((not dmPdv.qsEmpresaOUTRAS_INFO.IsNull) or (dmPdv.qsEmpresaOUTRAS_INFO.AsString <> '')) then
-      Emit.EnderEmit.xCpl  := dmPdv.qsEmpresaLOGRADOURO.AsString;
-    Emit.EnderEmit.xBairro := dmPdv.qsEmpresaBAIRRO.AsString;
-    Emit.EnderEmit.cMun    := StrToInt(RemoveChar(dmPdv.qsEmpresaCD_IBGE.AsString));
-    Emit.EnderEmit.xMun    := dmPdv.qsEmpresaCIDADE.AsString;
-    Emit.EnderEmit.UF      := dmPdv.qsEmpresaUF.AsString;
+    Emit.CNPJCPF           := RemoveChar(Trim(dmPdv.qsEmpresaCNPJ_CPF.AsString));
+    Emit.xNome             := Trim(dmPdv.qsEmpresaRAZAO.AsString);
+    Emit.xFant             := Trim(dmPdv.qsEmpresaEMPRESA.AsString);
+    Emit.EnderEmit.xLgr    := Trim(dmPdv.qsEmpresaENDERECO.AsString);
+    Emit.EnderEmit.nro     := Trim(dmPdv.qsEmpresaNUMERO.AsString);
+    if ((not dmPdv.qsEmpresaOUTRAS_INFO.IsNull) or (Trim(dmPdv.qsEmpresaOUTRAS_INFO.AsString) <> '')) then
+      Emit.EnderEmit.xCpl  := Trim(dmPdv.qsEmpresaLOGRADOURO.AsString);
+    Emit.EnderEmit.xBairro := Trim(dmPdv.qsEmpresaBAIRRO.AsString);
+    Emit.EnderEmit.cMun    := StrToInt(RemoveChar(Trim(dmPdv.qsEmpresaCD_IBGE.AsString)));
+    Emit.EnderEmit.xMun    := Trim(dmPdv.qsEmpresaCIDADE.AsString);
+    Emit.EnderEmit.UF      := Trim(dmPdv.qsEmpresaUF.AsString);
     if (not dmPdv.qsEmpresaCEP.IsNull) then
-      Emit.EnderEmit.CEP     := StrToInt(RemoveChar(dmPdv.qsEmpresaCEP.AsString));
+      Emit.EnderEmit.CEP     := StrToInt(RemoveChar(Trim(dmPdv.qsEmpresaCEP.AsString)));
     Emit.enderEmit.cPais   := 1058;
     Emit.enderEmit.xPais   := 'BRASIL';
-    Emit.EnderEmit.fone    := dmPdv.qsEmpresaDDD.AsString + dmPdv.qsEmpresaFONE.AsString;
-    Emit.IE                := RemoveChar(dmPdv.qsEmpresaIE_RG.AsString);
+    Emit.EnderEmit.fone    := Trim(dmPdv.qsEmpresaDDD.AsString) + Trim(dmPdv.qsEmpresaFONE.AsString);
+    Emit.IE                := RemoveChar(Trim(dmPdv.qsEmpresaIE_RG.AsString));
     if (dmPdv.qsEmpresaCRT.AsInteger = 0) Then
       Emit.CRT               := crtSimplesNacional
     else if (dmPdv.qsEmpresaCRT.AsInteger = 1) Then
@@ -3370,34 +3372,34 @@ begin
     // FORNECEDOR
     if (cbTipoNota.ItemIndex = 0) then
     begin
-      Dest.CNPJCPF           := RemoveChar(dmPdv.qsFornecCNPJ.AsString);
-      Dest.xNome             := dmPdv.qsFornecRAZAOSOCIAL.AsString;
-      Dest.EnderDest.xLgr    := dmPdv.qsFornecLOGRADOURO.AsString;
-      if ((dmPdv.qsFornecNUMERO.IsNull) or (dmPdv.qsFornecNUMERO.AsString = '')) then
+      Dest.CNPJCPF           := RemoveChar(Trim(dmPdv.qsFornecCNPJ.AsString));
+      Dest.xNome             := Trim(dmPdv.qsFornecRAZAOSOCIAL.AsString);
+      Dest.EnderDest.xLgr    := Trim(dmPdv.qsFornecLOGRADOURO.AsString);
+      if ((dmPdv.qsFornecNUMERO.IsNull) or (Trim(dmPdv.qsFornecNUMERO.AsString) = '')) then
       begin
         Dest.EnderDest.nro     := 'S/N';
       end
       else
-        Dest.EnderDest.nro     := dmPdv.qsFornecNUMERO.AsString;
-      if ((not dmPdv.qsFornecCOMPLEMENTO.IsNull) or (dmPdv.qsFornecCOMPLEMENTO.AsString <> '')) then
-        Dest.EnderDest.xCpl    := dmPdv.qsFornecCOMPLEMENTO.AsString;
-      Dest.EnderDest.xBairro := dmPdv.qsFornecBAIRRO.AsString;
+        Dest.EnderDest.nro     := Trim(dmPdv.qsFornecNUMERO.AsString);
+      if ((not dmPdv.qsFornecCOMPLEMENTO.IsNull) or (Trim(dmPdv.qsFornecCOMPLEMENTO.AsString) <> '')) then
+        Dest.EnderDest.xCpl    := Trim(dmPdv.qsFornecCOMPLEMENTO.AsString);
+      Dest.EnderDest.xBairro := Trim(dmPdv.qsFornecBAIRRO.AsString);
       if (trim(dmPdv.qsFornecCD_IBGE.AsString) = '') then
       begin
         MessageDlg('Fornecedor' + dmPdv.qsFornecRAZAOSOCIAL.AsString +  'sem Código do IBGE.', mtWarning, [mbOK], 0);
         Exit;
       end
       else
-        Dest.EnderDest.cMun    := StrToInt(RemoveChar(dmPdv.qsFornecCD_IBGE.AsString));
-      Dest.EnderDest.xMun    := dmPdv.qsFornecCIDADE.AsString;
-      Dest.EnderDest.UF      := dmPdv.qsFornecUF.AsString;
+        Dest.EnderDest.cMun    := StrToInt(RemoveChar(Trim(dmPdv.qsFornecCD_IBGE.AsString)));
+      Dest.EnderDest.xMun    := Trim(dmPdv.qsFornecCIDADE.AsString);
+      Dest.EnderDest.UF      := Trim(dmPdv.qsFornecUF.AsStringTrim(;
       if (trim(dmPdv.qsFornecCEP.AsString) = '') then
       begin
         MessageDlg('Fornecedor' + dmPdv.qsFornecRAZAOSOCIAL.AsString +  'sem CEP.', mtWarning, [mbOK], 0);
         Exit;
       end
       else
-        Dest.EnderDest.CEP     := StrToInt(RemoveChar(dmPdv.qsFornecCEP.AsString));
+        Dest.EnderDest.CEP     := StrToInt(RemoveChar(Trim(dmPdv.qsFornecCEP.AsString)));
 
       if (trim(dmPdv.qsFornecCODPAIS.AsString) = '') then
       begin
@@ -3405,16 +3407,16 @@ begin
         Exit;
       end
       else
-        Dest.EnderDest.cPais   := StrToInt(dmPdv.qsFornecCODPAIS.asString);
-      Dest.EnderDest.xPais   := dmPdv.qsFornecPAIS.AsString;
-      Dest.EnderDest.Fone    := dmPdv.qsFornecDDD.AsString + dmPdv.qsFornecTELEFONE.AsString;
+        Dest.EnderDest.cPais   := StrToInt(Trim(dmPdv.qsFornecCODPAIS.asString));
+      Dest.EnderDest.xPais   := Trim(dmPdv.qsFornecPAIS.AsString);
+      Dest.EnderDest.Fone    := Trim(dmPdv.qsFornecDDD.AsString) + Trim(dmPdv.qsFornecTELEFONE.AsString);
       IERG := 0;
-      IERG := StrLen(PChar(RemoveChar(dmPdv.qsFornecINSCESTADUAL.AsString)));
-      if ((dmPdv.qsFornecTIPOFIRMA.AsInteger = 0) and (dmPdv.qsFornecCODFISCAL.AsString = '9')) then
+      IERG := StrLen(PChar(RemoveChar(Trim(dmPdv.qsFornecINSCESTADUAL.AsString))));
+      if ((dmPdv.qsFornecTIPOFIRMA.AsInteger = 0) and (Trim(dmPdv.qsFornecCODFISCAL.AsString) = '9')) then
       begin
         IERG := 0;
       end;
-      if (dmPdv.qsFornecCODFISCAL.AsString = '9') then
+      if (Trim(dmPdv.qsFornecCODFISCAL.AsString) = '9') then
       begin
         vTipoFiscal := '9';
       end;
@@ -3424,24 +3426,24 @@ begin
         Dest.indIEDest := inNaoContribuinte;
       end
       else begin
-        if (dmPdv.qsFornecINSCESTADUAL.AsString = 'ISENTO') then
+        if (Trim(dmPdv.qsFornecINSCESTADUAL.AsString) = 'ISENTO') then
         begin
           Dest.indIEDest := inIsento;
         end
         else begin
           Dest.indIEDest := inContribuinte; //, inIsento, inNaoContribuinte
-          if ((dmPdv.qsFornecUF.AsString = 'SP') or (dmPdv.qsFornecUF.AsString = 'MG')) then
+          if ((Trim(dmPdv.qsFornecUF.AsString) = 'SP') or (Trim(dmPdv.qsFornecUF.AsString) = 'MG')) then
           begin
             if (IERG > 11) then
             begin
-              Dest.IE := RemoveChar(dmPdv.qsFornecINSCESTADUAL.AsString);
+              Dest.IE := RemoveChar(Trim(dmPdv.qsFornecINSCESTADUAL.AsString));
             end;
           end
           else begin
-            if (dmPdv.qsFornecUF.AsString <> 'EX') then
+            if (Trim(dmPdv.qsFornecUF.AsString) <> 'EX') then
             begin
               if (IERG >= 5) then
-                Dest.IE := RemoveChar(dmPdv.qsFornecINSCESTADUAL.AsString);
+                Dest.IE := RemoveChar(Trim(dmPdv.qsFornecINSCESTADUAL.AsString));
             end;
           end;
         end;
@@ -3451,27 +3453,27 @@ begin
     else
     begin
 
-      if (dmPdv.qsClienteUF.AsString <> 'EX') then
-        Dest.CNPJCPF := RemoveChar(dmPdv.qsClienteCNPJ.AsString);
-      Dest.xNome             := dmPdv.qsClienteRAZAOSOCIAL.AsString;
+      if (Trim(dmPdv.qsClienteUF.AsString) <> 'EX') then
+        Dest.CNPJCPF := RemoveChar(Trim(dmPdv.qsClienteCNPJ.AsString));
+      Dest.xNome             := Trim(dmPdv.qsClienteRAZAOSOCIAL.AsString);
 
 
       if (dmPdv.qsClienteSUFRAMA.Size = 9) then
       begin
-        pSuframa  := dmPdv.qsClienteSUFRAMA.AsString;
-        Dest.ISUF := dmPdv.qsClienteSUFRAMA.AsString;
+        pSuframa  := Trim(dmPdv.qsClienteSUFRAMA.AsString);
+        Dest.ISUF := Trim(dmPdv.qsClienteSUFRAMA.AsString);
       end;
-      Dest.EnderDest.xLgr := dmPdv.qsClienteLOGRADOURO.AsString;
+      Dest.EnderDest.xLgr := Trim(dmPdv.qsClienteLOGRADOURO.AsString);
 
-      if ((dmPdv.qsClienteNUMERO.IsNull) or (dmPdv.qsClienteNUMERO.AsString = '')) then
+      if ((dmPdv.qsClienteNUMERO.IsNull) or (Trim(dmPdv.qsClienteNUMERO.AsString) = '')) then
       begin
         Dest.EnderDest.nro     := 'S/N';
       end
       else
-        Dest.EnderDest.nro     := dmPdv.qsClienteNUMERO.AsString;
-      if ((not dmPdv.qsClienteCOMPLEMENTO.IsNull) or ( dmPdv.qsClienteCOMPLEMENTO.AsString <> '')) then
-        Dest.EnderDest.xCpl    := dmPdv.qsClienteCOMPLEMENTO.AsString;
-      Dest.EnderDest.xBairro := dmPdv.qsClienteBAIRRO.AsString;
+        Dest.EnderDest.nro     := Trim(dmPdv.qsClienteNUMERO.AsString);
+      if ((not dmPdv.qsClienteCOMPLEMENTO.IsNull) or ( Trim(dmPdv.qsClienteCOMPLEMENTO.AsString) <> '')) then
+        Dest.EnderDest.xCpl    := Trim(dmPdv.qsClienteCOMPLEMENTO.AsString);
+      Dest.EnderDest.xBairro := Trim(dmPdv.qsClienteBAIRRO.AsString);
 
       if (trim(dmPdv.qsClienteCD_IBGE.AsString) = '') then
       begin
@@ -3479,36 +3481,36 @@ begin
         Exit;
       end
       else
-        Dest.EnderDest.cMun    := StrToInt(RemoveChar(dmPdv.qsClienteCD_IBGE.AsString));
+        Dest.EnderDest.cMun    := StrToInt(RemoveChar(Trim(dmPdv.qsClienteCD_IBGE.AsString)));
 
-      Dest.EnderDest.xMun    := dmPdv.qsClienteCIDADE.AsString;
-      Dest.EnderDest.UF      := dmPdv.qsClienteUF.AsString;
+      Dest.EnderDest.xMun    := Trim(dmPdv.qsClienteCIDADE.AsString);
+      Dest.EnderDest.UF      := Trim(dmPdv.qsClienteUF.AsString);
 
-      if (trim(RemoveChar(dmPdv.qsClienteCEP.AsString)) = '') then
+      if (RemoveChar(Trim(dmPdv.qsClienteCEP.AsString)) = '') then
       begin
         MessageDlg('Cliente' + dmPdv.qsClienteRAZAOSOCIAL.AsString +  ' sem CEP.', mtWarning, [mbOK], 0);
         Exit;
       end
       else
-        Dest.EnderDest.CEP     := StrToInt(RemoveChar(dmPdv.qsClienteCEP.AsString));
+        Dest.EnderDest.CEP     := StrToInt(RemoveChar(Trim(dmPdv.qsClienteCEP.AsString)));
 
       Dest.EnderDest.cPais   := 1058 ; // StrToInt(dmPdv.qsClienteCODPAIS.AsString);
-      Dest.EnderDest.xPais   := dmPdv.qsClientePAIS.AsString;
-      Dest.EnderDest.Fone    := dmPdv.qsClienteDDD.AsString + dmPdv.qsClienteTELEFONE.AsString;
-      if (dmPdv.qsClienteINSCESTADUAL.AsString = 'ISENTO') then
+      Dest.EnderDest.xPais   := Trim(dmPdv.qsClientePAIS.AsString);
+      Dest.EnderDest.Fone    := Trim(dmPdv.qsClienteDDD.AsString) + Trim(dmPdv.qsClienteTELEFONE.AsString);
+      if (Trim(dmPdv.qsClienteINSCESTADUAL.AsString) = 'ISENTO') then
       begin
         //Dest.indIEDest := inIsento;
       end
       else begin
         IERG := 0;
-        IERG := StrLen(PChar(RemoveChar(dmPdv.qsClienteINSCESTADUAL.AsString)));
+        IERG := StrLen(PChar(RemoveChar(Trim(dmPdv.qsClienteINSCESTADUAL.AsString))));
         if ((dmPdv.qsClienteTIPOFIRMA.AsInteger = 0)
-          and (dmPdv.qsClienteCODFISCAL.AsString = '9')
-          and (dmPdv.qsClienteTEM_IE.AsString <> 'S')) then
+          and (Trim(dmPdv.qsClienteCODFISCAL.AsString) = '9')
+          and (Trim(dmPdv.qsClienteTEM_IE.AsString) <> 'S')) then
         begin
           IERG := 0;
         end;
-        if (dmPdv.qsClienteCODFISCAL.AsString = '9') then
+        if (Trim(dmPdv.qsClienteCODFISCAL.AsString) = '9') then
         begin
           vTipoFiscal := '9';
         end;
@@ -3528,18 +3530,18 @@ begin
           end;
           //Dest.indIEDest := inContribuinte; //, inIsento, inNaoContribuinte
           }
-          if ((dmPdv.qsClienteUF.AsString = 'SP') or (dmPdv.qsClienteUF.AsString = 'MG')) then
+          if ((Trim(dmPdv.qsClienteUF.AsString) = 'SP') or (Trim(dmPdv.qsClienteUF.AsString) = 'MG')) then
           begin
             if (IERG > 11) then
             begin
-              Dest.IE := RemoveChar(dmPdv.qsClienteINSCESTADUAL.AsString);
+              Dest.IE := RemoveChar(Trim(dmPdv.qsClienteINSCESTADUAL.AsString));
             end;
           end
           else begin
-            if (dmPdv.qsClienteUF.AsString <> 'EX') then
+            if (Trim(dmPdv.qsClienteUF.AsString) <> 'EX') then
             begin
               if (IERG >= 5) then
-                Dest.IE := RemoveChar(dmPdv.qsClienteINSCESTADUAL.AsString);
+                Dest.IE := RemoveChar(Trim(dmPdv.qsClienteINSCESTADUAL.AsString));
             end;
           end;
         end;
@@ -3550,11 +3552,11 @@ begin
       //begin
       //  Dest.indIEDest := inNaoContribuinte;
       //end;
-      if (dmPdv.qcdsNFIND_IEDEST.AsString = 'inNaoContribuinte') then
+      if (Trim(dmPdv.qcdsNFIND_IEDEST.AsString) = 'inNaoContribuinte') then
         Dest.indIEDest := inNaoContribuinte
       else
         Dest.indIEDest := inContribuinte;
-      if (dmPdv.qcdsNFIND_IEDEST.AsString = 'inIsento') then
+      if (Trim(dmPdv.qcdsNFIND_IEDEST.AsString) = 'inIsento') then
         Dest.indIEDest := inIsento;
 
       // ENDERECO ENTREGA
@@ -3570,14 +3572,14 @@ begin
         dmPdv.qsEndEntrega.Open;
         if not dmPdv.qsEndEntrega.IsEmpty then
         begin
-          Entrega.CNPJCPF := RemoveChar(dmPdv.qsClienteCNPJ.AsString);
-          Entrega.xLgr := dmPdv.qsEndEntregaLOGRADOURO.AsString;
-          Entrega.nro := dmPdv.qsEndEntregaNUMERO.AsString;
-          Entrega.xBairro := dmPdv.qsEndEntregaBAIRRO.AsString;
+          Entrega.CNPJCPF := RemoveChar(Trim(dmPdv.qsClienteCNPJ.AsString));
+          Entrega.xLgr := Trim(dmPdv.qsEndEntregaLOGRADOURO.AsString);
+          Entrega.nro := Trim(dmPdv.qsEndEntregaNUMERO.AsString);
+          Entrega.xBairro := Trim(dmPdv.qsEndEntregaBAIRRO.AsString);
           Entrega.cMun := StrToInt(RemoveChar(dmPdv.qsClienteCD_IBGE.AsString));
-          Entrega.xMun := dmPdv.qsEndEntregaCIDADE.AsString;
-          Entrega.UF := dmPdv.qsEndEntregaUF.AsString;
-          Entrega.CEP := StrToInt(RemoveChar(dmPdv.qsClienteCEP.AsString));
+          Entrega.xMun := Trim(dmPdv.qsEndEntregaCIDADE.AsString);
+          Entrega.UF := Trim(dmPdv.qsEndEntregaUF.AsString);
+          Entrega.CEP := StrToInt(RemoveChar(Trim(dmPdv.qsClienteCEP.AsString)));
         end;
       end;
 
@@ -3601,60 +3603,60 @@ begin
     with Det.Add do
     begin
       if (not dmPdv.cdsItensNFPEDIDO.IsNull) then
-        Prod.xPed := dmPdv.cdsItensNFPEDIDO.AsString;
+        Prod.xPed := Trim(dmPdv.cdsItensNFPEDIDO.AsString);
       if (not dmPdv.cdsItensNFNITEMPED.IsNull) then
         Prod.nItemPed := IntToStr(dmPdv.cdsItensNFNITEMPED.AsInteger);
       if (dmPdv.qsCFOP.Active) then
         dmPdv.qsCFOP.Close;
-      dmPdv.qsCFOP.Params[1].AsString := dmPdv.cdsItensNFCFOP.AsString;
+      dmPdv.qsCFOP.Params[1].AsString := Trim(dmPdv.cdsItensNFCFOP.AsString);
       if (cbTipoNota.ItemIndex = 1) then
-        dmPdv.qsCFOP.Params[0].AsString := dmPdv.qsClienteUF.AsString
+        dmPdv.qsCFOP.Params[0].AsString := Trim(dmPdv.qsClienteUF.AsString)
       else
-        dmPdv.qsCFOP.Params[0].AsString := dmPdv.qsFornecUF.AsString;
+        dmPdv.qsCFOP.Params[0].AsString := Trim(dmPdv.qsFornecUF.AsString);
       dmPdv.qsCFOP.Open;
 
       Prod.nItem    := contador;
       if (mascaraProduto <> '') then
-        Prod.cProd    := FormatMaskText(mascaraProduto+';0;_', dmPdv.cdsItensNFCODPRO.AsString)
+        Prod.cProd    := FormatMaskText(mascaraProduto+';0;_', Trim(dmPdv.cdsItensNFCODPRO.AsString))
       else
-        Prod.cProd    := dmPdv.cdsItensNFCODPRO.AsString;
+        Prod.cProd    := Trim(dmPdv.cdsItensNFCODPRO.AsString);
 
-      Prod.xProd    := LeftStr(dmPdv.cdsItensNFDESCPRODUTO.AsString, 99);
-      Prod.CFOP     := dmPdv.cdsItensNFCFOP.AsString;
-      Prod.uCom     := dmPdv.qsProdutosUNIDADEMEDIDA.AsString;
+      Prod.xProd    := LeftStr(Trim(dmPdv.cdsItensNFDESCPRODUTO.AsString), 99);
+      Prod.CFOP     := Trim(dmPdv.cdsItensNFCFOP.AsString);
+      Prod.uCom     := Trim(dmPdv.qsProdutosUNIDADEMEDIDA.AsString);
       Prod.qCom     := dmPdv.cdsItensNFQUANTIDADE.AsFloat;
       Prod.vUnCom   := dmPdv.cdsItensNFVLR_BASE.AsFloat;
-      Prod.uTrib    := dmPdv.qsProdutosUNIDADEMEDIDA.AsString;
+      Prod.uTrib    := Trim(dmPdv.qsProdutosUNIDADEMEDIDA.AsString);
       Prod.qTrib    := dmPdv.cdsItensNFQUANTIDADE.AsFloat;
       Prod.vUnTrib  := dmPdv.cdsItensNFVLR_BASE.AsFloat;
 
-      if((dmPdv.cdsItensNFLOTE.AsString <> '0')and(dmPdv.cdsItensNFLOTE.AsString <> '')) then
+      if((Trim(dmPdv.cdsItensNFLOTE.AsString) <> '0')and(Trim(dmPdv.cdsItensNFLOTE.AsString) <> '')) then
       begin
         with prod.rastro.Add do
         begin
-          nLote  := dmPdv.cdsItensNFLOTE.AsString ;
+          nLote  := Trim(dmPdv.cdsItensNFLOTE.AsString);
           qLote  := dmPdv.cdsItensNFQUANTIDADE.AsFloat;
           dFab   := dmPdv.cdsItensNFDTAFAB.AsDateTime;
           dVal   := dmPdv.cdsItensNFDTAVCTO.AsDateTime;
-          cAgreg := dmPdv.cdsItensNFCODPRO.AsString;
+          cAgreg := Trim(dmPdv.cdsItensNFCODPRO.AsString);
         end;
       end;
 
-      if (EAN13Valido(dmPdv.cdsItensNFCOD_BARRA.AsString)) then
+      if (EAN13Valido(Trim(dmPdv.cdsItensNFCOD_BARRA.AsString))) then
       begin
-        Prod.cEAN     := dmPdv.cdsItensNFCOD_BARRA.AsString;
-        Prod.cEANTrib := dmPdv.cdsItensNFCOD_BARRA.AsString;
+        Prod.cEAN     := Trim(dmPdv.cdsItensNFCOD_BARRA.AsString);
+        Prod.cEANTrib := Trim(dmPdv.cdsItensNFCOD_BARRA.AsString);
       end else
       begin
         Prod.cEAN     := 'SEM GTIN';
         Prod.cEANTrib := 'SEM GTIN';
       end;
 
-      desc := StrLen(PChar(MidStr(dmPdv.cdsItensNFDESCPRODUTO.AsString, 100, 200)));
+      desc := StrLen(PChar(MidStr(Trim(dmPdv.cdsItensNFDESCPRODUTO.AsString), 100, 200)));
       if ( desc > 0) then
-        inf_add_prd := MidStr(dmPdv.cdsItensNFDESCPRODUTO.AsString, 100, 200)  + dmPdv.cdsItensNFOBS.AsString
+        inf_add_prd := MidStr(Trim(dmPdv.cdsItensNFDESCPRODUTO.AsString), 100, 200)  + Trim(dmPdv.cdsItensNFOBS.AsString)
       else
-        inf_add_prd := inf_add_prd + dmPdv.cdsItensNFOBS.AsString;
+        inf_add_prd := inf_add_prd + Trim(dmPdv.cdsItensNFOBS.AsString);
       //if ((cdsItensNFVLRTOT_TRIB.AsFloat > 0) and (dm.vTipoFiscal = '9'))  then
       if (dmPdv.cdsItensNFVLRTOT_TRIB.AsFloat > 0)  then
       begin
@@ -3669,9 +3671,9 @@ begin
         inf_add_prd := inf_add_prd + ' ' + nfe_itens_tottrib;
       end;
       infAdProd := inf_add_prd;
-      Prod.NCM      := dmPdv.qsProdutosNCM.AsString;
-      if (dmPdv.cdsItensNFCEST.AsString <> '') then
-        Prod.CEST := dmPdv.cdsItensNFCEST.AsString;
+      Prod.NCM      := Trim(dmPdv.qsProdutosNCM.AsString);
+      if (Trim(dmPdv.cdsItensNFCEST.AsString) <> '') then
+        Prod.CEST := Trim(dmPdv.cdsItensNFCEST.AsString);
       Prod.vProd  := dmPdv.cdsItensNFVALTOTAL.AsFloat;
       Prod.vFrete := dmPdv.cdsItensNFFRETE.AsCurrency;
 
@@ -3694,17 +3696,17 @@ begin
           dmPdv.sDI.Open;
           with prod.DI.Add do
           begin
-            nDi         := dmPdv.sDIDI_NUMDI.AsString;
+            nDi         := Trim(dmPdv.sDIDI_NUMDI.AsString);
             dDi         := dmPdv.sDIDI_DATA.AsDateTime;
-            xLocDesemb  := dmPdv.sDIDI_LOCALDESEMB.AsString;
-            UFDesemb    := dmPdv.sDIDI_UFDESEMB.AsString;
+            xLocDesemb  := Trim(dmPdv.sDIDI_LOCALDESEMB.AsString);
+            UFDesemb    := Trim(dmPdv.sDIDI_UFDESEMB.AsString);
             dDesemb     := dmPdv.sDIDI_DATADESEMB.AsDateTime;
-            cExportador := dmPdv.sDIDI_CODEXPORTADOR.AsString;
+            cExportador := Trim(dmPdv.sDIDI_CODEXPORTADOR.AsString);
             with adi.Add do
             begin
               nAdicao     := dmPdv.sAdicaoADIC_NADICAO.AsInteger;
               nSeqAdi     := dmPdv.sAdicaoADIC_NSEQUEN.AsInteger;
-              cFabricante := dmPdv.sAdicaoADIC_CODFAB.AsString;
+              cFabricante := Trim(dmPdv.sAdicaoADIC_CODFAB.AsString);
               vDescDI     := dmPdv.sAdicaoADIC_VDESC.AsInteger;
             end;
           end;
@@ -3720,7 +3722,7 @@ begin
           with prod.comb do
           begin
             try
-              cProdANP := StrToInt(dmPdv.sdsProd_CombCPRODANP.AsString);
+              cProdANP := StrToInt(Trim(dmPdv.sdsProd_CombCPRODANP.AsString));
             except
               MessageDlg('O Código tem que ser Númerico.', mtWarning, [mbOK], 0);
               exit;
@@ -3731,7 +3733,7 @@ begin
             qTemp := dmPdv.cdsItensNFQUANTIDADE.AsFloat;
 
             // incluido 27/07/18
-            Prod.comb.descANP := dmPdv.cdsItensNFOBS.AsString;
+            Prod.comb.descANP := Trim(dmPdv.cdsItensNFOBS.AsString);
               //-- Percentual de GLP --
             pGLP  := dmPdv.cdsItensNFPGLP.AsCurrency; // 60.00
             //-- Percentual de Gás Natural --
@@ -3755,33 +3757,33 @@ begin
         Imposto.IPI.cEnq := trim(dmPdv.cdsItensNFCST_IPI_CENQ.AsString);
         with IPI do
         begin
-          if (dmPdv.cdsItensNFCSTIPI.AsString = '00') then
+          if (Trim(dmPdv.cdsItensNFCSTIPI.AsString) = '00') then
             CST := ipi00
-          else if (dmPdv.cdsItensNFCSTIPI.AsString = '01') then
+          else if (Trim(dmPdv.cdsItensNFCSTIPI.AsString) = '01') then
             CST := ipi01
-          else if (dmPdv.cdsItensNFCSTIPI.AsString = '02') then
+          else if (Trim(dmPdv.cdsItensNFCSTIPI.AsString) = '02') then
             CST := ipi02
-          else if (dmPdv.cdsItensNFCSTIPI.AsString = '03') then
+          else if (Trim(dmPdv.cdsItensNFCSTIPI.AsString) = '03') then
             CST := ipi03
-          else if (dmPdv.cdsItensNFCSTIPI.AsString = '04') then
+          else if (Trim(dmPdv.cdsItensNFCSTIPI.AsString) = '04') then
             CST :=  ipi04
-          else if (dmPdv.cdsItensNFCSTIPI.AsString = '05') then
+          else if (Trim(dmPdv.cdsItensNFCSTIPI.AsString) = '05') then
             CST :=  ipi05
-          else if (dmPdv.cdsItensNFCSTIPI.AsString = '49') then
+          else if (Trim(dmPdv.cdsItensNFCSTIPI.AsString) = '49') then
             CST :=  ipi49
-          else if (dmPdv.cdsItensNFCSTIPI.AsString = '50') then
+          else if (Trim(dmPdv.cdsItensNFCSTIPI.AsString) = '50') then
             CST := ipi50
-          else if (dmPdv.cdsItensNFCSTIPI.AsString = '51') then
+          else if (Trim(dmPdv.cdsItensNFCSTIPI.AsString) = '51') then
             CST := ipi51
-          else if (dmPdv.cdsItensNFCSTIPI.AsString = '52') then
+          else if (Trim(dmPdv.cdsItensNFCSTIPI.AsString) = '52') then
             CST := ipi52
-          else if (dmPdv.cdsItensNFCSTIPI.AsString = '53') then
+          else if (Trim(dmPdv.cdsItensNFCSTIPI.AsString) = '53') then
             CST := ipi53
-          else if (dmPdv.cdsItensNFCSTIPI.AsString = '54') then
+          else if (Trim(dmPdv.cdsItensNFCSTIPI.AsString) = '54') then
             CST := ipi54
-          else if (dmPdv.cdsItensNFCSTIPI.AsString = '55') then
+          else if (Trim(dmPdv.cdsItensNFCSTIPI.AsString) = '55') then
             CST := ipi55
-          else if (dmPdv.cdsItensNFCSTIPI.AsString = '99') then
+          else if (Trim(dmPdv.cdsItensNFCSTIPI.AsString) = '99') then
             CST := ipi99
           else
             CST := ipi00;
@@ -3810,11 +3812,11 @@ begin
           if(dmPdv.qsEmpresaCRT.AsInteger = 0) then
           begin
             cst_parte := '00';
-            if ((dmPdv.cdsItensNFCSOSN.AsString = null) or (dmPdv.cdsItensNFCSOSN.AsString = '')) then
+            if ((Trim(dmPdv.cdsItensNFCSOSN.AsString) = null) or (Trim(dmPdv.cdsItensNFCSOSN.AsString) = '')) then
             begin
               CSOSN := csosnVazio;
             end
-            else if (dmPdv.cdsItensNFCSOSN.AsString = '101') then
+            else if (Trim(dmPdv.cdsItensNFCSOSN.AsString) = '101') then
             begin
               CSOSN := csosn101;
               if (ACBrNFe1.NotasFiscais.Items[0].NFe.Emit.CRT = crtSimplesNacional ) then
@@ -3826,11 +3828,11 @@ begin
                 end;
               end;
             end
-            else if (dmPdv.cdsItensNFCSOSN.AsString = '102') then
+            else if (Trim(dmPdv.cdsItensNFCSOSN.AsString) = '102') then
               CSOSN := csosn102
-            else if (dmPdv.cdsItensNFCSOSN.AsString = '103') then
+            else if (Trim(dmPdv.cdsItensNFCSOSN.AsString) = '103') then
               CSOSN := csosn103
-            else if (dmPdv.cdsItensNFCSOSN.AsString = '201') then
+            else if (Trim(dmPdv.cdsItensNFCSOSN.AsString) = '201') then
             begin
               CSOSN := csosn201;
               vBCFCPST := dmPdv.cdsItensNFV_B_FCPST.Value;
@@ -3845,20 +3847,20 @@ begin
                 end;
               end;
             end
-            else if (dmPdv.cdsItensNFCSOSN.AsString = '202') then
+            else if (Trim(dmPdv.cdsItensNFCSOSN.AsString) = '202') then
             begin
               CSOSN := csosn202;
               vBCFCPST := dmPdv.cdsItensNFV_B_FCPST.Value;
               pFCPST   := dmPdv.cdsItensNFP_FCPST.Value;
               vFCPST   := dmPdv.cdsItensNFV_FCPST.Value;
             end
-            else if (dmPdv.cdsItensNFCSOSN.AsString = '203') then
+            else if (Trim(dmPdv.cdsItensNFCSOSN.AsString) = '203') then
               CSOSN := csosn203
-            else if (dmPdv.cdsItensNFCSOSN.AsString = '300') then
+            else if (Trim(dmPdv.cdsItensNFCSOSN.AsString) = '300') then
               CSOSN := csosn300
-            else if (dmPdv.cdsItensNFCSOSN.AsString = '400') then
+            else if (Trim(dmPdv.cdsItensNFCSOSN.AsString) = '400') then
               CSOSN := csosn400
-            else if (dmPdv.cdsItensNFCSOSN.AsString = '500') then
+            else if (Trim(dmPdv.cdsItensNFCSOSN.AsString) = '500') then
             begin
               CSOSN            := csosn500;
               pST              := dmPdv.cdsItensNFICMS_PST.Value;
@@ -3867,7 +3869,7 @@ begin
               vFCPSTRet        := dmPdv.cdsItensNFV_FCPSTRET.Value;
               vICMSSubstituto  := 0;
             end
-            else if (dmPdv.cdsItensNFCSOSN.AsString = '900') then
+            else if (Trim(dmPdv.cdsItensNFCSOSN.AsString) = '900') then
             begin
               CSOSN := csosn900;
               vBCFCPST := dmPdv.cdsItensNFV_B_FCPST.Value;
@@ -3875,6 +3877,8 @@ begin
               vFCPST   := dmPdv.cdsItensNFV_FCPST.Value;
             end;
           end;
+
+          TODO PAREI AQUI DE COLOCAR O TRIM
 
           // CST's
           //10 TRIBUTADA

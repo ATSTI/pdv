@@ -1244,14 +1244,14 @@ begin
     if (Trim(sqParametroPARAMETRO.AsString) = 'CENTROCUSTO') then
     begin
       if (ccusto = '') then
-        ccusto:=sqParametroDADOS.AsString;
+        ccusto := Trim(sqParametroDADOS.AsString);
 
-      ccusto_padrao:=sqParametroD1.AsString;
+      ccusto_padrao := Trim(sqParametroD1.AsString);
     end;
     if (Trim(sqParametroPARAMETRO.AsString) = 'SERIENFCe') then
     begin
-      tk := sqParametroDADOS.AsString;
-      id_tk := sqParametroD4.AsString;
+      tk := Trim(sqParametroDADOS.AsString);
+      id_tk := Trim(sqParametroD4.AsString);
     end;
     if (Trim(sqParametroPARAMETRO.AsString) = 'CONSUMIDOR') then
     begin

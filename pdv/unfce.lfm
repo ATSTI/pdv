@@ -10,7 +10,7 @@ object fNfce: TfNfce
   OnDestroy = FormDestroy
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '2.0.4.0'
+  LCLVersion = '2.0.6.0'
   object edCPF: TMaskEdit
     Left = 120
     Height = 34
@@ -32,10 +32,10 @@ object fNfce: TfNfce
   end
   object edCertificado: TLabeledEdit
     Left = 362
-    Height = 23
+    Height = 21
     Top = 28
     Width = 180
-    EditLabel.Height = 15
+    EditLabel.Height = 13
     EditLabel.Width = 180
     EditLabel.Caption = 'Certificado'
     EditLabel.ParentColor = False
@@ -83,10 +83,10 @@ object fNfce: TfNfce
   end
   object edNFce: TLabeledEdit
     Left = 16
-    Height = 23
+    Height = 21
     Top = 29
     Width = 72
-    EditLabel.Height = 15
+    EditLabel.Height = 13
     EditLabel.Width = 72
     EditLabel.Caption = 'Num. NFe'
     EditLabel.ParentColor = False
@@ -107,7 +107,7 @@ object fNfce: TfNfce
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 8
-    ClientHeight = 17
+    ClientHeight = 19
     ClientWidth = 612
     Columns = 8
     Items.Strings = (
@@ -125,7 +125,7 @@ object fNfce: TfNfce
   end
   object lblProtocolo: TLabel
     Left = 19
-    Height = 15
+    Height = 13
     Top = 55
     Width = 3
     Caption = '.'
@@ -141,7 +141,7 @@ object fNfce: TfNfce
     TabOrder = 5
     object TabSheet4: TTabSheet
       Caption = 'NFCe'
-      ClientHeight = 380
+      ClientHeight = 382
       ClientWidth = 638
       object BitBtn3: TBitBtn
         Cursor = crHandPoint
@@ -3015,40 +3015,40 @@ object fNfce: TfNfce
           ClientWidth = 633
           object cbSSLLib: TComboBox
             Left = 83
-            Height = 23
+            Height = 21
             Top = 22
             Width = 172
-            ItemHeight = 15
+            ItemHeight = 13
             OnChange = cbSSLLibChange
             TabOrder = 0
             Text = 'cbSSLLib'
           end
           object cbCryptLib: TComboBox
             Left = 83
-            Height = 23
+            Height = 21
             Top = 52
             Width = 172
-            ItemHeight = 15
+            ItemHeight = 13
             OnChange = cbCryptLibChange
             TabOrder = 1
             Text = 'cbCryptLib'
           end
           object cbXmlSignLib: TComboBox
             Left = 83
-            Height = 23
+            Height = 21
             Top = 112
             Width = 172
-            ItemHeight = 15
+            ItemHeight = 13
             OnChange = cbXmlSignLibChange
             TabOrder = 2
             Text = 'cbXmlSignLib'
           end
           object cbHttpLib: TComboBox
             Left = 83
-            Height = 23
+            Height = 21
             Top = 82
             Width = 172
-            ItemHeight = 15
+            ItemHeight = 13
             OnChange = cbHttpLibChange
             TabOrder = 3
             Text = 'cbHttpLib'
@@ -3129,10 +3129,10 @@ object fNfce: TfNfce
           end
           object cbxModeloPosPrinter: TComboBox
             Left = 83
-            Height = 23
+            Height = 21
             Top = 144
             Width = 172
-            ItemHeight = 15
+            ItemHeight = 13
             TabOrder = 8
           end
           object Label4: TLabel
@@ -3198,7 +3198,7 @@ object fNfce: TfNfce
             ChildSizing.ShrinkVertical = crsScaleChilds
             ChildSizing.Layout = cclLeftToRightThenTopToBottom
             ChildSizing.ControlsPerLine = 2
-            ClientHeight = 19
+            ClientHeight = 21
             ClientWidth = 181
             Columns = 2
             Items.Strings = (
@@ -3381,7 +3381,7 @@ object fNfce: TfNfce
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 2
-    ClientHeight = 20
+    ClientHeight = 22
     ClientWidth = 230
     Columns = 2
     ItemIndex = 0
@@ -3406,8 +3406,8 @@ object fNfce: TfNfce
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 23
-    Top = 485
+    Height = 20
+    Top = 488
     Width = 687
     Panels = <    
       item
@@ -3429,15 +3429,15 @@ object fNfce: TfNfce
     Visible = False
     object Label10: TLabel
       Left = 45
-      Height = 15
+      Height = 13
       Top = 17
-      Width = 124
+      Width = 119
       Caption = 'Motivo Cancelamento :'
       ParentColor = False
     end
     object edCancelamentoMotivo: TEdit
       Left = 27
-      Height = 23
+      Height = 21
       Top = 50
       Width = 229
       TabOrder = 0
@@ -3453,7 +3453,7 @@ object fNfce: TfNfce
     end
     object lblCancelamento: TLabel
       Left = 9
-      Height = 15
+      Height = 13
       Top = 139
       Width = 6
       Caption = '..'
@@ -3470,7 +3470,7 @@ object fNfce: TfNfce
     end
     object lblCancelamento2: TLabel
       Left = 6
-      Height = 15
+      Height = 13
       Top = 156
       Width = 9
       Caption = '...'
@@ -3521,6 +3521,12 @@ object fNfce: TfNfce
     MargemSuperior = 0.2
     MargemEsquerda = 0.2
     MargemDireita = 0.2
+    ExpandeLogoMarcaConfig.Altura = 0
+    ExpandeLogoMarcaConfig.Esquerda = 0
+    ExpandeLogoMarcaConfig.Topo = 0
+    ExpandeLogoMarcaConfig.Largura = 0
+    ExpandeLogoMarcaConfig.Dimensionar = False
+    ExpandeLogoMarcaConfig.Esticar = True
     CasasDecimais.Formato = tdetInteger
     CasasDecimais.qCom = 4
     CasasDecimais.vUnCom = 4
@@ -3528,10 +3534,11 @@ object fNfce: TfNfce
     CasasDecimais.MaskvUnCom = ',0.00'
     ACBrNFe = ACBrNFe1
     TipoDANFE = tiNFCe
-    ImprimeEmUmaLinha = True
     LarguraBobina = 280
     ImprimeQRCodeLateral = True
     EspacoFinal = 0
+    ImprimeEmUmaLinha = True
+    FormularioContinuo = True
     PosPrinter = ACBrPosPrinter1
     left = 325
     top = 45
@@ -3566,6 +3573,12 @@ object fNfce: TfNfce
     MargemSuperior = 0.8
     MargemEsquerda = 0.6
     MargemDireita = 0.51
+    ExpandeLogoMarcaConfig.Altura = 0
+    ExpandeLogoMarcaConfig.Esquerda = 0
+    ExpandeLogoMarcaConfig.Topo = 0
+    ExpandeLogoMarcaConfig.Largura = 0
+    ExpandeLogoMarcaConfig.Dimensionar = False
+    ExpandeLogoMarcaConfig.Esticar = True
     CasasDecimais.Formato = tdetInteger
     CasasDecimais.qCom = 2
     CasasDecimais.vUnCom = 2
@@ -3573,6 +3586,7 @@ object fNfce: TfNfce
     CasasDecimais.MaskvUnCom = ',0.00'
     ACBrSAT = ACBrSAT1
     MsgAppQRCode = 'Consulte o QR Code pelo aplicativo  "De olho na nota", disponível na AppStore (Apple) e PlayStore (Android)'
+    FormularioContinuo = True
     PosPrinter = ACBrPosPrinter1
     left = 595
     top = 216
@@ -3607,7 +3621,6 @@ object fNfce: TfNfce
     Configuracoes.WebServices.TimeZoneConf.ModoDeteccao = tzManual
     Configuracoes.WebServices.TimeZoneConf.TimeZoneStr = '-03:00'
     Configuracoes.RespTec.IdCSRT = 0
-    DANFE = ACBrNFeDANFeESCPOS1
     left = 49
     top = 144
   end
@@ -3625,22 +3638,5 @@ object fNfce: TfNfce
     Configuracoes.RespTec.IdCSRT = 0
     left = 617
     top = 367
-  end
-  object ACBrNFeDANFCeFortes1: TACBrNFeDANFCeFortes
-    Sistema = 'Projeto ACBr - www.projetoacbr.com.br'
-    MargemInferior = 0.8
-    MargemSuperior = 0.8
-    MargemEsquerda = 0.6
-    MargemDireita = 0.51
-    CasasDecimais.Formato = tdetInteger
-    CasasDecimais.qCom = 2
-    CasasDecimais.vUnCom = 2
-    CasasDecimais.MaskqCom = ',0.00'
-    CasasDecimais.MaskvUnCom = ',0.00'
-    LarguraBobina = 280
-    FonteLinhaItem.Height = -9
-    FonteLinhaItem.Name = 'Lucida Console'
-    left = 152
-    top = 56
   end
 end

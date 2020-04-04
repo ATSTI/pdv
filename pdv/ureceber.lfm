@@ -937,7 +937,7 @@ object fRecebimento: TfRecebimento
   object conOdoo: TPQConnection
     Connected = False
     LoginPrompt = False
-    DatabaseName = '20_clube'
+    DatabaseName = '20_clube1'
     KeepConnection = False
     Password = 'a2t00s7'
     Transaction = transODoo
@@ -947,7 +947,6 @@ object fRecebimento: TfRecebimento
     top = 200
   end
   object sqlOdoo: TSQLQuery
-    IndexName = 'DEFAULT_ORDER'
     FieldDefs = <    
       item
         Name = 'codrecebimento'
@@ -997,6 +996,11 @@ object fRecebimento: TfRecebimento
         Name = 'reconciled'
         DataType = ftBoolean
         Precision = -1
+      end    
+      item
+        Name = 'invoice_id'
+        DataType = ftInteger
+        Precision = -1
       end>
     Database = conOdoo
     Transaction = transODoo
@@ -1004,7 +1008,7 @@ object fRecebimento: TfRecebimento
       'select aml.id as CODRECEBIMENTO, aml.ref as TITULO, aml.date as EMISSAO,'
       'aml.date_maturity as DATAVENCIMENTO, '''' as DATARECEBIMENTO, rp.name as NOMECLIENTE,'
       'aml.amount_residual as VALORTITULO, aml.amount_residual as VALOR_RESTO'
-      ', aml.reconciled'
+      ', aml.reconciled , aml.invoice_id'
       'from account_move_line aml, account_account aa, account_account_type aat, res_partner rp'
       'where aa.id = aml.account_id'
       '  and aat.id = aa.user_type_id'
@@ -1108,6 +1112,15 @@ object fRecebimento: TfRecebimento
       ReadOnly = False
       Required = False
       DisplayValues = 'True;False'
+    end
+    object sqlOdooinvoice_id: TLongintField
+      FieldKind = fkData
+      FieldName = 'invoice_id'
+      Index = 9
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
     end
   end
   object transODoo: TSQLTransaction

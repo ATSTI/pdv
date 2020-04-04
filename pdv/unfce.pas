@@ -7,7 +7,7 @@ interface
 uses
   Classes, typinfo, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
   MaskEdit, Buttons, StdCtrls, ExtCtrls, ComCtrls, Menus, ActnList, udmpdv,
-  uCertificadoLer, ufrmStatus, ACBrNFe, ACBrNFeDANFeESCPOS, ACBrDANFCeFortesFr,
+  uCertificadoLer, ufrmStatus, ACBrNFe, ACBrNFeDANFeESCPOS,
   pcnConversao, pcnConversaoNFe, ACBrDFeSSL, ACBrPosPrinter, ACBrIntegrador,
   ACBrValidador, ACBrEnterTab, ACBrUtil, ACBrSAT, StrUtils, IniFiles, math,
   ACBrSATClass, ACBrSATExtratoESCPOS, dateutils, ACBrBase, ACBrDFe, ACBrDFeUtil;
@@ -21,7 +21,7 @@ type
     ACBrIntegrador1: TACBrIntegrador;
     ACBrNFe1: TACBrNFe;
     ACBrNFe2: TACBrNFe;
-    ACBrNFeDANFCeFortes1: TACBrNFeDANFCeFortes;
+    //ACBrNFeDANFCeFortes1: TACBrNFeDANFCeFortes;
     ACBrNFeDANFeESCPOS1: TACBrNFeDANFeESCPOS;
     ACBrPosPrinter1: TACBrPosPrinter;
     ACBrSAT1: TACBrSAT;

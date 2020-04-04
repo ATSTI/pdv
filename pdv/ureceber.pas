@@ -47,6 +47,7 @@ type
     sqlOdoodatarecebimento: TMemoField;
     sqlOdoodatavencimento: TDateField;
     sqlOdooemissao: TDateField;
+    sqlOdooinvoice_id: TLongintField;
     sqlOdoonomecliente: TStringField;
     sqlOdooreconciled: TBooleanField;
     sqlOdootitulo: TStringField;
@@ -133,7 +134,7 @@ end;
 procedure TfRecebimento.FormCreate(Sender: TObject);
 var
   conf: TIniFile;
-  vstr: String;
+  vstr, vstrhost: String;
 begin
   if (UpperCase(dmpdv.usoSistema) = 'ODOO') then
   begin
@@ -144,13 +145,17 @@ begin
        try
          vstr := conf.ReadString('DATABASEPG', 'Name', '');
          conOdoo.DatabaseName := vstr;
-         vstr := conf.ReadString('DATABASEPG', 'HostName', '');
-         conOdoo.HostName := vstr;
+         vstrhost := conf.ReadString('DATABASEPG', 'HostName', '');
+         conOdoo.HostName := vstrhost;
        finally
          conf.free;
        end;
     end;
-    conOdoo.Connected:=True;
+    try
+      conOdoo.Connected:=True;
+    except
+      ShowMessage('Erro conexao Database: ' + vstr + ' host: ' + vstrhost);
+    end;
   end;
   DBGrid1.Columns[0].FieldName:='CODRECEBIMENTO';
   DBGrid1.Columns[1].FieldName:='TITULO';
@@ -304,7 +309,7 @@ begin
     ShowMessage('Informe o Valor Pago');
     Exit;
   end;
-  if (dmpdv.usoSistema = 'ATS') then
+  if (UpperCase(dmpdv.usoSistema) = 'ATS') then
   begin
     dmPdv.sqBusca.First;
     str_rec := IntToStr(dmPdv.sqBusca.FieldByName('CODCLIENTE').AsInteger);
@@ -370,6 +375,7 @@ begin
         dmPdv.sqBusca.Next;
       end;
     end;
+    dmPdv.sTrans.Commit;
   end;
   if (UpperCase(dmpdv.usoSistema) = 'ODOO') then
   begin
@@ -393,13 +399,14 @@ begin
             vlr_pg := sqlOdoo.FieldByName('VALOR_RESTO').AsFloat;
           end;
           str_rec := 'INSERT INTO CONTAS_RECEBER (name, invoice_id, valor_titulo,';
-          str_rec += ' valor_recebido, data_recebido, caixa_recebeu) VALUES(';
+          str_rec += ' valor_recebido, data_recebido, caixa_recebeu, forma_recebimento) VALUES(';
           str_rec += QuotedStr(sqlOdoo.FieldByName('TITULO').AsString);
           str_rec += ', ' + IntToStr(sqlOdoo.FieldByName('invoice_id').AsInteger);
           str_rec += ', ' + FloattoStr(vlr_pg);
           str_rec += ', ' + FloattoStr(vlr_pg);
           str_rec += ', ' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now));
-          str_rec += ', ' + dmPdv.idcaixa + ')';
+          str_rec += ', ' + dmPdv.idcaixa;
+          str_rec += ', ' + QuotedStr(vr_formaRec)  + ')';
           vlr_rt -= vlr_pg;
           conOdoo.ExecuteDirect(str_rec);
           enviar_caixa(vlr_pg, sqlOdoo.FieldByName('CODRECEBIMENTO').AsInteger);
@@ -407,9 +414,10 @@ begin
         sqlOdoo.Next;
       end;
     end;
+    transODoo.Commit;
   end;
   DecimalSeparator:=',';
-  dmPdv.sTrans.Commit;
+  ShowMessage('Baixa efetuada com sucesso.');
   btnProcurar.Click;
 end;
 

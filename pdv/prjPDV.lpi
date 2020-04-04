@@ -33,7 +33,7 @@
         <Mode0 Name="default"/>
       </Modes>
     </RunParams>
-    <RequiredPackages Count="16">
+    <RequiredPackages Count="15">
       <Item1>
         <PackageName Value="ACBr_Integrador"/>
       </Item1>
@@ -59,29 +59,26 @@
         <PackageName Value="ACBrDiversos"/>
       </Item8>
       <Item9>
-        <PackageName Value="ACBr_NFCe_DanfeRL"/>
+        <PackageName Value="ACBr_NFe_DanfeESCPOS"/>
       </Item9>
       <Item10>
-        <PackageName Value="ACBr_NFe_DanfeESCPOS"/>
+        <PackageName Value="ACBr_NFe"/>
       </Item10>
       <Item11>
-        <PackageName Value="ACBr_NFe"/>
+        <PackageName Value="DateTimeCtrls"/>
       </Item11>
       <Item12>
-        <PackageName Value="DateTimeCtrls"/>
+        <PackageName Value="FCL"/>
       </Item12>
       <Item13>
-        <PackageName Value="FCL"/>
+        <PackageName Value="RunTimeTypeInfoControls"/>
       </Item13>
       <Item14>
-        <PackageName Value="RunTimeTypeInfoControls"/>
+        <PackageName Value="SynEdit"/>
       </Item14>
       <Item15>
-        <PackageName Value="SynEdit"/>
-      </Item15>
-      <Item16>
         <PackageName Value="LCL"/>
-      </Item16>
+      </Item15>
     </RequiredPackages>
     <Units Count="31">
       <Unit0>
