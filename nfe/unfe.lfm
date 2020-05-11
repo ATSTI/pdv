@@ -1650,7 +1650,7 @@ object fNFe: TfNFe
             Left = 376
             Height = 17
             Top = 0
-            Width = 50
+            Width = 52
             Caption = 'Todas'
             TabOrder = 2
           end

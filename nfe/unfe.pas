@@ -3392,7 +3392,7 @@ begin
       else
         Dest.EnderDest.cMun    := StrToInt(RemoveChar(Trim(dmPdv.qsFornecCD_IBGE.AsString)));
       Dest.EnderDest.xMun    := Trim(dmPdv.qsFornecCIDADE.AsString);
-      Dest.EnderDest.UF      := Trim(dmPdv.qsFornecUF.AsStringTrim(;
+      Dest.EnderDest.UF      := Trim(dmPdv.qsFornecUF.AsString);
       if (trim(dmPdv.qsFornecCEP.AsString) = '') then
       begin
         MessageDlg('Fornecedor' + dmPdv.qsFornecRAZAOSOCIAL.AsString +  'sem CEP.', mtWarning, [mbOK], 0);
@@ -3878,7 +3878,7 @@ begin
             end;
           end;
 
-          TODO PAREI AQUI DE COLOCAR O TRIM
+          //TODO PAREI AQUI DE COLOCAR O TRIM
 
           // CST's
           //10 TRIBUTADA

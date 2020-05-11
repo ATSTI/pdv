@@ -143,7 +143,7 @@ begin
     begin
        conf := TIniFile.Create(dmPdv.path_exe + 'conf.ini');
        try
-         vstr := conf.ReadString('DATABASEPG', 'Name', '');
+         vstr := conf.ReadString('DATABASEPG', 'Database', '');
          conOdoo.DatabaseName := vstr;
          vstrhost := conf.ReadString('DATABASEPG', 'HostName', '');
          conOdoo.HostName := vstrhost;
@@ -154,7 +154,7 @@ begin
     try
       conOdoo.Connected:=True;
     except
-      ShowMessage('Erro conexao Database: ' + vstr + ' host: ' + vstrhost);
+      ShowMessage('Erro conexao Database: ' + vstr + ' HostName: ' + vstrhost);
     end;
   end;
   DBGrid1.Columns[0].FieldName:='CODRECEBIMENTO';
@@ -213,6 +213,7 @@ var
   sql_rec: String;
   total_rec : Double;
 begin
+  total_rec := 0;
   if (UpperCase(dmpdv.usoSistema) = 'ATS') then
   begin
     // buscar contas (recebimento)
@@ -249,11 +250,13 @@ begin
     sqlOdoo.Close;
     dsRec.DataSet := sqlOdoo;
     sql_rec := 'select aml.id as CODRECEBIMENTO, aml.ref as TITULO, aml.date as EMISSAO, ';
-    sql_rec += 'aml.date_maturity as DATAVENCIMENTO, NULL as DATARECEBIMENTO, rp.name as NOMECLIENTE,';
+    sql_rec += 'aml.date_maturity as DATAVENCIMENTO, NULL as DATARECEBIMENTO, ';
+    sql_rec += ' rp.id || '-' || rp.name as NOMECLIENTE,';
     sql_rec += 'aml.amount_residual as VALORTITULO, aml.amount_residual as VALOR_RESTO,';
     sql_rec += ' aml.reconciled, aml.invoice_id ';
     sql_rec += ' FROM account_move_line aml, account_account aa, account_account_type aat, res_partner rp';
     sql_rec += ' WHERE aa.id = aml.account_id and aat.id = aa.user_type_id ';
+    sql_rec += '   AND aml.invoice_id IS NOT NULL ';
     sql_rec += '   AND rp.id = aml.partner_id and aat.type = ' + QuotedStr('receivable');
     if (edNomeCliente.Text <> '') then
     begin

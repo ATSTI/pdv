@@ -1169,12 +1169,14 @@ begin
     try
       vstr := conf.ReadString('DATABASE', 'Name', '');
       IBCon.DatabaseName := vstr;
+      //ShowMessage('BD ' + vstr);
       vstr := conf.ReadString('DATABASE', 'HostName', '');
       path_python := conf.ReadString('PATH', 'PathPython', '');
       path_script := conf.ReadString('PATH', 'PathScript', '');
       path_xml := conf.ReadString('PATH', 'PathXML', path_exe);
       path_imp := conf.ReadString('PATH', 'PathIMP', 'imp.txt');
       IBCon.HostName := vstr;
+      //ShowMessage('Hostname ' + vstr);
       snh:= conf.ReadString('DATABASE', 'Acesso', '');
       portaImp := conf.ReadString('IMPRESSORA', 'porta', '');
       ModeloImp := conf.ReadInteger('IMPRESSORA', 'Modelo', 0);
