@@ -7,7 +7,7 @@ interface
 uses
   Windows, Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls,
   ComCtrls, StdCtrls, DBGrids, Buttons, EditBtn, ACBrNFe, ACBrNFeDANFeRLClass,
-  ACBrDANFCeFortesFr, ACBrValidador, db, Grids, uCertificadoLer, uInutilizar,
+  ACBrValidador, db, Grids, uCertificadoLer, uInutilizar,
   IniFiles, ACBrUtil, pcnConversao, ACBrMail, ACBrIntegrador, pcnConversaoNFe,
   math, MaskUtils, StrUtils, DOM, FileUtil, SynMemo, SynHighlighterXML;
 
@@ -21,7 +21,6 @@ type
     ACBrMail1: TACBrMail;
     ACBrNFe1: TACBrNFe;
     ACBrNFe2: TACBrNFe;
-    ACBrNFeDANFCeFortes1: TACBrNFeDANFCeFortes;
     ACBrNFeDANFeRL1: TACBrNFeDANFeRL;
     ACBrValidador1: TACBrValidador;
     BitBtn1: TBitBtn;
@@ -1635,6 +1634,8 @@ end;
 procedure TfNFe.btnGeraNFeClick(Sender: TObject);
 var v_vlr: String;
 begin
+  //EnviaEmail;
+  //exit;
   if (GerarNFe = False) then
   begin
     ShowMessage('Erro pra gerar a Nota');
@@ -1642,9 +1643,9 @@ begin
   end;
 
   //Gera Envio da Nota
-  ACBrNFeDANFCeFortes1.Site := Trim(dmPdv.qsEmpresaWEB.AsString);
-  ACBrNFeDANFCeFortes1.Email := Trim(dmPdv.qsEmpresaE_MAIL.AsString);
-  ACBrNFeDANFCeFortes1.CasasDecimais.vUnCom := danfeDec;
+  //ACBrNFeDANFCeFortes1.Site := Trim(dmPdv.qsEmpresaWEB.AsString);
+  //ACBrNFeDANFCeFortes1.Email := Trim(dmPdv.qsEmpresaE_MAIL.AsString);
+  //ACBrNFeDANFCeFortes1.CasasDecimais.vUnCom := danfeDec;
 
   ACBrNFeDANFeRL1.Site := Trim(dmPdv.qsEmpresaWEB.AsString);
   ACBrNFeDANFeRL1.Email := Trim(dmPdv.qsEmpresaE_MAIL.AsString);
@@ -1672,25 +1673,27 @@ begin
     gravaRetornoEnvio(Protocolo, Recibo);
 
     FormatSettings.DecimalSeparator := ',';
+    Memolog.Lines.Add('Email Automatico:' + envemail);
     if (envemail = 'S') then
     begin
       lblMsgNfe.Caption := 'Enviando o email para o Cliente';
       if (cbTipoNota.ItemIndex = 1) then
       begin
-        if not(dmPdv.qsCliente.Active) then
-        begin
-          dmPdv.qsCliente.Params[0].AsInteger := dmPdv.qcdsNFCODCLIENTE.AsInteger;
-          dmPdv.qsCliente.Open;
-        end;
-        v_vlr := Trim(dmPdv.qsClienteRAZAOSOCIAL.AsString);
-        v_vlr := Trim(dmPdv.qsClienteE_MAIL.AsString);
-        if (not dmPdv.qsClienteE_MAIL.IsNull) then
-        begin
-          EnviaEmail;
-        end
-        else begin
-          MessageDlg('Não foi possivel Enviar o Email, pois o cliente não possui email em seu cadastro.', mtError, [mbOK], 0);
-        end;
+        //if not(dmPdv.qsCliente.Active) then
+        //begin
+        //  dmPdv.qsCliente.Params[0].AsInteger := dmPdv.qcdsNFCODCLIENTE.AsInteger;
+        //  dmPdv.qsCliente.Open;
+        //end;
+        //v_vlr := Trim(dmPdv.qsClienteRAZAOSOCIAL.AsString);
+        //v_vlr := Trim(dmPdv.qsClienteE_MAIL.AsString);
+        //if (not dmPdv.qsClienteE_MAIL.IsNull) then
+        //begin
+        //  Memolog.Lines.Add('Email Destino:' + Trim(dmPdv.qsClienteE_MAIL.AsString));
+        EnviaEmail;
+        //end
+        //else begin
+        //  MessageDlg('Não foi possivel Enviar o Email, pois o cliente não possui email em seu cadastro.', mtError, [mbOK], 0);
+        //end;
       end;
     end;
   end;
@@ -2282,9 +2285,9 @@ begin
   end;
   dmPdv.qcds_parametro.Close;
 
-  ACBrNFeDANFCeFortes1.UsaSeparadorPathPDF := True;
+  //ACBrNFeDANFCeFortes1.UsaSeparadorPathPDF := True;
   ACBrNFeDANFeRL1.UsaSeparadorPathPDF := True;
-  ACBrNFeDANFCeFortes1.CasasDecimais.vUnCom := danfeDec;
+  {ACBrNFeDANFCeFortes1.CasasDecimais.vUnCom := danfeDec;
   Case danfeDec of
      2 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.00';
      3 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.000';
@@ -2293,7 +2296,7 @@ begin
      6 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.000000';
      7 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.0000000';
      8 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.00000000';
-  end;
+  end;}
   ACBrNFeDANFeRL1.CasasDecimais.vUnCom := danfeDec;
   Case danfeDec of
      2 : ACBrNFeDANFeRL1.CasasDecimais.MaskvUnCom := ',0.00';
@@ -2375,11 +2378,11 @@ begin
   diretorio_schema := diretorio + '\Schemas';
   //envemail := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString);
   ACBrNFe1.DANFE.PathPDF := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString) + '\';
-  if (FilesExists(diretorio + '\logo_nfe.jpg')) then
+  {if (FilesExists(diretorio + '\logo_nfe.jpg')) then
     ACBrNFeDANFCeFortes1.Logo := diretorio + '\logo_nfe.jpg';
   if (FilesExists(diretorio + '\logo.bmp')) then
     ACBrNFeDANFCeFortes1.Logo := diretorio + '\logo.bmp';
-  ACBrNFeDANFCeFortes1.PathPDF := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString) + '\';
+  ACBrNFeDANFCeFortes1.PathPDF := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString) + '\';}
 
   if (FilesExists(diretorio + '\logo.jpg')) then
     ACBrNFeDANFeRL1.Logo := diretorio + '\logo.jpg';
@@ -2503,7 +2506,7 @@ begin
       if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathNFe)) then
         CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathNFe);
 
-      ACBrNFeDANFCeFortes1.PathPDF := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString)  + '\';
+      //ACBrNFeDANFCeFortes1.PathPDF := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString)  + '\';
 
       ACBrNFeDANFeRL1.PathPDF := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString)  + '\';
     end;
@@ -2534,7 +2537,7 @@ begin
   begin
     if (FilesExists(diretorio + '\' +  Trim(dmPdv.qsEmpresaDIVERSOS2.AsString))) then
     begin
-      ACBrNFeDANFCeFortes1.Logo := diretorio + '\' +  Trim(dmPdv.qsEmpresaDIVERSOS2.AsString);
+      //ACBrNFeDANFCeFortes1.Logo := diretorio + '\' +  Trim(dmPdv.qsEmpresaDIVERSOS2.AsString);
       ACBrNFeDANFeRL1.Logo := diretorio + '\' + Trim(dmPdv.qsEmpresaDIVERSOS2.AsString);
     end;
   end;
@@ -2554,19 +2557,20 @@ begin
   begin
     if (trim(dmPdv.qcdsNFSELECIONOU.AsString) = 'S') then
     begin
+      //Memolog.Lines.Add('Email Nota:' + Trim(dmPdv.qcdsNFNOTASERIE.AsString));
       nfe_carregalogo;
       ACBrNFe1.NotasFiscais.Clear;
       CarregarXML(Copy(Trim(dmPdv.qcdsNFNOMEXML.AsString),0,44));
       if (enumnf <> StrToInt(Trim(dmPdv.qcdsNFNOTASERIE.AsString))) then
         enumNF :=  StrToInt(Trim(dmPdv.qcdsNFNOTASERIE.AsString));
-      if not(dmPdv.qsCliente.Active) then
-      begin
-        dmPdv.qsCliente.Params[0].AsInteger := dmPdv.qcdsNFCODCLIENTE.AsInteger;
-        dmPdv.qsCliente.Open;
-      end;
+      if (dmPdv.qsCliente.Active) then
+        dmPdv.qsCliente.Close;
+
+      dmPdv.qsCliente.Params[0].AsInteger := dmPdv.qcdsNFCODCLIENTE.AsInteger;
+      dmPdv.qsCliente.Open;
 
       CC := TstringList.Create;
-      try
+    try
       //ABRE A NOTA
       IDNFE  := ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID;
       enumnf  := ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.nNF;
@@ -2587,52 +2591,50 @@ begin
       Texto.Add('');
       Texto.Add('Consulte no Portal Nacional da NFe: https://www.nfe.fazenda.gov.br/portal/FormularioDePesquisa.aspx?tipoconsulta=completa .');
       Texto.Add('Ou consulte pela página do SEFAZ do seu estado.');
-
-      CC.Add(Trim(dmPdv.qsEmpresaE_MAIL.AsString)); //especifique um email válido
+      Memolog.Lines.Add(Texto.Text);
+      Assunto := Trim(dmPdv.qsEmpresaE_MAIL.AsString);
+      CC.Add(Assunto); //especifique um email válido
       Assunto := 'Nota Fiscal Eletrônica ' + InttoStr(enumnf);
+      begin
+        ACBrMail1.Port     := Trim(dmPdv.qsEmpresaPORTA.AsString);
+        ACBrMail1.Host     := Trim(dmPdv.qsEmpresaSMTP.AsString);
+        ACBrMail1.Username := Trim(dmPdv.qsEmpresaE_MAIL.AsString);
+        ACBrMail1.Password := Trim(dmPdv.qsEmpresaSENHA.AsString);
+        ACBrMail1.From     := Trim(dmPdv.qsEmpresaE_MAIL.AsString);
+        ACBrMail1.FromName := Trim(dmPdv.qsEmpresaEMPRESA.AsString);
+        ACBrMail1.AddAddress(Trim(dmPdv.qsClienteE_MAIL.AsString));
+        Memolog.Lines.Add('Porta Servidor:' + Trim(dmPdv.qsEmpresaPORTA.AsString));
+        Memolog.Lines.Add('Email Destino:' + Trim(dmPdv.qsClienteE_MAIL.AsString));
 
-      //Try
-        begin
-          //try
-            ACBrMail1.Port     := Trim(dmPdv.qsEmpresaPORTA.AsString);
-            ACBrMail1.Host     := Trim(dmPdv.qsEmpresaSMTP.AsString);
-            ACBrMail1.Username := Trim(dmPdv.qsEmpresaE_MAIL.AsString);
-            ACBrMail1.Password := Trim(dmPdv.qsEmpresaSENHA.AsString);
-            ACBrMail1.From     := Trim(dmPdv.qsEmpresaE_MAIL.AsString);
-            ACBrMail1.FromName := Trim(dmPdv.qsEmpresaEMPRESA.AsString);
-            ACBrMail1.AddAddress(Trim(dmPdv.qsClienteE_MAIL.AsString));
+        if (email_tls = 'S') then
+          ACBrMail1.SetTLS := True;
+        if (email_ssl = 'S') then
+          ACBrMail1.SetSSL := True;
 
-            if (email_tls = 'S') then
-              ACBrMail1.SetTLS := True;
-            if (email_ssl = 'S') then
-              ACBrMail1.SetSSL := True;
+        //sPara, sAssunto: String; sMensagem: TStrings;
+        //       EnviaPDF: Boolean; sCC: TStrings; Anexos: TStrings)
+        Memolog.Lines.Add('Assunto:'  + Assunto);
 
-              //sPara, sAssunto: String; sMensagem: TStrings;
-            //       EnviaPDF: Boolean; sCC: TStrings; Anexos: TStrings)
-            ACBrNFe1.NotasFiscais.Items[0].EnviarEmail(Trim(dmPdv.qsClienteE_MAIL.AsString)
-                                                     , Assunto
-                                                     , Texto
-                                                     , True //Enviar PDF junto
-                                                     , CC //com copia
-                                                     , nil // Lista de anexos - TStrings
-                                                     );
+        //ACBrNFe1.NotasFiscais.Items[0].EnviarEmail
+        //, True //Enviar PDF junto
+        caminho := Trim(dmPdv.qsClienteE_MAIL.AsString);
+        ACBrNFe1.EnviarEmail(caminho
+                            , Assunto
+                            , Texto
+                            , CC //com copia
+                            , nil // Lista de anexos - TStrings
+                            );
 
-            ShowMessage('Email enviado com sucesso!');
+        ShowMessage('Email enviado com sucesso!');
 
-            lblMsgNfe.Caption := '';
-          //except
-          //   on E: Exception do
-          //    begin
-          //      raise Exception.Create('Erro ao enviar email'+sLineBreak+E.Message);
-          //    end;
-          //end;
-        end;
-      finally
-        CC.Clear;
-        CC.Free;
-        Texto.Free;
-        //fNFeletronica.ACBrNFe1.NotasFiscais.Clear;
+        lblMsgNfe.Caption := '';
       end;
+    finally
+      CC.Clear;
+      CC.Free;
+      Texto.Free;
+      //fNFeletronica.ACBrNFe1.NotasFiscais.Clear;
+    end;
     end;
     dmPdv.qcdsNF.Next;
   end;
@@ -3493,8 +3495,12 @@ begin
       end
       else
         Dest.EnderDest.CEP     := StrToInt(RemoveChar(Trim(dmPdv.qsClienteCEP.AsString)));
-
-      Dest.EnderDest.cPais   := 1058 ; // StrToInt(dmPdv.qsClienteCODPAIS.AsString);
+      if (Trim(dmPdv.qsClienteCODPAIS.AsString) = '') then
+      begin
+        MessageDlg('Código do Pais não informado.', mtWarning, [mbOK], 0);
+        Exit;
+      end;
+      Dest.EnderDest.cPais   := StrToInt(Trim(dmPdv.qsClienteCODPAIS.AsString));
       Dest.EnderDest.xPais   := Trim(dmPdv.qsClientePAIS.AsString);
       Dest.EnderDest.Fone    := Trim(dmPdv.qsClienteDDD.AsString) + Trim(dmPdv.qsClienteTELEFONE.AsString);
       if (Trim(dmPdv.qsClienteINSCESTADUAL.AsString) = 'ISENTO') then
