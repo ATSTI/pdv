@@ -251,7 +251,7 @@ begin
     dsRec.DataSet := sqlOdoo;
     sql_rec := 'select aml.id as CODRECEBIMENTO, aml.ref as TITULO, aml.date as EMISSAO, ';
     sql_rec += 'aml.date_maturity as DATAVENCIMENTO, NULL as DATARECEBIMENTO, ';
-    sql_rec += ' rp.id || '-' || rp.name as NOMECLIENTE,';
+    sql_rec += ' rp.id || ' + '-' + ' || rp.name as NOMECLIENTE,';
     sql_rec += 'aml.amount_residual as VALORTITULO, aml.amount_residual as VALOR_RESTO,';
     sql_rec += ' aml.reconciled, aml.invoice_id ';
     sql_rec += ' FROM account_move_line aml, account_account aa, account_account_type aat, res_partner rp';

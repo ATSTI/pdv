@@ -18,11 +18,14 @@ type
     btnSair: TBitBtn;
     dtData: TDateTimePicker;
     edReforco: TMaskEdit;
+    edSaldoini: TMaskEdit;
+    edTSaldoIni: TMaskEdit;
     edValor: TMaskEdit;
     Label1: TLabel;
     Label10: TLabel;
     Label11: TLabel;
     Label12: TLabel;
+    Label13: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
@@ -101,6 +104,8 @@ begin
     Writeln(Impressora, 'CAIXA : ' + dmPdv.nomeCaixa);
     Writeln(IMPRESSORA, FormatDateTime('dd/mm/yyyy hh:MM:ss', Now));
     Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, 'Saldo Inicial  - ' + edSaldoIni.Text);
+    Writeln(IMPRESSORA, '');
     Writeln(IMPRESSORA, 'Dinheiro       - ' + edDinheiro.Text);
     Writeln(IMPRESSORA, 'Cartao Credito - ' + edCcred.Text);
     Writeln(IMPRESSORA, 'Cartao Debito  - ' + edCdeb.Text);
@@ -113,6 +118,7 @@ begin
     Writeln(IMPRESSORA, 'Total Bruto    - ' + edTBruto.Text);
     Writeln(IMPRESSORA, 'Total Liquido  - ' + edTLiquido.Text);
     Writeln(IMPRESSORA, '---------------------------');
+    Writeln(IMPRESSORA, 'Saldo Abertura  - ' + edTLiquido.Text);
     Writeln(IMPRESSORA, '');
   finally
     CloseFile(IMPRESSORA);
@@ -183,6 +189,7 @@ begin
     totalcaixa := dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     totalliquido := dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     edDinheiro.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
+    edSaldoini.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
   end;
   sqlP := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
   sqlP += ' where CAIXA = ' + cx_m;
@@ -389,6 +396,8 @@ begin
         Writeln(IMPRESSORA, '');
         Writeln(Impressora, 'CAIXA : ' + dmPdv.nomeCaixa);
         Writeln(IMPRESSORA, FormatDateTime('dd/mm/yyyy hh:MM:ss', Now));
+        Writeln(IMPRESSORA, '');
+        Writeln(IMPRESSORA, 'Saldo Inicial  - ' + edSaldoIni.Text);
         Writeln(IMPRESSORA, '');
         Writeln(IMPRESSORA, 'Dinheiro       - ' + edDinheiro.Text);
         Writeln(IMPRESSORA, 'Cartao Credito - ' + edCcred.Text);

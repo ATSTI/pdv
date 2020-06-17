@@ -8,7 +8,7 @@ object fAbrirCaixa: TfAbrirCaixa
   ClientWidth = 584
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '2.0.4.0'
+  LCLVersion = '2.0.8.0'
   object Panel1: TPanel
     Left = 0
     Height = 268
@@ -50,7 +50,7 @@ object fAbrirCaixa: TfAbrirCaixa
     object Label3: TLabel
       Left = 24
       Height = 16
-      Top = 46
+      Top = 39
       Width = 58
       Caption = 'Dinheiro:'
       Font.CharSet = ANSI_CHARSET
@@ -65,7 +65,7 @@ object fAbrirCaixa: TfAbrirCaixa
     object Label4: TLabel
       Left = 24
       Height = 16
-      Top = 76
+      Top = 69
       Width = 96
       Caption = 'Cartão Crédito:'
       Font.CharSet = ANSI_CHARSET
@@ -80,7 +80,7 @@ object fAbrirCaixa: TfAbrirCaixa
     object Label5: TLabel
       Left = 24
       Height = 16
-      Top = 106
+      Top = 99
       Width = 91
       Caption = 'Cartão Débito:'
       Font.CharSet = ANSI_CHARSET
@@ -95,7 +95,7 @@ object fAbrirCaixa: TfAbrirCaixa
     object Label6: TLabel
       Left = 24
       Height = 16
-      Top = 136
+      Top = 129
       Width = 53
       Caption = 'Cheque:'
       Font.CharSet = ANSI_CHARSET
@@ -110,7 +110,7 @@ object fAbrirCaixa: TfAbrirCaixa
     object Label7: TLabel
       Left = 24
       Height = 16
-      Top = 166
+      Top = 159
       Width = 61
       Caption = 'Faturado:'
       Font.CharSet = ANSI_CHARSET
@@ -125,7 +125,7 @@ object fAbrirCaixa: TfAbrirCaixa
     object Label8: TLabel
       Left = 24
       Height = 16
-      Top = 196
+      Top = 189
       Width = 72
       Caption = 'Sangrias(-):'
       Font.CharSet = ANSI_CHARSET
@@ -203,11 +203,11 @@ object fAbrirCaixa: TfAbrirCaixa
       SpaceChar = '_'
     end
     object Label9: TLabel
-      Left = 320
+      Left = 296
       Height = 16
-      Top = 56
-      Width = 76
-      Caption = 'Total Caixa:'
+      Top = 69
+      Width = 118
+      Caption = 'Saldo Final Caixa:'
       Font.CharSet = ANSI_CHARSET
       Font.Height = -13
       Font.Name = 'Arial'
@@ -218,9 +218,9 @@ object fAbrirCaixa: TfAbrirCaixa
       ParentFont = False
     end
     object Label10: TLabel
-      Left = 320
+      Left = 327
       Height = 16
-      Top = 135
+      Top = 129
       Width = 87
       Caption = 'Total Liquido:'
       Font.CharSet = ANSI_CHARSET
@@ -233,9 +233,9 @@ object fAbrirCaixa: TfAbrirCaixa
       ParentFont = False
     end
     object Label11: TLabel
-      Left = 320
+      Left = 341
       Height = 16
-      Top = 96
+      Top = 99
       Width = 73
       Caption = 'Total Bruto:'
       Font.CharSet = ANSI_CHARSET
@@ -250,7 +250,7 @@ object fAbrirCaixa: TfAbrirCaixa
     object edTCaixa: TMaskEdit
       Left = 424
       Height = 23
-      Top = 49
+      Top = 69
       Width = 116
       Alignment = taRightJustify
       CharCase = ecNormal
@@ -263,7 +263,7 @@ object fAbrirCaixa: TfAbrirCaixa
     object edTBruto: TMaskEdit
       Left = 424
       Height = 23
-      Top = 89
+      Top = 99
       Width = 116
       Alignment = taRightJustify
       CharCase = ecNormal
@@ -276,7 +276,7 @@ object fAbrirCaixa: TfAbrirCaixa
     object edTLiquido: TMaskEdit
       Left = 424
       Height = 23
-      Top = 128
+      Top = 129
       Width = 116
       Alignment = taRightJustify
       CharCase = ecNormal
@@ -289,7 +289,7 @@ object fAbrirCaixa: TfAbrirCaixa
     object Label12: TLabel
       Left = 24
       Height = 16
-      Top = 226
+      Top = 219
       Width = 110
       Caption = 'Reforço Caixa(+):'
       Font.CharSet = ANSI_CHARSET
@@ -311,6 +311,34 @@ object fAbrirCaixa: TfAbrirCaixa
       Enabled = False
       MaxLength = 0
       TabOrder = 9
+      Text = '0,00'
+      SpaceChar = '_'
+    end
+    object Label13: TLabel
+      Left = 330
+      Height = 16
+      Top = 39
+      Width = 84
+      Caption = 'Saldo Inicial:'
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -13
+      Font.Name = 'Arial'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+    end
+    object edSaldoini: TMaskEdit
+      Left = 424
+      Height = 23
+      Top = 39
+      Width = 116
+      Alignment = taRightJustify
+      CharCase = ecNormal
+      Enabled = False
+      MaxLength = 0
+      TabOrder = 10
       Text = '0,00'
       SpaceChar = '_'
     end
