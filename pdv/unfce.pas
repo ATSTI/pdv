@@ -359,8 +359,8 @@ begin
   memoLog.Lines.Append('Recibo: '+ ACBrNFe1.WebServices.Retorno.Recibo);
   memoLog.Lines.Append('Protocolo: '+ ACBrNFe1.WebServices.Retorno.Protocolo);
 
-  ShowMessage('Nº do Protocolo de envio ' + ACBrNFe1.WebServices.Retorno.Protocolo);
-  ShowMessage('Nº do Recibo de envio ' + ACBrNFe1.WebServices.Retorno.Recibo);
+  //ShowMessage('Nº do Protocolo de envio ' + ACBrNFe1.WebServices.Retorno.Protocolo);
+  //ShowMessage('Nº do Recibo de envio ' + ACBrNFe1.WebServices.Retorno.Recibo);
 
   //LoadXML(ACBrNFe1.NotasFiscais.Items[0].XML,  mRecebido);
   //ACBrNFe1.NotasFiscais.Imprimir;
@@ -2099,8 +2099,8 @@ begin
     MemoResp.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetWS;
     memoResp.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetornoWS;
     //LoadXML(MemoResp, WBResposta);
-    ShowMessage(IntToStr(ACBrNFe1.WebServices.EnvEvento.cStat));
-    ShowMessage(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.nProt);
+    //ShowMessage(IntToStr(ACBrNFe1.WebServices.EnvEvento.cStat));
+    //ShowMessage(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.nProt);
   end;
   pnCancelamento.Visible:=False;
 end;
@@ -2188,7 +2188,7 @@ begin
   if ACBrNFe1.WebServices.Consulta.Protocolo <> '' then
   begin
     memoLog.Lines.Append('Consulta executada com sucesso');
-    ShowMessage(ACBrNFe1.WebServices.Consulta.Protocolo);
+    //ShowMessage(ACBrNFe1.WebServices.Consulta.Protocolo);
     Protocolo := ACBrNFe1.WebServices.Consulta.Protocolo;
     Recibo := 'recibo';//ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe. .WebServices.Consulta.Recibo;
     GravarDadosNF(protocolo, recibo);
