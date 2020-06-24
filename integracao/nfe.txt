@@ -1,0 +1,43 @@
+ACBrNFe.WebServices.Consulta.RetWS) e Protocolo (ACBrNFe.WebServices.Consulta.Protocolo
+
+procedure TForm1.btnConsultarChaveClick(Sender: TObject);
+var
+ vChave : String;
+begin
+  if not(InputQuery('WebServices Consultar', 'Chave da NF-e:', vChave)) then
+    exit;
+
+  ACBrNFe1.NotasFiscais.Clear;
+  ACBrNFe1.WebServices.Consulta.NFeChave := vChave;
+  ACBrNFe1.WebServices.Consulta.Executar;
+
+  MemoResp.Lines.Text := ACBrNFe1.WebServices.Consulta.RetWS;
+  memoRespWS.Lines.Text := ACBrNFe1.WebServices.Consulta.RetornoWS;
+  LoadXML(MemoResp, WBResposta);
+  
+  
+  
+  procedure LoadXML(MyMemo: TMemo; MyWebBrowser: TSynMemo);  
+  
+  
+  begin
+  OpenDialog1.Title := 'Selecione a NFE';
+  OpenDialog1.DefaultExt := '*-nfe.XML';
+  OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
+  if OpenDialog1.Execute then
+  begin
+    ACBrNFe1.NotasFiscais.Clear;
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+    ACBrNFe1.Consultar;
+    ShowMessage(ACBrNFe1.WebServices.Consulta.Protocolo);
+    MemoResp.Lines.Text := ACBrNFe1.WebServices.Consulta.RetWS;
+    memoRespWS.Lines.Text := ACBrNFe1.WebServices.Consulta.RetornoWS;
+    LoadXML(MemoResp, WBResposta);
+  end;
+  
+  
+     sqlProc := sqlProc + ' AND UPPER(CODPRO) LIKE UPPER(' +
+      QuotedStr(codigo + '%') + ')';
+    sqlProc := sqlProc + ' OR UPPER(CAST(PRODUTO AS VARCHAR(300) ' +
+      ' character set UTF8)) LIKE UPPER(' +   
