@@ -4914,7 +4914,8 @@ begin
         ACBrNFe1.NotasFiscais.Items[0].NFe.infRespTec.xContato := 'CARLOS RODRIGUES SILVEIRA';
         ACBrNFe1.NotasFiscais.Items[0].NFe.infRespTec.email := 'ats@atsti.com.br';
         ACBrNFe1.NotasFiscais.Items[0].NFe.infRespTec.fone :='19974014694';
-        if((dmPdv.qsEmpresaCONTADOR_CNPJ.AsString <> '') or (dmPdv.qsEmpresaCONTADOR_CPF.AsString <> '')) then
+        if((trim(dmPdv.qsEmpresaCONTADOR_CNPJ.AsString) <> '') or
+          (trim(dmPdv.qsEmpresaCONTADOR_CPF.AsString) <> '')) then
         begin
           with autXML.Add do
           begin

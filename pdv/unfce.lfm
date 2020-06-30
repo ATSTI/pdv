@@ -11,6 +11,65 @@ object fNfce: TfNfce
   OnShow = FormShow
   Position = poScreenCenter
   LCLVersion = '2.0.8.0'
+  object pnCancelamento: TPanel
+    Left = 160
+    Height = 173
+    Top = 224
+    Width = 343
+    ClientHeight = 173
+    ClientWidth = 343
+    TabOrder = 9
+    Visible = False
+    object Label10: TLabel
+      Left = 45
+      Height = 15
+      Top = 17
+      Width = 124
+      Caption = 'Motivo Cancelamento :'
+      ParentColor = False
+    end
+    object edCancelamentoMotivo: TEdit
+      Left = 27
+      Height = 23
+      Top = 50
+      Width = 229
+      TabOrder = 0
+    end
+    object BitBtn6: TBitBtn
+      Left = 64
+      Height = 30
+      Top = 102
+      Width = 120
+      Caption = 'Enviar Cancelamento'
+      OnClick = BitBtn6Click
+      TabOrder = 1
+    end
+    object lblCancelamento: TLabel
+      Left = 9
+      Height = 15
+      Top = 139
+      Width = 6
+      Caption = '..'
+      ParentColor = False
+    end
+    object BitBtn7: TBitBtn
+      Left = 184
+      Height = 30
+      Top = 102
+      Width = 75
+      Caption = 'Fechar'
+      OnClick = BitBtn7Click
+      TabOrder = 2
+    end
+    object lblCancelamento2: TLabel
+      Left = 6
+      Height = 15
+      Top = 156
+      Width = 9
+      Caption = '...'
+      ParentColor = False
+    end
+  end
   object edCPF: TMaskEdit
     Left = 120
     Height = 34
@@ -2819,6 +2878,127 @@ object fNfce: TfNfce
       Caption = 'Geral'
       ClientHeight = 380
       ClientWidth = 638
+      object Panel1: TPanel
+        Left = 72
+        Height = 251
+        Top = 120
+        Width = 456
+        ClientHeight = 251
+        ClientWidth = 456
+        TabOrder = 6
+        Visible = False
+        object edAno: TEdit
+          Left = 153
+          Height = 23
+          Top = 15
+          Width = 80
+          TabOrder = 0
+          Text = '2019'
+        end
+        object edModelo: TEdit
+          Left = 153
+          Height = 23
+          Top = 46
+          Width = 80
+          TabOrder = 1
+          Text = '65'
+        end
+        object edSerie: TEdit
+          Left = 153
+          Height = 23
+          Top = 77
+          Width = 80
+          TabOrder = 2
+          Text = '1'
+        end
+        object edNumIni: TEdit
+          Left = 153
+          Height = 23
+          Top = 108
+          Width = 80
+          TabOrder = 3
+        end
+        object edNumFim: TEdit
+          Left = 153
+          Height = 23
+          Top = 138
+          Width = 80
+          TabOrder = 4
+        end
+        object Label1: TLabel
+          Left = 120
+          Height = 15
+          Top = 15
+          Width = 22
+          Caption = 'Ano'
+          ParentColor = False
+        end
+        object Label5: TLabel
+          Left = 101
+          Height = 15
+          Top = 46
+          Width = 41
+          Caption = 'Modelo'
+          ParentColor = False
+        end
+        object Label6: TLabel
+          Left = 117
+          Height = 15
+          Top = 77
+          Width = 25
+          Caption = 'Serie'
+          ParentColor = False
+        end
+        object btnNFce4: TBitBtn
+          Left = 224
+          Height = 36
+          Top = 208
+          Width = 80
+          Caption = 'Enviar'
+          OnClick = btnNFce4Click
+          TabOrder = 5
+        end
+        object btnNFce5: TBitBtn
+          Left = 304
+          Height = 36
+          Top = 208
+          Width = 72
+          Caption = 'Fechar'
+          OnClick = btnNFce5Click
+          TabOrder = 6
+        end
+        object Label7: TLabel
+          Left = 96
+          Height = 15
+          Top = 108
+          Width = 46
+          Caption = 'Num. Ini'
+          ParentColor = False
+        end
+        object Label8: TLabel
+          Left = 89
+          Height = 15
+          Top = 138
+          Width = 53
+          Caption = 'Num. Fim'
+          ParentColor = False
+        end
+        object edJustificativa: TEdit
+          Left = 153
+          Height = 23
+          Top = 166
+          Width = 279
+          TabOrder = 7
+        end
+        object Label9: TLabel
+          Left = 81
+          Height = 15
+          Top = 166
+          Width = 61
+          Caption = 'Justificativa'
+          ParentColor = False
+        end
+      end
       object btnNFce: TBitBtn
         Left = 8
         Height = 44
@@ -3218,127 +3398,6 @@ object fNfce: TfNfce
         OnClick = btnNFce3Click
         TabOrder = 5
       end
-      object Panel1: TPanel
-        Left = 72
-        Height = 251
-        Top = 120
-        Width = 456
-        ClientHeight = 251
-        ClientWidth = 456
-        TabOrder = 6
-        Visible = False
-        object edAno: TEdit
-          Left = 153
-          Height = 23
-          Top = 15
-          Width = 80
-          TabOrder = 0
-          Text = '2019'
-        end
-        object edModelo: TEdit
-          Left = 153
-          Height = 23
-          Top = 46
-          Width = 80
-          TabOrder = 1
-          Text = '65'
-        end
-        object edSerie: TEdit
-          Left = 153
-          Height = 23
-          Top = 77
-          Width = 80
-          TabOrder = 2
-          Text = '1'
-        end
-        object edNumIni: TEdit
-          Left = 153
-          Height = 23
-          Top = 108
-          Width = 80
-          TabOrder = 3
-        end
-        object edNumFim: TEdit
-          Left = 153
-          Height = 23
-          Top = 138
-          Width = 80
-          TabOrder = 4
-        end
-        object Label1: TLabel
-          Left = 120
-          Height = 15
-          Top = 15
-          Width = 22
-          Caption = 'Ano'
-          ParentColor = False
-        end
-        object Label5: TLabel
-          Left = 101
-          Height = 15
-          Top = 46
-          Width = 41
-          Caption = 'Modelo'
-          ParentColor = False
-        end
-        object Label6: TLabel
-          Left = 117
-          Height = 15
-          Top = 77
-          Width = 25
-          Caption = 'Serie'
-          ParentColor = False
-        end
-        object btnNFce4: TBitBtn
-          Left = 224
-          Height = 36
-          Top = 208
-          Width = 80
-          Caption = 'Enviar'
-          OnClick = btnNFce4Click
-          TabOrder = 5
-        end
-        object btnNFce5: TBitBtn
-          Left = 304
-          Height = 36
-          Top = 208
-          Width = 72
-          Caption = 'Fechar'
-          OnClick = btnNFce5Click
-          TabOrder = 6
-        end
-        object Label7: TLabel
-          Left = 96
-          Height = 15
-          Top = 108
-          Width = 46
-          Caption = 'Num. Ini'
-          ParentColor = False
-        end
-        object Label8: TLabel
-          Left = 89
-          Height = 15
-          Top = 138
-          Width = 53
-          Caption = 'Num. Fim'
-          ParentColor = False
-        end
-        object edJustificativa: TEdit
-          Left = 153
-          Height = 23
-          Top = 166
-          Width = 279
-          TabOrder = 7
-        end
-        object Label9: TLabel
-          Left = 81
-          Height = 15
-          Top = 166
-          Width = 61
-          Caption = 'Justificativa'
-          ParentColor = False
-        end
-      end
       object btnNFce6: TBitBtn
         Left = 164
         Height = 44
@@ -3417,65 +3476,6 @@ object fNfce: TfNfce
         Width = 50
       end>
     SimplePanel = False
-  end
-  object pnCancelamento: TPanel
-    Left = 160
-    Height = 173
-    Top = 224
-    Width = 343
-    ClientHeight = 173
-    ClientWidth = 343
-    TabOrder = 9
-    Visible = False
-    object Label10: TLabel
-      Left = 45
-      Height = 15
-      Top = 17
-      Width = 124
-      Caption = 'Motivo Cancelamento :'
-      ParentColor = False
-    end
-    object edCancelamentoMotivo: TEdit
-      Left = 27
-      Height = 23
-      Top = 50
-      Width = 229
-      TabOrder = 0
-    end
-    object BitBtn6: TBitBtn
-      Left = 64
-      Height = 30
-      Top = 102
-      Width = 120
-      Caption = 'Enviar Cancelamento'
-      OnClick = BitBtn6Click
-      TabOrder = 1
-    end
-    object lblCancelamento: TLabel
-      Left = 9
-      Height = 15
-      Top = 139
-      Width = 6
-      Caption = '..'
-      ParentColor = False
-    end
-    object BitBtn7: TBitBtn
-      Left = 184
-      Height = 30
-      Top = 102
-      Width = 75
-      Caption = 'Fechar'
-      OnClick = BitBtn7Click
-      TabOrder = 2
-    end
-    object lblCancelamento2: TLabel
-      Left = 6
-      Height = 15
-      Top = 156
-      Width = 9
-      Caption = '...'
-      ParentColor = False
-    end
   end
   object ACBrValidador1: TACBrValidador
     TipoDocto = docGTIN

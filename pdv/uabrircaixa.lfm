@@ -428,7 +428,7 @@ object fAbrirCaixa: TfAbrirCaixa
       Height = 48
       Top = 23
       Width = 112
-      Caption = 'btnAbrefecha'
+      Caption = 'Abrir/Fechar'
       Glyph.Data = {
         36100000424D3610000000000000360000002800000020000000200000000100
         2000000000000010000064000000640000000000000000000000000000000000
