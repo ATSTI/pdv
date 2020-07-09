@@ -1670,7 +1670,6 @@ begin
     ShowMessage('Nº do Recibo de envio ' + ACBrNFe1.WebServices.Retorno.Recibo);
     Recibo := ACBrNFe1.WebServices.Retorno.Recibo;
     Protocolo := ACBrNFe1.WebServices.Retorno.Protocolo;
-    gravaRetornoEnvio(Protocolo, Recibo);
 
     FormatSettings.DecimalSeparator := ',';
     Memolog.Lines.Add('Email Automatico:' + envemail);
@@ -1696,6 +1695,7 @@ begin
         //end;
       end;
     end;
+    gravaRetornoEnvio(Protocolo, Recibo);
   end;
   btnListar.Click;
   ACBrNFe1.NotasFiscais.Items[0].GravarXML;
