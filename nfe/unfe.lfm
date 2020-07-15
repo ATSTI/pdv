@@ -4300,11 +4300,11 @@ object fNFe: TfNFe
       end
       object GroupBox6: TGroupBox
         Left = 632
-        Height = 328
-        Top = 224
+        Height = 280
+        Top = 272
         Width = 400
         Caption = 'Selecione uma NF para testar o envio de E-mail'
-        ClientHeight = 308
+        ClientHeight = 260
         ClientWidth = 396
         TabOrder = 9
         object Label36: TLabel
@@ -4325,21 +4325,21 @@ object fNFe: TfNFe
         object edtSMTP: TEdit
           Left = 128
           Height = 23
-          Top = 24
+          Top = 17
           Width = 200
           TabOrder = 0
         end
         object edtUsername: TEdit
           Left = 56
           Height = 23
-          Top = 72
+          Top = 65
           Width = 129
           TabOrder = 1
         end
         object Label37: TLabel
           Left = 56
           Height = 13
-          Top = 56
+          Top = 49
           Width = 51
           Caption = 'Username'
           Font.CharSet = ANSI_CHARSET
@@ -4354,14 +4354,14 @@ object fNFe: TfNFe
         object edtSenhas: TEdit
           Left = 192
           Height = 23
-          Top = 72
+          Top = 65
           Width = 137
           TabOrder = 2
         end
         object Label38: TLabel
           Left = 192
           Height = 13
-          Top = 56
+          Top = 49
           Width = 32
           Caption = 'Senha'
           Font.CharSet = ANSI_CHARSET
@@ -4376,14 +4376,14 @@ object fNFe: TfNFe
         object edtSeuEmail: TEdit
           Left = 56
           Height = 23
-          Top = 120
+          Top = 113
           Width = 273
           TabOrder = 3
         end
         object Label39: TLabel
           Left = 56
           Height = 13
-          Top = 104
+          Top = 97
           Width = 49
           Caption = 'Seu Email'
           Font.CharSet = ANSI_CHARSET
@@ -4398,14 +4398,14 @@ object fNFe: TfNFe
         object edtEmailCliente: TEdit
           Left = 58
           Height = 23
-          Top = 168
+          Top = 161
           Width = 272
           TabOrder = 4
         end
         object Label41: TLabel
           Left = 56
           Height = 13
-          Top = 152
+          Top = 145
           Width = 69
           Caption = ' Email Cliente'
           Font.CharSet = ANSI_CHARSET
@@ -4420,7 +4420,7 @@ object fNFe: TfNFe
         object edtTLS: TEdit
           Left = 58
           Height = 23
-          Top = 216
+          Top = 204
           Width = 25
           TabOrder = 5
           Text = 'S'
@@ -4428,7 +4428,7 @@ object fNFe: TfNFe
         object Label43: TLabel
           Left = 58
           Height = 13
-          Top = 200
+          Top = 188
           Width = 17
           Caption = 'TLS'
           Font.CharSet = ANSI_CHARSET
@@ -4443,7 +4443,7 @@ object fNFe: TfNFe
         object edtSSL: TEdit
           Left = 114
           Height = 23
-          Top = 216
+          Top = 204
           Width = 25
           TabOrder = 6
           Text = 'S'
@@ -4451,7 +4451,7 @@ object fNFe: TfNFe
         object Label50: TLabel
           Left = 114
           Height = 13
-          Top = 200
+          Top = 188
           Width = 17
           Caption = 'SSL'
           Font.CharSet = ANSI_CHARSET
@@ -4466,7 +4466,7 @@ object fNFe: TfNFe
         object Label45: TLabel
           Left = 162
           Height = 15
-          Top = 224
+          Top = 212
           Width = 55
           Caption = '( S  ou  N )'
           ParentColor = False
@@ -4474,7 +4474,7 @@ object fNFe: TfNFe
         object Label44: TLabel
           Left = 129
           Height = 13
-          Top = 8
+          Top = 1
           Width = 28
           Caption = 'SMTP'
           Font.CharSet = ANSI_CHARSET
@@ -4489,14 +4489,14 @@ object fNFe: TfNFe
         object edtPorta: TEdit
           Left = 56
           Height = 23
-          Top = 24
+          Top = 17
           Width = 62
           TabOrder = 7
         end
         object Label35: TLabel
           Left = 56
           Height = 13
-          Top = 8
+          Top = 1
           Width = 27
           Caption = 'Porta'
           Font.CharSet = ANSI_CHARSET
@@ -4511,7 +4511,7 @@ object fNFe: TfNFe
         object TestEmail: TButton
           Left = 95
           Height = 25
-          Top = 256
+          Top = 232
           Width = 217
           Caption = 'Teste Envio Email'
           Font.CharSet = ANSI_CHARSET
@@ -4539,7 +4539,7 @@ object fNFe: TfNFe
           Height = 24
           Top = 8
           Width = 281
-          Caption = 'Gravar Certificado'
+          Caption = 'Gravar Alterações'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
           Font.Height = -16
@@ -4871,6 +4871,96 @@ object fNFe: TfNFe
           TabOrder = 1
         end
       end
+      object GroupBox9: TGroupBox
+        Left = 632
+        Height = 46
+        Top = 209
+        Width = 400
+        Caption = 'Margem DANFE'
+        ClientHeight = 26
+        ClientWidth = 396
+        TabOrder = 13
+        object FloatSpinEdit1: TFloatSpinEdit
+          Left = 48
+          Height = 23
+          Top = 0
+          Width = 42
+          DecimalPlaces = 1
+          Increment = 0.1
+          MinValue = 0
+          OnChange = FloatSpinEdit1Change
+          TabOrder = 0
+          Value = 1
+        end
+        object FloatSpinEdit2: TFloatSpinEdit
+          Left = 137
+          Height = 23
+          Top = 0
+          Width = 42
+          DecimalPlaces = 1
+          Increment = 0.1
+          MinValue = 0
+          OnChange = FloatSpinEdit2Change
+          TabOrder = 1
+          Value = 1
+        end
+        object FloatSpinEdit3: TFloatSpinEdit
+          Left = 237
+          Height = 23
+          Top = 0
+          Width = 42
+          DecimalPlaces = 1
+          Increment = 0.1
+          MinValue = 0
+          OnChange = FloatSpinEdit3Change
+          TabOrder = 2
+          Value = 1
+        end
+        object FloatSpinEdit4: TFloatSpinEdit
+          Left = 324
+          Height = 23
+          Top = 0
+          Width = 42
+          DecimalPlaces = 1
+          Increment = 0.1
+          MinValue = 0
+          OnChange = FloatSpinEdit4Change
+          TabOrder = 3
+          Value = 3
+        end
+        object Label51: TLabel
+          Left = 1
+          Height = 15
+          Top = 0
+          Width = 44
+          Caption = 'Superior'
+          ParentColor = False
+        end
+        object Label52: TLabel
+          Left = 94
+          Height = 15
+          Top = 0
+          Width = 38
+          Caption = 'Inferior'
+          ParentColor = False
+        end
+        object Label53: TLabel
+          Left = 285
+          Height = 15
+          Top = 0
+          Width = 34
+          Caption = 'Direita'
+          ParentColor = False
+        end
+        object Label54: TLabel
+          Left = 183
+          Height = 15
+          Top = 0
+          Width = 48
+          Caption = 'Esquerda'
+          ParentColor = False
+        end
+      end
     end
     object TabSheet5: TTabSheet
       Caption = 'Notas Emitidas para a Empresa'
@@ -5131,7 +5221,7 @@ object fNFe: TfNFe
     Sistema = 'Projeto ACBr - www.projetoacbr.com.br'
     MargemInferior = 0.7
     MargemSuperior = 0.7
-    MargemEsquerda = 0.7
+    MargemEsquerda = 4
     MargemDireita = 0.7
     ExpandeLogoMarcaConfig.Altura = 0
     ExpandeLogoMarcaConfig.Esquerda = 0

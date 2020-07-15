@@ -7,7 +7,7 @@ interface
 uses
   Windows, Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls,
   ComCtrls, StdCtrls, DBGrids, Buttons, EditBtn, ACBrNFe, ACBrNFeDANFeRLClass,
-  ACBrValidador, db, Grids, uCertificadoLer, uInutilizar,
+  ACBrValidador, db, Grids, Spin, uCertificadoLer, uInutilizar,
   IniFiles, ACBrUtil, pcnConversao, ACBrMail, ACBrIntegrador, pcnConversaoNFe,
   math, MaskUtils, StrUtils, DOM, FileUtil, SynMemo, SynHighlighterXML;
 
@@ -120,6 +120,10 @@ type
     edtTLS: TEdit;
     edtUsername: TEdit;
     edUfEmbarque: TEdit;
+    FloatSpinEdit1: TFloatSpinEdit;
+    FloatSpinEdit2: TFloatSpinEdit;
+    FloatSpinEdit3: TFloatSpinEdit;
+    FloatSpinEdit4: TFloatSpinEdit;
     GroupBox1: TGroupBox;
     GroupBox10: TGroupBox;
     GroupBox11: TGroupBox;
@@ -133,6 +137,7 @@ type
     GroupBox6: TGroupBox;
     GroupBox7: TGroupBox;
     GroupBox8: TGroupBox;
+    GroupBox9: TGroupBox;
     ImageList1: TImageList;
     ImageList2: TImageList;
     Label1: TLabel;
@@ -181,6 +186,10 @@ type
     Label49: TLabel;
     Label5: TLabel;
     Label50: TLabel;
+    Label51: TLabel;
+    Label52: TLabel;
+    Label53: TLabel;
+    Label54: TLabel;
     Label6: TLabel;
     Label7: TLabel;
     Label8: TLabel;
@@ -289,6 +298,10 @@ type
     procedure DBGrid2ColEnter(Sender: TObject);
     procedure DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure FloatSpinEdit1Change(Sender: TObject);
+    procedure FloatSpinEdit2Change(Sender: TObject);
+    procedure FloatSpinEdit3Change(Sender: TObject);
+    procedure FloatSpinEdit4Change(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Label5Click(Sender: TObject);
@@ -2128,6 +2141,26 @@ begin
 
 end;
 
+procedure TfNFe.FloatSpinEdit1Change(Sender: TObject);
+begin
+  ACBrNFeDANFeRL1.MargemSuperior:=FloatSpinEdit1.Value;
+end;
+
+procedure TfNFe.FloatSpinEdit2Change(Sender: TObject);
+begin
+  ACBrNFeDANFeRL1.MargemInferior:=FloatSpinEdit2.Value;
+end;
+
+procedure TfNFe.FloatSpinEdit3Change(Sender: TObject);
+begin
+  ACBrNFeDANFeRL1.MargemEsquerda:=FloatSpinEdit3.Value;
+end;
+
+procedure TfNFe.FloatSpinEdit4Change(Sender: TObject);
+begin
+  ACBrNFeDANFeRL1.MargemDireita:=FloatSpinEdit4.Value;
+end;
+
 procedure TfNFe.FormCreate(Sender: TObject);
 var Ini: TIniFile;
     IniFile , onde   : String;
@@ -2196,6 +2229,21 @@ begin
     email_tls          := ImpressoraDet.ReadString('EMAIL','TLS','');
     email_ssl          := ImpressoraDet.ReadString('EMAIL','SSL','');
     edtNumSerie.Text  := Ini.ReadString('Certificado', 'NumSerie', '');
+  finally
+    ImpressoraDet.Free;
+  end;
+
+  IniFile := ChangeFileExt( Application.ExeName, '.ini');
+  ImpressoraDet := TIniFile.Create( IniFile );
+  try
+    ACBrNFeDANFeRL1.MargemDireita := ImpressoraDet.ReadFloat('NFe','MargemDireita',0.7);
+    ACBrNFeDANFeRL1.MargemEsquerda := ImpressoraDet.ReadFloat('NFe','MargemEsquerda',5.0);
+    ACBrNFeDANFeRL1.MargemSuperior := ImpressoraDet.ReadFloat('NFe','MargemSuperior',3.0);
+    ACBrNFeDANFeRL1.MargemInferior := ImpressoraDet.ReadFloat('NFe','MargemInferior',0.7);
+    FloatSpinEdit1.Value := ImpressoraDet.ReadFloat('NFe','MargemSuperior',3.0);
+    FloatSpinEdit2.Value := ImpressoraDet.ReadFloat('NFe','MargemInferior',0.7);
+    FloatSpinEdit3.Value := ImpressoraDet.ReadFloat('NFe','MargemEsquerda',5.0);
+    FloatSpinEdit4.Value := ImpressoraDet.ReadFloat('NFe','MargemDireita',0.7);
   finally
     ImpressoraDet.Free;
   end;
@@ -2289,6 +2337,12 @@ begin
   Edit1.Text := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString);
   Edit3.Text := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString);
   Edit6.Text := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString);
+  edtPorta.Text := IntToStr(dmPdv.qsEmpresa1PORTA.AsInteger);
+  edtSMTP.Text := dmPdv.qsEmpresa1SMTP.AsString;
+  edtUsername.Text := dmPdv.qsEmpresa1E_MAIL.AsString;
+  edtSenha.PasswordChar:=Chr(149);
+  edtSenha.Font.Style:= edtSenha.Font.Style + [fsBold];
+  edtSenha.Text := dmPdv.qsEmpresa1SENHA.Text;
 
   onde       := Trim(dmPdv.qsEmpresa1TIPO.AsString);
 
@@ -4444,8 +4498,12 @@ begin
     Ini.WriteInteger( 'Certificado','CryptLib' , cbCryptLib.ItemIndex) ;
     Ini.WriteInteger( 'Certificado','HttpLib' , cbHttpLib.ItemIndex) ;
     Ini.WriteInteger( 'Certificado','XmlSignLib' , cbXmlSignLib.ItemIndex) ;
-    Ini.WriteInteger( 'WebService','SSLType' , cbSSLType.ItemIndex) ;
-    Ini.WriteInteger( 'Certificado','Pasta NFe' , ComboBox3.ItemIndex) ;
+    Ini.WriteInteger( 'WebService','SSLType' , cbSSLType.ItemIndex);
+    Ini.WriteInteger( 'Certificado','Pasta NFe' , ComboBox3.ItemIndex);
+    Ini.WriteFloat( 'NFe','MargemSuperior' , FloatSpinEdit1.Value);
+    Ini.WriteFloat( 'NFe','MargemInferior' , FloatSpinEdit2.Value);
+    Ini.WriteFloat( 'NFe','MargemEsquerda' , FloatSpinEdit3.Value);
+    Ini.WriteFloat( 'NFe','MargemDireita' , FloatSpinEdit4.Value);
    // Ini.WriteString( 'Geral','PathSchemas'  ,PathWithDelim(ExtractFilePath(Application.ExeName))+'Schemas\') ;
 
    // edtPathSchemas.Text  := Ini.ReadString( 'Geral','PathSchemas'  ,PathWithDelim(ExtractFilePath(Application.ExeName))+'Schemas\') ;
