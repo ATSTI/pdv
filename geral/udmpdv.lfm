@@ -3,7 +3,7 @@ object dmPdv: TdmPdv
   OldCreateOrder = False
   Height = 694
   HorizontalOffset = 686
-  VerticalOffset = 0
+  VerticalOffset = 2
   Width = 473
   PPI = 96
   object IbCon: TIBConnection

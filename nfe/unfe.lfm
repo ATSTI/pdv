@@ -1,7 +1,7 @@
 object fNFe: TfNFe
   Left = 120
   Height = 662
-  Top = 32
+  Top = 34
   Width = 1069
   Caption = 'ATS-NFe'
   ClientHeight = 662
