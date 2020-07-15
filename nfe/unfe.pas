@@ -1592,6 +1592,9 @@ begin
   begin
     EnviaEmail;
     ShowMessage('Email enviado com sucesso.');
+  end
+  else begin
+    ShowMessage('NFe não ENVIADA.');
   end;
 end;
 
