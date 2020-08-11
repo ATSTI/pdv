@@ -1069,7 +1069,7 @@ var contaItens :integer;
   desconto_rateio: double;
   vlr_itemnf: double;
   qt_itemnf: double;
-  desc_rateado: double;
+  desc_rateado, ver_valor: double;
   ncm_str: String;
   num_itens: Integer;
 begin
@@ -1148,21 +1148,22 @@ begin
         //  vlr_itemnf := RoundABNT((dmPdv.sqLancamentosTOTALITEM.AsFloat+dmPdv.sqLancamentosVALOR_DESCONTO.AsCurrency),2)
         //else
         //  vlr_itemnf := RoundABNT(dmPdv.sqLancamentosTOTALITEM.AsFloat,2);
-        Prod.vProd := RoundABNT(((vlr_itemnf*qt_itemnf)-dmPdv.sqLancamentosVALOR_DESCONTO.AsFloat),2);
-        Prod.vUnTrib  := RoundABNT((Prod.vProd/qt_itemnf),2);
-        Prod.vUnCom   := RoundABNT((Prod.vProd/qt_itemnf),2);
+        ver_valor := RoundABNT(((vlr_itemnf*qt_itemnf)-dmPdv.sqLancamentosVALOR_DESCONTO.AsFloat),2);
+        Prod.vProd :=  ver_valor;
+        Prod.vUnTrib  := RoundABNT((Prod.vProd/qt_itemnf),6);
+        Prod.vUnCom   := RoundABNT((Prod.vProd/qt_itemnf),6);
         Prod.vFrete   := 0 ; //dmPdv.sqLancamentosFRETE.AsCurrency;
         //Prod.vDesc    := dmPdv.sqLancamentosVALOR_DESCONTO.AsCurrency;
         if ((nfce_desconto > 0) and (num_itens = 0)) then
         begin
           // jogar diferenca rateio desconto no ultimo item
-          Prod.vDesc      := RoundABNT((nfce_desconto - desc_rateado), 2);
+          Prod.vDesc      := RoundABNT((nfce_desconto - desc_rateado), 6);
         end;
         if ((nfce_desconto > 0) and (num_itens > 0)) then
         begin
           desconto_rateio := nfce_desconto/nfce_valor;
           desconto_rateio := dmPdv.sqLancamentosTOTALITEM.AsFloat * desconto_rateio;
-          Prod.vDesc      := RoundAbnt(desconto_rateio, 2);
+          Prod.vDesc      := RoundAbnt(desconto_rateio, 6);
           desc_rateado += Prod.vDesc;
         end;
 

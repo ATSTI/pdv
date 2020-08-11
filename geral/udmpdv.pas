@@ -458,8 +458,8 @@ type
     qsFornecTELEFONE: TStringField;
     qsFornecTIPOFIRMA: TSmallintField;
     qsFornecUF: TStringField;
-    qsMaiorData: TSQLQuery;
-    qsMaiorDataMAIORDATA: TDateField;
+    qsMaiorData_EXCLUIR: TSQLQuery;
+    qsMaiorData_EXCLUIRMAIORDATA: TDateField;
     qsProdutosBASE_ICMS: TFloatField;
     qsProdutosCATEGORIA: TStringField;
     qsProdutosCEST: TStringField;
@@ -891,8 +891,8 @@ type
     sqEmpresa: TSQLQuery;
     qcds_ccusto: TSQLQuery;
     qsEmpresa: TSQLQuery;
-    qsMenorData: TSQLQuery;
-    qsMenorDataMENORDATA: TDateField;
+    qsMenorData_EXCLUIR: TSQLQuery;
+    qsMenorData_EXCLUIRMENORDATA: TDateField;
     qcds_parametro: TSQLQuery;
     qsFornec: TSQLQuery;
     qsCliente: TSQLQuery;

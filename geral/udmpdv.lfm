@@ -34,16 +34,16 @@ object dmPdv: TdmPdv
     Database = IbCon
     Transaction = sTrans
     Params = <>
-    left = 256
-    top = 18
+    left = 264
+    top = 16
   end
   object sqGenerator: TSQLQuery
     FieldDefs = <>
     Database = IbCon
     Transaction = sTrans
     Params = <>
-    left = 224
-    top = 104
+    left = 536
+    top = 18
   end
   object sqParametro: TSQLQuery
     FieldDefs = <    
@@ -142,8 +142,8 @@ object dmPdv: TdmPdv
       'SELECT * FROM PARAMETRO'
     )
     Params = <>
-    left = 136
-    top = 105
+    left = 624
+    top = 18
     object sqParametroDESCRICAO: TStringField
       FieldKind = fkData
       FieldName = 'DESCRICAO'
@@ -724,7 +724,7 @@ object dmPdv: TdmPdv
         ParamType = ptInput
       end>
     left = 40
-    top = 104
+    top = 256
     object sqLancamentosCODMOVIMENTO: TLongintField
       FieldKind = fkData
       FieldName = 'CODMOVIMENTO'
@@ -1507,8 +1507,8 @@ object dmPdv: TdmPdv
         Name = 'PCODMOV'
         ParamType = ptInput
       end>
-    left = 320
-    top = 104
+    left = 392
+    top = 18
   end
   object sqEmpresa: TSQLQuery
     FieldDefs = <    
@@ -1978,8 +1978,8 @@ object dmPdv: TdmPdv
       'SELECT * FROM EMPRESA'
     )
     Params = <>
-    left = 192
-    top = 18
+    left = 128
+    top = 88
     object sqEmpresaEMPRESA: TStringField
       FieldKind = fkData
       FieldName = 'EMPRESA'
@@ -2773,16 +2773,16 @@ object dmPdv: TdmPdv
     Database = IbCon
     Transaction = sTrans
     Params = <>
-    left = 400
-    top = 104
+    left = 464
+    top = 18
   end
   object sqBusca1: TSQLQuery
     FieldDefs = <>
     Database = IbCon
     Transaction = sTrans
     Params = <>
-    left = 328
-    top = 18
+    left = 320
+    top = 16
   end
   object qcds_ccusto: TSQLQuery
     FieldDefs = <    
@@ -2818,8 +2818,8 @@ object dmPdv: TdmPdv
         Name = 'PCONTADESPESA'
         ParamType = ptInput
       end>
-    left = 40
-    top = 224
+    left = 360
+    top = 88
     object qcds_ccustoCODIGO: TLongintField
       FieldKind = fkData
       FieldName = 'CODIGO'
@@ -3355,7 +3355,7 @@ object dmPdv: TdmPdv
         ParamType = ptInput
       end>
     left = 200
-    top = 224
+    top = 88
     object qsEmpresaEMPRESA: TStringField
       FieldKind = fkData
       FieldName = 'EMPRESA'
@@ -4197,7 +4197,7 @@ object dmPdv: TdmPdv
       Size = 800
     end
   end
-  object qsMenorData: TSQLQuery
+  object qsMenorData_EXCLUIR: TSQLQuery
     FieldDefs = <    
       item
         Name = 'MENORDATA'
@@ -4232,9 +4232,9 @@ object dmPdv: TdmPdv
         Name = 'pserie'
         ParamType = ptInput
       end>
-    left = 272
-    top = 224
-    object qsMenorDataMENORDATA: TDateField
+    left = 648
+    top = 520
+    object qsMenorData_EXCLUIRMENORDATA: TDateField
       FieldKind = fkData
       FieldName = 'MENORDATA'
       Index = 0
@@ -4244,7 +4244,7 @@ object dmPdv: TdmPdv
       Required = False
     end
   end
-  object qsMaiorData: TSQLQuery
+  object qsMaiorData_EXCLUIR: TSQLQuery
     FieldDefs = <    
       item
         Name = 'MAIORDATA'
@@ -4279,9 +4279,9 @@ object dmPdv: TdmPdv
         Name = 'pserie'
         ParamType = ptInput
       end>
-    left = 360
-    top = 232
-    object qsMaiorDataMAIORDATA: TDateField
+    left = 848
+    top = 512
+    object qsMaiorData_EXCLUIRMAIORDATA: TDateField
       FieldKind = fkData
       FieldName = 'MAIORDATA'
       Index = 0
@@ -4293,8 +4293,8 @@ object dmPdv: TdmPdv
   end
   object dsNF: TDataSource
     DataSet = qcdsNF
-    left = 120
-    top = 336
+    left = 88
+    top = 328
   end
   object qcdsNF: TSQLQuery
     FieldDefs = <    
@@ -4814,8 +4814,8 @@ object dmPdv: TdmPdv
         Name = 'ENV'
         ParamType = ptInput
       end>
-    left = 120
-    top = 224
+    left = 40
+    top = 328
     object qcdsNFCFOP: TStringField
       FieldKind = fkData
       FieldName = 'CFOP'
@@ -5775,8 +5775,8 @@ object dmPdv: TdmPdv
         Name = 'pPARAM'
         ParamType = ptInput
       end>
-    left = 128
-    top = 168
+    left = 720
+    top = 16
     object qcds_parametroDESCRICAO: TStringField
       FieldKind = fkData
       FieldName = 'DESCRICAO'
@@ -6084,8 +6084,8 @@ object dmPdv: TdmPdv
         Name = 'id'
         ParamType = ptInput
       end>
-    left = 216
-    top = 336
+    left = 448
+    top = 88
     object qsFornecCODCLIENTE: TLongintField
       FieldKind = fkData
       FieldName = 'CODCLIENTE'
@@ -6460,8 +6460,8 @@ object dmPdv: TdmPdv
         Name = 'id'
         ParamType = ptInput
       end>
-    left = 296
-    top = 320
+    left = 536
+    top = 88
     object qsClienteCODCLIENTE: TLongintField
       FieldKind = fkData
       FieldName = 'CODCLIENTE'
@@ -6813,8 +6813,8 @@ object dmPdv: TdmPdv
         Name = 'id'
         ParamType = ptInput
       end>
-    left = 368
-    top = 320
+    left = 624
+    top = 88
     object qsCFOPCFCOD: TStringField
       FieldKind = fkData
       FieldName = 'CFCOD'
@@ -7022,8 +7022,8 @@ object dmPdv: TdmPdv
         Name = 'SIGLA'
         ParamType = ptInput
       end>
-    left = 112
-    top = 400
+    left = 688
+    top = 88
     object qsEstadoCODIGO: TLongintField
       FieldKind = fkData
       FieldName = 'CODIGO'
@@ -7526,8 +7526,8 @@ object dmPdv: TdmPdv
         Name = 'id'
         ParamType = ptInput
       end>
-    left = 208
-    top = 400
+    left = 144
+    top = 328
     object cdsItensNFCODPRODUTO: TLongintField
       FieldKind = fkData
       FieldName = 'CODPRODUTO'
@@ -8386,8 +8386,8 @@ object dmPdv: TdmPdv
     Database = IbCon
     Transaction = sTrans
     Params = <>
-    left = 298
-    top = 395
+    left = 232
+    top = 328
   end
   object sTabIBGE: TSQLQuery
     FieldDefs = <    
@@ -8438,8 +8438,8 @@ object dmPdv: TdmPdv
         Name = 'Cidade'
         ParamType = ptInput
       end>
-    left = 384
-    top = 392
+    left = 856
+    top = 88
     object sTabIBGENM_LOCALIDADE: TStringField
       FieldKind = fkData
       FieldName = 'NM_LOCALIDADE'
@@ -8892,8 +8892,8 @@ object dmPdv: TdmPdv
         Name = 'Codpro'
         ParamType = ptInput
       end>
-    left = 47
-    top = 463
+    left = 768
+    top = 88
     object qsProdutosCODPRODUTO: TLongintField
       FieldKind = fkData
       FieldName = 'CODPRODUTO'
@@ -9650,8 +9650,8 @@ object dmPdv: TdmPdv
         Name = 'tipo'
         ParamType = ptInput
       end>
-    left = 120
-    top = 467
+    left = 320
+    top = 328
     object qcdsFaturaDATAFATURA: TDateField
       FieldKind = fkData
       FieldName = 'DATAFATURA'
@@ -9733,8 +9733,8 @@ object dmPdv: TdmPdv
         Name = 'pnf'
         ParamType = ptInput
       end>
-    left = 200
-    top = 478
+    left = 384
+    top = 328
     object qsNFCNUMNF: TLongintField
       FieldKind = fkData
       FieldName = 'NUMNF'
@@ -9924,8 +9924,8 @@ object dmPdv: TdmPdv
         Name = 'cli'
         ParamType = ptInput
       end>
-    left = 267
-    top = 490
+    left = 120
+    top = 152
     object qsEndEntregaCODENDERECO: TLongintField
       FieldKind = fkData
       FieldName = 'CODENDERECO'
@@ -10197,8 +10197,8 @@ object dmPdv: TdmPdv
         Name = 'CODDET'
         ParamType = ptInput
       end>
-    left = 352
-    top = 496
+    left = 440
+    top = 328
     object sAdicaoADIC_CODDET: TLongintField
       FieldKind = fkData
       FieldName = 'ADIC_CODDET'
@@ -10319,8 +10319,8 @@ object dmPdv: TdmPdv
         Name = 'CODDI'
         ParamType = ptInput
       end>
-    left = 406
-    top = 502
+    left = 512
+    top = 328
     object sDiDI_CODDI: TLongintField
       FieldKind = fkData
       FieldName = 'DI_CODDI'
@@ -10439,8 +10439,8 @@ object dmPdv: TdmPdv
         Name = 'Codpro'
         ParamType = ptInput
       end>
-    left = 144
-    top = 528
+    left = 216
+    top = 152
     object sdsProd_CombCPRODANP: TStringField
       FieldKind = fkData
       FieldName = 'CPRODANP'
@@ -10716,8 +10716,8 @@ object dmPdv: TdmPdv
         Name = 'CODFISCAL'
         ParamType = ptInput
       end>
-    left = 224
-    top = 560
+    left = 312
+    top = 152
     object sdsCfopNCMNCM: TStringField
       FieldKind = fkData
       FieldName = 'NCM'
@@ -11308,8 +11308,8 @@ object dmPdv: TdmPdv
         Name = 'codcfop'
         ParamType = ptInput
       end>
-    left = 318
-    top = 557
+    left = 406
+    top = 152
     object sdsCfopProdCOD_PROD: TLongintField
       FieldKind = fkData
       FieldName = 'COD_PROD'
@@ -11768,8 +11768,8 @@ object dmPdv: TdmPdv
         Name = 'pTRANSP'
         ParamType = ptInput
       end>
-    left = 391
-    top = 579
+    left = 672
+    top = 152
     object qsTranspCODTRANSP: TLongintField
       FieldKind = fkData
       FieldName = 'CODTRANSP'
@@ -12162,8 +12162,8 @@ object dmPdv: TdmPdv
       ''
     )
     Params = <>
-    left = 120
-    top = 616
+    left = 592
+    top = 152
     object qsListaTranspCODTRANSP: TLongintField
       FieldKind = fkData
       FieldName = 'CODTRANSP'
@@ -12465,8 +12465,8 @@ object dmPdv: TdmPdv
         Name = 'micro'
         ParamType = ptInput
       end>
-    left = 224
-    top = 621
+    left = 488
+    top = 152
     object qsCentroCustoCODEMPRESA: TLongintField
       FieldKind = fkData
       FieldName = 'CODEMPRESA'
@@ -12585,8 +12585,8 @@ object dmPdv: TdmPdv
       'SELECT * FROM CCE'
     )
     Params = <>
-    left = 320
-    top = 632
+    left = 568
+    top = 328
     object qsCCECHAVE: TStringField
       FieldKind = fkData
       FieldName = 'CHAVE'
@@ -13167,8 +13167,8 @@ object dmPdv: TdmPdv
       'select * from EMPRESA'
     )
     Params = <>
-    left = 200
-    top = 272
+    left = 276
+    top = 88
     object qsEmpresa1EMPRESA: TStringField
       FieldKind = fkData
       FieldName = 'EMPRESA'
@@ -14002,7 +14002,7 @@ object dmPdv: TdmPdv
   end
   object dsCCE: TDataSource
     DataSet = qsCCE
-    left = 372
-    top = 640
+    left = 624
+    top = 328
   end
 end
