@@ -87,7 +87,6 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uProdutoProc"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="5"/>
         <TopLine Value="285"/>
         <CursorPos Y="304"/>
@@ -223,9 +222,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uNfce"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="469"/>
-        <CursorPos Y="484"/>
+        <TopLine Value="1900"/>
+        <CursorPos Y="1920"/>
         <UsageCount Value="200"/>
         <Bookmarks Count="3">
           <Item0 X="3" Y="660" ID="8"/>
@@ -674,124 +674,124 @@
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="uabrircaixa.pas"/>
-        <Caret Line="121" TopLine="108"/>
-      </Position1>
-      <Position2>
-        <Filename Value="uabrircaixa.pas"/>
-        <Caret Line="57" Column="23" TopLine="44"/>
-      </Position2>
-      <Position3>
-        <Filename Value="uabrircaixa.pas"/>
-        <Caret Line="182" Column="15" TopLine="160"/>
-      </Position3>
-      <Position4>
-        <Filename Value="uabrircaixa.pas"/>
-        <Caret Line="204" Column="15" TopLine="182"/>
-      </Position4>
-      <Position5>
         <Filename Value="updv_rec.pas"/>
         <Caret Line="178" Column="51" TopLine="166"/>
-      </Position5>
-      <Position6>
+      </Position1>
+      <Position2>
         <Filename Value="updv_rec.pas"/>
         <Caret Line="1095" Column="13" TopLine="1073"/>
-      </Position6>
-      <Position7>
+      </Position2>
+      <Position3>
         <Filename Value="updv_rec.pas"/>
         <Caret Line="1120" Column="18" TopLine="1085"/>
+      </Position3>
+      <Position4>
+        <Filename Value="uprodutoproc.pas"/>
+        <Caret Line="279" TopLine="265"/>
+      </Position4>
+      <Position5>
+        <Filename Value="uprodutoproc.pas"/>
+        <Caret Line="304" Column="14" TopLine="296"/>
+      </Position5>
+      <Position6>
+        <Filename Value="uprodutoproc.pas"/>
+        <Caret Line="20" Column="14" TopLine="7"/>
+      </Position6>
+      <Position7>
+        <Filename Value="uprodutoproc.pas"/>
+        <Caret Line="41" Column="24" TopLine="20"/>
       </Position7>
       <Position8>
         <Filename Value="uprodutoproc.pas"/>
-        <Caret Line="279" TopLine="265"/>
+        <Caret Line="66" Column="82" TopLine="45"/>
       </Position8>
       <Position9>
         <Filename Value="uprodutoproc.pas"/>
-        <Caret Line="304" Column="14" TopLine="296"/>
+        <Caret Line="88" Column="48" TopLine="66"/>
       </Position9>
       <Position10>
         <Filename Value="uprodutoproc.pas"/>
-        <Caret Line="20" Column="14" TopLine="7"/>
+        <Caret Line="99" Column="48" TopLine="77"/>
       </Position10>
       <Position11>
         <Filename Value="uprodutoproc.pas"/>
-        <Caret Line="41" Column="24" TopLine="20"/>
+        <Caret Line="155" Column="46" TopLine="133"/>
       </Position11>
       <Position12>
         <Filename Value="uprodutoproc.pas"/>
-        <Caret Line="66" Column="82" TopLine="45"/>
+        <Caret Line="171" Column="46" TopLine="149"/>
       </Position12>
       <Position13>
         <Filename Value="uprodutoproc.pas"/>
-        <Caret Line="88" Column="48" TopLine="66"/>
+        <Caret Line="179" Column="46" TopLine="157"/>
       </Position13>
       <Position14>
         <Filename Value="uprodutoproc.pas"/>
-        <Caret Line="99" Column="48" TopLine="77"/>
+        <Caret Line="228" Column="34" TopLine="206"/>
       </Position14>
       <Position15>
         <Filename Value="uprodutoproc.pas"/>
-        <Caret Line="155" Column="46" TopLine="133"/>
+        <Caret Line="254" Column="46" TopLine="232"/>
       </Position15>
       <Position16>
         <Filename Value="uprodutoproc.pas"/>
-        <Caret Line="171" Column="46" TopLine="149"/>
+        <Caret Line="271" Column="92" TopLine="249"/>
       </Position16>
       <Position17>
         <Filename Value="uprodutoproc.pas"/>
-        <Caret Line="179" Column="46" TopLine="157"/>
+        <Caret Line="304" Column="14" TopLine="289"/>
       </Position17>
       <Position18>
         <Filename Value="uprodutoproc.pas"/>
-        <Caret Line="228" Column="34" TopLine="206"/>
+        <Caret Line="20" Column="14" TopLine="7"/>
       </Position18>
       <Position19>
         <Filename Value="uprodutoproc.pas"/>
-        <Caret Line="254" Column="46" TopLine="232"/>
+        <Caret Line="41" Column="24" TopLine="20"/>
       </Position19>
       <Position20>
         <Filename Value="uprodutoproc.pas"/>
-        <Caret Line="271" Column="92" TopLine="249"/>
+        <Caret Line="66" Column="82" TopLine="45"/>
       </Position20>
       <Position21>
         <Filename Value="uprodutoproc.pas"/>
-        <Caret Line="304" Column="14" TopLine="289"/>
+        <Caret Line="88" Column="48" TopLine="66"/>
       </Position21>
       <Position22>
         <Filename Value="uprodutoproc.pas"/>
-        <Caret Line="20" Column="14" TopLine="7"/>
+        <Caret Line="99" Column="48" TopLine="77"/>
       </Position22>
       <Position23>
         <Filename Value="uprodutoproc.pas"/>
-        <Caret Line="41" Column="24" TopLine="20"/>
+        <Caret Line="155" Column="46" TopLine="133"/>
       </Position23>
       <Position24>
         <Filename Value="uprodutoproc.pas"/>
-        <Caret Line="66" Column="82" TopLine="45"/>
+        <Caret Line="171" Column="46" TopLine="149"/>
       </Position24>
       <Position25>
         <Filename Value="uprodutoproc.pas"/>
-        <Caret Line="88" Column="48" TopLine="66"/>
+        <Caret Line="179" Column="46" TopLine="157"/>
       </Position25>
       <Position26>
-        <Filename Value="uprodutoproc.pas"/>
-        <Caret Line="99" Column="48" TopLine="77"/>
-      </Position26>
-      <Position27>
-        <Filename Value="uprodutoproc.pas"/>
-        <Caret Line="155" Column="46" TopLine="133"/>
-      </Position27>
-      <Position28>
-        <Filename Value="uprodutoproc.pas"/>
-        <Caret Line="171" Column="46" TopLine="149"/>
-      </Position28>
-      <Position29>
-        <Filename Value="uprodutoproc.pas"/>
-        <Caret Line="179" Column="46" TopLine="157"/>
-      </Position29>
-      <Position30>
         <Filename Value="updv.pas"/>
         <Caret Line="1191" Column="46" TopLine="1177"/>
+      </Position26>
+      <Position27>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="484" TopLine="469"/>
+      </Position27>
+      <Position28>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="664" TopLine="651"/>
+      </Position28>
+      <Position29>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="665" TopLine="651"/>
+      </Position29>
+      <Position30>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="1920" TopLine="1899"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -800,7 +800,7 @@
     </RunParams>
   </ProjectSession>
   <Debugging>
-    <BreakPoints Count="10">
+    <BreakPoints Count="7">
       <Item1>
         <Kind Value="bpkData"/>
         <WatchData Value="dmPdv.sqBusca.FieldByName('TRIB_EST').AsFloat"/>
@@ -850,27 +850,6 @@
         <Source Value="unfce.pas"/>
         <Line Value="1389"/>
       </Item7>
-      <Item8>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="unfce.pas"/>
-        <Line Value="1920"/>
-      </Item8>
-      <Item9>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="unfce.pas"/>
-        <Line Value="664"/>
-      </Item9>
-      <Item10>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="uprodutoproc.pas"/>
-        <Line Value="304"/>
-      </Item10>
     </BreakPoints>
     <Watches Count="6">
       <Item2>

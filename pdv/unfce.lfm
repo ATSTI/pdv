@@ -3612,10 +3612,10 @@ object fNfce: TfNfce
     Configuracoes.Arquivos.SepararPorMes = True
     Configuracoes.Arquivos.SalvarEvento = True
     Configuracoes.Arquivos.SalvarApenasNFeProcessadas = True
-    Configuracoes.WebServices.Visualizar = True
     Configuracoes.WebServices.UF = 'SP'
     Configuracoes.WebServices.AguardarConsultaRet = 0
     Configuracoes.WebServices.Salvar = True
+    Configuracoes.WebServices.TimeOut = 10000
     Configuracoes.WebServices.QuebradeLinha = '|'
     Configuracoes.WebServices.TimeZoneConf.ModoDeteccao = tzManual
     Configuracoes.WebServices.TimeZoneConf.TimeZoneStr = '-03:00'
