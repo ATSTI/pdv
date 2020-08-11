@@ -3478,7 +3478,7 @@ begin
       Dest.xNome             := Trim(dmPdv.qsClienteRAZAOSOCIAL.AsString);
 
 
-      if (dmPdv.qsClienteSUFRAMA.Size = 9) then
+      if (Length(Trim(dmPdv.qsClienteSUFRAMA.AsString)) = 9) then
       begin
         pSuframa  := Trim(dmPdv.qsClienteSUFRAMA.AsString);
         Dest.ISUF := Trim(dmPdv.qsClienteSUFRAMA.AsString);

@@ -5203,6 +5203,7 @@ object fNFe: TfNFe
     Configuracoes.Arquivos.SalvarEvento = True
     Configuracoes.WebServices.UF = 'SP'
     Configuracoes.WebServices.AguardarConsultaRet = 0
+    Configuracoes.WebServices.TimeOut = 10000
     Configuracoes.WebServices.QuebradeLinha = '|'
     Configuracoes.WebServices.SSLType = LT_TLSv1_2
     Configuracoes.Certificados.ArquivoPFX = 'C:\home\cert_2020.cer'
