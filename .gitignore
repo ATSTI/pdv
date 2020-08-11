@@ -9,3 +9,6 @@ cte/lib/x86_64-win64/ucteprincipal.lfm
 *lib*
 cte/lib/x86_64-win64/prjCTe.obj
 cte/lib/x86_64-win64/prjCTe.compiled
+integracao/python37.dll
+*.pyc
+*.ini

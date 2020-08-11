@@ -1117,7 +1117,7 @@ begin
   begin
     status := '7-';
     vlr := vlr_rec;
-    parc_rec := 1;
+    parc_rec := 0;
   end;
   if (num_cx = 0) then
   begin

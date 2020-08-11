@@ -1181,11 +1181,13 @@ begin
   DBGrid2.Columns[3].FieldName:='VALOR_PRAZO';
   DBGrid2.Columns[3].DisplayFormat:=',##0.00';
   fPDV_Rec.OutrosCartoes:='N';
+  dmPdv.OutrosCartoes := 'N';
   sqlP := 'SELECT * FROM PARAMETRO WHERE PARAMETRO = ' + QuotedStr('OUTROSCARTOES');
   dmPdv.busca_sql(sqlP);
   if (not dmPdv.sqBusca.IsEmpty) then
   begin
     fPDV_Rec.OutrosCartoes:='S';
+    dmPdv.OutrosCartoes := 'S';
   end;
 
   sqlP := 'SELECT CODCAIXA, NOMECAIXA ';

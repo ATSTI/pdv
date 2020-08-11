@@ -359,8 +359,8 @@ begin
   memoLog.Lines.Append('Recibo: '+ ACBrNFe1.WebServices.Retorno.Recibo);
   memoLog.Lines.Append('Protocolo: '+ ACBrNFe1.WebServices.Retorno.Protocolo);
 
-  ShowMessage('Nº do Protocolo de envio ' + ACBrNFe1.WebServices.Retorno.Protocolo);
-  ShowMessage('Nº do Recibo de envio ' + ACBrNFe1.WebServices.Retorno.Recibo);
+  //ShowMessage('Nº do Protocolo de envio ' + ACBrNFe1.WebServices.Retorno.Protocolo);
+  //ShowMessage('Nº do Recibo de envio ' + ACBrNFe1.WebServices.Retorno.Recibo);
 
   //LoadXML(ACBrNFe1.NotasFiscais.Items[0].XML,  mRecebido);
   //ACBrNFe1.NotasFiscais.Imprimir;
@@ -430,6 +430,7 @@ var  N: TACBrPosPrinterModelo;
     U: TSSLCryptLib;
     V: TSSLHttpLib;
     X: TSSLXmlSignLib;
+    ver: Integer;
 begin
   //ACBrNFe1 := TACBrNFe.Create(ACBrNFe1);
 
@@ -478,21 +479,25 @@ begin
   For T := Low(TSSLLib) to High(TSSLLib) do
     cbSSLLib.Items.Add( GetEnumName(TypeInfo(TSSLLib), integer(T) ) ) ;
   cbSSLLib.ItemIndex := dmPdv.SSLLib;
+  ver := cbSSLLib.ItemIndex;
 
   cbCryptLib.Items.Clear ;
   For U := Low(TSSLCryptLib) to High(TSSLCryptLib) do
     cbCryptLib.Items.Add( GetEnumName(TypeInfo(TSSLCryptLib), integer(U) ) ) ;
   cbCryptLib.ItemIndex := dmPdv.CryptLib;
+  ver := cbCryptLib.ItemIndex;
 
   cbHttpLib.Items.Clear ;
   For V := Low(TSSLHttpLib) to High(TSSLHttpLib) do
     cbHttpLib.Items.Add( GetEnumName(TypeInfo(TSSLHttpLib), integer(V) ) ) ;
   cbHttpLib.ItemIndex := dmPdv.HttpLib;
+  ver := cbHttpLib.ItemIndex;
 
   cbXmlSignLib.Items.Clear ;
   For X := Low(TSSLXmlSignLib) to High(TSSLXmlSignLib) do
     cbXmlSignLib.Items.Add( GetEnumName(TypeInfo(TSSLXmlSignLib), integer(X) ) ) ;
   cbXmlSignLib.ItemIndex := dmPdv.XmlSignLib;
+  ver := cbXmlSignLib.ItemIndex;
 
   edtCaminho.Text := dmPdv.CaminhoCert;
   edtSenha.Text   := dmPdv.SenhaCert;
@@ -653,6 +658,16 @@ begin
     end;
     num_nfce := dmPdv.sqBusca.FieldByName('ULTIMO_NUMERO').AsInteger+1;
     edNFce.Text:=IntToStr(num_nfce);
+  end;
+  with ACBrNFe1.Configuracoes.Geral do
+  begin
+    t := IntToStr(cbSSLLib.ItemIndex);
+    SSLLib       := TSSLLib(cbSSLLib.ItemIndex);
+    t := IntToStr(cbCryptLib.ItemIndex);
+    SSLCryptLib  := TSSLCryptLib(cbCryptLib.ItemIndex);
+    t := IntToStr(cbHttpLib.ItemIndex);
+    SSLHttpLib   := TSSLHttpLib(cbHttpLib.ItemIndex);
+    SSLXmlSignLib:= TSSLXmlSignLib(cbXmlSignLib.ItemIndex);
   end;
   BitBtn3.SetFocus;
 end;
@@ -1370,9 +1385,14 @@ begin
 end;
 
 procedure TfNfce.AtualizaSSLLibsCombo;
+var teste: integer;
 begin
+  teste := Integer( ACBrNFe1.Configuracoes.Geral.SSLLib );
+  teste := cbSSLLib.ItemIndex;
   cbSSLLib.ItemIndex := Integer( ACBrNFe1.Configuracoes.Geral.SSLLib );
   cbCryptLib.ItemIndex := Integer( ACBrNFe1.Configuracoes.Geral.SSLCryptLib );
+  teste := cbHttpLib.ItemIndex;
+  teste := Integer( ACBrNFe1.Configuracoes.Geral.SSLHttpLib );
   cbHttpLib.ItemIndex := Integer( ACBrNFe1.Configuracoes.Geral.SSLHttpLib );
   cbXmlSignLib.ItemIndex := Integer( ACBrNFe1.Configuracoes.Geral.SSLXmlSignLib );
 end;
@@ -1898,8 +1918,11 @@ begin
 
   with ACBrNFe1.Configuracoes.Geral do
   begin
+    ver_strc := IntToStr(cbSSLLib.ItemIndex);
     SSLLib       := TSSLLib(cbSSLLib.ItemIndex);
+    ver_strc := IntToStr(cbCryptLib.ItemIndex);
     SSLCryptLib  := TSSLCryptLib(cbCryptLib.ItemIndex);
+    ver_strc := IntToStr(cbHttpLib.ItemIndex);
     SSLHttpLib   := TSSLHttpLib(cbHttpLib.ItemIndex);
     SSLXmlSignLib:= TSSLXmlSignLib(cbXmlSignLib.ItemIndex);
   end;
@@ -2100,8 +2123,8 @@ begin
     MemoResp.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetWS;
     memoResp.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetornoWS;
     //LoadXML(MemoResp, WBResposta);
-    ShowMessage(IntToStr(ACBrNFe1.WebServices.EnvEvento.cStat));
-    ShowMessage(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.nProt);
+    //ShowMessage(IntToStr(ACBrNFe1.WebServices.EnvEvento.cStat));
+    //ShowMessage(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.nProt);
   end;
   pnCancelamento.Visible:=False;
 end;
@@ -2189,7 +2212,7 @@ begin
   if ACBrNFe1.WebServices.Consulta.Protocolo <> '' then
   begin
     memoLog.Lines.Append('Consulta executada com sucesso');
-    ShowMessage(ACBrNFe1.WebServices.Consulta.Protocolo);
+    //ShowMessage(ACBrNFe1.WebServices.Consulta.Protocolo);
     Protocolo := ACBrNFe1.WebServices.Consulta.Protocolo;
     Recibo := 'recibo';//ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe. .WebServices.Consulta.Recibo;
     GravarDadosNF(protocolo, recibo);

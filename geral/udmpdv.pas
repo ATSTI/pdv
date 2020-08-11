@@ -1055,6 +1055,7 @@ type
     CaminhoCert:String;
     SenhaCert :String;
     NumSerieCert :String;
+    OutrosCartoes : String;
     vendedor_padrao: Integer;
     imp_controle_porta: Boolean;
     imp_Interval: Integer;

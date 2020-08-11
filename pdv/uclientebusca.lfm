@@ -15,8 +15,9 @@ inherited fClienteBusca: TfClienteBusca
     end
     inherited Label1: TLabel
       Left = 24
+      Height = 21
       Top = 8
-      Width = 57
+      Width = 54
       Caption = 'Código'
     end
     inherited Edit2: TEdit
@@ -25,6 +26,7 @@ inherited fClienteBusca: TfClienteBusca
       OnKeyPress = Edit2KeyPress
     end
     inherited chInativo: TCheckBox
+      Width = 60
       OnChange = chInativoChange
     end
     object Label2: TLabel[4]

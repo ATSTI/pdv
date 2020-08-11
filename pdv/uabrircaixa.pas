@@ -18,11 +18,16 @@ type
     btnSair: TBitBtn;
     dtData: TDateTimePicker;
     edReforco: TMaskEdit;
+    edSaldoini: TMaskEdit;
+    edTLiquido: TMaskEdit;
+    edTSaldoIni: TMaskEdit;
     edValor: TMaskEdit;
     Label1: TLabel;
     Label10: TLabel;
     Label11: TLabel;
     Label12: TLabel;
+    Label13: TLabel;
+    Label14: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
@@ -39,7 +44,6 @@ type
     edDinheiro: TMaskEdit;
     edTCaixa: TMaskEdit;
     edTBruto: TMaskEdit;
-    edTLiquido: TMaskEdit;
     Panel1: TPanel;
     Panel2: TPanel;
     procedure BitBtn24Click(Sender: TObject);
@@ -49,6 +53,9 @@ type
     procedure FormShow(Sender: TObject);
     procedure mostrarCaixa(usuarioCX: String);
   private
+    cartao_debito_vlr: Double;
+    cartao_credito_vlr: Double;
+    cx_m: String;
     procedure AbrirCaixa();
     procedure FecharCaixa();
 
@@ -81,6 +88,8 @@ end;
 procedure TfAbrirCaixa.BitBtn24Click(Sender: TObject);
 var
   IMPRESSORA:TextFile;
+  total, total1 : double;
+  vlr_cartao : String;
 begin
   // leio um arquivo txt e imprimo
   //lFile := TStringList.Create;
@@ -101,18 +110,64 @@ begin
     Writeln(Impressora, 'CAIXA : ' + dmPdv.nomeCaixa);
     Writeln(IMPRESSORA, FormatDateTime('dd/mm/yyyy hh:MM:ss', Now));
     Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, 'Saldo Inicial  - ' + edSaldoIni.Text);
+    Writeln(IMPRESSORA, 'Entradas       - ' + edDinheiro.Text);
+    Writeln(IMPRESSORA, 'Sangria        - ' + edSangrias.Text);
+    Writeln(IMPRESSORA, 'Reforco        - ' + edReforco.Text);
+    Writeln(IMPRESSORA, '---------------------------');
+    Writeln(IMPRESSORA, 'Saldo Caixa    - ' + edTCaixa.Text);
+    Writeln(IMPRESSORA, '');
     Writeln(IMPRESSORA, 'Dinheiro       - ' + edDinheiro.Text);
-    Writeln(IMPRESSORA, 'Cartao Credito - ' + edCcred.Text);
+    total := 0;
+    total1 := 0;
+    if dmPdv.OutrosCartoes = 'S' then
+    begin
+      vlr_cartao := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
+      vlr_cartao += ' where CAIXA = ' + cx_m;
+      vlr_cartao += ' and STATE = 1 and FORMA_PGTO = 7';//Sia Net
+      vlr_cartao += ' and cod_venda > 1  ';
+      if (dmPdv.sqBusca.Active) then
+        dmPdv.sqBusca.Close;
+      dmPdv.sqBusca.SQL.Clear;
+      dmPdv.sqBusca.SQL.Add(vlr_cartao);
+      dmPdv.sqBusca.Active:=True;
+      if (not dmPdv.sqBusca.IsEmpty) then
+      begin
+        total := dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+      end;
+      vlr_cartao := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
+      vlr_cartao += ' where CAIXA = ' + cx_m;
+      vlr_cartao += ' and STATE = 1 and FORMA_PGTO = 8';//Brasil Card
+      vlr_cartao += ' and cod_venda > 1  ';
+      if (dmPdv.sqBusca.Active) then
+        dmPdv.sqBusca.Close;
+      dmPdv.sqBusca.SQL.Clear;
+      dmPdv.sqBusca.SQL.Add(vlr_cartao);
+      dmPdv.sqBusca.Active:=True;
+      if (not dmPdv.sqBusca.IsEmpty) then
+      begin
+        total1 := dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+      end;
+    end;
+    cartao_credito_vlr := cartao_credito_vlr - total - total1;
+    vlr_cartao := format('%6.2n',[cartao_credito_vlr]);
+    Writeln(IMPRESSORA, 'Cartao Credito - ' + vlr_cartao);
     Writeln(IMPRESSORA, 'Cartao Debito  - ' + edCdeb.Text);
+    if dmPdv.OutrosCartoes = 'S' then
+    begin
+      vlr_cartao := format('%6.2n',[total]);
+      Writeln(IMPRESSORA, 'Sia Net        - ' + vlr_cartao);
+      vlr_cartao := format('%6.2n',[total1]);
+      Writeln(IMPRESSORA, 'Brasil Card    - ' + vlr_cartao);
+    end;
     Writeln(IMPRESSORA, 'Cheque         - ' + edCheque.Text);
     if (edFaturado.Text <> '0,00') then
       Writeln(IMPRESSORA, 'Faturado       - ' + edFaturado.Text);
-    Writeln(IMPRESSORA, 'Sangria        - ' + edSangrias.Text);
+
+    //Writeln(IMPRESSORA, 'Total Liquido  - ' + edTLiquido.Text);
     Writeln(IMPRESSORA, '---------------------------');
-    Writeln(IMPRESSORA, 'Total Caixa    - ' + edTCaixa.Text);
-    Writeln(IMPRESSORA, 'Total Bruto    - ' + edTBruto.Text);
-    Writeln(IMPRESSORA, 'Total Liquido  - ' + edTLiquido.Text);
-    Writeln(IMPRESSORA, '---------------------------');
+    Writeln(IMPRESSORA, 'Total Vendas   - ' + edTBruto.Text);
+    //Writeln(IMPRESSORA, 'Saldo Abertura  - ' + edTLiquido.Text);
     Writeln(IMPRESSORA, '');
   finally
     CloseFile(IMPRESSORA);
@@ -157,12 +212,15 @@ var
   total : Double;
   totalliquido : Double;
   totalcaixa : Double;
-  cx_m: String;
+  vendacaixa : Double;
+  saldoini : Double;
   data_hoje: String;
 begin
   total :=0;
   totalliquido :=0;
-  totalcaixa :=0;
+  totalcaixa := 0;
+  vendacaixa := 0;
+  saldoini := 0;
   cx_m := dmpdv.idcaixa;
   data_hoje := FormatDateTime('dd/mm/yyyy', Now);
   if (FormatDateTime('dd/mm/yyyy', dtData.Date) <> data_hoje) then
@@ -171,7 +229,8 @@ begin
        'SITUACAO, NOMECAIXA ' +
        ' FROM CAIXA_CONTROLE WHERE CODUSUARIO = ' + dmPdv.varLogado +
        ' AND DATAABERTURA = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', dtData.Date)) +
-       ' ORDER BY IDCAIXACONTROLE DESC');
+       '  ORDER BY IDCAIXACONTROLE DESC');
+    // ' ) OR (DATAFECHAMENTO = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', dtData.Date)) +
     cx_m := IntToStr(dmPdv.sqBusca.FieldByName('IDCAIXACONTROLE').AsInteger);
   end;
   sqlP := 'select COALESCE(VALORABRE,0) as Valor from CAIXA_CONTROLE';
@@ -179,10 +238,12 @@ begin
   dmPdv.busca_sql(sqlP);
   if (not dmPdv.sqBusca.IsEmpty) then
   begin
-    total := dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    //total := dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    saldoini := dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     totalcaixa := dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     totalliquido := dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     edDinheiro.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
+    edSaldoini.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
   end;
   sqlP := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
   sqlP += ' where CAIXA = ' + cx_m;
@@ -195,10 +256,11 @@ begin
   dmPdv.sqBusca.Active:=True;
   if (not dmPdv.sqBusca.IsEmpty) then
   begin
+    vendacaixa += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     total += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     totalliquido += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     totalcaixa += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
-    edDinheiro.Text:= format('%6.2n',[totalcaixa]);
+    edDinheiro.Text:= format('%6.2n',[vendacaixa]);
   end;
 
   sqlP := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
@@ -212,6 +274,7 @@ begin
   dmPdv.sqBusca.Active:=True;
   if (not dmPdv.sqBusca.IsEmpty) then
   begin
+    cartao_debito_vlr := dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     total += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     totalliquido += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     edCdeb.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
@@ -219,7 +282,7 @@ begin
 
   sqlP := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
   sqlP += ' where CAIXA = ' + cx_m;
-  sqlP += ' and STATE = 1 and FORMA_PGTO = 3';//Cartão Crédito
+  sqlP += ' and STATE = 1 and FORMA_PGTO in (3,7,8)';//Cartão Crédito
   sqlP += ' and cod_venda > 1  ';//1 para Sangria, >1 para Outros
   if (dmPdv.sqBusca.Active) then
     dmPdv.sqBusca.Close;
@@ -228,6 +291,7 @@ begin
   dmPdv.sqBusca.Active:=True;
   if (not dmPdv.sqBusca.IsEmpty) then
   begin
+    cartao_credito_vlr := dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     total += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     totalliquido += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     edCcred.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
@@ -260,6 +324,7 @@ begin
   dmPdv.sqBusca.Active:=True;
   if (not dmPdv.sqBusca.IsEmpty) then
   begin
+    vendacaixa += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     total += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     totalliquido += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     edCheque.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
@@ -296,10 +361,9 @@ begin
     totalcaixa += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     edReforco.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
   end;
-
   edTCaixa.Text:= format('%6.2n',[totalcaixa]);
   edTBruto.Text:= format('%6.2n',[total]);
-  edTLiquido.Text:= format('%6.2n',[totalliquido]);
+  edTLiquido.Text:= format('%6.2n',[vendacaixa]);
 end;
 
 procedure TfAbrirCaixa.AbrirCaixa();
@@ -371,8 +435,10 @@ begin
     dmPdv.sTrans.Commit;
     ShowMessage('Caixa fechado com sucesso!');
     begin  // IMPRESSAO
+      BitBtn24.Click;
       // leio um arquivo txt e imprimo
       //lFile := TStringList.Create;
+      {
       if (dmPdv.CupomImp = 'Texto') then
       begin
         AssignFile(IMPRESSORA, dmPdv.portaIMP);
@@ -390,6 +456,8 @@ begin
         Writeln(Impressora, 'CAIXA : ' + dmPdv.nomeCaixa);
         Writeln(IMPRESSORA, FormatDateTime('dd/mm/yyyy hh:MM:ss', Now));
         Writeln(IMPRESSORA, '');
+        Writeln(IMPRESSORA, 'Saldo Inicial  - ' + edSaldoIni.Text);
+        Writeln(IMPRESSORA, '');
         Writeln(IMPRESSORA, 'Dinheiro       - ' + edDinheiro.Text);
         Writeln(IMPRESSORA, 'Cartao Credito - ' + edCcred.Text);
         Writeln(IMPRESSORA, 'Cartao Debito  - ' + edCdeb.Text);
@@ -406,6 +474,7 @@ begin
       finally
         CloseFile(IMPRESSORA);
       end;
+        }
     end; // FIM IMPRESSAO
   except
     on e: Exception do
