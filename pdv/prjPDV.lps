@@ -8,7 +8,7 @@
       <Unit0>
         <Filename Value="prjPDV.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="10"/>
         <TopLine Value="13"/>
         <CursorPos Y="23"/>
         <UsageCount Value="206"/>
@@ -75,8 +75,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <EditorIndex Value="8"/>
-        <TopLine Value="1162"/>
-        <CursorPos X="9" Y="1179"/>
+        <TopLine Value="1166"/>
+        <CursorPos Y="1176"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -129,7 +129,7 @@
         <Filename Value="..\geral\urecebimento.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uRecebimento"/>
-        <EditorIndex Value="12"/>
+        <EditorIndex Value="13"/>
         <TopLine Value="145"/>
         <CursorPos X="67" Y="155"/>
         <UsageCount Value="201"/>
@@ -195,7 +195,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uPermissao"/>
-        <EditorIndex Value="11"/>
+        <EditorIndex Value="12"/>
         <TopLine Value="57"/>
         <CursorPos X="18" Y="65"/>
         <UsageCount Value="235"/>
@@ -221,14 +221,15 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uNfce"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="459"/>
-        <CursorPos Y="472"/>
+        <TopLine Value="1148"/>
+        <CursorPos X="60" Y="1160"/>
         <UsageCount Value="200"/>
         <Bookmarks Count="3">
           <Item0 X="3" Y="655" ID="8"/>
-          <Item1 X="20" Y="2306" ID="4"/>
-          <Item2 Y="1984" ID="7"/>
+          <Item1 X="20" Y="2307" ID="4"/>
+          <Item2 Y="1985" ID="7"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -352,10 +353,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uReceber"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="7"/>
-        <TopLine Value="248"/>
-        <CursorPos X="33" Y="254"/>
+        <TopLine Value="124"/>
+        <CursorPos Y="141"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -378,7 +378,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uPadraoBusca"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="143"/>
+        <UsageCount Value="145"/>
       </Unit30>
       <Unit31>
         <Filename Value="..\upadraobusca.pas"/>
@@ -426,10 +426,10 @@
       </Unit35>
       <Unit36>
         <Filename Value="C:\lazarus\lcl\include\control.inc"/>
-        <EditorIndex Value="10"/>
+        <EditorIndex Value="11"/>
         <TopLine Value="3934"/>
         <CursorPos Y="3947"/>
-        <UsageCount Value="15"/>
+        <UsageCount Value="16"/>
         <Loaded Value="True"/>
       </Unit36>
       <Unit37>
@@ -662,132 +662,133 @@
       </Unit68>
       <Unit69>
         <Filename Value="C:\lazarus\lcl\include\application.inc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="2220"/>
-        <CursorPos Y="2241"/>
-        <UsageCount Value="10"/>
+        <EditorIndex Value="9"/>
+        <TopLine Value="2221"/>
+        <CursorPos X="43" Y="2248"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
       </Unit69>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="unfce.pas"/>
-        <Caret Line="24" Column="27" TopLine="11"/>
+        <Caret Line="1096" TopLine="1072"/>
       </Position1>
       <Position2>
         <Filename Value="unfce.pas"/>
-        <Caret Line="273" Column="45" TopLine="253"/>
+        <Caret Line="1097" TopLine="1073"/>
       </Position2>
       <Position3>
         <Filename Value="unfce.pas"/>
-        <Caret Line="464" Column="25" TopLine="444"/>
+        <Caret Line="1099" TopLine="1075"/>
       </Position3>
       <Position4>
         <Filename Value="unfce.pas"/>
-        <Caret Line="15" Column="33" TopLine="4"/>
+        <Caret Line="1100" TopLine="1076"/>
       </Position4>
       <Position5>
         <Filename Value="unfce.pas"/>
-        <Caret Line="24" Column="45" TopLine="4"/>
+        <Caret Line="1101" TopLine="1077"/>
       </Position5>
       <Position6>
         <Filename Value="unfce.pas"/>
-        <Caret Line="273" Column="40" TopLine="253"/>
+        <Caret Line="1102" TopLine="1078"/>
       </Position6>
       <Position7>
         <Filename Value="unfce.pas"/>
-        <Caret Line="464" Column="45" TopLine="444"/>
+        <Caret Line="1103" TopLine="1079"/>
       </Position7>
       <Position8>
         <Filename Value="unfce.pas"/>
-        <Caret Line="524" Column="20" TopLine="503"/>
+        <Caret Line="1104" TopLine="1080"/>
       </Position8>
       <Position9>
         <Filename Value="unfce.pas"/>
-        <Caret Line="972" Column="24" TopLine="952"/>
+        <Caret Line="1106" TopLine="1082"/>
       </Position9>
       <Position10>
         <Filename Value="unfce.pas"/>
-        <Caret Line="973" Column="24" TopLine="953"/>
+        <Caret Line="1107" TopLine="1083"/>
       </Position10>
       <Position11>
         <Filename Value="unfce.pas"/>
-        <Caret Line="974" Column="24" TopLine="954"/>
+        <Caret Line="1110" TopLine="1086"/>
       </Position11>
       <Position12>
         <Filename Value="unfce.pas"/>
-        <Caret Line="975" Column="24" TopLine="955"/>
+        <Caret Line="1122" TopLine="1108"/>
       </Position12>
       <Position13>
         <Filename Value="unfce.pas"/>
-        <Caret Line="472" TopLine="459"/>
+        <Caret Line="1124" TopLine="1108"/>
       </Position13>
       <Position14>
-        <Filename Value="prjPDV.lpr"/>
-        <Caret Line="22" TopLine="13"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="1125" TopLine="1108"/>
       </Position14>
       <Position15>
-        <Filename Value="prjPDV.lpr"/>
-        <Caret Line="23" TopLine="13"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="1126" TopLine="1108"/>
       </Position15>
       <Position16>
         <Filename Value="unfce.pas"/>
-        <Caret Line="468" Column="70" TopLine="459"/>
+        <Caret Line="1127" TopLine="1108"/>
       </Position16>
       <Position17>
         <Filename Value="unfce.pas"/>
-        <Caret Line="472" TopLine="459"/>
+        <Caret Line="1131" TopLine="1108"/>
       </Position17>
       <Position18>
-        <Filename Value="ureceber.pas"/>
-        <Caret Line="139" TopLine="123"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="1136" TopLine="1112"/>
       </Position18>
       <Position19>
-        <Filename Value="ureceber.pas"/>
-        <Caret Line="141" TopLine="123"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="1137" TopLine="1113"/>
       </Position19>
       <Position20>
-        <Filename Value="ureceber.pas"/>
-        <Caret Line="142" TopLine="123"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="1138" TopLine="1114"/>
       </Position20>
       <Position21>
-        <Filename Value="ureceber.pas"/>
-        <Caret Line="144" TopLine="123"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="1139" TopLine="1115"/>
       </Position21>
       <Position22>
-        <Filename Value="ureceber.pas"/>
-        <Caret Line="145" TopLine="124"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="1140" TopLine="1116"/>
       </Position22>
       <Position23>
-        <Filename Value="ureceber.pas"/>
-        <Caret Line="146" TopLine="125"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="1142" TopLine="1118"/>
       </Position23>
       <Position24>
-        <Filename Value="ureceber.pas"/>
-        <Caret Line="147" TopLine="126"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="1147" TopLine="1133"/>
       </Position24>
       <Position25>
-        <Filename Value="ureceber.pas"/>
-        <Caret Line="148" TopLine="127"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="1155" TopLine="1133"/>
       </Position25>
       <Position26>
-        <Filename Value="ureceber.pas"/>
-        <Caret Line="149" TopLine="128"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="1156" TopLine="1133"/>
       </Position26>
       <Position27>
-        <Filename Value="ureceber.pas"/>
-        <Caret Line="151" TopLine="130"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="1158" TopLine="1134"/>
       </Position27>
       <Position28>
-        <Filename Value="ureceber.pas"/>
-        <Caret Line="154" TopLine="133"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="1161" TopLine="1128"/>
       </Position28>
       <Position29>
-        <Filename Value="ureceber.pas"/>
-        <Caret Line="155" TopLine="134"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="1162" TopLine="1148"/>
       </Position29>
       <Position30>
-        <Filename Value="ureceber.pas"/>
-        <Caret Line="271" Column="18" TopLine="257"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="1164" TopLine="1148"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -796,7 +797,7 @@
     </RunParams>
   </ProjectSession>
   <Debugging>
-    <BreakPoints Count="9">
+    <BreakPoints Count="8">
       <Item1>
         <Kind Value="bpkData"/>
         <WatchData Value="dmPdv.sqBusca.FieldByName('TRIB_EST').AsFloat"/>
@@ -830,36 +831,29 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfce.pas"/>
-        <Line Value="1606"/>
+        <Line Value="1607"/>
       </Item5>
       <Item6>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfce.pas"/>
-        <Line Value="1966"/>
+        <Line Value="1967"/>
       </Item6>
       <Item7>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
-        <Source Value="ureceber.pas"/>
-        <Line Value="142"/>
+        <Source Value="..\..\acbr\Fontes\ACBrDFe\ACBrDFeWinCrypt.pas"/>
+        <Line Value="844"/>
       </Item7>
       <Item8>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
-        <Source Value="ureceber.pas"/>
-        <Line Value="139"/>
+        <Source Value="unfce.pas"/>
+        <Line Value="1136"/>
       </Item8>
-      <Item9>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\acbr\Fontes\ACBrDFe\ACBrDFeWinCrypt.pas"/>
-        <Line Value="844"/>
-      </Item9>
     </BreakPoints>
     <Watches Count="6">
       <Item2>
