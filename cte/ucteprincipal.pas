@@ -4347,8 +4347,11 @@ begin
     Exit;
   end;
   modoInicio := 'ALTERAR';
-  lblCteAtual.Caption := IntToStr(dmCte.cdsCteCTE_NUMERO.AsInteger) +
-    '-' + Copy(dmCte.cdsCteD_FANTASIA.AsString,0,30) + '...';
+  if (not dmCte.cdsCte.IsEmpty) then
+  begin
+    lblCteAtual.Caption := IntToStr(dmCte.cdsCteCTE_NUMERO.AsInteger) +
+      '-' + Copy(dmCte.cdsCteD_FANTASIA.AsString,0,30) + '...';
+  end;
   lblCteAtual1.Font.Color:=clBlack;
   if (rgTipoAmb.ItemIndex = 1) then
     lblCteAtual1.Font.Color:=clRed;
@@ -5590,6 +5593,7 @@ var
   i: Integer;
 begin
   // Limpando tudo
+  DateTimePicker2.DateTime := Now;
   lblCteAtual.Caption := '';
   lblCteAtual1.Caption := '';
   for i := 0 to fCTePrincipal.ComponentCount-1 do
