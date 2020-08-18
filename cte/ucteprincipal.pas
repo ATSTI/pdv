@@ -808,7 +808,7 @@ type
     modoGravacao : string;
     modoInicio: String;
     val_genCte : integer;
-    val0 , val1, val2 : Double;
+    val0 , val1, val2, percentualFrete : Double;
     valC :string;
     strInsere : string;
     generetor : integer;
@@ -1044,6 +1044,8 @@ begin
     Ini.WriteInteger('Geral','TipoRecebedor', rgRec.ItemIndex);
     Ini.WriteInteger('Geral','TipoExpedidor', rgExp.ItemIndex);
 
+    Ini.WriteInteger('Geral','CodSitTributario',combCodSitTrib.ItemIndex);
+
     if (edtModelo.Text <> '') then
       Ini.WriteInteger( 'Geral','ModeloCTe', StrToInt(Trim(edtModelo.Text)));
     Ini.WriteString( 'Geral','LogoMarca'   ,edtLogoMarca.Text);
@@ -1185,6 +1187,8 @@ begin
   rgRem.ItemIndex := Ini.ReadInteger('Geral','TipoRemetente',0);
   rgRec.ItemIndex := Ini.ReadInteger('Geral','TipoRecebedor',0);
   rgExp.ItemIndex := Ini.ReadInteger('Geral','TipoExpedidor',0);
+  combCodSitTrib.ItemIndex := Ini.ReadInteger('Geral','CodSitTributario',0);
+  percentualFrete := Ini.ReadFloat('Geral','PercentualFrete',0);
 
   ckSalvar.Checked         := Ini.ReadBool(   'Geral','Salvar'      ,True);
   edtPathLogs.Text         := Ini.ReadString( 'Geral','PathSalvar'  ,'');
@@ -1425,17 +1429,17 @@ begin
     // Emissão
     Ide.cMunEnv := StrToInt(LimparString(edtEnvCodCidade.Text, '-'));
     Ide.xMunEnv := edtEnvCidade.Text;
-    Ide.UFEnv := edtEnvUF.Text;
+    Ide.UFEnv := Trim(edtEnvUF.Text);
 
     // Inicio da Prestação
     Ide.cMunIni:= StrToInt(LimparString(edtIniCodCidade.Text,'-')); // DM_CNT.Conhec2CodCidadeColeta.AsInteger;
     Ide.xMunIni:= edtIniCidade.Text; //DM_CNT.Conhec2NomeCidadeColeta.AsString;
-    Ide.UFIni:= edtIniUF.Text; // DM_CNT.Conhec2EstadoColeta.AsString;
+    Ide.UFIni:= Trim(edtIniUF.Text); // DM_CNT.Conhec2EstadoColeta.AsString;
 
     // Termino da Prestação
     Ide.cMunFim:= StrToInt(LimparString(edtFimCodCidade.Text, '-')); // DM_CNT.Conhec2CodCidadeEntrega.AsInteger;
     Ide.xMunFim:= edtFimCidade.Text; // DM_CNT.Conhec2NomeCidadeEntrega.AsString;
-    Ide.UFFim:= edtFimUF.Text; //DM_CNT.Conhec2EstadoEntrega.AsString;
+    Ide.UFFim:= Trim(edtFimUF.Text); //DM_CNT.Conhec2EstadoEntrega.AsString;
 
     /////////// aba dados fim
 
@@ -1489,7 +1493,7 @@ begin
      Ide.Toma4.xFant:= edtRazaoTomador.Text;
      Ide.Toma4.fone:= edtFoneTomador.Text;
      Ide.Toma4.EnderToma.xLgr:= edtEndTomador.Text;
-     Ide.Toma4.EnderToma.nro:= edtNumTomador.Text;
+     Ide.Toma4.EnderToma.nro:= Trim(edtNumTomador.Text);
      Ide.Toma4.EnderToma.xCpl:= edtCompTomador.Text;
      Ide.Toma4.EnderToma.xBairro:= edtBairroTomador.Text;
 
@@ -1497,7 +1501,7 @@ begin
      Ide.Toma4.EnderToma.cMun:= CodigoMunicipio;
      Ide.Toma4.EnderToma.xMun:= edtTomadorCidade.Text;
      Ide.Toma4.EnderToma.CEP:= StrToInt(LimparString(edtCepTomador.TExt,'-')); //StrToIntDef(edtCepTomador.TExt, 0); 199
-     Ide.Toma4.EnderToma.UF:= edtTomadorUF.Text;
+     Ide.Toma4.EnderToma.UF:= Trim(edtTomadorUF.Text);
      Ide.Toma4.EnderToma.cPais:= 1058 ; //////////////////// manoel
      Ide.Toma4.EnderToma.xPais:= 'BRASIL';                  ///manoel
     end;
@@ -1536,7 +1540,7 @@ begin
     Emit.xNome := dmPdv.sqEmpresaRAZAO.AsString;
     Emit.xFant := dmPdv.sqEmpresaEMPRESA.AsString;
     Emit.EnderEmit.xLgr := dmPdv.sqEmpresaENDERECO.AsString;
-    Emit.EnderEmit.nro := dmPdv.sqEmpresaNUMERO.AsString;
+    Emit.EnderEmit.nro := Trim(dmPdv.sqEmpresaNUMERO.AsString);
     Emit.EnderEmit.xCpl := dmPdv.sqEmpresaLOGRADOURO.AsString;
     Emit.EnderEmit.xBairro := dmPdv.sqEmpresaBAIRRO.AsString;
     /// refazer aqui ta errado
@@ -1546,7 +1550,7 @@ begin
 
     Emit.EnderEmit.xMun := dmPdv.sqEmpresaCIDADE.AsString;
     Emit.EnderEmit.CEP := StrToIntDef(dmPdv.sqEmpresaCEP.AsString, 0);
-    Emit.EnderEmit.UF := dmPdv.sqEmpresaUF.AsString;
+    Emit.EnderEmit.UF := Trim(dmPdv.sqEmpresaUF.AsString);
     ////Emit.enderEmit.cPais := 1058; // manoel Obs ver se precisar refazer
     ////Emit.EnderEmit.xPais := 'Brasil' ; //manoel Obs ver se precisar refazer
     Emit.EnderEmit.fone := dmPdv.sqEmpresaDDD.AsString + '-' + dmPdv.sqEmpresaFONE.AsString;
@@ -1563,7 +1567,7 @@ begin
       Rem.xNome:= edtRemRazao.Text;
       Rem.xFant:= edtRemNome.Text;
       Rem.EnderReme.xLgr:= edtRemEnd.Text;
-      Rem.EnderReme.nro:= edtRemNum.Text;
+      Rem.EnderReme.nro:= Trim(edtRemNum.Text);
       Rem.EnderReme.xCpl:= edtRemComp.Text;
       Rem.EnderReme.xBairro:= edtRemBairro.Text;
 
@@ -1572,7 +1576,7 @@ begin
       Rem.EnderReme.cMun := CodigoMunicipio;
       Rem.EnderReme.xMun := edtRemCidade.Text;
       Rem.EnderReme.CEP :=  StrToInt(LimparString(edtRemCep.Text,'-')); //StrToIntDef(edtRemCep.Text, 0); 199
-      Rem.EnderReme.UF := edtRemUF.Text;
+      Rem.EnderReme.UF := Trim(edtRemUF.Text);
       Rem.EnderReme.cPais := 1058 ; ///  manoel DM_CTA.PessoaFJCodigoPais.AsInteger;
       Rem.EnderReme.xPais := 'BRASIL' ; /// manoel DM_CTA.PessoaFJPais.AsString;
 
@@ -1672,7 +1676,7 @@ begin
     begin
       Dest.xNome:= edtDestNome.Text ;//DM_CTA.PessoaFJRSocial.AsString;
       Dest.EnderDest.xLgr:= edtDestEnd.Text ;// DM_CTA.PessoaFJEndereco.AsString;
-      Dest.EnderDest.nro:= edtDestNum.Text ;// DM_CTA.PessoaFJNumero.AsString;
+      Dest.EnderDest.nro:= Trim(edtDestNum.Text);// DM_CTA.PessoaFJNumero.AsString;
       Dest.EnderDest.xCpl:= edtDestComp.Text ;//DM_CTA.PessoaFJComplemento.AsString;
       Dest.EnderDest.xBairro:= edtDestBairro.Text ;// DM_CTA.PessoaFJBairro.AsString;
 
@@ -1681,7 +1685,7 @@ begin
       Dest.EnderDest.cMun:= CodigoMunicipio;
       Dest.EnderDest.xMun:= edtDestCidade.Text ;//DM_CTA.PessoaFJCidade.AsString;
       Dest.EnderDest.CEP:= StrToInt(LimparString(edtDestCEP.Text,'-')); //StrToIntDef(edtDestCEP.Text, 0); 199
-      Dest.EnderDest.UF:= edtDestUF.Text ;// DM_CTA.PessoaFJEstado.AsString;
+      Dest.EnderDest.UF:= Trim(edtDestUF.Text);// DM_CTA.PessoaFJEstado.AsString;
       Dest.EnderDest.cPais:= 1058 ;//  manoel DM_CTA.PessoaFJCodigoPais.AsInteger;
       Dest.EnderDest.xPais:= 'BRASIL' ; // manoelDM_CTA.PessoaFJPais.AsString;
 
@@ -1709,7 +1713,7 @@ begin
       try
       Exped.xNome:= edtExpRazao.Text;
       Exped.EnderExped.xLgr:= edtExpEnd.Text;
-      Exped.EnderExped.nro:= edtExpNum.Text;//DM_CTA.PessoaFJNumero.AsString;
+      Exped.EnderExped.nro:= Trim(edtExpNum.Text);//DM_CTA.PessoaFJNumero.AsString;
       Exped.EnderExped.xCpl:= edtExpComp.Text;//DM_CTA.PessoaFJComplemento.AsString;
       Exped.EnderExped.xBairro:= edtExpBairro.Text;//DM_CTA.PessoaFJBairro.AsString;
 
@@ -1717,7 +1721,7 @@ begin
       Exped.EnderExped.cMun:=CodigoMunicipio;
       Exped.EnderExped.xMun:= edtExpCidade.Text;//DM_CTA.PessoaFJCidade.AsString;
       Exped.EnderExped.CEP:= StrToInt(LimparString(edtExpCep.Text,'-')); // StrToIntDef(edtExpCep.Text, 0); 199
-      Exped.EnderExped.UF:= edtExpUF.Text;//DM_CTA.PessoaFJEstado.AsString;
+      Exped.EnderExped.UF:= Trim(edtExpUF.Text);//DM_CTA.PessoaFJEstado.AsString;
       Exped.EnderExped.cPais:= 1058;// DM_CTA.PessoaFJCodigoPais.AsInteger;
       Exped.EnderExped.xPais:= 'BRASIL' ; //DM_CTA.PessoaFJPais.AsString;
 
@@ -1745,7 +1749,7 @@ begin
     begin
       Receb.xNome:= edtRecRazao.Text;// DM_CTA.PessoaFJRSocial.AsString;
       Receb.EnderReceb.xLgr:= edtRecEnd.Text;// DM_CTA.PessoaFJEndereco.AsString;
-      Receb.EnderReceb.nro:= edtRecNum.Text;// DM_CTA.PessoaFJNumero.AsString;
+      Receb.EnderReceb.nro:= Trim(edtRecNum.Text);// DM_CTA.PessoaFJNumero.AsString;
       Receb.EnderReceb.xCpl:= edtRecComp.Text;// DM_CTA.PessoaFJComplemento.AsString;
       Receb.EnderReceb.xBairro:= edtRecBairro.Text;// DM_CTA.PessoaFJBairro.AsString;
 
@@ -1753,7 +1757,7 @@ begin
       Receb.EnderReceb.cMun:=CodigoMunicipio;
       Receb.EnderReceb.xMun:= edtRecCidade.Text;// DM_CTA.PessoaFJCidade.AsString;
       Receb.EnderReceb.CEP:= StrToInt(LimparString(edtRecCep.Text,'-')); //StrToIntDef(edtRecCep.Text, 0); 199
-      Receb.EnderReceb.UF:= edtRecUF.Text;// DM_CTA.PessoaFJEstado.AsString;
+      Receb.EnderReceb.UF:= Trim(edtRecUF.Text);// DM_CTA.PessoaFJEstado.AsString;
       Receb.EnderReceb.cPais:= 1058 ; //DM_CTA.PessoaFJCodigoPais.AsInteger;
       Receb.EnderReceb.xPais:= 'BRASIL' ; //DM_CTA.PessoaFJPais.AsString;
 
@@ -2353,7 +2357,6 @@ begin
    rgTipoServico.Items.Add('Transporte de Valores');
    rgTipoServico.Items.Add('Excesso de Bagagem');
   end;
-
   rgTipoServico.ItemIndex := dmCte.cdsCTETIPOSERVICO.AsInteger;
   rgTiposCte.ItemIndex    := dmCte.cdsCTETIPOCTE.AsInteger;
   rgFormaEmissao.ItemIndex := dmCte.cdsCTETPOEMISSAO.AsInteger;
@@ -3596,7 +3599,8 @@ begin
   if ((modoGravacao = 'EDITAR') or (modoGravacao = 'INSERIR')) then
   begin
     dmCte.cdsCteVREC.AsFloat := dmCte.cdsCteVPREST.AsFloat;
-    dmCte.cdsCteVALVBC.AsFloat := dmCte.cdsCteVPREST.AsFloat;
+    if combCodSitTrib.ItemIndex < 6 then
+        dmCte.cdsCteVALVBC.AsFloat := dmCte.cdsCteVPREST.AsFloat;
     dmCte.cdsCteVALVICMS.AsFloat := dmCte.cdsCteVPREST.AsFloat *
       (dmCte.cdsCteVALPICMS.AsFloat/100);
   end;
@@ -4344,7 +4348,7 @@ begin
   end;
   modoInicio := 'ALTERAR';
   lblCteAtual.Caption := IntToStr(dmCte.cdsCteCTE_NUMERO.AsInteger) +
-    '-' + dmCte.cdsCteD_FANTASIA.AsString;
+    '-' + Copy(dmCte.cdsCteD_FANTASIA.AsString,0,30) + '...';
   lblCteAtual1.Font.Color:=clBlack;
   if (rgTipoAmb.ItemIndex = 1) then
     lblCteAtual1.Font.Color:=clRed;
@@ -6102,14 +6106,14 @@ begin
     comboEmpresa.ItemIndex :=0;
     buscaEmpresa(dmPdv.sqEmpresaRAZAO.AsString);
   end;
-
+  {
   combCodSitTrib.Items.Add('00 - Trib. Normal do ICMS');
   combCodSitTrib.Items.Add('20 - Trib. Redução BC do ICMS');
   combCodSitTrib.Items.Add('40 - ICMS Isenção');
   combCodSitTrib.Items.Add('41 - ICMS não Tributado');
   combCodSitTrib.Items.Add('51 - ICMS Deferido');
   combCodSitTrib.Items.Add('60 - ICMS Cobrado Anterior ST');
-  combCodSitTrib.Items.Add('90 - ICMS Outros');
+  combCodSitTrib.Items.Add('90 - ICMS Outros');}
 
   LerConfiguracao;
 
@@ -6378,6 +6382,8 @@ procedure TfCTePrincipal.sbtnLerXmlCteClick(Sender: TObject);
    i: Integer;
    cod_gen : Integer;
    v_xml2, nome, strEndereco: String;
+   vstr_sql :string;
+   num_cod_comp: Integer;
 begin
   // lendo xml
  if (modoGravacao = 'INCLUIR') then
@@ -6563,11 +6569,35 @@ begin
          dmCte.cdsCteVALVBC.AsFloat := 0; //ICMS00.vBC;
          dmCte.cdsCteVALVICMS.AsFloat := 0; //ICMS00.vICMS;
        end;
-       combCodSitTrib.ItemIndex:=0;
+       //combCodSitTrib.ItemIndex := CodSitTributario;
        // Documentacao carga
        with infCTeNorm.infCarga do
        begin
          dmCte.cdsCteVALINFCARGA.AsFloat := vCarga;
+         if percentualFrete > 0 then
+         begin
+           dmCte.cdsCteVPREST.AsFloat := (percentualFrete/100) * vCarga;
+           dmCte.cdsCteVREC.AsFloat := (percentualFrete/100) * vCarga;
+
+           if (componente_nome <> '') then
+           begin
+             FormatSettings.DecimalSeparator := '.';
+             num_cod_comp := dmPdv.busca_generator('GEN_CTE_COMP_ID');
+             vstr_sql := 'INSERT INTO CTE_COMP (COD_CTE_COMP, COD_CTE ,COMP_NOME, ' +
+               ' COMP_VALOR) VALUES ( ' + IntToStr(num_cod_comp);
+             vstr_sql := vstr_sql + ', ' + IntToStr(val_genCte) ;
+             vstr_sql := vstr_sql + ', ' + QuotedStr(componente_nome);
+             vstr_sql := vstr_sql + ', '  + FloatToStr((percentualFrete/100) * vCarga);
+             vstr_sql := vstr_sql + ')';
+             FormatSettings.DecimalSeparator := ',';
+             dmPdv.Ibcon.ExecuteDirect(vstr_sql);
+             //fCompValor.ShowModal;
+             dmCte.sqComp.Close;
+             dmCte.sqComp.Params[0].AsInteger := val_genCte;
+             dmCte.sqComp.Open;
+             componente_nome := dmCte.sqCompCOMP_NOME.AsString;
+           end;
+         end;
          edtProPred.Text := proPred;
          edtOutCat.Text := xOutCat;
          dmPdv.Ibcon.ExecuteDirect('DELETE FROM CTE_QC' +

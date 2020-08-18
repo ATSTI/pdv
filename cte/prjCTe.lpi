@@ -22,7 +22,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
-      <BuildNr Value="2"/>
+      <BuildNr Value="3"/>
       <Language Value="0416"/>
       <StringTable CompanyName="ATS Soluções" FileDescription="Conhecimento de Transporte Eletrônico" LegalCopyright="ATS Soluções" ProductName="ATS-CTe" ProductVersion="1.0/2020"/>
     </VersionInfo>

@@ -2557,7 +2557,7 @@ end;
 
 procedure TfNFe.EnviaEmail;
 var
- IDNFE, RAZAO, CNPJ, TRANSP, Assunto, caminho : String;
+ IDNFE, RAZAO, CNPJ, TRANSP, Assunto, caminho, email : String;
  enumnf ,serie, num_xml, num_posicao : Integer;
  CC, Texto: Tstrings;
 begin
@@ -2581,11 +2581,32 @@ begin
         ACBrNFe1.NotasFiscais.Clear;
         CarregarXML(Copy(Trim(dmPdv.qcdsNFNOMEXML.AsString),0,44));
       end;
-      if (dmPdv.qsCliente.Active) then
-        dmPdv.qsCliente.Close;
+      email := '';
+      if (cbTipoNota.ItemIndex = 1) then
+      begin
+        if (dmPdv.qsCliente.Active) then
+          dmPdv.qsCliente.Close;
+        dmPdv.qsCliente.Params[0].AsInteger := dmPdv.qcdsNFCODCLIENTE.AsInteger;
+        dmPdv.qsCliente.Open;
+        email := Trim(dmPdv.qsClienteE_MAIL.AsString);
+      end;
+      if (cbTipoNota.ItemIndex = 0) then
+      begin
+        if (dmPdv.qsFornec.Active) then
+          dmPdv.qsFornec.Close;
+        dmPdv.qsFornec.Params[0].AsInteger := dmPdv.qcdsNFCODCLIENTE.AsInteger;
+        dmPdv.qsFornec.Open;
+        email := Trim(dmPdv.qsFornecE_MAIL.AsString);
+      end;
 
-      dmPdv.qsCliente.Params[0].AsInteger := dmPdv.qcdsNFCODCLIENTE.AsInteger;
-      dmPdv.qsCliente.Open;
+    if (email = '') then
+    begin
+      if (cbTipoNota.ItemIndex = 1) then
+        ShowMessage('Cliente sem email no cadastro.');
+      if (cbTipoNota.ItemIndex = 0) then
+        ShowMessage('Fornecedor sem email no cadastro.');
+
+    end;
 
       CC := TstringList.Create;
     try
@@ -2618,9 +2639,9 @@ begin
         ACBrMail1.Password := Trim(dmPdv.qsEmpresaSENHA.AsString);
         ACBrMail1.From     := Trim(dmPdv.qsEmpresaE_MAIL.AsString);
         ACBrMail1.FromName := Trim(dmPdv.qsEmpresaEMPRESA.AsString);
-        ACBrMail1.AddAddress(Trim(dmPdv.qsClienteE_MAIL.AsString));
+        ACBrMail1.AddAddress(email);
         Memolog.Lines.Add('Porta Servidor:' + Trim(dmPdv.qsEmpresaPORTA.AsString));
-        Memolog.Lines.Add('Email Destino:' + Trim(dmPdv.qsClienteE_MAIL.AsString));
+        Memolog.Lines.Add('Email Destino:' + email);
 
         if (email_tls = 'S') then
           ACBrMail1.SetTLS := True;
@@ -2633,7 +2654,7 @@ begin
 
         //ACBrNFe1.NotasFiscais.Items[0].EnviarEmail
         //, True //Enviar PDF junto
-        caminho := Trim(dmPdv.qsClienteE_MAIL.AsString);
+        caminho := email;
         ACBrNFe1.NotasFiscais.Items[0].EnviarEmail(caminho
                             , Assunto
                             , Texto
@@ -3708,7 +3729,7 @@ begin
       Prod.vSeg     := dmPdv.cdsItensNFVALOR_SEGURO.AsCurrency;
 
       if(dmPdv.qsFornec.Active) then
-        if(dmPdv.qsFornecUF.AsString = 'EX') then
+        if (Trim(dmPdv.qsFornecUF.AsString) = 'EX') then
         begin
           if(dmPdv.sAdicao.Active) then
             dmPdv.sAdicao.Close;
@@ -3925,7 +3946,7 @@ begin
           end
           else
           begin
-            cst_parte := copy(dmPdv.cdsItensNFCST.AsString,2,2);
+            cst_parte := copy(Trim(dmPdv.cdsItensNFCST.AsString),2,2);
             if (cst_parte = '00') then
             begin
               CST  := cst00;
@@ -5061,6 +5082,10 @@ begin
         end;
         //end; // fim with nfe
         getTransportadora();
+
+
+
+
         //VALOR TORAL
         if not ((ACBrNFe1.NotasFiscais.Items[0].NFe.Emit.CRT = crtSimplesNacional) and (dmPdv.cdsItensNFCSOSN.AsString <> '900')) then
         begin
