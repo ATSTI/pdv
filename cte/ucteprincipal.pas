@@ -6170,8 +6170,9 @@ begin
   end;
   vDate1 := StartOfTheMonth(today);
   DateTimePicker1.Date := vDate1 ;
-  vDate2 := today;
-  DateTimePicker2.Date := vDate2 ;
+  //vDate2 := today;
+  //DateTimePicker2.Date := vDate2;
+  DateTimePicker2.DateTime := Now;
   modoGravacao := 'CONSULTAR';
   pcPrincipal.PageIndex := 0;
 end;
