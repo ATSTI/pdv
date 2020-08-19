@@ -1142,6 +1142,7 @@ var
  IniFile    : String;
  Ini        : TIniFile;
  StreamMemo : TMemoryStream;
+ Margem_ver : Double;
 begin
  IniFile := ChangeFileExt( Application.ExeName, '.ini');
 
@@ -1255,6 +1256,17 @@ begin
   mmEmailMsg.Lines.LoadFromStream(StreamMemo);
   StreamMemo.Free;}
 
+  ACBrCTeDACTeRL1.MargemDireita := Ini.ReadFloat('Danfe','MargemDireita',0.7);
+  ACBrCTeDACTeRL1.MargemEsquerda := Ini.ReadFloat('Danfe','MargemEsquerda',5.0);
+  ACBrCTeDACTeRL1.MargemSuperior := Ini.ReadFloat('Danfe','MargemSuperior',3.0);
+  ACBrCTeDACTeRL1.MargemInferior := Ini.ReadFloat('Danfe','MargemInferior',0.7);
+
+  ACBrCTe1.DACTE.MargemDireita := Ini.ReadFloat('Danfe','MargemDireita',3.0);
+  ACBrCTe1.DACTE.MargemEsquerda := Ini.ReadFloat('Danfe','MargemEsquerda',2.0);
+  ACBrCTe1.DACTE.MargemSuperior := Ini.ReadFloat('Danfe','MargemSuperior',3.0);
+  ACBrCTe1.DACTE.MargemInferior := Ini.ReadFloat('Danfe','MargemInferior',0.7);
+  Margem_ver := Ini.ReadFloat('Danfe','MargemDireita',3.7);
+  Margem_ver := Ini.ReadFloat('Danfe','MargemEsquerda',2.0);
  finally
   Ini.Free;
  end;
@@ -1549,7 +1561,7 @@ begin
     Emit.EnderEmit.cMun := CodigoMunicipio;
 
     Emit.EnderEmit.xMun := dmPdv.sqEmpresaCIDADE.AsString;
-    Emit.EnderEmit.CEP := StrToIntDef(dmPdv.sqEmpresaCEP.AsString, 0);
+    Emit.EnderEmit.CEP := StrToInt(LimparString(dmPdv.sqEmpresaCEP.AsString,'-'));
     Emit.EnderEmit.UF := Trim(dmPdv.sqEmpresaUF.AsString);
     ////Emit.enderEmit.cPais := 1058; // manoel Obs ver se precisar refazer
     ////Emit.EnderEmit.xPais := 'Brasil' ; //manoel Obs ver se precisar refazer
