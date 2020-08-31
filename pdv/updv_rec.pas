@@ -68,7 +68,9 @@ type
     imgTroca: TImage;
     Label1: TLabel;
     Label10: TLabel;
+    Label11: TLabel;
     Label2: TLabel;
+    Label3: TLabel;
     lblCupom: TLabel;
     lblStatus: TLabel;
     Label4: TLabel;
@@ -425,6 +427,7 @@ begin
       fVnd.NParcela   := 1;
       fVnd.Valor       := strParaFloat(vValor);
       fVnd.NotaFiscal  := num_cx;
+      Label11.Caption := IntToStr(num_cx);
       fVnd.Serie       := serie_cx;
       vCodVenda := fVnd.inserirVenda(0);
       dmPdv.sTrans.Commit;
@@ -501,6 +504,7 @@ begin
     dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET STATUS = 1 ' +
       ' , CODCLIENTE = ' + IntToStr(vCliente) +
       ' , DATA_FECHOU = ' + QuotedStr(FormatDateTime('mm/dd/yyyy hh:MM:ss', Now)) +
+      ' , CONTROLE = ' + QuotedStr(Label11.Caption) +
       ' WHERE CODMOVIMENTO  = ' +
       IntToStr(vCodMovimento) + ' AND STATUS = 0');
     dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTODETALHE SET BAIXA = 1 ' +

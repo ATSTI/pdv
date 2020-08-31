@@ -1565,6 +1565,22 @@ object fPDV_Rec: TfPDV_Rec
           TabOrder = 3
         end
       end
+      object Label3: TLabel
+        Left = 317
+        Height = 15
+        Top = 218
+        Width = 34
+        Caption = 'Label3'
+        ParentColor = False
+      end
+      object Label11: TLabel
+        Left = 336
+        Height = 15
+        Top = 8
+        Width = 9
+        Caption = '...'
+        ParentColor = False
+      end
     end
     object Panel3: TPanel
       Left = 574

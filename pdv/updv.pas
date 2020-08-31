@@ -1671,6 +1671,7 @@ begin
    ' WHERE M.CODMOVIMENTO = a.CODMOVIMENTO ' +
    '   AND a.CODPRODUTO = P.CODPRODUTO ';
   aSql := aSql + '  AND M.CODMOVIMENTO = :PMOV';
+  asql := aSql + ' AND m.CODUSUARIO = ' + dmPdv.varLogado;
   aSql := aSql + '   AND a.STATUS = ' + QuotedStr('0');
 
   dmPdv.sqLancamentos.SQL.Text := aSql;
@@ -1869,6 +1870,7 @@ begin
     dmPdv.sqBusca.SQL.Text := 'SELECT CODMOVIMENTO FROM MOVIMENTO ' +
       ' WHERE STATUS = 0 AND CODNATUREZA = 3 ' +
       ' AND CODALMOXARIFADO = ' + dmPdv.ccusto +
+      ' AND CODUSUARIO = ' + dmPdv.varLogado +
       ' ORDER BY CODMOVIMENTO DESC';
   end;
   dmPdv.sqBusca.Open;
