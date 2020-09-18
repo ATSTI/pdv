@@ -431,9 +431,12 @@ begin
       fVnd.Serie       := serie_cx;
       vCodVenda := fVnd.inserirVenda(0);
       dmPdv.sTrans.Commit;
-    finally
+    Except
       fVnd.Free;
+      ShowMessage('Erro no fechamento, tente novamente');
+      Exit;
     end;
+    fVnd.Free;
   end;
   if (dmPdv.sqGenerator.Active) then
     dmPdv.sqGenerator.Close;

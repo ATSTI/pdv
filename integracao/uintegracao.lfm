@@ -7,6 +7,7 @@ object fIntegracao: TfIntegracao
   ClientHeight = 515
   ClientWidth = 766
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnShow = FormShow
   LCLVersion = '2.0.8.0'
   object BitBtn1: TBitBtn
@@ -105,18 +106,28 @@ object fIntegracao: TfIntegracao
     OnClick = btnVendaClick
     TabOrder = 8
   end
-  object PythonGUIInputOutput1: TPythonGUIInputOutput
-    UnicodeIO = True
-    RawOutput = False
-    Output = Memo1
-    left = 152
-    top = 32
+  object Memo3: TMemo
+    Left = 104
+    Height = 373
+    Top = 115
+    Width = 630
+    Color = clGradientActiveCaption
+    Lines.Strings = (
+      'Instalar :  PYHTON 3.7.9  (32 BiTS) '
+      ''
+      'Instalar na Pasta :  C:\Python'
+    )
+    TabOrder = 9
+    Visible = False
   end
-  object PythonEngine1: TPythonEngine
-    DllPath = 'C:\home\pdv'
-    IO = PythonGUIInputOutput1
-    left = 304
-    top = 32
+  object BitBtn4: TBitBtn
+    Left = 664
+    Height = 30
+    Top = 72
+    Width = 32
+    Caption = '?'
+    OnClick = BitBtn4Click
+    TabOrder = 10
   end
   object OpenDialog1: TOpenDialog
     FileName = '''C:\home\programas\lazarus\pdv\pdv\atsProduto.py'''

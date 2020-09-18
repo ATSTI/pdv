@@ -16,6 +16,7 @@ type
     BitBtn1: TBitBtn;
     BitBtn2: TBitBtn;
     BitBtn3: TBitBtn;
+    BitBtn4: TBitBtn;
     btnVenda: TBitBtn;
     btnProduto: TBitBtn;
     btnCliente: TBitBtn;
@@ -23,23 +24,27 @@ type
     lblMsg: TLabel;
     Memo1: TMemo;
     Memo2: TMemo;
+    Memo3: TMemo;
     OpenDialog1: TOpenDialog;
-    PythonEngine1: TPythonEngine;
-    PythonGUIInputOutput1: TPythonGUIInputOutput;
     Timer1: TTimer;
     Timer2: TTimer;
     procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
+    procedure BitBtn4Click(Sender: TObject);
     procedure btnCaixaClick(Sender: TObject);
     procedure btnClienteClick(Sender: TObject);
     procedure btnProdutoClick(Sender: TObject);
     procedure btnVendaClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
   private
+    //
+    PythonEngine1 : TPythonEngine;
+    PythonGUIInputOutput1 : TPythonGUIInputOutput;
     path_exe : String;
     pathScript: String;
     pathPython: String;
@@ -112,6 +117,14 @@ procedure TfIntegracao.BitBtn3Click(Sender: TObject);
 begin
 end;
 
+procedure TfIntegracao.BitBtn4Click(Sender: TObject);
+begin
+  if (memo3.Visible) then
+    Memo3.Visible:=False
+  else
+    Memo3.Visible:=True;
+end;
+
 procedure TfIntegracao.btnCaixaClick(Sender: TObject);
 begin
   Executa('atsCaixa.py');
@@ -133,9 +146,28 @@ begin
 end;
 
 procedure TfIntegracao.FormCreate(Sender: TObject);
+//const cPyLibraryWindows = 'C:\home\python37.dll';
+//var s: String;
 begin
+  PythonEngine1 := TPythonEngine.Create(Nil);
+
+  PythonGUIInputOutput1 := TPythonGUIInputOutput.Create(Nil);
+  PythonGUIInputOutput1.Output := Memo1;
+
+  PythonEngine1.IO := PythonGUIInputOutput1;
+  //S := cPyLibraryWindows;
   PythonEngine1.RegVersion:='3.7';
+  //PythonEngine1.RegVersion:='3.8';
   PythonEngine1.DllName:='python37.dll';
+  PythonEngine1.DllPath := 'C:\Python';
+  //PythonEngine1.DllName := ExtractFileName(s);
+  PythonEngine1.LoadDll;
+end;
+
+procedure TfIntegracao.FormDestroy(Sender: TObject);
+begin
+  PythonEngine1.Free;
+  PythonGUIInputOutput1.Free;
 end;
 
 procedure TfIntegracao.FormShow(Sender: TObject);
@@ -149,7 +181,7 @@ begin
   conf := TIniFile.Create(path_exe + 'conf.ini');
   try
     pathScript := conf.ReadString('PATH', 'PathScript', '');
-    pathPython := conf.ReadString('PATH', 'PathPython', '');
+    //pathPython := conf.ReadString('PATH', 'PathPython', '');
   finally
     conf.free;
   end;
@@ -208,9 +240,10 @@ end;
 procedure TfIntegracao.Executa(script: String);
 var tamanho: Integer;
 begin
-  PythonEngine1.RegVersion:='3.7';
-  PythonEngine1.DllName:='python37.dll';
+  //PythonEngine1.RegVersion:='3.7';
+  //PythonEngine1.DllName:='python37.dll';
   Memo1.Lines.LoadFromFile(pathScript + '\' + script);
+  //PythonEngine1.IsHandleValid;
   if PythonEngine1.IsHandleValid then
   begin
     PythonEngine1.ExecStrings((Memo1.Lines));
