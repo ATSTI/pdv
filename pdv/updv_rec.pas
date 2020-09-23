@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, Buttons, DBGrids, MaskEdit, ActnList, Menus, ACBrPosPrinter, udmpdv,
   uvenda, uRecebimento, uClienteBusca, uNfce, sqldb, db, math, StrUtils, IniFiles,
-  uCadeira, uPermissao, typinfo, LConvEncoding;
+  uCadeira, uPermissao, uEstoqueExecuta, typinfo, LConvEncoding;
 
 type
 
@@ -493,6 +493,7 @@ var vRec : TRecebimento;
    tot_lanc: integer;
    num_lanc: Integer;
    i: Integer;
+   EstoqueExe : TEstoqueThread;
 begin
   vlr_entrada := 0;
   vlr_desc := 0;
@@ -618,6 +619,11 @@ begin
     dmpdv.sTrans.Rollback;
     ShowMessage('Erro para finalizar a venda.');
   end;
+  // Executa atualizacao estoque
+  dmpdv.codMovimentoEst := vCodMovimento;
+  EstoqueExe := TEstoqueThread.Create(True);
+  EstoqueExe.FreeOnTerminate := True;
+  EstoqueExe.Resume;
 
 end;
 

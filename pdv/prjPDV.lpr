@@ -12,7 +12,7 @@ uses
   uMovimentoProc, uvenda, uRecebimento, uExecutaIntegracao, uLogin,
   uVendedorBusca, uClienteBusca, uSenhaNova, uPermissao, uExcluirItem, uNfce,
   uabrircaixa, uCadeira, usangria, uAbrirCaixa2, uCursoBusca, uAlunoBusca,
-  uComandaJuntar, uReceber;
+  uComandaJuntar, uReceber, uEstoqueExecuta;
 
 {$R *.res}
 

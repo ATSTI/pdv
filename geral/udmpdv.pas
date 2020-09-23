@@ -1019,6 +1019,7 @@ type
     contaCaixa : Integer;
     margemCodBarra: Integer;
     tamanhoLinha: Integer;
+    codMovimentoEst: Integer;
     caixaBanco : String;
     idcaixa : string;
     ccusto : String;
