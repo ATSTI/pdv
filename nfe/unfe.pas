@@ -2605,7 +2605,7 @@ begin
         ShowMessage('Cliente sem email no cadastro.');
       if (cbTipoNota.ItemIndex = 0) then
         ShowMessage('Fornecedor sem email no cadastro.');
-
+      Exit;
     end;
 
       CC := TstringList.Create;
