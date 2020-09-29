@@ -267,7 +267,7 @@ var
 
 implementation
 
-uses updv_rec,udmpdv, uMovimentoProc, uProdutoProc, uExecutaIntegracao;
+uses updv_rec,udmpdv, uMovimentoProc, uProdutoProc, uIntegracaoOdoo;
 
 {$R *.lfm}
 

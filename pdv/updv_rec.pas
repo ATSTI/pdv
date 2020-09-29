@@ -7,8 +7,9 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, Buttons, DBGrids, MaskEdit, ActnList, Menus, ACBrPosPrinter, udmpdv,
-  uvenda, uRecebimento, uClienteBusca, uNfce, sqldb, db, math, StrUtils, IniFiles,
-  uCadeira, uPermissao, uEstoqueExecuta, typinfo, LConvEncoding;
+  uvenda, uRecebimento, jsontools, uClienteBusca, uNfce, sqldb, db, math,
+  StrUtils, IniFiles, uCadeira, uPermissao, uEstoqueExecuta, uIntegracaoOdoo,
+  typinfo, LConvEncoding;
 
 type
 
@@ -170,6 +171,7 @@ type
     procedure insereRecebimento(parc_rec: Integer; vlr_rec: Double;
       vlr_tot_rec: Double; via_rec: Integer; n_doc_rec: String; forma_rec: String;
       vlr_via_rec: Double);
+    procedure gerarjson;
   public
     OutrosCartoes: String;
     v_log: String;
@@ -493,7 +495,6 @@ var vRec : TRecebimento;
    tot_lanc: integer;
    num_lanc: Integer;
    i: Integer;
-   EstoqueExe : TEstoqueThread;
 begin
   vlr_entrada := 0;
   vlr_desc := 0;
@@ -619,12 +620,6 @@ begin
     dmpdv.sTrans.Rollback;
     ShowMessage('Erro para finalizar a venda.');
   end;
-  // Executa atualizacao estoque
-  dmpdv.codMovimentoEst := vCodMovimento;
-  EstoqueExe := TEstoqueThread.Create(True);
-  EstoqueExe.FreeOnTerminate := True;
-  EstoqueExe.Resume;
-
 end;
 
 procedure TfPDV_Rec.imprimir();
@@ -1197,6 +1192,71 @@ begin
   dmPdv.executaSql(strG);
 end;
 
+procedure TfPDV_Rec.gerarjson;
+var
+  //postJson: TJSONObject;
+  //dadosJson: TJSONObject;
+  //responseData: String;
+  Campo : String;
+  Valor : String;
+  tipo : TFieldType;
+  arquivo: TJsonNode;
+  i: Integer;
+begin
+  arquivo := TJsonNode.Create;
+  //postJson := TJSONObject.Create;
+  //dadosJson := TJSONObject.Create;
+  //postJson.Add('title', 'Movimento');
+  //postJson.Add('body', 'Insert');
+  //postJson.Add('movimento', dadosJson);
+  //postJson.Add('userId', 1);
+  if ( not dmPdv.sqLancamentos.Active) then
+    dmPdv.sqLancamentos.Open;
+  dmPdv.sqLancamentos.First;
+  while not dmPdv.sqLancamentos.Eof do
+  begin
+    for i:=0 to dmPdv.sqLancamentos.FieldDefs.Count-1 do
+    begin
+      try
+      campo := dmPdv.sqLancamentos.FieldDefs.Items[i].Name;
+      //if (ver <> 'OBS') then
+      begin
+
+        if (not dmPdv.sqLancamentos.Fields[i].IsNull) then
+        begin
+          valor := '';
+          if (Trim(dmPdv.sqLancamentos.Fields[i].Value) <> '') then
+          begin
+            tipo := dmPdv.sqLancamentos.Fields[i].DataType;
+            if dmPdv.sqLancamentos.Fields[i].DataType = ftDate then
+               valor := FormatDateTime('mm/dd/yyyy', dmPdv.sqLancamentos.Fields[i].Value);
+            if dmPdv.sqLancamentos.Fields[i].DataType = ftString then
+               valor := dmPdv.sqLancamentos.Fields[i].Value;
+            if dmPdv.sqLancamentos.Fields[i].DataType = ftInteger then
+               valor := IntToStr(dmPdv.sqLancamentos.Fields[i].Value);
+            if dmPdv.sqLancamentos.Fields[i].DataType = ftFloat then
+              try
+                 valor := FloatToStr(dmPdv.sqLancamentos.Fields[i].Value);
+              except
+                valor := '';
+              end;
+            if valor <> '' then
+              arquivo.Add(dmPdv.sqLancamentos.Fields[i].Name,valor);
+            valor := '';
+          end;
+        end;
+      end;
+      except
+         ShowMessage('Erro Campo : ' + campo + ' Valor : ' + valor);
+         valor := '0';
+      end;
+    end;
+    dmPdv.sqLancamentos.Next;
+  end;
+  arquivo.SaveToFile('C:\home\json_move.txt');
+  arquivo.Free;
+end;
+
 function TfPDV_Rec.strParaFloat(vlr_st: String): Double;
 var tam: Integer;
   vVlrStr: String;
@@ -1479,6 +1539,9 @@ begin
 end;
 
 procedure TfPDV_Rec.acFecharExecute(Sender: TObject);
+var
+   EstoqueExe : TEstoqueThread;
+   IntegracaoOdoo : TIntegracaoOdoo;
 begin
   if (vResto > 0.009) then
   begin
@@ -1510,6 +1573,15 @@ begin
   else begin
     //Close;
   end;
+    // Executa atualizacao estoque
+  dmpdv.codMovimentoEst := vCodMovimento;
+  EstoqueExe := TEstoqueThread.Create(True);
+  EstoqueExe.FreeOnTerminate := True;
+  EstoqueExe.Resume;
+  gerarjson;
+  //IntegracaoOdoo := TIntegracaoOdoo.Create(True);
+  //IntegracaoOdoo.FreeOnTerminate := True;
+  //IntegracaoOdoo.Resume;
 end;
 
 procedure TfPDV_Rec.acNfceExecute(Sender: TObject);

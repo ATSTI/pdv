@@ -80,7 +80,7 @@
         <PackageName Value="LCL"/>
       </Item15>
     </RequiredPackages>
-    <Units Count="32">
+    <Units Count="34">
       <Unit0>
         <Filename Value="prjPDV.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -305,6 +305,15 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uEstoqueExecuta"/>
       </Unit31>
+      <Unit32>
+        <Filename Value="uintegracaoodoo.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uIntegracaoOdoo"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="..\geral\jsontools.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit33>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
