@@ -313,6 +313,7 @@
       <Unit33>
         <Filename Value="..\geral\jsontools.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="JsonTools"/>
       </Unit33>
     </Units>
   </ProjectOptions>

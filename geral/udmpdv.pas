@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, IBConnection, sqldb, db, FileUtil, IniFiles,
-  Dialogs,  base64;
+  Dialogs, uExecutaIntegracao, JsonTools, base64, fphttpclient, fpjson, jsonparser;
 
 type
 
@@ -1071,6 +1071,7 @@ type
     function busca_generator(generator: String): integer;
     function busca_serie(Serie: String): integer;
     procedure busca_sql(sql_txt: String);
+    procedure executa_integracao;
   end;
 var
   dmPdv: TdmPdv;
@@ -1617,6 +1618,95 @@ begin
   sqBusca.SQL.Clear;
   sqBusca.SQL.Add(sql_txt);
   sqBusca.Open;
+end;
+
+procedure TdmPdv.executa_integracao;
+var k: Integer;
+  postJson: TJSONObject;
+  //dadosJson: TJSONObject;
+  dadosJson: TJsonNode;
+  responseData: String;
+  ver: string;
+  arquivo : string;
+  listaArquivos : TStringList;
+  //sqMovIntegra: TSQLQuery;
+  //IntegracaoOdoo : TIntegracaoOdoo;
+begin
+  // Rotina sera executada em um Timer ?!!!!!
+
+  // GERANDO o JSON em ARQUIVO aqui so vai enviar
+
+
+  {
+  sqMovIntegra := TSQLQuery.Create;
+  sqMovIntegra.DataBase := dmPdv.IbCon;
+  comDados := 'N';
+  postJson := TJSONObject.Create;
+  dadosJson := TJSONObject.Create;
+  ver := 'SELECT FIRST 10 m.CODMOVIMENTO, m.DATAMOVIMENTO, ' +
+               'm.CODCLIENTE, m.STATUS, m.CODUSUARIO, m.CODVENDEDOR, ' +
+               'm.CODALMOXARIFADO, DATEADD(3 hour to m.DATA_SISTEMA) ' +
+               '  FROM MOVIMENTO m ' +
+               ' WHERE m.STATUS = 1 ' +
+               '  ORDER BY m.CODMOVIMENTO DESC';
+  sqMovIntegra.SQL.Text := ver;
+  dmPdv.IbCon.Connected := True;
+  sqMovIntegra.Transaction := dmPdv.sTrans;
+  sqMovIntegra.Open;
+  // inclusao
+  postJson.Add('title', 'Movimento');
+  postJson.Add('body', 'Insert');
+  postJson.Add('movimento', dadosJson);
+  postJson.Add('userId', 1);
+  While not sqMovIntegra.EOF do
+  begin
+    for i:=0 to sqMovIntegra.FieldDefs.Count-1 do
+    begin
+      comDados := 'S';
+      ver := sqMovIntegra.FieldDefs.Items[i].Name;
+      ver := sqMovIntegra.Fields[i].Value;
+      dadosJson.Add(sqMovIntegra.FieldDefs.Items[i].Name, sqMovIntegra.Fields[i].Value);
+    end;
+    sqMovIntegra.Next;
+  end;
+  sqMovIntegra.Free;
+  gerarjson;}
+
+  // VER SE EXISTE ARQUIVO
+  listaArquivos := TStringList.Create;
+  try
+    FindAllFiles(listaArquivos, 'C:\home\integra\', '*.txt', true);
+    for k:=0 to Pred(listaArquivos.Count) do
+    begin
+      arquivo := listaArquivos[k];
+      // SE EXISTE ENVIA
+      postJson := TJSONObject.Create;
+      dadosJson := TJsonNode.Create;
+      postJson.Add('title', 'Enviando Movimento');
+      postJson.Add('body', 'Enviando Movimento');
+      dadosJson.LoadFromFile(arquivo);
+      //dadosJson.Add('nometabela', 'Movimento');
+
+      postJson.Add('tab_venda', dadosJson.ToString);
+      postJson.Add('userId', 1);
+      With TFPHttpClient.Create(Nil) do
+        try
+          AddHeader('Content-Type', 'application/json');
+          RequestBody := TStringStream.Create(postJson.AsJSON);
+          //responseData := Post('http://vitton.atsti.com.br:8905');
+          responseData := Post('http://192.168.6.100:8905');
+        finally
+         Free;
+        end;
+    end;
+  finally
+    listaArquivos.Free;
+  end;
+
+
+  //IntegracaoOdoo := TIntegracaoOdoo.Create(True);
+  //IntegracaoOdoo.FreeOnTerminate := True;
+  //IntegracaoOdoo.Resume;
 end;
 
 function TdmPdv.executaSql(strSql: String): Boolean;

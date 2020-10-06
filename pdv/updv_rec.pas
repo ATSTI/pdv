@@ -1194,22 +1194,16 @@ end;
 
 procedure TfPDV_Rec.gerarjson;
 var
-  //postJson: TJSONObject;
-  //dadosJson: TJSONObject;
-  //responseData: String;
   Campo : String;
   Valor : String;
   tipo : TFieldType;
   arquivo: TJsonNode;
+  itens: String;
   i: Integer;
+  num: Integer;
+  campos: String;
 begin
   arquivo := TJsonNode.Create;
-  //postJson := TJSONObject.Create;
-  //dadosJson := TJSONObject.Create;
-  //postJson.Add('title', 'Movimento');
-  //postJson.Add('body', 'Insert');
-  //postJson.Add('movimento', dadosJson);
-  //postJson.Add('userId', 1);
   if ( not dmPdv.sqLancamentos.Active) then
     dmPdv.sqLancamentos.Open;
   dmPdv.sqLancamentos.First;
@@ -1219,9 +1213,10 @@ begin
     begin
       try
       campo := dmPdv.sqLancamentos.FieldDefs.Items[i].Name;
-      //if (ver <> 'OBS') then
+      campos := 'CODMOVIMENTO DATAMOVIMENTO CODCLIENTE CONTROLE CODUSUARIO';
+      campos += ' CODVENDEDOR CODALMOXARIFADO';
+      if (pos(campo, Campos) <> 0) then
       begin
-
         if (not dmPdv.sqLancamentos.Fields[i].IsNull) then
         begin
           valor := '';
@@ -1234,14 +1229,18 @@ begin
                valor := dmPdv.sqLancamentos.Fields[i].Value;
             if dmPdv.sqLancamentos.Fields[i].DataType = ftInteger then
                valor := IntToStr(dmPdv.sqLancamentos.Fields[i].Value);
+            if dmPdv.sqLancamentos.Fields[i].DataType = ftSmallint then
+               valor := IntToStr(dmPdv.sqLancamentos.Fields[i].Value);
             if dmPdv.sqLancamentos.Fields[i].DataType = ftFloat then
+            begin
               try
                  valor := FloatToStr(dmPdv.sqLancamentos.Fields[i].Value);
               except
                 valor := '';
               end;
-            if valor <> '' then
-              arquivo.Add(dmPdv.sqLancamentos.Fields[i].Name,valor);
+            end;
+            if (valor <> '') then
+              arquivo.Add(dmPdv.sqLancamentos.Fields[i].FieldName,valor);
             valor := '';
           end;
         end;
@@ -1253,8 +1252,144 @@ begin
     end;
     dmPdv.sqLancamentos.Next;
   end;
-  arquivo.SaveToFile('C:\home\json_move.txt');
+  num := 0;
+  campo := 'C:\home\integra\mov' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) + '.txt';
+  arquivo.SaveToFile(campo);
   arquivo.Free;
+  arquivo := TJsonNode.Create;
+  // ITENS
+  itens := '';
+  dmPdv.sqLancamentos.First;
+  while not dmPdv.sqLancamentos.Eof do
+  begin
+    itens += '[{';
+    num += 1;
+    for i:=0 to dmPdv.sqLancamentos.FieldDefs.Count-1 do
+    begin
+      try
+      campo := dmPdv.sqLancamentos.FieldDefs.Items[i].Name;
+      campos := 'CODPRODUTO PRECO QUANTIDADE';
+      campos += ' VALOR_DESCONTO CORTESIA DESCPRODUTO';
+      if (pos(campo, Campos) <> 0) then
+      begin
+        if (not dmPdv.sqLancamentos.Fields[i-1].IsNull) then
+        begin
+          valor := '';
+          if (Trim(dmPdv.sqLancamentos.Fields[i-1].Value) <> '') then
+          begin
+            tipo := dmPdv.sqLancamentos.FieldDefs[i].DataType;
+            if dmPdv.sqLancamentos.FieldDefs[i].DataType = ftDate then
+               valor := FormatDateTime('mm/dd/yyyy', dmPdv.sqLancamentos.Fields[i-1].Value);
+            if dmPdv.sqLancamentos.FieldDefs[i].DataType = ftString then
+               valor := dmPdv.sqLancamentos.Fields[i-1].Value;
+            if dmPdv.sqLancamentos.FieldDefs[i].DataType = ftInteger then
+               valor := IntToStr(dmPdv.sqLancamentos.Fields[i-1].Value);
+            if dmPdv.sqLancamentos.FieldDefs[i].DataType = ftFloat then
+            begin
+              try
+                 valor := FloatToStr(dmPdv.sqLancamentos.Fields[i-1].Value);
+              except
+                valor := '';
+              end;
+            end;
+            if (valor <> '') then
+            begin
+              if itens <> '[{' then
+                itens += ',';
+              itens += '"' + campo + '": "' + valor + '"';
+            end;
+            valor := '';
+          end;
+        end;
+      end;
+      except
+         ShowMessage('Erro Campo : ' + campo + ' Valor : ' + valor);
+         valor := '0';
+      end;
+    end;
+    itens += ', "CODMOVIMENTO": "' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) + '"';
+    itens += '}]';
+    //arquivo.add(itens, nkString);
+    arquivo.add('item-'+IntTostr(num), itens);
+    itens := '';
+    dmPdv.sqLancamentos.Next;
+  end;
+  campo := 'C:\home\integra\detalhe' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) + '.txt';
+  arquivo.SaveToFile(campo);
+  arquivo.Free;
+
+
+  // PAGAMENTOS
+  arquivo := TJsonNode.Create;
+  dmPdv.busca_sql('SELECT CODFORMA, COD_VENDA, ID_ENTRADA, FORMA_PGTO' +
+    ' , CAIXA , N_DOC, VALOR_PAGO, CAIXINHA, TROCO, DESCONTO, STATE' +
+    ' FROM FORMA_ENTRADA WHERE STATE < 2 AND ID_ENTRADA = ' +
+    InttoStr(vCodMovimento) + ' ORDER BY FORMA_PGTO');
+  while not dmPdv.sqBusca.EOF do
+  begin
+    for i:=0 to dmPdv.sqBusca.FieldDefs.Count-1 do
+    begin
+      try
+      campo := dmPdv.sqBusca.FieldDefs.Items[i].Name;
+      campos := 'FORMA_PGTO VALOR_PAGO CODCLIENTE DESCONTO ID_ENTRADA';
+      if (pos(campo, Campos) <> 0) then
+      begin
+        if (not dmPdv.sqBusca.Fields[i].IsNull) then
+        begin
+          valor := '';
+          if (Trim(dmPdv.sqBusca.Fields[i].Value) <> '') then
+          begin
+            tipo := dmPdv.sqBusca.Fields[i].DataType;
+            if dmPdv.sqBusca.Fields[i].DataType = ftDate then
+               valor := FormatDateTime('mm/dd/yyyy', dmPdv.sqBusca.Fields[i].Value);
+            if dmPdv.sqBusca.Fields[i].DataType = ftString then
+               valor := dmPdv.sqBusca.Fields[i].Value;
+            if dmPdv.sqBusca.Fields[i].DataType = ftInteger then
+               valor := IntToStr(dmPdv.sqBusca.Fields[i].Value);
+            if dmPdv.sqBusca.Fields[i].DataType = ftSmallint then
+               valor := IntToStr(dmPdv.sqBusca.Fields[i].Value);
+            if dmPdv.sqBusca.Fields[i].DataType = ftFixedChar then
+               valor := dmPdv.sqBusca.Fields[i].Value;
+
+            if dmPdv.sqBusca.Fields[i].DataType = ftFloat then
+            begin
+              try
+                 valor := FloatToStr(dmPdv.sqBusca.Fields[i].Value);
+              except
+                valor := '';
+              end;
+            end;
+            if (valor <> '') then
+              arquivo.Add(dmPdv.sqBusca.Fields[i].FieldName,valor);
+            valor := '';
+          end;
+        end;
+      end;
+      except
+         ShowMessage('Erro Campo : ' + campo + ' Valor : ' + valor);
+         valor := '0';
+      end;
+    end;
+    {
+    tot_lanc += 1;
+    forma_pagto := Trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString);
+    vlr_entrada += dmPdv.sqBusca.FieldByName('VALOR_PAGO').AsFloat;
+    vlr_desc += dmPdv.sqBusca.FieldByName('DESCONTO').AsFloat;
+    if (forma_pagto = '4') then
+    begin
+      vlr_prazo += dmPdv.sqBusca.FieldByName('VALOR_PAGO').AsFloat;
+    end;
+    if (forma_pagto = '9') then
+    begin
+      vlr_troca += dmPdv.sqBusca.FieldByName('VALOR_PAGO').AsFloat;
+    end;}
+    dmPdv.sqBusca.Next;
+  end;
+  campo := 'C:\home\integra\pag' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) + '.txt';
+  arquivo.SaveToFile(campo);
+  arquivo.Free;
+
+  dmpdv.executa_integracao;
 end;
 
 function TfPDV_Rec.strParaFloat(vlr_st: String): Double;
@@ -1541,7 +1676,6 @@ end;
 procedure TfPDV_Rec.acFecharExecute(Sender: TObject);
 var
    EstoqueExe : TEstoqueThread;
-   IntegracaoOdoo : TIntegracaoOdoo;
 begin
   if (vResto > 0.009) then
   begin
