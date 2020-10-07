@@ -14005,4 +14005,17 @@ object dmPdv: TdmPdv
     left = 624
     top = 328
   end
+  object Timer1: TTimer
+    Interval = 10000
+    OnTimer = Timer1Timer
+    left = 131
+    top = 451
+  end
+  object Timer2: TTimer
+    Enabled = False
+    Interval = 300000
+    OnTimer = Timer2Timer
+    left = 216
+    top = 456
+  end
 end

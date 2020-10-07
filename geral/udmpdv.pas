@@ -5,8 +5,9 @@ unit udmpdv;
 interface
 
 uses
-  Classes, SysUtils, IBConnection, sqldb, db, FileUtil, IniFiles,
-  Dialogs, uExecutaIntegracao, JsonTools, base64, fphttpclient, fpjson, jsonparser;
+  Classes, SysUtils, IBConnection, sqldb, db, FileUtil, IniFiles, Dialogs,
+  ExtCtrls, JsonTools, base64, fphttpclient, fpjson,
+  jsonparser, uIntegracaoOdoo;
 
 type
 
@@ -1002,9 +1003,13 @@ type
     sTabIBGENM_TIPO_LOCALIDADE: TStringField;
     sTabIBGESQ_IBGE: TLongintField;
     sTrans: TSQLTransaction;
+    Timer1: TTimer;
+    Timer2: TTimer;
     procedure DataModuleCreate(Sender: TObject);
     procedure IbConAfterDisconnect(Sender: TObject);
     procedure IbConBeforeConnect(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure Timer2Timer(Sender: TObject);
   private
     procedure atualiza_bd(sistema: String);
     procedure campo_novo(tabela, campo, tipo: String);
@@ -1038,6 +1043,9 @@ type
     MICRO : String;
     path_exe: String;
     path_python: String;
+    path_integra: String;
+    path_integra_url: String;
+    time_integra: Integer;
     path_script: String;
     path_xml: String;
     path_imp: String;
@@ -1178,6 +1186,14 @@ begin
       path_script := conf.ReadString('PATH', 'PathScript', '');
       path_xml := conf.ReadString('PATH', 'PathXML', path_exe);
       path_imp := conf.ReadString('PATH', 'PathIMP', 'imp.txt');
+      path_integra := conf.ReadString('PATH', 'PathIntegra', path_exe);
+      path_integra_url := conf.ReadString('PATH', 'PathIntegraUrl', path_exe);
+      time_integra := conf.ReadInteger('PATH', 'TimeIntegra', 0);
+      if time_integra = 0 then
+      begin
+        Timer1.Enabled := False;
+      end;
+      Timer1.Interval := time_integra * 60 * 1000;
       IBCon.HostName := vstr;
       //ShowMessage('Hostname ' + vstr);
       snh:= conf.ReadString('DATABASE', 'Acesso', '');
@@ -1355,6 +1371,21 @@ end;
 procedure TdmPdv.IbConBeforeConnect(Sender: TObject);
 begin
 
+end;
+
+procedure TdmPdv.Timer1Timer(Sender: TObject);
+begin
+  executa_integracao;
+end;
+
+procedure TdmPdv.Timer2Timer(Sender: TObject);
+//var
+//   EstoqueExe : TEstoqueThread;
+begin
+  //dmpdv.codMovimentoEst := 0;
+  //EstoqueExe := TEstoqueThread.Create(True);
+  //EstoqueExe.FreeOnTerminate := True;
+  //EstoqueExe.Resume;
 end;
 
 procedure TdmPdv.atualiza_bd(sistema: String);
@@ -1630,7 +1661,7 @@ var k: Integer;
   arquivo : string;
   listaArquivos : TStringList;
   //sqMovIntegra: TSQLQuery;
-  //IntegracaoOdoo : TIntegracaoOdoo;
+  IntegracaoOdoo : TIntegracaoOdoo;
 begin
   // Rotina sera executada em um Timer ?!!!!!
 
@@ -1672,10 +1703,11 @@ begin
   sqMovIntegra.Free;
   gerarjson;}
 
+  {
   // VER SE EXISTE ARQUIVO
   listaArquivos := TStringList.Create;
   try
-    FindAllFiles(listaArquivos, 'C:\home\integra\', '*.txt', true);
+    FindAllFiles(listaArquivos, path_integra, '*.txt', true);
     for k:=0 to Pred(listaArquivos.Count) do
     begin
       arquivo := listaArquivos[k];
@@ -1694,19 +1726,23 @@ begin
           AddHeader('Content-Type', 'application/json');
           RequestBody := TStringStream.Create(postJson.AsJSON);
           //responseData := Post('http://vitton.atsti.com.br:8905');
-          responseData := Post('http://192.168.6.100:8905');
+          responseData := Post(path_integra_url);
+          if FileExists(path_integra + responseData) then
+            DeleteFile(path_integra + responseData);
         finally
          Free;
         end;
     end;
   finally
     listaArquivos.Free;
-  end;
+  end;    }
 
 
-  //IntegracaoOdoo := TIntegracaoOdoo.Create(True);
-  //IntegracaoOdoo.FreeOnTerminate := True;
-  //IntegracaoOdoo.Resume;
+  IntegracaoOdoo := TIntegracaoOdoo.Create(True);
+  IntegracaoOdoo.path_integracao := path_integra;
+  IntegracaoOdoo.path_integracao_url := path_integra_url;
+  IntegracaoOdoo.FreeOnTerminate := True;
+  IntegracaoOdoo.Resume;
 end;
 
 function TdmPdv.executaSql(strSql: String): Boolean;

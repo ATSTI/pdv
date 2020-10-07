@@ -5,13 +5,16 @@ unit uIntegracaoOdoo;
 interface
 
 uses
-  Classes, SysUtils, udmpdv, fpjson, jsonparser, fphttpclient, db, sqldb;
+  Classes, SysUtils, JsonTools, fpjson, jsonparser, fphttpclient, FileUtil;
 
 type
 
   { TIntegracaoOdoo }
 
   TIntegracaoOdoo = class(TThread)
+  public
+    path_integracao : String;
+    path_integracao_url: String;
   protected
     procedure Execute; override;
     procedure atualiza;
@@ -27,58 +30,40 @@ begin
 end;
 
 procedure TIntegracaoOdoo.atualiza;
-var i: Integer;
+var k: Integer;
   postJson: TJSONObject;
-  dadosJson: TJSONObject;
+  dadosJson: TJsonNode;
   responseData: String;
-  ver: string;
-  sqMovIntegra: TSQLQuery;
+  listaArquivos : TStringList;
 begin
- {
-  sqMovIntegra := TSQLQuery.Create;
-  sqMovIntegra.DataBase := dmPdv.IbCon;
-  comDados := 'N';
-  postJson := TJSONObject.Create;
-  dadosJson := TJSONObject.Create;
-  ver := 'SELECT FIRST 10 m.CODMOVIMENTO, m.DATAMOVIMENTO, ' +
-               'm.CODCLIENTE, m.STATUS, m.CODUSUARIO, m.CODVENDEDOR, ' +
-               'm.CODALMOXARIFADO, DATEADD(3 hour to m.DATA_SISTEMA) ' +
-               '  FROM MOVIMENTO m ' +
-               ' WHERE m.STATUS = 1 ' +
-               '  ORDER BY m.CODMOVIMENTO DESC';
-  sqMovIntegra.SQL.Text := ver;
-  dmPdv.IbCon.Connected := True;
-  //dmPdv.sTrans.Active   := True;
-  sqMovIntegra.Transaction := dmPdv.sTrans;
-  sqMovIntegra.Open;
-   // inclusao
-   postJson.Add('title', 'Movimento');
-   postJson.Add('body', 'Insert');
-   postJson.Add('movimento', dadosJson);
-   postJson.Add('userId', 1);
-   While not sqMovIntegra.EOF do
-   begin
-     for i:=0 to sqMovIntegra.FieldDefs.Count-1 do
-     begin
-       comDados := 'S';
-       ver := sqMovIntegra.FieldDefs.Items[i].Name;
-       ver := sqMovIntegra.Fields[i].Value;
-       dadosJson.Add(sqMovIntegra.FieldDefs.Items[i].Name, sqMovIntegra.Fields[i].Value);
-     end;
-     sqMovIntegra.Next;
-   end;
-   sqMovIntegra.Free;
-   }
+  // VER SE EXISTE ARQUIVO
+  listaArquivos := TStringList.Create;
+  try
+    FindAllFiles(listaArquivos, path_integracao, '*.txt', true);
+    for k:=0 to Pred(listaArquivos.Count) do
+    begin
+      // SE EXISTE ENVIA
+      postJson := TJSONObject.Create;
+      dadosJson := TJsonNode.Create;
+      postJson.Add('title', 'Enviando Movimento');
+      postJson.Add('body', 'Enviando Movimento');
+      dadosJson.LoadFromFile(listaArquivos[k]);
+      postJson.Add('tab_venda', dadosJson.ToString);
+      postJson.Add('userId', 1);
       With TFPHttpClient.Create(Nil) do
         try
           AddHeader('Content-Type', 'application/json');
           RequestBody := TStringStream.Create(postJson.AsJSON);
-          responseData := Post('vitton.atsti.com.br:8905');
-          //ShowMessage(responseData);
+          responseData := Post(path_integracao_url);
+          if FileExists(path_integracao + responseData) then
+            DeleteFile(path_integracao + responseData);
         finally
          Free;
         end;
-
+    end;
+  finally
+    listaArquivos.Free;
+  end;
 end;
 
 end.

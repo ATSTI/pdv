@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, Buttons, DBGrids, MaskEdit, ActnList, Menus, ACBrPosPrinter, udmpdv,
   uvenda, uRecebimento, jsontools, uClienteBusca, uNfce, sqldb, db, math,
-  StrUtils, IniFiles, uCadeira, uPermissao, uEstoqueExecuta, uIntegracaoOdoo,
+  StrUtils, IniFiles, uCadeira, uPermissao, uIntegracaoOdoo,
   typinfo, LConvEncoding;
 
 type
@@ -1253,7 +1253,7 @@ begin
     dmPdv.sqLancamentos.Next;
   end;
   num := 0;
-  campo := 'C:\home\integra\mov' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) + '.txt';
+  campo := dmpdv.path_integra + 'mov_' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) + '.txt';
   arquivo.SaveToFile(campo);
   arquivo.Free;
   arquivo := TJsonNode.Create;
@@ -1314,7 +1314,7 @@ begin
     itens := '';
     dmPdv.sqLancamentos.Next;
   end;
-  campo := 'C:\home\integra\detalhe' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) + '.txt';
+  campo := dmpdv.path_integra + 'det_' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) + '.txt';
   arquivo.SaveToFile(campo);
   arquivo.Free;
 
@@ -1325,8 +1325,12 @@ begin
     ' , CAIXA , N_DOC, VALOR_PAGO, CAIXINHA, TROCO, DESCONTO, STATE' +
     ' FROM FORMA_ENTRADA WHERE STATE < 2 AND ID_ENTRADA = ' +
     InttoStr(vCodMovimento) + ' ORDER BY FORMA_PGTO');
+  itens := '';
+  num := 0;
   while not dmPdv.sqBusca.EOF do
   begin
+    itens += '[{';
+    num += 1;
     for i:=0 to dmPdv.sqBusca.FieldDefs.Count-1 do
     begin
       try
@@ -1360,7 +1364,11 @@ begin
               end;
             end;
             if (valor <> '') then
-              arquivo.Add(dmPdv.sqBusca.Fields[i].FieldName,valor);
+            begin
+              if itens <> '[{' then
+                itens += ',';
+              itens += '"' + campo + '": "' + valor + '"';
+            end;
             valor := '';
           end;
         end;
@@ -1370,26 +1378,18 @@ begin
          valor := '0';
       end;
     end;
-    {
-    tot_lanc += 1;
-    forma_pagto := Trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString);
-    vlr_entrada += dmPdv.sqBusca.FieldByName('VALOR_PAGO').AsFloat;
-    vlr_desc += dmPdv.sqBusca.FieldByName('DESCONTO').AsFloat;
-    if (forma_pagto = '4') then
-    begin
-      vlr_prazo += dmPdv.sqBusca.FieldByName('VALOR_PAGO').AsFloat;
-    end;
-    if (forma_pagto = '9') then
-    begin
-      vlr_troca += dmPdv.sqBusca.FieldByName('VALOR_PAGO').AsFloat;
-    end;}
+    itens += ', "CODMOVIMENTO": "' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) + '"';
+    itens += '}]';
+    arquivo.add('pag-'+IntTostr(num), itens);
+    itens := '';
     dmPdv.sqBusca.Next;
   end;
-  campo := 'C:\home\integra\pag' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) + '.txt';
+  campo := dmpdv.path_integra + 'pag_' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) + '.txt';
   arquivo.SaveToFile(campo);
   arquivo.Free;
 
-  dmpdv.executa_integracao;
+  // isso e executado na dmpv pelo timer
+  //dmpdv.executa_integracao;
 end;
 
 function TfPDV_Rec.strParaFloat(vlr_st: String): Double;
@@ -1674,8 +1674,6 @@ begin
 end;
 
 procedure TfPDV_Rec.acFecharExecute(Sender: TObject);
-var
-   EstoqueExe : TEstoqueThread;
 begin
   if (vResto > 0.009) then
   begin
@@ -1708,11 +1706,13 @@ begin
     //Close;
   end;
     // Executa atualizacao estoque
-  dmpdv.codMovimentoEst := vCodMovimento;
-  EstoqueExe := TEstoqueThread.Create(True);
-  EstoqueExe.FreeOnTerminate := True;
-  EstoqueExe.Resume;
+  // sendo chamado pelo dmpdv
+  //dmpdv.codMovimentoEst := vCodMovimento;
+  //EstoqueExe := TEstoqueThread.Create(True);
+  //EstoqueExe.FreeOnTerminate := True;
+  //EstoqueExe.Resume;
   gerarjson;
+  // sendo chamado pelo dmpdv
   //IntegracaoOdoo := TIntegracaoOdoo.Create(True);
   //IntegracaoOdoo.FreeOnTerminate := True;
   //IntegracaoOdoo.Resume;
