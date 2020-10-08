@@ -9,7 +9,7 @@ uses
   Graphics, Dialogs, ExtCtrls, StdCtrls, Buttons, MaskEdit, DBGrids, ActnList,
   Menus, dateutils, uMovimento, uCompraCls, uUtil, uVendedorBusca,
   uClienteBusca, uPermissao, uComandaJuntar, uReceber, Grids, ComCtrls,
-  ACBrPosPrinter, MTProcs, strutils;
+  ACBrPosPrinter, MTProcs, strutils, fphttpclient;
 
 type
 
@@ -1168,7 +1168,30 @@ end;
 
 procedure TfPdv.FormShow(Sender: TObject);
 var sqlP: String;
+  postJson: TJSONObject;
+  dadosJson: TJsonNode;
+  responseData: String;
+  listaArquivos : TStringList;
 begin
+  postJson := TJSONObject.Create;
+  dadosJson := TJsonNode.Create;
+  postJson.Add('title', 'Atualizando cliente');
+  postJson.Add('body', 'Atualizando cliente');
+  postJson.Add('tab_cli', '');
+  postJson.Add('userId', 1);
+  With TFPHttpClient.Create(Nil) do
+    try
+      AddHeader('Content-Type', 'application/json');
+      RequestBody := TStringStream.Create(postJson.AsJSON);
+      responseData := Post(dmPdv.path_integra_url);
+      if FileExists(dmpdv.path_integra + responseData) then
+        DeleteFile(dmpdv.path_integra + responseData);
+    finally
+     Free;
+    end;
+
+
+
   ACBrPosPrinter1.ControlePorta:=dmPdv.imp_controle_porta;
   ACBrPosPrinter1.LinhasBuffer:=dmPdv.imp_LinhasBuffer;
   ACBrPosPrinter1.Device.SendBytesInterval:=dmpdv.imp_Interval;

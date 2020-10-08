@@ -1253,7 +1253,8 @@ begin
     dmPdv.sqLancamentos.Next;
   end;
   num := 0;
-  campo := dmpdv.path_integra + 'mov_' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) + '.txt';
+  campo := dmpdv.path_integra + 'mov_' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) +
+     '_' + IntToStr(dmpdv.sqLancamentosCODALMOXARIFADO.AsInteger) + '.txt';
   arquivo.SaveToFile(campo);
   arquivo.Free;
   arquivo := TJsonNode.Create;
@@ -1269,9 +1270,35 @@ begin
       try
       campo := dmPdv.sqLancamentos.FieldDefs.Items[i].Name;
       campos := 'CODPRODUTO PRECO QUANTIDADE';
-      campos += ' VALOR_DESCONTO CORTESIA DESCPRODUTO';
+      campos += ' VALOR_DESCONTO DESCPRODUTO';
       if (pos(campo, Campos) <> 0) then
       begin
+        valor := '';
+        if (campo = 'VALOR_DESCONTO') then
+        begin
+          valor := FloatToStr(dmPdv.sqLancamentosVALOR_DESCONTO.Value);
+        end;
+        if (campo = 'CODPRODUTO') then
+        begin
+          valor := IntToStr(dmPdv.sqLancamentosCODPRODUTO.Value);
+        end;
+        if (campo = 'PRECO') then
+        begin
+          valor := FloatToStr(dmPdv.sqLancamentosPRECO.Value);
+        end;
+        if (campo = 'QUANTIDADE') then
+        begin
+          valor := FloatToStr(dmPdv.sqLancamentosQUANTIDADE.Value);
+        end;
+        if (campo = 'CODPRO') then
+        begin
+          valor := dmPdv.sqLancamentosCODPRO.Value;
+        end;
+        if (campo = 'DESCPRODUTO') then
+        begin
+          valor := dmPdv.sqLancamentosDESCPRODUTO.Value;
+        end;
+        {
         if (not dmPdv.sqLancamentos.Fields[i-1].IsNull) then
         begin
           valor := '';
@@ -1292,15 +1319,15 @@ begin
                 valor := '';
               end;
             end;
-            if (valor <> '') then
-            begin
-              if itens <> '[{' then
-                itens += ',';
-              itens += '"' + campo + '": "' + valor + '"';
-            end;
-            valor := '';
-          end;
+          }
+        if (valor <> '') then
+        begin
+          if itens <> '[{' then
+            itens += ',';
+          itens += '"' + campo + '": "' + valor + '"';
         end;
+        valor := '';
+        //end;
       end;
       except
          ShowMessage('Erro Campo : ' + campo + ' Valor : ' + valor);
@@ -1314,7 +1341,8 @@ begin
     itens := '';
     dmPdv.sqLancamentos.Next;
   end;
-  campo := dmpdv.path_integra + 'det_' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) + '.txt';
+  campo := dmpdv.path_integra + 'det_' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) +
+     '_' + IntToStr(dmpdv.sqLancamentosCODALMOXARIFADO.AsInteger) + '.txt';
   arquivo.SaveToFile(campo);
   arquivo.Free;
 
@@ -1384,7 +1412,8 @@ begin
     itens := '';
     dmPdv.sqBusca.Next;
   end;
-  campo := dmpdv.path_integra + 'pag_' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) + '.txt';
+  campo := dmpdv.path_integra + 'pag_' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) +
+     '_' + IntToStr(dmpdv.sqLancamentosCODALMOXARIFADO.AsInteger) + '.txt';
   arquivo.SaveToFile(campo);
   arquivo.Free;
 
