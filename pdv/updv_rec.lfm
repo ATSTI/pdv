@@ -462,6 +462,7 @@ object fPDV_Rec: TfPDV_Rec
         Width = 30
         OnChange = edParcelaChange
         OnKeyPress = edParcelaKeyPress
+        PopupMenu = PopupMenu1
         TabOrder = 8
         Text = '1'
       end
@@ -481,6 +482,7 @@ object fPDV_Rec: TfPDV_Rec
         Font.Style = [fsBold]
         MaxLength = 0
         ParentFont = False
+        PopupMenu = PopupMenu1
         TabOrder = 9
         Text = '0,00'
         SpaceChar = '_'
@@ -4306,7 +4308,7 @@ object fPDV_Rec: TfPDV_Rec
       Action = acVoltarVenda
     end
     object MenuItem4: TMenuItem
-      Caption = 'MenuItem4'
+      Action = acFechar
     end
   end
   object ACBrPosPrinter1: TACBrPosPrinter

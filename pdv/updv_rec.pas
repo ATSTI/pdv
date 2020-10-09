@@ -1213,7 +1213,7 @@ begin
     begin
       try
       campo := dmPdv.sqLancamentos.FieldDefs.Items[i].Name;
-      campos := 'CODMOVIMENTO DATAMOVIMENTO CODCLIENTE CONTROLE CODUSUARIO';
+      campos := 'CODMOVIMENTO DATA_SISTEMA CODCLIENTE CONTROLE CODUSUARIO';
       campos += ' CODVENDEDOR CODALMOXARIFADO';
       if (pos(campo, Campos) <> 0) then
       begin
@@ -1223,8 +1223,8 @@ begin
           if (Trim(dmPdv.sqLancamentos.Fields[i].Value) <> '') then
           begin
             tipo := dmPdv.sqLancamentos.Fields[i].DataType;
-            if dmPdv.sqLancamentos.Fields[i].DataType = ftDate then
-               valor := FormatDateTime('mm/dd/yyyy', dmPdv.sqLancamentos.Fields[i].Value);
+            if dmPdv.sqLancamentos.Fields[i].DataType = ftDateTime then
+               valor := FormatDateTime('mm/dd/yyyy hh:MM', dmPdv.sqLancamentos.Fields[i].Value);
             if dmPdv.sqLancamentos.Fields[i].DataType = ftString then
                valor := dmPdv.sqLancamentos.Fields[i].Value;
             if dmPdv.sqLancamentos.Fields[i].DataType = ftInteger then

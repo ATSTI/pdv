@@ -9,7 +9,7 @@ object dmPdv: TdmPdv
   object IbCon: TIBConnection
     Connected = False
     LoginPrompt = False
-    DatabaseName = 'Z:\home\publico\bd\sge_maisflores.fdb'
+    DatabaseName = 'C:\home\bd\sge_vitton_artur.fdb'
     KeepConnection = False
     Params.Strings = (
       'port=3050'
@@ -443,9 +443,9 @@ object dmPdv: TdmPdv
       end    
       item
         Name = 'STATUS_1'
-        DataType = ftFixedChar
+        DataType = ftString
         Precision = -1
-        Size = 4
+        Size = 120
       end    
       item
         Name = 'VLR_BASEICMS'
@@ -664,7 +664,7 @@ object dmPdv: TdmPdv
       end    
       item
         Name = 'QTDEATACADO'
-        DataType = ftInteger
+        DataType = ftFloat
         Precision = -1
       end    
       item
@@ -688,6 +688,11 @@ object dmPdv: TdmPdv
         DataType = ftFixedChar
         Precision = -1
         Size = 4
+      end    
+      item
+        Name = 'DATA_SISTEMA'
+        DataType = ftDateTime
+        Precision = -1
       end>
     Database = IbCon
     Transaction = sTrans
@@ -708,7 +713,7 @@ object dmPdv: TdmPdv
       '    p.USA, p.LOCALIZACAO,  p.TIPOPRECOVENDA, p.UNIDADEMEDIDA,'
       '    p.ORIGEM, p.OBS OBS_PROD, p.CEST, p.PRECOATACADO, p.QTDEATACADO,'
       '    (COALESCE(A.VALTOTAL,0) - COALESCE(A.VALOR_DESCONTO, 0)) AS TOTALITEM ,'
-      '    a.ICMS_SUBST, c.NOMECLIENTE, p.RATEIO'
+      '    a.ICMS_SUBST, c.NOMECLIENTE, p.RATEIO, m.DATA_SISTEMA'
       'FROM MOVIMENTO m'
       '  INNER JOIN CLIENTES c ON  c.CODCLIENTE = m.CODCLIENTE'
       '  LEFT OUTER JOIN MOVIMENTODETALHE a ON M.CODMOVIMENTO = a.CODMOVIMENTO'
@@ -1491,6 +1496,15 @@ object dmPdv: TdmPdv
       ReadOnly = False
       Required = False
       Size = 4
+    end
+    object sqLancamentosDATA_SISTEMA: TDateTimeField
+      FieldKind = fkData
+      FieldName = 'DATA_SISTEMA'
+      Index = 72
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
     end
   end
   object SQLQuery1: TSQLQuery

@@ -840,6 +840,7 @@ type
     sqLancamentosCSTIPI: TStringField;
     sqLancamentosCSTPIS: TStringField;
     sqLancamentosDATAMOVIMENTO: TDateField;
+    sqLancamentosDATA_SISTEMA: TDateTimeField;
     sqLancamentosDESCONTO: TFloatField;
     sqLancamentosDESCONTO_BC: TStringField;
     sqLancamentosDESCPRODUTO: TStringField;
@@ -1741,6 +1742,7 @@ begin
   IntegracaoOdoo := TIntegracaoOdoo.Create(True);
   IntegracaoOdoo.path_integracao := path_integra;
   IntegracaoOdoo.path_integracao_url := path_integra_url;
+  IntegracaoOdoo.cod_caixa_integra := ccusto;
   IntegracaoOdoo.FreeOnTerminate := True;
   IntegracaoOdoo.Resume;
 end;

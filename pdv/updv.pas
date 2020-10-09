@@ -9,7 +9,7 @@ uses
   Graphics, Dialogs, ExtCtrls, StdCtrls, Buttons, MaskEdit, DBGrids, ActnList,
   Menus, dateutils, uMovimento, uCompraCls, uUtil, uVendedorBusca,
   uClienteBusca, uPermissao, uComandaJuntar, uReceber, Grids, ComCtrls,
-  ACBrPosPrinter, MTProcs, strutils, fphttpclient;
+  ACBrPosPrinter, MTProcs, strutils, fphttpclient, JsonTools, fpjson;
 
 type
 
@@ -1168,10 +1168,11 @@ end;
 
 procedure TfPdv.FormShow(Sender: TObject);
 var sqlP: String;
+  sqlD: String;
   postJson: TJSONObject;
   dadosJson: TJsonNode;
-  responseData: String;
-  listaArquivos : TStringList;
+  dados: String;
+  c: TJsonNode;
 begin
   postJson := TJSONObject.Create;
   dadosJson := TJsonNode.Create;
@@ -1179,18 +1180,65 @@ begin
   postJson.Add('body', 'Atualizando cliente');
   postJson.Add('tab_cli', '');
   postJson.Add('userId', 1);
-  With TFPHttpClient.Create(Nil) do
+  try
+    With TFPHttpClient.Create(Nil) do
     try
       AddHeader('Content-Type', 'application/json');
       RequestBody := TStringStream.Create(postJson.AsJSON);
-      responseData := Post(dmPdv.path_integra_url);
-      if FileExists(dmpdv.path_integra + responseData) then
-        DeleteFile(dmpdv.path_integra + responseData);
+      //Get(dmPdv.path_integra_url, L);
+      dados := Post(dmPdv.path_integra_url);
+      //Memo1.Lines.Assign(responseData);
+      dadosJson.Value := dados;
+      //Memo1.Lines.Clear;
+      //arquivo := dmpdv.path_integra + 'cliente.txt';
+      //dadosJson.SaveToFile(arquivo);
+      for c in dadosJson do
+      begin
+        dados := C.Find('codcliente').Value;
+      end;
+      if (StrToInt(dados) > 0) then
+      begin
+        dmpdv.busca_sql('SELECT CODCLIENTE FROM CLIENTES WHERE CODCLIENTE = ' + dados);
+        if dmpdv.sqBusca.IsEmpty then
+        begin
+          sqlP := 'INSERT INTO CLIENTES (CODCLIENTE, NOMECLIENTE, RAZAOSOCIAL, TIPOFIRMA ';
+          sqlP += ', CNPJ, SEGMENTO, REGIAO, DATACADASTRO, CODUSUARIO, STATUS) VALUES(';
+          for c in dadosJson do
+          begin
+            sqlD := C.Find('codcliente').Value;
+            sqlD += ',' + QuotedStr(C.Find('nomecliente').AsString);
+            sqlD += ',' + QuotedStr(C.Find('nomecliente').AsString) + ',0';
+            sqlD += ',' + QuotedStr(C.Find('cnpj').AsString) + ',1,1,' + QuotedStr('01.01.2020');
+            sqlD += ',1,1)';
+            dmpdv.executaSql(sqlP + sqlD);
+            dmPdv.sTrans.Commit;
+          end;
+        end
+        else begin
+          sqlP := 'UPDATE CLIENTES  SET ';
+          for c in dadosJson do
+          begin
+            sqlD += ' NOMECLIENTE = ' +  QuotedStr(C.Find('nomecliente').AsString);
+            sqlD += ', RAZAOSOCIAL = ' + QuotedStr(C.Find('nomecliente').AsString);
+            //sqlD += ', STATUS = ' +  C.Find('status').Value;
+            sqlD += ' WHERE CODCLIENTE = ' + C.Find('codcliente').Value;
+            dmpdv.executaSql(sqlP + sqlD);
+            dmPdv.sTrans.Commit;
+          end;
+
+        end;
+
+      end;
+      //if FileExists(dmpdv.path_integra + responseData) then
+      //  DeleteFile(dmpdv.path_integra + responseData);
+
     finally
-     Free;
+      postJson.Free;
+      dadosJson.Free;
+      Free;
     end;
-
-
+  except
+  end;
 
   ACBrPosPrinter1.ControlePorta:=dmPdv.imp_controle_porta;
   ACBrPosPrinter1.LinhasBuffer:=dmPdv.imp_LinhasBuffer;

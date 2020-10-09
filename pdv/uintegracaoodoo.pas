@@ -15,6 +15,7 @@ type
   public
     path_integracao : String;
     path_integracao_url: String;
+    cod_caixa_integra: String;
   protected
     procedure Execute; override;
     procedure atualiza;
@@ -55,8 +56,8 @@ begin
           AddHeader('Content-Type', 'application/json');
           RequestBody := TStringStream.Create(postJson.AsJSON);
           responseData := Post(path_integracao_url);
-          if FileExists(path_integracao + responseData) then
-            DeleteFile(path_integracao + responseData);
+          if FileExists(path_integracao + responseData + '_' + cod_caixa_integra + '.txt') then
+            DeleteFile(path_integracao + responseData + '_' + cod_caixa_integra + '.txt');
         finally
          Free;
         end;
