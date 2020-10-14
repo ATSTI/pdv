@@ -16,6 +16,7 @@ type
     path_integracao : String;
     path_integracao_url: String;
     cod_caixa_integra: String;
+    nome_empresa_integra: String;
   protected
     procedure Execute; override;
     procedure atualiza;
@@ -47,7 +48,7 @@ begin
       postJson := TJSONObject.Create;
       dadosJson := TJsonNode.Create;
       postJson.Add('title', 'Enviando Movimento');
-      postJson.Add('body', 'Enviando Movimento');
+      postJson.Add('body', nome_empresa_integra);
       dadosJson.LoadFromFile(listaArquivos[k]);
       postJson.Add('tab_venda', dadosJson.ToString);
       postJson.Add('userId', 1);

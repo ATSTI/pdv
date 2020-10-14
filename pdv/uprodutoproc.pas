@@ -173,6 +173,8 @@ end;
 
 procedure TfProdutoProc.BitBtn2Click(Sender: TObject);
 begin
+  if dmpdv.empresa_integra <> 'ATS' then
+    dmPdv.integra_produtos;
   dmPdv.IbCon.Connected:=False;
   dmPdv.IbCon.Connected:=True;
   num_pedidos := 0;

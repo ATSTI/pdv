@@ -1047,6 +1047,7 @@ type
     path_integra: String;
     path_integra_url: String;
     time_integra: Integer;
+    empresa_integra: String;
     path_script: String;
     path_xml: String;
     path_imp: String;
@@ -1081,6 +1082,10 @@ type
     function busca_serie(Serie: String): integer;
     procedure busca_sql(sql_txt: String);
     procedure executa_integracao;
+    procedure integra_cliente;
+    procedure integra_caixa;
+    procedure integra_produtos;
+    procedure integra_usuario;
   end;
 var
   dmPdv: TdmPdv;
@@ -1190,6 +1195,7 @@ begin
       path_integra := conf.ReadString('PATH', 'PathIntegra', path_exe);
       path_integra_url := conf.ReadString('PATH', 'PathIntegraUrl', path_exe);
       time_integra := conf.ReadInteger('PATH', 'TimeIntegra', 0);
+      empresa_integra := conf.ReadString('PATH', 'EmpresaIntegra', 'ATS');
       if time_integra = 0 then
       begin
         Timer1.Enabled := False;
@@ -1743,8 +1749,281 @@ begin
   IntegracaoOdoo.path_integracao := path_integra;
   IntegracaoOdoo.path_integracao_url := path_integra_url;
   IntegracaoOdoo.cod_caixa_integra := ccusto;
+  IntegracaoOdoo.nome_empresa_integra := empresa_integra;
   IntegracaoOdoo.FreeOnTerminate := True;
   IntegracaoOdoo.Resume;
+end;
+
+procedure TdmPdv.integra_cliente;
+var sqlP: String;
+  sqlD: String;
+  postJson: TJSONObject;
+  dadosJson: TJsonNode;
+  dados: String;
+  c: TJsonNode;
+  msg_erro: String;
+begin
+  postJson := TJSONObject.Create;
+  dadosJson := TJsonNode.Create;
+  postJson.Add('title', 'Atualizando cliente');
+  postJson.Add('body', empresa_integra);
+  postJson.Add('tab_cli', '');
+  postJson.Add('userId', 1);
+  try
+    With TFPHttpClient.Create(Nil) do
+    try
+      AddHeader('Content-Type', 'application/json');
+      RequestBody := TStringStream.Create(postJson.AsJSON);
+      dados := Post(dmPdv.path_integra_url);
+      dadosJson.Value := dados;
+      for c in dadosJson do
+      begin
+        dados := C.Find('codcliente').Value;
+        if (StrToInt(dados) > 0) then
+        begin
+          dmpdv.busca_sql('SELECT CODCLIENTE FROM CLIENTES WHERE CODCLIENTE = ' + dados);
+          if dmpdv.sqBusca.IsEmpty then
+          begin
+            sqlP := 'INSERT INTO CLIENTES (CODCLIENTE, NOMECLIENTE, RAZAOSOCIAL, TIPOFIRMA ';
+            sqlP += ', CNPJ, SEGMENTO, REGIAO, DATACADASTRO, CODUSUARIO, STATUS) VALUES(';
+            sqlD := C.Find('codcliente').Value;
+            sqlD += ',' + QuotedStr(C.Find('nomecliente').AsString);
+            msg_erro := 'Cliente: ' + sqlD;
+            sqlD += ',' + QuotedStr(C.Find('nomecliente').AsString) + ',0';
+            sqlD += ',' + QuotedStr(C.Find('cnpj').AsString) + ',1,1,' + QuotedStr('01.01.2020');
+            sqlD += ',1,1)';
+            Try
+              ibcon.ExecuteDirect(sqlP + sqlD);
+              dmPdv.sTrans.Commit;
+            except
+              on dmPdv: EDatabaseError do
+              begin
+                MessageDlg('Erro','Já existe este CPF no sistema: ' + msg_erro
+                  ,mtError,[mbOK],0);
+              end
+            end;
+          end
+          else begin
+            sqlP := 'UPDATE CLIENTES  SET ';
+            sqlD := ' NOMECLIENTE = ' +  QuotedStr(C.Find('nomecliente').AsString);
+            sqlD += ', RAZAOSOCIAL = ' + QuotedStr(C.Find('nomecliente').AsString);
+            //sqlD += ', STATUS = ' +  C.Find('status').Value;
+            sqlD += ' WHERE CODCLIENTE = ' + C.Find('codcliente').Value;
+            dmpdv.executaSql(sqlP + sqlD);
+            dmPdv.sTrans.Commit;
+          end;
+        end;
+      end;
+      //if FileExists(dmpdv.path_integra + responseData) then
+      //  DeleteFile(dmpdv.path_integra + responseData);
+
+    finally
+      postJson.Free;
+      dadosJson.Free;
+      Free;
+    end;
+  except
+  end;
+end;
+
+procedure TdmPdv.integra_caixa;
+var sqlP: String;
+  sqlD: String;
+  postJson: TJSONObject;
+  dadosJson: TJsonNode;
+  dados: String;
+  c: TJsonNode;
+begin
+  postJson := TJSONObject.Create;
+  dadosJson := TJsonNode.Create;
+  postJson.Add('title', 'Atualizando Caixa');
+  postJson.Add('body', empresa_integra);
+  postJson.Add('tab_caixa', '');
+  postJson.Add('userId', 1);
+  try
+    With TFPHttpClient.Create(Nil) do
+    try
+      AddHeader('Content-Type', 'application/json');
+      RequestBody := TStringStream.Create(postJson.AsJSON);
+      dados := Post(dmPdv.path_integra_url);
+      dadosJson.Value := dados;
+      for c in dadosJson do
+      begin
+        dados := C.Find('codcaixa').Value;
+        if (StrToInt(dados) > 0) then
+        begin
+          dmpdv.busca_sql('SELECT CODCAIXA FROM CAIXA_CONTROLE WHERE CODCAIXA = ' + dados);
+          if dmpdv.sqBusca.IsEmpty then
+          begin
+            sqlP := 'INSERT INTO CAIXA_CONTROLE (IDCAIXACONTROLE, ' +
+                  'CODCAIXA, CODUSUARIO, SITUACAO, DATAFECHAMENTO' +
+                  ',NOMECAIXA) VALUES ( ';
+            sqlD := C.Find('codcaixa').Value;
+            sqlD += ',' + C.Find('codcaixa').Value;
+            sqlD += ',' + C.Find('codusuario').Value;
+            sqlD += ',' + QuotedStr(C.Find('situacao').AsString);
+            sqlD += ',' + QuotedStr(C.Find('datafechamento').AsString);
+            sqlD += ',' + QuotedStr(C.Find('nomecaixa').AsString);
+            sqlD += ')';
+            dmpdv.executaSql(sqlP + sqlD);
+            dmPdv.sTrans.Commit;
+          end;
+        end;
+      end;
+    finally
+      postJson.Free;
+      dadosJson.Free;
+      Free;
+    end;
+  except
+  end;
+end;
+
+procedure TdmPdv.integra_produtos;
+var sqlP: String;
+  sqlD: String;
+  postJson: TJSONObject;
+  dadosJson: TJsonNode;
+  dados: String;
+  c: TJsonNode;
+  codbarra: string;
+begin
+  postJson := TJSONObject.Create;
+  dadosJson := TJsonNode.Create;
+  postJson.Add('title', 'Atualizando Produto');
+  postJson.Add('body', empresa_integra);
+  postJson.Add('tab_produto', '');
+  postJson.Add('userId', 1);
+  try
+    With TFPHttpClient.Create(Nil) do
+    try
+      AddHeader('Content-Type', 'application/json');
+      RequestBody := TStringStream.Create(postJson.AsJSON);
+      dados := Post(dmPdv.path_integra_url);
+      dadosJson.Value := dados;
+      for c in dadosJson do
+      begin
+        dados := C.Find('codproduto').Value;
+        if (StrToInt(dados) > 0) then
+        begin
+          dmpdv.busca_sql('SELECT CODPRODUTO FROM PRODUTOS WHERE CODPRODUTO = ' + dados);
+          if dmpdv.sqBusca.IsEmpty then
+          begin
+            sqlP := 'INSERT INTO PRODUTOS (CODPRODUTO, UNIDADEMEDIDA, PRODUTO ';
+            sqlP += ', CODPRO, TIPOPRECOVENDA, ORIGEM, NCM ';
+            sqlP += ', VALOR_PRAZO, TIPO, COD_BARRA) VALUES(';
+            sqlD := C.Find('codproduto').Value;
+            sqlD += ',' + QuotedStr(C.Find('unidademedida').AsString);
+            sqlD += ',' + QuotedStr(C.Find('produto').AsString);
+            sqlD += ',' + QuotedStr(C.Find('codpro').AsString);
+            sqlD += ',' + QuotedStr('F');
+            sqlD += ',' + QuotedStr(C.Find('origem').AsString);
+            sqlD += ',' + QuotedStr(C.Find('ncm').AsString);
+            sqlD += ',' + C.Find('valor_prazo').Value;
+            sqlD += ',' + QuotedStr('PROD');
+            codbarra := C.Find('cod_barra').AsString;
+            if codbarra <> 'NULL' then
+              sqlD += ',' + QuotedStr(codbarra)
+            else
+              sqlD += ', Null';
+            dmpdv.executaSql(sqlP + sqlD);
+            dmPdv.sTrans.Commit;
+          end
+          else begin
+            sqlP := 'UPDATE PRODUTOS  SET ';
+            sqlD := ' PRODUTO = ' +  QuotedStr(C.Find('produto').AsString);
+            sqlD += ', UNIDADEMEDIDA = ' + QuotedStr(C.Find('unidademedida').AsString);
+            sqlD += ', CODPRO = ' + QuotedStr(C.Find('codpro').AsString);
+            sqlD += ', NCM = ' + QuotedStr(C.Find('ncm').AsString);
+            sqlD += ', ORIGEM = ' + QuotedStr(C.Find('origem').AsString);
+            codbarra := C.Find('cod_barra').AsString;
+            if codbarra <> 'NULL' then
+              sqlD += ', COD_BARRA = ' + QuotedStr(codbarra);
+            sqlD += ', VALOR_PRAZO = ' +  C.Find('valor_prazo').Value;
+            sqlD += ' WHERE CODPRODUTO = ' + C.Find('codproduto').Value;
+            dmpdv.executaSql(sqlP + sqlD);
+            dmPdv.sTrans.Commit;
+          end;
+        end;
+      end;
+    finally
+      postJson.Free;
+      dadosJson.Free;
+      Free;
+    end;
+  except
+  end;
+end;
+
+procedure TdmPdv.integra_usuario;
+var sqlP: String;
+  sqlD: String;
+  postJson: TJSONObject;
+  dadosJson: TJsonNode;
+  dados: String;
+  c: TJsonNode;
+begin
+  if (DirectoryExists(path_integra) = False) then
+    ShowMessage('Crie o diretorio do Path Integra.');
+  postJson := TJSONObject.Create;
+  dadosJson := TJsonNode.Create;
+  postJson.Add('title', 'Atualizando usuario');
+  postJson.Add('body', empresa_integra);
+  postJson.Add('tab_usuario', '');
+  postJson.Add('userId', 1);
+  try
+    With TFPHttpClient.Create(Nil) do
+    try
+      AddHeader('Content-Type', 'application/json');
+      RequestBody := TStringStream.Create(postJson.AsJSON);
+      dados := Post(dmPdv.path_integra_url);
+      dadosJson.Value := dados;
+      for c in dadosJson do
+      begin
+        dados := C.Find('codusuario').Value;
+      end;
+      if (StrToInt(dados) > 0) then
+      begin
+        dmpdv.busca_sql('SELECT CODUSUARIO FROM USUARIO WHERE CODUSUARIO = ' + dados);
+        if dmpdv.sqBusca.IsEmpty then
+        begin
+          sqlP := 'INSERT INTO USUARIO (CODUSUARIO, NOMEUSUARIO, CODBARRA, ' +
+                  'STATUS, PERFIL, SENHA) VALUES (';
+          for c in dadosJson do
+          begin
+            sqlD := C.Find('codusuario').Value;
+            sqlD += ',' + QuotedStr(C.Find('nomeusuario').AsString);
+            sqlD += ',' + QuotedStr(C.Find('barcode').AsString);
+            sqlD += ', 1, ' + QuotedStr('CAIXA') + ', ' + QuotedStr('MTIz') + ')';
+            dmpdv.executaSql(sqlP + sqlD);
+            dmPdv.sTrans.Commit;
+          end;
+        end
+        else begin
+          sqlP := 'UPDATE USUARIO  SET ';
+          for c in dadosJson do
+          begin
+            sqlD := ' NOMEUSUARIO = ' +  QuotedStr(C.Find('nomeusuario').AsString);
+            sqlD += ', CODBARRA = ' + QuotedStr(C.Find('barcode').AsString);
+            sqlD += ' WHERE CODUSUARIO = ' + C.Find('codusuario').Value;
+            dmpdv.executaSql(sqlP + sqlD);
+            dmPdv.sTrans.Commit;
+          end;
+
+        end;
+
+      end;
+      //if FileExists(dmpdv.path_integra + responseData) then
+      //  DeleteFile(dmpdv.path_integra + responseData);
+
+    finally
+      postJson.Free;
+      dadosJson.Free;
+      Free;
+    end;
+  except
+  end;
+
 end;
 
 function TdmPdv.executaSql(strSql: String): Boolean;

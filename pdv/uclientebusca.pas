@@ -13,9 +13,11 @@ type
   { TfClienteBusca }
 
   TfClienteBusca = class(TfPadraoBusca)
+    BitBtn2: TBitBtn;
     chCurso: TCheckBox;
     dsCliente: TDataSource;
     Label2: TLabel;
+    procedure BitBtn2Click(Sender: TObject);
     procedure btnExcluirClick(Sender: TObject);
     procedure btnGravarClick(Sender: TObject);
     procedure btnProcurarClick(Sender: TObject);
@@ -67,6 +69,13 @@ begin
     dmPdv.executaSql(update_cli);
     dmPdv.sTrans.Commit;
   end;
+end;
+
+procedure TfClienteBusca.BitBtn2Click(Sender: TObject);
+begin
+  if dmpdv.empresa_integra <> 'ATS' then
+    dmPdv.integra_cliente;
+  Procurar();
 end;
 
 procedure TfClienteBusca.btnGravarClick(Sender: TObject);
