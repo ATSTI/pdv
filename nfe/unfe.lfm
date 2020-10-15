@@ -137,9 +137,9 @@ object fNFe: TfNFe
           Height = 215
           Top = 0
           Width = 583
-          ActivePage = TabSheet1
+          ActivePage = TabSheet7
           Align = alClient
-          TabIndex = 0
+          TabIndex = 2
           TabOrder = 0
           OnChange = PageControl2Change
           object TabSheet1: TTabSheet
@@ -1072,7 +1072,7 @@ object fNFe: TfNFe
               Left = 4
               Height = 15
               Top = 128
-              Width = 89
+              Width = 90
               Caption = 'Local Exportação'
               ParentColor = False
             end

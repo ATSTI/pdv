@@ -65,7 +65,7 @@
         <PackageName Value="LCL"/>
       </Item9>
     </RequiredPackages>
-    <Units Count="5">
+    <Units Count="6">
       <Unit0>
         <Filename Value="prjNFe.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -101,6 +101,10 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uInutilizar"/>
       </Unit4>
+      <Unit5>
+        <Filename Value="..\pdv\uintegracaoodoo.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit5>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -111,7 +115,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="..\geral"/>
+      <OtherUnitFiles Value="..\geral;..\pdv"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

@@ -1814,8 +1814,6 @@ begin
           end;
         end;
       end;
-      //if FileExists(dmpdv.path_integra + responseData) then
-      //  DeleteFile(dmpdv.path_integra + responseData);
 
     finally
       postJson.Free;
@@ -1866,6 +1864,9 @@ begin
             sqlD += ',' + QuotedStr(C.Find('nomecaixa').AsString);
             sqlD += ')';
             dmpdv.executaSql(sqlP + sqlD);
+            sqlP := 'UPDATE CAIXA_CONTROLE  SET SITUACAO = ' + QuotedStr('F') +
+              ' WHERE SITUACAO = ' + QuotedStr('o') + ' AND CODCAIXA < ' + dados;
+            dmpdv.executaSql(sqlP);
             dmPdv.sTrans.Commit;
           end;
         end;
@@ -1906,6 +1907,7 @@ begin
         dados := C.Find('codproduto').Value;
         if (StrToInt(dados) > 0) then
         begin
+          sqlP := '';
           dmpdv.busca_sql('SELECT CODPRODUTO FROM PRODUTOS WHERE CODPRODUTO = ' + dados);
           if dmpdv.sqBusca.IsEmpty then
           begin
@@ -1926,8 +1928,7 @@ begin
               sqlD += ',' + QuotedStr(codbarra)
             else
               sqlD += ', Null';
-            dmpdv.executaSql(sqlP + sqlD);
-            dmPdv.sTrans.Commit;
+            sqlD += ')';
           end
           else begin
             sqlP := 'UPDATE PRODUTOS  SET ';
@@ -1941,8 +1942,19 @@ begin
               sqlD += ', COD_BARRA = ' + QuotedStr(codbarra);
             sqlD += ', VALOR_PRAZO = ' +  C.Find('valor_prazo').Value;
             sqlD += ' WHERE CODPRODUTO = ' + C.Find('codproduto').Value;
-            dmpdv.executaSql(sqlP + sqlD);
-            dmPdv.sTrans.Commit;
+          end;
+          if sqlP <> '' then
+          begin
+            try
+              IbCon.ExecuteDirect(sqlP + sqlD);
+              sTrans.Commit;
+            except
+              on dmPdv: EDatabaseError do
+              begin
+                MessageDlg('Erro','Erro atualizacao produtos: ' + sqlP + sqlD
+                ,mtError,[mbOK],0);
+              end;
+            end;
           end;
         end;
       end;
@@ -1981,41 +1993,40 @@ begin
       for c in dadosJson do
       begin
         dados := C.Find('codusuario').Value;
-      end;
-      if (StrToInt(dados) > 0) then
-      begin
-        dmpdv.busca_sql('SELECT CODUSUARIO FROM USUARIO WHERE CODUSUARIO = ' + dados);
-        if dmpdv.sqBusca.IsEmpty then
+        sqlP := '';
+        if (StrToInt(dados) > 0) then
         begin
-          sqlP := 'INSERT INTO USUARIO (CODUSUARIO, NOMEUSUARIO, CODBARRA, ' +
-                  'STATUS, PERFIL, SENHA) VALUES (';
-          for c in dadosJson do
+          dmpdv.busca_sql('SELECT CODUSUARIO FROM USUARIO WHERE CODUSUARIO = ' + dados);
+          if dmpdv.sqBusca.IsEmpty then
           begin
+            sqlP := 'INSERT INTO USUARIO (CODUSUARIO, NOMEUSUARIO, CODBARRA, ' +
+                  'STATUS, PERFIL, SENHA) VALUES (';
             sqlD := C.Find('codusuario').Value;
             sqlD += ',' + QuotedStr(C.Find('nomeusuario').AsString);
             sqlD += ',' + QuotedStr(C.Find('barcode').AsString);
             sqlD += ', 1, ' + QuotedStr('CAIXA') + ', ' + QuotedStr('MTIz') + ')';
-            dmpdv.executaSql(sqlP + sqlD);
-            dmPdv.sTrans.Commit;
-          end;
-        end
-        else begin
-          sqlP := 'UPDATE USUARIO  SET ';
-          for c in dadosJson do
-          begin
+          end
+          else begin
+            sqlP := 'UPDATE USUARIO  SET ';
             sqlD := ' NOMEUSUARIO = ' +  QuotedStr(C.Find('nomeusuario').AsString);
             sqlD += ', CODBARRA = ' + QuotedStr(C.Find('barcode').AsString);
             sqlD += ' WHERE CODUSUARIO = ' + C.Find('codusuario').Value;
-            dmpdv.executaSql(sqlP + sqlD);
-            dmPdv.sTrans.Commit;
           end;
-
+          if sqlP <> '' then
+          begin
+            try
+              IbCon.ExecuteDirect(sqlP + sqlD);
+              sTrans.Commit;
+            except
+              on dmPdv: EDatabaseError do
+              begin
+                MessageDlg('Erro','Erro atualizacao usuario: ' + sqlP + sqlD
+                ,mtError,[mbOK],0);
+              end;
+            end;
+          end;
         end;
-
       end;
-      //if FileExists(dmpdv.path_integra + responseData) then
-      //  DeleteFile(dmpdv.path_integra + responseData);
-
     finally
       postJson.Free;
       dadosJson.Free;

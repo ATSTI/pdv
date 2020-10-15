@@ -2139,7 +2139,18 @@ begin
   dmPdv.sqLancamentos.Open;
   // leio um arquivo txt e imprimo
   lFile := TStringList.Create;
-  AssignFile(IMPRESSORA, dmpdv.path_imp);
+  if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
+  begin
+    //v_log := 'Log portaImp - ' + dmPdv.portaIMP;
+    AssignFile(IMPRESSORA, dmPdv.portaIMP);
+  end
+  else begin
+    //v_log := 'Log path_imp - ' + dmPdv.path_imp;
+    AssignFile(IMPRESSORA, dmPdv.path_imp);
+  end;
+
+
+  //AssignFile(IMPRESSORA, dmpdv.path_imp);
   try
     Rewrite(IMPRESSORA);
     lFile.LoadFromFile('cupomTroca.txt');

@@ -195,8 +195,8 @@ object fNfce: TfNfce
     Height = 408
     Top = 72
     Width = 646
-    ActivePage = TabSheet4
-    TabIndex = 0
+    ActivePage = TabSheet5
+    TabIndex = 1
     TabOrder = 5
     object TabSheet4: TTabSheet
       Caption = 'NFCe'

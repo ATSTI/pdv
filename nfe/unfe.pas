@@ -5083,7 +5083,15 @@ begin
         //end; // fim with nfe
         getTransportadora();
 
-
+        if (dmPdv.qsCliente.Active) then
+        if ((trim(dmPdv.qsClienteUF.AsString) = 'EX') and (trim(dmPdv.qcdsNFCFOP.AsString) <> '3202'))  then
+        begin
+          exporta.UFembarq := edUfEmbarque.Text;
+          exporta.xLocEmbarq := edLocalEmbarque.Text;
+          exporta.UFSaidaPais:= edUfEmbarque.Text;
+          exporta.xLocExporta:= Edit2.Text;
+          exporta.xLocDespacho:= edit4.Text;
+        end;
 
 
         //VALOR TORAL
