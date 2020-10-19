@@ -1084,6 +1084,8 @@ type
     procedure executa_integracao;
     procedure integra_cliente;
     procedure integra_caixa;
+    procedure integra_caixa_mov;
+    procedure gera_integra_caixa_mov;
     procedure integra_produtos;
     procedure integra_usuario;
   end;
@@ -1878,6 +1880,141 @@ begin
     end;
   except
   end;
+end;
+
+procedure TdmPdv.integra_caixa_mov;
+var
+  postJson: TJSONObject;
+  dadosJson: TJsonNode;
+  responseData: String;
+  K: Integer;
+  listaArquivos : TStringList;
+begin
+  // Envia ENTRADAS e SAIDAS do CAIXA para o Odoo
+
+  // envia o arquivo
+  postJson := TJSONObject.Create;
+  dadosJson := TJsonNode.Create;
+  postJson.Add('title', 'Atualizando Caixa Mov');
+  postJson.Add('body', empresa_integra);
+  postJson.Add('tab_sangria', '');
+  postJson.Add('userId', 1);
+  // VER SE EXISTE ARQUIVO
+ listaArquivos := TStringList.Create;
+ try
+   FindAllFiles(listaArquivos, path_integra, 'caixa_mov_*.txt', true);
+   for k:=0 to Pred(listaArquivos.Count) do
+   begin
+    // SE EXISTE ENVIA
+    postJson := TJSONObject.Create;
+    dadosJson := TJsonNode.Create;
+    postJson.Add('title', 'Enviando Mov. Caixa');
+    postJson.Add('body', empresa_integra);
+    dadosJson.LoadFromFile(listaArquivos[k]);
+    postJson.Add('tab_sangria', dadosJson.ToString);
+    postJson.Add('userId', 1);
+    With TFPHttpClient.Create(Nil) do
+    try
+      AddHeader('Content-Type', 'application/json');
+      RequestBody := TStringStream.Create(postJson.AsJSON);
+      responseData := Post(path_integra_url);
+      if FileExists(path_integra + responseData) then
+         DeleteFile(path_integra + responseData);
+    finally
+      postJson.Free;
+      dadosJson.Free;
+      Free;
+    end;
+   end;
+   listaArquivos.Free;
+  except
+  end;
+end;
+
+procedure TdmPdv.gera_integra_caixa_mov;
+var
+  dados: String;
+  Campo : String;
+  Valor : String;
+  tipo : TFieldType;
+  arquivo: TJsonNode;
+  itens: String;
+  i: Integer;
+  num: Integer;
+  campos: String;
+begin
+  // Envia ENTRADAS e SAIDAS do CAIXA para o Odoo
+
+  // Cria o arquivo
+  arquivo := TJsonNode.Create;
+  dmPdv.busca_sql('SELECT CODFORMA, COD_VENDA, ID_ENTRADA, FORMA_PGTO' +
+    ' , CAIXA , N_DOC, VALOR_PAGO, CAIXINHA, TROCO, DESCONTO, STATE' +
+    ' FROM FORMA_ENTRADA WHERE STATE = 1 AND CAIXA = ' +
+    idcaixa + ' AND COD_VENDA IN (0,1) ORDER BY FORMA_PGTO');
+  itens := '';
+  num := 0;
+  while not dmPdv.sqBusca.EOF do
+  begin
+    itens += '[{';
+    num += 1;
+    for i:=0 to dmPdv.sqBusca.FieldDefs.Count-1 do
+    begin
+      try
+      campo := dmPdv.sqBusca.FieldDefs.Items[i].Name;
+      campos := 'CODFORMA, FORMA_PGTO VALOR_PAGO CAIXA COD_VENDA N_DOC';
+      if (pos(campo, Campos) <> 0) then
+      begin
+        if (not dmPdv.sqBusca.Fields[i].IsNull) then
+        begin
+          valor := '';
+          if (Trim(dmPdv.sqBusca.Fields[i].Value) <> '') then
+          begin
+            tipo := dmPdv.sqBusca.Fields[i].DataType;
+            if dmPdv.sqBusca.Fields[i].DataType = ftDate then
+               valor := FormatDateTime('mm/dd/yyyy', dmPdv.sqBusca.Fields[i].Value);
+            if dmPdv.sqBusca.Fields[i].DataType = ftString then
+               valor := dmPdv.sqBusca.Fields[i].Value;
+            if dmPdv.sqBusca.Fields[i].DataType = ftInteger then
+               valor := IntToStr(dmPdv.sqBusca.Fields[i].Value);
+            if dmPdv.sqBusca.Fields[i].DataType = ftSmallint then
+               valor := IntToStr(dmPdv.sqBusca.Fields[i].Value);
+            if dmPdv.sqBusca.Fields[i].DataType = ftFixedChar then
+               valor := dmPdv.sqBusca.Fields[i].Value;
+
+            if dmPdv.sqBusca.Fields[i].DataType = ftFloat then
+            begin
+              try
+                 valor := FloatToStr(dmPdv.sqBusca.Fields[i].Value);
+              except
+                valor := '';
+              end;
+            end;
+            if (valor <> '') then
+            begin
+              if itens <> '[{' then
+                itens += ',';
+              itens += '"' + campo + '": "' + valor + '"';
+            end;
+            valor := '';
+          end;
+        end;
+      end;
+      except
+         ShowMessage('Erro Campo : ' + campo + ' Valor : ' + valor);
+         valor := '0';
+      end;
+    end;
+    itens += ', "CODFORMA": "' + IntToStr(dmpdv.sqBusca.FieldByName('CODFORMA').AsInteger) + '"';
+    itens += '}]';
+    arquivo.add('caixa-'+IntTostr(num), itens);
+    itens := '';
+    dmPdv.sqBusca.Next;
+  end;
+  campo := dmpdv.path_integra + 'caixa_mov_' + idcaixa + '.txt';
+  arquivo.SaveToFile(campo);
+  arquivo.Free;
+
+
 end;
 
 procedure TdmPdv.integra_produtos;

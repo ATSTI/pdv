@@ -1,13 +1,14 @@
 object fPdv: TfPdv
   Left = 81
   Height = 664
-  Top = 43
+  Top = 32
   Width = 1108
   Align = alLeft
   Caption = 'Ponto de Venda - ATS'
   ClientHeight = 664
   ClientWidth = 1108
   Color = clBlack
+  OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
   PopupMenu = PopupMenu1

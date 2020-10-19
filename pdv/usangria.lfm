@@ -7,7 +7,7 @@ object fSangria: TfSangria
   ClientHeight = 206
   ClientWidth = 483
   OnShow = FormShow
-  LCLVersion = '2.0.0.4'
+  LCLVersion = '2.0.8.0'
   object btnGravar: TBitBtn
     Left = 264
     Height = 44

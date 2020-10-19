@@ -197,6 +197,7 @@ type
     procedure edQtdeKeyPress(Sender: TObject; var Key: char);
     procedure edVendedorKeyPress(Sender: TObject; var Key: char);
     procedure FlowPanel1Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Image1Click(Sender: TObject);
@@ -1159,6 +1160,16 @@ begin
 
 end;
 
+procedure TfPdv.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  if dmpdv.empresa_integra <> 'ATS' then
+  begin
+    dmpdv.integra_caixa;
+    dmpdv.gera_integra_caixa_mov;
+    dmpdv.integra_caixa_mov;
+  end;
+end;
+
 procedure TfPdv.FormCreate(Sender: TObject);
 begin
   DBGrid1.Columns[2].Width := dmPdv.tamanhoDescProd;
@@ -1172,6 +1183,7 @@ begin
   if dmpdv.empresa_integra <> 'ATS' then
   begin
     dmpdv.integra_caixa;
+    dmpdv.integra_caixa_mov;
     dmpdv.integra_cliente;
     dmpdv.integra_usuario;
     dmpdv.integra_produtos;

@@ -126,6 +126,8 @@ procedure TfSangria.Sangria();
 var
   codForma: integer;
   vlrSangria: double;
+  Campo : String;
+  Valor : String;
 begin
   if (dmPdv.sqGenerator.Active) then
     dmPdv.sqGenerator.Close;
@@ -155,7 +157,8 @@ begin
   sqPagamentoTROCO.AsFloat       := 0;
   sqPagamento.ApplyUpdates;
   dmPdv.sTrans.Commit;
-
+  dmpdv.gera_integra_caixa_mov;
+  dmpdv.integra_caixa_mov;
 end;
 
 end.
