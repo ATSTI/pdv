@@ -1791,7 +1791,7 @@ begin
   else begin
     Close;
   end;
-
+  gerarjson;
 end;
 
 procedure TfPDV_Rec.acOutrosExecute(Sender: TObject);

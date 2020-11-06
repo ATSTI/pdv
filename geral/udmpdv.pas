@@ -1833,6 +1833,7 @@ var sqlP: String;
   dadosJson: TJsonNode;
   dados: String;
   c: TJsonNode;
+  caixa_int : Integer;
 begin
   postJson := TJSONObject.Create;
   dadosJson := TJsonNode.Create;
@@ -1855,6 +1856,17 @@ begin
           dmpdv.busca_sql('SELECT CODCAIXA FROM CAIXA_CONTROLE WHERE CODCAIXA = ' + dados);
           if dmpdv.sqBusca.IsEmpty then
           begin
+            try
+              caixa_int := StrToInt(dados)-1;
+              dados := IntToStr(caixa_int);
+            except
+              caixa_int := 0;
+            end;
+            sqlP := 'UPDATE CAIXA_CONTROLE  SET SITUACAO = ' + QuotedStr('F') +
+              ' WHERE SITUACAO = ' + QuotedStr('o') + ' AND CODCAIXA < ' + dados +
+              ' AND CODUSUARIO = ' + varLogado;
+            dmpdv.executaSql(sqlP);
+
             sqlP := 'INSERT INTO CAIXA_CONTROLE (IDCAIXACONTROLE, ' +
                   'CODCAIXA, CODUSUARIO, SITUACAO, DATAFECHAMENTO' +
                   ',NOMECAIXA) VALUES ( ';
@@ -1866,9 +1878,6 @@ begin
             sqlD += ',' + QuotedStr(C.Find('nomecaixa').AsString);
             sqlD += ')';
             dmpdv.executaSql(sqlP + sqlD);
-            sqlP := 'UPDATE CAIXA_CONTROLE  SET SITUACAO = ' + QuotedStr('F') +
-              ' WHERE SITUACAO = ' + QuotedStr('o') + ' AND CODCAIXA < ' + dados;
-            dmpdv.executaSql(sqlP);
             dmPdv.sTrans.Commit;
           end;
         end;
@@ -1889,6 +1898,7 @@ var
   responseData: String;
   K: Integer;
   listaArquivos : TStringList;
+  ver : String;
 begin
   // Envia ENTRADAS e SAIDAS do CAIXA para o Odoo
 
@@ -1917,9 +1927,10 @@ begin
     try
       AddHeader('Content-Type', 'application/json');
       RequestBody := TStringStream.Create(postJson.AsJSON);
+      ver := listaArquivos[k];
       responseData := Post(path_integra_url);
-      if FileExists(path_integra + responseData) then
-         DeleteFile(path_integra + responseData);
+      if FileExists(listaArquivos[k]) then
+         DeleteFile(listaArquivos[k]);
     finally
       postJson.Free;
       dadosJson.Free;

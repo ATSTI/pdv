@@ -1180,7 +1180,7 @@ end;
 procedure TfPdv.FormShow(Sender: TObject);
 var sqlP : String;
 begin
-  if dmpdv.empresa_integra <> 'ATS' then
+  if (dmpdv.empresa_integra <> 'ATS') then
   begin
     dmpdv.integra_caixa;
     dmpdv.integra_caixa_mov;
@@ -2279,7 +2279,15 @@ var arquivo: TStringList;
 begin
   arquivo := TStringList.Create();
   try
-    arquivo.LoadFromFile(dmpdv.path_imp);
+    if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
+    begin
+      //v_log := 'Log portaImp - ' + dmPdv.portaIMP;
+      arquivo.LoadFromFile(dmpdv.portaIMP);
+    end
+    else begin
+      //v_log := 'Log path_imp - ' + dmPdv.path_imp;
+      arquivo.LoadFromFile(dmpdv.path_imp);
+    end;
     MemoImp.Clear;
     MemoImp.Text := arquivo.Text;
   finally
@@ -2295,7 +2303,7 @@ begin
   ACBrPosPrinter1.ConfigBarras.Margem:= dmPdv.margemCodBarra;
 
   ACBrPosPrinter1.CortaPapel := True;
-
+  ACBrPosPrinter1.TraduzirTags:=True;
   ACBrPosPrinter1.Modelo := TACBrPosPrinterModelo(dmPdv.ModeloImp);
   ACBrPosPrinter1.Ativar ;
 

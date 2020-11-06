@@ -125,7 +125,10 @@ begin
     3 : sqlProc += ' WHERE m.STATUS = 1 AND v.SERIE LIKE ' + QuotedStr('NFCE%');
     4 : sqlProc += ' WHERE m.STATUS = 9 ';
   end;
-  sqlProc += ' AND m.CODNATUREZA = 3 ';
+  if (rgStatus.ItemIndex = 4) then
+    sqlProc += ' AND m.CODNATUREZA = 1 '
+  else
+    sqlProc += ' AND m.CODNATUREZA = 3 ';
   // sqlProc += ' AND m.CODALMOXARIFADO = ' + dmPdv.ccusto;  tem q ser usuario
   // pois o  CCUSTO muda com o caixa todo dia
   sqlProc += ' AND m.CODCLIENTE > 0 ';
