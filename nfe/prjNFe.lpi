@@ -21,7 +21,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
-      <BuildNr Value="4"/>
+      <BuildNr Value="5"/>
       <Language Value="0416"/>
       <StringTable Comments="Nota Fiscal Eletrônica" CompanyName="ATS Ti Soluções" FileDescription="Envio de Nota Fiscal Eletrônica" LegalCopyright="ATS Soluções"/>
     </VersionInfo>
@@ -104,6 +104,7 @@
       <Unit5>
         <Filename Value="..\pdv\uintegracaoodoo.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="uIntegracaoOdoo"/>
       </Unit5>
     </Units>
   </ProjectOptions>
@@ -111,7 +112,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="C:\home\publico\tmp\NFe"/>
+      <Filename Value="C:\home\sisadmin\NFe.exe"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>

@@ -138,6 +138,7 @@ type
     GroupBox7: TGroupBox;
     GroupBox8: TGroupBox;
     GroupBox9: TGroupBox;
+    Image1: TImage;
     ImageList1: TImageList;
     ImageList2: TImageList;
     Label1: TLabel;
@@ -190,6 +191,8 @@ type
     Label52: TLabel;
     Label53: TLabel;
     Label54: TLabel;
+    Label55: TLabel;
+    lblVencimentoCert: TLabel;
     Label6: TLabel;
     Label7: TLabel;
     Label8: TLabel;
@@ -289,6 +292,7 @@ type
     procedure cbHttpLibChange(Sender: TObject);
     procedure cbSSLLibChange(Sender: TObject);
     procedure cbXmlSignLibChange(Sender: TObject);
+    procedure ComboBox1Change(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
     procedure DBGrid1ColEnter(Sender: TObject);
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
@@ -347,6 +351,8 @@ type
     procedure CarregarXML(ChaveNFCe: String);
     procedure gravaRetornoEnvio(Protocolo: String; Recibo: String);
     procedure gravaRetornoCancelada(Protocolo: String);
+    procedure carregaTudo;
+    procedure abrindoSistema;
     //procedure LoadXML(MyMemo: TMemo; MyWebBrowser: TSynMemo);
   public
     danfe_larg_codprod: integer;
@@ -1953,8 +1959,9 @@ begin
   if (edtNumSerieABA.Text <> '') then
   begin
     try
+      abrirEmpresa;
       str := 'UPDATE EMPRESA SET CERTIFICADO = ' + quotedStr(edtNumSerieABA.Text)
-        + ' WHERE CCUSTO = ' + quotedStr(IntToStr(dmPdv.qcds_ccustoCODIGO.AsInteger));
+        + ' WHERE CCUSTO = ' + quotedStr(IntToStr(dmpdv.qsEmpresaCCUSTO.AsInteger));
         dmPdv.IbCon.ExecuteDirect(str);
         dmPdv.sTrans.Commit;
     except
@@ -1970,8 +1977,9 @@ end;
 procedure TfNFe.Button4Click(Sender: TObject);
 begin
   try
+    abrirEmpresa;
     str := 'UPDATE EMPRESA SET CERTIFICADO = ' + 'NULL'
-    + ' WHERE CCUSTO = ' + quotedStr(IntToStr(dmPdv.qcds_ccustoCODIGO.AsInteger));
+    + ' WHERE CCUSTO = ' + quotedStr(IntToStr(dmpdv.qsEmpresaCCUSTO.AsInteger));
     dmPdv.IbCon.ExecuteDirect(str);
     dmPdv.sTrans.Commit;
   except
@@ -2022,6 +2030,13 @@ begin
   finally
     AtualizaSSLLibsCombo;
   end;
+end;
+
+procedure TfNFe.ComboBox1Change(Sender: TObject);
+begin
+  abrirEmpresa;
+  carregaTudo;
+  abrindoSistema;
 end;
 
 procedure TfNFe.DBGrid1CellClick(Column: TColumn);
@@ -2165,366 +2180,13 @@ begin
 end;
 
 procedure TfNFe.FormCreate(Sender: TObject);
-var Ini: TIniFile;
-    IniFile , onde   : String;
-    ImpressoraDet: TIniFile;
-
-    T: TSSLLib;
-    U: TSSLCryptLib;
-    V: TSSLHttpLib;
-    X: TSSLXmlSignLib;
-    Y: TSSLType;
 begin
-  fNFe.Caption := 'ATS-NFe ' + GetVersion;
-  micro := Trim(GetComputerNameFunc);
-  ACBrNFe1.DANFE := ACBrNFeDANFeRL1;
-  ACBrNFeDANFeRL1.ACBrNFe := ACBrNFe1;
-  cbSSLLib.Items.Clear ;
-  For T := Low(TSSLLib) to High(TSSLLib) do
-    cbSSLLib.Items.Add( GetEnumName(TypeInfo(TSSLLib), integer(T) ) ) ;
-  cbSSLLib.ItemIndex := 0 ;
-
-  cbCryptLib.Items.Clear ;
-  For U := Low(TSSLCryptLib) to High(TSSLCryptLib) do
-    cbCryptLib.Items.Add( GetEnumName(TypeInfo(TSSLCryptLib), integer(U) ) ) ;
-  cbCryptLib.ItemIndex := 0 ;
-
-  cbHttpLib.Items.Clear ;
-  For V := Low(TSSLHttpLib) to High(TSSLHttpLib) do
-    cbHttpLib.Items.Add( GetEnumName(TypeInfo(TSSLHttpLib), integer(V) ) ) ;
-  cbHttpLib.ItemIndex := 0 ;
-
-  cbXmlSignLib.Items.Clear ;
-  For X := Low(TSSLXmlSignLib) to High(TSSLXmlSignLib) do
-    cbXmlSignLib.Items.Add( GetEnumName(TypeInfo(TSSLXmlSignLib), integer(X) ) ) ;
-  cbXmlSignLib.ItemIndex := 0 ;
-
-  cbSSLType.Items.Clear ;
-  For Y := Low(TSSLType) to High(TSSLType) do
-    cbSSLType.Items.Add( GetEnumName(TypeInfo(TSSLType), integer(Y) ) ) ;
-  cbSSLType.ItemIndex := 0 ;
-
- begin
-  Ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'dbxconnections.ini');
- {
-   con.Connected       := False;
-   con.HostName        := Ini.ReadString('nfe', 'Hostname', '');
-   con.Port            := Ini.ReadInteger('nfe', 'Port', 0);
-   con.Protocol        := Ini.ReadString('nfe', 'Protocol', '');
-   con.User            := Ini.ReadString('nfe', 'User', '');
-   con.Password        := Ini.ReadString('nfe', 'Password', '');
-   con.Database        := Ini.ReadString('nfe', 'Database', '');
-   con.ClientCodepage  := Ini.ReadString('nfe', 'ClientCodepage', '');
-   con.LibraryLocation := Ini.ReadString('nfe', 'LibraryLocation', '');
- }
-   edtPathSchemas.Text  := Ini.ReadString( 'nfe','PathSchemas',PathWithDelim(ExtractFilePath(Application.ExeName))+'Schemas\');
-   Ini.Free;
- end;
-
-
-  // LerConfiguracao;
-
-  nfe_serie_receita := 1;
-
-  ImpressoraDet := TIniFile.Create(ExtractFilePath(Application.ExeName)+ 'prjAtsAdmin.ini' );
-  try
-    nfe_serie_receita  := ImpressoraDet.ReadInteger('SISTEMA','SERIERECEITA',1);
-    email_tls          := ImpressoraDet.ReadString('EMAIL','TLS','');
-    email_ssl          := ImpressoraDet.ReadString('EMAIL','SSL','');
-    edtNumSerie.Text  := Ini.ReadString('Certificado', 'NumSerie', '');
-  finally
-    ImpressoraDet.Free;
-  end;
-
-  IniFile := ChangeFileExt( Application.ExeName, '.ini');
-  ImpressoraDet := TIniFile.Create( IniFile );
-  try
-    ACBrNFeDANFeRL1.MargemDireita := ImpressoraDet.ReadFloat('NFe','MargemDireita',0.7);
-    ACBrNFeDANFeRL1.MargemEsquerda := ImpressoraDet.ReadFloat('NFe','MargemEsquerda',5.0);
-    ACBrNFeDANFeRL1.MargemSuperior := ImpressoraDet.ReadFloat('NFe','MargemSuperior',3.0);
-    ACBrNFeDANFeRL1.MargemInferior := ImpressoraDet.ReadFloat('NFe','MargemInferior',0.7);
-    FloatSpinEdit1.Value := ImpressoraDet.ReadFloat('NFe','MargemSuperior',3.0);
-    FloatSpinEdit2.Value := ImpressoraDet.ReadFloat('NFe','MargemInferior',0.7);
-    FloatSpinEdit3.Value := ImpressoraDet.ReadFloat('NFe','MargemEsquerda',5.0);
-    FloatSpinEdit4.Value := ImpressoraDet.ReadFloat('NFe','MargemDireita',0.7);
-  finally
-    ImpressoraDet.Free;
-  end;
-  dmPdv.IbCon.ExecuteDirect('ALTER TRIGGER PROIBE_ALT_DEL_NF INACTIVE');
-  dmPdv.sTrans.Commit;
-  dmPdv.IbCon.ExecuteDirect('UPDATE NOTAFISCAL SET SELECIONOU = null '
-    + ' WHERE SELECIONOU = ' + QuotedStr('S'));
-  dmPdv.IbCon.ExecuteDirect('UPDATE CCE SET SELECIONOU = null '
-    + ' WHERE SELECIONOU = ' + QuotedStr('S'));
-  dmPdv.IbCon.ExecuteDirect('ALTER TRIGGER PROIBE_ALT_DEL_NF ACTIVE');
-  dmPdv.sTrans.Commit;
-
-  if dmPdv.sqparametro.Active then
-    dmPdv.qcds_parametro.Close;
-  dmPdv.qcds_parametro.Params[0].AsString := 'CENTRORECEITA';
-  dmPdv.qcds_parametro.Open;
-  conta_local := Trim(dmPdv.qcds_parametroDADOS.AsString);
-  dmPdv.qcds_parametro.Close;
-
-  if dmPdv.qcds_parametro.Active then
-    dmPdv.qcds_parametro.Close;
-  dmPdv.qcds_parametro.Params[0].AsString := 'EMPRESA';
-  dmPdv.qcds_parametro.Open;
-  danfeDec := 2;
-  if (Trim(dmPdv.qcds_parametroD5.AsString) <> '') then
-    danfeDec := StrToInt(Trim(dmPdv.qcds_parametroD5.AsString));
-
-  quebraLinhaDanfe := True;
-  if (Trim(dmPdv.qcds_parametroD6.AsString) <> '') then
-    quebraLinhaDanfe := False;
-  imprimeDetalhamentoEspecifico := True;
-  if (Trim(dmPdv.qcds_parametroD7.AsString) <> '') then
-    imprimeDetalhamentoEspecifico := False;
-  danfe_larg_codprod := 46;
-  if (Trim(dmPdv.qcds_parametroD2.AsString) <> '') then
-  begin
-    try
-      danfe_larg_codprod := StrToInt(Trim(dmPdv.qcds_parametroD2.AsString));
-    except
-    end;
-  end;
-  dmPdv.qcds_parametro.Close;
-
-  //ACBrNFeDANFCeFortes1.UsaSeparadorPathPDF := True;
-  ACBrNFeDANFeRL1.UsaSeparadorPathPDF := True;
-  {ACBrNFeDANFCeFortes1.CasasDecimais.vUnCom := danfeDec;
-  Case danfeDec of
-     2 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.00';
-     3 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.000';
-     4 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.0000';
-     5 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.00000';
-     6 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.000000';
-     7 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.0000000';
-     8 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.00000000';
-  end;}
-  ACBrNFeDANFeRL1.CasasDecimais.vUnCom := danfeDec;
-  Case danfeDec of
-     2 : ACBrNFeDANFeRL1.CasasDecimais.MaskvUnCom := ',0.00';
-     3 : ACBrNFeDANFeRL1.CasasDecimais.MaskvUnCom := ',0.000';
-     4 : ACBrNFeDANFeRL1.CasasDecimais.MaskvUnCom := ',0.0000';
-     5 : ACBrNFeDANFeRL1.CasasDecimais.MaskvUnCom := ',0.00000';
-     6 : ACBrNFeDANFeRL1.CasasDecimais.MaskvUnCom := ',0.000000';
-     7 : ACBrNFeDANFeRL1.CasasDecimais.MaskvUnCom := ',0.0000000';
-     8 : ACBrNFeDANFeRL1.CasasDecimais.MaskvUnCom := ',0.00000000';
-  end;
-
-
-  if dmPdv.qcds_ccusto.Active then
-    dmPdv.qcds_ccusto.Close;
-  dmPdv.qcds_ccusto.Params[0].AsString := conta_local;
-  dmPdv.qcds_ccusto.Open;
-  // populo a combobox
-  dmPdv.qcds_ccusto.First;
-  while not dmPdv.qcds_ccusto.Eof do
-  begin
-    ComboBox1.Items.Add(Trim(dmPdv.qcds_ccustoNOME.AsString));
-    ComboBox2.Items.Add(Trim(dmPdv.qcds_ccustoNOME.AsString));
-    cbEmpresa.Items.Add(Trim(dmPdv.qcds_ccustoNOME.AsString));
-    dmPdv.qcds_ccusto.Next;
-  end;
-  if (dmPdv.qcds_ccusto.RecNo = 1) then
-  begin
-    ComboBox1.ItemIndex := 0;
-    ComboBox2.ItemIndex := 0;
-  end;
-
-  if (dmPdv.qsEmpresa1.Active) then
-    dmPdv.qsEmpresa1.Close;
-  dmPdv.qsEmpresa1.Open;
-
-  Edit1.Text := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString);
-  Edit3.Text := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString);
-  Edit6.Text := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString);
-  edtPorta.Text := IntToStr(dmPdv.qsEmpresa1PORTA.AsInteger);
-  edtSMTP.Text := dmPdv.qsEmpresa1SMTP.AsString;
-  edtUsername.Text := dmPdv.qsEmpresa1E_MAIL.AsString;
-  edtSenha.PasswordChar:=Chr(149);
-  edtSenha.Font.Style:= edtSenha.Font.Style + [fsBold];
-  edtSenha.Text := dmPdv.qsEmpresa1SENHA.Text;
-
-  onde       := Trim(dmPdv.qsEmpresa1TIPO.AsString);
-
-  if (trim(dmPdv.qsEmpresa1TIPO.AsString) = '1') then
-  begin
-    ACBrNFe1.Configuracoes.WebServices.Ambiente := taProducao;
-    label5.Font.Color := clBlue;
-    Label5.Caption :=  'PRODUÇÃO.';
-    label8.Font.Color := clBlue;
-    Label8.Caption :=  'PRODUÇÃO.';
-  end
-  else
-  begin
-    ACBrNFe1.Configuracoes.WebServices.Ambiente := taHomologacao;
-    label5.Font.Color := clRed;
-    Label5.Caption :=  'HOMOLOGAÇÃO.';
-    label8.Font.Color := clRed;
-    Label8.Caption :=  'HOMOLOGAÇÃO.';
-  end;
-  ACBrNFe1.Configuracoes.Arquivos.PathNFe := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString);
-  if ( not DirectoryExists(Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString))) then
-     CreateDir(Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString));
-  ACBrNFe1.Configuracoes.Arquivos.PathEvento := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString) + 'Canceladas\';
-  if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathEvento)) then
-    CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathEvento);
-  ACBrNFe1.Configuracoes.Arquivos.PathEvento := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString) + 'CCe\';
-  if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathEvento)) then
-    CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathEvento);
-
-  ACBrNFe1.Configuracoes.Arquivos.PathEvento := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString) + 'Inutilizadas\';
-  if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathEvento)) then
-    CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathEvento);
-  ACBrNFe1.Configuracoes.Arquivos.PathNFe := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString);
-
-  if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathNFe)) then
-  CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathNFe);
-
-  tp_amb := 1;
-
-  diretorio := GetCurrentDir;
-  diretorio_schema := diretorio + '\Schemas';
-  //envemail := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString);
-  ACBrNFe1.DANFE.PathPDF := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString) + '\';
-  {if (FilesExists(diretorio + '\logo_nfe.jpg')) then
-    ACBrNFeDANFCeFortes1.Logo := diretorio + '\logo_nfe.jpg';
-  if (FilesExists(diretorio + '\logo.bmp')) then
-    ACBrNFeDANFCeFortes1.Logo := diretorio + '\logo.bmp';
-  ACBrNFeDANFCeFortes1.PathPDF := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString) + '\';}
-
-  if (FilesExists(diretorio + '\logo.jpg')) then
-    ACBrNFeDANFeRL1.Logo := diretorio + '\logo.jpg';
-  if (FilesExists(diretorio + '\logo.bmp')) then
-    ACBrNFeDANFeRL1.Logo := diretorio + '\logo.bmp';
-  ACBrNFeDANFeRL1.PathPDF := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString) + '\';
-
-  // tamanho da coluna produto na DANFE
-
-  ACBrNFeDANFeRL1.LarguraCodProd := danfe_larg_codprod;
-
-  ACBrNFe1.NotasFiscais.Add.NFe.Ide.tpEmis    := teNormal;
-  ACBrNFe1.Configuracoes.Arquivos.PathSchemas := diretorio_schema;
-
-
-  dmPdv.qsEmpresa1.Close;
-
-  if dmPdv.qcds_parametro.Active then
-    dmPdv.qcds_parametro.Close;
-  dmPdv.qcds_parametro.Params[0].AsString := 'EMAILAUTOMATICO';
-  dmPdv.qcds_parametro.Open;
-  envemail := 'N';
-  if (not dmPdv.qcds_parametro.IsEmpty) then
-    envemail := Trim(dmPdv.qcds_parametroCONFIGURADO.AsString);
-
-  dmPdv.qcds_parametro.Close;
-
+  carregaTudo;
 end;
 
 procedure TfNFe.FormShow(Sender: TObject);
-var  CSize: DWORD;
-     ccusto_emp : Integer;
-     sq : string;
 begin
-  edtChaveNfeCCe.Text := '';
-  label48.Caption := GetVersion;
-  label26.caption := Trim(GetComputerNameFunc);
-
-  lblSerieNfe.Caption := IntToStr(nfe_serie_receita);
-  if (DateEdit1.Text = '') then
-    DateEdit1.Text := DateToStr(Now);
-  if (DateEdit2.Text = '') then
-    DateEdit2.Text := DateToStr(Now);
-
-  begin
-    dmPdv.qsCentroCusto.Close;
-    dmPdv.qsCentroCusto.Params[0].AsString := micro;
-    dmPdv.qcds_ccusto.First;
-    While not dmPdv.qcds_ccusto.Eof do begin
-      if (dmPdv.qsCentroCustoCODEMPRESA.AsInteger = dmPdv.qcds_ccustoCODIGO.AsInteger) then
-      begin
-        ccusto_emp          := dmPdv.qcds_ccustoCODIGO.AsInteger;
-        ComboBox1.ItemIndex := dmPdv.qcds_ccusto.RecNo-1;
-        ComboBox2.ItemIndex := dmPdv.qcds_ccusto.RecNo-1;
-        ComboBox1.Text      := Trim(dmPdv.qsCentroCustoNOMEEMPRESA.AsString);
-        ComboBox2.Text      := Trim(dmPdv.qsCentroCustoNOMEEMPRESA.AsString);
-        cbEmpresa.ItemIndex := dmPdv.qcds_ccusto.RecNo-1;
-        cbEmpresa.Text      := Trim(dmPdv.qsCentroCustoNOMEEMPRESA.AsString);
-      end;
-        dmPdv.qcds_ccusto.Next;
-    end;
-      cbTipoNota.ItemIndex := dmPdv.qsCentroCustoTIPONOTA.AsInteger;
-      Label25.Caption      := Trim(dmPdv.qsCentroCustoUCLOGIN.AsString);
-  end;
-
-  if(trim(dmPdv.qsCentroCustoNOMEEMPRESA.AsString) = '' ) then
-  begin
-    cbTipoNota.ItemIndex := 1;
-  end;
-
-  if (ComboBox1.Text <> '') then
-  begin
-    //Seleciona Empresa de acordo com o CCusto selecionado
-    if (dmPdv.qsEmpresa.Active) then
-      dmPdv.qsEmpresa.Close;
-    dmPdv.qsEmpresa.Params[0].AsInteger := ccusto_emp;
-    dmPdv.qsEmpresa.Open;
-    ACBrNFe1.Configuracoes.WebServices.UF := Trim(dmPdv.qsEmpresaUF.AsString);
-
-    //  se e multi empresa carrega estes dados novamente
-    if (not dmPdv.qsEmpresa.IsEmpty) then
-    begin
-      if(trim(dmPdv.qsEmpresaCERTIFICADO.AsString) <> '')then
-      begin
-        edtNumSerie.Text := Trim(dmPdv.qsEmpresaCERTIFICADO.AsString);
-        edtNumSerie1.Text := Trim(dmPdv.qsEmpresaCERTIFICADO.AsString);
-      end;
-      Edit1.Text := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString);
-      Edit3.Text := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString);
-
-      if (trim(dmPdv.qsEmpresaTIPO.AsString) = '1') then
-      begin
-        ACBrNFe1.Configuracoes.WebServices.Ambiente := taProducao;
-        label5.Font.Color := clBlue;
-        Label5.Caption :=  'PRODUÇÃO.';
-        label8.Font.Color := clBlue;
-        Label8.Caption :=  'PRODUÇÃO.';
-      end
-      else
-      begin
-        ACBrNFe1.Configuracoes.WebServices.Ambiente := taHomologacao;
-        label5.Font.Color := clRed;
-        Label5.Caption :=  'HOMOLOGAÇÃO.';
-        label8.Font.Color := clRed;
-        Label8.Caption :=  'HOMOLOGAÇÃO.';
-      end;
-      ACBrNFe1.Configuracoes.Arquivos.PathNFe := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString);
-      if ( not DirectoryExists(Trim(dmPdv.qsEmpresaDIVERSOS1.AsString))) then
-        CreateDir(Trim(dmPdv.qsEmpresaDIVERSOS1.AsString));
-      ACBrNFe1.Configuracoes.Arquivos.PathEvento := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString) + 'Canceladas\';
-      if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathEvento)) then
-        CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathEvento);
-      ACBrNFe1.Configuracoes.Arquivos.PathEvento := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString) + 'CCe\';
-      if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathEvento)) then
-        CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathEvento);
-      ACBrNFe1.Configuracoes.Arquivos.PathEvento := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString) + 'Inutilizadas\';
-      if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathEvento)) then
-        CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathEvento);
-      //ACBrNFe1.Configuracoes.Arquivos.PathNFe := dmPdv.qsEmpresaDIVERSOS1.AsString;
-
-      if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathNFe)) then
-        CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathNFe);
-
-      //ACBrNFeDANFCeFortes1.PathPDF := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString)  + '\';
-
-      ACBrNFeDANFeRL1.PathPDF := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString)  + '\';
-    end;
-  end;
-  LerConfiguracao;
-  cstSuframa := '';
-
+  abrindoSistema;
 end;
 
 procedure TfNFe.Label5Click(Sender: TObject);
@@ -2550,6 +2212,7 @@ begin
     begin
       //ACBrNFeDANFCeFortes1.Logo := diretorio + '\' +  Trim(dmPdv.qsEmpresaDIVERSOS2.AsString);
       ACBrNFeDANFeRL1.Logo := diretorio + '\' + Trim(dmPdv.qsEmpresaDIVERSOS2.AsString);
+      Image1.Picture.LoadFromFile(diretorio + '\' + Trim(dmPdv.qsEmpresaDIVERSOS2.AsString));
     end;
   end;
 
@@ -2784,6 +2447,7 @@ begin
   end;
   if ( ((ACBrNFe1.SSL.CertDataVenc - Now) < 30) and ((ACBrNFe1.SSL.CertDataVenc - Now) > 0)) then
      MessageDlg( 'Seu certificado expira dia ' + DateToStr(ACBrNFe1.SSL.CertDataVenc) , mtInformation, [mbOK], 0);
+  //lblVencimentoCert.Caption := DateToStr(ACBrNFe1.SSL.CertDataVenc);
 end;
 
 procedure TfNFe.SpeedButton1Click(Sender: TObject);
@@ -3357,7 +3021,7 @@ begin
 
 
   ///*
-  if (PageControl1.ActivePageIndex = 0) then
+  //if (PageControl1.ActivePageIndex = 0) then
   begin
     if(ComboBox1.Text = '') then
     begin
@@ -4632,7 +4296,7 @@ begin
   end;
 end;
 
-procedure TfNFe.gravaRetornoCancelada(protocolo: String);
+procedure TfNFe.gravaRetornoCancelada(Protocolo: String);
 begin
   try
     str := 'UPDATE NOTAFISCAL SET ';
@@ -4652,6 +4316,388 @@ begin
       dmPdv.qcdsNF.Open;
     end;
   end;
+
+end;
+
+procedure TfNFe.carregaTudo;
+var Ini: TIniFile;
+    IniFile , onde   : String;
+    ImpressoraDet: TIniFile;
+
+    T: TSSLLib;
+    U: TSSLCryptLib;
+    V: TSSLHttpLib;
+    X: TSSLXmlSignLib;
+    Y: TSSLType;
+begin
+  if (label26.Caption = '...') then
+  begin
+    fNFe.Caption := 'ATS-NFe ' + GetVersion;
+    micro := Trim(GetComputerNameFunc);
+
+    ACBrNFe1.DANFE := ACBrNFeDANFeRL1;
+    ACBrNFeDANFeRL1.ACBrNFe := ACBrNFe1;
+    cbSSLLib.Items.Clear ;
+    For T := Low(TSSLLib) to High(TSSLLib) do
+      cbSSLLib.Items.Add( GetEnumName(TypeInfo(TSSLLib), integer(T) ) ) ;
+    cbSSLLib.ItemIndex := 0 ;
+
+    cbCryptLib.Items.Clear ;
+    For U := Low(TSSLCryptLib) to High(TSSLCryptLib) do
+      cbCryptLib.Items.Add( GetEnumName(TypeInfo(TSSLCryptLib), integer(U) ) ) ;
+    cbCryptLib.ItemIndex := 0 ;
+
+    cbHttpLib.Items.Clear ;
+    For V := Low(TSSLHttpLib) to High(TSSLHttpLib) do
+      cbHttpLib.Items.Add( GetEnumName(TypeInfo(TSSLHttpLib), integer(V) ) ) ;
+    cbHttpLib.ItemIndex := 0 ;
+
+    cbXmlSignLib.Items.Clear ;
+    For X := Low(TSSLXmlSignLib) to High(TSSLXmlSignLib) do
+      cbXmlSignLib.Items.Add( GetEnumName(TypeInfo(TSSLXmlSignLib), integer(X) ) ) ;
+    cbXmlSignLib.ItemIndex := 0 ;
+
+    cbSSLType.Items.Clear ;
+    For Y := Low(TSSLType) to High(TSSLType) do
+      cbSSLType.Items.Add( GetEnumName(TypeInfo(TSSLType), integer(Y) ) ) ;
+    cbSSLType.ItemIndex := 0 ;
+
+   begin
+    Ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'dbxconnections.ini');
+   {
+     con.Connected       := False;
+     con.HostName        := Ini.ReadString('nfe', 'Hostname', '');
+     con.Port            := Ini.ReadInteger('nfe', 'Port', 0);
+     con.Protocol        := Ini.ReadString('nfe', 'Protocol', '');
+     con.User            := Ini.ReadString('nfe', 'User', '');
+     con.Password        := Ini.ReadString('nfe', 'Password', '');
+     con.Database        := Ini.ReadString('nfe', 'Database', '');
+     con.ClientCodepage  := Ini.ReadString('nfe', 'ClientCodepage', '');
+     con.LibraryLocation := Ini.ReadString('nfe', 'LibraryLocation', '');
+   }
+     edtPathSchemas.Text  := Ini.ReadString( 'nfe','PathSchemas',PathWithDelim(ExtractFilePath(Application.ExeName))+'Schemas\');
+     Ini.Free;
+   end;
+
+
+    // LerConfiguracao;
+
+    nfe_serie_receita := 1;
+
+    ImpressoraDet := TIniFile.Create(ExtractFilePath(Application.ExeName)+ 'prjAtsAdmin.ini' );
+    try
+      nfe_serie_receita  := ImpressoraDet.ReadInteger('SISTEMA','SERIERECEITA',1);
+      email_tls          := ImpressoraDet.ReadString('EMAIL','TLS','');
+      email_ssl          := ImpressoraDet.ReadString('EMAIL','SSL','');
+      edtNumSerie.Text  := Ini.ReadString('Certificado', 'NumSerie', '');
+    finally
+      ImpressoraDet.Free;
+    end;
+
+    IniFile := ChangeFileExt( Application.ExeName, '.ini');
+    ImpressoraDet := TIniFile.Create( IniFile );
+    try
+      ACBrNFeDANFeRL1.MargemDireita := ImpressoraDet.ReadFloat('NFe','MargemDireita',0.7);
+      ACBrNFeDANFeRL1.MargemEsquerda := ImpressoraDet.ReadFloat('NFe','MargemEsquerda',5.0);
+      ACBrNFeDANFeRL1.MargemSuperior := ImpressoraDet.ReadFloat('NFe','MargemSuperior',3.0);
+      ACBrNFeDANFeRL1.MargemInferior := ImpressoraDet.ReadFloat('NFe','MargemInferior',0.7);
+      FloatSpinEdit1.Value := ImpressoraDet.ReadFloat('NFe','MargemSuperior',3.0);
+      FloatSpinEdit2.Value := ImpressoraDet.ReadFloat('NFe','MargemInferior',0.7);
+      FloatSpinEdit3.Value := ImpressoraDet.ReadFloat('NFe','MargemEsquerda',5.0);
+      FloatSpinEdit4.Value := ImpressoraDet.ReadFloat('NFe','MargemDireita',0.7);
+    finally
+      ImpressoraDet.Free;
+    end;
+    dmPdv.IbCon.ExecuteDirect('ALTER TRIGGER PROIBE_ALT_DEL_NF INACTIVE');
+    dmPdv.sTrans.Commit;
+    dmPdv.IbCon.ExecuteDirect('UPDATE NOTAFISCAL SET SELECIONOU = null '
+      + ' WHERE SELECIONOU = ' + QuotedStr('S'));
+    dmPdv.IbCon.ExecuteDirect('UPDATE CCE SET SELECIONOU = null '
+      + ' WHERE SELECIONOU = ' + QuotedStr('S'));
+    dmPdv.IbCon.ExecuteDirect('ALTER TRIGGER PROIBE_ALT_DEL_NF ACTIVE');
+    dmPdv.sTrans.Commit;
+
+    if dmPdv.qcds_parametro.Active then
+      dmPdv.qcds_parametro.Close;
+    dmPdv.qcds_parametro.Params[0].AsString := 'CENTRORECEITA';
+    dmPdv.qcds_parametro.Open;
+    conta_local := Trim(dmPdv.qcds_parametroDADOS.AsString);
+    dmPdv.qcds_parametro.Close;
+
+    if dmPdv.qcds_parametro.Active then
+      dmPdv.qcds_parametro.Close;
+    dmPdv.qcds_parametro.Params[0].AsString := 'EMPRESA';
+    dmPdv.qcds_parametro.Open;
+    danfeDec := 2;
+    if (Trim(dmPdv.qcds_parametroD5.AsString) <> '') then
+      danfeDec := StrToInt(Trim(dmPdv.qcds_parametroD5.AsString));
+
+    quebraLinhaDanfe := True;
+    if (Trim(dmPdv.qcds_parametroD6.AsString) <> '') then
+      quebraLinhaDanfe := False;
+    imprimeDetalhamentoEspecifico := True;
+    if (Trim(dmPdv.qcds_parametroD7.AsString) <> '') then
+      imprimeDetalhamentoEspecifico := False;
+    danfe_larg_codprod := 46;
+    if (Trim(dmPdv.qcds_parametroD2.AsString) <> '') then
+    begin
+      try
+        danfe_larg_codprod := StrToInt(Trim(dmPdv.qcds_parametroD2.AsString));
+      except
+      end;
+    end;
+    dmPdv.qcds_parametro.Close;
+
+    //ACBrNFeDANFCeFortes1.UsaSeparadorPathPDF := True;
+    ACBrNFeDANFeRL1.UsaSeparadorPathPDF := True;
+    {ACBrNFeDANFCeFortes1.CasasDecimais.vUnCom := danfeDec;
+    Case danfeDec of
+       2 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.00';
+       3 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.000';
+       4 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.0000';
+       5 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.00000';
+       6 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.000000';
+       7 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.0000000';
+       8 : ACBrNFeDANFCeFortes1.CasasDecimais.MaskvUnCom := ',0.00000000';
+    end;}
+    ACBrNFeDANFeRL1.CasasDecimais.vUnCom := danfeDec;
+    Case danfeDec of
+       2 : ACBrNFeDANFeRL1.CasasDecimais.MaskvUnCom := ',0.00';
+       3 : ACBrNFeDANFeRL1.CasasDecimais.MaskvUnCom := ',0.000';
+       4 : ACBrNFeDANFeRL1.CasasDecimais.MaskvUnCom := ',0.0000';
+       5 : ACBrNFeDANFeRL1.CasasDecimais.MaskvUnCom := ',0.00000';
+       6 : ACBrNFeDANFeRL1.CasasDecimais.MaskvUnCom := ',0.000000';
+       7 : ACBrNFeDANFeRL1.CasasDecimais.MaskvUnCom := ',0.0000000';
+       8 : ACBrNFeDANFeRL1.CasasDecimais.MaskvUnCom := ',0.00000000';
+    end;
+
+
+    if dmPdv.qcds_ccusto.Active then
+      dmPdv.qcds_ccusto.Close;
+    dmPdv.qcds_ccusto.Params[0].AsString := conta_local;
+    dmPdv.qcds_ccusto.Open;
+    // populo a combobox
+    dmPdv.qcds_ccusto.First;
+    while not dmPdv.qcds_ccusto.Eof do
+    begin
+      ComboBox1.Items.Add(Trim(dmPdv.qcds_ccustoNOME.AsString));
+      ComboBox2.Items.Add(Trim(dmPdv.qcds_ccustoNOME.AsString));
+      cbEmpresa.Items.Add(Trim(dmPdv.qcds_ccustoNOME.AsString));
+      dmPdv.qcds_ccusto.Next;
+    end;
+    if (dmPdv.qcds_ccusto.RecNo = 1) then
+    begin
+      ComboBox1.ItemIndex := 0;
+      ComboBox2.ItemIndex := 0;
+    end;
+
+    if (dmPdv.qsEmpresa1.Active) then
+      dmPdv.qsEmpresa1.Close;
+    dmPdv.qsEmpresa1.Open;
+
+    Edit1.Text := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString);
+    Edit3.Text := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString);
+    Edit6.Text := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString);
+    edtPorta.Text := IntToStr(dmPdv.qsEmpresa1PORTA.AsInteger);
+    edtSMTP.Text := dmPdv.qsEmpresa1SMTP.AsString;
+    edtUsername.Text := dmPdv.qsEmpresa1E_MAIL.AsString;
+    edtSenha.PasswordChar:=Chr(149);
+    edtSenha.Font.Style:= edtSenha.Font.Style + [fsBold];
+    edtSenha.Text := dmPdv.qsEmpresa1SENHA.Text;
+
+    onde       := Trim(dmPdv.qsEmpresa1TIPO.AsString);
+
+    if (trim(dmPdv.qsEmpresa1TIPO.AsString) = '1') then
+    begin
+      ACBrNFe1.Configuracoes.WebServices.Ambiente := taProducao;
+      label5.Font.Color := clBlue;
+      Label5.Caption :=  'PRODUÇÃO.';
+      label8.Font.Color := clBlue;
+      Label8.Caption :=  'PRODUÇÃO.';
+    end
+    else
+    begin
+      ACBrNFe1.Configuracoes.WebServices.Ambiente := taHomologacao;
+      label5.Font.Color := clRed;
+      Label5.Caption :=  'HOMOLOGAÇÃO.';
+      label8.Font.Color := clRed;
+      Label8.Caption :=  'HOMOLOGAÇÃO.';
+    end;
+    ACBrNFe1.Configuracoes.Arquivos.PathNFe := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString);
+    if ( not DirectoryExists(Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString))) then
+       CreateDir(Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString));
+    ACBrNFe1.Configuracoes.Arquivos.PathEvento := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString) + 'Canceladas\';
+    if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathEvento)) then
+      CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathEvento);
+    ACBrNFe1.Configuracoes.Arquivos.PathEvento := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString) + 'CCe\';
+    if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathEvento)) then
+      CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathEvento);
+
+    ACBrNFe1.Configuracoes.Arquivos.PathEvento := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString) + 'Inutilizadas\';
+    if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathEvento)) then
+      CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathEvento);
+    ACBrNFe1.Configuracoes.Arquivos.PathNFe := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString);
+
+    if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathNFe)) then
+    CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathNFe);
+
+    tp_amb := 1;
+
+    diretorio := GetCurrentDir;
+    diretorio_schema := diretorio + '\Schemas';
+    //envemail := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString);
+    ACBrNFe1.DANFE.PathPDF := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString) + '\';
+    {if (FilesExists(diretorio + '\logo_nfe.jpg')) then
+      ACBrNFeDANFCeFortes1.Logo := diretorio + '\logo_nfe.jpg';
+    if (FilesExists(diretorio + '\logo.bmp')) then
+      ACBrNFeDANFCeFortes1.Logo := diretorio + '\logo.bmp';
+    ACBrNFeDANFCeFortes1.PathPDF := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString) + '\';}
+
+    if (FilesExists(diretorio + '\logo.jpg')) then
+      ACBrNFeDANFeRL1.Logo := diretorio + '\logo.jpg';
+    if (FilesExists(diretorio + '\logo.bmp')) then
+      ACBrNFeDANFeRL1.Logo := diretorio + '\logo.bmp';
+    ACBrNFeDANFeRL1.PathPDF := Trim(dmPdv.qsEmpresa1DIVERSOS1.AsString) + '\';
+
+    // tamanho da coluna produto na DANFE
+
+    ACBrNFeDANFeRL1.LarguraCodProd := danfe_larg_codprod;
+
+    ACBrNFe1.NotasFiscais.Add.NFe.Ide.tpEmis    := teNormal;
+    ACBrNFe1.Configuracoes.Arquivos.PathSchemas := diretorio_schema;
+
+
+    dmPdv.qsEmpresa1.Close;
+
+    if dmPdv.qcds_parametro.Active then
+      dmPdv.qcds_parametro.Close;
+    dmPdv.qcds_parametro.Params[0].AsString := 'EMAILAUTOMATICO';
+    dmPdv.qcds_parametro.Open;
+    envemail := 'N';
+    if (not dmPdv.qcds_parametro.IsEmpty) then
+      envemail := Trim(dmPdv.qcds_parametroCONFIGURADO.AsString);
+
+    dmPdv.qcds_parametro.Close;
+  end;
+end;
+
+procedure TfNFe.abrindoSistema;
+var  CSize: DWORD;
+     ccusto_emp : Integer;
+     sq, sq_condicao, sq_condicao1 : string;
+begin
+  edtChaveNfeCCe.Text := '';
+  if (label26.Caption = '...') then
+  begin
+    label48.Caption := GetVersion;
+    label26.caption := Trim(GetComputerNameFunc);
+
+    lblSerieNfe.Caption := IntToStr(nfe_serie_receita);
+    if (DateEdit1.Text = '') then
+      DateEdit1.Text := DateToStr(Now);
+    if (DateEdit2.Text = '') then
+      DateEdit2.Text := DateToStr(Now);
+
+    begin
+      dmPdv.qsCentroCusto.Close;
+      dmPdv.qsCentroCusto.SQL.Clear;
+      sq := 'select  CODEMPRESA , NOMEEMPRESA , TIPONOTA, UCMACHINENAME,UCDATA, UCLOGIN ' +
+        ' from UCTABUSERSLOGGED UL, uctabusers UU ' +
+        ' WHERE ( (UL.uciduser = UU.uciduser)';
+      sq_condicao := ' AND ( UL.nomeempresa <> ' + QuotedStr('') + ')';
+      //ccusto_emp := Length(micro);
+      sq_condicao1 := copy(micro,0,20);
+      sq_condicao1 := ' AND (UL.UCMACHINENAME = ' + QuotedStr(Trim(sq_condicao1)) + ')';
+      sq_condicao1 += ' ) ORDER BY UL.ucdata DESC';
+      dmPdv.qsCentroCusto.SQL.Add(sq + sq_condicao + sq_condicao1);
+      dmPdv.qsCentroCusto.Open;
+      dmPdv.qcds_ccusto.First;
+      While not dmPdv.qcds_ccusto.Eof do begin
+        if (dmPdv.qsCentroCustoCODEMPRESA.AsInteger = dmPdv.qcds_ccustoCODIGO.AsInteger) then
+        begin
+          ccusto_emp          := dmPdv.qcds_ccustoCODIGO.AsInteger;
+          ComboBox1.ItemIndex := dmPdv.qcds_ccusto.RecNo-1;
+          ComboBox2.ItemIndex := dmPdv.qcds_ccusto.RecNo-1;
+          ComboBox1.Text      := Trim(dmPdv.qsCentroCustoNOMEEMPRESA.AsString);
+          ComboBox2.Text      := Trim(dmPdv.qsCentroCustoNOMEEMPRESA.AsString);
+          cbEmpresa.ItemIndex := dmPdv.qcds_ccusto.RecNo-1;
+          cbEmpresa.Text      := Trim(dmPdv.qsCentroCustoNOMEEMPRESA.AsString);
+        end;
+          dmPdv.qcds_ccusto.Next;
+      end;
+        cbTipoNota.ItemIndex := dmPdv.qsCentroCustoTIPONOTA.AsInteger;
+        Label25.Caption      := Trim(dmPdv.qsCentroCustoUCLOGIN.AsString);
+    end;
+
+    if(trim(dmPdv.qsCentroCustoNOMEEMPRESA.AsString) = '' ) then
+    begin
+      cbTipoNota.ItemIndex := 1;
+    end;
+    abrirEmpresa;
+  end;
+  if (ComboBox1.Text <> '') then
+  begin
+    //Seleciona Empresa de acordo com o CCusto selecionado
+    // ja esta aberta 10/11/20
+    {
+    if (dmPdv.qsEmpresa.Active) then
+      dmPdv.qsEmpresa.Close;
+    dmPdv.qsEmpresa.Params[0].AsInteger := ccusto_emp;
+    dmPdv.qsEmpresa.Open;}
+    ACBrNFe1.Configuracoes.WebServices.UF := Trim(dmPdv.qsEmpresaUF.AsString);
+
+    //  se e multi empresa carrega estes dados novamente
+    if (not dmPdv.qsEmpresa.IsEmpty) then
+    begin
+      if(trim(dmPdv.qsEmpresaCERTIFICADO.AsString) <> '')then
+      begin
+        edtNumSerie.Text := Trim(dmPdv.qsEmpresaCERTIFICADO.AsString);
+        edtNumSerie1.Text := Trim(dmPdv.qsEmpresaCERTIFICADO.AsString);
+      end;
+      Edit1.Text := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString);
+      Edit3.Text := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString);
+
+      if (trim(dmPdv.qsEmpresaTIPO.AsString) = '1') then
+      begin
+        ACBrNFe1.Configuracoes.WebServices.Ambiente := taProducao;
+        label5.Font.Color := clBlue;
+        Label5.Caption :=  'PRODUÇÃO.';
+        label8.Font.Color := clBlue;
+        Label8.Caption :=  'PRODUÇÃO.';
+      end
+      else
+      begin
+        ACBrNFe1.Configuracoes.WebServices.Ambiente := taHomologacao;
+        label5.Font.Color := clRed;
+        Label5.Caption :=  'HOMOLOGAÇÃO.';
+        label8.Font.Color := clRed;
+        Label8.Caption :=  'HOMOLOGAÇÃO.';
+      end;
+      ACBrNFe1.Configuracoes.Arquivos.PathNFe := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString);
+      if ( not DirectoryExists(Trim(dmPdv.qsEmpresaDIVERSOS1.AsString))) then
+        CreateDir(Trim(dmPdv.qsEmpresaDIVERSOS1.AsString));
+      ACBrNFe1.Configuracoes.Arquivos.PathEvento := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString) + 'Canceladas\';
+      if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathEvento)) then
+        CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathEvento);
+      ACBrNFe1.Configuracoes.Arquivos.PathEvento := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString) + 'CCe\';
+      if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathEvento)) then
+        CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathEvento);
+      ACBrNFe1.Configuracoes.Arquivos.PathEvento := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString) + 'Inutilizadas\';
+      if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathEvento)) then
+        CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathEvento);
+      //ACBrNFe1.Configuracoes.Arquivos.PathNFe := dmPdv.qsEmpresaDIVERSOS1.AsString;
+
+      if ( not DirectoryExists(ACBrNFe1.Configuracoes.Arquivos.PathNFe)) then
+        CreateDir(ACBrNFe1.Configuracoes.Arquivos.PathNFe);
+
+      //ACBrNFeDANFCeFortes1.PathPDF := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString)  + '\';
+
+      ACBrNFeDANFeRL1.PathPDF := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString)  + '\';
+    end;
+  end;
+  LerConfiguracao;
+  cstSuframa := '';
+  nfe_carregalogo;
 
 end;
 

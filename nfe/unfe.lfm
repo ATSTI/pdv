@@ -137,9 +137,9 @@ object fNFe: TfNFe
           Height = 215
           Top = 0
           Width = 583
-          ActivePage = TabSheet7
+          ActivePage = TabSheet1
           Align = alClient
-          TabIndex = 2
+          TabIndex = 0
           TabOrder = 0
           OnChange = PageControl2Change
           object TabSheet1: TTabSheet
@@ -150,9 +150,9 @@ object fNFe: TfNFe
               Left = 8
               Height = 176
               Top = 0
-              Width = 552
+              Width = 440
               ClientHeight = 158
-              ClientWidth = 548
+              ClientWidth = 436
               Font.Color = clRed
               Font.Height = -11
               Font.Name = 'MS Sans Serif'
@@ -810,6 +810,12 @@ object fNFe: TfNFe
                 TabOrder = 3
               end
             end
+            object Image1: TImage
+              Left = 456
+              Height = 112
+              Top = 8
+              Width = 112
+            end
           end
           object TabSheet6: TTabSheet
             Caption = 'Outros Serviços'
@@ -1409,11 +1415,11 @@ object fNFe: TfNFe
         ClientWidth = 474
         TabOrder = 1
         object Label7: TLabel
-          Left = 75
+          Left = 7
           Height = 15
-          Top = 85
-          Width = 81
-          Caption = 'Salvar na Pasta:'
+          Top = 120
+          Width = 65
+          Caption = 'Salvar Pasta:'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
           Font.Height = -12
@@ -1424,9 +1430,9 @@ object fNFe: TfNFe
           ParentFont = False
         end
         object Label6: TLabel
-          Left = 216
+          Left = 136
           Height = 15
-          Top = 85
+          Top = 80
           Width = 95
           Caption = 'Certificado Dígital'
           Font.CharSet = ANSI_CHARSET
@@ -1439,9 +1445,9 @@ object fNFe: TfNFe
           ParentFont = False
         end
         object Label4: TLabel
-          Left = 6
+          Left = 7
           Height = 15
-          Top = 85
+          Top = 80
           Width = 43
           Caption = 'Série NF'
           Font.CharSet = ANSI_CHARSET
@@ -1456,7 +1462,7 @@ object fNFe: TfNFe
         object Label23: TLabel
           Left = 16
           Height = 15
-          Top = 200
+          Top = 210
           Width = 101
           Caption = 'Série Emissão NFe :'
           ParentColor = False
@@ -1464,7 +1470,7 @@ object fNFe: TfNFe
         object lblSerieNfe: TLabel
           Left = 120
           Height = 15
-          Top = 201
+          Top = 211
           Width = 6
           Caption = '1'
           ParentColor = False
@@ -1472,7 +1478,7 @@ object fNFe: TfNFe
         object Label24: TLabel
           Left = 163
           Height = 15
-          Top = 199
+          Top = 209
           Width = 41
           Caption = 'Login ='
           ParentColor = False
@@ -1480,7 +1486,7 @@ object fNFe: TfNFe
         object Label25: TLabel
           Left = 212
           Height = 15
-          Top = 200
+          Top = 210
           Width = 15
           Caption = '.....'
           ParentColor = False
@@ -1488,23 +1494,23 @@ object fNFe: TfNFe
         object Label26: TLabel
           Left = 338
           Height = 15
-          Top = 200
-          Width = 18
-          Caption = '......'
+          Top = 210
+          Width = 9
+          Caption = '...'
           ParentColor = False
         end
         object Label27: TLabel
           Left = 288
           Height = 15
-          Top = 200
+          Top = 210
           Width = 42
           Caption = 'Micro ='
           ParentColor = False
         end
         object SpeedButton3: TSpeedButton
-          Left = 341
+          Left = 352
           Height = 24
-          Top = 117
+          Top = 128
           Width = 33
           Glyph.Data = {
             76010000424D7601000000000000760000002800000020000000100000000100
@@ -1527,7 +1533,7 @@ object fNFe: TfNFe
         object cbTipoNota: TRadioGroup
           Left = 208
           Height = 41
-          Top = 142
+          Top = 152
           Width = 248
           AutoFill = True
           Caption = 'Tipo de Nota Fiscal'
@@ -1551,7 +1557,7 @@ object fNFe: TfNFe
         object GroupBox5: TGroupBox
           Left = 7
           Height = 41
-          Top = 142
+          Top = 152
           Width = 195
           Caption = 'Tipo Ambiente'
           ClientHeight = 21
@@ -1581,18 +1587,18 @@ object fNFe: TfNFe
           Visible = False
         end
         object edtNumSerie: TEdit
-          Left = 217
+          Left = 240
           Height = 23
-          Top = 99
-          Width = 203
+          Top = 80
+          Width = 183
           TabOrder = 4
           Text = 'edtNumSerie'
         end
         object Edit1: TEdit
           Left = 75
           Height = 23
-          Top = 99
-          Width = 141
+          Top = 120
+          Width = 381
           Color = cl3DLight
           TabOrder = 5
           Text = 'C:\home\nfee\Schemas'
@@ -1660,6 +1666,7 @@ object fNFe: TfNFe
             Top = 0
             Width = 247
             ItemHeight = 15
+            OnChange = ComboBox1Change
             TabOrder = 3
           end
           object DateEdit2: TDateEdit
@@ -1748,16 +1755,16 @@ object fNFe: TfNFe
           end
         end
         object edSerie: TEdit
-          Left = 6
+          Left = 75
           Height = 23
-          Top = 99
-          Width = 66
+          Top = 80
+          Width = 55
           TabOrder = 3
         end
         object sbtnGetCert: TSpeedButton
           Left = 422
           Height = 24
-          Top = 98
+          Top = 80
           Width = 34
           Glyph.Data = {
             D20F0000424DD20F0000000000003600000028000000250000001B0000000100
@@ -1889,6 +1896,24 @@ object fNFe: TfNFe
             FDFFFEFEFEFFFFFFFFFFFCFCFCFFFEFEFEFFFFFFFFFF
           }
           OnClick = sbtnGetCertClick
+        end
+        object Label55: TLabel
+          Left = 136
+          Height = 15
+          Top = 96
+          Width = 63
+          Caption = 'Vencimento'
+          ParentColor = False
+          Visible = False
+        end
+        object lblVencimentoCert: TLabel
+          Left = 242
+          Height = 15
+          Top = 99
+          Width = 9
+          Caption = '...'
+          ParentColor = False
+          Visible = False
         end
       end
       object GroupBox11: TGroupBox

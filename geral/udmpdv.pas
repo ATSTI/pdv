@@ -1182,6 +1182,7 @@ begin
       conf.free;
     end;
   end;
+  empresa_integra := 'ATS';
   if FileExists(path_exe  + 'conf.ini') then
   begin
     conf := TIniFile.Create(path_exe + 'conf.ini');
@@ -1384,7 +1385,8 @@ end;
 
 procedure TdmPdv.Timer1Timer(Sender: TObject);
 begin
-  executa_integracao;
+  if ((ApplicationName = 'ATS-PDV') and (empresa_integra <> 'ATS')) then
+    executa_integracao;
 end;
 
 procedure TdmPdv.Timer2Timer(Sender: TObject);
@@ -1857,7 +1859,7 @@ begin
           if dmpdv.sqBusca.IsEmpty then
           begin
             try
-              caixa_int := StrToInt(dados)-1;
+              caixa_int := StrToInt(dados); // -1; como estou fazendo o update por usuario nao preciso disto
               dados := IntToStr(caixa_int);
             except
               caixa_int := 0;

@@ -151,6 +151,8 @@ type
     procedure GroupBox2Click(Sender: TObject);
     procedure lblParcelaClick(Sender: TObject);
   private
+    cupom_mv: String;
+    cod_compra: Integer;
     serie_cx: String;
     num_cx: Integer;
     vCodVenda: Integer;
@@ -200,6 +202,9 @@ implementation
 procedure TfPDV_Rec.FormShow(Sender: TObject);
 var vr_curso: string;
 begin
+  cupom_mv := '0';
+  cod_compra := 0;
+
   num_cx := 0;
   MemoImp.Clear;
   imgTroca.Visible:=False;
@@ -380,7 +385,7 @@ var
   vTeste: Integer;
   codForma: Integer;
   vlr_desD: Double;
-  vlr_desT: String;
+  vlr_desT, ver_str: String;
 begin
   if vStatus = 1 then
   begin
@@ -455,6 +460,9 @@ begin
   sqPagamentoCOD_VENDA.AsInteger := vCodVenda;
   sqPagamentoFORMA_PGTO.AsString := Copy(lblForma.Caption,1,1);
   sqPagamentoID_ENTRADA.AsInteger:= vCodMovimento;
+  ver_str := Copy(lblForma.Caption,1,1);
+  if ((cod_compra > 0) and (ver_str = '9')) then
+    sqPagamentoCAIXINHA.AsFloat := StrToFloat(IntToStr(cod_compra));
   sqPagamentoN_DOC.AsString      := lblForma.Caption;
   sqPagamentoSTATE.AsInteger     := 0;
 
@@ -610,6 +618,20 @@ begin
           n_doc, forma_pagto,vlr_prim_via);
         vlr_prim_via := 0;
         num_lanc += 1;
+      end;
+    end;
+    // Troca
+    if (forma_pagto = '9') then
+    begin
+      //teve troca :
+      cod_compra := StrToInt(FloatToStr(dmPdv.sqBusca.FieldByName('CAIXINHA').AsFloat));
+      if (cod_compra > 0) then
+      begin
+        // colocar o cupom como ja baixado
+        dmPdv.IbCon.ExecuteDirect('UPDATE COMPRA SET STATUS = 9, N_BOLETO = ' +
+          IntToStr(vCodMovimento) + ' WHERE CODMOVIMENTO = ' + IntToStr(cod_compra));
+        dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET STATUS = 99 ' +
+          ' WHERE CODMOVIMENTO = ' + intToStr(cod_compra));
       end;
     end;
     dmPdv.sqBusca.Next;
@@ -1595,8 +1617,6 @@ end;
 procedure TfPDV_Rec.edCupomKeyPress(Sender: TObject; var Key: char);
 var
   cupom_ch: String;
-  cupom_mv: String;
-  cod_compra: Integer;
 begin
   if Key = #13 then
   begin
@@ -1616,16 +1636,11 @@ begin
         edCupom.Text := '';
         exit;
       end;
-      cod_compra := dmPdv.sqBusca.FieldByName('CODCOMPRA').AsInteger;
+      cod_compra := StrToInt(cupom_mv);//dmPdv.sqBusca.FieldByName('CODCOMPRA').AsInteger;
       // se existir lancar ele como credito
 
       edPagamento.Text := FormatFloat('#,,,0.00', dmPdv.sqBusca.FieldByName('VALOR').AsFloat);
       //registra_valores(strParaFloat(edPagamento.Text));
-      // colocar o cupom como ja baixado
-      dmPdv.IbCon.ExecuteDirect('UPDATE COMPRA SET STATUS = 9, N_BOLETO = ' +
-        IntToStr(vCodMovimento) + ' WHERE CODCOMPRA = ' + IntToStr(cod_compra));
-      dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET STATUS = 99 ' +
-        ' WHERE CODMOVIMENTO = ' + cupom_mv);
       imgTroca.Visible:=True;
       edPagamento.SetFocus;
     end;
@@ -1741,6 +1756,7 @@ begin
   //EstoqueExe.FreeOnTerminate := True;
   //EstoqueExe.Resume;
   gerarjson;
+  Close;
   // sendo chamado pelo dmpdv
   //IntegracaoOdoo := TIntegracaoOdoo.Create(True);
   //IntegracaoOdoo.FreeOnTerminate := True;

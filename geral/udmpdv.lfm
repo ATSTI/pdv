@@ -2,14 +2,14 @@ object dmPdv: TdmPdv
   OnCreate = DataModuleCreate
   OldCreateOrder = False
   Height = 694
-  HorizontalOffset = 686
+  HorizontalOffset = 225
   VerticalOffset = 2
-  Width = 473
+  Width = 934
   PPI = 96
   object IbCon: TIBConnection
     Connected = False
     LoginPrompt = False
-    DatabaseName = 'C:\home\bd\sge_vitton_artur.fdb'
+    DatabaseName = 'C:\home\bd\sge_condor.fdb'
     KeepConnection = False
     Params.Strings = (
       'port=3050'
@@ -5780,12 +5780,13 @@ object dmPdv: TdmPdv
     Database = IbCon
     Transaction = sTrans
     SQL.Strings = (
-      'select param.* from PARAMETRO param where (param.PARAMETRO = :pPARAM) OR (:pPARAM = ''TODOS PARAMETROS DISPONIVEIS'')'
+      'select param.* from PARAMETRO param'
+      'where (param.PARAMETRO = :pPARAM)'
       ''
     )
     Params = <    
       item
-        DataType = ftUnknown
+        DataType = ftString
         Name = 'pPARAM'
         ParamType = ptInput
       end>
@@ -12457,28 +12458,15 @@ object dmPdv: TdmPdv
     Database = IbCon
     Transaction = sTrans
     SQL.Strings = (
-      'select   CODEMPRESA , NOMEEMPRESA , TIPONOTA ,UCMACHINENAME,UCDATA, UCLOGIN'
-      ''
+      'select  CODEMPRESA , NOMEEMPRESA , TIPONOTA ,UCMACHINENAME,UCDATA, UCLOGIN'
       ' from UCTABUSERSLOGGED'
-      ''
       '   inner join uctabusers on (uctabuserslogged.uciduser = uctabusers.uciduser)'
-      'where'
-      '   ('
-      '    ( uctabuserslogged.nomeempresa <> '' '' )'
-      'and'
-      ' (uctabuserslogged.UCMACHINENAME =:micro)'
-      ''
-      '   )'
-      ''
+      'where   ('
+      '    ( uctabuserslogged.nomeempresa <> '''' )'
       'order by uctabuserslogged.ucdata desc'
       ''
     )
-    Params = <    
-      item
-        DataType = ftString
-        Name = 'micro'
-        ParamType = ptInput
-      end>
+    Params = <>
     left = 488
     top = 152
     object qsCentroCustoCODEMPRESA: TLongintField

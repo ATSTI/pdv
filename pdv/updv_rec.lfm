@@ -1957,6 +1957,7 @@ object fPDV_Rec: TfPDV_Rec
         OnClick = BitBtn24Click
         ParentFont = False
         ParentShowHint = False
+        PopupMenu = PopupMenu1
         ShowHint = True
         TabOrder = 1
       end
@@ -4266,9 +4267,8 @@ object fPDV_Rec: TfPDV_Rec
       ShortCut = 117
     end
     object acFechar: TAction
-      Caption = 'Fechar - F9'
+      Caption = 'Fechar-F9'
       OnExecute = acFecharExecute
-      ShortCut = 120
     end
     object acDinheiro: TAction
       Caption = 'Dinheiro-F1'
@@ -4309,6 +4309,7 @@ object fPDV_Rec: TfPDV_Rec
     end
     object MenuItem4: TMenuItem
       Action = acFechar
+      ShortCut = 120
     end
   end
   object ACBrPosPrinter1: TACBrPosPrinter
