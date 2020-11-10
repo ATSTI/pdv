@@ -2282,15 +2282,15 @@ var arquivo: TStringList;
 begin
   arquivo := TStringList.Create();
   try
-    if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
-    begin
+    //if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
+    //begin
       //v_log := 'Log portaImp - ' + dmPdv.portaIMP;
-      arquivo.LoadFromFile(dmpdv.portaIMP);
-    end
-    else begin
+    //  arquivo.LoadFromFile(dmpdv.portaIMP);
+    //end
+    //else begin
       //v_log := 'Log path_imp - ' + dmPdv.path_imp;
       arquivo.LoadFromFile(dmpdv.path_imp);
-    end;
+    //end;
     MemoImp.Clear;
     MemoImp.Text := arquivo.Text;
   finally
