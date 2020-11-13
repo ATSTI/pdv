@@ -1866,18 +1866,20 @@ begin
             end;
             sqlP := 'UPDATE CAIXA_CONTROLE  SET SITUACAO = ' + QuotedStr('F') +
               ' WHERE SITUACAO = ' + QuotedStr('o') + ' AND CODCAIXA < ' + dados +
-              ' AND CODUSUARIO = ' + varLogado;
+              ' AND CODUSUARIO = ' + varLogado +
+              ' AND DATAABERTURA < ' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now));
             dmpdv.executaSql(sqlP);
 
             sqlP := 'INSERT INTO CAIXA_CONTROLE (IDCAIXACONTROLE, ' +
                   'CODCAIXA, CODUSUARIO, SITUACAO, DATAFECHAMENTO' +
-                  ',NOMECAIXA) VALUES ( ';
+                  ',NOMECAIXA, DATAABERTURA) VALUES ( ';
             sqlD := C.Find('codcaixa').Value;
             sqlD += ',' + C.Find('codcaixa').Value;
             sqlD += ',' + C.Find('codusuario').Value;
             sqlD += ',' + QuotedStr(C.Find('situacao').AsString);
             sqlD += ',' + QuotedStr(C.Find('datafechamento').AsString);
             sqlD += ',' + QuotedStr(C.Find('nomecaixa').AsString);
+            sqlD += ',' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now));
             sqlD += ')';
             dmpdv.executaSql(sqlP + sqlD);
             dmPdv.sTrans.Commit;

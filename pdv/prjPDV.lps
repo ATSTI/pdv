@@ -20,8 +20,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uPdv"/>
-        <TopLine Value="2236"/>
-        <CursorPos X="29" Y="2298"/>
+        <TopLine Value="1161"/>
+        <CursorPos X="24" Y="1167"/>
         <UsageCount Value="206"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -32,10 +32,9 @@
         <ComponentName Value="fPDV_Rec"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="6"/>
-        <TopLine Value="1615"/>
-        <CursorPos X="15" Y="1644"/>
+        <TopLine Value="1175"/>
+        <CursorPos X="67" Y="1191"/>
         <UsageCount Value="205"/>
         <Bookmarks Count="5">
           <Item0 X="19" Y="1759" ID="4"/>
@@ -71,9 +70,10 @@
         <ComponentName Value="dmPdv"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="1850"/>
-        <CursorPos X="94" Y="1865"/>
+        <TopLine Value="1844"/>
+        <CursorPos X="64" Y="1864"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="1">
           <Item0 X="3" Y="1387" ID="7"/>
@@ -147,7 +147,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uLogin"/>
         <EditorIndex Value="11"/>
-        <CursorPos X="25" Y="5"/>
+        <TopLine Value="68"/>
+        <CursorPos Y="90"/>
         <UsageCount Value="217"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -388,7 +389,7 @@
         <EditorIndex Value="8"/>
         <TopLine Value="7"/>
         <CursorPos X="48" Y="10"/>
-        <UsageCount Value="149"/>
+        <UsageCount Value="151"/>
         <Loaded Value="True"/>
       </Unit31>
       <Unit32>
@@ -398,7 +399,7 @@
         <EditorIndex Value="9"/>
         <TopLine Value="66"/>
         <CursorPos X="9" Y="89"/>
-        <UsageCount Value="147"/>
+        <UsageCount Value="149"/>
         <Loaded Value="True"/>
       </Unit32>
       <Unit33>
@@ -408,7 +409,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="709"/>
         <CursorPos Y="722"/>
-        <UsageCount Value="146"/>
+        <UsageCount Value="148"/>
       </Unit33>
       <Unit34>
         <Filename Value="..\upadraobusca.pas"/>
@@ -586,124 +587,124 @@
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="463" Column="39" TopLine="450"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1086" Column="28" TopLine="1070"/>
       </Position1>
       <Position2>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="464" TopLine="450"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1087" Column="28" TopLine="1070"/>
       </Position2>
       <Position3>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="463" Column="69" TopLine="436"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1088" Column="33" TopLine="1070"/>
       </Position3>
       <Position4>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="461" Column="59" TopLine="437"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1831" Column="31" TopLine="1802"/>
       </Position4>
       <Position5>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="462" Column="53" TopLine="437"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1898" Column="31" TopLine="1869"/>
       </Position5>
       <Position6>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="465" TopLine="437"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1949" Column="36" TopLine="1920"/>
       </Position6>
       <Position7>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="466" TopLine="438"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1086" Column="28" TopLine="1089"/>
       </Position7>
       <Position8>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="463" Column="64" TopLine="438"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1087" Column="28" TopLine="1071"/>
       </Position8>
       <Position9>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="466" TopLine="438"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1088" Column="33" TopLine="1071"/>
       </Position9>
       <Position10>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="624" TopLine="607"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1831" Column="31" TopLine="1802"/>
       </Position10>
       <Position11>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="623" Column="61" TopLine="609"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1898" Column="31" TopLine="1869"/>
       </Position11>
       <Position12>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="1720" Column="28" TopLine="1713"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1949" Column="36" TopLine="1950"/>
       </Position12>
       <Position13>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="1722" Column="3" TopLine="1720"/>
+        <Filename Value="updv.pas"/>
+        <Caret Line="2254" Column="57" TopLine="2237"/>
       </Position13>
       <Position14>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="464" TopLine="447"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1086" Column="28" TopLine="1070"/>
       </Position14>
       <Position15>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="467" Column="75" TopLine="447"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1087" Column="28" TopLine="1070"/>
       </Position15>
       <Position16>
-        <Filename Value="unfce.pas"/>
-        <Caret Line="568" TopLine="551"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1088" Column="33" TopLine="1070"/>
       </Position16>
       <Position17>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="461" Column="98" TopLine="447"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1867" TopLine="1836"/>
       </Position17>
       <Position18>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="1752" Column="59" TopLine="1732"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1868" Column="52" TopLine="1842"/>
       </Position18>
       <Position19>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="1965" Column="38" TopLine="1945"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1871" Column="61" TopLine="1843"/>
       </Position19>
       <Position20>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="69" Column="13" TopLine="52"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1874" TopLine="1846"/>
       </Position20>
       <Position21>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="210" Column="11" TopLine="181"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1876" TopLine="1848"/>
       </Position21>
       <Position22>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="493" Column="13" TopLine="464"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1877" TopLine="1849"/>
       </Position22>
       <Position23>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="509" Column="12" TopLine="480"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1878" TopLine="1850"/>
       </Position23>
       <Position24>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="560" Column="16" TopLine="532"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1879" TopLine="1851"/>
       </Position24>
       <Position25>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="623" Column="13" TopLine="624"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1880" TopLine="1852"/>
       </Position25>
       <Position26>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="626" Column="19" TopLine="619"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1881" TopLine="1853"/>
       </Position26>
       <Position27>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="1196" Column="34" TopLine="1168"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1882" TopLine="1854"/>
       </Position27>
       <Position28>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="1211" Column="50" TopLine="1183"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1883" TopLine="1855"/>
       </Position28>
       <Position29>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="1491" Column="42" TopLine="1456"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1884" TopLine="1856"/>
       </Position29>
       <Position30>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="1510" Column="42" TopLine="1475"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1885" TopLine="1857"/>
       </Position30>
     </JumpHistory>
     <RunParams>
