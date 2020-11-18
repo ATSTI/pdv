@@ -1074,6 +1074,7 @@ type
     imp_LinhasBuffer: Integer;
     imp_ColunaFonteNormal: Integer;
     imp_larguraBobina: Integer;
+    imp_desconto_item: String;
     function executaSql(strSql: String): Boolean;
     procedure executaDSQL(strDSQL: String); // criei pra executar o atualiza Bd
     procedure gravaLog(DataLog: TDateTime; usuario: String; tipoMovimento: String;
@@ -1241,6 +1242,7 @@ begin
       usaCurso := conf.ReadInteger( 'Outros','UsaCurso',0);
       NfceSat := conf.ReadString( 'Outros','NfceSat','NFCE');
       ccusto := conf.ReadString( 'Outros','CentroCusto','');
+      //imp_desconto_item := conf.ReadString( 'Outros','ImprimeDescontoItem','N');
       modoDesenvolvedor := conf.ReadString( 'Outros','modoDesenvolvedor','N');
     finally
       conf.free;

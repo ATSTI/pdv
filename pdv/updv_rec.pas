@@ -759,6 +759,7 @@ var
   prazo : String;
   totalP: Double;
   totalD: Double;
+  ItemDesc: Double;
   totalR: Double;
 begin
   v_log := 'Log de impressão - ';
@@ -843,12 +844,17 @@ begin
         while not dmPdv.sqLancamentos.Eof do
         begin
           dmPdv.sqLancamentos.RecordCount;
+          ItemDesc := 0;
+          if not dmPdv.sqLancamentosVALOR_DESCONTO.IsNull then
+              ItemDesc := dmPdv.sqLancamentosVALOR_DESCONTO.AsFloat;
           texto3 := '';
           texto6 := '  ';
-          texto3 := texto3 + Format('            %-2s',[dmPdv.sqLancamentosUNIDADEMEDIDA.Value]);
+          texto3 := texto3 + Format('       %-2s',[dmPdv.sqLancamentosUNIDADEMEDIDA.Value]);
           texto3 := texto3 + Format('    %6.3n',[dmPdv.sqLancamentosQUANTIDADE.AsFloat]);
           texto3 := texto3 + Format(' %6.2n',[dmPdv.sqLancamentosPRECO.AsFloat]);
-          texto3 := texto3 + Format('   %6.2n',[dmPdv.sqLancamentosVALTOTAL.value]);
+          if ItemDesc > 0 then
+            texto3 := texto3 + Format(' %6.2n',[ItemDesc]);
+          texto3 := texto3 + Format('   %6.2n',[dmPdv.sqLancamentosVALTOTAL.value-ItemDesc]);
           produto_cupomf := trim(RemoveAcento(dmPdv.sqLancamentosDESCPRODUTO.Value));
           texto6 := texto6 + '  ' + Copy(produto_cupomf, 0, dmPdv.tamanhoLinha);       //descrição do produto
           Writeln(Impressora, texto6);
