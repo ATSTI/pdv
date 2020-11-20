@@ -1213,6 +1213,7 @@ begin
   sqlP += ' FROM CAIXA_CONTROLE  ';
   sqlP += ' WHERE CODUSUARIO = ' + dmPdv.varLogado;
   sqlP += '   AND SITUACAO = ' + QuotedStr('o');
+  sqlP += ' ORDER BY IDCAIXACONTROLE DESC';
   if (dmPdv.sqBusca.Active) then
     dmPdv.sqBusca.Close;
   dmPdv.sqBusca.SQL.Clear;

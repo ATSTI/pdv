@@ -357,6 +357,17 @@ object fAbrirCaixa: TfAbrirCaixa
       Text = '0,00'
       SpaceChar = '_'
     end
+    object Memo1: TMemo
+      Left = 271
+      Height = 90
+      Top = 186
+      Width = 150
+      Lines.Strings = (
+        'Memo1'
+      )
+      TabOrder = 11
+      Visible = False
+    end
   end
   object Panel2: TPanel
     Left = 0
@@ -824,5 +835,17 @@ object fAbrirCaixa: TfAbrirCaixa
       OnClick = btnSairClick
       TabOrder = 4
     end
+  end
+  object ACBrPosPrinter1: TACBrPosPrinter
+    ConfigBarras.MostrarCodigo = False
+    ConfigBarras.LarguraLinha = 0
+    ConfigBarras.Altura = 0
+    ConfigBarras.Margem = 0
+    ConfigQRCode.Tipo = 2
+    ConfigQRCode.LarguraModulo = 4
+    ConfigQRCode.ErrorLevel = 0
+    LinhasEntreCupons = 0
+    left = 296
+    top = 24
   end
 end

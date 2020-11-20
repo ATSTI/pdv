@@ -6,13 +6,14 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, DateTimePicker, Forms, Controls, Graphics,
-  Dialogs, StdCtrls, MaskEdit, Buttons, ExtCtrls, udmpdv;
+  Dialogs, StdCtrls, MaskEdit, Buttons, ExtCtrls, ACBrPosPrinter, udmpdv;
 
 type
 
   { TfAbrirCaixa }
 
   TfAbrirCaixa = class(TForm)
+    ACBrPosPrinter1: TACBrPosPrinter;
     BitBtn24: TBitBtn;
     btnAbrefecha: TBitBtn;
     btnSair: TBitBtn;
@@ -44,6 +45,7 @@ type
     edDinheiro: TMaskEdit;
     edTCaixa: TMaskEdit;
     edTBruto: TMaskEdit;
+    Memo1: TMemo;
     Panel1: TPanel;
     Panel2: TPanel;
     procedure BitBtn24Click(Sender: TObject);
@@ -90,6 +92,7 @@ var
   IMPRESSORA:TextFile;
   total, total1 : double;
   vlr_cartao : String;
+  arquivo: TStringList;
 begin
   // leio um arquivo txt e imprimo
   //lFile := TStringList.Create;
@@ -172,6 +175,32 @@ begin
   finally
     CloseFile(IMPRESSORA);
   end;
+
+
+
+    arquivo := TStringList.Create();
+    try
+      arquivo.LoadFromFile(dmPdv.path_imp);
+      Memo1.Clear;
+      Memo1.Text := arquivo.Text;
+    finally
+      arquivo.free;
+    end;
+    ACBrPosPrinter1.Desativar;
+    ACBrPosPrinter1.LinhasBuffer := dmpdv.imp_LinhasBuffer;
+    ACBrPosPrinter1.LinhasEntreCupons := 0;
+    ACBrPosPrinter1.EspacoEntreLinhas := dmpdv.espacoEntreLinhas;
+    ACBrPosPrinter1.ColunasFonteNormal := dmpdv.imp_ColunaFonteNormal;
+    ACBrPosPrinter1.Device.SendBytesCount:=1024;
+    ACBrPosPrinter1.Device.SendBytesInterval := dmpdv.imp_Interval;
+    ACBrPosPrinter1.ControlePorta :=  dmpdv.imp_controle_porta;
+    ACBrPosPrinter1.Porta  := dmPdv.portaImp;
+    ACBrPosPrinter1.CortaPapel := True;
+    ACBrPosPrinter1.Modelo := TACBrPosPrinterModelo(dmPdv.ModeloImp);
+    ACBrPosPrinter1.Ativar;
+
+    ACBrPosPrinter1.Buffer.Text := Memo1.Lines.Text;
+    ACBrPosPrinter1.Imprimir;
 end;
 
 procedure TfAbrirCaixa.btnSairClick(Sender: TObject);
