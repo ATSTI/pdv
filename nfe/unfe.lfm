@@ -815,6 +815,9 @@ object fNFe: TfNFe
               Height = 112
               Top = 8
               Width = 112
+              AutoSize = True
+              Proportional = True
+              Stretch = True
             end
           end
           object TabSheet6: TTabSheet
@@ -3360,6 +3363,7 @@ object fNFe: TfNFe
             FDFFFBFCFDFFFDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
             FFFFFFFFFFFFFFFDFDFFFEFEFEFFFCFCFCFFFEFEFEFFFAFAFAFF
           }
+          OnClick = BtnCCe1Click
           ParentFont = False
           TabOrder = 1
         end
@@ -3477,6 +3481,7 @@ object fNFe: TfNFe
             FBFFFFFFFFFFFDFDFDFFFFFFFFFFFCFCFCFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
             FFFFFFFFFFFFFFFFFFFF
           }
+          OnClick = btnImprimirCCe1Click
           ParentFont = False
           TabOrder = 2
         end

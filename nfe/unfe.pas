@@ -248,6 +248,7 @@ type
     procedure BitBtn8Click(Sender: TObject);
     procedure btnAbaPrincipalClick(Sender: TObject);
     procedure btnAlteraStatusClick(Sender: TObject);
+    procedure BtnCCe1Click(Sender: TObject);
     procedure BtnCCeClick(Sender: TObject);
     procedure btnConnDpecClick(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
@@ -265,6 +266,7 @@ type
     procedure btnGeraPDFClick(Sender: TObject);
     procedure btnGravArqNFEiniClick(Sender: TObject);
     procedure btnImprimeClick(Sender: TObject);
+    procedure btnImprimirCCe1Click(Sender: TObject);
     procedure btnImprimirCCeClick(Sender: TObject);
     procedure btnInutilizarClick(Sender: TObject);
     procedure btnListarCCeClick(Sender: TObject);
@@ -660,11 +662,26 @@ begin
   dmPdv.qcdsNF.EnableControls;
 end;
 
+procedure TfNFe.btnImprimirCCe1Click(Sender: TObject);
+begin
+  btnImprimirCCe.Click;
+end;
+
 procedure TfNFe.btnImprimirCCeClick(Sender: TObject);
   var path_eve: String;
     xCond : String;
     nome_evento: String;
 begin
+  dmPdv.qcds_ccusto.Locate('NOME', ComboBox2.Text,[loCaseInsensitive]);
+
+  //Seleciona Empresa de acordo com o CCusto selecionado
+  if (dmPdv.qsEmpresa.Active) then
+   dmPdv.qsEmpresa.Close;
+  dmPdv.qsEmpresa.Params[0].AsInteger := dmPdv.qcds_ccustoCODIGO.AsInteger;
+  dmPdv.qsEmpresa.Open;
+
+  ACBrNFe1.Configuracoes.WebServices.UF := Trim(dmPdv.qsEmpresaUF.AsString);
+  ACBrNFe1.Configuracoes.Arquivos.PathSchemas := diretorio_schema;
   AcbrNfe1.Configuracoes.Arquivos.PathEvento := edit3.Text + '\Eventos';
   path_eve := FormatDateTime('yyyymm', NOW);
   dmPdv.qsCCE.First;
@@ -672,12 +689,19 @@ begin
   begin
     if(trim(dmPdv.qsCCESELECIONOU.AsString) = 'S') then
     begin
-      path_eve := AcbrNfe1.Configuracoes.Arquivos.PathEvento + '\nfe\' + path_eve +
+      // carregando o xml da nota
+      memoLog.Lines.Add('Carregando XML da NOTA');
+      nfe_carregalogo;
+      CarregarXML(Copy(Trim(dmPdv.qsCCECHAVE.AsString),0,44));
+      // carregando o xml do Evento
+      path_eve := AcbrNfe1.Configuracoes.Arquivos.PathEvento + '\' + path_eve +
          '\110110' + Trim(dmPdv.qsCCECHAVE.AsString) + '0' + IntToStr(dmPdv.qsCCESEQUENCIA.AsInteger) +
          '-procEventoNFe.XML';
+      memoLog.Lines.Add('Carregando XML do EVENTO');
+      memoLog.Lines.Add(path_eve);
       if (not FilesExists(path_eve)) then
       begin
-        OpenDialog1.Title := 'Selecione a NFE';
+        OpenDialog1.Title := 'Selecione o Evento';
         OpenDialog1.DefaultExt := '*-procEventoNFe.XML';
         OpenDialog1.Filter := 'Arquivos CCe (*-procEventoNFe.XML)|*-procEventoNFe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
         OpenDialog1.InitialDir := AcbrNfe1.Configuracoes.Arquivos.PathEvento;
@@ -686,11 +710,12 @@ begin
           path_eve := OpenDialog1.FileName;
         end;
       end;
+      ACBrNFe1.EventoNFe.LerXML(path_eve);
     end;
       dmPdv.qsCCE.Next;
     end;
 
-    ACBrNFe1.EventoNFe.LerXML(path_eve);
+
     ACBrNFe1.ImprimirEvento;
 end;
 
@@ -1409,6 +1434,11 @@ begin
 
 end;
 
+procedure TfNFe.BtnCCe1Click(Sender: TObject);
+begin
+  BtnCCe.Click;
+end;
+
 procedure TfNFe.BtnCCeClick(Sender: TObject);
 var   xCond :string;
     envio :TDateTime;
@@ -2098,6 +2128,7 @@ begin
 end;
 
 procedure TfNFe.DBGrid2CellClick(Column: TColumn);
+var str_cce: string;
 begin
   if (trim(dmPdv.qsCCESELECIONOU.AsString) = '') then
   begin
@@ -2114,7 +2145,7 @@ begin
     edtChaveNfeCCe.Text := '';
     dmPdv.sTrans.Commit;
   end;
-  dmPdv.qsCCE.Open;
+
   if (edtChaveNfeCCe.Text <> '') then
   begin
     btnListar.Click;
@@ -2128,7 +2159,26 @@ begin
     dmPdv.qsEmpresa.Open;
     fNFe.Caption := dmPdv.qsEmpresaEMPRESA.AsString;
   end;
-  btnListarCCe.Click;
+
+  // 25/11/2020 , era antes do if acima, mudei pra ca e  adicionei este bloco do if
+  if (edtChaveNfeCCe.Text <> '') then
+  begin
+    if (dmPdv.qsCCE.Active) then
+      dmPdv.qsCCE.Close;
+    dmPdv.qsCCE.SQL.Clear;
+
+    str_cce := 'select * FROM CCE WHERE CHAVE = ' +
+      QuotedStr(edtChaveNfeCCe.Text) +
+      ' AND SELECIONOU = ' + QuotedStr('S');
+    dmPdv.qsCCE.SQL.Text := str_cce;
+  end;
+  dmPdv.qsCCE.Open;
+
+
+  // 25/11/2020  comentei e adicionei as 2 linhas abaixo
+  //btnListarCCe.Click;
+  BtnCCe.Enabled := True;
+  btnImprimirCCe.Enabled := True;
 end;
 
 procedure TfNFe.DBGrid2CellClick(Sender: TObject);
@@ -2828,7 +2878,7 @@ begin
       'case when udf_Pos(' + quotedstr('-') +', pr.CODPRO) > 0 then udf_Copy(pr.CODPRO, 0, (udf_Pos(' + quotedstr('-') + ', pr.CODPRO)-1)) ' +
       'ELSE pr.CODPRO END as codpro, md.VLR_BASEICMS, md.CSTIPI, md.CSTPIS, md.CSTCOFINS, md.PPIS, md.PCOFINS, ' +
       'pr.UNIDADEMEDIDA, UDF_TRIM(md.CST) CST, md.CSOSN, md.ICMS, md.pIPI, md.vIPI, md.VLR_BASEICMS, ' +
-      ' UDF_ROUNDDEC(md.VALOR_ICMS, 2) as VALOR_ICMS, UDF_ROUNDDEC(md.VLR_BASE, ' + intTostr(danfeDec) + ') as VLR_BASE, ' +
+      ' UDF_ROUNDDEC(md.VALOR_ICMS, 2) as VALOR_ICMS, UDF_ROUNDDEC(md.VLR_BASE, 10) as VLR_BASE, ' +
       'UDF_ROUNDDEC(md.ICMS_SUBST, 2) as ICMS_SUBST, md.ICMS_SUBSTD, UDF_ROUNDDEC(md.FRETE, 2) as FRETE, UDF_ROUNDDEC(md.VALOR_DESCONTO, 2) as VALOR_DESCONTO, (md.VLR_BASE * md.QUANTIDADE) as VALTOTAL, ' +
       'UDF_ROUNDDEC(md.VALOR_PIS, 2) as VALOR_PIS, UDF_ROUNDDEC(md.VALOR_COFINS, 2) as VALOR_COFINS, md.VALOR_SEGURO, md.VALOR_OUTROS, UDF_ROUNDDEC(md.II, 2) as II, UDF_ROUNDDEC(md.BCII, 2) as BCII ' +
       ' ,md.NITEMPED, md.PEDIDO, MD.VLRBC_IPI, MD.VLRBC_PIS, md.VLRBC_COFINS, UDF_ROUNDDEC(md.VLRTOT_TRIB, 2) as VLRTOT_TRIB ' +
@@ -2882,7 +2932,7 @@ begin
       ' (udf_Pos(' + quotedstr('-') + ', pr.CODPRO)-1)) ' +
       'ELSE pr.CODPRO END as codpro, pr.UNIDADEMEDIDA, UDF_TRIM(md.CST) CST, md.ICMS, md.pIPI, md.OBS, ' +
       'md.vIPI, md.CSOSN, md.VLR_BASEICMS, UDF_ROUNDDEC(md.VALOR_ICMS, 2) as VALOR_ICMS, md.PPIS, md.PCOFINS, ' +
-      'UDF_ROUNDDEC(md.VLR_BASE, ' + IntToStr(danfeDec) + ') as VLR_BASE, UDF_ROUNDDEC(md.ICMS_SUBST, 2) as ICMS_SUBST, md.CSTIPI, ' +
+      'UDF_ROUNDDEC(md.VLR_BASE, 10) as VLR_BASE, UDF_ROUNDDEC(md.ICMS_SUBST, 2) as ICMS_SUBST, md.CSTIPI, ' +
       'md.CSTPIS, md.CSTCOFINS, ' +
       'UDF_ROUNDDEC(md.VALOR_PIS, 2) as VALOR_PIS, UDF_ROUNDDEC(md.VALOR_COFINS, 2) as VALOR_COFINS, ' +
       '  UDF_ROUNDDEC(md.FRETE, 2) as FRETE, UDF_ROUNDDEC(md.VALOR_DESCONTO, 2) as VALOR_DESCONTO, ' +
@@ -3304,6 +3354,7 @@ var
   cst_parte: String;
   inf_add_prd: String;
   nfe_itens_tottrib: String;
+  ver_valor: Double;
 begin
   BC := 0;
   BCST := 4;
@@ -3334,6 +3385,7 @@ begin
       Prod.CFOP     := Trim(dmPdv.cdsItensNFCFOP.AsString);
       Prod.uCom     := Trim(dmPdv.qsProdutosUNIDADEMEDIDA.AsString);
       Prod.qCom     := dmPdv.cdsItensNFQUANTIDADE.AsFloat;
+      ver_valor := dmPdv.cdsItensNFVLR_BASE.AsFloat;
       Prod.vUnCom   := dmPdv.cdsItensNFVLR_BASE.AsFloat;
       Prod.uTrib    := Trim(dmPdv.qsProdutosUNIDADEMEDIDA.AsString);
       Prod.qTrib    := dmPdv.cdsItensNFQUANTIDADE.AsFloat;
@@ -4223,9 +4275,9 @@ var Dia, Mes, Ano: Word;
   path_dosxml: String;
 begin
   DecodeDate(Now, Ano, Mes, Dia);
-  OpenDialog1.Title := 'Selecione a NFCe';
+  OpenDialog1.Title := 'Selecione a NFe';
   OpenDialog1.DefaultExt := '*-nfe.xml';
-  OpenDialog1.Filter := 'Arquivos NFCe (*-nfe.xml)|*-nfe.xml|Arquivos XML (*.xml)|*.xml|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.Filter := 'Arquivos NFe (*-nfe.xml)|*-nfe.xml|Arquivos XML (*.xml)|*.xml|Todos os Arquivos (*.*)|*.*';
   path_dosxml := Edit1.Text + '\' + IntToStr(Ano) + FormatFloat('00', mes);// + '\';
   OpenDialog1.InitialDir := path_dosxml;
   ACBrNFe1.NotasFiscais.Clear;

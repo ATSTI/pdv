@@ -7481,7 +7481,7 @@ object dmPdv: TdmPdv
       '          UDF_ROUNDDEC(md.vIPI, 2) as vIPI,'
       '          UDF_ROUNDDEC(md.VLR_BASEICMS, 2) as VLR_BASEICMS,'
       '          UDF_ROUNDDEC(md.VALOR_ICMS, 2) as VALOR_ICMS,'
-      '          UDF_ROUNDDEC(md.VLR_BASE, 2) as VLR_BASE,'
+      '          UDF_ROUNDDEC(md.VLR_BASE, 12) as VLR_BASE,'
       '          UDF_ROUNDDEC(md.ICMS_SUBST, 2) as ICMS_SUBST,'
       '          UDF_ROUNDDEC(md.ICMS_SUBSTD, 2) as ICMS_SUBSTD,'
       '          UDF_ROUNDDEC(md.VALOR_PIS, 2) as VALOR_PIS,'
