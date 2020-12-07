@@ -20,6 +20,7 @@ type
     edSenha: TLabeledEdit;
     Label1: TLabel;
     Label2: TLabel;
+    Label3: TLabel;
     LHelpConnector1: TLHelpConnector;
     Memo1: TMemo;
     Memo2: TMemo;
@@ -27,6 +28,7 @@ type
     procedure btnAbrirCaixaClick(Sender: TObject);
     procedure btnInfoClick(Sender: TObject);
     procedure btnLoginClick(Sender: TObject);
+    procedure edLoginExit(Sender: TObject);
     procedure edLoginKeyPress(Sender: TObject; var Key: char);
     procedure edSenhaKeyPress(Sender: TObject; var Key: char);
     procedure FormShow(Sender: TObject);
@@ -113,6 +115,10 @@ begin
   end;
 end;
 
+procedure TfLogin.edLoginExit(Sender: TObject);
+begin
+end;
+
 procedure TfLogin.btnAbrirCaixaClick(Sender: TObject);
 begin
 
@@ -145,7 +151,47 @@ begin
 end;
 
 procedure TfLogin.FormShow(Sender: TObject);
+var verStr: String;
 begin
+  if ((ApplicationName = 'ATS-PDV') and (dmPdv.empresa_integra <> 'ATS')) then
+  begin
+    dmPdv.executa_integracao;
+    dmPdv.integra_caixa;
+    dmpdv.busca_sql('SELECT FIRST 1 IDCAIXACONTROLE, CODCAIXA, CODUSUARIO,' +
+       'SITUACAO, NOMECAIXA ' +
+       ' FROM CAIXA_CONTROLE WHERE SITUACAO = ' + QuotedStr('o') +
+       ' ORDER BY IDCAIXACONTROLE DESC');
+    if (not dmPdv.sqBusca.IsEmpty) then
+    begin
+      verStr := dmPdv.sqBusca.FieldByName('NOMECAIXA').AsString;
+      Label3.Caption := dmPdv.sqBusca.FieldByName('NOMECAIXA').AsString;
+    end
+    else begin
+      dmPdv.executa_integracao;
+      dmPdv.integra_caixa;
+      dmpdv.busca_sql('SELECT FIRST 1 IDCAIXACONTROLE, CODCAIXA, CODUSUARIO,' +
+           'SITUACAO, NOMECAIXA ' +
+           ' FROM CAIXA_CONTROLE WHERE SITUACAO = ' + QuotedStr('o') +
+           ' ORDER BY IDCAIXACONTROLE DESC');
+      if (not dmPdv.sqBusca.IsEmpty) then
+      begin
+        verStr := dmPdv.sqBusca.FieldByName('NOMECAIXA').AsString;
+        Label3.Caption := dmPdv.sqBusca.FieldByName('NOMECAIXA').AsString;
+      end;
+    end;
+  end
+  else begin
+     dmpdv.busca_sql('SELECT FIRST 1 IDCAIXACONTROLE, CODCAIXA, CODUSUARIO,' +
+           'SITUACAO, NOMECAIXA ' +
+           ' FROM CAIXA_CONTROLE WHERE SITUACAO = ' + QuotedStr('o') +
+           ' ORDER BY IDCAIXACONTROLE DESC');
+      if (not dmPdv.sqBusca.IsEmpty) then
+      begin
+        verStr := dmPdv.sqBusca.FieldByName('NOMECAIXA').AsString;
+        Label3.Caption := dmPdv.sqBusca.FieldByName('NOMECAIXA').AsString;
+      end;
+  end;
+
   if dmPdv.nomeLogado <> '' then
   begin
     edLogin.Text := dmPdv.nomeLogado;
@@ -167,9 +213,11 @@ begin
     dmPdv.sqBusca.SQL.Text := 'SELECT IDCAIXACONTROLE, CODCAIXA, CODUSUARIO,' +
        'SITUACAO, NOMECAIXA ' +
        ' FROM CAIXA_CONTROLE WHERE SITUACAO = ' + QuotedStr('o') +
-       ' AND CODUSUARIO = ' + dmPdv.varLogado;
+       ' AND CODUSUARIO = ' + dmPdv.varLogado +
+       ' ORDER BY IDCAIXACONTROLE DESC';
     dmPdv.sqBusca.Open;
-
+    if (not dmPdv.sqBusca.IsEmpty) then
+      Label3.Caption := dmPdv.sqBusca.FieldByName('NOMECAIXA').AsString;
 end;
 
 procedure TfLogin.Label1Click(Sender: TObject);

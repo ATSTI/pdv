@@ -102,6 +102,7 @@ object fLogin: TfLogin
     EditLabel.Caption = 'Usuário'
     EditLabel.ParentColor = False
     TabOrder = 0
+    OnExit = edLoginExit
     OnKeyPress = edLoginKeyPress
   end
   object edSenha: TLabeledEdit
@@ -161,6 +162,22 @@ object fLogin: TfLogin
     AutoSize = False
     Caption = 'ATS Ti Sistemas , v. 4.6'
     ParentColor = False
+  end
+  object Label3: TLabel
+    Left = 208
+    Height = 25
+    Top = 328
+    Width = 19
+    Caption = '...'
+    Font.CharSet = ANSI_CHARSET
+    Font.Color = clBlack
+    Font.Height = -20
+    Font.Name = 'MS Sans Serif'
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
   end
   object LHelpConnector1: TLHelpConnector
     LHelpPath = 'c:\home\help.chm'

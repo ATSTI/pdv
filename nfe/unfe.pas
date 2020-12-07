@@ -5228,7 +5228,10 @@ begin
         Total.ICMSTot.vOutro := dmPdv.qcdsNFOUTRAS_DESP.AsVariant;
         Total.ICMSTot.vNF   := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant;
         Total.ICMSTot.vTotTrib := dmPdv.qcdsNFVLRTOT_TRIB.AsVariant;
-
+        if (dmPdv.qcdsNFII.AsFloat > 0) then
+        begin
+          Total.ICMSTot.vII := dmPdv.qcdsNFII.AsFloat;
+        end;
         if ((cstSuframa <> '00') and ( pSuframa <> '')) then
         begin
           Total.ICMSTot.vICMSDeson := dmPdv.qcdsNFVALOR_ICMS.AsVariant;
