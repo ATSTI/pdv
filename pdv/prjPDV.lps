@@ -73,7 +73,6 @@
         <EditorIndex Value="1"/>
         <TopLine Value="1836"/>
         <CursorPos X="34" Y="1854"/>
-        <FoldState Value=" T3~g0@9"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="1">
           <Item0 X="3" Y="1389" ID="7"/>
@@ -224,9 +223,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uNfce"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="5"/>
-        <TopLine Value="592"/>
-        <CursorPos X="10" Y="596"/>
+        <TopLine Value="1309"/>
+        <CursorPos X="132" Y="1283"/>
         <UsageCount Value="200"/>
         <Bookmarks Count="2">
           <Item0 X="3" Y="656" ID="8"/>
@@ -395,10 +395,9 @@
         <Filename Value="uintegracaoodoo.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uIntegracaoOdoo"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="9"/>
         <TopLine Value="62"/>
-        <CursorPos Y="79"/>
+        <CursorPos X="69" Y="80"/>
         <UsageCount Value="161"/>
         <Loaded Value="True"/>
       </Unit32>
@@ -697,15 +696,15 @@
       </Position27>
       <Position28>
         <Filename Value="unfce.pas"/>
-        <Caret Line="533" Column="12" TopLine="536"/>
+        <Caret Line="596" Column="10" TopLine="592"/>
       </Position28>
       <Position29>
-        <Filename Value="unfce.pas"/>
-        <Caret Line="596" Column="10" TopLine="592"/>
-      </Position29>
-      <Position30>
         <Filename Value="..\geral\udmpdv.pas"/>
         <Caret Line="1854" Column="34" TopLine="1836"/>
+      </Position29>
+      <Position30>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="596" Column="10" TopLine="592"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -748,7 +747,7 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfce.pas"/>
-        <Line Value="1627"/>
+        <Line Value="1629"/>
       </Item5>
       <Item6>
         <Kind Value="bpkSource"/>
@@ -762,7 +761,7 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfce.pas"/>
-        <Line Value="1390"/>
+        <Line Value="1392"/>
       </Item7>
       <Item8>
         <Kind Value="bpkSource"/>
@@ -781,7 +780,7 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfce.pas"/>
-        <Line Value="2152"/>
+        <Line Value="2154"/>
       </Item10>
     </BreakPoints>
     <Watches Count="6">

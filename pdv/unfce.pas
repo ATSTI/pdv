@@ -1073,6 +1073,7 @@ var contaItens :integer;
   desc_rateado, ver_valor: double;
   ncm_str: String;
   num_itens: Integer;
+  icms_cst: String;
 begin
   desconto_rateio := 0;
   desc_rateado := 0;
@@ -1244,41 +1245,42 @@ begin
             end;
             if( dmPdv.sqEmpresaCRT.AsInteger = 2) then
             begin
-              if ((dmPdv.sqLancamentosCST.AsString = '000') or (dmPdv.sqLancamentosCST.AsString = '100') or (dmPdv.sqLancamentosCST.AsString = '200') or (dmPdv.sqLancamentosCST.AsString = '00')) then
+              icms_cst := Trim(dmPdv.sqLancamentosCST.AsString);
+              if ((icms_cst = '000') or (icms_cst = '100') or (icms_cst = '200') or (icms_cst = '00')) then
                 CST := cst00
-              else if ((dmPdv.sqLancamentosCST.AsString = '010') or (dmPdv.sqLancamentosCST.AsString = '110') or (dmPdv.sqLancamentosCST.AsString = '210') or (dmPdv.sqLancamentosCST.AsString = '10')) then
+              else if ((icms_cst = '010') or (icms_cst = '110') or (icms_cst = '210') or (icms_cst = '10')) then
                 CST := cst10
-              else if ((dmPdv.sqLancamentosCST.AsString = '020') or (dmPdv.sqLancamentosCST.AsString = '120') or (dmPdv.sqLancamentosCST.AsString = '220') or (dmPdv.sqLancamentosCST.AsString = '20')) then
+              else if ((icms_cst = '020') or (icms_cst = '120') or (icms_cst = '220') or (icms_cst = '20')) then
                 CST := cst20
-              else if ((dmPdv.sqLancamentosCST.AsString = '030') or (dmPdv.sqLancamentosCST.AsString = '130') or (dmPdv.sqLancamentosCST.AsString = '230') or (dmPdv.sqLancamentosCST.AsString = '30')) then
+              else if ((icms_cst = '030') or (icms_cst = '130') or (icms_cst = '230') or (icms_cst = '30')) then
                 CST := cst30
-              else if ((dmPdv.sqLancamentosCST.AsString = '040') or (dmPdv.sqLancamentosCST.AsString = '140') or (dmPdv.sqLancamentosCST.AsString = '240') or (dmPdv.sqLancamentosCST.AsString = '40')) then
+              else if ((icms_cst = '040') or (icms_cst = '140') or (icms_cst = '240') or (icms_cst = '40')) then
                 CST :=  cst40
-              else if ((dmPdv.sqLancamentosCST.AsString = '041') or (dmPdv.sqLancamentosCST.AsString = '141') or (dmPdv.sqLancamentosCST.AsString = '241') or (dmPdv.sqLancamentosCST.AsString = '41')) then
+              else if ((icms_cst = '041') or (icms_cst = '141') or (icms_cst = '241') or (icms_cst = '41')) then
                 CST :=  cst41
-              else if ((dmPdv.sqLancamentosCST.AsString = '050') or (dmPdv.sqLancamentosCST.AsString = '150') or (dmPdv.sqLancamentosCST.AsString = '250') or (dmPdv.sqLancamentosCST.AsString = '50')) then
+              else if ((icms_cst = '050') or (icms_cst = '150') or (icms_cst = '250') or (icms_cst = '50')) then
                 CST :=  cst50
-              else if ((dmPdv.sqLancamentosCST.AsString = '051') or (dmPdv.sqLancamentosCST.AsString = '151') or (dmPdv.sqLancamentosCST.AsString = '251') or (dmPdv.sqLancamentosCST.AsString = '51')) then
+              else if ((icms_cst = '051') or (icms_cst = '151') or (icms_cst = '251') or (icms_cst = '51')) then
                 CST := cst51
-              else if ((dmPdv.sqLancamentosCST.AsString = '060') or (dmPdv.sqLancamentosCST.AsString = '160') or (dmPdv.sqLancamentosCST.AsString = '260') or (dmPdv.sqLancamentosCST.AsString = '60')) then
+              else if ((icms_cst = '060') or (icms_cst = '160') or (icms_cst = '260') or (icms_cst = '60')) then
                 CST := cst60
-              else if ((dmPdv.sqLancamentosCST.AsString = '070') or (dmPdv.sqLancamentosCST.AsString = '170') or (dmPdv.sqLancamentosCST.AsString = '270') or (dmPdv.sqLancamentosCST.AsString = '70')) then
+              else if ((icms_cst = '070') or (icms_cst = '170') or (icms_cst = '270') or (icms_cst = '70')) then
                 CST := cst70
-              else if ((dmPdv.sqLancamentosCST.AsString = '090') or (dmPdv.sqLancamentosCST.AsString = '190') or (dmPdv.sqLancamentosCST.AsString = '290') or (dmPdv.sqLancamentosCST.AsString = '90')) then
+              else if ((icms_cst = '090') or (icms_cst = '190') or (icms_cst = '290') or (icms_cst = '90')) then
                 CST := cst90
               else
                 CST := cst00;
             end;
 
-            if dmPdv.sqLancamentosORIGEM.AsString = '0' then
+            if Trim(dmPdv.sqLancamentosORIGEM.AsString) = '0' then
               orig  := oeNacional                       //ORIGEM DO PRODUTO
-            else if dmPdv.sqLancamentosORIGEM.AsString = '1' then
+            else if Trim(dmPdv.sqLancamentosORIGEM.AsString) = '1' then
               orig  := oeEstrangeiraAdquiridaBrasil
             else
               orig  := oeEstrangeiraImportacaoDireta;
             modBC := BC;                                              //MODO DE BASE DE CALCULO (0) POR %
             //Não carregar ICMS para Simples Nacional
-            if not ((ACBrNFe1.NotasFiscais.Items[0].NFe.Emit.CRT = crtSimplesNacional) and (dmPdv.sqLancamentosCSOSN.AsString <> '900')) then
+            if not ((ACBrNFe1.NotasFiscais.Items[0].NFe.Emit.CRT = crtSimplesNacional) and (Trim(dmPdv.sqLancamentosCSOSN.AsString) <> '900')) then
             begin
               vBC := dmPdv.sqLancamentosVLR_BASEICMS.AsVariant;                //VALOR DA BASE DE CALCULO
               pICMS := dmPdv.sqLancamentosICMS.AsVariant;                     //ALIQUOTA DO ICMS
