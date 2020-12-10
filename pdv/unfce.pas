@@ -609,15 +609,16 @@ begin
     end;
     dmPdv.sqLancamentos.Next;
   end;
-  if (msg_ncm <> '') then
-  begin
-    MessageDlg('NCM não informado ou inválido para os produtos: ' + msg_ncm, mtError, [mbOK], 0);
-  end;
-  if (msg_origem <> '') then
-  begin
-    MessageDlg('Origem do Produto(CADASTRO PRODUTO) não informado, para : ' +
-              msg_origem, mtError, [mbOK], 0);
-  end;
+  // 10/12/2020 comentei abaixo
+  //if (msg_ncm <> '') then
+  //begin
+  //  MessageDlg('NCM não informado ou inválido para os produtos: ' + msg_ncm, mtError, [mbOK], 0);
+  //end;
+  //if (msg_origem <> '') then
+  //begin
+  //  MessageDlg('Origem do Produto(CADASTRO PRODUTO) não informado, para : ' +
+  //            msg_origem, mtError, [mbOK], 0);
+  //end;
   if ((msg_ncm <> '') or (msg_origem <> '')) then
   begin
     MemoResp.Lines.Clear;
