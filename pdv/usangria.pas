@@ -15,10 +15,12 @@ type
   TfSangria = class(TForm)
     btnFechar: TBitBtn;
     btnGravar: TBitBtn;
+    ComboBox1: TComboBox;
     Label1: TLabel;
     Label2: TLabel;
     edMotivo: TMaskEdit;
     edValor: TMaskEdit;
+    Label3: TLabel;
     sqPagamento: TSQLQuery;
     sqPagamentoCAIXA: TSmallintField;
     sqPagamentoCAIXINHA: TFloatField;
@@ -56,6 +58,11 @@ procedure TfSangria.btnGravarClick(Sender: TObject);
 var
   IMPRESSORA:TextFile;
 begin
+  if (ComboBox1.ItemIndex = -1) then
+  begin
+    ShowMessage('Informar o Tipo de Sangria ' + SangriaReforco);
+    exit;
+  end;
   if (edValor.Text = '') then
   begin
     ShowMessage('Informar Valor ' + SangriaReforco);
@@ -127,6 +134,7 @@ var
   codForma: integer;
   vlrSangria: double;
   Campo : String;
+  forma_pag : String;
   Valor : String;
 begin
   if (dmPdv.sqGenerator.Active) then
@@ -145,7 +153,23 @@ begin
     sqPagamentoCOD_VENDA.AsInteger := 1
   else
     sqPagamentoCOD_VENDA.AsInteger := 0;
-  sqPagamentoFORMA_PGTO.AsString := '1';
+  {Sangria
+   Recebimento Cliente
+   Pagamento Fornecedor
+   Retirada Uso
+   Pagamento Func.(Vale)
+   Outros}
+  Case ComboBox1.ItemIndex of
+    0: forma_pag := 'S';
+    1: forma_pag := 'R';
+    2: forma_pag := 'F';
+    3: forma_pag := 'U';
+    4: forma_pag := 'V';
+    5: forma_pag := 'T';
+  end;
+
+  //ComboBox1.ItemIndex
+  sqPagamentoFORMA_PGTO.AsString := forma_pag;
   sqPagamentoID_ENTRADA.AsInteger:= StrToINT(dmPdv.idcaixa);
   sqPagamentoN_DOC.AsString      := edMotivo.Text;
   sqPagamentoSTATE.AsInteger     := 1;
