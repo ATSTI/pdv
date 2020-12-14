@@ -105,6 +105,7 @@ type
     memoImp: TMemo;
     MemoIntegra: TMemo;
     MenuItem1: TMenuItem;
+    MenuItem10: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
@@ -112,6 +113,7 @@ type
     MenuItem6: TMenuItem;
     MenuItem7: TMenuItem;
     MenuItem8: TMenuItem;
+    MenuItem9: TMenuItem;
     PageControl1: TPageControl;
     Panel1: TPanel;
     Panel10: TPanel;
@@ -203,6 +205,7 @@ type
     procedure Image1Click(Sender: TObject);
     procedure Image2Click(Sender: TObject);
     procedure Image3Click(Sender: TObject);
+    procedure MenuItem10Click(Sender: TObject);
     procedure MenuItem5Click(Sender: TObject);
     procedure MenuItem6Click(Sender: TObject);
     procedure MenuItem8Click(Sender: TObject);
@@ -235,6 +238,7 @@ type
     codCliente: Integer;
     codCaixa: Integer; // cod Usuario
     codVendedor: Integer;
+    codVendedorAnterior : Integer;
     codMov: Integer;
     codDet: Integer;
     qtde_ped: Integer;
@@ -567,11 +571,11 @@ end;
 
 procedure TfPdv.BitBtn3Click(Sender: TObject);
 begin
-  if (statusPedido > 0) then
-  begin
-    ShowMessage('Pedido ja finalizado/cancelado.');
-    Exit;
-  end;
+  //if (statusPedido > 0) then
+  //begin
+  //  ShowMessage('Pedido ja finalizado/cancelado.');
+  //  Exit;
+  //end;
   if (edVendedor.Text <> '') then
     fVendedorBusca.uCodVendedor:=StrToInt(edVendedor.Text);
   fVendedorBusca.ShowModal;
@@ -804,6 +808,7 @@ begin
     //controlaPedidos(codMov, 0, 0);
     buscaPedidosAbertoCaixa(codMov);
     buscaVendedor(edVendedor.Text);
+    codVendedorAnterior := codVendedor;
     calculaTotalGeral();
   end;
 end;
@@ -1180,6 +1185,7 @@ end;
 procedure TfPdv.FormShow(Sender: TObject);
 var sqlP : String;
 begin
+  codVendedorAnterior := 0;
   if (dmpdv.empresa_integra <> 'ATS') then
   begin
     dmpdv.integra_caixa;
@@ -1259,6 +1265,24 @@ begin
   finalizarVenda();
   fPDV_Rec.ShowModal;
   iniciarVenda();
+end;
+
+procedure TfPdv.MenuItem10Click(Sender: TObject);
+begin
+  if MessageDlg('Confirma:', 'Confirma a ALTERAÇAO no VENDEDOR do pedido :  ',
+     mtConfirmation,  [mbYes, mbNo, mbIgnore],0) = mrYes then
+   begin
+     dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET CODVENDEDOR = ' + edVendedor.Text +
+      ' , HIST_MOV = ' + QuotedStr('VENDEDOR ERA :' + IntToStr(codVendedorAnterior) + ', ALTERADO para ' +
+       edVendedor.Text + ' em : ' + FormatDateTime('dd/mm/yyyy hh:MM', Now)) +
+      ' WHERE CODMOVIMENTO  = ' + IntToStr(codMov));
+     try
+       dmPdv.sTrans.Commit;
+     except
+       dmpdv.sTrans.Rollback;
+       ShowMessage('Erro para finalizar a venda.');
+     end;
+   end;
 end;
 
 procedure TfPdv.MenuItem5Click(Sender: TObject);

@@ -12686,6 +12686,9 @@ object fPdv: TfPdv
         Caption = 'MenuItem2'
       end
     end
+    object MenuItem9: TMenuItem
+      Caption = '-'
+    end
     object MenuItem3: TMenuItem
       Action = acExcluirItemPedido
       Caption = 'Exluir Item/Pedido'
@@ -12700,6 +12703,11 @@ object fPdv: TfPdv
     object MenuItem6: TMenuItem
       Caption = 'Informações'
       OnClick = MenuItem6Click
+    end
+    object MenuItem10: TMenuItem
+      Caption = 'Alterar Vendedor'
+      Hint = 'Altere o Vendedor do Pedido desejado e clique aqui.'
+      OnClick = MenuItem10Click
     end
     object MenuItem8: TMenuItem
       Caption = 'Receber Conta'

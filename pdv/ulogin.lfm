@@ -47,6 +47,7 @@ object fLogin: TfLogin
         '  Vendedor=1  (cod. Usuario)'
         '  SenhaLogin=123'
         '  NomeLogin=adm'
+        '  PermiteCancelarBaixao=1    (0(zero) nao permite)'
         ''
         ' [IMPRESSORA]'
         '  Cupom=Texto , ACBR, DB  *'

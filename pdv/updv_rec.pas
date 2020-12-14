@@ -1697,7 +1697,7 @@ end;
 
 procedure TfPDV_Rec.acExcluirLancamentoExecute(Sender: TObject);
 begin
-  if (vStatus = 1) then
+  if ((vStatus = 1) and (dmpdv.permiteCancelarBaixao = 0)) then
   begin
     ShowMessage('Não pode excluir pedido já finalizado.');
     exit;
@@ -1882,14 +1882,17 @@ end;
 
 procedure TfPDV_Rec.acCancelaFechamentoExecute(Sender: TObject);
 begin
-  ShowMessage('Não pode excluir pedido já finalizado.');
-  exit;
+  if (dmpdv.permiteCancelarBaixao = 0) then
+  begin
+    ShowMessage('Não pode excluir pedido já finalizado.');
+    exit;
+  end;
   sqPagamento.First;
   While not sqPagamento.EOF do
   begin
     if sqPagamentoSTATE.AsInteger < 2 then
     begin
-      ShowMessage('Cancele pagamentos ativos, primeiro (F12)');
+      ShowMessage('Cancele pagamentos ativos, primeiro');
       Exit;
     end;
     sqPagamento.Next;
