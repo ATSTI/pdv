@@ -1068,6 +1068,7 @@ type
     NumSerieCert :String;
     OutrosCartoes : String;
     vendedor_padrao: Integer;
+    permiteCancelarBaixao: Integer;
     imp_controle_porta: Boolean;
     imp_Interval: Integer;
     imp_vias: Integer;
@@ -1240,6 +1241,7 @@ begin
       usoSistema := conf.ReadString( 'Outros','TipoUso','ATS');
       usaComanda := conf.ReadInteger( 'Outros','UsaComanda',0);
       usaCurso := conf.ReadInteger( 'Outros','UsaCurso',0);
+      permiteCancelarBaixao := conf.ReadInteger( 'Outros','PermiteCancelarBaixa',0);
       NfceSat := conf.ReadString( 'Outros','NfceSat','NFCE');
       ccusto := conf.ReadString( 'Outros','CentroCusto','');
       //imp_desconto_item := conf.ReadString( 'Outros','ImprimeDescontoItem','N');
