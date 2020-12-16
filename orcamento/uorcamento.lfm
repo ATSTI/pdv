@@ -1,0 +1,940 @@
+object fOrcamento: TfOrcamento
+  Left = 222
+  Height = 557
+  Top = 111
+  Width = 1018
+  Caption = 'fOrcamento'
+  ClientHeight = 557
+  ClientWidth = 1018
+  OnShow = FormShow
+  LCLVersion = '2.0.10.0'
+  object edtNOrc: TEdit
+    Left = 96
+    Height = 23
+    Top = 8
+    Width = 64
+    ReadOnly = True
+    TabOrder = 0
+  end
+  object edtQTDE: TEdit
+    Left = 40
+    Height = 23
+    Top = 72
+    Width = 46
+    TabOrder = 1
+    Text = 'edtQTDE'
+  end
+  object edtValUn: TEdit
+    Left = 96
+    Height = 23
+    Top = 72
+    Width = 61
+    TabOrder = 2
+    Text = 'edtValUn'
+  end
+  object edtValT: TEdit
+    Left = 168
+    Height = 23
+    Top = 72
+    Width = 62
+    TabOrder = 3
+    Text = 'edtValT'
+  end
+  object edtProduto: TEdit
+    Left = 240
+    Height = 23
+    Top = 72
+    Width = 600
+    TabOrder = 4
+    Text = 'edtProduto'
+  end
+  object DBGrid1: TDBGrid
+    Left = 40
+    Height = 304
+    Top = 104
+    Width = 936
+    Color = clWindow
+    Columns = <    
+      item
+        Title.Caption = 'QTDE'
+        FieldName = 'QTDE'
+      end    
+      item
+        Title.Caption = 'Val Unitario'
+        FieldName = 'CUSTOUNIT'
+      end    
+      item
+        Title.Caption = 'Val. Total'
+        FieldName = 'CUSTOTOT'
+      end    
+      item
+        Title.Caption = 'Materias- Materia Prima'
+        Width = 450
+        FieldName = 'MATPRIMA'
+      end>
+    DataSource = DataSource1
+    TabOrder = 5
+    OnCellClick = DBGrid1CellClick
+    OnKeyDown = DBGrid1KeyDown
+    OnKeyUp = DBGrid1KeyUp
+  end
+  object btnIncCte: TBitBtn
+    Left = 944
+    Height = 34
+    Top = 429
+    Width = 66
+    Glyph.Data = {
+      AE060000424DAE06000000000000360000002800000017000000170000000100
+      1800000000007806000064000000640000000000000000000000FAFFFBF2FFF1
+      E5FFE6D9FED8D7FFD6DAFFD7D3F9CFDEFFDBD4FAD6DDFFE0D8F2DAE1F5E2EAFC
+      EBEAFFEBE7FFE7B8F2B84BA04C16701631812E84C580CAFEC9EAFFEAEBFFF200
+      0000E6FFE88DB290235025114313164715184C17164A150F4510104815134718
+      18431E2F5432BBDEBCE0FFE1619861014A020E6A110A6A0C1469140E590D1558
+      1391CA93E3FFEA000000AFE9B30B430E40744473A3737BA67977A2757DAB807B
+      AC807AAB7D7CAA807CA481B2D7B5DDFFDF76AD760F550F1B6C1D1B711D6BC16D
+      4D9E4F1B691C135F11155B15C3FCC90000003F92431C6320ADDCAEE9FFE8EBFF
+      E8EEFFECEEFFF0EEFFF0EEFFEEF0FFEEEDFCEEEEFFEEC4EFC22763261B691C16
+      6619286D2AC9FFCAAEEEAD1A601A1A69180C5B0A78BF7C000000208222328235
+      D0FAD1EBFEEBF8FFF4FAFFF8FAFFFEF7FEFBFFFFFBFBFDF7FDFFFBEFFFEF9AC8
+      991E611C1F6D208CD78DBEF4BFD8FFD7D3FFD2B0F0AF4E9E4B136A1230843200
+      0000137F152F8331D1F4D2FAFFF9F7FBF5FBFFFCF4FFFCF5FFFBFCFFF8FCFFF5
+      FBFFFBEDFFECA4D6A01B611A1C671DB9FDBCD6FFD6E5FFE3DAFFD8CDFFCB6BBE
+      690C6A0B19751C00000019851B318533CDF1CDF5FEF4FDFFFBF9FEFCF2FFFDF2
+      FFFCF9FFF7FDFFF9FBFFFBECFFEAA8D5A4286722186118286D2A497748D8FFD6
+      BEF2BD327230196C1710680E50A354000000187C1C378839CDF8CBF2FFF0F9FF
+      F7FBFFFFF7FEFFF5FFFFF7FFFBFAFFFBFAFDFBF5FFF2E7FFDD4D7D421D651917
+      6917266C25BCFFBC88D6891667181D6C1D034902B1EAB30000001D7A1F39873A
+      CDF9CAF2FFF0F6FFF7FBFFFFF9FEFFF7FEFFF7FEFBFBFFFEFEFDFFFDFFFCF3FF
+      E9CEEFC2195715105B0F1C661A176315196B19156415145714699F6AE6FFE600
+      00002278203E853CD2F7CFF3FFF3F4FFF7F8FFFEF9FEFFFAFDFFFFFFFFFFFCFD
+      FFFCFFFAF7F9FCFFF6F3FFEDC8F0C74A814A26622221601A23641F2D692C78A9
+      77E3FFE5E9FFEA00000024782040833ED2F6D2F3FFF6F4FFF9FAFFFEF9FDFEFE
+      FDFFFFFBFCFFFDFFFFF9FFFFFDFFFCFFFBEDFDECEAFFE9DFFFDEB1E2AEA4D6A0
+      A1D09FC4ECC2E9FFEAECFFEDF3FFF50000001E77213C8340D1F5D7F4FFF9F8FF
+      FAFDFFFEFDFDFDFFFDFEFFFEFFFFFDFFFFFAFFF6F6FCF9FFFEF6FFF8E7FFE4AB
+      CCA9CDF6D1E0FFE5E6FFEAEFFFF0F5FFF7FAFFFBF8FEF90000001C7A1C3B853D
+      D1F5D7F6FFFCFBFEFCFFFEFEFFFCFDFFFFFEFFFEFDFFFBFCFDFEFFF6FAFFF7FF
+      FFF2FFF9E7FFE64C6D4A4A6F4FD6F6DDF2FFF7F9FFFBFDFFFFFFFFFFFCFFFD00
+      00001D7C143C8837D4F7D5FAFFFCFFFCFEFFFCFFFFFBFEFFFFFEFFFFFBFCFEF8
+      F7FEFBF4FFFDF4FFFFEAFCF5DBFCE1416A442A562FD2F4D5F6FFF7F9FCFAFDFC
+      FEFFFEFFFBFDFD0000001D7D123C8935D6F7D4FAFFFBFFFCFEFFFCFFFFFCFDFF
+      FFFCFDFFF9F7FFF4EFFFF1EEFFF6E5FFF1DFFFEDD6FFDE3D7141336234D3F6D4
+      F2FFF1FFFFFCFDFAFCFFFEFFF9FEFC0000001F7E153A8634D2F3D0F7FFF8FAFE
+      F9FDFFFCF5FDF6F8FFF8F5FFF6EDFFEDC3E9C5A8D9ADA8DEB3A5E2B08ACD8F23
+      65242E612FD4F8D4F4FFF1FBFDF7FFFEFEFFFFFFF9FFFA000000187A163C883A
+      D1F5D1F8FFF8F6FFF5F4FCF5F8FFF8F3FFF4F1FFF2CDECCF3B713C175E1B0E5F
+      1615671A11600F1A5E17548454D9F7DAF8FFF7FDFFFCFDFBFAFDFEFCFCFFFA00
+      0000177C2035863DCAEFCDF1FFF3FAFFFBFBFFFBF8FFF8FAFFF9F6FFF8C3E5C6
+      256B250B680D0F77121276101B6B102A6822BBE2BCEEFFF2F6FEF7FCFFFDFFFF
+      FFFFFFFEFFFFFB000000177821308039C6EFCAF3FFF4F5FFF6FBFFFCF7FBF5FA
+      FFF8F5FFF6BEE4C01F6D200E710D117A11066602266B1BB6E3ABEFFFEEF5FFF8
+      F8FFFAFDFFFEFFFFFEFFFDFCFFFEFA0000002076223A833BC8F3C6EEFFEDF3FF
+      F5FAFFFBFBFFF9F7FFF4F1FFEFC2EDC21E691D136D13156A15276A25BEE5B8F4
+      FFEEF4FFEFF7FFF4FBFFF8F8FFF6FDFEFAFFFDFDFFFBFD00000065AB64145412
+      93C58FCEF9CED1F6D6D0EFD4D8F7D6D9FBD6D2FDD098D39919671A126314306F
+      31AFDAAFF1FFEFFDFFF9FFFFFCFEFFFBFBFFF9F4FDF3FCFFFBFEFEFEFFF9FF00
+      0000CCFDCB144910175611387E3736813D37833C3D883C358532398F3B1F7723
+      075E0E276E2CAFD8B2EEFFEFF8FFF8FBFEFCFFFAFFFDF9FFF8FFFCF8FFFBFAFF
+      FCF8FBF9FFFAFF000000E6FFE3CEFFCB6AAF662176211B782317791F17791518
+      7F16117C1519822157B060BEFFC5EAFFEEF1FCF2FAFFFCFDFFFFFFF8FFFFF9FF
+      F7FCFDF4FFFAF9FFFBF8FDFBFFFDFF000000
+    }
+    OnClick = btnIncCteClick
+    TabOrder = 6
+  end
+  object dataORC: TDateTimePicker
+    Left = 904
+    Height = 23
+    Top = 9
+    Width = 83
+    CenturyFrom = 1941
+    MaxDate = 2958465
+    MinDate = -53780
+    TabOrder = 7
+    TrailingSeparator = False
+    TextForNullDate = 'NULL'
+    LeadingZeros = True
+    Kind = dtkDate
+    TimeFormat = tf24
+    TimeDisplay = tdHMS
+    DateMode = dmComboBox
+    Date = 44173
+    Time = 0.49713184027496
+    UseDefaultSeparators = True
+    HideDateTimeParts = []
+    MonthNames = 'Long'
+  end
+  object dbData: TDBEdit
+    Left = 168
+    Height = 23
+    Top = 40
+    Width = 80
+    DataField = 'DATACADASTRO'
+    DataSource = dsOrcDados
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 8
+  end
+  object btnSair1: TBitBtn
+    Left = 952
+    Height = 48
+    Top = 488
+    Width = 52
+    Glyph.Data = {
+      360C0000424D360C000000000000360000002800000020000000200000000100
+      180000000000000C000064000000640000000000000000000000C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0808080808080C0C0C0C0C0C0C0C0C0808080808080C0C0
+      C0C0C0C0C0C0C0808080808080C0C0C0C0C0C0C0C0C0000000000000000000C0
+      C0C0C0C0C0808080808080C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+      C0C0C0808080C0C0C0C0C0C0C0C0C0808080808080C0C0C0C0C0C0C0C0C08080
+      80808080C0C0C0C0C0C0C0C0C0808080808080C0C0C0000000FFFF00FFFF0000
+      0000C0C0C0C0C0C0C0C0C0808080808080C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0808080808080C0C0C0C0C0C0C0C0C0808080808080C0C0C0C0C0
+      C0C0C0C0808080808080C0C0C0C0C0C0C0C0C0808080000000FFFF00FFFF0080
+      8000000000808080C0C0C0C0C0C0C0C0C0808080808080C0C0C0C0C0C0808080
+      808080C0C0C0C0C0C0C0C0C0808080808080C0C0C0C0C0C0C0C0C08080808080
+      80C0C0C0C0C0C0C0C0C0808080808080C0C0C0C0C0C0000000FFFF00FFFF0080
+      8000808000000000808080808080C0C0C0C0C0C0C0C0C0808080C0C0C0C0C0C0
+      C0C0C0808080808080C0C0C0C0C0C0C0C0C0808080808080C0C0C0C0C0C0C0C0
+      C0808080808080C0C0C0C0C0C0C0C0C0808080808080000000FFFF00FFFF0080
+      8000808000808000000000000000808080808080C0C0C0C0C0C0C0C0C0808080
+      C0C0C0C0C0C0C0C0C0808080808080C0C0C0C0C0C0C0C0C0808080808080C0C0
+      C0C0C0C0C0C0C0808080808080C0C0C0C0C0C0C0C0C0000000FFFF00FFFF0080
+      8000808000808000808000000000000000000000808080808080C0C0C0000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000C0C0C0C0C0C0C0C0C0808080808080C0C0C0000000FFFF00FFFF0080
+      8000808000808000808000808000000000000000000000000000C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+      C0000000808080808080C0C0C0C0C0C0C0C0C0808080000000FFFF00FFFF0080
+      8000808000808000808000808000000000808080808080C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+      C0000000000000000000808080808080C0C0C0C0C0C0000000FFFF00FFFF0080
+      8000808000808000808000808000000000808080808080C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0808080C0C0
+      C0000000000000000000000000000000000000000000000000FFFF00FFFF0080
+      8000808000808000808000808000000000808080808080C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C00000008080808080
+      80000000808080808080808080808080808080808080000000FFFF00FFFF0080
+      8000808000808000808000808000000000808080808080C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C00000000000008080
+      80000000808080808080808080808080808080808080000000FFFF00FFFF0080
+      8000808000808000808000808000000000808080808080C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C00000008080000000
+      00000000808080808080808080808080808080808080000000FFFF00FFFF0080
+      8000808000808000808000808000000000808080808080C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C00000008080008080
+      00000000808080808080808080808080808080808080000000FFFF00FFFF0080
+      8000000000000000808000808000000000808080808080C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0808080808080808080808080808080000000FFFF008080
+      00808000000000808080808080808080808080808080000000FFFF00FFFF0000
+      0000808080000000808000808000000000808080808080C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0808080808080808080808080808080808080000000FFFF00FFFF
+      00808000808000000000808080808080808080808080000000FFFF00FFFF0000
+      0000FFFFFF000000808000808000000000808080808080C0C0C0C0C0C0C0C0C0
+      C0C0C0000000000000000000000000000000000000000000000000FFFF00FFFF
+      00FFFF00808000808000000000808080808080808080000000FFFF00FFFF0080
+      8000000000000000808000808000000000808080808080C0C0C0C0C0C0C0C0C0
+      000000808000808000808000808000808000808000808000808000FFFF00FFFF
+      00FFFF00FFFF00808000808000000000808080808080000000FFFF00FFFF0080
+      8000808000808000808000808000000000808080808080C0C0C0C0C0C0C0C0C0
+      000000FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+      00FFFF00FFFF00FFFF00808000808000000000808080000000FFFF00FFFF0080
+      8000808000808000808000808000000000808080808080C0C0C0C0C0C0C0C0C0
+      000000FFFF00FFFF00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFF00FFFF00808000000000808080000000FFFF00FFFF0080
+      8000808000808000808000808000000000808080808080C0C0C0C0C0C0C0C0C0
+      000000FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+      00FFFFFFFFFF00FFFF00808000000000808080808080000000FFFF00FFFF0080
+      8000808000808000808000808000000000808080808080C0C0C0C0C0C0C0C0C0
+      C0C0C0000000000000000000000000000000000000000000000000FFFF00FFFF
+      FFFFFF00FFFF00808000000000808080808080808080000000FFFF00FFFF0080
+      8000808000808000808000808000000000808080808080C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0000000FFFF00FFFF
+      00FFFF00808000000000808080808080808080808080000000FFFF00FFFF0080
+      8000808000808000808000808000000000808080808080C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0000000FFFF00FFFF
+      00808000000000808080808080808080808080808080000000FFFF00FFFF0080
+      8000808000808000808000808000000000808080808080C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0000000FFFF008080
+      00000000808080808080808080808080808080808080000000FFFF00FFFF0080
+      8000808000808000808000808000000000808080808080C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C00000008080000000
+      00000000808080808080808080808080808080808080808080000000FFFF00FF
+      FF00808000808000808000808000000000808080808080C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0000000000000C0C0
+      C0000000808080808080808080808080808080808080808080808080000000FF
+      FF00FFFF00808000808000808000000000808080808080C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+      C000000080808080808080808080808080808080808080808080808080808000
+      0000FFFF00FFFF00808000808000000000808080808080C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+      C000000080808080808080808080808080808080808080808080808080808080
+      8080000000FFFF00FFFF00808000000000808080808080C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+      C000000080808080808080808080808080808080808080808080808080808080
+      8080808080000000FFFF00FFFF00000000808080C0C0C0C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+      C000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+    }
+    OnClick = btnSair1Click
+    TabOrder = 9
+  end
+  object edtNomeCliente: TEdit
+    Left = 262
+    Height = 23
+    Top = 39
+    Width = 674
+    TabOrder = 10
+  end
+  object DBEdit1: TDBEdit
+    Left = 464
+    Height = 23
+    Top = 416
+    Width = 80
+    DataField = 'VALOR_A'
+    DataSource = dsOrcDados
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 20
+  end
+  object DBEdit2: TDBEdit
+    Left = 464
+    Height = 23
+    Top = 447
+    Width = 80
+    DataField = 'VALOR_B'
+    DataSource = dsOrcDados
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 24
+  end
+  object DBEdit3: TDBEdit
+    Left = 464
+    Height = 23
+    Top = 472
+    Width = 80
+    DataField = 'VALOR_C'
+    DataSource = dsOrcDados
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 29
+  end
+  object DBEdit4: TDBEdit
+    Left = 464
+    Height = 23
+    Top = 500
+    Width = 80
+    DataField = 'VALOR_D'
+    DataSource = dsOrcDados
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 11
+  end
+  object DBEdit6: TDBEdit
+    Left = 560
+    Height = 23
+    Top = 416
+    Width = 80
+    DataField = 'VALOR_PORC_A'
+    DataSource = dsOrcDados
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 21
+    OnExit = DBEdit6Exit
+  end
+  object DBEdit7: TDBEdit
+    Left = 560
+    Height = 23
+    Top = 447
+    Width = 80
+    DataField = 'VALOR_PORC_B'
+    DataSource = dsOrcDados
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 25
+  end
+  object DBEdit8: TDBEdit
+    Left = 560
+    Height = 23
+    Top = 474
+    Width = 80
+    DataField = 'VALOR_PORC_C'
+    DataSource = dsOrcDados
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 31
+  end
+  object DBEdit5: TDBEdit
+    Left = 464
+    Height = 23
+    Top = 528
+    Width = 80
+    DataField = 'VALOR_E'
+    DataSource = dsOrcDados
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 12
+  end
+  object DBEdit9: TDBEdit
+    Left = 560
+    Height = 23
+    Top = 500
+    Width = 80
+    DataField = 'VALOR_PORC_D'
+    DataSource = dsOrcDados
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 13
+  end
+  object DBEdit10: TDBEdit
+    Left = 560
+    Height = 23
+    Top = 526
+    Width = 80
+    DataField = 'VALOR_E'
+    DataSource = dsOrcDados
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 14
+  end
+  object DBEdit11: TDBEdit
+    Left = 664
+    Height = 23
+    Top = 416
+    Width = 80
+    DataField = 'VALOR_TOTAL_A'
+    DataSource = dsOrcDados
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 22
+  end
+  object DBEdit12: TDBEdit
+    Left = 664
+    Height = 23
+    Top = 447
+    Width = 80
+    DataField = 'VALOR_TOTAL_B'
+    DataSource = dsOrcDados
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 26
+  end
+  object DBEdit13: TDBEdit
+    Left = 664
+    Height = 23
+    Top = 474
+    Width = 80
+    DataField = 'VALOR_PORC_C'
+    DataSource = dsOrcDados
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 32
+  end
+  object DBEdit14: TDBEdit
+    Left = 664
+    Height = 23
+    Top = 500
+    Width = 80
+    DataField = 'VALOR_TOTAL_D'
+    DataSource = dsOrcDados
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 15
+  end
+  object DBEdit15: TDBEdit
+    Left = 664
+    Height = 23
+    Top = 526
+    Width = 80
+    DataField = 'VALOR_TOTAL_E'
+    DataSource = dsOrcDados
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 16
+  end
+  object DBEdit16: TDBEdit
+    Left = 784
+    Height = 23
+    Top = 474
+    Width = 80
+    DataField = 'VALOR_TOTAL_GERAL'
+    DataSource = dsOrcDados
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 17
+  end
+  object edTNome: TEdit
+    Left = 176
+    Height = 23
+    Top = 9
+    Width = 600
+    ReadOnly = True
+    TabOrder = 18
+  end
+  object Label1: TLabel
+    Left = 792
+    Height = 15
+    Top = 455
+    Width = 57
+    Caption = 'Total Geral'
+    ParentColor = False
+  end
+  object DBEdit17: TDBEdit
+    Left = 40
+    Height = 23
+    Top = 416
+    Width = 408
+    DataField = 'DESCRICAO_A'
+    DataSource = dsOrcDados
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 19
+  end
+  object DBEdit18: TDBEdit
+    Left = 40
+    Height = 23
+    Top = 447
+    Width = 408
+    DataField = 'DESCRICAO_B'
+    DataSource = dsOrcDados
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 23
+  end
+  object DBEdit19: TDBEdit
+    Left = 40
+    Height = 23
+    Top = 474
+    Width = 408
+    DataField = 'DESCRICAO_C'
+    DataSource = dsOrcDados
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 27
+  end
+  object DBEdit20: TDBEdit
+    Left = 40
+    Height = 23
+    Top = 500
+    Width = 408
+    DataField = 'DESCRICAO_D'
+    DataSource = dsOrcDados
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 28
+  end
+  object DBEdit21: TDBEdit
+    Left = 40
+    Height = 23
+    Top = 528
+    Width = 408
+    DataField = 'DESCRICAO_E'
+    DataSource = dsOrcDados
+    CharCase = ecNormal
+    MaxLength = 0
+    TabOrder = 30
+  end
+  object DataSource1: TDataSource
+    DataSet = dm.sqlOrcamento
+    Left = 32
+    Top = 351
+  end
+  object dsOrcDados: TDataSource
+    DataSet = sqlOrcDados
+    Left = 40
+    Top = 136
+  end
+  object sqlOrcDados: TSQLQuery
+    FieldDefs = <    
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'ID_ORCAMENTO'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'DATACADASTRO'
+        DataType = ftDate
+        Precision = -1
+      end    
+      item
+        Name = 'NOMECLIENTE'
+        DataType = ftString
+        Precision = -1
+        Size = 60
+      end    
+      item
+        Name = 'VALOR_A'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALOR_B'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALOR_C'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALOR_D'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALOR_E'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALOR_PORC_A'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALOR_PORC_B'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALOR_PORC_C'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALOR_PORC_D'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALOR_PORC_E'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALOR_TOTAL_A'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALOR_TOTAL_B'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALOR_TOTAL_C'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALOR_TOTAL_D'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALOR_TOTAL_E'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALOR_TOTAL_GERAL'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'DESCRICAO_A'
+        DataType = ftString
+        Precision = -1
+        Size = 100
+      end    
+      item
+        Name = 'DESCRICAO_B'
+        DataType = ftString
+        Precision = -1
+        Size = 100
+      end    
+      item
+        Name = 'DESCRICAO_C'
+        DataType = ftString
+        Precision = -1
+        Size = 100
+      end    
+      item
+        Name = 'DESCRICAO_D'
+        DataType = ftString
+        Precision = -1
+        Size = 100
+      end    
+      item
+        Name = 'DESCRICAO_E'
+        DataType = ftString
+        Precision = -1
+        Size = 100
+      end>
+    Database = dm.IbCon
+    Transaction = dm.sTrans
+    SQL.Strings = (
+      'select * from orcamentos_dados'
+    )
+    Params = <>
+    Left = 24
+    Top = 24
+    object sqlOrcDadosID: TLongintField
+      FieldKind = fkData
+      FieldName = 'ID'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object sqlOrcDadosID_ORCAMENTO: TLongintField
+      FieldKind = fkData
+      FieldName = 'ID_ORCAMENTO'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object sqlOrcDadosDATACADASTRO: TDateField
+      FieldKind = fkData
+      FieldName = 'DATACADASTRO'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqlOrcDadosNOMECLIENTE: TStringField
+      FieldKind = fkData
+      FieldName = 'NOMECLIENTE'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 60
+    end
+    object sqlOrcDadosVALOR_A: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALOR_A'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqlOrcDadosVALOR_B: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALOR_B'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqlOrcDadosVALOR_C: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALOR_C'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqlOrcDadosVALOR_D: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALOR_D'
+      Index = 7
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqlOrcDadosVALOR_E: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALOR_E'
+      Index = 8
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqlOrcDadosVALOR_PORC_A: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALOR_PORC_A'
+      Index = 9
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqlOrcDadosVALOR_PORC_B: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALOR_PORC_B'
+      Index = 10
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqlOrcDadosVALOR_PORC_C: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALOR_PORC_C'
+      Index = 11
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqlOrcDadosVALOR_PORC_D: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALOR_PORC_D'
+      Index = 12
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqlOrcDadosVALOR_PORC_E: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALOR_PORC_E'
+      Index = 13
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqlOrcDadosVALOR_TOTAL_A: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALOR_TOTAL_A'
+      Index = 14
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqlOrcDadosVALOR_TOTAL_B: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALOR_TOTAL_B'
+      Index = 15
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqlOrcDadosVALOR_TOTAL_C: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALOR_TOTAL_C'
+      Index = 16
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqlOrcDadosVALOR_TOTAL_D: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALOR_TOTAL_D'
+      Index = 17
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqlOrcDadosVALOR_TOTAL_E: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALOR_TOTAL_E'
+      Index = 18
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqlOrcDadosVALOR_TOTAL_GERAL: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALOR_TOTAL_GERAL'
+      Index = 19
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqlOrcDadosDESCRICAO_A: TStringField
+      FieldKind = fkData
+      FieldName = 'DESCRICAO_A'
+      Index = 20
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 100
+    end
+    object sqlOrcDadosDESCRICAO_B: TStringField
+      FieldKind = fkData
+      FieldName = 'DESCRICAO_B'
+      Index = 21
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 100
+    end
+    object sqlOrcDadosDESCRICAO_C: TStringField
+      FieldKind = fkData
+      FieldName = 'DESCRICAO_C'
+      Index = 22
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 100
+    end
+    object sqlOrcDadosDESCRICAO_D: TStringField
+      FieldKind = fkData
+      FieldName = 'DESCRICAO_D'
+      Index = 23
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 100
+    end
+    object sqlOrcDadosDESCRICAO_E: TStringField
+      FieldKind = fkData
+      FieldName = 'DESCRICAO_E'
+      Index = 24
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 100
+    end
+  end
+end

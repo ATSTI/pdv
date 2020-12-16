@@ -1,0 +1,82 @@
+object fRel: TfRel
+  Left = 257
+  Height = 386
+  Top = 250
+  Width = 767
+  Caption = 'fRel'
+  ClientHeight = 386
+  ClientWidth = 767
+  LCLVersion = '2.0.10.0'
+  object RLReport1: TRLReport
+    Left = 0
+    Height = 1123
+    Top = 8
+    Width = 794
+    DataSource = dsOrc
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Title = 'Orçamentos'
+    BeforePrint = RLReport1BeforePrint
+    object RLBand1: TRLBand
+      Left = 38
+      Height = 48
+      Top = 38
+      Width = 718
+      BandType = btHeader
+      object RLDBText2: TRLDBText
+        Left = 88
+        Height = 16
+        Top = 16
+        Width = 67
+        DataField = 'PRODUTO'
+        DataSource = dsOrc
+      end
+    end
+    object RLDetailGrid1: TRLDetailGrid
+      Left = 38
+      Height = 48
+      Top = 86
+      Width = 718
+      object RLDBText3: TRLDBText
+        Left = 256
+        Height = 16
+        Top = 16
+        Width = 72
+        DataField = 'MATPRIMA'
+        DataSource = dsOrc
+      end
+      object RLDBText1: TRLDBText
+        Left = 0
+        Height = 16
+        Top = 16
+        Width = 69
+        DataField = 'CODPROD'
+        DataSource = dsOrc
+      end
+      object RLDBText4: TRLDBText
+        Left = 88
+        Height = 16
+        Top = 16
+        Width = 76
+        Alignment = taRightJustify
+        DataField = 'CUSTOUNIT'
+        DataSource = dsOrc
+      end
+      object RLDBText5: TRLDBText
+        Left = 168
+        Height = 16
+        Top = 16
+        Width = 72
+        Alignment = taRightJustify
+        DataField = 'CUSTOTOT'
+        DataSource = dsOrc
+      end
+    end
+  end
+  object dsOrc: TDataSource
+    DataSet = dm.sqlOrcamento
+    Left = 536
+    Top = 16
+  end
+end

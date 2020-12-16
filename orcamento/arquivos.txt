@@ -1,0 +1,53 @@
+===== Tabela ====
+
+CREATE TABLE ORCAMENTOS_DADOS (
+  ID                     INTEGER                NOT NULL
+, ID_ORCAMENTO           INTEGER                NOT NULL
+, DATACADASTRO           DATE
+, NOMECLIENTE            VARCHAR( 60 )
+, VALOR_A                DOUBLE PRECISION
+, VALOR_B                DOUBLE PRECISION
+, VALOR_C                DOUBLE PRECISION
+, VALOR_D                DOUBLE PRECISION
+, VALOR_E                DOUBLE PRECISION
+, VALOR_PORC_A           DOUBLE PRECISION
+, VALOR_PORC_B           DOUBLE PRECISION
+, VALOR_PORC_C           DOUBLE PRECISION
+, VALOR_PORC_D           DOUBLE PRECISION
+, VALOR_PORC_E           DOUBLE PRECISION
+, VALOR_TOTAL_A          DOUBLE PRECISION
+, VALOR_TOTAL_B          DOUBLE PRECISION
+, VALOR_TOTAL_C          DOUBLE PRECISION
+, VALOR_TOTAL_D          DOUBLE PRECISION
+, VALOR_TOTAL_E          DOUBLE PRECISION
+, VALOR_TOTAL_GERAL      DOUBLE PRECISION
+, DESCRICAO_A            VARCHAR( 100 )
+, DESCRICAO_B            VARCHAR( 100 )
+, DESCRICAO_C            VARCHAR( 100 )
+, DESCRICAO_D            VARCHAR( 100 )
+, DESCRICAO_E            VARCHAR( 100 )
+)
+
+===== Tabela =====
+
+CREATE TABLE ORCAMENTO_VBS (
+  ID                     INTEGER                NOT NULL
+, CODORC                 INTEGER                NOT NULL
+, CODPROD                INTEGER
+, CODPRODPRO             VARCHAR( 30 )
+, CODPRODMAT             VARCHAR( 30 )
+, QTDE                   DOUBLE PRECISION
+, CUSTOUNIT              DOUBLE PRECISION
+, CUSTOTOT               DOUBLE PRECISION
+, PRODUTO                VARCHAR( 600 )
+, MATPRIMA               VARCHAR( 800 )
+)
+
+====== Generetors ======
+
+CREATE SEQUENCE GEN_ORCD
+CREATE SEQUENCE GEN_ORCD_VBS
+
+
+
+
