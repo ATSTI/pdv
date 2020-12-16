@@ -1517,8 +1517,12 @@ begin
      Ide.Toma4.EnderToma.cPais:= 1058 ; //////////////////// manoel
      Ide.Toma4.EnderToma.xPais:= 'BRASIL';                  ///manoel
     end;
-                                         // Aba Tomador  fim
-
+   // Aba Tomador  fim
+   Case  RadioGroup3.ItemIndex of
+     0:  Ide.indIEToma := inContribuinte;
+     1:  Ide.indIEToma := inIsento;
+     2:  Ide.indIEToma := inNaoContribuinte;
+   end;
    //
    //  Informações Complementares do CTe     Aba Dados Complementares inicio
    //
