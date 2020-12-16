@@ -120,13 +120,13 @@ begin
 
     //TODO  Imprimindo TODOS tipos de Sangria
 
-    sqlP := 'select FORMA_PAGTO, MOTIVO,  sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
+    sqlP := 'select FORMA_PGTO, N_DOC,  sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
     sqlP += ' where CAIXA = ' + cx_m;
     sqlP += ' and STATE = 1 and FORMA_PGTO IN (' + QuotedStr('S') + ', ' +
       QuotedStr('R') + ', ' + QuotedStr('F') + ', ' + QuotedStr('U') + ', ' +
       QuotedStr('V') + ', ' + QuotedStr('T') + ')';//Sangrias
     sqlP += ' and cod_venda = 1  ';//1 para Sangria, >1 para Outros
-    sqlP += ' GROUP BY FORMA_PAGTO, MOTIVO';
+    sqlP += ' GROUP BY FORMA_PGTO, N_DOC';
     if (dmPdv.sqBusca.Active) then
       dmPdv.sqBusca.Close;
     dmPdv.sqBusca.SQL.Clear;
@@ -134,20 +134,22 @@ begin
     dmPdv.sqBusca.Active:=True;
     While not dmPdv.sqBusca.EOF do
     begin
-      forma_pg := 'Sangria';
-      Case dmPdv.sqBusca.FieldByName('FORMA_PAGTO').AsString of
+      forma_pg := Trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString);
+
+      {Case dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString of
         'S': forma_pg := 'Sangria';
         'R': forma_pg := 'Rec. Cliente';
         'F': forma_pg := 'Pag. Fornecedor';
         'U': forma_pg := 'Uso interno';
         'V': forma_pg := 'Vale';
         'T': forma_pg := 'Outros';
-      end;
+      end;}
       //totalliquido -= dmPdv.sqBusca.FieldByName('Valor').AsFloat;
       //totalcaixa -= dmPdv.sqBusca.FieldByName('Valor').AsFloat;
       //edSangrias.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
       //Writeln(IMPRESSORA,  'Sangria        - ' + edSangrias.Text);
-      Writeln(IMPRESSORA, forma_pg + '       - ' + format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat])
+      forma_pg += '-' + dmPdv.sqBusca.FieldByName('N_DOC').asString;
+      Writeln(IMPRESSORA, forma_pg + ' - ' + format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat])
       );
       dmPdv.sqBusca.Next;
     end;
@@ -278,6 +280,7 @@ end;
 procedure TfAbrirCaixa.mostrarCaixa(usuarioCX: String);
 var
   sqlp : String;
+  sqlx : String;
   total : Double;
   totalliquido : Double;
   totalcaixa : Double;
@@ -353,9 +356,10 @@ begin
 
   sqlP := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
   sqlP += ' where CAIXA = ' + cx_m;
-  sqlP += ' and STATE = 1 and FORMA_PGTO in (' + QuotedStr('3') + ',' +
-    QuotedStr('7') + ',' + QuotedStr('8') + ')';//Cartão Crédito
-  sqlP += ' and cod_venda > 1  ';//1 para Sangria, >1 para Outros
+  sqlP += ' and STATE = 1 and FORMA_PGTO in (';
+  sqlX := QuotedStr('3') + ',' + QuotedStr('7') + ',' + QuotedStr('8');
+  sqlP += sqlX + ')';//Cartão Crédito
+  sqlP += ' and cod_venda > 1 ';//1 para Sangria, >1 para Outros
   if (dmPdv.sqBusca.Active) then
     dmPdv.sqBusca.Close;
   dmPdv.sqBusca.SQL.Clear;
@@ -401,12 +405,11 @@ begin
     totalliquido += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     edCheque.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
   end;
-
   sqlP := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
   sqlP += ' where CAIXA = ' + cx_m;
-  sqlP += ' and STATE = 1 and FORMA_PGTO IN (' + QuotedStr('S') + ', ' +
-    QuotedStr('R') + ', ' + QuotedStr('F') + ', ' + QuotedStr('U') + ', ' +
-    QuotedStr('V') + ', ' + QuotedStr('T') + ')';//Sangrias
+  sqlP += ' and STATE = 1 and FORMA_PGTO IN (' + QuotedStr('S') + ', ';
+  //sqlP += QuotedStr('R') + ', ' + QuotedStr('F') + ', ' + QuotedStr('U') + ', ';
+  sqlP += QuotedStr('V') + ', ' + QuotedStr('T') + ')'; //Sangrias
   sqlP += ' and cod_venda = 1  ';//1 para Sangria, >1 para Outros
   if (dmPdv.sqBusca.Active) then
     dmPdv.sqBusca.Close;

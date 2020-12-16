@@ -1876,7 +1876,7 @@ begin
 
             sqlP := 'INSERT INTO CAIXA_CONTROLE (IDCAIXACONTROLE, ' +
                   'CODCAIXA, CODUSUARIO, SITUACAO, DATAFECHAMENTO' +
-                  ',NOMECAIXA, DATAABERTURA) VALUES ( ';
+                  ',NOMECAIXA, DATAABERTURA, VALORABRE) VALUES ( ';
             sqlD := C.Find('codcaixa').Value;
             sqlD += ',' + C.Find('codcaixa').Value;
             sqlD += ',' + C.Find('codusuario').Value;
@@ -1884,6 +1884,7 @@ begin
             sqlD += ',' + QuotedStr(C.Find('datafechamento').AsString);
             sqlD += ',' + QuotedStr(C.Find('nomecaixa').AsString);
             sqlD += ',' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now));
+            sqlD += ',' + C.Find('valorabertura').Value;
             sqlD += ')';
             dmpdv.executaSql(sqlP + sqlD);
             dmPdv.sTrans.Commit;
