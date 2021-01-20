@@ -337,6 +337,7 @@ type
     tot1: double;
     tot2: double;
     tot3: double;
+    cst_utilizado: String;
     function validaNumNfeScan():Boolean;
     function GerarNFe: Boolean;
     procedure getPagamento;
@@ -415,7 +416,7 @@ end;
 { TfNFe }
 
 procedure TfNFe.btnListarClick(Sender: TObject);
-var str_nf, str_proc: string;
+var str_nf, str_proc, ver_str: string;
 begin
   str_proc := '';
   dmPdv.IbCon.ExecuteDirect('ALTER TRIGGER PROIBE_ALT_DEL_NF INACTIVE');
@@ -477,8 +478,19 @@ begin
     end;
     if (ComboBox1.Text <> '') then
     begin
-      dmPdv.qcds_ccusto.Locate('NOME', ComboBox1.Text,[loCaseInsensitive]);
+      ver_str := ComboBox1.Text;
+      dmPdv.qcds_ccusto.Close;
+      dmPdv.qcds_ccusto.SQL.Clear;
+      dmPdv.qcds_ccusto.SQL.Add('select CODIGO, CONTA, NOME from PLANO where plnCtaRoot(CONTA) = ' +
+        QuotedStr(conta_local) + ' AND CONSOLIDA = ' + QuotedStr('S') + ' AND NOME = '+
+        QuotedStr(ComboBox1.Text));
+      dmPdv.qcds_ccusto.Open;
       str_nf := str_nf + ' and (nf.CCUSTO = ' + IntToStr(dmPdv.qcds_ccustoCODIGO.AsInteger) + ')';
+      dmPdv.qcds_ccusto.Close;
+      dmPdv.qcds_ccusto.SQL.Clear;
+      dmPdv.qcds_ccusto.SQL.Add('select CODIGO, CONTA, NOME from PLANO where plnCtaRoot(CONTA) = ' +
+        QuotedStr(conta_local) + ' AND CONSOLIDA = ' + QuotedStr('S'));
+      dmPdv.qcds_ccusto.Open;
     end;
   end
   else
@@ -530,8 +542,20 @@ begin
     end;
     if (ComboBox1.Text <> '') then
     begin
-      dmPdv.qcds_ccusto.Locate('NOME', ComboBox1.Text,[loCaseInsensitive]);
+      dmPdv.qcds_ccusto.Close;
+      dmPdv.qcds_ccusto.SQL.Clear;
+      dmPdv.qcds_ccusto.SQL.Add('select CODIGO, CONTA, NOME from PLANO where plnCtaRoot(CONTA) = ' +
+        QuotedStr(conta_local) + ' AND CONSOLIDA = ' + QuotedStr('S') + ' AND NOME = '+
+        QuotedStr(ComboBox1.Text));
+      dmPdv.qcds_ccusto.Open;
+      //ver_str := ComboBox1.Text;
+      //dmPdv.qcds_ccusto.Locate('NOME', ComboBox1.Text,[loCaseInsensitive]);
       str_nf := str_nf + ' and (nf.CCUSTO = ' + IntToStr(dmPdv.qcds_ccustoCODIGO.AsInteger) + ')';
+      dmPdv.qcds_ccusto.Close;
+      dmPdv.qcds_ccusto.SQL.Clear;
+      dmPdv.qcds_ccusto.SQL.Add('select CODIGO, CONTA, NOME from PLANO where plnCtaRoot(CONTA) = ' +
+        QuotedStr(conta_local) + ' AND CONSOLIDA = ' + QuotedStr('S'));
+      dmPdv.qcds_ccusto.Open;
     end;
   end;
   if (edtChaveNfeCCe.Text <> '') then
@@ -672,7 +696,14 @@ procedure TfNFe.btnImprimirCCeClick(Sender: TObject);
     xCond : String;
     nome_evento: String;
 begin
-  dmPdv.qcds_ccusto.Locate('NOME', ComboBox2.Text,[loCaseInsensitive]);
+  dmPdv.qcds_ccusto.Close;
+  dmPdv.qcds_ccusto.SQL.Clear;
+  dmPdv.qcds_ccusto.SQL.Add('select CODIGO, CONTA, NOME from PLANO where plnCtaRoot(CONTA) = ' +
+    QuotedStr(conta_local) + ' AND CONSOLIDA = ' + QuotedStr('S') + ' AND NOME = '+
+    QuotedStr(ComboBox2.Text));
+  dmPdv.qcds_ccusto.Open;
+
+  //dmPdv.qcds_ccusto.Locate('NOME', ComboBox2.Text,[loCaseInsensitive]);
 
   //Seleciona Empresa de acordo com o CCusto selecionado
   if (dmPdv.qsEmpresa.Active) then
@@ -784,7 +815,13 @@ begin
     str_sql := str_sql + QuotedStr('fnInutilizado') + ', ';
     str_sql := str_sql + '12, 0,';  // Natureza , codcliente
     str_sql := str_sql + QuotedStr('INUTILIZADA') + ', ';
-    dmPdv.qcds_ccusto.Locate('NOME', ComboBox1.Text,[loCaseInsensitive]);
+    dmPdv.qcds_ccusto.Close;
+    dmPdv.qcds_ccusto.SQL.Clear;
+    dmPdv.qcds_ccusto.SQL.Add('select CODIGO, CONTA, NOME from PLANO where plnCtaRoot(CONTA) = ' +
+      QuotedStr(conta_local) + ' AND CONSOLIDA = ' + QuotedStr('S') + ' AND NOME = '+
+      QuotedStr(ComboBox1.Text));
+    dmPdv.qcds_ccusto.Open;
+    //dmPdv.qcds_ccusto.Locate('NOME', ComboBox1.Text,[loCaseInsensitive]);
     str_sql := str_sql + IntToStr(dmPdv.qcds_ccustoCODIGO.AsInteger) + ')';
     dmPdv.executaSql(str_sql);
   end;
@@ -1457,8 +1494,13 @@ begin
     MessageDlg('Centro de custo não selecionado', mtError, [mbOK], 0);
     exit;
   end;
-
-  dmPdv.qcds_ccusto.Locate('NOME', ComboBox2.Text,[loCaseInsensitive]);
+  dmPdv.qcds_ccusto.Close;
+  dmPdv.qcds_ccusto.SQL.Clear;
+  dmPdv.qcds_ccusto.SQL.Add('select CODIGO, CONTA, NOME from PLANO where plnCtaRoot(CONTA) = ' +
+    QuotedStr(conta_local) + ' AND CONSOLIDA = ' + QuotedStr('S') + ' AND NOME = '+
+    QuotedStr(ComboBox2.Text));
+  dmPdv.qcds_ccusto.Open;
+  //dmPdv.qcds_ccusto.Locate('NOME', ComboBox2.Text,[loCaseInsensitive]);
 
   //Seleciona Empresa de acordo com o CCusto selecionado
   if (dmPdv.qsEmpresa.Active) then
@@ -2888,9 +2930,9 @@ begin
       ' , md.PICMSUFDEST' +
       ' , md.PICMSINTER' +
       ' , md.PICMSINTERPART' +
-      ' , md.VFCPUFDEST' +
-      ' , md.VICMSUFDEST' +
-      ' , md.VICMSUFREMET ' +
+      ' , UDF_ROUNDDEC(md.VFCPUFDEST,2) as VFCPUFDEST' +
+      ' , UDF_ROUNDDEC(md.VICMSUFDEST,2) as VICMSUFDEST' +
+      ' , UDF_ROUNDDEC(md.VICMSUFREMET,2) as VICMSUFREMET ' +
       ' , md.CST_IPI_CENQ ' +
       ' , md.CEST ' +
       ' , cp.CODMOVIMENTO ' +
@@ -2944,9 +2986,9 @@ begin
       ' , md.PICMSUFDEST' +
       ' , md.PICMSINTER' +
       ' , md.PICMSINTERPART' +
-      ' , md.VFCPUFDEST' +
-      ' , md.VICMSUFDEST' +
-      ' , md.VICMSUFREMET' +
+      ' ,UDF_ROUNDDEC(md.VFCPUFDEST,2) as VFCPUFDEST' +
+      ' , UDF_ROUNDDEC(md.VICMSUFDEST,2) as VICMSUFDEST' +
+      ' , UDF_ROUNDDEC(md.VICMSUFREMET,2) as VICMSUFREMET ' +
       ' , md.CST_IPI_CENQ ' +
       ' , md.CEST ' +
       ' , vd.CODMOVIMENTO ' +
@@ -5193,6 +5235,7 @@ begin
 
 
         //VALOR TORAL
+        cst_utilizado := Trim(dmPdv.cdsItensNFCSOSN.AsString);
         if not ((ACBrNFe1.NotasFiscais.Items[0].NFe.Emit.CRT = crtSimplesNacional) and (dmPdv.cdsItensNFCSOSN.AsString <> '900')) then
         begin
           if ((cstSuframa = '00') OR ( pSuframa = '')) then
@@ -5234,7 +5277,8 @@ begin
         end;
         if ((cstSuframa <> '00') and ( pSuframa <> '')) then
         begin
-          Total.ICMSTot.vICMSDeson := dmPdv.qcdsNFVALOR_ICMS.AsVariant;
+          if (cst_utilizado <> '101') then
+            Total.ICMSTot.vICMSDeson := dmPdv.qcdsNFVALOR_ICMS.AsVariant;
         end;
       end;
       break; // saio do while se a já peguei a nota selecionada
