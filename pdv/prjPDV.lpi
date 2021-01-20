@@ -33,7 +33,7 @@
         <Mode0 Name="default"/>
       </Modes>
     </RunParams>
-    <RequiredPackages Count="15">
+    <RequiredPackages Count="14">
       <Item1>
         <PackageName Value="ACBr_Integrador"/>
       </Item1>
@@ -44,41 +44,38 @@
         <PackageName Value="ACBr_SAT"/>
       </Item3>
       <Item4>
-        <PackageName Value="zcomponent"/>
+        <PackageName Value="lhelpcontrolpkg"/>
       </Item4>
       <Item5>
-        <PackageName Value="lhelpcontrolpkg"/>
+        <PackageName Value="MultiThreadProcsLaz"/>
       </Item5>
       <Item6>
-        <PackageName Value="MultiThreadProcsLaz"/>
+        <PackageName Value="ACBrSerial"/>
       </Item6>
       <Item7>
-        <PackageName Value="ACBrSerial"/>
+        <PackageName Value="ACBrDiversos"/>
       </Item7>
       <Item8>
-        <PackageName Value="ACBrDiversos"/>
+        <PackageName Value="ACBr_NFe_DanfeESCPOS"/>
       </Item8>
       <Item9>
-        <PackageName Value="ACBr_NFe_DanfeESCPOS"/>
+        <PackageName Value="ACBr_NFe"/>
       </Item9>
       <Item10>
-        <PackageName Value="ACBr_NFe"/>
+        <PackageName Value="DateTimeCtrls"/>
       </Item10>
       <Item11>
-        <PackageName Value="DateTimeCtrls"/>
+        <PackageName Value="FCL"/>
       </Item11>
       <Item12>
-        <PackageName Value="FCL"/>
+        <PackageName Value="RunTimeTypeInfoControls"/>
       </Item12>
       <Item13>
-        <PackageName Value="RunTimeTypeInfoControls"/>
+        <PackageName Value="SynEdit"/>
       </Item13>
       <Item14>
-        <PackageName Value="SynEdit"/>
-      </Item14>
-      <Item15>
         <PackageName Value="LCL"/>
-      </Item15>
+      </Item14>
     </RequiredPackages>
     <Units Count="34">
       <Unit0>

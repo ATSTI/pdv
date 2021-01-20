@@ -166,7 +166,7 @@ begin
     begin
       vlr_cartao := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
       vlr_cartao += ' where CAIXA = ' + cx_m;
-      vlr_cartao += ' and STATE = 1 and FORMA_PGTO = 7';//Sia Net
+      vlr_cartao += ' and STATE = 1 and FORMA_PGTO = ' + QuotedStr('7');//Sia Net
       vlr_cartao += ' and cod_venda > 1  ';
       if (dmPdv.sqBusca.Active) then
         dmPdv.sqBusca.Close;
@@ -179,7 +179,7 @@ begin
       end;
       vlr_cartao := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
       vlr_cartao += ' where CAIXA = ' + cx_m;
-      vlr_cartao += ' and STATE = 1 and FORMA_PGTO = 8';//Brasil Card
+      vlr_cartao += ' and STATE = 1 and FORMA_PGTO = ' + QuotedStr('8');//Brasil Card
       vlr_cartao += ' and cod_venda > 1  ';
       if (dmPdv.sqBusca.Active) then
         dmPdv.sqBusca.Close;

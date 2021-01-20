@@ -7,7 +7,7 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, zcomponent, runtimetypeinfocontrols, datetimectrls, lhelpcontrolpkg,
+  Forms, runtimetypeinfocontrols, datetimectrls, lhelpcontrolpkg,
   uPdv, updv_rec, uMovimento, uMovimentoDetalhe, udmpdv, uprodutoproc,
   uMovimentoProc, uvenda, uRecebimento, uExecutaIntegracao, uLogin,
   uVendedorBusca, uClienteBusca, uSenhaNova, uPermissao, uExcluirItem, uNfce,
