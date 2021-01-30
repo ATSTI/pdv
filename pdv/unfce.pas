@@ -1118,7 +1118,7 @@ begin
         Prod.qTrib    := qt_itemnf;
         ncm_str := dmPdv.sqLancamentosNCM.AsString;
         ncm_str  := StringReplace(ncm_str,'.','',[rfReplaceAll]);
-        if Length(ncm_str) < 8then
+        if Length(ncm_str) < 8 then
            ncm_str := '00000000';
         Prod.NCM      := ncm_str;
         Prod.EXTIPI   := '';
@@ -1159,13 +1159,13 @@ begin
         if ((nfce_desconto > 0) and (num_itens = 0)) then
         begin
           // jogar diferenca rateio desconto no ultimo item
-          Prod.vDesc      := RoundABNT((nfce_desconto - desc_rateado), 6);
+          Prod.vDesc      := RoundABNT((nfce_desconto - desc_rateado), 2);
         end;
         if ((nfce_desconto > 0) and (num_itens > 0)) then
         begin
           desconto_rateio := nfce_desconto/nfce_valor;
           desconto_rateio := dmPdv.sqLancamentosTOTALITEM.AsFloat * desconto_rateio;
-          Prod.vDesc      := RoundAbnt(desconto_rateio, 6);
+          Prod.vDesc      := RoundAbnt(desconto_rateio, 2);
           desc_rateado += Prod.vDesc;
         end;
 
