@@ -5,7 +5,6 @@ object dmPdv: TdmPdv
   HorizontalOffset = 225
   VerticalOffset = 2
   Width = 934
-  PPI = 96
   object IbCon: TIBConnection
     Connected = False
     LoginPrompt = False
@@ -20,30 +19,31 @@ object dmPdv: TdmPdv
     CharSet = 'UTF8'
     HostName = 'localhost'
     CheckTransactionParams = False
-    left = 40
-    top = 18
+    UseConnectionCharSetIfNone = False
+    Left = 40
+    Top = 18
   end
   object sTrans: TSQLTransaction
     Active = False
     Database = IbCon
-    left = 136
-    top = 16
+    Left = 136
+    Top = 16
   end
   object sqBusca: TSQLQuery
     FieldDefs = <>
     Database = IbCon
     Transaction = sTrans
     Params = <>
-    left = 264
-    top = 16
+    Left = 264
+    Top = 16
   end
   object sqGenerator: TSQLQuery
     FieldDefs = <>
     Database = IbCon
     Transaction = sTrans
     Params = <>
-    left = 536
-    top = 18
+    Left = 536
+    Top = 18
   end
   object sqParametro: TSQLQuery
     FieldDefs = <    
@@ -142,8 +142,8 @@ object dmPdv: TdmPdv
       'SELECT * FROM PARAMETRO'
     )
     Params = <>
-    left = 624
-    top = 18
+    Left = 624
+    Top = 18
     object sqParametroDESCRICAO: TStringField
       FieldKind = fkData
       FieldName = 'DESCRICAO'
@@ -292,8 +292,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
   end
@@ -728,8 +726,8 @@ object dmPdv: TdmPdv
         Name = 'PMOV'
         ParamType = ptInput
       end>
-    left = 40
-    top = 256
+    Left = 40
+    Top = 256
     object sqLancamentosCODMOVIMENTO: TLongintField
       FieldKind = fkData
       FieldName = 'CODMOVIMENTO'
@@ -840,8 +838,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosCODDETALHE: TLongintField
@@ -871,8 +867,6 @@ object dmPdv: TdmPdv
       ReadOnly = False
       Required = False
       DisplayFormat = '#,##0.0'
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosPRECO: TFloatField
@@ -884,8 +878,6 @@ object dmPdv: TdmPdv
       ReadOnly = False
       Required = False
       DisplayFormat = ',##0.00'
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosICMS: TFloatField
@@ -896,8 +888,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosUN: TStringField
@@ -918,8 +908,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosBAIXA: TStringField
@@ -941,8 +929,6 @@ object dmPdv: TdmPdv
       ReadOnly = False
       Required = False
       DisplayFormat = '#,##0.00'
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosDESCPRODUTO: TStringField
@@ -973,8 +959,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosVLR_BASE: TFloatField
@@ -985,8 +969,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosCODIGO: TLongintField
@@ -1016,8 +998,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosCFOP: TStringField
@@ -1048,8 +1028,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosVALOR_SEGURO: TFloatField
@@ -1060,8 +1038,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosVALOR_OUTROS: TFloatField
@@ -1072,8 +1048,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosOBS_MD: TStringField
@@ -1094,8 +1068,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosVALOR_COFINS: TFloatField
@@ -1106,8 +1078,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosII: TFloatField
@@ -1118,8 +1088,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosCSTIPI: TStringField
@@ -1160,8 +1128,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosPCOFINS: TFloatField
@@ -1172,8 +1138,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosNITEMPED: TLongintField
@@ -1243,8 +1207,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosCOD_BARRA: TStringField
@@ -1305,8 +1267,6 @@ object dmPdv: TdmPdv
       ReadOnly = False
       Required = False
       DisplayFormat = ',##0.00'
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosQTDEATACADO: TFloatField
@@ -1318,8 +1278,6 @@ object dmPdv: TdmPdv
       ReadOnly = False
       Required = False
       DisplayFormat = ',##0.0'
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosTOTALITEM: TFloatField
@@ -1331,8 +1289,6 @@ object dmPdv: TdmPdv
       ReadOnly = False
       Required = False
       DisplayFormat = ',##0.00'
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosVLR_BASEICMS: TFloatField
@@ -1343,8 +1299,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosPIPI: TFloatField
@@ -1355,8 +1309,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosVLRBC_IPI: TFloatField
@@ -1367,8 +1319,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosVLRBC_PIS: TFloatField
@@ -1379,8 +1329,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosVLRBC_COFINS: TFloatField
@@ -1391,8 +1339,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosVLRTOT_TRIB: TFloatField
@@ -1403,8 +1349,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosICMS_SUBST: TFloatField
@@ -1415,8 +1359,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqLancamentosCONTROLE_1: TSmallintField
@@ -1521,8 +1463,8 @@ object dmPdv: TdmPdv
         Name = 'PCODMOV'
         ParamType = ptInput
       end>
-    left = 392
-    top = 18
+    Left = 392
+    Top = 18
   end
   object sqEmpresa: TSQLQuery
     FieldDefs = <    
@@ -1992,8 +1934,8 @@ object dmPdv: TdmPdv
       'SELECT * FROM EMPRESA'
     )
     Params = <>
-    left = 128
-    top = 88
+    Left = 128
+    Top = 88
     object sqEmpresaEMPRESA: TStringField
       FieldKind = fkData
       FieldName = 'EMPRESA'
@@ -2268,8 +2210,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqEmpresaPORTA: TLongintField
@@ -2787,16 +2727,16 @@ object dmPdv: TdmPdv
     Database = IbCon
     Transaction = sTrans
     Params = <>
-    left = 464
-    top = 18
+    Left = 464
+    Top = 18
   end
   object sqBusca1: TSQLQuery
     FieldDefs = <>
     Database = IbCon
     Transaction = sTrans
     Params = <>
-    left = 320
-    top = 16
+    Left = 320
+    Top = 16
   end
   object qcds_ccusto: TSQLQuery
     FieldDefs = <    
@@ -2832,8 +2772,8 @@ object dmPdv: TdmPdv
         Name = 'PCONTADESPESA'
         ParamType = ptInput
       end>
-    left = 360
-    top = 88
+    Left = 360
+    Top = 88
     object qcds_ccustoCODIGO: TLongintField
       FieldKind = fkData
       FieldName = 'CODIGO'
@@ -3368,8 +3308,8 @@ object dmPdv: TdmPdv
         Name = 'pcusto'
         ParamType = ptInput
       end>
-    left = 200
-    top = 88
+    Left = 200
+    Top = 88
     object qsEmpresaEMPRESA: TStringField
       FieldKind = fkData
       FieldName = 'EMPRESA'
@@ -3645,8 +3585,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsEmpresaPORTA: TLongintField
@@ -4246,8 +4184,8 @@ object dmPdv: TdmPdv
         Name = 'pserie'
         ParamType = ptInput
       end>
-    left = 648
-    top = 520
+    Left = 648
+    Top = 520
     object qsMenorData_EXCLUIRMENORDATA: TDateField
       FieldKind = fkData
       FieldName = 'MENORDATA'
@@ -4293,8 +4231,8 @@ object dmPdv: TdmPdv
         Name = 'pserie'
         ParamType = ptInput
       end>
-    left = 848
-    top = 512
+    Left = 848
+    Top = 512
     object qsMaiorData_EXCLUIRMAIORDATA: TDateField
       FieldKind = fkData
       FieldName = 'MAIORDATA'
@@ -4307,8 +4245,8 @@ object dmPdv: TdmPdv
   end
   object dsNF: TDataSource
     DataSet = qcdsNF
-    left = 88
-    top = 328
+    Left = 88
+    Top = 328
   end
   object qcdsNF: TSQLQuery
     FieldDefs = <    
@@ -4828,8 +4766,8 @@ object dmPdv: TdmPdv
         Name = 'ENV'
         ParamType = ptInput
       end>
-    left = 40
-    top = 328
+    Left = 40
+    Top = 328
     object qcdsNFCFOP: TStringField
       FieldKind = fkData
       FieldName = 'CFOP'
@@ -4992,8 +4930,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFVALOR_ICMS: TFloatField
@@ -5004,8 +4940,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFBASE_ICMS_SUBST: TFloatField
@@ -5016,8 +4950,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFVALOR_ICMS_SUBST: TFloatField
@@ -5028,8 +4960,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFVALOR_PRODUTO: TFloatField
@@ -5040,8 +4970,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFVALOR_FRETE: TFloatField
@@ -5052,8 +4980,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFVALOR_SEGURO: TFloatField
@@ -5064,8 +4990,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFOUTRAS_DESP: TFloatField
@@ -5076,8 +5000,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFVALOR_IPI: TFloatField
@@ -5088,8 +5010,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFII: TFloatField
@@ -5100,8 +5020,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFBCII: TFloatField
@@ -5112,8 +5030,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFVALOR_TOTAL_NOTA: TFloatField
@@ -5124,8 +5040,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFFRETE: TStringField
@@ -5226,8 +5140,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFESPECIE: TStringField
@@ -5345,8 +5257,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFPROTOCOLOENV: TStringField
@@ -5387,8 +5297,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFVALOR_PAGAR: TFloatField
@@ -5399,8 +5307,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFVALOR_PIS: TFloatField
@@ -5411,8 +5317,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFVALOR_COFINS: TFloatField
@@ -5423,8 +5327,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFVALOR_DESCONTO: TFloatField
@@ -5435,8 +5337,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFTRANSP2: TStringField
@@ -5466,8 +5366,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFBASE_PIS: TFloatField
@@ -5478,8 +5376,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFBASE_COFINS: TFloatField
@@ -5490,8 +5386,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFVLRTOT_TRIB: TFloatField
@@ -5502,8 +5396,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFSTATUS: TStringField
@@ -5633,8 +5525,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFV_FCP: TFloatField
@@ -5645,8 +5535,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFV_FCPST: TFloatField
@@ -5657,8 +5545,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFV_FCPSTRET: TFloatField
@@ -5669,8 +5555,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsNFV_IPI_DEVOL: TFloatField
@@ -5681,8 +5565,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
   end
@@ -5790,8 +5672,8 @@ object dmPdv: TdmPdv
         Name = 'pPARAM'
         ParamType = ptInput
       end>
-    left = 720
-    top = 16
+    Left = 720
+    Top = 16
     object qcds_parametroDESCRICAO: TStringField
       FieldKind = fkData
       FieldName = 'DESCRICAO'
@@ -5940,8 +5822,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
   end
@@ -6099,8 +5979,8 @@ object dmPdv: TdmPdv
         Name = 'id'
         ParamType = ptInput
       end>
-    left = 448
-    top = 88
+    Left = 448
+    Top = 88
     object qsFornecCODCLIENTE: TLongintField
       FieldKind = fkData
       FieldName = 'CODCLIENTE'
@@ -6475,8 +6355,8 @@ object dmPdv: TdmPdv
         Name = 'id'
         ParamType = ptInput
       end>
-    left = 536
-    top = 88
+    Left = 536
+    Top = 88
     object qsClienteCODCLIENTE: TLongintField
       FieldKind = fkData
       FieldName = 'CODCLIENTE'
@@ -6828,8 +6708,8 @@ object dmPdv: TdmPdv
         Name = 'id'
         ParamType = ptInput
       end>
-    left = 624
-    top = 88
+    Left = 624
+    Top = 88
     object qsCFOPCFCOD: TStringField
       FieldKind = fkData
       FieldName = 'CFCOD'
@@ -6868,8 +6748,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsCFOPREDUCAO: TFloatField
@@ -6880,8 +6758,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsCFOPIPI: TFloatField
@@ -6892,8 +6768,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsCFOPICMS_SUBSTRIB: TFloatField
@@ -6904,8 +6778,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsCFOPICMS_SUBSTRIB_IC: TFloatField
@@ -6916,8 +6788,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsCFOPICMS_SUBSTRIB_IND: TFloatField
@@ -6928,8 +6798,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsCFOPNAOENVFATURA: TStringField
@@ -6980,8 +6848,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsCFOPPIS: TFloatField
@@ -6992,8 +6858,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsCFOPCODFISCAL: TStringField
@@ -7037,8 +6901,8 @@ object dmPdv: TdmPdv
         Name = 'SIGLA'
         ParamType = ptInput
       end>
-    left = 688
-    top = 88
+    Left = 688
+    Top = 88
     object qsEstadoCODIGO: TLongintField
       FieldKind = fkData
       FieldName = 'CODIGO'
@@ -7541,8 +7405,8 @@ object dmPdv: TdmPdv
         Name = 'id'
         ParamType = ptInput
       end>
-    left = 144
-    top = 328
+    Left = 144
+    Top = 328
     object cdsItensNFCODPRODUTO: TLongintField
       FieldKind = fkData
       FieldName = 'CODPRODUTO'
@@ -7569,8 +7433,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFPRECO: TFloatField
@@ -7581,8 +7443,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFCFOP: TStringField
@@ -7653,8 +7513,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFCSOSN: TStringField
@@ -7675,8 +7533,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFFRETE: TFloatField
@@ -7687,8 +7543,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVALOR_DESCONTO: TFloatField
@@ -7699,8 +7553,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVIPI: TFloatField
@@ -7711,8 +7563,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVLR_BASEICMS: TFloatField
@@ -7723,8 +7573,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVALOR_ICMS: TFloatField
@@ -7735,8 +7583,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVLR_BASE: TFloatField
@@ -7747,8 +7593,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFICMS_SUBST: TFloatField
@@ -7759,8 +7603,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFICMS_SUBSTD: TFloatField
@@ -7771,8 +7613,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVALOR_PIS: TFloatField
@@ -7783,8 +7623,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVALOR_COFINS: TFloatField
@@ -7795,8 +7633,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVALTOTAL: TFloatField
@@ -7807,8 +7643,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVALOR_SEGURO: TFloatField
@@ -7819,8 +7653,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVALOR_OUTROS: TFloatField
@@ -7831,8 +7663,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFII: TFloatField
@@ -7843,8 +7673,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFBCII: TFloatField
@@ -7855,8 +7683,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFCSTIPI: TStringField
@@ -7897,8 +7723,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFPCOFINS: TFloatField
@@ -7909,8 +7733,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFNITEMPED: TLongintField
@@ -7940,8 +7762,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVLRBC_PIS: TFloatField
@@ -7952,8 +7772,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVLRBC_COFINS: TFloatField
@@ -7964,8 +7782,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVLRTOT_TRIB: TFloatField
@@ -7976,8 +7792,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFCOD_BARRA: TStringField
@@ -7998,8 +7812,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFPFCPUFDEST: TFloatField
@@ -8010,8 +7822,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFPICMSUFDEST: TFloatField
@@ -8022,8 +7832,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFPICMSINTER: TFloatField
@@ -8034,8 +7842,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFPICMSINTERPART: TFloatField
@@ -8046,8 +7852,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVFCPUFDEST: TFloatField
@@ -8058,8 +7862,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVICMSUFDEST: TFloatField
@@ -8070,8 +7872,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVICMSUFREMET: TFloatField
@@ -8082,8 +7882,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFCST_IPI_CENQ: TStringField
@@ -8123,8 +7921,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVALORIPIDEVOL: TFloatField
@@ -8135,8 +7931,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFICMS_PST: TFloatField
@@ -8147,8 +7941,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFV_B_FCP: TFloatField
@@ -8159,8 +7951,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFV_FCP: TFloatField
@@ -8171,8 +7961,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFP_FCP: TFloatField
@@ -8183,8 +7971,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFV_B_FCPST: TFloatField
@@ -8195,8 +7981,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFV_FCPST: TFloatField
@@ -8207,8 +7991,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFP_FCPST: TFloatField
@@ -8219,8 +8001,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFV_B_FCPSTRET: TFloatField
@@ -8231,8 +8011,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFV_FCPSTRET: TFloatField
@@ -8243,8 +8021,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFP_FCPSTRET: TFloatField
@@ -8255,8 +8031,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVBCSTRET: TFloatField
@@ -8267,8 +8041,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVICMSSTRET: TFloatField
@@ -8279,8 +8051,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVBCSTDEST: TFloatField
@@ -8291,8 +8061,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVICMSSTDEST: TFloatField
@@ -8303,8 +8071,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVBFCPUFDEST: TFloatField
@@ -8315,8 +8081,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFPGLP: TFloatField
@@ -8327,8 +8091,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFPGNN: TFloatField
@@ -8339,8 +8101,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFVPART: TFloatField
@@ -8351,8 +8111,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFPGNI: TFloatField
@@ -8363,8 +8121,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsItensNFLOTE: TStringField
@@ -8401,8 +8157,8 @@ object dmPdv: TdmPdv
     Database = IbCon
     Transaction = sTrans
     Params = <>
-    left = 232
-    top = 328
+    Left = 232
+    Top = 328
   end
   object sTabIBGE: TSQLQuery
     FieldDefs = <    
@@ -8453,8 +8209,8 @@ object dmPdv: TdmPdv
         Name = 'Cidade'
         ParamType = ptInput
       end>
-    left = 856
-    top = 88
+    Left = 856
+    Top = 88
     object sTabIBGENM_LOCALIDADE: TStringField
       FieldKind = fkData
       FieldName = 'NM_LOCALIDADE'
@@ -8907,8 +8663,8 @@ object dmPdv: TdmPdv
         Name = 'Codpro'
         ParamType = ptInput
       end>
-    left = 768
-    top = 88
+    Left = 768
+    Top = 88
     object qsProdutosCODPRODUTO: TLongintField
       FieldKind = fkData
       FieldName = 'CODPRODUTO'
@@ -8975,8 +8731,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosESTOQUEATUAL: TFloatField
@@ -8987,8 +8741,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosESTOQUEREPOSICAO: TFloatField
@@ -8999,8 +8751,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosESTOQUEMINIMO: TFloatField
@@ -9011,8 +8761,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosVALORUNITARIOATUAL: TFloatField
@@ -9023,8 +8771,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosVALORUNITARIOANTERIOR: TFloatField
@@ -9035,8 +8781,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosICMS: TFloatField
@@ -9047,8 +8791,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosCODALMOXARIFADO: TLongintField
@@ -9068,8 +8810,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosCLASSIFIC_FISCAL: TStringField
@@ -9100,8 +8840,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosPRODUTO: TStringField
@@ -9145,8 +8883,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosCOD_BARRA: TStringField
@@ -9167,8 +8903,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosTIPO: TStringField
@@ -9239,8 +8973,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosPESO_QTDE: TFloatField
@@ -9251,8 +8983,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosDATACADASTRO: TDateTimeField
@@ -9272,8 +9002,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosPRO_COD: TStringField
@@ -9363,8 +9091,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosVALORCOMISSAO: TFloatField
@@ -9375,8 +9101,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosGERADESCONTO: TStringField
@@ -9484,8 +9208,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosCEST: TStringField
@@ -9526,8 +9248,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosVALIQPROD: TFloatField
@@ -9538,8 +9258,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosPGLP: TFloatField
@@ -9550,8 +9268,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosPGNN: TFloatField
@@ -9562,8 +9278,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosVPART: TFloatField
@@ -9574,8 +9288,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosPGNI: TFloatField
@@ -9586,8 +9298,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosPRECOATACADO: TFloatField
@@ -9598,8 +9308,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosQTDEATACADO: TFloatField
@@ -9610,8 +9318,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsProdutosGENERO: TLongintField
@@ -9665,8 +9371,8 @@ object dmPdv: TdmPdv
         Name = 'tipo'
         ParamType = ptInput
       end>
-    left = 320
-    top = 328
+    Left = 320
+    Top = 328
     object qcdsFaturaDATAFATURA: TDateField
       FieldKind = fkData
       FieldName = 'DATAFATURA'
@@ -9694,8 +9400,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qcdsFaturaFORMAPAGAMENTO: TStringField
@@ -9748,8 +9452,8 @@ object dmPdv: TdmPdv
         Name = 'pnf'
         ParamType = ptInput
       end>
-    left = 384
-    top = 328
+    Left = 384
+    Top = 328
     object qsNFCNUMNF: TLongintField
       FieldKind = fkData
       FieldName = 'NUMNF'
@@ -9939,8 +9643,8 @@ object dmPdv: TdmPdv
         Name = 'cli'
         ParamType = ptInput
       end>
-    left = 120
-    top = 152
+    Left = 120
+    Top = 152
     object qsEndEntregaCODENDERECO: TLongintField
       FieldKind = fkData
       FieldName = 'CODENDERECO'
@@ -10212,8 +9916,8 @@ object dmPdv: TdmPdv
         Name = 'CODDET'
         ParamType = ptInput
       end>
-    left = 440
-    top = 328
+    Left = 440
+    Top = 328
     object sAdicaoADIC_CODDET: TLongintField
       FieldKind = fkData
       FieldName = 'ADIC_CODDET'
@@ -10334,8 +10038,8 @@ object dmPdv: TdmPdv
         Name = 'CODDI'
         ParamType = ptInput
       end>
-    left = 512
-    top = 328
+    Left = 512
+    Top = 328
     object sDiDI_CODDI: TLongintField
       FieldKind = fkData
       FieldName = 'DI_CODDI'
@@ -10454,8 +10158,8 @@ object dmPdv: TdmPdv
         Name = 'Codpro'
         ParamType = ptInput
       end>
-    left = 216
-    top = 152
+    Left = 216
+    Top = 152
     object sdsProd_CombCPRODANP: TStringField
       FieldKind = fkData
       FieldName = 'CPRODANP'
@@ -10474,8 +10178,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsProd_CombVALIQPROD: TFloatField
@@ -10486,8 +10188,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
   end
@@ -10731,8 +10431,8 @@ object dmPdv: TdmPdv
         Name = 'CODFISCAL'
         ParamType = ptInput
       end>
-    left = 312
-    top = 152
+    Left = 312
+    Top = 152
     object sdsCfopNCMNCM: TStringField
       FieldKind = fkData
       FieldName = 'NCM'
@@ -10781,8 +10481,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopNCMICMS_SUBST_IC: TFloatField
@@ -10793,8 +10491,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopNCMICMS_SUBST_IND: TFloatField
@@ -10805,8 +10501,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopNCMICMS: TFloatField
@@ -10817,8 +10511,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopNCMICMS_BASE: TFloatField
@@ -10829,8 +10521,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopNCMCST: TStringField
@@ -10851,8 +10541,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopNCMCSOSN: TStringField
@@ -10903,8 +10591,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopNCMCOFINS: TFloatField
@@ -10915,8 +10601,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopNCMORIGEM: TLongintField
@@ -11006,8 +10690,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopNCMPFCPUFDEST: TFloatField
@@ -11018,8 +10700,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopNCMPICMSUFDEST: TFloatField
@@ -11030,8 +10710,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopNCMPICMSINTER: TFloatField
@@ -11042,8 +10720,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopNCMPICMSINTERPART: TFloatField
@@ -11054,8 +10730,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopNCMVFCPUFDEST: TFloatField
@@ -11066,8 +10740,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopNCMVICMSUFDEST: TFloatField
@@ -11078,8 +10750,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopNCMVICMSUFREMET: TFloatField
@@ -11090,8 +10760,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopNCMCST_IPI_CENQ: TStringField
@@ -11112,8 +10780,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopNCMREDBASECOFINS: TFloatField
@@ -11124,8 +10790,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopNCMREDBASEIPI: TFloatField
@@ -11136,8 +10800,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopNCMII_PERCENTUAL: TFloatField
@@ -11148,8 +10810,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
   end
@@ -11323,8 +10983,8 @@ object dmPdv: TdmPdv
         Name = 'codcfop'
         ParamType = ptInput
       end>
-    left = 406
-    top = 152
+    Left = 406
+    Top = 152
     object sdsCfopProdCOD_PROD: TLongintField
       FieldKind = fkData
       FieldName = 'COD_PROD'
@@ -11362,8 +11022,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopProdICMS_SUBST_IC: TFloatField
@@ -11374,8 +11032,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopProdICMS_SUBST_IND: TFloatField
@@ -11386,8 +11042,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopProdICMS: TFloatField
@@ -11398,8 +11052,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopProdICMS_BASE: TFloatField
@@ -11410,8 +11062,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopProdCST: TStringField
@@ -11432,8 +11082,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopProdCSOSN: TStringField
@@ -11484,8 +11132,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopProdCOFINS: TFloatField
@@ -11496,8 +11142,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopProdALIQ_CUPOM: TStringField
@@ -11518,8 +11162,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopProdPFCPUFDEST: TFloatField
@@ -11530,8 +11172,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopProdPICMSUFDEST: TFloatField
@@ -11542,8 +11182,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopProdPICMSINTER: TFloatField
@@ -11554,8 +11192,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopProdPICMSINTERPART: TFloatField
@@ -11566,8 +11202,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopProdVFCPUFDEST: TFloatField
@@ -11578,8 +11212,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopProdVICMSUFDEST: TFloatField
@@ -11590,8 +11222,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopProdVICMSUFREMET: TFloatField
@@ -11602,8 +11232,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sdsCfopProdCST_IPI_CENQ: TStringField
@@ -11783,8 +11411,8 @@ object dmPdv: TdmPdv
         Name = 'pTRANSP'
         ParamType = ptInput
       end>
-    left = 672
-    top = 152
+    Left = 672
+    Top = 152
     object qsTranspCODTRANSP: TLongintField
       FieldKind = fkData
       FieldName = 'CODTRANSP'
@@ -12177,8 +11805,8 @@ object dmPdv: TdmPdv
       ''
     )
     Params = <>
-    left = 592
-    top = 152
+    Left = 592
+    Top = 152
     object qsListaTranspCODTRANSP: TLongintField
       FieldKind = fkData
       FieldName = 'CODTRANSP'
@@ -12467,8 +12095,8 @@ object dmPdv: TdmPdv
       ''
     )
     Params = <>
-    left = 488
-    top = 152
+    Left = 488
+    Top = 152
     object qsCentroCustoCODEMPRESA: TLongintField
       FieldKind = fkData
       FieldName = 'CODEMPRESA'
@@ -12587,8 +12215,8 @@ object dmPdv: TdmPdv
       'SELECT * FROM CCE'
     )
     Params = <>
-    left = 568
-    top = 328
+    Left = 568
+    Top = 328
     object qsCCECHAVE: TStringField
       FieldKind = fkData
       FieldName = 'CHAVE'
@@ -13169,8 +12797,8 @@ object dmPdv: TdmPdv
       'select * from EMPRESA'
     )
     Params = <>
-    left = 276
-    top = 88
+    Left = 276
+    Top = 88
     object qsEmpresa1EMPRESA: TStringField
       FieldKind = fkData
       FieldName = 'EMPRESA'
@@ -13446,8 +13074,6 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object qsEmpresa1PORTA: TLongintField
@@ -14004,20 +13630,20 @@ object dmPdv: TdmPdv
   end
   object dsCCE: TDataSource
     DataSet = qsCCE
-    left = 624
-    top = 328
+    Left = 624
+    Top = 328
   end
   object Timer1: TTimer
     Interval = 10000
     OnTimer = Timer1Timer
-    left = 131
-    top = 451
+    Left = 131
+    Top = 451
   end
   object Timer2: TTimer
     Enabled = False
     Interval = 300000
     OnTimer = Timer2Timer
-    left = 216
-    top = 456
+    Left = 216
+    Top = 456
   end
 end

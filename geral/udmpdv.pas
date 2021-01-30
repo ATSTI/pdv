@@ -1485,6 +1485,13 @@ begin
       ' WHERE CODATUALIZA = 5002');
       sTrans.Commit;
     end;
+    if (versao_sistema = '1.3') then
+    begin
+      campo_novo('FORMA_ENTRADA', 'CAIXINHA', 'DOUBLE PRECISION');
+      IbCon.ExecuteDirect('UPDATE ATUALIZA SET VERSAO = ' + QuotedStr('1.4') +
+      ' WHERE CODATUALIZA = 5002');
+      sTrans.Commit;
+    end;
   end;
   if (sistema = 'CTe') then
   begin
