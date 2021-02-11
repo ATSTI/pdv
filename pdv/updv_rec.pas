@@ -637,10 +637,17 @@ begin
     dmPdv.sqBusca.Next;
   end;
   try
+    // 08/02/2021 Coloquei aqui pq no Caldana nao esta atualizando o estoque
+    dmPdv.IbCon.ExecuteDirect('EXECUTE PROCEDURE ESTOQUE_ATUALIZA_V (' +
+      IntToStr(vCodMovimento) + ')');
     dmPdv.sTrans.Commit;
   except
-    dmpdv.sTrans.Rollback;
-    ShowMessage('Erro para finalizar a venda.');
+    on e: Exception do
+    begin
+      MessageDlg('Error','Erro na finalização da venda ' +
+        e.Message,mtError,[mbOK],0);
+      dmPdv.sTrans.Rollback;
+    end;
   end;
 end;
 
@@ -838,7 +845,8 @@ begin
       else if lFile[i] = 'cliente' then
         Writeln(Impressora, clientecupom)
       else if lFile[i] = 'doc' then
-        Writeln(Impressora, '  ' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now) + ' Pedido :' + IntToStr(vCodMovimento))
+        Writeln(Impressora, '  ' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now) +
+          ' Pedido :' + IntToStr(vCodMovimento) + '/' + label11.Caption)
       else if lFile[i] = 'itens' then
       begin
         while not dmPdv.sqLancamentos.Eof do
@@ -1761,6 +1769,7 @@ begin
   //EstoqueExe := TEstoqueThread.Create(True);
   //EstoqueExe.FreeOnTerminate := True;
   //EstoqueExe.Resume;
+
   gerarjson;
   Close;
   // sendo chamado pelo dmpdv

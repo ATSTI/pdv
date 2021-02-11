@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="11"/>
+    <BuildModes Active="Default"/>
+    <Units Count="2">
+      <Unit0>
+        <Filename Value="prjSuporte.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="usuporte.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fSuporte"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uSuporte"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="37"/>
+        <CursorPos X="32" Y="56"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit1>
+    </Units>
+    <JumpHistory Count="6" HistoryIndex="5">
+      <Position1>
+        <Filename Value="usuporte.pas"/>
+      </Position1>
+      <Position2>
+        <Filename Value="usuporte.pas"/>
+        <Caret Line="37" Column="33" TopLine="16"/>
+      </Position2>
+      <Position3>
+        <Filename Value="usuporte.pas"/>
+        <Caret Line="48" Column="34" TopLine="25"/>
+      </Position3>
+      <Position4>
+        <Filename Value="usuporte.pas"/>
+        <Caret Line="44" Column="36" TopLine="26"/>
+      </Position4>
+      <Position5>
+        <Filename Value="usuporte.pas"/>
+        <Caret Line="54" Column="32" TopLine="35"/>
+      </Position5>
+      <Position6>
+        <Filename Value="usuporte.pas"/>
+        <Caret Line="55" Column="32" TopLine="36"/>
+      </Position6>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes Count="0" ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>
