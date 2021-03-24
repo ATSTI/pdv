@@ -93,11 +93,11 @@ object fAbrirCaixa: TfAbrirCaixa
       ParentFont = False
     end
     object Label6: TLabel
-      Left = 356
+      Left = 331
       Height = 16
       Top = 122
-      Width = 53
-      Caption = 'Cheque:'
+      Width = 78
+      Caption = 'Cheque/Pix:'
       Font.CharSet = ANSI_CHARSET
       Font.Height = -13
       Font.Name = 'Arial'

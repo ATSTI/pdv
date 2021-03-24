@@ -37,37 +37,37 @@ var k: Integer;
   dadosJson: TJsonNode;
   responseData: String;
   listaArquivos : TStringList;
-  //logs:TextFile;
+  logs:TextFile;
   ver : String;
 begin
   // log
   ver := 'C:\home\log_integracao.txt';
-  //AssignFile(logs, ver);
+  AssignFile(logs, ver);
   // VER SE EXISTE ARQUIVO
   listaArquivos := TStringList.Create;
   try
-    //if FileExists(ver) then
-    //  Append(logs)
-    //else
-    //  Rewrite(logs);
-
+    if FileExists(ver) then
+      Append(logs)
+    else
+      Rewrite(logs);
     FindAllFiles(listaArquivos, path_integracao, '*.txt', true);
     for k:=0 to Pred(listaArquivos.Count) do
     begin
-      //Writeln(logs, 'Iniciando integracao : ' + FormatDateTime('mm/dd/yyyy hh:MM', Now));
-      //Writeln(logs, 'Path : ' + path_integracao);
+      Writeln(logs, 'Iniciando integracao : ' + FormatDateTime('mm/dd/yyyy hh:MM', Now));
+      Writeln(logs, 'Path : ' + path_integracao);
+      Writeln(logs, 'URL : ' + path_integracao_url);
 
       // SE EXISTE ENVIA
       postJson := TJSONObject.Create;
       dadosJson := TJsonNode.Create;
       postJson.Add('title', 'Enviando Movimento');
 
-      //Writeln(logs, 'Empresa : ' + nome_empresa_integra);
+      Writeln(logs, 'Empresa : ' + nome_empresa_integra);
 
       postJson.Add('body', nome_empresa_integra);
       dadosJson.LoadFromFile(listaArquivos[k]);
       ver := listaArquivos[k];
-      //Writeln(logs, 'Arquivo : ' + listaArquivos[k]);
+      Writeln(logs, 'Arquivo : ' + listaArquivos[k]);
 
       postJson.Add('tab_venda', dadosJson.ToString);
       postJson.Add('userId', 1);
@@ -79,10 +79,10 @@ begin
           responseData := Post(path_integracao_url);
           if (responseData <> 'N') then
           begin
-            //Writeln(logs, 'Existe arquivo : ' + path_integracao + responseData + '_' + cod_caixa_integra + '.txt');
+            Writeln(logs, 'Existe arquivo : ' + path_integracao + responseData + '_' + cod_caixa_integra + '.txt');
             if FileExists(path_integracao + responseData + '_' + cod_caixa_integra + '.txt') then
             begin
-              //Writeln(logs, 'Excluindo arquivo : ' + path_integracao + responseData + '_' + cod_caixa_integra + '.txt');
+              Writeln(logs, 'Excluindo arquivo : ' + path_integracao + responseData + '_' + cod_caixa_integra + '.txt');
               DeleteFile(path_integracao + responseData + '_' + cod_caixa_integra + '.txt');
             end;
           end;
@@ -93,7 +93,7 @@ begin
     end;
   finally
     listaArquivos.Free;
-    //CloseFile(logs);
+    CloseFile(logs);
   end;
 end;
 

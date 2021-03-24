@@ -637,6 +637,7 @@ var num_ln: integer;
 begin
   Protocolo := '';
   abrirEmpresa;
+  memoLog.Lines.Append('Abriu a Empresa');
   ACBrNFe1.Configuracoes.WebServices.UF := Trim(dmPdv.qsEmpresaUF.AsString);
   dmPdv.qcdsNF.DisableControls;
   num_ln := dmPdv.qcdsNF.RecNo;
@@ -645,13 +646,21 @@ begin
   begin
     if (trim(dmPdv.qcdsNFSELECIONOU.AsString) = 'S') then
     begin
+      memoLog.Lines.Append('Carregando logo');
       nfe_carregalogo;
       num_ln := dmPdv.qcdsNF.RecNo;
       codnf := dmPdv.qcdsNFNUMNF.AsInteger;
+      memoLog.Lines.Append('Limpa ACBR 1');
       ACBrNFe1.NotasFiscais.Clear;
-
-      CarregarXML(Copy(Trim(dmPdv.qcdsNFNOMEXML.AsString),0,44));
-
+      if (dmPdv.qcdsNFNOMEXML.AsString <> '') then
+      begin
+          memoLog.Lines.Append('Carrega com chave');
+          CarregarXML(Copy(Trim(dmPdv.qcdsNFNOMEXML.AsString),0,44));
+      end
+      else begin
+          memoLog.Lines.Append('Sem com chave');
+          CarregarXML('');
+      end;
       if (ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.nNF <> StrToInt(Trim(dmPdv.qcdsNFNOTASERIE.AsString))) then
       begin
         ShowMessage('Nota Selecionada diferente do Xml');
@@ -4316,15 +4325,18 @@ procedure TfNFe.CarregarXML(ChaveNFCe: String);
 var Dia, Mes, Ano: Word;
   path_dosxml: String;
 begin
+  memoLog.Lines.Add('Entrou Carrega XML');
   DecodeDate(Now, Ano, Mes, Dia);
   OpenDialog1.Title := 'Selecione a NFe';
   OpenDialog1.DefaultExt := '*-nfe.xml';
   OpenDialog1.Filter := 'Arquivos NFe (*-nfe.xml)|*-nfe.xml|Arquivos XML (*.xml)|*.xml|Todos os Arquivos (*.*)|*.*';
   path_dosxml := Edit1.Text + '\' + IntToStr(Ano) + FormatFloat('00', mes);// + '\';
   OpenDialog1.InitialDir := path_dosxml;
+  memoLog.Lines.Add('Limpa o acbr nfe1');
   ACBrNFe1.NotasFiscais.Clear;
   if (Length(ChaveNFCe) > 30) then
   begin
+    memoLog.Lines.Add('Tem a chave XML');
     if (FileExists(path_dosxml + '\' +
       ChaveNFCe + '-nfe.xml')) then
     begin
@@ -4338,8 +4350,10 @@ begin
     end;
   end
   else begin
-    if OpenDialog1.Execute then
+    //memoLog.Lines.Add('Não tem a chave');
+    if (OpenDialog1.Execute) then
     begin
+      //memoLog.Lines.Add('Não tem a chave, abrindo acbr');
       ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
     end;
   end;
@@ -5271,6 +5285,8 @@ begin
         Total.ICMSTot.vOutro := dmPdv.qcdsNFOUTRAS_DESP.AsVariant;
         Total.ICMSTot.vNF   := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant;
         Total.ICMSTot.vTotTrib := dmPdv.qcdsNFVLRTOT_TRIB.AsVariant;
+        Total.ICMSTot.vICMSUFDest:=tot2;
+
         if (dmPdv.qcdsNFII.AsFloat > 0) then
         begin
           Total.ICMSTot.vII := dmPdv.qcdsNFII.AsFloat;

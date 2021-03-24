@@ -1184,7 +1184,13 @@ end;
 
 procedure TfPdv.FormShow(Sender: TObject);
 var sqlP : String;
+  logs:TextFile;
 begin
+  AssignFile(logs, 'log.txt');
+  try
+    Rewrite(logs);
+    Writeln(logs, 'Abrindo sistema');
+
   codVendedorAnterior := 0;
   if (dmpdv.empresa_integra <> 'ATS') then
   begin
@@ -1214,7 +1220,7 @@ begin
     fPDV_Rec.OutrosCartoes:='S';
     dmPdv.OutrosCartoes := 'S';
   end;
-
+  Writeln(logs, 'Abrindo sistema 2');
   sqlP := 'SELECT CODCAIXA, NOMECAIXA ';
   sqlP += ' FROM CAIXA_CONTROLE  ';
   sqlP += ' WHERE CODUSUARIO = ' + dmPdv.varLogado;
@@ -1242,12 +1248,18 @@ begin
   edVendedor.Text := IntToStr(dmpdv.vendedor_padrao);
   edCaixa.Text := dmPdv.nomeLogado + '-' + dmPdv.nomeCaixa;
   buscaPedidosAbertoCaixa(0);
+  Writeln(logs, 'Abrindo sistema 3');
   if (dmPdv.usaComanda > 0) then
   begin
     if (btnVnd1.Caption <> '') then
       abrePedido(StrToInt(btnVnd1.Caption));
     pnComanda.Visible:=True;
   end;
+  Writeln(logs, 'Abrindo sistema 4');
+  finally
+    CloseFile(logs);
+  end;
+
 end;
 
 procedure TfPdv.Image1Click(Sender: TObject);

@@ -23,17 +23,18 @@ type
     acCartaoCredito: TAction;
     acPrazo: TAction;
     acCheque: TAction;
-    acOutros: TAction;
     acFechar: TAction;
     acDinheiro: TAction;
     acExcluirLancamento: TAction;
     acCancelaFechamento: TAction;
     acNfce: TAction;
+    actionPix: TAction;
     acVoltarVenda: TAction;
     ActionListFechamento: TActionList;
     BitBtn1: TBitBtn;
     BitBtn19: TBitBtn;
     BitBtn2: TBitBtn;
+    BitBtn21: TBitBtn;
     BitBtn4: TBitBtn;
     BitBtn5: TBitBtn;
     btnCupom: TBitBtn;
@@ -118,6 +119,7 @@ type
     procedure acNfceExecute(Sender: TObject);
     procedure acOutrosExecute(Sender: TObject);
     procedure acPrazoExecute(Sender: TObject);
+    procedure actionPixExecute(Sender: TObject);
     procedure acVoltarVendaExecute(Sender: TObject);
     procedure BitBtn12Click(Sender: TObject);
     procedure BitBtn17Click(Sender: TObject);
@@ -503,6 +505,7 @@ var vRec : TRecebimento;
    tot_lanc: integer;
    num_lanc: Integer;
    i: Integer;
+   ver_sql: String;
 begin
   vlr_entrada := 0;
   vlr_desc := 0;
@@ -514,12 +517,13 @@ begin
     ' WHERE STATE = 0 AND ID_ENTRADA = ' +
     IntToStr(vCodMovimento));
   try
-    dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET STATUS = 1 ' +
+    ver_sql := 'UPDATE MOVIMENTO SET STATUS = 1 ' +
       ' , CODCLIENTE = ' + IntToStr(vCliente) +
       ' , DATA_FECHOU = ' + QuotedStr(FormatDateTime('mm/dd/yyyy hh:MM:ss', Now)) +
-      ' , CONTROLE = ' + QuotedStr(Label11.Caption) +
+      ' , CONTROLE = ' + QuotedStr(IntToStr(num_cx)) +
       ' WHERE CODMOVIMENTO  = ' +
-      IntToStr(vCodMovimento) + ' AND STATUS = 0');
+      IntToStr(vCodMovimento) + ' AND STATUS = 0';
+    dmPdv.IbCon.ExecuteDirect(ver_sql);
     dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTODETALHE SET BAIXA = 1 ' +
       ' WHERE CODMOVIMENTO  = ' + IntToStr(vCodMovimento) +
       ' AND BAIXA IS NULL AND STATUS = 0');
@@ -1769,8 +1773,8 @@ begin
   //EstoqueExe := TEstoqueThread.Create(True);
   //EstoqueExe.FreeOnTerminate := True;
   //EstoqueExe.Resume;
-
-  gerarjson;
+  if (dmpdv.empresa_integra <> 'ATS') then
+    gerarjson;
   Close;
   // sendo chamado pelo dmpdv
   //IntegracaoOdoo := TIntegracaoOdoo.Create(True);
@@ -1836,6 +1840,13 @@ begin
   lblForma.Caption:='4-Faturar';
   lblParcela.Visible:=True;
   edParcela.Visible:=True;
+  edPagamento.SetFocus;
+end;
+
+procedure TfPDV_Rec.actionPixExecute(Sender: TObject);
+begin
+  // PIX
+  lblForma.Caption:='6-Pix';
   edPagamento.SetFocus;
 end;
 

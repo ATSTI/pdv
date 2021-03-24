@@ -8,7 +8,7 @@ object fNFe: TfNFe
   ClientWidth = 1069
   OnCreate = FormCreate
   OnShow = FormShow
-  LCLVersion = '2.0.10.0'
+  LCLVersion = '2.0.12.0'
   object StatusBar1: TStatusBar
     Left = 0
     Height = 20
@@ -3489,14 +3489,14 @@ object fNFe: TfNFe
     end
     object Certificado: TTabSheet
       Caption = 'Configuração'
-      ClientHeight = 611
+      ClientHeight = 616
       ClientWidth = 1061
       ImageIndex = 2
       object Label42: TLabel
         Left = 504
-        Height = 13
+        Height = 14
         Top = 192
-        Width = 249
+        Width = 243
         Caption = 'Diretórios com os arquivos XSD(Schemas) Padrão'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clBlack
@@ -3509,9 +3509,9 @@ object fNFe: TfNFe
       end
       object Label47: TLabel
         Left = 192
-        Height = 13
+        Height = 14
         Top = 192
-        Width = 105
+        Width = 95
         Caption = 'Caminho do arquivo'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clBlack
@@ -3524,9 +3524,9 @@ object fNFe: TfNFe
       end
       object Label33: TLabel
         Left = 16
-        Height = 13
+        Height = 14
         Top = 192
-        Width = 115
+        Width = 106
         Caption = 'Diretório XML por Mês'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clBlack
@@ -3555,9 +3555,9 @@ object fNFe: TfNFe
         TabOrder = 0
         object Label29: TLabel
           Left = 8
-          Height = 13
+          Height = 14
           Top = 8
-          Width = 46
+          Width = 41
           Caption = 'Caminho'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -3570,9 +3570,9 @@ object fNFe: TfNFe
         end
         object Label30: TLabel
           Left = 8
-          Height = 13
+          Height = 14
           Top = 48
-          Width = 32
+          Width = 31
           Caption = 'Senha'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -3585,9 +3585,9 @@ object fNFe: TfNFe
         end
         object Label31: TLabel
           Left = 8
-          Height = 13
+          Height = 14
           Top = 88
-          Width = 85
+          Width = 80
           Caption = 'Número de Série'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -3600,14 +3600,14 @@ object fNFe: TfNFe
         end
         object edtCaminho: TEdit
           Left = 8
-          Height = 21
+          Height = 22
           Top = 24
           Width = 249
           TabOrder = 0
         end
         object edtSenha: TEdit
           Left = 8
-          Height = 21
+          Height = 22
           Top = 64
           Width = 249
           EchoMode = emPassword
@@ -3616,7 +3616,7 @@ object fNFe: TfNFe
         end
         object edtNumSerieABA: TEdit
           Left = 8
-          Height = 21
+          Height = 22
           Top = 104
           Width = 215
           TabOrder = 2
@@ -3760,7 +3760,7 @@ object fNFe: TfNFe
       end
       object edtPathSchemas: TEdit
         Left = 760
-        Height = 23
+        Height = 21
         Top = 182
         Width = 248
         ReadOnly = True
@@ -3784,7 +3784,7 @@ object fNFe: TfNFe
       end
       object Edit6: TEdit
         Left = 304
-        Height = 23
+        Height = 21
         Top = 184
         Width = 177
         Color = cl3DLight
@@ -4339,9 +4339,9 @@ object fNFe: TfNFe
         TabOrder = 9
         object Label36: TLabel
           Left = 745
-          Height = 13
+          Height = 14
           Top = 328
-          Width = 28
+          Width = 27
           Caption = 'SMTP'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -4354,23 +4354,23 @@ object fNFe: TfNFe
         end
         object edtSMTP: TEdit
           Left = 128
-          Height = 23
+          Height = 21
           Top = 17
           Width = 200
           TabOrder = 0
         end
         object edtUsername: TEdit
           Left = 56
-          Height = 23
+          Height = 21
           Top = 65
           Width = 129
           TabOrder = 1
         end
         object Label37: TLabel
           Left = 56
-          Height = 13
+          Height = 14
           Top = 49
-          Width = 51
+          Width = 49
           Caption = 'Username'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -4383,16 +4383,16 @@ object fNFe: TfNFe
         end
         object edtSenhas: TEdit
           Left = 192
-          Height = 23
+          Height = 21
           Top = 65
           Width = 137
           TabOrder = 2
         end
         object Label38: TLabel
           Left = 192
-          Height = 13
+          Height = 14
           Top = 49
-          Width = 32
+          Width = 31
           Caption = 'Senha'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -4405,16 +4405,16 @@ object fNFe: TfNFe
         end
         object edtSeuEmail: TEdit
           Left = 56
-          Height = 23
+          Height = 21
           Top = 113
           Width = 273
           TabOrder = 3
         end
         object Label39: TLabel
           Left = 56
-          Height = 13
+          Height = 14
           Top = 97
-          Width = 49
+          Width = 46
           Caption = 'Seu Email'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -4427,16 +4427,16 @@ object fNFe: TfNFe
         end
         object edtEmailCliente: TEdit
           Left = 58
-          Height = 23
+          Height = 21
           Top = 161
           Width = 272
           TabOrder = 4
         end
         object Label41: TLabel
           Left = 56
-          Height = 13
+          Height = 14
           Top = 145
-          Width = 69
+          Width = 62
           Caption = ' Email Cliente'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -4449,7 +4449,7 @@ object fNFe: TfNFe
         end
         object edtTLS: TEdit
           Left = 58
-          Height = 23
+          Height = 21
           Top = 204
           Width = 25
           TabOrder = 5
@@ -4457,9 +4457,9 @@ object fNFe: TfNFe
         end
         object Label43: TLabel
           Left = 58
-          Height = 13
+          Height = 14
           Top = 188
-          Width = 17
+          Width = 19
           Caption = 'TLS'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -4472,7 +4472,7 @@ object fNFe: TfNFe
         end
         object edtSSL: TEdit
           Left = 114
-          Height = 23
+          Height = 21
           Top = 204
           Width = 25
           TabOrder = 6
@@ -4480,9 +4480,9 @@ object fNFe: TfNFe
         end
         object Label50: TLabel
           Left = 114
-          Height = 13
+          Height = 14
           Top = 188
-          Width = 17
+          Width = 20
           Caption = 'SSL'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -4495,17 +4495,17 @@ object fNFe: TfNFe
         end
         object Label45: TLabel
           Left = 162
-          Height = 15
+          Height = 13
           Top = 212
-          Width = 55
+          Width = 51
           Caption = '( S  ou  N )'
           ParentColor = False
         end
         object Label44: TLabel
           Left = 129
-          Height = 13
+          Height = 14
           Top = 1
-          Width = 28
+          Width = 27
           Caption = 'SMTP'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -4518,16 +4518,16 @@ object fNFe: TfNFe
         end
         object edtPorta: TEdit
           Left = 56
-          Height = 23
+          Height = 21
           Top = 17
           Width = 62
           TabOrder = 7
         end
         object Label35: TLabel
           Left = 56
-          Height = 13
+          Height = 14
           Top = 1
-          Width = 27
+          Width = 25
           Caption = 'Porta'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -4595,9 +4595,9 @@ object fNFe: TfNFe
         end
         object Label32: TLabel
           Left = 95
-          Height = 13
+          Height = 14
           Top = 48
-          Width = 103
+          Width = 97
           Caption = 'Para Multi Empresas'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -4643,9 +4643,9 @@ object fNFe: TfNFe
         end
         object lCryptLib: TLabel
           Left = 41
-          Height = 13
+          Height = 14
           Top = 33
-          Width = 42
+          Width = 40
           Alignment = taRightJustify
           Caption = 'CryptLib'
           Color = clBtnFace
@@ -4671,9 +4671,9 @@ object fNFe: TfNFe
         end
         object lXmlSign: TLabel
           Left = 24
-          Height = 13
+          Height = 14
           Top = 82
-          Width = 59
+          Width = 56
           Alignment = taRightJustify
           Caption = 'XMLSignLib'
           Color = clBtnFace
@@ -4699,9 +4699,9 @@ object fNFe: TfNFe
         end
         object lHttpLib: TLabel
           Left = 45
-          Height = 13
+          Height = 14
           Top = 57
-          Width = 38
+          Width = 33
           Alignment = taRightJustify
           Caption = 'HttpLib'
           Color = clBtnFace
@@ -4727,9 +4727,9 @@ object fNFe: TfNFe
         end
         object lSSLLib: TLabel
           Left = 51
-          Height = 13
+          Height = 14
           Top = 9
-          Width = 32
+          Width = 34
           Alignment = taRightJustify
           Caption = 'SSLLib'
           Color = clBtnFace
@@ -4755,7 +4755,7 @@ object fNFe: TfNFe
         end
         object cbSSLTypeLbl: TLabel
           Left = 40
-          Height = 13
+          Height = 14
           Top = 107
           Width = 43
           Alignment = taRightJustify
@@ -4912,7 +4912,7 @@ object fNFe: TfNFe
         TabOrder = 13
         object FloatSpinEdit1: TFloatSpinEdit
           Left = 48
-          Height = 23
+          Height = 21
           Top = 0
           Width = 42
           DecimalPlaces = 1
@@ -4923,7 +4923,7 @@ object fNFe: TfNFe
         end
         object FloatSpinEdit2: TFloatSpinEdit
           Left = 137
-          Height = 23
+          Height = 21
           Top = 0
           Width = 42
           DecimalPlaces = 1
@@ -4934,7 +4934,7 @@ object fNFe: TfNFe
         end
         object FloatSpinEdit3: TFloatSpinEdit
           Left = 237
-          Height = 23
+          Height = 21
           Top = 0
           Width = 42
           DecimalPlaces = 1
@@ -4945,7 +4945,7 @@ object fNFe: TfNFe
         end
         object FloatSpinEdit4: TFloatSpinEdit
           Left = 324
-          Height = 23
+          Height = 21
           Top = 0
           Width = 42
           DecimalPlaces = 1
@@ -4956,33 +4956,33 @@ object fNFe: TfNFe
         end
         object Label51: TLabel
           Left = 1
-          Height = 15
+          Height = 13
           Top = 0
-          Width = 44
+          Width = 40
           Caption = 'Superior'
           ParentColor = False
         end
         object Label52: TLabel
           Left = 94
-          Height = 15
+          Height = 13
           Top = 0
-          Width = 38
+          Width = 36
           Caption = 'Inferior'
           ParentColor = False
         end
         object Label53: TLabel
           Left = 285
-          Height = 15
+          Height = 13
           Top = 0
-          Width = 34
+          Width = 31
           Caption = 'Direita'
           ParentColor = False
         end
         object Label54: TLabel
           Left = 183
-          Height = 15
+          Height = 13
           Top = 0
-          Width = 48
+          Width = 45
           Caption = 'Esquerda'
           ParentColor = False
         end
@@ -4990,7 +4990,7 @@ object fNFe: TfNFe
     end
     object TabSheet5: TTabSheet
       Caption = 'Notas Emitidas para a Empresa'
-      ClientHeight = 611
+      ClientHeight = 616
       ClientWidth = 1061
       object Panel6: TPanel
         Left = 0
@@ -5012,9 +5012,9 @@ object fNFe: TfNFe
         end
         object Label10: TLabel
           Left = 3
-          Height = 20
+          Height = 18
           Top = 16
-          Width = 112
+          Width = 117
           Caption = 'Centro de Custo'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -5036,7 +5036,7 @@ object fNFe: TfNFe
         end
         object edtNumSerie1: TEdit
           Left = 130
-          Height = 23
+          Height = 21
           Top = 56
           Width = 214
           TabOrder = 2
@@ -5180,9 +5180,9 @@ object fNFe: TfNFe
         end
         object Label46: TLabel
           Left = 0
-          Height = 20
+          Height = 18
           Top = 55
-          Width = 126
+          Width = 127
           Caption = 'Certificado Dígital'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack

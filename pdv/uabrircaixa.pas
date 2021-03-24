@@ -391,7 +391,7 @@ begin
 
   sqlP := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
   sqlP += ' where CAIXA = ' + cx_m;
-  sqlP += ' and STATE = 1 and FORMA_PGTO = ' + QuotedStr('5');//Cheque
+  sqlP += ' and STATE = 1 and FORMA_PGTO IN (' + QuotedStr('5') + ', ' + QuotedStr('6')+ ')';//Cheque
   sqlP += ' and cod_venda > 1  ';//1 para Sangria, >1 para Outros
   if (dmPdv.sqBusca.Active) then
     dmPdv.sqBusca.Close;
