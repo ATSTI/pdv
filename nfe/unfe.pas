@@ -453,7 +453,8 @@ begin
     'nf.NOMETRANSP TRANSP2, nf.BASE_IPI, nf.BASE_PIS, nf.BASE_COFINS, ' +
     'UDF_ROUNDDEC(nf.VLRTOT_TRIB, 2) as VLRTOT_TRIB, nf.STATUS, nf.NOMEXML  ' +
     ', NFE_FINNFE, NFE_MODELO, NFE_VERSAO, NFE_DESTOPERACAO, NFE_FORMATODANFE,'+
-    ' NFE_TIPOEMISSAO, NFE_INDFINAL, NFE_INDPRES, IND_IEDEST , NF.CCUSTO ' +
+    ' NFE_TIPOEMISSAO, NFE_INDFINAL, INTERM_CNPJ, INTERM_PERFIL ' +
+    ', IND_IEDEST , NF.CCUSTO ' +
     ', nf.V_B_FCPUFDEST ' +
     ', nf.V_FCP ' +
     ', nf.V_FCPST ' +
@@ -522,7 +523,7 @@ begin
     ', nf.V_FCP ' +
     ', nf.V_FCPST ' +
     ', nf.V_FCPSTRET ' +
-    ', nf.V_IPI_DEVOL ' +
+    ', nf.V_IPI_DEVOL , INTERM_CNPJ, INTERM_PERFIL ' +
     '  from NOTAFISCAL nf ' +
     ' inner join CLIENTES c on c.CODCLIENTE = nf.CODCLIENTE ' +
     ' left outer join ENDERECOCLIENTE ec on ec.CODCLIENTE = c.CODCLIENTE '+
@@ -5026,6 +5027,35 @@ begin
         begin
           Ide.tpEmis    := teSVCAN;
           Ide.serie     := nfe_serie_receita;
+        end;
+        // pcNao, pcPresencial, pcInternet, pcTeleatendimento, pcEntregaDomicilio, pcPresencialForaEstabelecimento, pcOutros
+        if (dmPdv.qcdsNFNFE_INDPRES.AsString = 'pcPresencial') then
+          ide.indPres := pcPresencial
+        else if (dmPdv.qcdsNFNFE_INDPRES.AsString = 'pcNao') then
+          ide.indPres := pcNao
+        else if (dmPdv.qcdsNFNFE_INDPRES.AsString = 'pcInternet') then
+          ide.indPres := pcInternet
+        else if (dmPdv.qcdsNFNFE_INDPRES.AsString = 'pcTeleatendimento') then
+          ide.indPres := pcTeleatendimento
+        else if (dmPdv.qcdsNFNFE_INDPRES.AsString = 'pcPresencialForaEst.') then
+          ide.indPres := pcPresencialForaEstabelecimento
+        else if (dmPdv.qcdsNFNFE_INDPRES.AsString = 'pcEntregaDomicilio') then
+          ide.indPres := pcEntregaDomicilio
+        else if (dmPdv.qcdsNFNFE_INDPRES.AsString = 'pcOutros') then
+          ide.indPres := pcOutros;
+
+        //iiSemOperacao, iiOperacaoSemIntermediador, iiOperacaoComIntermediador)
+        if ((dmPdv.qcdsNFNFE_INDPRES.AsString = 'pcNao') or
+          (dmPdv.qcdsNFNFE_INDPRES.AsString = 'pcPresencial')) then
+          ide.indIntermed := iiSemOperacao
+        else begin
+          ide.indIntermed := iiOperacaoSemIntermediador;
+          if (RemoveChar(Trim(dmPdv.qcdsNFINTERM_CNPJ.AsString)) <> '') then
+          begin
+            ide.indIntermed := iiOperacaoComIntermediador;
+            infIntermed.CNPJ := RemoveChar(Trim(dmPdv.qcdsNFINTERM_CNPJ.AsString));
+            infIntermed.idCadIntTran := dmPdv.qcdsNFINTERM_PERFIL.AsString;
+          end;
         end;
 
         //Carrega os itens da NF

@@ -6,9 +6,9 @@ object dmPdv: TdmPdv
   VerticalOffset = 2
   Width = 934
   object IbCon: TIBConnection
-    Connected = False
+    Connected = True
     LoginPrompt = False
-    DatabaseName = 'C:\home\bd\sge_condor.fdb'
+    DatabaseName = 'd:\home\bd\sge_vbs.fdb'
     KeepConnection = False
     Params.Strings = (
       'port=3050'
@@ -24,7 +24,7 @@ object dmPdv: TdmPdv
     Top = 18
   end
   object sTrans: TSQLTransaction
-    Active = False
+    Active = True
     Database = IbCon
     Left = 136
     Top = 16
@@ -4245,16 +4245,18 @@ object dmPdv: TdmPdv
   end
   object dsNF: TDataSource
     DataSet = qcdsNF
+    OnDataChange = dsNFDataChange
     Left = 88
     Top = 328
   end
   object qcdsNF: TSQLQuery
+    MaxIndexesCount = 4
     FieldDefs = <    
       item
         Name = 'CFOP'
         DataType = ftString
         Precision = -1
-        Size = 120
+        Size = 30
       end    
       item
         Name = 'DTAEMISSAO'
@@ -4270,7 +4272,7 @@ object dmPdv: TdmPdv
         Name = 'CORPONF1'
         DataType = ftString
         Precision = -1
-        Size = 800
+        Size = 200
       end    
       item
         Name = 'XMLNFE'
@@ -4282,37 +4284,37 @@ object dmPdv: TdmPdv
         Name = 'IDCOMPLEMENTAR'
         DataType = ftString
         Precision = -1
-        Size = 176
+        Size = 44
       end    
       item
         Name = 'CORPONF2'
         DataType = ftString
         Precision = -1
-        Size = 800
+        Size = 200
       end    
       item
         Name = 'CORPONF3'
         DataType = ftString
         Precision = -1
-        Size = 800
+        Size = 200
       end    
       item
         Name = 'CORPONF4'
         DataType = ftString
         Precision = -1
-        Size = 800
+        Size = 200
       end    
       item
         Name = 'CORPONF5'
         DataType = ftString
         Precision = -1
-        Size = 800
+        Size = 75
       end    
       item
         Name = 'CORPONF6'
         DataType = ftString
         Precision = -1
-        Size = 800
+        Size = 75
       end    
       item
         Name = 'CODCLIENTE'
@@ -4333,7 +4335,7 @@ object dmPdv: TdmPdv
         Name = 'FATURA'
         DataType = ftString
         Precision = -1
-        Size = 1200
+        Size = 300
       end    
       item
         Name = 'NATUREZA'
@@ -4404,55 +4406,55 @@ object dmPdv: TdmPdv
         Name = 'FRETE'
         DataType = ftFixedChar
         Precision = -1
-        Size = 4
+        Size = 1
       end    
       item
         Name = 'CNPJ_CPF'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'NOMETRANSP'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'INSCRICAOESTADUAL'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'END_TRANSP'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'CIDADE_TRANSP'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'UF_TRANSP'
         DataType = ftFixedChar
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'PLACATRANSP'
         DataType = ftString
         Precision = -1
-        Size = 32
+        Size = 8
       end    
       item
         Name = 'UF_VEICULO_TRANSP'
         DataType = ftFixedChar
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'QUANTIDADE'
@@ -4463,19 +4465,19 @@ object dmPdv: TdmPdv
         Name = 'ESPECIE'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'MARCA'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'NUMERO'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'PESOLIQUIDO'
@@ -4493,13 +4495,13 @@ object dmPdv: TdmPdv
         Name = 'RAZAOSOCIAL'
         DataType = ftString
         Precision = -1
-        Size = 200
+        Size = 60
       end    
       item
         Name = 'CNPJ'
         DataType = ftString
         Precision = -1
-        Size = 72
+        Size = 18
       end    
       item
         Name = 'HORASAIDA'
@@ -4510,13 +4512,13 @@ object dmPdv: TdmPdv
         Name = 'NOTASERIE'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'SELECIONOU'
         DataType = ftFixedChar
         Precision = -1
-        Size = 4
+        Size = 1
       end    
       item
         Name = 'REDUZICMS'
@@ -4527,19 +4529,19 @@ object dmPdv: TdmPdv
         Name = 'PROTOCOLOENV'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'NUMRECIBO'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'PROTOCOLOCANC'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'ENTRADA'
@@ -4570,7 +4572,7 @@ object dmPdv: TdmPdv
         Name = 'TRANSP2'
         DataType = ftString
         Precision = -1
-        Size = 200
+        Size = 50
       end    
       item
         Name = 'CODTRANSP'
@@ -4601,67 +4603,67 @@ object dmPdv: TdmPdv
         Name = 'STATUS'
         DataType = ftFixedChar
         Precision = -1
-        Size = 4
+        Size = 1
       end    
       item
         Name = 'NOMEXML'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'NFE_FINNFE'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'NFE_MODELO'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'NFE_VERSAO'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'NFE_DESTOPERACAO'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'NFE_FORMATODANFE'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'NFE_TIPOEMISSAO'
         DataType = ftString
         Precision = -1
-        Size = 60
+        Size = 15
       end    
       item
         Name = 'NFE_INDFINAL'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'NFE_INDPRES'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'IND_IEDEST'
         DataType = ftString
         Precision = -1
-        Size = 120
+        Size = 30
       end    
       item
         Name = 'CCUSTO'
@@ -4692,6 +4694,18 @@ object dmPdv: TdmPdv
         Name = 'V_IPI_DEVOL'
         DataType = ftFloat
         Precision = -1
+      end    
+      item
+        Name = 'INTERM_CNPJ'
+        DataType = ftString
+        Precision = -1
+        Size = 24
+      end    
+      item
+        Name = 'INTERM_PERFIL'
+        DataType = ftString
+        Precision = -1
+        Size = 40
       end>
     Database = IbCon
     Transaction = sTrans
@@ -4731,6 +4745,7 @@ object dmPdv: TdmPdv
       ',UDF_ROUNDDEC(nf.V_FCPST, 2) as V_FCPST'
       ',UDF_ROUNDDEC(nf.V_FCPSTRET, 2) as V_FCPSTRET'
       ',UDF_ROUNDDEC(nf.V_IPI_DEVOL, 2) as V_IPI_DEVOL'
+      ', INTERM_CNPJ, INTERM_PERFIL'
       'from NOTAFISCAL nf'
       'inner join CLIENTES cl on cl.CODCLIENTE = nf.CODCLIENTE'
       'inner join enderecocliente endecli on endecli.CODCLIENTE = cl.CODCLIENTE'
@@ -5566,6 +5581,26 @@ object dmPdv: TdmPdv
       ReadOnly = False
       Required = False
       Precision = -1
+    end
+    object qcdsNFINTERM_CNPJ: TStringField
+      FieldKind = fkData
+      FieldName = 'INTERM_CNPJ'
+      Index = 80
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 24
+    end
+    object qcdsNFINTERM_PERFIL: TStringField
+      FieldKind = fkData
+      FieldName = 'INTERM_PERFIL'
+      Index = 81
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
     end
   end
   object qcds_parametro: TSQLQuery

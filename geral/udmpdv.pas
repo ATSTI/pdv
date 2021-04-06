@@ -129,6 +129,8 @@ type
     qcdsNFII: TFloatField;
     qcdsNFIND_IEDEST: TStringField;
     qcdsNFINSCRICAOESTADUAL: TStringField;
+    qcdsNFINTERM_CNPJ: TStringField;
+    qcdsNFINTERM_PERFIL: TStringField;
     qcdsNFMARCA: TStringField;
     qcdsNFNATUREZA: TSmallintField;
     qcdsNFNFE_DESTOPERACAO: TStringField;
@@ -1007,6 +1009,7 @@ type
     Timer1: TTimer;
     Timer2: TTimer;
     procedure DataModuleCreate(Sender: TObject);
+    procedure dsNFDataChange(Sender: TObject; Field: TField);
     procedure IbConAfterDisconnect(Sender: TObject);
     procedure IbConBeforeConnect(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
@@ -1375,6 +1378,11 @@ begin
   //begin
 
   //end;
+end;
+
+procedure TdmPdv.dsNFDataChange(Sender: TObject; Field: TField);
+begin
+
 end;
 
 procedure TdmPdv.IbConAfterDisconnect(Sender: TObject);
