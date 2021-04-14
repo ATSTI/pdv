@@ -1725,6 +1725,9 @@ begin
   end
   else
   begin
+    // 12/04/2021 adicionei este gravarRetornoEnvio linha 1730
+    // gravando aqui pq se der algo no Enviar, nao grava o nome xml e da erro imprimir
+    gravaRetornoEnvio('', '');
     ACBrNFe1.Enviar(0);
     AcbrNfe1.Configuracoes.Arquivos.PathNFe := Edit1.Text;
 
@@ -5241,7 +5244,7 @@ begin
             Result := False;
             Exit;
           end;
-          if ((trim(dmPdv.qsProdutosNCM.AsString) = '00000000') or (dmPdv.qsProdutosNCM.IsNull) ) then
+          if (dmPdv.qsProdutosNCM.IsNull) then
           begin
             MessageDlg('Produto ' + dmPdv.cdsItensNFDESCPRODUTO.AsString + ' com NCM Nulo ou Inválido', mtError, [mbOK], 0);
             Result := False;

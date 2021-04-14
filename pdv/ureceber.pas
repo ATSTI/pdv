@@ -19,9 +19,10 @@ type
     acCredito: TAction;
     ActionList1: TActionList;
     BitBtn1: TBitBtn;
-    BitBtn2: TBitBtn;
-    BitBtn3: TBitBtn;
-    BitBtn4: TBitBtn;
+    BitBtn18: TBitBtn;
+    BitBtn20: TBitBtn;
+    BitBtn21: TBitBtn;
+    BitBtn9: TBitBtn;
     btnConfirma: TBitBtn;
     btnProcurar: TBitBtn;
     btnSair: TBitBtn;
@@ -41,6 +42,7 @@ type
     Panel2: TPanel;
     Panel3: TPanel;
     conOdoo: TPQConnection;
+    pnCartoes: TPanel;
     rgSituacao: TRadioGroup;
     sqlOdoo: TSQLQuery;
     sqlOdoocodrecebimento: TLongintField;
@@ -69,7 +71,14 @@ type
     procedure acCreditoExecute(Sender: TObject);
     procedure acDebitoExecute(Sender: TObject);
     procedure acDinheiroExecute(Sender: TObject);
+    procedure BitBtn18Click(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
+    procedure BitBtn20Click(Sender: TObject);
+    procedure BitBtn21Click(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
+    procedure BitBtn3Click(Sender: TObject);
+    procedure BitBtn4Click(Sender: TObject);
+    procedure BitBtn5Click(Sender: TObject);
     procedure btnConfirmaClick(Sender: TObject);
     procedure btnProcurarClick(Sender: TObject);
     procedure btnSairClick(Sender: TObject);
@@ -178,6 +187,8 @@ end;
 
 procedure TfRecebimento.FormShow(Sender: TObject);
 begin
+  pnCartoes.Visible:=False;
+  edPago.Enabled:=False;
   lblForma.Caption := '...';
 end;
 
@@ -214,7 +225,7 @@ var
   total_rec : Double;
 begin
   total_rec := 0;
-  if (UpperCase(dmpdv.usoSistema) = 'ATS') then
+  if ((UpperCase(dmpdv.usoSistema) = 'ATS') or (UpperCase(dmpdv.usoSistema) = 'ODOO')) then
   begin
     // buscar contas (recebimento)
     total_rec := 0;
@@ -245,7 +256,7 @@ begin
     dmPdv.sqBusca.First;
     edTotalGeral.Text := FormatFloat('#,,,0.00',total_rec);
   end;
-  if (UpperCase(dmpdv.usoSistema) = 'ODOO') then
+  if (UpperCase(dmpdv.usoSistema) = 'ODOO-LOCAL') then
   begin
     sqlOdoo.Close;
     dsRec.DataSet := sqlOdoo;
@@ -312,7 +323,7 @@ begin
     ShowMessage('Informe o Valor Pago');
     Exit;
   end;
-  if (UpperCase(dmpdv.usoSistema) = 'ATS') then
+  if ((UpperCase(dmpdv.usoSistema) = 'ATS') or (UpperCase(dmpdv.usoSistema) = 'ODOO')) then
   begin
     dmPdv.sqBusca.First;
     str_rec := IntToStr(dmPdv.sqBusca.FieldByName('CODCLIENTE').AsInteger);
@@ -338,7 +349,7 @@ begin
         begin
           if (dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat > vlr_rt) then
           begin
-            // duplico o lancamento na recebimento
+            // duplico o lancamento no recebimento
             // este novo item o valor vai ser a diferenca do pago
             // um vai ficar em aberto o outro como pago
             str_rec := 'INSERT INTO RECEBIMENTO (  ' +
@@ -380,7 +391,7 @@ begin
     end;
     dmPdv.sTrans.Commit;
   end;
-  if (UpperCase(dmpdv.usoSistema) = 'ODOO') then
+  if (UpperCase(dmpdv.usoSistema) = 'ODOO-LOCAL') then
   begin
     // inserir dados no Contas_receber odoo a rotina integracao vai fazer o resto no odoo
     vlr_pg := StrToFloat(edPago.Text);
@@ -421,6 +432,8 @@ begin
   end;
   DecimalSeparator:=',';
   ShowMessage('Baixa efetuada com sucesso.');
+  edPago.Text:='0,00';
+  edPago.Enabled:=False;
   btnProcurar.Click;
 end;
 
@@ -430,19 +443,82 @@ begin
   edNomeCliente.Text := '';
 end;
 
+procedure TfRecebimento.BitBtn20Click(Sender: TObject);
+begin
+  if (dmPdv.OutrosCartoes = 'S') then
+  begin
+    pnCartoes.Visible:=True;
+    BitBtn1.SetFocus;
+  end
+  else begin
+    lblForma.Caption:='3-Cartao Credito';
+    edPago.Enabled:=True;
+    edPago.SetFocus;
+  end;
+end;
+
+procedure TfRecebimento.BitBtn21Click(Sender: TObject);
+begin
+  lblForma.Caption:= '6-Pix';
+  edPago.Enabled:=True;
+  edPago.SetFocus;
+end;
+
+procedure TfRecebimento.BitBtn2Click(Sender: TObject);
+begin
+  lblForma.Caption:='7-Sianet';
+  pnCartoes.Visible:=False;
+  edPago.Enabled:=True;
+  edPago.SetFocus;
+end;
+
+procedure TfRecebimento.BitBtn3Click(Sender: TObject);
+begin
+  lblForma.Caption:='8-Brasil Card';
+  pnCartoes.Visible:=False;
+  edPago.Enabled:=True;
+  edPago.SetFocus;
+end;
+
+procedure TfRecebimento.BitBtn4Click(Sender: TObject);
+begin
+  lblForma.Caption:='3-Cartao Credito';
+  pnCartoes.Visible:=False;
+  edPago.Enabled:=True;
+  edPago.SetFocus;
+end;
+
+procedure TfRecebimento.BitBtn5Click(Sender: TObject);
+begin
+  pnCartoes.Visible:=False;
+end;
+
 procedure TfRecebimento.acDinheiroExecute(Sender: TObject);
 begin
   lblForma.Caption := '1-Dinheiro';
+  edPago.Enabled:=True;
+  edPago.SetFocus;
+end;
+
+procedure TfRecebimento.BitBtn18Click(Sender: TObject);
+begin
+  lblForma.Caption := '2-Debito';
+  edPago.Enabled:=True;
+  edPago.SetFocus;
 end;
 
 procedure TfRecebimento.acDebitoExecute(Sender: TObject);
 begin
   lblForma.Caption := '2-Debito';
+  edPago.Enabled:=True;
+  edPago.SetFocus;
 end;
 
 procedure TfRecebimento.acCreditoExecute(Sender: TObject);
 begin
   lblForma.Caption := '3-Credito';
+  edPago.Enabled:=True;
+  edPago.SetFocus;
 end;
 
 procedure TfRecebimento.btnSairClick(Sender: TObject);
