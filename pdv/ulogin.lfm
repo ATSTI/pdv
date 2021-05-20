@@ -8,7 +8,7 @@ object fLogin: TfLogin
   ClientWidth = 550
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '2.0.8.0'
+  LCLVersion = '2.0.12.0'
   object pnInfo: TPanel
     Left = 29
     Height = 306
@@ -25,6 +25,16 @@ object fLogin: TfLogin
       Width = 497
       Align = alClient
       Lines.Strings = (
+        'Versao : 1.4'
+        '   Adicionado o parametro: '
+        '       Imprimir Cupom Cozinha:'
+        '       Imprime um cupom usando o cupom_outro.txt '
+        '      quando vai na tela NFCe'
+        '      '
+        '       [IMPRESSORA]'
+        '            Cupom_Outro=S'
+        ''
+        ''
         'logo.png'
         ''
         'Criar uma série PDV com o código do usuário, ex. :'
@@ -53,6 +63,13 @@ object fLogin: TfLogin
         '  Cupom=Texto , ACBR, DB  *'
         '  NumeroVias=2'
         '  LarguraBobina=280'
+        ''
+        'Imprimir Cupom Cozinha:'
+        '    Imprime um cupom usando o cupom_outro.txt '
+        '    quando vai na tela NFCe'
+        '    [IMPRESSORA]'
+        '        Cupom_Outro=S'
+        ''
         ''
         '* Texto , imprime modo texto sem usar o driver impressora'
         '  DB : Salva a impressao no banco de dados, tem q usar o prjImprime para imprimir'
@@ -95,10 +112,10 @@ object fLogin: TfLogin
   end
   object edLogin: TLabeledEdit
     Left = 48
-    Height = 23
+    Height = 21
     Top = 24
     Width = 136
-    EditLabel.Height = 15
+    EditLabel.Height = 13
     EditLabel.Width = 136
     EditLabel.Caption = 'Usuário'
     EditLabel.ParentColor = False
@@ -108,11 +125,11 @@ object fLogin: TfLogin
   end
   object edSenha: TLabeledEdit
     Left = 216
-    Height = 23
+    Height = 21
     Top = 24
     Width = 120
     EchoMode = emPassword
-    EditLabel.Height = 15
+    EditLabel.Height = 13
     EditLabel.Width = 120
     EditLabel.Caption = 'Senha'
     EditLabel.ParentColor = False
@@ -166,7 +183,7 @@ object fLogin: TfLogin
   end
   object Label3: TLabel
     Left = 208
-    Height = 25
+    Height = 24
     Top = 328
     Width = 19
     Caption = '...'
@@ -183,7 +200,7 @@ object fLogin: TfLogin
   object LHelpConnector1: TLHelpConnector
     LHelpPath = 'c:\home\help.chm'
     AutoRegister = True
-    left = 15
-    top = 40
+    Left = 15
+    Top = 40
   end
 end

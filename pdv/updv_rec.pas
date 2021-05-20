@@ -171,6 +171,7 @@ type
     procedure encerra_venda();
     procedure imprimir();
     procedure imprimirTxt();
+    procedure imprimirTxtOutro();
     procedure imprimiAcbr();
     procedure insereRecebimento(parc_rec: Integer; vlr_rec: Double;
       vlr_tot_rec: Double; via_rec: Integer; n_doc_rec: String; forma_rec: String;
@@ -1078,6 +1079,169 @@ begin
   end;
 end;
 
+procedure TfPDV_Rec.imprimirTxtOutro();
+var
+  IMPRESSORA:TextFile;
+  lFile   : TStringList;
+  i      : Integer;
+  logradouro: String;
+  cep: String;
+  fone: String;
+  clientecupom: string;
+  texto3: String;
+  texto6: String;
+  produto_cupomf: String;
+  linhaTxt : String;
+  prazo : String;
+  totalP: Double;
+  totalD: Double;
+  ItemDesc: Double;
+  totalR: Double;
+begin
+  v_log := 'Log de impressão - ';
+  totalP := 0;
+  totalD := 0;
+  totalR := 0;
+  if (not dmPdv.sqEmpresa.Active) then
+    dmPdv.sqEmpresa.Open;
+  v_log := 'Log de impressão 3 ';
+  {----- aqui monto o endereço-----}
+  logradouro := '  ' + dmPdv.sqEmpresaENDERECO.Value +
+     ', ' + dmPdv.sqEmpresaBAIRRO.Value;
+  cep :=  '  ' + dmPdv.sqEmpresaCIDADE.Value + ' - ' + dmPdv.sqEmpresaUF.Value +
+  ' - ' + dmPdv.sqEmpresaCEP.Value;
+  fone := '  (19)' + dmPdv.sqEmpresaFONE.Value + ' / ' + dmPdv.sqEmpresaFONE_1.Value +
+  ' / ' + dmPdv.sqEmpresaFONE_2.Value;
+  {------------------------DADOS DO CLIENTE--------------------------}
+  clientecupom := '  ' + IntToStr(vCliente) + '-' + RemoveAcento(vClienteNome);
+  dmPdv.sqLancamentos.Close;
+  dmPdv.sqLancamentos.Params.ParamByName('PMOV').AsInteger := vCodMovimento;
+  dmPdv.sqLancamentos.Open;
+  // leio um arquivo txt e imprimo
+  v_log := 'Log de impressão - criando lFile ';
+  lFile := TStringList.Create;
+  if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
+  begin
+    v_log := 'Log portaImp - ' + dmPdv.portaIMP;
+    AssignFile(IMPRESSORA, dmPdv.portaIMP);
+  end
+  else begin
+    v_log := 'Log path_imp - ' + dmPdv.path_imp;
+    AssignFile(IMPRESSORA, dmPdv.path_imp);
+  end;
+  v_log := 'Log abrindo cupom.txt ' + dmpdv.path_exe + 'cupom.txt';
+  try
+    Rewrite(IMPRESSORA);
+    lFile.LoadFromFile(dmpdv.path_exe + 'cupom_outro.txt');
+    for i:=0 to lFile.Count-1 do
+    begin
+      v_log := 'Log lendo cupom.txt ';
+      linhaTxt := Copy(lFile[i],0,1);
+      if lFile[i] = 'empresa' then
+        Writeln(Impressora, RemoveAcento(Format('  %-36s',[dmPdv.sqEmpresaRAZAO.Value])))
+      else if lFile[i] = 'logradouro' then
+        Writeln(Impressora, logradouro)
+      else if lFile[i] = 'cep' then
+        Writeln(Impressora, cep)
+      else if lFile[i] = 'fone' then
+      begin
+        Writeln(Impressora, fone);
+      end
+      else if lFile[i] = 'linha' then
+      begin
+        Writeln(IMPRESSORA, '');
+      end
+      else if lFile[i] = 'usuario' then
+      begin
+        Writeln(impressora, 'Usuario: ' + dmpdv.nomeLogado);
+        Writeln(impressora, 'Vendedor: ' + RemoveAcento(edVendedor.Text));
+      end
+      else if lFile[i] = 'cliente' then
+        Writeln(Impressora, clientecupom)
+      else if lFile[i] = 'doc' then
+        Writeln(Impressora, '  ' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now) +
+          ' Pedido :' + IntToStr(vCodMovimento) + '/' + label11.Caption)
+      else if lFile[i] = 'itens' then
+      begin
+        while not dmPdv.sqLancamentos.Eof do
+        begin
+          dmPdv.sqLancamentos.RecordCount;
+          texto3 := '';
+          //texto6 := ' ';
+          texto3 := Format('%6.1n',[dmPdv.sqLancamentosQUANTIDADE.AsFloat]);
+          texto3 := texto3 + ' ' + Format(' %-2s',[dmPdv.sqLancamentosUNIDADEMEDIDA.Value]);
+          produto_cupomf := texto3 + ' ' + trim(RemoveAcento(dmPdv.sqLancamentosDESCPRODUTO.Value));
+          texto6 := Copy(produto_cupomf, 0, dmPdv.tamanhoLinha);       //descrição do produto
+          Writeln(Impressora, texto6);
+          if (length(produto_cupomf)>dmPdv.tamanhoLinha) then
+          begin
+            texto6 := '           ' + Copy(produto_cupomf, dmPdv.tamanhoLinha+1, dmPdv.tamanhoLinha*2);       //descrição do produto
+            Writeln(Impressora, texto6);
+          end;
+          //Writeln(Impressora, texto3);//NOME DO PRODUTO
+          dmPdv.sqLancamentos.next;
+        end;
+      end
+      else if linhaTxt = 'V' then
+      begin
+        linhaTxt := 'Pedido: ' + IntToStr(dmPdv.sqLancamentosCODMOVIMENTO.AsInteger);  // Copy(lFile[i],2,Length(lFile[i])-1);
+        Writeln(Impressora, linhaTxt);
+      end
+      else if linhaTxt = 'C' then
+      begin
+        linhaTxt := Copy(lFile[i],2,Length(lFile[i])-1);
+        Writeln(Impressora, chr(27)+chr(109));
+      end
+      else if linhaTxt = '1' then
+      begin
+      end
+      else if linhaTxt = '2' then
+      begin
+      end
+      else if linhaTxt = '3' then
+      begin
+      end
+      else if linhaTxt = '4' then
+      begin
+      end
+      else
+        Writeln(Impressora,lFile[i]);
+    end;
+  finally
+    CloseFile(IMPRESSORA);
+    lFile.Free;
+  end;
+  v_log := 'Log Impressao: ';
+  v_log += 'conf Cupom: ' + dmPdv.CupomImp;
+  if (dmPdv.CupomImp = 'BD') then
+  begin
+    lFile := TStringList.Create;
+    try
+      v_log += ', PathIMP: ' + dmPdv.path_imp;
+      lFile.LoadFromFile(dmPdv.path_imp);
+      texto6 := lFile.Text;
+    finally
+      lFile.Free;
+    end;
+    {
+    try
+      texto6 := 'INSERT INTO AVISOS (CODAVISOS, TIPO, DESCRICAO) VALUES ('+
+        'GEN_ID(GEN_AVISOS, 1), ' + QuotedStr(dmPdv.MICRO) + ', ' +
+        QuotedStr(texto6) + ')';
+      dmPdv.IbCon.ExecuteDirect(texto6);
+      v_log += ', SQL: ' +texto6;
+      dmPdv.sTrans.Commit;
+    except
+      on dmPdv: EDatabaseError do
+      begin
+        MessageDlg('Error','Erro na conexao com a base de dados, erro : ' +
+          dmPdv.Message,mtError,[mbOK],0);
+      end;
+    end;
+    }
+  end;
+end;
+
 procedure TfPDV_Rec.imprimiAcbr();
 var arquivo: TStringList;
 begin
@@ -1827,6 +1991,11 @@ begin
     Close;
   end;
   gerarjson;
+  if (dmpdv.outro_cupom = 'S') then
+  begin
+    imprimirTxtOutro();
+    //imprimiAcbr();
+  end;
 end;
 
 procedure TfPDV_Rec.acOutrosExecute(Sender: TObject);

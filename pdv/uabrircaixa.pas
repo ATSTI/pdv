@@ -400,7 +400,8 @@ begin
   dmPdv.sqBusca.Active:=True;
   if (not dmPdv.sqBusca.IsEmpty) then
   begin
-    vendacaixa += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    // esta entrando o pix aqui tbem por isso tirei das entradas
+    //vendacaixa += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     total += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     totalliquido += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     edCheque.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
@@ -425,7 +426,10 @@ begin
 
   sqlP := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
   sqlP += ' where CAIXA = ' + cx_m;
-  sqlP += ' and STATE = 1 and FORMA_PGTO = ' + QuotedStr('1');//Sangrias/Reforco
+  sqlP += ' and STATE = 1 and FORMA_PGTO IN (' + QuotedStr('T') +
+     ',' + QuotedStr('S') + ', ' + QuotedStr('R') + ', ' +
+     QuotedStr('F') + ', ' + QuotedStr('U') + ',  ' +
+     QuotedStr('V') + ')';//Sangrias/Reforco
   sqlP += ' and cod_venda = 0  ';//0 para Reforco Caixa, >1 para Outros
   if (dmPdv.sqBusca.Active) then
     dmPdv.sqBusca.Close;

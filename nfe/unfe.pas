@@ -338,6 +338,7 @@ type
     tot2: double;
     tot3: double;
     cst_utilizado: String;
+    c_custo_open: String;
     function validaNumNfeScan():Boolean;
     function GerarNFe: Boolean;
     procedure getPagamento;
@@ -4696,7 +4697,7 @@ end;
 procedure TfNFe.abrindoSistema;
 var  CSize: DWORD;
      ccusto_emp : Integer;
-     sq, sq_condicao, sq_condicao1 : string;
+     sq, sq_condicao, sq_condicao1: string;
 begin
   edtChaveNfeCCe.Text := '';
   if (label26.Caption = '...') then
@@ -4725,6 +4726,8 @@ begin
       dmPdv.qsCentroCusto.Open;
       dmPdv.qcds_ccusto.First;
       While not dmPdv.qcds_ccusto.Eof do begin
+        sq_condicao1 := IntToStr(dmPdv.qsCentroCustoCODEMPRESA.AsInteger);
+        sq_condicao1 := IntToStr(dmPdv.qcds_ccustoCODIGO.AsInteger);
         if (dmPdv.qsCentroCustoCODEMPRESA.AsInteger = dmPdv.qcds_ccustoCODIGO.AsInteger) then
         begin
           ccusto_emp          := dmPdv.qcds_ccustoCODIGO.AsInteger;
@@ -4735,10 +4738,14 @@ begin
           cbEmpresa.ItemIndex := dmPdv.qcds_ccusto.RecNo-1;
           cbEmpresa.Text      := Trim(dmPdv.qsCentroCustoNOMEEMPRESA.AsString);
         end;
-          dmPdv.qcds_ccusto.Next;
+        dmPdv.qcds_ccusto.Next;
       end;
-        cbTipoNota.ItemIndex := dmPdv.qsCentroCustoTIPONOTA.AsInteger;
-        Label25.Caption      := Trim(dmPdv.qsCentroCustoUCLOGIN.AsString);
+      c_custo_open := IntToStr(dmPdv.qsCentroCustoTIPONOTA.AsInteger);
+      c_custo_open := Copy(c_custo_open, 0, 1);
+      cbTipoNota.ItemIndex := StrToInt(c_custo_open);
+      c_custo_open := IntToStr(dmPdv.qsCentroCustoTIPONOTA.AsInteger);
+      c_custo_open := Copy(c_custo_open, 1, Length(c_custo_open));
+      Label25.Caption      := Trim(dmPdv.qsCentroCustoUCLOGIN.AsString);
     end;
 
     if(trim(dmPdv.qsCentroCustoNOMEEMPRESA.AsString) = '' ) then

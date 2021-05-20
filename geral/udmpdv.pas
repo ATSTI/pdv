@@ -1032,6 +1032,7 @@ type
     caixaBanco : String;
     idcaixa : string;
     ccusto : String;
+    outro_cupom : String;
     ccusto_padrao : String;
     versao_sistema: String;
     usaCentroCusto: String;
@@ -1154,6 +1155,7 @@ begin
       portaImp := conf.ReadString('IMPRESSORA', 'porta', '');
       ModeloImp := conf.ReadInteger('IMPRESSORA', 'Modelo', 0);
       CupomImp := conf.ReadString('IMPRESSORA', 'Cupom', 'Texto');
+      Outro_Cupom := conf.ReadString('IMPRESSORA', 'Cupom_Outro', 'N');
       espacoEntreLinhas := conf.ReadInteger('IMPRESSORA', 'EspacoEntreLinhas', 10);
       margemCodBarra := conf.ReadInteger('IMPRESSORA', 'MargemCodBarra', 50);
       tamanhoLinha := conf.ReadInteger('IMPRESSORA', 'TamanhoLinha', 36);
@@ -1215,6 +1217,7 @@ begin
       portaImp := conf.ReadString('IMPRESSORA', 'porta', '');
       ModeloImp := conf.ReadInteger('IMPRESSORA', 'Modelo', 0);
       CupomImp := conf.ReadString('IMPRESSORA', 'Cupom', 'Texto');
+      Outro_Cupom := conf.ReadString('IMPRESSORA', 'Cupom_Outro', 'N');
       espacoEntreLinhas := conf.ReadInteger('IMPRESSORA', 'EspacoEntreLinhas', 10);
       margemCodBarra := conf.ReadInteger('IMPRESSORA', 'MargemCodBarra', 50);
       tamanhoLinha := conf.ReadInteger('IMPRESSORA', 'TamanhoLinha', 36);
@@ -1363,7 +1366,9 @@ begin
   begin
     busca_sql('SELECT r.VERSAO FROM ATUALIZA r WHERE r.CODATUALIZA = 5002');
     if (sqBusca.IsEmpty) then
-      versao_sistema := '1.1'
+    begin
+      versao_sistema := '1.1';
+    end
     else
       versao_sistema := Trim(sqBusca.FieldByName('VERSAO').AsString);
     atualiza_bd('PDV');
@@ -1473,10 +1478,7 @@ begin
       campo_novo('PRODUTOS', 'QTDEATACADO', 'DOUBLE PRECISION');
       campo_novo('FORMA_ENTRADA', 'CODFORMA', 'INTEGER NOT NULL');
       campo_novo('FORMA_ENTRADA', 'PRIMARY KEY', '(CODFORMA)');
-      Try
-        IbCon.ExecuteDirect('CREATE SEQUENCE GEN_FORMA');
-      Except
-      end;
+      ShowMessage('Execute este comando no IBSQL: CREATE SEQUENCE GEN_FORMA');
       campo_novo('MOVIMENTO', 'DESCONTO', 'DOUBLE PRECISION');
       campo_novo('venda', 'XMLNFE', 'BLOB SUB_TYPE 0');
       campo_novo('venda', 'NOMEXML', 'VARCHAR( 60 )');

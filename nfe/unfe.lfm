@@ -1418,7 +1418,7 @@ object fNFe: TfNFe
         ClientWidth = 474
         TabOrder = 1
         object Label7: TLabel
-          Left = 7
+          Left = 4
           Height = 15
           Top = 120
           Width = 72
@@ -1448,7 +1448,7 @@ object fNFe: TfNFe
           ParentFont = False
         end
         object Label4: TLabel
-          Left = 7
+          Left = 4
           Height = 15
           Top = 80
           Width = 48
@@ -1513,7 +1513,7 @@ object fNFe: TfNFe
         object SpeedButton3: TSpeedButton
           Left = 352
           Height = 24
-          Top = 128
+          Top = 120
           Width = 33
           Glyph.Data = {
             76010000424D7601000000000000760000002800000020000000100000000100
