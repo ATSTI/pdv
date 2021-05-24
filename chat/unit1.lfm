@@ -1,20 +1,21 @@
 object fChatATS: TfChatATS
   Left = 320
-  Height = 462
+  Height = 578
   Top = 181
-  Width = 898
+  Width = 1122
   Caption = 'ATS Ti Soluçoes - Suporte'
-  ClientHeight = 462
-  ClientWidth = 898
+  ClientHeight = 578
+  ClientWidth = 1122
+  DesignTimePPI = 120
   OnClose = FormClose
   OnCreate = FormCreate
   LCLVersion = '2.0.10.0'
   object edAssunto: TEdit
-    Left = 64
-    Height = 21
+    Left = 80
+    Height = 25
     Hint = 'Informe o problema ou dúvida no qual você tem.'
-    Top = 13
-    Width = 541
+    Top = 16
+    Width = 676
     Color = 16777169
     OnKeyPress = edAssuntoKeyPress
     ParentFont = False
@@ -22,11 +23,11 @@ object fChatATS: TfChatATS
     ShowHint = True
     TabOrder = 0
   end
-  object BitBtn1: TBitBtn
-    Left = 609
-    Height = 65
+  object btnEnviaMsg: TBitBtn
+    Left = 761
+    Height = 81
     Top = 0
-    Width = 109
+    Width = 136
     Caption = 'Enviar'
     Glyph.Data = {
       F63C0000424DF63C000000000000360000002800000048000000480000000100
@@ -518,16 +519,16 @@ object fChatATS: TfChatATS
       F9F8F7F9F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F9F7F8
       F9F7F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8
     }
-    OnClick = BitBtn1Click
+    OnClick = btnEnviaMsgClick
     ParentFont = False
     TabOrder = 2
   end
   object edMensagem: TEdit
-    Left = 64
-    Height = 21
+    Left = 80
+    Height = 25
     Hint = 'Por favor, tente detalhar o problema ou dúvida.'
-    Top = 45
-    Width = 544
+    Top = 56
+    Width = 638
     Color = 16777169
     OnKeyPress = edMensagemKeyPress
     ParentFont = False
@@ -536,20 +537,20 @@ object fChatATS: TfChatATS
     TabOrder = 1
   end
   object Panel1: TPanel
-    Left = 5
-    Height = 376
-    Top = 72
-    Width = 603
+    Left = 6
+    Height = 470
+    Top = 90
+    Width = 754
     Caption = 'Panel1'
-    ClientHeight = 376
-    ClientWidth = 603
+    ClientHeight = 470
+    ClientWidth = 754
     ParentFont = False
     TabOrder = 3
     object memoChat: TRichMemo
-      Left = 3
-      Height = 358
-      Top = 13
-      Width = 592
+      Left = 4
+      Height = 448
+      Top = 16
+      Width = 740
       Color = cl3DLight
       HideSelection = False
       OnChange = memoChatChange
@@ -560,29 +561,29 @@ object fChatATS: TfChatATS
     end
   end
   object Label1: TLabel
-    Left = 17
-    Height = 13
-    Top = 13
-    Width = 41
+    Left = 21
+    Height = 17
+    Top = 16
+    Width = 53
     Caption = 'Assunto'
     ParentColor = False
     ParentFont = False
   end
   object Label2: TLabel
     Left = 0
-    Height = 13
-    Top = 45
-    Width = 58
+    Height = 17
+    Top = 56
+    Width = 68
     Caption = 'Mensagem'
     ParentColor = False
     ParentFont = False
   end
   object edUsuario: TEdit
-    Left = 706
-    Height = 21
+    Left = 882
+    Height = 25
     Hint = 'Nome do Usuario'
-    Top = 123
-    Width = 168
+    Top = 154
+    Width = 210
     Color = 16777169
     OnChange = edUsuarioChange
     ParentFont = False
@@ -591,11 +592,11 @@ object fChatATS: TfChatATS
     TabOrder = 4
   end
   object edCodCLiente: TEdit
-    Left = 706
-    Height = 21
+    Left = 882
+    Height = 25
     Hint = 'Código do Cliente'
-    Top = 149
-    Width = 168
+    Top = 186
+    Width = 210
     Color = 16777169
     ParentFont = False
     ParentShowHint = False
@@ -603,11 +604,11 @@ object fChatATS: TfChatATS
     TabOrder = 5
   end
   object edCNPJ: TEdit
-    Left = 706
-    Height = 21
+    Left = 882
+    Height = 25
     Hint = 'CNPJ'
-    Top = 171
-    Width = 168
+    Top = 214
+    Width = 210
     Color = 16777169
     ParentFont = False
     ParentShowHint = False
@@ -615,10 +616,10 @@ object fChatATS: TfChatATS
     TabOrder = 6
   end
   object edAtendimento: TEdit
-    Left = 706
-    Height = 21
-    Top = 96
-    Width = 168
+    Left = 882
+    Height = 25
+    Top = 120
+    Width = 210
     Color = 16744576
     ParentFont = False
     ReadOnly = True
@@ -626,20 +627,20 @@ object fChatATS: TfChatATS
     Text = '1'
   end
   object edRetorno: TEdit
-    Left = 706
-    Height = 21
-    Top = 211
-    Width = 168
+    Left = 882
+    Height = 25
+    Top = 264
+    Width = 210
     Color = 16744576
     ParentFont = False
     ReadOnly = True
     TabOrder = 8
   end
   object btnConsulta: TButton
-    Left = 152
-    Height = 30
-    Top = 400
-    Width = 128
+    Left = 190
+    Height = 38
+    Top = 500
+    Width = 160
     Caption = 'Consultar Mensagem'
     OnClick = btnConsultaClick
     ParentFont = False
@@ -647,20 +648,20 @@ object fChatATS: TfChatATS
     Visible = False
   end
   object edCanal: TEdit
-    Left = 706
-    Height = 21
-    Top = 237
-    Width = 168
+    Left = 882
+    Height = 25
+    Top = 296
+    Width = 210
     Color = 16744576
     ParentFont = False
     ReadOnly = True
     TabOrder = 10
   end
   object edPath: TEdit
-    Left = 13
-    Height = 21
-    Top = 410
-    Width = 362
+    Left = 16
+    Height = 25
+    Top = 512
+    Width = 452
     Color = 16744576
     ParentFont = False
     ReadOnly = True
@@ -668,11 +669,11 @@ object fChatATS: TfChatATS
     Text = 'http://atsti.no-ip.biz:8905'
   end
   object edEmpresa: TEdit
-    Left = 706
-    Height = 21
+    Left = 882
+    Height = 25
     Hint = 'Nome da Empresa'
-    Top = 301
-    Width = 168
+    Top = 376
+    Width = 210
     Color = 16777169
     ParentFont = False
     ParentShowHint = False
@@ -680,97 +681,193 @@ object fChatATS: TfChatATS
     TabOrder = 12
   end
   object Label3: TLabel
-    Left = 654
-    Height = 13
-    Top = 123
-    Width = 39
+    Left = 818
+    Height = 17
+    Top = 154
+    Width = 49
     Caption = 'Usuario'
     ParentColor = False
     ParentFont = False
   end
   object Label4: TLabel
-    Left = 649
-    Height = 13
-    Top = 301
-    Width = 44
+    Left = 811
+    Height = 17
+    Top = 376
+    Width = 55
     Caption = 'Empresa'
     ParentColor = False
     ParentFont = False
   end
   object Label5: TLabel
-    Left = 667
-    Height = 13
-    Top = 176
-    Width = 26
+    Left = 834
+    Height = 17
+    Top = 220
+    Width = 32
     Caption = 'CNPJ'
     ParentColor = False
     ParentFont = False
   end
   object Label6: TLabel
-    Left = 629
-    Height = 13
-    Top = 149
-    Width = 64
+    Left = 786
+    Height = 17
+    Top = 186
+    Width = 80
     Caption = 'Cód. Cliente'
     ParentColor = False
     ParentFont = False
   end
   object Label7: TLabel
-    Left = 568
-    Height = 13
-    Top = 96
-    Width = 7
+    Left = 710
+    Height = 17
+    Top = 120
+    Width = 8
     Caption = 'n'
     ParentColor = False
+    ParentFont = False
   end
   object Label8: TLabel
-    Left = 609
-    Height = 13
-    Top = 96
-    Width = 84
+    Left = 761
+    Height = 17
+    Top = 120
+    Width = 103
     Caption = 'Cód. Mensagem'
     ParentColor = False
+    ParentFont = False
   end
   object Label9: TLabel
-    Left = 626
-    Height = 13
-    Top = 211
-    Width = 67
+    Left = 782
+    Height = 17
+    Top = 264
+    Width = 88
     Caption = 'Cód. Retorno'
     ParentColor = False
+    ParentFont = False
   end
   object Label10: TLabel
-    Left = 636
-    Height = 13
-    Top = 237
-    Width = 57
+    Left = 795
+    Height = 17
+    Top = 296
+    Width = 71
     Caption = 'Cód. Canal'
     ParentColor = False
+    ParentFont = False
   end
-  object Button1: TButton
-    Left = 648
-    Height = 25
-    Top = 384
-    Width = 187
+  object btnEnviaImagem: TButton
+    Left = 810
+    Height = 31
+    Top = 480
+    Width = 234
     Caption = 'Enviar Imagem'
-    OnClick = Button1Click
+    OnClick = btnEnviaImagemClick
+    ParentFont = False
     TabOrder = 13
+    Visible = False
   end
   object Memo1: TMemo
-    Left = 712
-    Height = 90
-    Top = 112
-    Width = 150
+    Left = 890
+    Height = 112
+    Top = 140
+    Width = 188
     Lines.Strings = (
       'Memo1'
     )
+    ParentFont = False
     TabOrder = 14
     Visible = False
+  end
+  object BitBtn2: TBitBtn
+    Left = 720
+    Height = 31
+    Hint = 'Anexar Imagem'
+    Top = 56
+    Width = 37
+    Glyph.Data = {
+      56070000424D5607000000000000360000002800000013000000180000000100
+      2000000000002007000064000000640000000000000000000000000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF5D979BFF5C979AFF5C979AFF5C969AFF5C969AFF5C96
+      9AFF5C969AFF5C979AFF5C979AFF5C969AFF5C979AFF5C969AFF5C979AFF5C97
+      9AFF5C979AFF5C979AFF5C979AFF000000FF000000FF5F9A9EFF5E9A9DFF5E99
+      9DFF5D989CFF5D989CFF5D989DFF5E999EFF5E999EFF5D989DFF5D989CFF5D98
+      9CFF5E989DFF5F999EFF5E999EFF5F999FFF5F999FFF5F999FFF000000FF0000
+      00FF609CA2FF609CA1FF609CA1FF609CA1FF609BA1FF609CA1FF609CA1FF609C
+      A1FF609CA1FF609CA1FF609CA1FF609CA1FF619DA1FF619DA1FF619DA1FF619D
+      A1FF619DA1FF000000FF000000FF64A1A5FF64A1A5FF63A0A4FF63A1A5FF63A0
+      A4FF64A1A5FF64A1A5FF63A0A4FF63A0A4FF63A0A4FF63A0A4FF63A1A5FF63A1
+      A5FF63A1A5FF64A1A6FF64A2A7FF64A1A6FF000000FF000000FF66A6ABFF66A5
+      AAFF65A5AAFF65A5AAFF65A5AAFF66A6AAFF65A5AAFF65A4A9FF65A5AAFF65A5
+      AAFF66A5ABFF66A6AAFF66A6AAFF66A6AAFF66A6AAFF66A7ABFF66A7ABFF0000
+      00FF000000FF6BACB2FF6AABB2FF69AAB0FF6AAAB2FF6AAAB2FF6AAAB1FF6AAA
+      B1FF6AAAB1FF6AAAB2FF6AAAB1FF6AAAB2FF6AAAB2FF6AAAB2FF6AACB2FF6AAC
+      B2FF6AACB2FF6BACB3FF000000FF000000FF6EB1B8FF6EB1B7FF6EB1B7FF6EB1
+      B6FF6EB1B6FF6DB1B6FF6DB1B6FF6DB2B7FF6DB2B7FF6DB2B7FF6DB2B7FF6EB2
+      B8FF6FB2B9FF6FB2B9FF6FB2B9FF6FB2B9FF6FB2B9FF000000FF000000FF71B8
+      BDFF72B8BDFF72B9BEFF71B7BCFF72B8BDFF72B9BEFF71B8BDFF71B8BDFF72B9
+      BEFF72B9BEFF72B9BEFF73B9BFFF73B9BFFF74BAC0FF74BAC0FF74BBC1FF74BB
+      C1FF000000FF000000FF75BEC4FF75BFC5FF75BEC5FF76BFC5FF76BEC5FF77BF
+      C5FF77BFC5FF76BFC5FF76BFC5FF76BFC5FF76BFC5FF77C0C6FF77C0C6FF77C0
+      C6FF78C1C6FF78C1C6FF79C2C7FF000000FF000000FF7AC5CCFF7AC4CBFF0000
+      00FF7AC5CCFF7AC5CCFF7AC5CCFF000000FF7AC6CCFF000000FF000000FF0000
+      00FF7CC7CEFF000000FF000000FF000000FF7CC7CEFF7CC7CEFF000000FF0000
+      00FF80CCD3FF80CDD4FF000000FF80CDD4FF80CDD4FF7FCCD3FF000000FF80CD
+      D5FF000000FF80CDD5FF80CDD5FF80CED6FF000000FF7FCDD5FF7FCDD5FF7FCD
+      D5FF7FCDD5FF000000FF000000FF82D3D9FF83D4DAFF000000FF000000FF83D3
+      D9FF83D3D9FF000000FF83D4DAFF000000FF83D4DAFF82D3D9FF81D2D8FF0000
+      00FF000000FF7FCFD5FF7FCFD5FF81D1D7FF000000FF000000FF88D9E1FF88D9
+      E1FF000000FF87D9E0FF87D9E0FF88DAE2FF000000FF88DAE2FF000000FF87D9
+      E1FF83D5DDFF81D1D8FF000000FF7DCAD2FF7DC9D1FF7DCAD2FF7ECDD5FF0000
+      00FF000000FF8ADDE5FF8ADDE5FF000000FF000000FF000000FF8BDFE7FF0000
+      00FF8ADFE7FF000000FF84DAE2FF80D2D9FF7CCCD3FF000000FF000000FF0000
+      00FF75BEC4FF78C1C8FF000000FF000000FF8CE4EBFF8DE5ECFF8DE5ECFF8DE5
+      ECFF8DE4EBFF8DE5ECFF8DE4EBFF8CE4EBFF88DFE6FF85D8DFFF7DCCD2FF73BB
+      C1FF6AADB2FF65A4A9FF65A2A9FF68A8AEFF6DB0B5FF000000FF000000FF8FE8
+      EFFF8FE8EFFF8FE8EFFF8FE8EFFF8FE8EFFF8FE8EFFF8FE8F0FF8EE8F0FF8AE3
+      EBFF82D3DBFF78C1C8FF69A8AEFF5C959AFF588C92FF578D93FF5D959AFF63A0
+      A6FF000000FF000000FF92ECF4FF90EAF2FF92ECF4FF92ECF4FF92ECF4FF92EC
+      F4FF91EBF3FF8FE8F0FF8BE1E9FF82D2D9FF72B8BFFF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF94EFF7FF95F0F8FF95F0
+      F8FF95F0F8FF95F0F8FF94EFF7FF95F0F8FF92EDF5FF8BE1E9FF81D0D6FF71B7
+      BCFF000000FF96F1F9FF96F1F9FF95F0F8FF96F1F9FF000000FF000000000000
+      00FF96F2FAFF96F2FAFF96F2FAFF96F2FAFF96F2FAFF96F2FAFF96F2FAFF92EE
+      F6FF8BE3EBFF83D5DBFF73B9BFFF000000FF96F3FBFF96F3FBFF96F3FBFF0000
+      00FF0000000000000000000000FF96F3FBFF96F3FBFF96F3FBFF96F3FBFF97F4
+      FCFF96F3FBFF96F3FBFF93F0F8FF8FE8F0FF86D9DFFF75BFC6FF000000FF97F4
+      FCFF97F4FCFF000000FF000000000000000000000000000000FF98F5FDFF98F5
+      FDFF97F4FCFF98F5FDFF98F5FDFF98F5FDFF98F5FDFF95F2FAFF91ECF4FF88DC
+      E4FF7BC7CDFF000000FF98F5FDFF000000FF0000000000000000000000000000
+      0000000000FF98F6FEFF98F6FEFF98F6FEFF98F6FEFF98F6FEFF98F6FEFF98F6
+      FEFF97F5FDFF94F1F9FF8CE4ECFF81D4DBFF000000FF000000FF000000000000
+      0000000000000000000000000000000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000000000000000000000000000000000000000000000
+    }
+    OnClick = BitBtn2Click
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 15
+  end
+  object edPathImg: TEdit
+    Left = 768
+    Height = 25
+    Top = 530
+    Width = 324
+    Color = 16777169
+    Enabled = False
+    TabOrder = 16
   end
   object Timer1: TTimer
     Interval = 10000
     OnTimer = Timer1Timer
-    Left = 616
-    Top = 368
+    Left = 770
+    Top = 460
+  end
+  object OpenDialog1: TOpenDialog
+    Left = 1000
+    Top = 24
+  end
+  object OpenPictureDialog1: TOpenPictureDialog
+    Left = 944
+    Top = 48
   end
 end

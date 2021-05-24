@@ -36,9 +36,10 @@
         <ComponentName Value="fPDV_Rec"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="1162"/>
-        <CursorPos X="61" Y="1167"/>
+        <TopLine Value="1983"/>
+        <CursorPos X="5" Y="1997"/>
         <UsageCount Value="205"/>
         <Bookmarks Count="5">
           <Item0 Y="1801" ID="5"/>
@@ -250,7 +251,6 @@
         <ComponentName Value="fAbrirCaixa"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="14"/>
         <TopLine Value="384"/>
         <CursorPos X="65" Y="403"/>
@@ -649,123 +649,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="updv_rec.pas"/>
-        <Caret Line="175" Column="26" TopLine="165"/>
+        <Caret Line="1925" Column="18" TopLine="1912"/>
       </Position1>
       <Position2>
         <Filename Value="updv_rec.pas"/>
-        <Caret Line="1245" Column="32" TopLine="1225"/>
+        <Caret Line="1997" Column="16" TopLine="1978"/>
       </Position2>
       <Position3>
         <Filename Value="updv_rec.pas"/>
-        <Caret Line="1925" Column="18" TopLine="1912"/>
+        <Caret Line="175" Column="26" TopLine="165"/>
       </Position3>
       <Position4>
         <Filename Value="updv_rec.pas"/>
-        <Caret Line="1997" Column="16" TopLine="1978"/>
+        <Caret Line="1245" Column="32" TopLine="1225"/>
       </Position4>
       <Position5>
         <Filename Value="updv_rec.pas"/>
-        <Caret Line="175" Column="26" TopLine="165"/>
+        <Caret Line="1913" TopLine="1906"/>
       </Position5>
       <Position6>
         <Filename Value="updv_rec.pas"/>
-        <Caret Line="1245" Column="32" TopLine="1225"/>
+        <Caret Line="1996" Column="21" TopLine="1990"/>
       </Position6>
       <Position7>
         <Filename Value="updv_rec.pas"/>
-        <Caret Line="1913" TopLine="1906"/>
+        <Caret Line="174" Column="31" TopLine="164"/>
       </Position7>
       <Position8>
         <Filename Value="updv_rec.pas"/>
-        <Caret Line="1996" Column="21" TopLine="1990"/>
+        <Caret Line="1168" Column="49" TopLine="1162"/>
       </Position8>
       <Position9>
         <Filename Value="updv_rec.pas"/>
-        <Caret Line="174" Column="31" TopLine="164"/>
+        <Caret Line="1998" Column="24" TopLine="1988"/>
       </Position9>
       <Position10>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="1168" Column="49" TopLine="1162"/>
+        <Filename Value="uabrircaixa.pas"/>
+        <Caret Line="42" Column="13" TopLine="29"/>
       </Position10>
       <Position11>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="1998" Column="24" TopLine="1988"/>
+        <Filename Value="uabrircaixa.pas"/>
+        <Caret Line="158" Column="54" TopLine="139"/>
       </Position11>
       <Position12>
         <Filename Value="uabrircaixa.pas"/>
-        <Caret Line="42" Column="13" TopLine="29"/>
+        <Caret Line="434" Column="69" TopLine="420"/>
       </Position12>
       <Position13>
-        <Filename Value="uabrircaixa.pas"/>
-        <Caret Line="158" Column="54" TopLine="139"/>
+        <Filename Value="usangria.pas"/>
+        <Caret Line="163" Column="44" TopLine="155"/>
       </Position13>
       <Position14>
-        <Filename Value="uabrircaixa.pas"/>
-        <Caret Line="434" Column="69" TopLine="420"/>
+        <Filename Value="usangria.pas"/>
+        <Caret Line="77" Column="10" TopLine="60"/>
       </Position14>
       <Position15>
         <Filename Value="usangria.pas"/>
-        <Caret Line="163" Column="44" TopLine="155"/>
+        <Caret Line="92" Column="32" TopLine="73"/>
       </Position15>
       <Position16>
-        <Filename Value="usangria.pas"/>
-        <Caret Line="77" Column="10" TopLine="60"/>
+        <Filename Value="uabrircaixa.pas"/>
+        <Caret Line="432" TopLine="420"/>
       </Position16>
       <Position17>
-        <Filename Value="usangria.pas"/>
-        <Caret Line="92" Column="32" TopLine="73"/>
+        <Filename Value="uabrircaixa.pas"/>
+        <Caret Line="431" Column="5" TopLine="418"/>
       </Position17>
       <Position18>
         <Filename Value="uabrircaixa.pas"/>
-        <Caret Line="432" TopLine="420"/>
+        <Caret Line="425" Column="10" TopLine="418"/>
       </Position18>
       <Position19>
         <Filename Value="uabrircaixa.pas"/>
-        <Caret Line="431" Column="5" TopLine="418"/>
+        <Caret Line="291" Column="31" TopLine="273"/>
       </Position19>
       <Position20>
         <Filename Value="uabrircaixa.pas"/>
-        <Caret Line="425" Column="10" TopLine="418"/>
+        <Caret Line="295" Column="13" TopLine="275"/>
       </Position20>
       <Position21>
         <Filename Value="uabrircaixa.pas"/>
-        <Caret Line="291" Column="31" TopLine="273"/>
+        <Caret Line="333" Column="15" TopLine="323"/>
       </Position21>
       <Position22>
         <Filename Value="uabrircaixa.pas"/>
-        <Caret Line="295" Column="13" TopLine="275"/>
+        <Caret Line="337" Column="49" TopLine="323"/>
       </Position22>
       <Position23>
         <Filename Value="uabrircaixa.pas"/>
-        <Caret Line="333" Column="15" TopLine="323"/>
+        <Caret Line="403" Column="15" TopLine="384"/>
       </Position23>
       <Position24>
         <Filename Value="uabrircaixa.pas"/>
-        <Caret Line="337" Column="49" TopLine="323"/>
+        <Caret Line="446" Column="47" TopLine="406"/>
       </Position24>
       <Position25>
         <Filename Value="uabrircaixa.pas"/>
-        <Caret Line="403" Column="15" TopLine="384"/>
+        <Caret Line="287" Column="13" TopLine="275"/>
       </Position25>
       <Position26>
         <Filename Value="uabrircaixa.pas"/>
-        <Caret Line="446" Column="47" TopLine="406"/>
+        <Caret Line="295" Column="13" TopLine="275"/>
       </Position26>
       <Position27>
         <Filename Value="uabrircaixa.pas"/>
-        <Caret Line="287" Column="13" TopLine="275"/>
+        <Caret Line="333" Column="15" TopLine="314"/>
       </Position27>
       <Position28>
         <Filename Value="uabrircaixa.pas"/>
-        <Caret Line="295" Column="13" TopLine="275"/>
+        <Caret Line="337" Column="49" TopLine="318"/>
       </Position28>
       <Position29>
-        <Filename Value="uabrircaixa.pas"/>
-        <Caret Line="333" Column="15" TopLine="314"/>
+        <Filename Value="updv_rec.pas"/>
+        <Caret Line="1167" Column="61" TopLine="1182"/>
       </Position29>
       <Position30>
-        <Filename Value="uabrircaixa.pas"/>
-        <Caret Line="337" Column="49" TopLine="318"/>
+        <Filename Value="updv_rec.pas"/>
+        <Caret Line="1242" Column="9" TopLine="1231"/>
       </Position30>
     </JumpHistory>
     <RunParams>

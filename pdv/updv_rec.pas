@@ -1994,7 +1994,7 @@ begin
   if (dmpdv.outro_cupom = 'S') then
   begin
     imprimirTxtOutro();
-    //imprimiAcbr();
+    imprimiAcbr();
   end;
 end;
 

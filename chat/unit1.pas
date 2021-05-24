@@ -6,21 +6,24 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Buttons,
-  ExtCtrls, RichMemo, JsonTools, fpjson, FileUtil, SynEdit, fphttpclient, IniFiles, Base64;
+  ExtCtrls, ExtDlgs, RichMemo, JsonTools, fpjson, FileUtil, SynEdit,
+  fphttpclient, IniFiles, Base64;
 
 type
 
   { TfChatATS }
 
   TfChatATS = class(TForm)
-    BitBtn1: TBitBtn;
+    btnEnviaMsg: TBitBtn;
+    BitBtn2: TBitBtn;
     btnConsulta: TButton;
-    Button1: TButton;
+    btnEnviaImagem: TButton;
     edAssunto: TEdit;
     edCodCLiente: TEdit;
     edCNPJ: TEdit;
     edAtendimento: TEdit;
     edEmpresa: TEdit;
+    edPathImg: TEdit;
     edPath: TEdit;
     edRetorno: TEdit;
     edCanal: TEdit;
@@ -37,12 +40,15 @@ type
     Label8: TLabel;
     Label9: TLabel;
     Memo1: TMemo;
+    OpenDialog1: TOpenDialog;
+    OpenPictureDialog1: TOpenPictureDialog;
     Panel1: TPanel;
     memoChat: TRichMemo;
     Timer1: TTimer;
-    procedure BitBtn1Click(Sender: TObject);
+    procedure btnEnviaMsgClick(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
     procedure btnConsultaClick(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure btnEnviaImagemClick(Sender: TObject);
     procedure edAssuntoKeyPress(Sender: TObject; var Key: char);
     procedure edMensagemKeyPress(Sender: TObject; var Key: char);
     procedure edUsuarioChange(Sender: TObject);
@@ -65,7 +71,7 @@ implementation
 
 { TfChatATS }
 
-procedure TfChatATS.BitBtn1Click(Sender: TObject);
+procedure TfChatATS.btnEnviaMsgClick(Sender: TObject);
 var k: Integer;
   postJson: TJSONObject;
   dadosJson, c: TJsonNode;
@@ -121,6 +127,7 @@ begin
       postJson.Add('id', edAtendimento.Text);
       postJson.Add('canal', edCanal.Text);
       postJson.Add('img', '');
+      postJson.Add('img_type', '');
       if (edMensagem.Text <> '') then
       begin
         ver := edUsuario.text + ': ' + edMensagem.text;
@@ -169,6 +176,22 @@ begin
   edMensagem.SetFocus;
 end;
 
+procedure TfChatATS.BitBtn2Click(Sender: TObject);
+var ver: String;
+begin
+  if OpenPictureDialog1.Execute then
+  begin
+    if (FileExists(OpenPictureDialog1.FileName)) then
+    begin
+      edPathImg.Text:=OpenPictureDialog1.FileName;
+      ver := edUsuario.text + ': ' + edPathImg.text;
+      memoChat.Lines.Add(ver);
+      btnEnviaImagem.Click;
+      edMensagem.SetFocus;
+    end;
+  end;
+end;
+
 procedure TfChatATS.btnConsultaClick(Sender: TObject);
 var k: Integer;
   postJson: TJSONObject;
@@ -201,7 +224,7 @@ begin
     else
       Rewrite(logs);
     begin
-      Writeln(logs, 'Iniciando integracao : ' + FormatDateTime('mm/dd/yyyy hh:MM', Now));
+      Writeln(logs, 'Iniciando chat : ' + FormatDateTime('mm/dd/yyyy hh:MM', Now));
       Writeln(logs, 'Path : ' + path_integracao);
       Writeln(logs, 'URL : ' + path_integracao_url);
 
@@ -235,6 +258,10 @@ begin
                 edRetorno.Text := dadosJson.find('atendimento').AsString;
               if (dadosJson.find('canal').AsString <> '000') then
                 edCanal.Text := dadosJson.find('canal').AsString;
+              if (edAtendimento.Text = '1') then
+                edAtendimento.Text := '2';
+              if (edAssunto.Text = '') then
+                edAssunto.Text := dadosJson.find('assunto').AsString;
             end;
             if (retorno <> '') then
             begin
@@ -255,30 +282,47 @@ begin
   end;
 end;
 
-procedure TfChatATS.Button1Click(Sender: TObject);
-
+procedure TfChatATS.btnEnviaImagemClick(Sender: TObject);
 Var
   Respo: TStringStream;
   S : String;
-    img: TJPEGImage;
-    imgstream, outputstream: tstream;
-    encoder: TBase64EncodingStream;
-    path_integracao_url: String;
-    postJson: TJSONObject;
-    dadosJson, c: TJsonNode;
-    responseData: String;
+  //img_jpg: TJPEGImage;
+  //img_bmp: TBitmap;
+  //img_png: TPortableNetworkGraphic;
+  imgstream, outputstream: tstream;
+  FS: TFileStream;
+  encoder: TBase64EncodingStream;
+  path_integracao_url: String;
+  postJson: TJSONObject;
+  dadosJson, c: TJsonNode;
+  responseData: String;
+  tipo_img : String;
 begin
+  if (edPathImg.Text = '') then
+    exit;
+  tipo_img := Copy(edPathImg.Text, Length(edPathImg.Text)-2, Length(edPathImg.Text));
+  Fs := TFileStream.Create(edPathImg.Text, fmOpenRead);
   memo1.Lines.Clear;
   imgstream := TMemoryStream.create();
   outputstream := TStringStream.Create('');
-   img := TJPEGImage.Create;
-   img.LoadFromFile('C:\home\sisadmin\logo.jpg');
-   img.SaveToStream(imgstream);
+  //if (LowerCase(tipo_img) = 'png') then
+  //begin
+  //  img_png := TPortableNetworkGraphic.Create;
+  //end;
+  //img_bmp := TPicture.Create;
+  // img := TJPEGImage.Create;
+  //imgx.LoadFromFile(edPathImg.Text);
+  // img.LoadFromFile(edPathImg.Text);
+  // img.SaveToStream(imgstream);
+  //imgx.SaveToStream(imgstream);
+
    encoder := TBase64EncodingStream.create(outputstream);
    imgstream.Position:=0;
-   encoder.CopyFrom(TStringStream(imgstream), imgstream.Size);
+   //encoder.CopyFrom(TStringStream(imgstream), imgstream.Size);
+   encoder.CopyFrom(TStringStream(Fs), Fs.Size);
    encoder.Flush;
-   memo1.Text:='data:image/jpg;base64,'+ TStringStream(outputstream).DataString;
+   //memo1.Text:='data:image/jpg;base64,'+ TStringStream(outputstream).DataString;
+   memo1.Text := TStringStream(outputstream).DataString;
   With TFPHttpClient.Create(Nil) do
     try
       {Respo := TStringStream.Create('');
@@ -296,6 +340,7 @@ begin
         postJson.Add('cnpj', edCNPJ.text);
         postJson.Add('id', edAtendimento.Text);
         postJson.Add('img', memo1.Text);
+        postJson.Add('img_type', tipo_img);
         postJson.Add('canal', edCanal.Text);
         AddHeader('Content-Type', 'application/json');
         RequestBody := TStringStream.Create(postJson.AsJSON);
@@ -303,8 +348,12 @@ begin
 
     finally
       imgstream.free;
-      img.free;
+      //img_jpg.free;
+      outputstream.Free;
+      encoder.Free;
+      Fs.Free;
       Free;
+      edPathImg.Text := '';
     end;
 
 end;
@@ -322,7 +371,7 @@ begin
   if (key=#13) then
   begin
      SelectNext(ActiveControl, True, True);
-     BitBtn1.Click;
+     btnEnviaMsg.Click;
   end;
 end;
 
