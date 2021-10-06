@@ -246,7 +246,8 @@ begin
      MessageDlg('Valor Inválido.',mtError,[mbok],0);
      exit;
   end;
-  Sincrono := False;
+  // comentei abaixo 04/10/21 erro rejeicao assincrono ...
+  //Sincrono := False;
 
   ACBrNFe1.DANFE := ACBrNFeDANFeESCPOS1;
 
@@ -277,12 +278,21 @@ begin
     begin
       memoLog.Lines.Append('Enviando ...');
       //memoLog.Lines.Add('Enviando ...');
+
       ACBrNFe1.Enviar(vNumLote,True,Sincrono);
+      //ACBrNFe1.WebServices.Enviar.Lote := vNumLote;
+      //ACBrNFe1.WebServices.Enviar.Sincrono := Sincrono;
+      //ACBrNFe1.WebServices.Enviar.Executar;
       memoLog.Lines.Append('cStat : ' + IntToStr(ACBrNFe1.WebServices.Retorno.cStat));
-      if (ACBrNFe1.WebServices.Retorno.cStat = 100) then
+      //05/10/21 comentei a linha abaixo e adicionei a outra
+      //if (ACBrNFe1.WebServices.Retorno.cStat = 100) then
+      if (ACBrNFe1.NotasFiscais.Items[0].NFe.procNFe.cStat = 100) then
       begin
-        Protocolo := ACBrNFe1.WebServices.Retorno.Protocolo;
-        Recibo := ACBrNFe1.WebServices.Retorno.Recibo;
+        // 05/10/21 troquei as 2 linhas abaixo  por causa do modo sincrono
+        //Protocolo := ACBrNFe1.WebServices.Retorno.Protocolo;
+        //Recibo := ACBrNFe1.WebServices.Retorno.Recibo;
+        Protocolo := ACBrNFe1.NotasFiscais.Items[0].NFe.procNFe.nProt;
+        Recibo := ACBrNFe1.WebServices.Enviar.Recibo;
         GravarDadosNF(protocolo, recibo);
       end;
     end;
@@ -929,20 +939,27 @@ begin
     with pag.Add do
     begin
       tPag := fpCreditoLoja;
+      tpIntegra := tiPagNaoIntegrado;
       if (trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString) = '1') then
         tPag := fpDinheiro
       else if (trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString) = '3') then
       begin
         tPag := fpCartaoCredito;
-        tpIntegra := tiPagNaoIntegrado;
       end
       else if trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString) = '2' then
       begin
         tPag := fpCartaoDebito;
-        tpIntegra := tiPagNaoIntegrado;
       end
-      else
-        tPag := fpOutro;
+      else if trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString) = '5' then
+      begin
+        tPag := fpCheque;
+      end
+      else if trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString) = '6' then
+      begin
+        tPag := fpPagamentoInstantaneo;
+      end;
+      //else
+      //  tPag := fpOutro;
       vlr_pg := RoundABNT(dmPdv.sqBusca.FieldByName('VALOR_PAGO').AsFloat,2);
       if (num_parc = 1) then
       begin
