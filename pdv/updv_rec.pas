@@ -453,7 +453,11 @@ begin
   dmPdv.sqGenerator.SQL.Clear;
   dmPdv.sqGenerator.SQL.Text := 'SELECT CAST(GEN_ID(GEN_FORMA, 1) AS INTEGER) ' +
     'AS CODIGO FROM RDB$DATABASE';
-  dmPdv.sqGenerator.Open;
+  try
+    dmPdv.sqGenerator.Open;
+  except
+    ShowMessage('Crie o Generator : CREATE GENERATOR gen_forma ');
+  end;
   codForma := dmPdv.sqGenerator.Fields[0].AsInteger;
   dmPdv.sqGenerator.Close;
   sqPagamento.Open;
@@ -847,8 +851,32 @@ begin
         Writeln(impressora, 'Usuario: ' + dmpdv.nomeLogado);
         Writeln(impressora, 'Vendedor: ' + RemoveAcento(edVendedor.Text));
       end
-      else if lFile[i] = 'cliente' then
-        Writeln(Impressora, clientecupom)
+      else if ((lFile[i] = 'cliente') or (lFile[i] = 'clientecompleto')) then
+      begin
+        if lFile[i] = 'clientecompleto' then
+        begin
+          dmPdv.qsCliente.Close;
+          dmPdv.qsCliente.Params.ParamByName('ID').AsInteger := vCliente;
+          dmPdv.qsCliente.Open;
+          if dmPdv.qsCliente.IsEmpty then
+          begin
+            Writeln(Impressora, clientecupom);
+          end
+          else begin
+            clientecupom := '  ' + IntToStr(vCliente) + '-' + RemoveAcento(vClienteNome);
+            Writeln(Impressora, clientecupom);
+            clientecupom := ' Doc.: ' + dmPdv.qsClienteCNPJ.AsString + ', ' + dmPdv.qsClienteINSCESTADUAL.AsString;
+            Writeln(Impressora, clientecupom);
+            clientecupom := ' End.: ' + dmPdv.qsClienteLOGRADOURO.AsString + ', ' + dmPdv.qsClienteNUMERO.AsString;
+            Writeln(Impressora, clientecupom);
+            clientecupom := ' ' + dmPdv.qsClienteBAIRRO.AsString + ', ' + dmPdv.qsClienteCIDADE.AsString + ', ' + dmPdv.qsClienteUF.AsString;
+            Writeln(Impressora, clientecupom);
+          end;
+        end
+        else begin
+          Writeln(Impressora, clientecupom);
+        end;
+      end
       else if lFile[i] = 'doc' then
         Writeln(Impressora, '  ' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now) +
           ' Pedido :' + IntToStr(vCodMovimento) + '/' + label11.Caption)
@@ -1995,6 +2023,10 @@ begin
   begin
     imprimirTxtOutro();
     imprimiAcbr();
+  end;
+  if (dmpdv.outro_cupom = 'P') then
+  begin
+    BitBtn24.Click;
   end;
 end;
 

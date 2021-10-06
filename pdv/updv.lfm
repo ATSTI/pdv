@@ -12564,9 +12564,9 @@ object fPdv: TfPdv
       end
     end
     object pnProdutoNaoLocalizado: TPanel
-      Left = 136
+      Left = 128
       Height = 162
-      Top = 102
+      Top = 92
       Width = 409
       ClientHeight = 162
       ClientWidth = 409

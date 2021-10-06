@@ -20,8 +20,13 @@ type
     ActionList1: TActionList;
     BitBtn1: TBitBtn;
     BitBtn18: TBitBtn;
+    BitBtn2: TBitBtn;
     BitBtn20: TBitBtn;
     BitBtn21: TBitBtn;
+    BitBtn24: TBitBtn;
+    BitBtn3: TBitBtn;
+    BitBtn4: TBitBtn;
+    BitBtn5: TBitBtn;
     BitBtn9: TBitBtn;
     btnConfirma: TBitBtn;
     btnProcurar: TBitBtn;
@@ -38,6 +43,7 @@ type
     Label2: TLabel;
     edPago: TMaskEdit;
     lblForma: TLabel;
+    Memo1: TMemo;
     Panel1: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
@@ -75,6 +81,7 @@ type
     procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn20Click(Sender: TObject);
     procedure BitBtn21Click(Sender: TObject);
+    procedure BitBtn24Click(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
     procedure BitBtn4Click(Sender: TObject);
@@ -91,6 +98,7 @@ type
   private
     codClienteR : Integer;
     procedure enviar_caixa(valor_pago: Double; codRec: Integer);
+        function RemoveAcento(Str: string): string;
   public
 
   end;
@@ -219,6 +227,34 @@ begin
   sqPagamento.ApplyUpdates;
 end;
 
+function TfRecebimento.RemoveAcento(Str: string): string;
+const
+ComAcento = 'àâêôûãõáéíóúçüÀÂÊÔÛÃÕÁÉÍÓÚÇÜ';
+SemAcento = 'aaeouaoaeioucuAAEOUAOAEIOUCU';
+var
+ x: Integer;
+ verAcento : String;
+begin;
+for x := 1 to Length(Str) do
+if Pos(Str[x],ComAcento) <> 0 then
+begin
+  verAcento := Str[x];
+  if Str[x] > #120 then
+    str[x] := Char('')
+  else
+    Str[x] := SemAcento[Pos(Str[x], ComAcento)];
+  verAcento := Str[x];
+end;
+str := UTF8String(str);
+for x := 1 to Length(Str) do
+  if Str[x] > #127 then
+    str[x] := 'a';
+//Result := AnsiToUtf8(str);
+Result := str;
+
+
+end;
+
 procedure TfRecebimento.btnProcurarClick(Sender: TObject);
 var
   sql_rec: String;
@@ -299,6 +335,7 @@ var
   //vRec : TRecebimento;
   vr_formaRec: String;
 begin
+  memo1.Lines.Clear;
   // baixar pagamentos
   if (rgSituacao.ItemIndex > 0) then
   begin
@@ -462,6 +499,212 @@ begin
   lblForma.Caption:= '6-Pix';
   edPago.Enabled:=True;
   edPago.SetFocus;
+end;
+
+procedure TfRecebimento.BitBtn24Click(Sender: TObject);
+  var
+  IMPRESSORA:TextFile;
+  lFile   : TStringList;
+  i      : Integer;
+  logradouro: String;
+  cep: String;
+  fone: String;
+  clientecupom: string;
+  texto3: String;
+  texto6: String;
+  produto_cupomf: String;
+  linhaTxt : String;
+  prazo : String;
+  totalP: Double;
+  totalD: Double;
+  ItemDesc: Double;
+  totalR: Double;
+  sql_rec: string;
+  v_log: string;
+begin
+  // buscando contas pagas
+  sql_rec := 'SELECT r.CODCLIENTE, r.CODRECEBIMENTO, r.TITULO, r.EMISSAO';
+  sql_rec += ', r.DATAVENCIMENTO, r.DATARECEBIMENTO ';
+  sql_rec += ' ,COALESCE(r.VALORRECEBIDO,0) AS VALOR_RECEBIDO, ';
+  sql_rec += ' c.NOMECLIENTE FROM RECEBIMENTO r, CLIENTES c ';
+  sql_rec += ' WHERE r.CODCLIENTE = c.CODCLIENTE ';
+  if (edCodCliente.Text <> '') then
+  begin
+    sql_rec += ' AND r.CODCLIENTE = ' + edCodCliente.Text;
+  end;
+  sql_rec += ' AND r.STATUS  = ' + QuotedStr('7-');
+  sql_rec += ' AND r.DATARECEBIMENTO = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now));
+  sql_rec += ' ORDER BY r.DATAVENCIMENTO, r.EMISSAO, r.TITULO';
+  dmPdv.busca_sql(sql_rec);
+  While not dmPdv.sqBusca.EOF do
+  begin
+    totalR += dmPdv.sqBusca.FieldByName('VALOR_RECEBIDO').AsFloat;
+    dmPdv.sqBusca.Next;
+  end;
+  dmPdv.sqBusca.First;
+
+  v_log := 'Log de impressão - ';
+  totalP := 0;
+  totalD := 0;
+  totalR := 0;
+  if (not dmPdv.sqEmpresa.Active) then
+    dmPdv.sqEmpresa.Open;
+  v_log := 'Log de impressão 3 ';
+  {----- aqui monto o endereço-----}
+  logradouro := '  ' + dmPdv.sqEmpresaENDERECO.Value +
+     ', ' + dmPdv.sqEmpresaBAIRRO.Value;
+  cep :=  '  ' + dmPdv.sqEmpresaCIDADE.Value + ' - ' + dmPdv.sqEmpresaUF.Value +
+  ' - ' + dmPdv.sqEmpresaCEP.Value;
+  fone := '  (19)' + dmPdv.sqEmpresaFONE.Value + ' / ' + dmPdv.sqEmpresaFONE_1.Value +
+  ' / ' + dmPdv.sqEmpresaFONE_2.Value;
+  {------------------------DADOS DO CLIENTE--------------------------}
+  clientecupom := '  ' + IntToStr(dmPdv.sqBusca.FieldByName('CODCLIENTE').asInteger) +
+      '-' + RemoveAcento(dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString);
+  // leio um arquivo txt e imprimo
+  v_log := 'Log de impressão - criando lFile ';
+  lFile := TStringList.Create;
+  if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
+  begin
+    v_log := 'Log portaImp - ' + dmPdv.portaIMP;
+    AssignFile(IMPRESSORA, dmPdv.portaIMP);
+  end
+  else begin
+    v_log := 'Log path_imp - ' + dmPdv.path_imp;
+    AssignFile(IMPRESSORA, dmPdv.path_imp);
+  end;
+  v_log := 'Log abrindo cupom.txt ' + dmpdv.path_exe + 'cupom.txt';
+  try
+    Rewrite(IMPRESSORA);
+    lFile.LoadFromFile(dmpdv.path_exe + 'cupom.txt');
+    for i:=0 to lFile.Count-1 do
+    begin
+      v_log := 'Log lendo cupom.txt ';
+      linhaTxt := Copy(lFile[i],0,1);
+      if lFile[i] = 'empresa' then
+        Writeln(Impressora, RemoveAcento(Format('  %-36s',[dmPdv.sqEmpresaRAZAO.Value])))
+      else if lFile[i] = 'logradouro' then
+        Writeln(Impressora, logradouro)
+      else if lFile[i] = 'cep' then
+        Writeln(Impressora, cep)
+      else if lFile[i] = 'fone' then
+      begin
+        Writeln(Impressora, fone);
+      end
+      else if lFile[i] = 'linha' then
+      begin
+        Writeln(IMPRESSORA, '');
+      end
+      else if lFile[i] = 'usuario' then
+      begin
+        Writeln(impressora, 'Usuario: ' + dmpdv.nomeLogado);
+      end
+      else if ((lFile[i] = 'cliente') or (lFile[i] = 'clientecompleto')) then
+      begin
+        if lFile[i] = 'clientecompleto' then
+        begin
+          dmPdv.qsCliente.Close;
+          dmPdv.qsCliente.Params.ParamByName('ID').AsInteger := StrToInt(edCodCliente.Text);
+          dmPdv.qsCliente.Open;
+          if dmPdv.qsCliente.IsEmpty then
+          begin
+            Writeln(Impressora, clientecupom);
+          end
+          else begin
+            Writeln(Impressora, clientecupom);
+            clientecupom := ' Doc.: ' + dmPdv.qsClienteCNPJ.AsString + ', ' + dmPdv.qsClienteINSCESTADUAL.AsString;
+            Writeln(Impressora, clientecupom);
+            clientecupom := ' End.: ' + dmPdv.qsClienteLOGRADOURO.AsString + ', ' + dmPdv.qsClienteNUMERO.AsString;
+            Writeln(Impressora, clientecupom);
+            clientecupom := ' ' + dmPdv.qsClienteBAIRRO.AsString + ', ' + dmPdv.qsClienteCIDADE.AsString + ', ' + dmPdv.qsClienteUF.AsString;
+            Writeln(Impressora, clientecupom);
+          end;
+        end
+        else begin
+          Writeln(Impressora, clientecupom);
+        end;
+      end
+      else if lFile[i] = 'doc' then
+        Writeln(Impressora, '  ' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now) +
+          ' Recibo pagamento prazo.')
+      else if lFile[i] = 'itens' then
+      begin
+        while not dmPdv.sqBusca.EOF do
+        begin
+          texto3 := ' ';
+          texto6 := '  ';
+          itemDesc := dmPdv.sqBusca.FieldByName('EMISSAO').AsString + '-' +
+              dmPdv.sqBusca.FieldByName('TITULO').AsVariant + ' Valor Recebido: ';
+          texto3 := texto3 + Format(' %6.2n',[ItemDesc]);
+          texto3 := texto3 + Format('   %6.2n',[dmPdv.sqBusca.FieldByName('VALOR_RECEBIDO').asFloat]);
+          Writeln(Impressora, texto3);
+          dmPdv.sqBusca.next;
+        end;
+      end
+      else if linhaTxt = 'P' then
+      begin
+      end
+      else if linhaTxt = 'D' then
+      begin
+      end
+      else if linhaTxt = 'T' then
+      begin
+      end
+      else if linhaTxt = 'Z' then
+      begin
+      end
+      else if linhaTxt = 'V' then
+      begin
+      end
+      else if linhaTxt = 'C' then
+      begin
+      end
+      else if linhaTxt = '1' then
+      begin
+      end
+      else if linhaTxt = '2' then
+      begin
+      end
+      else if linhaTxt = '3' then
+      begin
+      end
+      else if linhaTxt = '4' then
+      begin
+      end
+      else
+        Writeln(Impressora,lFile[i]);
+    end;
+  finally
+    CloseFile(IMPRESSORA);
+    lFile.Free;
+  end;
+  v_log := 'Log Impressao: ';
+  v_log += 'conf Cupom: ' + dmPdv.CupomImp;
+  if (dmPdv.CupomImp = 'BD') then
+  begin
+    lFile := TStringList.Create;
+    try
+      v_log += ', PathIMP: ' + dmPdv.path_imp;
+      lFile.LoadFromFile(dmPdv.path_imp);
+      texto6 := lFile.Text;
+    finally
+      lFile.Free;
+    end;
+    try
+      texto6 := 'INSERT INTO AVISOS (CODAVISOS, TIPO, DESCRICAO) VALUES ('+
+        'GEN_ID(GEN_AVISOS, 1), ' + QuotedStr(dmPdv.MICRO) + ', ' +
+        QuotedStr(texto6) + ')';
+      dmPdv.IbCon.ExecuteDirect(texto6);
+      v_log += ', SQL: ' +texto6;
+      dmPdv.sTrans.Commit;
+    except
+      on dmPdv: EDatabaseError do
+      begin
+        MessageDlg('Error','Erro na conexao com a base de dados, erro : ' +
+          dmPdv.Message,mtError,[mbOK],0);
+      end;
+    end;
+  end;
+
 end;
 
 procedure TfRecebimento.BitBtn2Click(Sender: TObject);

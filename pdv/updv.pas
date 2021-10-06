@@ -677,6 +677,7 @@ begin
   edDesconto.Text:=edDesconto.Text;
   alterar_item();
   calculaTotalGeral();
+  fPermissao.Permissao_Fazer := 'PRECO';
   edProduto.SetFocus;
   pnAltera.Visible:=False;
 end;

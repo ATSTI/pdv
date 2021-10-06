@@ -1044,7 +1044,7 @@ object fPDV_Rec: TfPDV_Rec
       object pnCartoes: TPanel
         Left = 48
         Height = 226
-        Top = 56
+        Top = 150
         Width = 374
         ClientHeight = 226
         ClientWidth = 374

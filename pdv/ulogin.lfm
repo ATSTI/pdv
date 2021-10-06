@@ -25,6 +25,16 @@ object fLogin: TfLogin
       Width = 497
       Align = alClient
       Lines.Strings = (
+        'Versao : 4.7'
+        '  Adicionado opção de imprimir Endereço Completo do '
+        '  cliente, no cupom.txt no lugar de :   cliente  , colocar '
+        '  clientecompleto'
+        ''
+        '  Adicionado o parametro: '
+        '    [IMPRESSORA]'
+        '       Cupom_Outro=P  (Executa o botão Imprimir antes'
+        '   de ir pra tela da nota)'
+        '   '
         'Versao : 1.4'
         '   Adicionado o parametro: '
         '       Imprimir Cupom Cozinha:'
@@ -178,7 +188,7 @@ object fLogin: TfLogin
     Top = 330
     Width = 172
     AutoSize = False
-    Caption = 'ATS Ti Sistemas , v. 4.6'
+    Caption = 'ATS Ti Sistemas , v. 4.7'
     ParentColor = False
   end
   object Label3: TLabel
