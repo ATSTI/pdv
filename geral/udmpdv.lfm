@@ -706,10 +706,10 @@ object dmPdv: TdmPdv
       '    a.VALOR_PIS, a.VALOR_COFINS, a.II, a.CSTIPI,'
       '    a.CSTPIS, a.CSTCOFINS, a.PPIS, a.PCOFINS, a.NITEMPED,'
       '    a.DESCONTO_BC, a.VLRBC_IPI, a.VLRBC_PIS,'
-      '    a.VLRBC_COFINS, a.VLRTOT_TRIB, a.ORIGEM, p.NCM, a.ALIQ_CUPOM,'
+      '    a.VLRBC_COFINS, a.VLRTOT_TRIB, p.ORIGEM, p.NCM, a.ALIQ_CUPOM,'
       '    a.CEST, p.ESTOQUEATUAL, p.COD_BARRA, p.TIPO, p.CODPRO,'
       '    p.USA, p.LOCALIZACAO,  p.TIPOPRECOVENDA, p.UNIDADEMEDIDA,'
-      '    p.ORIGEM, p.OBS OBS_PROD, p.CEST, p.PRECOATACADO, p.QTDEATACADO,'
+      '    a.ORIGEM, p.OBS OBS_PROD, p.CEST, p.PRECOATACADO, p.QTDEATACADO,'
       '    (COALESCE(A.VALTOTAL,0) - COALESCE(A.VALOR_DESCONTO, 0)) AS TOTALITEM ,'
       '    a.ICMS_SUBST, c.NOMECLIENTE, p.RATEIO, m.DATA_SISTEMA'
       'FROM MOVIMENTO m'
@@ -4707,6 +4707,7 @@ object dmPdv: TdmPdv
         Precision = -1
         Size = 40
       end>
+    AfterOpen = qcdsNFAfterOpen
     Database = IbCon
     Transaction = sTrans
     SQL.Strings = (

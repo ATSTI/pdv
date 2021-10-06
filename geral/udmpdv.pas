@@ -1012,6 +1012,8 @@ type
     procedure dsNFDataChange(Sender: TObject; Field: TField);
     procedure IbConAfterDisconnect(Sender: TObject);
     procedure IbConBeforeConnect(Sender: TObject);
+    procedure qcdsNFAfterOpen(DataSet: TDataSet);
+    procedure qcdsNFAfterPost(DataSet: TDataSet);
     procedure Timer1Timer(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
   private
@@ -1109,7 +1111,11 @@ var
   conf: TIniFile;
   snh: String;
   vstr: String;
+  logs:TextFile;
 begin
+  AssignFile(logs, 'log.txt');
+  Rewrite(logs);
+  Writeln(logs, 'Abrindo sistema');
   //extrac
   contaCaixa := 0;
   caixaBanco := '1.1.1.01';
@@ -1135,8 +1141,10 @@ begin
     conf := TIniFile.Create(path_exe + 'dbxconnections.ini');
     try
       vstr := conf.ReadString('nfe', 'Database', '');
+      Writeln(logs, 'BD dbxconnections.ini ' + vstr);
       IBCon.DatabaseName := vstr;
       vstr := conf.ReadString('nfe', 'Hostname', '');
+      Writeln(logs, 'Host dbxconnections.ini ' + vstr);
       IBCon.HostName := vstr;
       snh := conf.ReadString('nfe', 'Password', '');
       //snh:= EncodeStringBase64(snh); // Ver a senha Encryptada
@@ -1195,9 +1203,11 @@ begin
     conf := TIniFile.Create(path_exe + 'conf.ini');
     try
       vstr := conf.ReadString('DATABASE', 'Name', '');
+      Writeln(logs, 'BD conf.ini ' + vstr);
       IBCon.DatabaseName := vstr;
       //ShowMessage('BD ' + vstr);
       vstr := conf.ReadString('DATABASE', 'HostName', '');
+      Writeln(logs, 'Host conf.ini ' + vstr);
       path_python := conf.ReadString('PATH', 'PathPython', '');
       path_script := conf.ReadString('PATH', 'PathScript', '');
       path_xml := conf.ReadString('PATH', 'PathXML', path_exe);
@@ -1256,6 +1266,7 @@ begin
       conf.free;
     end;
   end;
+  CloseFile(logs);
   //path_exe := path_exe + 'dbxconnections.ini';
   {
   if FileExists(path_exe + 'dbxconnections.ini') then
@@ -1396,6 +1407,18 @@ begin
 end;
 
 procedure TdmPdv.IbConBeforeConnect(Sender: TObject);
+begin
+
+end;
+
+procedure TdmPdv.qcdsNFAfterOpen(DataSet: TDataSet);
+var ver_str: String;
+begin
+  ver_str := qcdsNFCORPONF1.AsString;
+end;
+
+procedure TdmPdv.qcdsNFAfterPost(DataSet: TDataSet);
+
 begin
 
 end;
@@ -2062,6 +2085,7 @@ var sqlP: String;
   dados: String;
   c: TJsonNode;
   codbarra: string;
+  uso : string;
 begin
   postJson := TJSONObject.Create;
   dadosJson := TJsonNode.Create;
@@ -2076,6 +2100,7 @@ begin
       RequestBody := TStringStream.Create(postJson.AsJSON);
       dados := Post(dmPdv.path_integra_url);
       dadosJson.Value := dados;
+      //dadosJson.LoadFromFile('c:\home\integra\produto.txt');
       for c in dadosJson do
       begin
         dados := C.Find('codproduto').Value;
@@ -2112,8 +2137,14 @@ begin
             sqlD += ', NCM = ' + QuotedStr(C.Find('ncm').AsString);
             sqlD += ', ORIGEM = ' + QuotedStr(C.Find('origem').AsString);
             codbarra := C.Find('cod_barra').AsString;
+            uso := '';
+            uso := C.Find('uso').AsString;
             if codbarra <> 'NULL' then
               sqlD += ', COD_BARRA = ' + QuotedStr(codbarra);
+            if (uso <> '') then
+            begin
+              sqlD += ', USA = ' + QuotedStr(uso);
+            end;
             sqlD += ', VALOR_PRAZO = ' +  C.Find('valor_prazo').Value;
             sqlD += ' WHERE CODPRODUTO = ' + C.Find('codproduto').Value;
           end;
