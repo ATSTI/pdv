@@ -4,21 +4,21 @@ object fNFe: TfNFe
   Top = 34
   Width = 1069
   Caption = 'ATS-NFe'
-  ClientHeight = 662
-  ClientWidth = 1069
+  ClientHeight = 0
+  ClientWidth = 0
   OnCreate = FormCreate
   OnShow = FormShow
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '2.0.10.0'
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 20
-    Top = 642
+    Height = 23
+    Top = 639
     Width = 1069
     Panels = <>
   end
   object PageControl1: TPageControl
     Left = 0
-    Height = 642
+    Height = 639
     Top = 0
     Width = 1069
     ActivePage = NFe
@@ -27,12 +27,12 @@ object fNFe: TfNFe
     TabOrder = 1
     object NFe: TTabSheet
       Caption = 'NFe'
-      ClientHeight = 616
+      ClientHeight = 611
       ClientWidth = 1061
       object DBGrid1: TDBGrid
         Left = 0
         Height = 326
-        Top = 240
+        Top = 235
         Width = 1061
         Align = alBottom
         AutoEdit = False
@@ -103,9 +103,9 @@ object fNFe: TfNFe
       end
       object Label34: TLabel
         Left = 360
-        Height = 13
+        Height = 15
         Top = 656
-        Width = 40
+        Width = 41
         Caption = 'Versão :'
         ParentColor = False
       end
@@ -124,17 +124,17 @@ object fNFe: TfNFe
       end
       object GroupBox1: TGroupBox
         Left = 474
-        Height = 240
+        Height = 235
         Top = 0
         Width = 587
         Align = alClient
         Caption = 'Gerar NF-e'
-        ClientHeight = 222
+        ClientHeight = 215
         ClientWidth = 583
         TabOrder = 0
         object PageControl2: TPageControl
           Left = 0
-          Height = 222
+          Height = 215
           Top = 0
           Width = 583
           ActivePage = TabSheet1
@@ -144,7 +144,7 @@ object fNFe: TfNFe
           OnChange = PageControl2Change
           object TabSheet1: TTabSheet
             Caption = 'Princípal'
-            ClientHeight = 196
+            ClientHeight = 187
             ClientWidth = 575
             object GroupBox2: TGroupBox
               Left = 8
@@ -1145,7 +1145,7 @@ object fNFe: TfNFe
               ChildSizing.ShrinkVertical = crsScaleChilds
               ChildSizing.Layout = cclLeftToRightThenTopToBottom
               ChildSizing.ControlsPerLine = 4
-              ClientHeight = 63
+              ClientHeight = 61
               ClientWidth = 559
               Columns = 4
               Items.Strings = (
@@ -1410,18 +1410,18 @@ object fNFe: TfNFe
       end
       object Panel1: TPanel
         Left = 0
-        Height = 240
+        Height = 235
         Top = 0
         Width = 474
         Align = alLeft
-        ClientHeight = 240
+        ClientHeight = 235
         ClientWidth = 474
         TabOrder = 1
         object Label7: TLabel
           Left = 4
           Height = 15
           Top = 120
-          Width = 72
+          Width = 65
           Caption = 'Salvar Pasta:'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -1436,7 +1436,7 @@ object fNFe: TfNFe
           Left = 136
           Height = 15
           Top = 80
-          Width = 97
+          Width = 95
           Caption = 'Certificado Dígital'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -1451,7 +1451,7 @@ object fNFe: TfNFe
           Left = 4
           Height = 15
           Top = 80
-          Width = 48
+          Width = 43
           Caption = 'Série NF'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -1464,15 +1464,15 @@ object fNFe: TfNFe
         end
         object Label23: TLabel
           Left = 16
-          Height = 13
+          Height = 15
           Top = 210
-          Width = 94
+          Width = 101
           Caption = 'Série Emissão NFe :'
           ParentColor = False
         end
         object lblSerieNfe: TLabel
           Left = 120
-          Height = 13
+          Height = 15
           Top = 211
           Width = 6
           Caption = '1'
@@ -1480,33 +1480,33 @@ object fNFe: TfNFe
         end
         object Label24: TLabel
           Left = 163
-          Height = 13
+          Height = 15
           Top = 209
-          Width = 36
+          Width = 41
           Caption = 'Login ='
           ParentColor = False
         end
         object Label25: TLabel
           Left = 212
-          Height = 13
+          Height = 15
           Top = 210
-          Width = 20
+          Width = 15
           Caption = '.....'
           ParentColor = False
         end
         object Label26: TLabel
           Left = 338
-          Height = 13
+          Height = 15
           Top = 210
-          Width = 12
+          Width = 9
           Caption = '...'
           ParentColor = False
         end
         object Label27: TLabel
           Left = 288
-          Height = 13
+          Height = 15
           Top = 210
-          Width = 36
+          Width = 42
           Caption = 'Micro ='
           ParentColor = False
         end
@@ -1547,7 +1547,7 @@ object fNFe: TfNFe
           ChildSizing.ShrinkVertical = crsScaleChilds
           ChildSizing.Layout = cclLeftToRightThenTopToBottom
           ChildSizing.ControlsPerLine = 2
-          ClientHeight = 23
+          ClientHeight = 21
           ClientWidth = 244
           Columns = 2
           ItemIndex = 1
@@ -1563,7 +1563,7 @@ object fNFe: TfNFe
           Top = 152
           Width = 195
           Caption = 'Tipo Ambiente'
-          ClientHeight = 23
+          ClientHeight = 21
           ClientWidth = 191
           TabOrder = 1
           object Label5: TLabel
@@ -1591,7 +1591,7 @@ object fNFe: TfNFe
         end
         object edtNumSerie: TEdit
           Left = 240
-          Height = 21
+          Height = 23
           Top = 80
           Width = 183
           TabOrder = 4
@@ -1599,7 +1599,7 @@ object fNFe: TfNFe
         end
         object Edit1: TEdit
           Left = 75
-          Height = 21
+          Height = 23
           Top = 120
           Width = 381
           Color = cl3DLight
@@ -1613,7 +1613,7 @@ object fNFe: TfNFe
           Width = 469
           Align = alCustom
           Caption = 'Filtro'
-          ClientHeight = 58
+          ClientHeight = 56
           ClientWidth = 465
           TabOrder = 6
           object Label2: TLabel
@@ -1657,24 +1657,24 @@ object fNFe: TfNFe
           end
           object chkTodas: TCheckBox
             Left = 376
-            Height = 17
+            Height = 19
             Top = 0
-            Width = 49
+            Width = 52
             Caption = 'Todas'
             TabOrder = 2
           end
           object ComboBox1: TComboBox
             Left = 116
-            Height = 21
+            Height = 23
             Top = 0
             Width = 247
-            ItemHeight = 13
+            ItemHeight = 15
             OnChange = ComboBox1Change
             TabOrder = 3
           end
           object DateEdit2: TDateEdit
             Left = 272
-            Height = 21
+            Height = 23
             Top = 32
             Width = 96
             CalendarDisplaySettings = [dsShowHeadings, dsShowDayNames]
@@ -1688,7 +1688,7 @@ object fNFe: TfNFe
           end
           object DateEdit1: TDateEdit
             Left = 88
-            Height = 21
+            Height = 23
             Top = 31
             Width = 96
             CalendarDisplaySettings = [dsShowHeadings, dsShowDayNames]
@@ -1703,7 +1703,7 @@ object fNFe: TfNFe
           object btnListar: TBitBtn
             Left = 384
             Height = 24
-            Top = 32
+            Top = 31
             Width = 72
             Caption = 'Listar'
             Glyph.Data = {
@@ -1759,7 +1759,7 @@ object fNFe: TfNFe
         end
         object edSerie: TEdit
           Left = 75
-          Height = 21
+          Height = 23
           Top = 80
           Width = 55
           TabOrder = 3
@@ -1902,18 +1902,18 @@ object fNFe: TfNFe
         end
         object Label55: TLabel
           Left = 136
-          Height = 13
+          Height = 15
           Top = 96
-          Width = 55
+          Width = 64
           Caption = 'Vencimento'
           ParentColor = False
           Visible = False
         end
         object lblVencimentoCert: TLabel
           Left = 242
-          Height = 13
+          Height = 15
           Top = 99
-          Width = 12
+          Width = 9
           Caption = '...'
           ParentColor = False
           Visible = False
@@ -1925,7 +1925,7 @@ object fNFe: TfNFe
         Top = 264
         Width = 761
         Caption = 'Consultar nota pelo Recibo'
-        ClientHeight = 205
+        ClientHeight = 203
         ClientWidth = 757
         Color = clGradientActiveCaption
         ParentColor = False
@@ -1933,15 +1933,15 @@ object fNFe: TfNFe
         Visible = False
         object Label17: TLabel
           Left = 32
-          Height = 13
+          Height = 15
           Top = 32
-          Width = 32
+          Width = 36
           Caption = 'Recibo'
           ParentColor = False
         end
         object edRecibo: TEdit
           Left = 74
-          Height = 21
+          Height = 23
           Top = 24
           Width = 121
           TabOrder = 0
@@ -1980,7 +1980,7 @@ object fNFe: TfNFe
       end
       object edDadosXml: TEdit
         Left = 40
-        Height = 21
+        Height = 23
         Top = 512
         Width = 849
         Color = clScrollBar
@@ -1992,7 +1992,7 @@ object fNFe: TfNFe
       object Panel3: TPanel
         Left = 0
         Height = 50
-        Top = 566
+        Top = 561
         Width = 1061
         Align = alBottom
         ClientHeight = 50
@@ -2368,7 +2368,7 @@ object fNFe: TfNFe
     end
     object CCe: TTabSheet
       Caption = 'CCe'
-      ClientHeight = 611
+      ClientHeight = 616
       ClientWidth = 1061
       ImageIndex = 1
       object Panel2: TPanel
@@ -2386,7 +2386,7 @@ object fNFe: TfNFe
           Top = 38
           Width = 170
           Caption = 'Tipo Ambiente'
-          ClientHeight = 23
+          ClientHeight = 21
           ClientWidth = 166
           TabOrder = 0
           object Label11: TLabel
@@ -2418,7 +2418,7 @@ object fNFe: TfNFe
           Width = 608
           Align = alCustom
           Caption = 'Filtro'
-          ClientHeight = 119
+          ClientHeight = 117
           ClientWidth = 604
           TabOrder = 2
           object Label14: TLabel
@@ -2436,26 +2436,26 @@ object fNFe: TfNFe
           end
           object Label28: TLabel
             Left = 8
-            Height = 15
+            Height = 13
             Top = 37
-            Width = 9
+            Width = 12
             Caption = '...'
             ParentColor = False
           end
           object CheckBox1: TCheckBox
             Left = 368
-            Height = 19
+            Height = 17
             Top = 0
-            Width = 51
+            Width = 49
             Caption = 'Todas'
             TabOrder = 0
           end
           object ComboBox2: TComboBox
             Left = 120
-            Height = 21
+            Height = 23
             Top = 0
             Width = 222
-            ItemHeight = 13
+            ItemHeight = 15
             TabOrder = 1
           end
           object GroupBox10: TGroupBox
@@ -2464,7 +2464,7 @@ object fNFe: TfNFe
             Top = 48
             Width = 178
             Caption = 'Tipo Ambiente'
-            ClientHeight = 23
+            ClientHeight = 21
             ClientWidth = 174
             TabOrder = 2
             object Label8: TLabel
@@ -2482,7 +2482,7 @@ object fNFe: TfNFe
           end
           object Edit3: TEdit
             Left = 184
-            Height = 23
+            Height = 21
             Top = 64
             Width = 138
             Color = cl3DLight
@@ -2492,7 +2492,7 @@ object fNFe: TfNFe
           end
           object edtNumSerie2: TEdit
             Left = 320
-            Height = 23
+            Height = 21
             Top = 64
             Width = 192
             TabOrder = 4
@@ -2692,7 +2692,7 @@ object fNFe: TfNFe
             Left = 184
             Height = 15
             Top = 48
-            Width = 81
+            Width = 89
             Caption = 'Salvar na Pasta:'
             Font.CharSet = ANSI_CHARSET
             Font.Color = clBlack
@@ -2707,7 +2707,7 @@ object fNFe: TfNFe
             Left = 320
             Height = 15
             Top = 48
-            Width = 95
+            Width = 97
             Caption = 'Certificado Dígital'
             Font.CharSet = ANSI_CHARSET
             Font.Color = clBlack
@@ -2733,7 +2733,7 @@ object fNFe: TfNFe
           end
           object edtChaveNfeCCe: TEdit
             Left = 96
-            Height = 23
+            Height = 21
             Top = 92
             Width = 448
             Color = clActiveBorder
@@ -3028,7 +3028,7 @@ object fNFe: TfNFe
       end
       object DBGrid2: TDBGrid
         Left = 0
-        Height = 422
+        Height = 427
         Top = 147
         Width = 1061
         Align = alClient
@@ -3085,7 +3085,7 @@ object fNFe: TfNFe
       object Panel4: TPanel
         Left = 0
         Height = 42
-        Top = 569
+        Top = 574
         Width = 1061
         Align = alBottom
         ClientHeight = 42
@@ -3543,7 +3543,7 @@ object fNFe: TfNFe
         Top = 11
         Width = 328
         Caption = 'Certificado Dígital'
-        ClientHeight = 148
+        ClientHeight = 149
         ClientWidth = 324
         Font.CharSet = ANSI_CHARSET
         Font.Color = clBlack
@@ -3794,10 +3794,10 @@ object fNFe: TfNFe
       end
       object ComboBox3: TComboBox
         Left = 136
-        Height = 21
+        Height = 23
         Top = 184
         Width = 47
-        ItemHeight = 13
+        ItemHeight = 15
         Items.Strings = (
           'Sim'
           'Nao'
@@ -4334,7 +4334,7 @@ object fNFe: TfNFe
         Top = 272
         Width = 400
         Caption = 'Selecione uma NF para testar o envio de E-mail'
-        ClientHeight = 262
+        ClientHeight = 260
         ClientWidth = 396
         TabOrder = 9
         object Label36: TLabel
@@ -4561,7 +4561,7 @@ object fNFe: TfNFe
         Top = 11
         Width = 400
         Caption = 'Gravar Certificado'
-        ClientHeight = 149
+        ClientHeight = 147
         ClientWidth = 396
         TabOrder = 10
         object btnGravArqNFEini: TButton
@@ -4628,15 +4628,15 @@ object fNFe: TfNFe
         Top = 11
         Width = 276
         Caption = 'Biblioteca Criptografia'
-        ClientHeight = 149
+        ClientHeight = 147
         ClientWidth = 272
         TabOrder = 11
         object cbCryptLib: TComboBox
           Left = 88
-          Height = 21
+          Height = 23
           Top = 33
           Width = 160
-          ItemHeight = 13
+          ItemHeight = 15
           OnChange = cbCryptLibChange
           Style = csDropDownList
           TabOrder = 0
@@ -4661,10 +4661,10 @@ object fNFe: TfNFe
         end
         object cbXmlSignLib: TComboBox
           Left = 88
-          Height = 21
+          Height = 23
           Top = 82
           Width = 160
-          ItemHeight = 13
+          ItemHeight = 15
           OnChange = cbXmlSignLibChange
           Style = csDropDownList
           TabOrder = 1
@@ -4689,10 +4689,10 @@ object fNFe: TfNFe
         end
         object cbHttpLib: TComboBox
           Left = 88
-          Height = 21
+          Height = 23
           Top = 57
           Width = 160
-          ItemHeight = 13
+          ItemHeight = 15
           OnChange = cbHttpLibChange
           Style = csDropDownList
           TabOrder = 2
@@ -4717,10 +4717,10 @@ object fNFe: TfNFe
         end
         object cbSSLLib: TComboBox
           Left = 88
-          Height = 21
+          Height = 23
           Top = 9
           Width = 160
-          ItemHeight = 13
+          ItemHeight = 15
           OnChange = cbSSLLibChange
           Style = csDropDownList
           TabOrder = 3
@@ -4745,10 +4745,10 @@ object fNFe: TfNFe
         end
         object cbSSLType: TComboBox
           Left = 88
-          Height = 21
+          Height = 23
           Top = 107
           Width = 160
-          ItemHeight = 13
+          ItemHeight = 15
           OnChange = cbXmlSignLibChange
           Style = csDropDownList
           TabOrder = 4
@@ -4907,7 +4907,7 @@ object fNFe: TfNFe
         Top = 209
         Width = 400
         Caption = 'Margem DANFE'
-        ClientHeight = 28
+        ClientHeight = 26
         ClientWidth = 396
         TabOrder = 13
         object FloatSpinEdit1: TFloatSpinEdit
@@ -5028,10 +5028,10 @@ object fNFe: TfNFe
         end
         object cbEmpresa: TComboBox
           Left = 130
-          Height = 21
+          Height = 23
           Top = 14
           Width = 247
-          ItemHeight = 13
+          ItemHeight = 15
           TabOrder = 1
         end
         object edtNumSerie1: TEdit
