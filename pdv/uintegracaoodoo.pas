@@ -63,10 +63,10 @@ begin
       postJson.Add('title', 'Enviando Movimento');
 
       Writeln(logs, 'Empresa : ' + nome_empresa_integra);
-
+      ver := listaArquivos[k];
       postJson.Add('body', nome_empresa_integra);
       dadosJson.LoadFromFile(listaArquivos[k]);
-      ver := listaArquivos[k];
+
       Writeln(logs, 'Arquivo : ' + listaArquivos[k]);
 
       postJson.Add('tab_venda', dadosJson.ToString);
