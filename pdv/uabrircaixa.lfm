@@ -93,11 +93,11 @@ object fAbrirCaixa: TfAbrirCaixa
       ParentFont = False
     end
     object Label6: TLabel
-      Left = 331
+      Left = 356
       Height = 16
       Top = 122
-      Width = 78
-      Caption = 'Cheque/Pix:'
+      Width = 53
+      Caption = 'Cheque:'
       Font.CharSet = ANSI_CHARSET
       Font.Height = -13
       Font.Name = 'Arial'
@@ -110,7 +110,7 @@ object fAbrirCaixa: TfAbrirCaixa
     object Label7: TLabel
       Left = 348
       Height = 16
-      Top = 153
+      Top = 176
       Width = 61
       Caption = 'Faturado:'
       Font.CharSet = ANSI_CHARSET
@@ -166,7 +166,7 @@ object fAbrirCaixa: TfAbrirCaixa
     object edFaturado: TMaskEdit
       Left = 424
       Height = 21
-      Top = 152
+      Top = 176
       Width = 116
       Alignment = taRightJustify
       CharCase = ecNormal
@@ -205,7 +205,7 @@ object fAbrirCaixa: TfAbrirCaixa
     object Label9: TLabel
       Left = 33
       Height = 16
-      Top = 192
+      Top = 224
       Width = 97
       Caption = 'Saldo Final (=):'
       Font.CharSet = ANSI_CHARSET
@@ -220,7 +220,7 @@ object fAbrirCaixa: TfAbrirCaixa
     object Label11: TLabel
       Left = 324
       Height = 16
-      Top = 192
+      Top = 224
       Width = 87
       Caption = 'Total Vendas:'
       Font.CharSet = ANSI_CHARSET
@@ -235,7 +235,7 @@ object fAbrirCaixa: TfAbrirCaixa
     object edTCaixa: TMaskEdit
       Left = 140
       Height = 21
-      Top = 192
+      Top = 224
       Width = 116
       Alignment = taRightJustify
       CharCase = ecNormal
@@ -248,7 +248,7 @@ object fAbrirCaixa: TfAbrirCaixa
     object edTBruto: TMaskEdit
       Left = 424
       Height = 21
-      Top = 192
+      Top = 224
       Width = 116
       Alignment = taRightJustify
       CharCase = ecNormal
@@ -358,15 +358,43 @@ object fAbrirCaixa: TfAbrirCaixa
       SpaceChar = '_'
     end
     object Memo1: TMemo
-      Left = 271
+      Left = 272
       Height = 90
-      Top = 186
+      Top = 64
       Width = 150
       Lines.Strings = (
         'Memo1'
       )
       TabOrder = 11
       Visible = False
+    end
+    object edPix: TMaskEdit
+      Left = 424
+      Height = 21
+      Top = 150
+      Width = 116
+      Alignment = taRightJustify
+      CharCase = ecNormal
+      Enabled = False
+      MaxLength = 0
+      TabOrder = 12
+      Text = '0,00'
+      SpaceChar = '_'
+    end
+    object Label15: TLabel
+      Left = 384
+      Height = 16
+      Top = 152
+      Width = 25
+      Caption = 'Pix:'
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -13
+      Font.Name = 'Arial'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
     end
   end
   object Panel2: TPanel

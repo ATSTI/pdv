@@ -20,6 +20,7 @@
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
       <MinorVersionNr Value="4"/>
+      <BuildNr Value="1"/>
       <Language Value="0416"/>
       <StringTable CompanyName="ATS Soluções"/>
     </VersionInfo>
@@ -341,7 +342,6 @@
     </CodeGeneration>
     <Linking>
       <Debugging>
-        <GenerateDebugInfo Value="False"/>
         <UseExternalDbgSyms Value="True"/>
       </Debugging>
       <Options>

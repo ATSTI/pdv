@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
-  MaskEdit, StdCtrls, udmpdv, DateTimePicker;
+  MaskEdit, StdCtrls, udmpdv, DateTimePicker, db;
 
 type
 
@@ -45,6 +45,7 @@ var str:string;
   codCaixa:integer;
   vlrCaixa:double;
 begin
+  try
   codCaixa := dmPdv.busca_generator('GEN_CAIXA');
   str := 'insert into CAIXA_CONTROLE (IDCAIXACONTROLE, CODCAIXA, CODUSUARIO,' +
     'SITUACAO, NOMECAIXA, MAQUINA, DATAABERTURA, VALORABRE, DATAFECHAMENTO) values (';
@@ -65,6 +66,14 @@ begin
   dmPdv.idcaixa := IntToStr(codCaixa);
   dmPdv.nomeCaixa := FormatDateTime('dd/mm/yyyy', dtData.Date);
   ShowMessage('Caixa aberto com sucesso!');
+        Except
+        on dmPdv: EDatabaseError do
+        begin
+          MessageDlg('Error','Erro para abrir o caixa : ' +
+            dmPdv.Message,mtError,[mbOK],0);
+          //strans.Rollback;
+        end;
+      end;
 end;
 
 procedure TfAbreCaixa.btnSairClick(Sender: TObject);

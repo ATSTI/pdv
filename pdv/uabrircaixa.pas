@@ -18,6 +18,7 @@ type
     btnAbrefecha: TBitBtn;
     btnSair: TBitBtn;
     dtData: TDateTimePicker;
+    edPix: TMaskEdit;
     edReforco: TMaskEdit;
     edSaldoini: TMaskEdit;
     edTLiquido: TMaskEdit;
@@ -29,6 +30,7 @@ type
     Label12: TLabel;
     Label13: TLabel;
     Label14: TLabel;
+    Label15: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
@@ -203,6 +205,7 @@ begin
       Writeln(IMPRESSORA, 'Brasil Card    - ' + vlr_cartao);
     end;
     Writeln(IMPRESSORA, 'Cheque         - ' + edCheque.Text);
+    Writeln(IMPRESSORA, 'PIX            - ' + edPix.Text);
     if (edFaturado.Text <> '0,00') then
       Writeln(IMPRESSORA, 'Faturado       - ' + edFaturado.Text);
 
@@ -388,10 +391,10 @@ begin
     totalliquido += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     edFaturado.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
   end;
-
+  // CHEQUE
   sqlP := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
   sqlP += ' where CAIXA = ' + cx_m;
-  sqlP += ' and STATE = 1 and FORMA_PGTO IN (' + QuotedStr('5') + ', ' + QuotedStr('6')+ ')';//Cheque
+  sqlP += ' and STATE = 1 and FORMA_PGTO = ' + QuotedStr('5');//Cheque
   sqlP += ' and cod_venda > 1  ';//1 para Sangria, >1 para Outros
   if (dmPdv.sqBusca.Active) then
     dmPdv.sqBusca.Close;
@@ -405,6 +408,25 @@ begin
     total += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     totalliquido += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     edCheque.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
+  end;
+
+  // PIX
+  sqlP := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
+  sqlP += ' where CAIXA = ' + cx_m;
+  sqlP += ' and STATE = 1 and FORMA_PGTO = ' + QuotedStr('6');//Cheque
+  sqlP += ' and cod_venda > 1  ';//1 para Sangria, >1 para Outros
+  if (dmPdv.sqBusca.Active) then
+    dmPdv.sqBusca.Close;
+  dmPdv.sqBusca.SQL.Clear;
+  dmPdv.sqBusca.SQL.Add(sqlP);
+  dmPdv.sqBusca.Active:=True;
+  if (not dmPdv.sqBusca.IsEmpty) then
+  begin
+    // esta entrando o pix aqui tbem por isso tirei das entradas
+    //vendacaixa += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    total += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    totalliquido += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    edPix.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
   end;
   sqlP := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
   sqlP += ' where CAIXA = ' + cx_m;
