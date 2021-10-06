@@ -21,7 +21,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
-      <BuildNr Value="10"/>
+      <BuildNr Value="14"/>
       <Language Value="0416"/>
       <StringTable Comments="Nota Fiscal Eletrônica" CompanyName="ATS Ti Soluções" FileDescription="Envio de Nota Fiscal Eletrônica" LegalCopyright="ATS Soluções"/>
     </VersionInfo>
@@ -121,7 +121,6 @@
     </SearchPaths>
     <Linking>
       <Debugging>
-        <GenerateDebugInfo Value="False"/>
         <UseExternalDbgSyms Value="True"/>
       </Debugging>
       <Options>
