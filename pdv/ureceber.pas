@@ -524,6 +524,7 @@ procedure TfRecebimento.BitBtn24Click(Sender: TObject);
   sql_rec: string;
   v_log: string;
   dataRec: string;
+  vtotalR: Double;
 begin
   // buscando contas pagas
   if(edCodCliente.Text = '')then
@@ -638,8 +639,10 @@ begin
         Writeln(Impressora,'Recebido Dia.' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now))
       else if lFile[i] = 'itens' then
       begin
+        vtotalR := 0 ;
         while not dmPdv.sqBusca.EOF do
         begin
+          vtotalR := vtotalR + dmPdv.sqBusca.FieldByName('VALOR_RECEBIDO').asFloat;
           texto3 := ' ';
           texto6 := ' ';
           dataRec := dmPdv.sqBusca.FieldByName('DATAVENCIMENTO').AsString +
@@ -648,7 +651,7 @@ begin
           texto3 := texto3 + Format('   %6.2n',[dmPdv.sqBusca.FieldByName('VALOR_RECEBIDO').asFloat]);
           Writeln(Impressora, texto3);
           dmPdv.sqBusca.next;
-          texto6 := texto6 + 'Total                   :' +  Format('   %6.2n',[dmPdv.sqBusca.FieldByName('VALOR_RECEBIDO').asFloat]);
+          texto6 := texto6 + 'Total                   :' + Format('   %6.2n',[vtotalR]);
 
         end;
         Writeln(Impressora,texto6);
