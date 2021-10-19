@@ -20,15 +20,15 @@ object fRecebimento: TfRecebimento
     TabOrder = 0
     object Label1: TLabel
       Left = 592
-      Height = 13
+      Height = 15
       Top = 15
-      Width = 51
+      Width = 54
       Caption = 'Valor Total'
       ParentColor = False
     end
     object edTotalGeral: TMaskEdit
       Left = 664
-      Height = 21
+      Height = 23
       Top = 15
       Width = 120
       Alignment = taRightJustify
@@ -40,7 +40,7 @@ object fRecebimento: TfRecebimento
     end
     object edPago: TMaskEdit
       Left = 456
-      Height = 21
+      Height = 23
       Hint = 'Clique na forma de pagamento primeiro.'
       Top = 15
       Width = 88
@@ -55,17 +55,17 @@ object fRecebimento: TfRecebimento
     end
     object Label2: TLabel
       Left = 397
-      Height = 13
+      Height = 15
       Top = 15
-      Width = 51
+      Width = 56
       Caption = 'Valor Pago'
       ParentColor = False
     end
     object lblForma: TLabel
       Left = 456
-      Height = 13
+      Height = 15
       Top = 40
-      Width = 12
+      Width = 9
       Caption = '...'
       ParentColor = False
     end
@@ -1603,15 +1603,15 @@ object fRecebimento: TfRecebimento
     end
     object Cliente: TLabel
       Left = 16
-      Height = 13
+      Height = 15
       Top = 8
-      Width = 33
+      Width = 37
       Caption = 'Cliente'
       ParentColor = False
     end
     object edCodCliente: TEdit
       Left = 64
-      Height = 21
+      Height = 23
       Top = 8
       Width = 80
       OnExit = edCodClienteExit
@@ -1620,7 +1620,7 @@ object fRecebimento: TfRecebimento
     end
     object edNomeCliente: TEdit
       Left = 175
-      Height = 21
+      Height = 23
       Top = 8
       Width = 345
       TabOrder = 4
@@ -1639,7 +1639,7 @@ object fRecebimento: TfRecebimento
       ChildSizing.ShrinkVertical = crsScaleChilds
       ChildSizing.Layout = cclLeftToRightThenTopToBottom
       ChildSizing.ControlsPerLine = 3
-      ClientHeight = 19
+      ClientHeight = 17
       ClientWidth = 244
       Columns = 3
       ItemIndex = 0
@@ -1755,7 +1755,7 @@ object fRecebimento: TfRecebimento
     end
     object edLimit: TEdit
       Left = 320
-      Height = 21
+      Height = 23
       Hint = 'Número total de linhas'
       Top = 42
       Width = 48

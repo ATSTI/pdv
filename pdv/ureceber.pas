@@ -269,9 +269,10 @@ begin
     sql_rec += ', r.DATAVENCIMENTO, r.DATARECEBIMENTO ';
     //sql_rec += ', (CASE WHEN r.STATUS = ' + QuotedStr('5-') + ' THEN r.VALOR_RESTO';
     //sql_rec += ' ELSE 0 END) AS VALOR_RESTO, (r.VALORTITULO - COALESCE(r.VALORRECEBIDO,0)) ';
-    sql_rec += ' ,(r.VALOR_RESTO  - COALESCE(r.VALORRECEBIDO,0))  AS VALOR_RESTO, r.VALORTITULO ';
+    sql_rec += ' ,(r.VALOR_RESTO  - COALESCE(r.VALORRECEBIDO,0))  AS VALOR_RESTO,r.VALORRECEBIDO, r.VALORTITULO ';
     sql_rec += ' AS VALORTITULO, c.NOMECLIENTE FROM RECEBIMENTO r, CLIENTES c ';
     sql_rec += ' WHERE r.CODCLIENTE = c.CODCLIENTE AND r.VALOR_RESTO > 0';
+    //sql_rec += ' AND r.DATARECEBIMENTO = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now));
     if (edCodCliente.Text <> '') then
     begin
       sql_rec += ' AND r.CODCLIENTE = ' + edCodCliente.Text;
@@ -471,6 +472,7 @@ begin
   ShowMessage('Baixa efetuada com sucesso.');
   edPago.Text:='0,00';
   edPago.Enabled:=False;
+  rgSituacao.ItemIndex := 1;
   btnProcurar.Click;
 end;
 
@@ -521,8 +523,17 @@ procedure TfRecebimento.BitBtn24Click(Sender: TObject);
   totalR: Double;
   sql_rec: string;
   v_log: string;
+  dataRec: string;
 begin
   // buscando contas pagas
+  if(edCodCliente.Text = '')then
+  begin
+    ShowMessage('Selecione Um Cliente.');
+    Button1.Click;
+    Exit;
+  end;
+
+
   sql_rec := 'SELECT r.CODCLIENTE, r.CODRECEBIMENTO, r.TITULO, r.EMISSAO';
   sql_rec += ', r.DATAVENCIMENTO, r.DATARECEBIMENTO ';
   sql_rec += ' ,COALESCE(r.VALORRECEBIDO,0) AS VALOR_RECEBIDO, ';
@@ -572,13 +583,13 @@ begin
     v_log := 'Log path_imp - ' + dmPdv.path_imp;
     AssignFile(IMPRESSORA, dmPdv.path_imp);
   end;
-  v_log := 'Log abrindo cupom.txt ' + dmpdv.path_exe + 'cupom.txt';
+  v_log := 'Log abrindo cupomRec.txt ' + dmpdv.path_exe + 'cupomRec.txt';
   try
     Rewrite(IMPRESSORA);
-    lFile.LoadFromFile(dmpdv.path_exe + 'cupom.txt');
+    lFile.LoadFromFile(dmpdv.path_exe + 'cupomRec.txt');
     for i:=0 to lFile.Count-1 do
     begin
-      v_log := 'Log lendo cupom.txt ';
+      v_log := 'Log lendo cupomRec.txt ';
       linhaTxt := Copy(lFile[i],0,1);
       if lFile[i] = 'empresa' then
         Writeln(Impressora, RemoveAcento(Format('  %-36s',[dmPdv.sqEmpresaRAZAO.Value])))
@@ -624,85 +635,32 @@ begin
         end;
       end
       else if lFile[i] = 'doc' then
-        Writeln(Impressora, '  ' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now) +
-          ' Recibo pagamento prazo.')
+        Writeln(Impressora,'Recebido Dia.' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now))
       else if lFile[i] = 'itens' then
       begin
         while not dmPdv.sqBusca.EOF do
         begin
           texto3 := ' ';
-          texto6 := '  ';
-          itemDesc := dmPdv.sqBusca.FieldByName('EMISSAO').AsString + '-' +
-              dmPdv.sqBusca.FieldByName('TITULO').AsVariant + ' Valor Recebido: ';
-          texto3 := texto3 + Format(' %6.2n',[ItemDesc]);
+          texto6 := ' ';
+          dataRec := dmPdv.sqBusca.FieldByName('DATAVENCIMENTO').AsString +
+                  '  -  ' + dmPdv.sqBusca.FieldByName('TITULO').AsString ;
+          texto3 := texto3 + dataRec;
           texto3 := texto3 + Format('   %6.2n',[dmPdv.sqBusca.FieldByName('VALOR_RECEBIDO').asFloat]);
           Writeln(Impressora, texto3);
           dmPdv.sqBusca.next;
+          texto6 := texto6 + 'Total                   :' +  Format('   %6.2n',[dmPdv.sqBusca.FieldByName('VALOR_RECEBIDO').asFloat]);
+
         end;
-      end
-      else if linhaTxt = 'P' then
-      begin
-      end
-      else if linhaTxt = 'D' then
-      begin
-      end
-      else if linhaTxt = 'T' then
-      begin
-      end
-      else if linhaTxt = 'Z' then
-      begin
-      end
-      else if linhaTxt = 'V' then
-      begin
-      end
-      else if linhaTxt = 'C' then
-      begin
-      end
-      else if linhaTxt = '1' then
-      begin
-      end
-      else if linhaTxt = '2' then
-      begin
-      end
-      else if linhaTxt = '3' then
-      begin
-      end
-      else if linhaTxt = '4' then
-      begin
+        Writeln(Impressora,texto6);
+
       end
       else
         Writeln(Impressora,lFile[i]);
+
     end;
   finally
     CloseFile(IMPRESSORA);
     lFile.Free;
-  end;
-  v_log := 'Log Impressao: ';
-  v_log += 'conf Cupom: ' + dmPdv.CupomImp;
-  if (dmPdv.CupomImp = 'BD') then
-  begin
-    lFile := TStringList.Create;
-    try
-      v_log += ', PathIMP: ' + dmPdv.path_imp;
-      lFile.LoadFromFile(dmPdv.path_imp);
-      texto6 := lFile.Text;
-    finally
-      lFile.Free;
-    end;
-    try
-      texto6 := 'INSERT INTO AVISOS (CODAVISOS, TIPO, DESCRICAO) VALUES ('+
-        'GEN_ID(GEN_AVISOS, 1), ' + QuotedStr(dmPdv.MICRO) + ', ' +
-        QuotedStr(texto6) + ')';
-      dmPdv.IbCon.ExecuteDirect(texto6);
-      v_log += ', SQL: ' +texto6;
-      dmPdv.sTrans.Commit;
-    except
-      on dmPdv: EDatabaseError do
-      begin
-        MessageDlg('Error','Erro na conexao com a base de dados, erro : ' +
-          dmPdv.Message,mtError,[mbOK],0);
-      end;
-    end;
   end;
 
 end;
