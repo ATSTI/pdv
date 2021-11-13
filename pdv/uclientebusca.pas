@@ -82,7 +82,7 @@ procedure TfClienteBusca.btnGravarClick(Sender: TObject);
   var update_cli:string;
 begin
     //inherited;
-    if MessageDlg('Confirma:', 'Confirma ATIVAR o Cliente: ' +
+    {if MessageDlg('Confirma:', 'Confirma ATIVAR o Cliente: ' +
       cNomeCliente , mtConfirmation,
       [mbYes, mbNo, mbIgnore],0) = mrYes then
     begin
@@ -90,7 +90,7 @@ begin
         IntToStr(cCodCliente);
       dmPdv.executaSql(update_cli);
       dmPdv.sTrans.Commit;
-    end;
+    end;}
 end;
 
 

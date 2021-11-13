@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
-  StdCtrls, DBGrids, MaskEdit, ActnList, uClienteBusca, udmpdv, db, sqldb,
+  StdCtrls, DBGrids, MaskEdit, ActnList, uClienteBusca, udmpdv, db, math, sqldb,
   pqconnection, IniFiles;
 
 type
@@ -259,17 +259,23 @@ procedure TfRecebimento.btnProcurarClick(Sender: TObject);
 var
   sql_rec: String;
   total_rec : Double;
+  juros_str: String;
 begin
   total_rec := 0;
+//  total_juromulta := dmPdv.RecJuro;
+ // juros_str := FormatFloat('#0.00000',total_juromulta);
+  //juros_str := StringReplace(juros_str, ',', '.', [rfReplaceAll]);
   if ((UpperCase(dmpdv.usoSistema) = 'ATS') or (UpperCase(dmpdv.usoSistema) = 'ODOO')) then
   begin
     // buscar contas (recebimento)
     total_rec := 0;
     sql_rec := 'SELECT r.CODCLIENTE, r.CODRECEBIMENTO, r.TITULO, r.EMISSAO';
     sql_rec += ', r.DATAVENCIMENTO, r.DATARECEBIMENTO ';
-    //sql_rec += ', (CASE WHEN r.STATUS = ' + QuotedStr('5-') + ' THEN r.VALOR_RESTO';
-    //sql_rec += ' ELSE 0 END) AS VALOR_RESTO, (r.VALORTITULO - COALESCE(r.VALORRECEBIDO,0)) ';
-    sql_rec += ' ,(r.VALOR_RESTO  - COALESCE(r.VALORRECEBIDO,0))  AS VALOR_RESTO, r.VALORTITULO ';
+    sql_rec += ' ,(r.VALOR_RESTO - COALESCE(r.VALORRECEBIDO,0)) AS RESTO ';
+    sql_rec += ' , CASE WHEN r.DATAVENCIMENTO < (CURRENT_DATE - 30) THEN ';
+    sql_rec += ' ((r.VALOR_RESTO * (1+(' + dmPdv.RecJuro + '*(current_date - r.datavencimento))))';
+    sql_rec += ' - COALESCE(r.VALORRECEBIDO,0)) ';
+    sql_rec += ' ELSE (r.VALOR_RESTO - COALESCE(r.VALORRECEBIDO,0)) END AS VALOR_RESTO, r.VALORTITULO ';
     sql_rec += ' AS VALORTITULO, c.NOMECLIENTE FROM RECEBIMENTO r, CLIENTES c ';
     sql_rec += ' WHERE r.CODCLIENTE = c.CODCLIENTE AND r.VALOR_RESTO > 0';
     if (edCodCliente.Text <> '') then
@@ -331,6 +337,7 @@ procedure TfRecebimento.btnConfirmaClick(Sender: TObject);
 var
   vlr_pg: Double;
   vlr_rt: Double;
+  vlr_juro: Double;
   str_rec : String;
   //vRec : TRecebimento;
   vr_formaRec: String;
@@ -384,7 +391,9 @@ begin
       begin
         if (vlr_rt > 0) then
         begin
-          if (dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat > vlr_rt) then
+          vlr_juro:= RoundTo(dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat -
+              dmPdv.sqBusca.FieldByName('RESTO').AsFloat, -2);
+          if ((dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat - vlr_juro) > (vlr_rt-vlr_juro)) then
           begin
             // duplico o lancamento no recebimento
             // este novo item o valor vai ser a diferenca do pago
@@ -397,7 +406,7 @@ begin
               ' GEN_ID(COD_AREC, 1), TITULO, EMISSAO, CODCLIENTE, DATAVENCIMENTO' +
               ', CAIXA, STATUS, VIA, CODVENDA, CODALMOXARIFADO, CODVENDEDOR' +
               ', CODUSUARIO, DATASISTEMA, ';
-            vlr_pg := dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat - vlr_rt;
+            vlr_pg := RoundTo(dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat - vlr_rt, -2);
             str_rec += FloatToStr(vlr_pg) + ', ' + FloatToStr(vlr_pg); //VALOR_PRIM_VIA, VALOR_RESTO
             str_rec += ', VALORTITULO, PARCELAS, FORMARECEBIMENTO ';
             str_rec += ' FROM RECEBIMENTO WHERE CODRECEBIMENTO = ';
@@ -406,10 +415,11 @@ begin
             vlr_pg := vlr_rt;
           end
           else begin
-            vlr_pg := dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat;
+            vlr_pg := RoundTo(dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat, -2);
           end;
           dmPdv.executaSql('UPDATE RECEBIMENTO SET STATUS = ' +
             QuotedStr('7-') + ', VALORRECEBIDO = ' + FloattoStr(vlr_pg) +
+            ' , JUROS = ' + FloattoStr(vlr_juro) +
             ' , FORMARECEBIMENTO = ' + QuotedStr(vr_formaRec) +
             ' , DATARECEBIMENTO = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now)) +
             ' , DATABAIXA = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now)) +
