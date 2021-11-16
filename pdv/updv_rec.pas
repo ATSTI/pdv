@@ -871,6 +871,8 @@ begin
             Writeln(Impressora, clientecupom);
             clientecupom := ' ' + dmPdv.qsClienteBAIRRO.AsString + ', ' + dmPdv.qsClienteCIDADE.AsString + ', ' + dmPdv.qsClienteUF.AsString;
             Writeln(Impressora, clientecupom);
+            clientecupom :=  ' ' + dmPdv.qsClienteDDD.AsString + '-' + dmPdv.qsClienteTELEFONE.AsString;
+            Writeln(Impressora, clientecupom);
           end;
         end
         else begin
@@ -896,7 +898,8 @@ begin
           if ItemDesc > 0 then
             texto3 := texto3 + Format(' %6.2n',[ItemDesc]);
           texto3 := texto3 + Format('   %6.2n',[dmPdv.sqLancamentosVALTOTAL.value-ItemDesc]);
-          produto_cupomf := trim(RemoveAcento(dmPdv.sqLancamentosDESCPRODUTO.Value));
+          //produto_cupomf := trim(RemoveAcento(dmPdv.sqLancamentosDESCPRODUTO.Value));
+          produto_cupomf := trim(RemoveAcento(dmPdv.sqLancamentosCODPRO.Value)) + '-' + trim(RemoveAcento(dmPdv.sqLancamentosDESCPRODUTO.Value));
           texto6 := texto6 + '  ' + Copy(produto_cupomf, 0, dmPdv.tamanhoLinha);       //descrição do produto
           Writeln(Impressora, texto6);
           if (length(produto_cupomf)>dmPdv.tamanhoLinha) then
@@ -993,8 +996,11 @@ begin
           Writeln(impressora, 'Usuario: ' + dmpdv.nomeLogado);
           Writeln(impressora, 'Vendedor: ' + RemoveAcento(edVendedor.Text));
         end
-        else if lFile[i] = 'cliente' then
-          Writeln(Impressora, clientecupom)
+        else if ((lFile[i] = 'cliente') or (lFile[i] = 'clientecompleto')) then
+        begin
+          clientecupom := '  ' + IntToStr(vCliente) + '-' + RemoveAcento(vClienteNome);
+          Writeln(Impressora, clientecupom);
+        end
         else if lFile[i] = 'doc' then
           Writeln(Impressora, '  ' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now) + ' Pedido : ' + IntToStr(vCodMovimento))
         else if lFile[i] = 'itens' then
@@ -1009,7 +1015,8 @@ begin
             texto3 := texto3 + Format('    %6.2n',[dmPdv.sqLancamentosQUANTIDADE.AsFloat]);
             texto3 := texto3 + Format(' %6.2n',[dmPdv.sqLancamentosPRECO.AsFloat]);
             texto3 := texto3 + Format('   %6.2n',[dmPdv.sqLancamentosVALTOTAL.value]);
-            produto_cupomf := trim(dmPdv.sqLancamentosDESCPRODUTO.Value);
+            //produto_cupomf := trim(dmPdv.sqLancamentosDESCPRODUTO.Value);
+            produto_cupomf := trim(RemoveAcento(dmPdv.sqLancamentosCODPRO.Value)) + '-' + trim(RemoveAcento(dmPdv.sqLancamentosDESCPRODUTO.Value));
             texto6 := texto6 + '  ' + Copy(produto_cupomf, 0, dmPdv.tamanhoLinha);       //descrição do produto
             Writeln(Impressora, texto6);
             if (length(produto_cupomf)>dmPdv.tamanhoLinha) then
@@ -2018,11 +2025,13 @@ begin
   else begin
     Close;
   end;
-  gerarjson;
+  if (dmpdv.empresa_integra <> 'ATS') then
+    gerarjson;
   if (dmpdv.outro_cupom = 'S') then
   begin
     imprimirTxtOutro();
-    imprimiAcbr();
+    if (dmPdv.CupomImp <> 'Texto') then
+      imprimiAcbr();
   end;
   if (dmpdv.outro_cupom = 'P') then
   begin

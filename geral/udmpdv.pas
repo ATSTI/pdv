@@ -1822,7 +1822,7 @@ begin
     try
       AddHeader('Content-Type', 'application/json');
       RequestBody := TStringStream.Create(postJson.AsJSON);
-      dados := Post(dmPdv.path_integra_url);
+      dados := Post(dmPdv.path_integra_url + '/clienteconsulta');
       dadosJson.Value := dados;
       for c in dadosJson do
       begin
