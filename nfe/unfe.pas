@@ -389,6 +389,9 @@ implementation
 
 uses udmpdv , ACBrDFeSSL,TypInfo,ufrmStatus, blcksock;
 
+const
+  libName: String = 'fbclient.dll';
+
 function GetComputerNameFunc : string;
 var ipbuffer : string;
       nsize : dword;
@@ -3067,7 +3070,7 @@ begin
       ' , md.CFOP, md.PRECO, md.DESCPRODUTO, md.OBS, '+
       'case when udf_Pos(' + quotedstr('-') +', pr.CODPRO) > 0 then udf_Copy(pr.CODPRO, 0, (udf_Pos(' + quotedstr('-') + ', pr.CODPRO)-1)) ' +
       'ELSE pr.CODPRO END as codpro, md.VLR_BASEICMS, md.CSTIPI, md.CSTPIS, md.CSTCOFINS, md.PPIS, md.PCOFINS, ' +
-      'pr.UNIDADEMEDIDA, UDF_TRIM(md.CST) CST, md.CSOSN, md.ICMS, md.pIPI, md.vIPI, md.VLR_BASEICMS, ' +
+      'md.UN AS UNIDADEMEDIDA , UDF_TRIM(md.CST) CST, md.CSOSN, md.ICMS, md.pIPI, md.vIPI, md.VLR_BASEICMS, ' +
       ' UDF_ROUNDDEC(md.VALOR_ICMS, 2) as VALOR_ICMS, UDF_ROUNDDEC(md.VLR_BASE, 10) as VLR_BASE, ' +
       'UDF_ROUNDDEC(md.ICMS_SUBST, 2) as ICMS_SUBST, md.ICMS_SUBSTD, UDF_ROUNDDEC(md.FRETE, 2) as FRETE, UDF_ROUNDDEC(md.VALOR_DESCONTO, 2) as VALOR_DESCONTO, (md.VLR_BASE * md.QUANTIDADE) as VALTOTAL, ' +
       'UDF_ROUNDDEC(md.VALOR_PIS, 2) as VALOR_PIS, UDF_ROUNDDEC(md.VALOR_COFINS, 2) as VALOR_COFINS, md.VALOR_SEGURO, md.VALOR_OUTROS, UDF_ROUNDDEC(md.II, 2) as II, UDF_ROUNDDEC(md.BCII, 2) as BCII ' +
@@ -3120,7 +3123,7 @@ begin
       ' md.PRECO, md.CFOP, md.DESCPRODUTO, ' +
       'case when udf_Pos(' + quotedstr('-') +', pr.CODPRO) > 0 then udf_Copy(pr.CODPRO, 0, ' +
       ' (udf_Pos(' + quotedstr('-') + ', pr.CODPRO)-1)) ' +
-      'ELSE pr.CODPRO END as codpro, pr.UNIDADEMEDIDA, UDF_TRIM(md.CST) CST, md.ICMS, md.pIPI, md.OBS, ' +
+      'ELSE pr.CODPRO END as codpro, md.UN AS UNIDADEMEDIDA, UDF_TRIM(md.CST) CST, md.ICMS, md.pIPI, md.OBS, ' +
       'md.vIPI, md.CSOSN, md.VLR_BASEICMS, UDF_ROUNDDEC(md.VALOR_ICMS, 2) as VALOR_ICMS, md.PPIS, md.PCOFINS, ' +
       'UDF_ROUNDDEC(md.VLR_BASE, 10) as VLR_BASE, UDF_ROUNDDEC(md.ICMS_SUBST, 2) as ICMS_SUBST, md.CSTIPI, ' +
       'md.CSTPIS, md.CSTCOFINS, ' +
@@ -3573,7 +3576,7 @@ begin
 
       Prod.xProd    := LeftStr(Trim(dmPdv.cdsItensNFDESCPRODUTO.AsString), 99);
       Prod.CFOP     := Trim(dmPdv.cdsItensNFCFOP.AsString);
-      Prod.uCom     := Trim(dmPdv.qsProdutosUNIDADEMEDIDA.AsString);
+      Prod.uCom     := Trim(dmPdv.cdsItensNFUNIDADEMEDIDA.AsString);
       Prod.qCom     := dmPdv.cdsItensNFQUANTIDADE.AsFloat;
       ver_valor := dmPdv.cdsItensNFVLR_BASE.AsFloat;
       Prod.vUnCom   := dmPdv.cdsItensNFVLR_BASE.AsFloat;
