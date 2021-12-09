@@ -7,9 +7,9 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, Buttons, DBGrids, MaskEdit, ActnList, Menus, ACBrPosPrinter, udmpdv,
-  uvenda, uRecebimento, jsontools, uClienteBusca, uNfce, sqldb, db, math,
+  uvenda, uRecebimento, uClienteBusca, uNfce, sqldb, db, math,
   StrUtils, IniFiles, uCadeira, uPermissao, uIntegracaoOdoo,
-  typinfo, LConvEncoding;
+  typinfo, LConvEncoding, fphttpclient, JsonTools, fpjson, jsonparser;
 
 type
 
@@ -871,6 +871,8 @@ begin
             Writeln(Impressora, clientecupom);
             clientecupom := ' ' + dmPdv.qsClienteBAIRRO.AsString + ', ' + dmPdv.qsClienteCIDADE.AsString + ', ' + dmPdv.qsClienteUF.AsString;
             Writeln(Impressora, clientecupom);
+            clientecupom :=  ' ' + dmPdv.qsClienteDDD.AsString + '-' + dmPdv.qsClienteTELEFONE.AsString;
+            Writeln(Impressora, clientecupom);
           end;
         end
         else begin
@@ -896,7 +898,7 @@ begin
           if ItemDesc > 0 then
             texto3 := texto3 + Format(' %6.2n',[ItemDesc]);
           texto3 := texto3 + Format('   %6.2n',[dmPdv.sqLancamentosVALTOTAL.value-ItemDesc]);
-          produto_cupomf := trim(RemoveAcento(dmPdv.sqLancamentosDESCPRODUTO.Value));
+          produto_cupomf := trim(RemoveAcento(dmPdv.sqLancamentosCODPRO.Value)) + '-' + trim(RemoveAcento(dmPdv.sqLancamentosDESCPRODUTO.Value));
           texto6 := texto6 + '  ' + Copy(produto_cupomf, 0, dmPdv.tamanhoLinha);       //descrição do produto
           Writeln(Impressora, texto6);
           if (length(produto_cupomf)>dmPdv.tamanhoLinha) then
@@ -993,7 +995,7 @@ begin
           Writeln(impressora, 'Usuario: ' + dmpdv.nomeLogado);
           Writeln(impressora, 'Vendedor: ' + RemoveAcento(edVendedor.Text));
         end
-        else if lFile[i] = 'cliente' then
+        else if ((lFile[i] = 'cliente') or (lFile[i] = 'clientecompleto')) then
           Writeln(Impressora, clientecupom)
         else if lFile[i] = 'doc' then
           Writeln(Impressora, '  ' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now) + ' Pedido : ' + IntToStr(vCodMovimento))
@@ -1009,7 +1011,8 @@ begin
             texto3 := texto3 + Format('    %6.2n',[dmPdv.sqLancamentosQUANTIDADE.AsFloat]);
             texto3 := texto3 + Format(' %6.2n',[dmPdv.sqLancamentosPRECO.AsFloat]);
             texto3 := texto3 + Format('   %6.2n',[dmPdv.sqLancamentosVALTOTAL.value]);
-            produto_cupomf := trim(dmPdv.sqLancamentosDESCPRODUTO.Value);
+            //produto_cupomf := trim(dmPdv.sqLancamentosDESCPRODUTO.Value);
+            produto_cupomf := trim(RemoveAcento(dmPdv.sqLancamentosCODPRO.Value)) + '-' + trim(RemoveAcento(dmPdv.sqLancamentosDESCPRODUTO.Value));
             texto6 := texto6 + '  ' + Copy(produto_cupomf, 0, dmPdv.tamanhoLinha);       //descrição do produto
             Writeln(Impressora, texto6);
             if (length(produto_cupomf)>dmPdv.tamanhoLinha) then
@@ -1105,6 +1108,7 @@ begin
       end;
     end;
   end;
+
 end;
 
 procedure TfPDV_Rec.imprimirTxtOutro();
@@ -1430,11 +1434,17 @@ var
   Valor : String;
   tipo : TFieldType;
   arquivo: TJsonNode;
+  postJson: TJSONObject;
   itens: String;
   i: Integer;
   num: Integer;
   campos: String;
+    responseData: String;
 begin
+  // novo 16/11/21
+  postJson := TJSONObject.Create;
+  postJson.Add('title', 'Enviando Movimento');
+
   arquivo := TJsonNode.Create;
   if ( not dmPdv.sqLancamentos.Active) then
     dmPdv.sqLancamentos.Open;
@@ -1485,11 +1495,11 @@ begin
     dmPdv.sqLancamentos.Next;
   end;
   num := 0;
-  campo := dmpdv.path_integra + 'mov_' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) +
-     '_' + IntToStr(dmpdv.sqLancamentosCODALMOXARIFADO.AsInteger) + '.txt';
-  arquivo.SaveToFile(campo);
-  arquivo.Free;
-  arquivo := TJsonNode.Create;
+  //campo := dmpdv.path_integra + 'mov_' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) +
+  //   '_' + IntToStr(dmpdv.sqLancamentosCODALMOXARIFADO.AsInteger) + '.txt';
+  //arquivo.SaveToFile(campo);
+  //arquivo.Free;
+  //arquivo := TJsonNode.Create;
   // ITENS
   itens := '';
   dmPdv.sqLancamentos.First;
@@ -1573,14 +1583,14 @@ begin
     itens := '';
     dmPdv.sqLancamentos.Next;
   end;
-  campo := dmpdv.path_integra + 'det_' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) +
-     '_' + IntToStr(dmpdv.sqLancamentosCODALMOXARIFADO.AsInteger) + '.txt';
-  arquivo.SaveToFile(campo);
-  arquivo.Free;
+  //campo := dmpdv.path_integra + 'det_' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) +
+  //   '_' + IntToStr(dmpdv.sqLancamentosCODALMOXARIFADO.AsInteger) + '.txt';
+  //arquivo.SaveToFile(campo);
+  //arquivo.Free;
 
 
   // PAGAMENTOS
-  arquivo := TJsonNode.Create;
+  //arquivo := TJsonNode.Create;
   dmPdv.busca_sql('SELECT CODFORMA, COD_VENDA, ID_ENTRADA, FORMA_PGTO' +
     ' , CAIXA , N_DOC, VALOR_PAGO, CAIXINHA, TROCO, DESCONTO, STATE' +
     ' FROM FORMA_ENTRADA WHERE STATE < 2 AND ID_ENTRADA = ' +
@@ -1644,9 +1654,27 @@ begin
     itens := '';
     dmPdv.sqBusca.Next;
   end;
-  campo := dmpdv.path_integra + 'pag_' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) +
-     '_' + IntToStr(dmpdv.sqLancamentosCODALMOXARIFADO.AsInteger) + '.txt';
-  arquivo.SaveToFile(campo);
+  //campo := dmpdv.path_integra + 'pag_' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) +
+  //   '_' + IntToStr(dmpdv.sqLancamentosCODALMOXARIFADO.AsInteger) + '.txt';
+  //arquivo.SaveToFile(campo);
+
+  // comentei pra gerar o arquivo acima, aqui adicionei pra enviar  o post 16/11/21
+    postJson.Add('pedido', arquivo.ToString);
+          With TFPHttpClient.Create(Nil) do
+        begin
+          try
+            AddHeader('Content-Type', 'application/json');
+            RequestBody := TStringStream.Create(postJson.AsJSON);
+            responseData := Post(dmPdv.path_integra_url + '/pedidoinsere');
+            if (responseData <> 'N') then
+            begin
+            end;
+          finally
+           Free;
+          end;
+        end;
+
+  postJson.Free;
   arquivo.Free;
 
   // isso e executado na dmpv pelo timer
@@ -1965,8 +1993,9 @@ begin
   //EstoqueExe := TEstoqueThread.Create(True);
   //EstoqueExe.FreeOnTerminate := True;
   //EstoqueExe.Resume;
-  if (dmpdv.empresa_integra <> 'ATS') then
-    gerarjson;
+  // 26/11/21 Carlos
+  //if (dmpdv.empresa_integra <> 'ATS') then
+  //  gerarjson;
   Close;
   // sendo chamado pelo dmpdv
   //IntegracaoOdoo := TIntegracaoOdoo.Create(True);
@@ -2018,11 +2047,14 @@ begin
   else begin
     Close;
   end;
-  gerarjson;
+  //26/11/21 Carlos
+  //if (dmpdv.empresa_integra <> 'ATS') then
+  //  gerarjson;
   if (dmpdv.outro_cupom = 'S') then
   begin
     imprimirTxtOutro();
-    imprimiAcbr();
+    if (dmPdv.CupomImp <> 'Texto') then
+       imprimiAcbr();
   end;
   if (dmpdv.outro_cupom = 'P') then
   begin

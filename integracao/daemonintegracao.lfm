@@ -1,0 +1,14 @@
+object dExecutaIntegracao: TdExecutaIntegracao
+  OnCreate = DataModuleCreate
+  OldCreateOrder = False
+  Height = 358
+  HorizontalOffset = 294
+  VerticalOffset = 250
+  Width = 766
+  object Timer1: TTimer
+    Interval = 100000
+    OnTimer = Timer1Timer
+    Left = 159
+    Top = 132
+  end
+end

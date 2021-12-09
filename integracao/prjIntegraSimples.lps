@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="11"/>
+    <BuildModes Active="Default"/>
+    <Units Count="10">
+      <Unit0>
+        <Filename Value="prjIntegraSimples.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="8"/>
+        <CursorPos Y="22"/>
+        <UsageCount Value="98"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="uintegrasimples.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form1"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uIntegraSimples"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="484"/>
+        <CursorPos X="55" Y="506"/>
+        <UsageCount Value="98"/>
+        <Bookmarks Count="5">
+          <Item0 Y="461" ID="3"/>
+          <Item1 X="34" Y="496" ID="4"/>
+          <Item2 X="26" Y="832" ID="5"/>
+          <Item3 X="34" Y="412" ID="1"/>
+          <Item4 X="52" Y="116" ID="2"/>
+        </Bookmarks>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="dmPdv"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="DataModule"/>
+        <EditorIndex Value="6"/>
+        <CursorPos X="6" Y="13"/>
+        <UsageCount Value="98"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="..\pdv\uintegracaoodoo.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="98"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="..\geral\jsontools.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="JsonTools"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="658"/>
+        <CursorPos Y="670"/>
+        <UsageCount Value="97"/>
+        <Loaded Value="True"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="C:\Users\ats\AppData\Local\lazarus\onlinepackagemanager\packages\Indy10\Protocols\IdSSLOpenSSLHeaders.pas"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="19476"/>
+        <CursorPos Y="19489"/>
+        <UsageCount Value="28"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="C:\Users\ats\AppData\Local\lazarus\onlinepackagemanager\packages\Indy10\Core\IdThread.pas"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="300"/>
+        <CursorPos X="116" Y="313"/>
+        <UsageCount Value="28"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="C:\Users\ats\AppData\Local\lazarus\onlinepackagemanager\packages\Indy10\Protocols\IdHTTP.pas"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="2834"/>
+        <CursorPos Y="2845"/>
+        <UsageCount Value="28"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="C:\lazarus12\lcl\include\control.inc"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="2901"/>
+        <CursorPos Y="2915"/>
+        <UsageCount Value="13"/>
+        <Loaded Value="True"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="C:\lazarus12\lcl\include\buttoncontrol.inc"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="43"/>
+        <CursorPos Y="56"/>
+        <UsageCount Value="13"/>
+        <Loaded Value="True"/>
+      </Unit9>
+    </Units>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="180" Column="67" TopLine="163"/>
+      </Position1>
+      <Position2>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="175" Column="72" TopLine="157"/>
+      </Position2>
+      <Position3>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="181" Column="46" TopLine="163"/>
+      </Position3>
+      <Position4>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="183" TopLine="163"/>
+      </Position4>
+      <Position5>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="186" TopLine="166"/>
+      </Position5>
+      <Position6>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="194" TopLine="182"/>
+      </Position6>
+      <Position7>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="179" Column="48" TopLine="170"/>
+      </Position7>
+      <Position8>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="183" TopLine="170"/>
+      </Position8>
+      <Position9>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="194" TopLine="174"/>
+      </Position9>
+      <Position10>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="185" Column="70" TopLine="174"/>
+      </Position10>
+      <Position11>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="183" TopLine="174"/>
+      </Position11>
+      <Position12>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="186" TopLine="174"/>
+      </Position12>
+      <Position13>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="136" TopLine="124"/>
+      </Position13>
+      <Position14>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="182" TopLine="170"/>
+      </Position14>
+      <Position15>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="183" TopLine="170"/>
+      </Position15>
+      <Position16>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="184" Column="62" TopLine="170"/>
+      </Position16>
+      <Position17>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="183" TopLine="170"/>
+      </Position17>
+      <Position18>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="136" TopLine="124"/>
+      </Position18>
+      <Position19>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="90" Column="15" TopLine="85"/>
+      </Position19>
+      <Position20>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="101" Column="54" TopLine="90"/>
+      </Position20>
+      <Position21>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="103" Column="54" TopLine="92"/>
+      </Position21>
+      <Position22>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="191" Column="3" TopLine="188"/>
+      </Position22>
+      <Position23>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="187" TopLine="163"/>
+      </Position23>
+      <Position24>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="197" Column="42" TopLine="182"/>
+      </Position24>
+      <Position25>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="106" Column="38" TopLine="80"/>
+      </Position25>
+      <Position26>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="315" Column="49" TopLine="309"/>
+      </Position26>
+      <Position27>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="489" Column="26" TopLine="480"/>
+      </Position27>
+      <Position28>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="490" Column="26" TopLine="481"/>
+      </Position28>
+      <Position29>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="497" Column="26" TopLine="483"/>
+      </Position29>
+      <Position30>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="488" Column="19" TopLine="484"/>
+      </Position30>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes Count="0" ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>

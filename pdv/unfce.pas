@@ -52,6 +52,7 @@ type
     cbSSLLib: TComboBox;
     cbXmlSignLib: TComboBox;
     cbxModeloPosPrinter: TComboBox;
+    chkmudarnumero: TCheckBox;
     edAno: TEdit;
     edCancelamentoMotivo: TEdit;
     edModelo: TEdit;
@@ -131,6 +132,7 @@ type
     procedure cbHttpLibChange(Sender: TObject);
     procedure cbSSLLibChange(Sender: TObject);
     procedure cbXmlSignLibChange(Sender: TObject);
+    procedure chkmudarnumeroChange(Sender: TObject);
     procedure edCPFKeyPress(Sender: TObject; var Key: char);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -199,7 +201,8 @@ begin
     Exit;
   end;
   memoLog.Lines.Append('Carregando certificado(se parar deve estar pedindo permissao)');
-  carregaAcbr;
+  if (dmPdv.NFE_Teste = 'N') then
+    carregaAcbr;
   memoLog.Lines.Append('Certificado carregado');
   if (dmPdv.tk = '') then
   begin
@@ -256,7 +259,10 @@ begin
     memoLog.Lines.Append('Gerando XML');
     GerarNFCe(vAux);
     memoLog.Lines.Append('Assinando XML');
-    ACBrNFe1.NotasFiscais.Assinar;
+
+    if (dmPdv.NFE_Teste = 'N') then
+      ACBrNFe1.NotasFiscais.Assinar;
+
     //ACBrNFe1.NotasFiscais.GravarXML(AcbrNfe1.Configuracoes.Arquivos.PathSalvar);
 
     // Gravando a nota aqui pois se der erro no validar ja gravei
@@ -266,7 +272,10 @@ begin
     //ACBrNFe1.NotasFiscais.Items[0].GravarXML();
     ACBrNFe1.NotasFiscais.GravarXML();
     memoLog.Lines.Append('Validando');
-    ACBrNFe1.NotasFiscais.Validar;
+
+    if (dmPdv.NFE_Teste = 'N') then
+      ACBrNFe1.NotasFiscais.Validar;
+
     //LoadXML(ACBrNFe1.NotasFiscais.Items[0].XML,  mRecebido);
 
     // TODO
@@ -278,7 +287,6 @@ begin
     begin
       memoLog.Lines.Append('Enviando ...');
       //memoLog.Lines.Add('Enviando ...');
-
       ACBrNFe1.Enviar(vNumLote,True,Sincrono);
       //ACBrNFe1.WebServices.Enviar.Lote := vNumLote;
       //ACBrNFe1.WebServices.Enviar.Sincrono := Sincrono;
@@ -423,6 +431,14 @@ begin
   end;
 end;
 
+procedure TfNfce.chkmudarnumeroChange(Sender: TObject);
+begin
+  if (chkmudarnumero.Checked) then
+  begin
+    bitbtn5.Enabled:= True;
+  end;
+end;
+
 procedure TfNfce.edCPFKeyPress(Sender: TObject; var Key: char);
 begin
   if Key = #13 then
@@ -545,6 +561,8 @@ var msg_ncm: String;
  t: string;
  serie : String;
 begin
+  bitbtn5.Enabled:= False;
+  chkmudarnumero.Checked:= False;
   tipoEmissaoNFCe := 'teNormal';
   if (dmPdv.sqEmpresa.Active) then
    dmPdv.sqEmpresa.Close;
@@ -597,7 +615,7 @@ begin
     end;
     if dmPdv.sqBusca.Fields[2].AsString <> '' then
     begin
-      lblProtocolo.Caption:=dmPdv.sqBusca.Fields[2].AsString;
+      lblProtocolo.Caption := 'Protocolo: ' + dmPdv.sqBusca.Fields[2].AsString;
     end;
   end;
   if (not dmPdv.sqLancamentos.Active) then
@@ -803,11 +821,17 @@ begin
   dmPdv.sqEmpresa.Open;
   dmPdv.busca_sql('SELECT MAX(NOTAFISCAL) AS NUM ' +
     ' FROM VENDA WHERE SERIE = ' + QuotedStr('NFCE-'+dmPdv.varLogado));
-  if (num_nfce < dmPdv.sqBusca.FieldByName('NUM').AsInteger+1) then
+  //if (num_nfce < dmPdv.sqBusca.FieldByName('NUM').AsInteger+1) then
+  //begin
+  if (chkmudarnumero.Checked) then
   begin
+    num_nfce := StrToInt(edNFce.Text);
+  end
+  else begin
     num_nfce := dmPdv.sqBusca.FieldByName('NUM').AsInteger+1;
     edNFce.Text:=IntToStr(num_nfce);
   end;
+  //end;
   with ACBrNFe1.NotasFiscais.Add.NFe do
   begin
     infRespTec.CNPJ := '08382545000111';
@@ -1419,12 +1443,13 @@ end;
 
 procedure TfNfce.GravarDadosNF(protocolo: String; recibo: String);
 var str: String;
+  str_s: string;
 begin
   try
     if ((num_nfce > 0) and (protocolo <> '')) then
     begin
-      str := 'UPDATE SERIES SET ULTIMO_NUMERO = ' + IntToSTR(num_nfce) +
-        ' WHERE SERIE = ' + QuotedStr('NFCE-'+dmPdv.varLogado);
+      str := 'UPDATE SERIES SET ULTIMO_NUMERO = ' + IntToSTR(num_nfce);
+      str := str + ' WHERE SERIE = ' + QuotedStr('NFCE-'+dmPdv.varLogado);
       dmPdv.IbCon.ExecuteDirect(str);
     end;
     if (protocolo <> '') then
@@ -1444,7 +1469,25 @@ begin
       str := 'UPDATE VENDA SET ';
       str := str + ' NOMEXML = ' +
           QuotedStr('NFCE-' + dmPdv.varLogado + '-' + IntToStr(num_nfce));
+      if (dmPdv.NFE_Teste = 'S') then
+      begin
+        // ----------------------------------------------------------------
+        // e teste
+        // ----------------------------------------------------------------
+        str_s := 'UPDATE SERIES SET ULTIMO_NUMERO = ' + IntToSTR(num_nfce);
+          str_s := str_s + ' WHERE SERIE = ' + QuotedStr('NFCE-'+dmPdv.varLogado);
+        dmPdv.IbCon.ExecuteDirect(str_s);
+        str := str + ', NOTAFISCAL = ' + IntToStr(num_nfce);
+        str := str + ', SERIE = ' + QuotedStr('NFCE-'+dmPdv.varLogado);
+        str := str + ', PROTOCOLOENV = ' + quotedStr('111111111111');
+        str := str + ', NUMRECIBO = ' + QuotedStr('99999999');
+        // ----------------------------------------------------------------
+      end;
     end;
+    if (chkmudarnumero.Checked) then
+      begin
+        str := str + ', CONTROLE = ' + QuotedStr('Manual');
+      end;
     str := str + ' WHERE CODVENDA = ' + IntToStr(nfce_codVenda);
     dmPdv.IbCon.ExecuteDirect(str);
     dmPdv.sTrans.Commit;
@@ -2344,7 +2387,8 @@ var
 begin
   memoLog.Lines.Append('Gerando NFCe');
   ACBrNFe1.NotasFiscais.Clear;
-  carregaAcbr;
+  if (dmPdv.NFE_Teste = 'N') then
+    carregaAcbr;
   ACBrNFe1.Configuracoes.Geral.FormaEmissao:=teOffLine;
   tipoEmissaoNFCe := 'teOffLine';
   ShowMessage('Modo Offline.');
@@ -2412,7 +2456,8 @@ begin
     GerarNFCe(vAux);
     memoLog.Lines.Append('Assinando XML');
     //ShowMessage('Assinando.');
-    ACBrNFe1.NotasFiscais.Assinar;
+    if (dmPdv.NFE_Teste = 'N') then
+      ACBrNFe1.NotasFiscais.Assinar;
 
     // Gravando a nota aqui pois se der erro no validar ja gravei
     GravarDadosNF('', '');
@@ -2422,7 +2467,9 @@ begin
     ACBrNFe1.NotasFiscais.GravarXML();
     memoLog.Lines.Append('Validando');
     //ShowMessage('Validando.');
-    ACBrNFe1.NotasFiscais.Validar;
+
+    if (dmPdv.NFE_Teste = 'N') then
+      ACBrNFe1.NotasFiscais.Validar;
     //LoadXML(ACBrNFe1.NotasFiscais.Items[0].XML,  mRecebido);
 
     // TODO

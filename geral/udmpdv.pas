@@ -836,6 +836,7 @@ type
     sqLancamentosCOD_BARRA: TStringField;
     sqLancamentosCONTROLE: TStringField;
     sqLancamentosCONTROLE_1: TSmallintField;
+    sqLancamentosCORTESIA: TStringField;
     sqLancamentosCSOSN: TStringField;
     sqLancamentosCST: TStringField;
     sqLancamentosCSTCOFINS: TStringField;
@@ -1010,6 +1011,7 @@ type
     Timer2: TTimer;
     procedure DataModuleCreate(Sender: TObject);
     procedure dsNFDataChange(Sender: TObject; Field: TField);
+    procedure IbConAfterConnect(Sender: TObject);
     procedure IbConAfterDisconnect(Sender: TObject);
     procedure IbConBeforeConnect(Sender: TObject);
     procedure qcdsNFAfterOpen(DataSet: TDataSet);
@@ -1028,6 +1030,7 @@ type
     usaComanda : Integer;
     usaCurso : Integer;
     contaCaixa : Integer;
+    RecJuro : String;
     margemCodBarra: Integer;
     tamanhoLinha: Integer;
     codMovimentoEst: Integer;
@@ -1132,7 +1135,6 @@ begin
   path_exe := ExtractFilePath(ParamStr(0));
   path_xml := path_exe;
   IBCon.Connected:=False;
-
   sTrans.Params.Text := 'isc_tpb_read_committed';
   //IBCon.CharSet:='WIN1252';
   //path_exe := path_exe;
@@ -1257,6 +1259,7 @@ begin
       usoSistema := conf.ReadString( 'Outros','TipoUso','ATS');
       usaComanda := conf.ReadInteger( 'Outros','UsaComanda',0);
       usaCurso := conf.ReadInteger( 'Outros','UsaCurso',0);
+      RecJuro := conf.ReadString( 'Outros','RecJuros','0');
       permiteCancelarBaixao := conf.ReadInteger( 'Outros','PermiteCancelarBaixa',0);
       NfceSat := conf.ReadString( 'Outros','NfceSat','NFCE');
       ccusto := conf.ReadString( 'Outros','CentroCusto','');
@@ -1285,8 +1288,13 @@ begin
     end;
   end;
   }
-  sTrans.Active:=True;
-  IBCon.Connected:=True;
+
+  Try
+    sTrans.Active:=True;
+    IBCon.Connected:=True;
+  except
+    ShowMessage('Erro pra conectar ' + IBCon.HostName + IBCon.DatabaseName);
+  end;
   sqParametro.Active:=True;
   usaCentroCusto := 'S';
   precoLivre := 'LIVRE';
@@ -1401,6 +1409,11 @@ begin
 
 end;
 
+procedure TdmPdv.IbConAfterConnect(Sender: TObject);
+begin
+
+end;
+
 procedure TdmPdv.IbConAfterDisconnect(Sender: TObject);
 begin
 
@@ -1425,8 +1438,9 @@ end;
 
 procedure TdmPdv.Timer1Timer(Sender: TObject);
 begin
-  if ((ApplicationName = 'ATS-PDV') and (empresa_integra <> 'ATS')) then
-    executa_integracao;
+  //fazendo integracao exe a parte, nao preciso mais disto 21/11/21
+  //if ((ApplicationName = 'ATS-PDV') and (empresa_integra <> 'ATS')) then
+  //  executa_integracao;
 end;
 
 procedure TdmPdv.Timer2Timer(Sender: TObject);
@@ -1792,14 +1806,14 @@ begin
     listaArquivos.Free;
   end;    }
 
-
-  IntegracaoOdoo := TIntegracaoOdoo.Create(True);
+  //fazendo integracao exe a parte, nao preciso mais disto 21/11/21
+  {IntegracaoOdoo := TIntegracaoOdoo.Create(True);
   IntegracaoOdoo.path_integracao := path_integra;
   IntegracaoOdoo.path_integracao_url := path_integra_url;
   IntegracaoOdoo.cod_caixa_integra := ccusto;
   IntegracaoOdoo.nome_empresa_integra := empresa_integra;
   IntegracaoOdoo.FreeOnTerminate := True;
-  IntegracaoOdoo.Resume;
+  IntegracaoOdoo.Resume;}
 end;
 
 procedure TdmPdv.integra_cliente;
@@ -1961,7 +1975,7 @@ begin
   // VER SE EXISTE ARQUIVO
  listaArquivos := TStringList.Create;
  try
-   FindAllFiles(listaArquivos, path_integra, 'caixa_mov_*.txt', true);
+   FindAllFiles(listaArquivos, path_integra, '*.txt', true);
    for k:=0 to Pred(listaArquivos.Count) do
    begin
     // SE EXISTE ENVIA
@@ -1969,7 +1983,7 @@ begin
     dadosJson := TJsonNode.Create;
     postJson.Add('title', 'Enviando Mov. Caixa');
     postJson.Add('body', empresa_integra);
-    dadosJson.LoadFromFile(listaArquivos[k]);
+    dadosJson.LoadFromFile(listaArquivos[K]);
     postJson.Add('tab_sangria', dadosJson.ToString);
     postJson.Add('userId', 1);
     With TFPHttpClient.Create(Nil) do
@@ -1978,14 +1992,15 @@ begin
       RequestBody := TStringStream.Create(postJson.AsJSON);
       ver := listaArquivos[k];
       responseData := Post(path_integra_url);
-      if FileExists(listaArquivos[k]) then
-         DeleteFile(listaArquivos[k]);
+      //if FileExists(listaArquivos[k]) then
+      //   DeleteFile(listaArquivos[k]);
     finally
       postJson.Free;
       dadosJson.Free;
       Free;
     end;
    end;
+
    listaArquivos.Free;
   except
   end;

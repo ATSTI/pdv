@@ -419,7 +419,7 @@ inherited fClienteBusca: TfClienteBusca
   end
   object dsCliente: TDataSource[3]
     DataSet = dmPdv.sqBusca
-    left = 760
-    top = 352
+    Left = 760
+    Top = 352
   end
 end

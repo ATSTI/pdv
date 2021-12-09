@@ -168,7 +168,7 @@ begin
     end
     else begin
       dmPdv.executa_integracao;
-      dmPdv.integra_caixa;
+      //dmPdv.integra_caixa;
       dmpdv.busca_sql('SELECT FIRST 1 IDCAIXACONTROLE, CODCAIXA, CODUSUARIO,' +
            'SITUACAO, NOMECAIXA ' +
            ' FROM CAIXA_CONTROLE WHERE SITUACAO = ' + QuotedStr('o') +

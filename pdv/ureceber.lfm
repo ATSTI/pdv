@@ -1,7 +1,7 @@
 object fRecebimento: TfRecebimento
-  Left = 485
+  Left = 569
   Height = 482
-  Top = 110
+  Top = 125
   Width = 809
   Caption = 'Recebimento'
   ClientHeight = 482

@@ -1,7 +1,7 @@
 object fLogin: TfLogin
-  Left = 316
+  Left = 494
   Height = 361
-  Top = 159
+  Top = 180
   Width = 550
   Caption = 'Acesso ao Sistema'
   ClientHeight = 361
@@ -25,6 +25,11 @@ object fLogin: TfLogin
       Width = 497
       Align = alClient
       Lines.Strings = (
+        'Adicionado parametro:'
+        '  [Outros]'
+        '      RecJuros=0.000333'
+        '     acima de 30 dias calcula o juros acima x número de dias em atraso'
+        ''
         'Versao : 4.7'
         '  Adicionado opção de imprimir Endereço Completo do '
         '  cliente, no cupom.txt no lugar de :   cliente  , colocar '
@@ -105,7 +110,10 @@ object fLogin: TfLogin
         'PARAMETRO  PDV_PERMISSAO :'
         '  DADOS = ''LIVRE'' o usuario pode alterar o PRECO de venda'
         '  D1 = 5 o Usuario pode dar Até 5% de Desconto, se'
-        'D1 = 0 o usuario pode dar QUAQUER DESCONTO '
+        '  D1 = 0 o usuario pode dar QUAQUER DESCONTO '
+        ''
+        'PARAMETRO CONSUMIDOR'
+        '   DADOS=16 (Consumidor Padrão)'
       )
       ScrollBars = ssBoth
       TabOrder = 0
@@ -122,10 +130,10 @@ object fLogin: TfLogin
   end
   object edLogin: TLabeledEdit
     Left = 48
-    Height = 21
+    Height = 23
     Top = 24
     Width = 136
-    EditLabel.Height = 13
+    EditLabel.Height = 15
     EditLabel.Width = 136
     EditLabel.Caption = 'Usuário'
     EditLabel.ParentColor = False
@@ -135,11 +143,11 @@ object fLogin: TfLogin
   end
   object edSenha: TLabeledEdit
     Left = 216
-    Height = 21
+    Height = 23
     Top = 24
     Width = 120
     EchoMode = emPassword
-    EditLabel.Height = 13
+    EditLabel.Height = 15
     EditLabel.Width = 120
     EditLabel.Caption = 'Senha'
     EditLabel.ParentColor = False
@@ -152,7 +160,7 @@ object fLogin: TfLogin
     Left = 48
     Height = 16
     Top = 48
-    Width = 115
+    Width = 139
     Caption = 'Cadastrar/Alterar Senha'
     DragCursor = crHandPoint
     Font.CharSet = ANSI_CHARSET
@@ -188,7 +196,7 @@ object fLogin: TfLogin
     Top = 330
     Width = 172
     AutoSize = False
-    Caption = 'ATS Ti Sistemas , v. 4.7'
+    Caption = 'ATS Ti Sistemas , v. 4.8'
     ParentColor = False
   end
   object Label3: TLabel

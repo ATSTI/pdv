@@ -25,6 +25,7 @@ type
     acQuantidade: TAction;
     acConsultaItem: TAction;
     acComandaJuntar: TAction;
+    acEnviarPedido: TAction;
     ActionList1: TActionList;
     BitBtn10: TBitBtn;
     BitBtn11: TBitBtn;
@@ -106,6 +107,8 @@ type
     MemoIntegra: TMemo;
     MenuItem1: TMenuItem;
     MenuItem10: TMenuItem;
+    MenuItem11: TMenuItem;
+    MenuItem12: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
@@ -144,6 +147,7 @@ type
     TIButton2: TTIButton;
     procedure acComandaJuntarExecute(Sender: TObject);
     procedure acConsultaItemExecute(Sender: TObject);
+    procedure acEnviarPedidoExecute(Sender: TObject);
     procedure acExcluirItemPedidoExecute(Sender: TObject);
     procedure acFecharExecute(Sender: TObject);
     procedure acNovaExecute(Sender: TObject);
@@ -262,6 +266,7 @@ type
     procedure trocaDevolucao;
     procedure imprimirCupomTroca;
     procedure imprimirAcbr;
+    procedure imprime_envio;
   public
 
   end;
@@ -737,6 +742,23 @@ begin
     pnProdBusca.Visible:=True;
   end;
   edProduto.SetFocus;
+end;
+
+procedure TfPdv.acEnviarPedidoExecute(Sender: TObject);
+begin
+  // mudo o status do pedido
+  ch_cp := FormatDateTime('ddmmyyMMss', Now);
+  ch_cp := Copy(ch_cp,7,4);
+  dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTO SET STATUS = 11 ' +
+    ' , NFE = ' + QuotedStr(ch_cp) +
+    ' WHERE CODMOVIMENTO  = ' + IntToStr(codMov));
+  dmPdv.sTrans.Commit;
+  if (dmPdv.CupomImp = 'Texto') then
+    if not (DirectoryExists(ExtractFilePath(dmPdv.path_imp))) then
+      CreateDir(ExtractFilePath(dmPdv.path_imp));
+  imprime_envio;
+  if (dmPdv.CupomImp <> 'Texto') then
+    imprimirAcbr;
 end;
 
 procedure TfPdv.acComandaJuntarExecute(Sender: TObject);
@@ -2142,14 +2164,18 @@ begin
     fCpr.Free;
   end;
   dmPdv.sTrans.Commit;
+  if (dmPdv.CupomImp = 'Texto') then
+    if not (DirectoryExists(ExtractFilePath(dmPdv.path_imp))) then
+      CreateDir(ExtractFilePath(dmPdv.path_imp));
   imprimirCupomTroca;
-  imprimirAcbr;
+  if (dmPdv.CupomImp <> 'Texto') then
+    imprimirAcbr;
   edMotivo.Text:='';
 end;
 
 procedure TfPdv.imprimirCupomTroca;
 var
-  IMPRESSORA:TextFile;
+  IMPRESSORA : Text;
   lFile   : TStringList;
   i      : Integer;
   logradouro: String;
@@ -2189,7 +2215,6 @@ begin
   dmPdv.sqLancamentos.Open;
   // leio um arquivo txt e imprimo
   lFile := TStringList.Create;
-
   //Aqui uso o ACBR pra imprimir , entao nao precisa disto 10/11/2020
 
   //if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
@@ -2350,6 +2375,63 @@ begin
 
   ACBrPosPrinter1.Buffer.Text := MemoImp.Lines.Text;
   ACBrPosPrinter1.Imprimir;
+end;
+
+procedure TfPdv.imprime_envio;
+var
+  IMPRESSORA : Text;
+  i      : Integer;
+  logradouro: String;
+  cep: String;
+  fone: String;
+  clientecupom: string;
+  texto3: String;
+  texto6: String;
+  produto_cupomf: String;
+  linhaTxt : String;
+  barcode : String;
+  prazo : String;
+  totalP: Double;
+  totalD: Double;
+  totalR: Double;
+  pos_mx : Integer;
+  tamanho : Integer;
+  texto : String;
+begin
+  prazo := 'N';
+  totalP := 0;
+  totalD := 0;
+  totalR := 0;
+  if (not dmPdv.sqEmpresa.Active) then
+    dmPdv.sqEmpresa.Open;
+  {----- aqui monto o endereço-----}
+  logradouro := '  ' + dmPdv.sqEmpresaENDERECO.Value +
+     ', ' + dmPdv.sqEmpresaBAIRRO.Value;
+  cep :=  '  ' + dmPdv.sqEmpresaCIDADE.Value + ' - ' + dmPdv.sqEmpresaUF.Value +
+  ' - ' + dmPdv.sqEmpresaCEP.Value;
+  fone := '  (19)' + dmPdv.sqEmpresaFONE.Value + ' / ' + dmPdv.sqEmpresaFONE_1.Value +
+  ' / ' + dmPdv.sqEmpresaFONE_2.Value;
+  {------------------------DADOS DO CLIENTE--------------------------}
+  clientecupom := '  ' + IntToStr(codCliente) + '-' + uutil.RemoveAcento(edClienteNome.Text);
+  dmPdv.sqLancamentos.Close;
+  dmPdv.sqLancamentos.Params.ParamByName('PMOV').AsInteger := CodMov;
+  dmPdv.sqLancamentos.Open;
+  AssignFile(IMPRESSORA, dmPdv.path_imp);
+  try
+    Rewrite(IMPRESSORA);
+    Writeln(Impressora, uutil.RemoveAcento(Format('  %-36s',[dmPdv.sqEmpresaRAZAO.Value])));
+    Writeln(IMPRESSORA, '');
+    Writeln(impressora, 'Usuario: ' + dmpdv.nomeLogado);
+    Writeln(impressora, 'Vendedor: ' + uutil.RemoveAcento(edVendedor.Text));
+    Writeln(Impressora, '  ' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now) + '    COD: ' + IntToStr(CodMov));
+    Writeln(Impressora, 'Pedido enviado');
+    barcode := IntToStr(codMov);
+    barcode := '7' + ch_cp + AddChar('0', barcode, 7);
+    barcode := barcode + uutil.EAN13(barcode);
+    Writeln(Impressora, '<code128>' + barcode + '</code128>');//Motivo
+  finally
+    CloseFile(IMPRESSORA);
+  end;
 end;
 
 

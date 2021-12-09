@@ -1,14 +1,15 @@
 object dmPdv: TdmPdv
   OnCreate = DataModuleCreate
   OldCreateOrder = False
-  Height = 694
-  HorizontalOffset = 225
-  VerticalOffset = 2
+  Height = 684
+  HorizontalOffset = 440
+  VerticalOffset = 0
   Width = 934
   object IbCon: TIBConnection
     Connected = False
     LoginPrompt = False
-    DatabaseName = 'd:\home\bd\sge_vbs.fdb'
+    AfterConnect = IbConAfterConnect
+    DatabaseName = 'c:\home\bd\ats_pdv_felicita.fdb'
     KeepConnection = False
     Params.Strings = (
       'port=3050'
@@ -341,19 +342,19 @@ object dmPdv: TdmPdv
         Name = 'CONTROLE'
         DataType = ftString
         Precision = -1
-        Size = 120
+        Size = 30
       end    
       item
         Name = 'OBS'
         DataType = ftString
         Precision = -1
-        Size = 400
+        Size = 100
       end    
       item
         Name = 'USUARIOLOGADO'
         DataType = ftString
         Precision = -1
-        Size = 120
+        Size = 30
       end    
       item
         Name = 'DESCONTO'
@@ -394,7 +395,7 @@ object dmPdv: TdmPdv
         Name = 'UN'
         DataType = ftFixedChar
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'QTDE_ALT'
@@ -405,7 +406,7 @@ object dmPdv: TdmPdv
         Name = 'BAIXA'
         DataType = ftFixedChar
         Precision = -1
-        Size = 4
+        Size = 1
       end    
       item
         Name = 'VALTOTAL'
@@ -416,13 +417,13 @@ object dmPdv: TdmPdv
         Name = 'DESCPRODUTO'
         DataType = ftString
         Precision = -1
-        Size = 1200
+        Size = 300
       end    
       item
         Name = 'CST'
         DataType = ftString
         Precision = -1
-        Size = 20
+        Size = 5
       end    
       item
         Name = 'VALOR_ICMS'
@@ -441,9 +442,9 @@ object dmPdv: TdmPdv
       end    
       item
         Name = 'STATUS_1'
-        DataType = ftString
+        DataType = ftFixedChar
         Precision = -1
-        Size = 120
+        Size = 1
       end    
       item
         Name = 'VLR_BASEICMS'
@@ -464,13 +465,13 @@ object dmPdv: TdmPdv
         Name = 'CFOP'
         DataType = ftFixedChar
         Precision = -1
-        Size = 16
+        Size = 4
       end    
       item
         Name = 'CSOSN'
         DataType = ftString
         Precision = -1
-        Size = 12
+        Size = 3
       end    
       item
         Name = 'VALOR_DESCONTO'
@@ -491,7 +492,7 @@ object dmPdv: TdmPdv
         Name = 'OBS_MD'
         DataType = ftString
         Precision = -1
-        Size = 1200
+        Size = 300
       end    
       item
         Name = 'VALOR_PIS'
@@ -512,19 +513,19 @@ object dmPdv: TdmPdv
         Name = 'CSTIPI'
         DataType = ftString
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'CSTPIS'
         DataType = ftString
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'CSTCOFINS'
         DataType = ftString
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'PPIS'
@@ -545,7 +546,7 @@ object dmPdv: TdmPdv
         Name = 'DESCONTO_BC'
         DataType = ftString
         Precision = -1
-        Size = 20
+        Size = 5
       end    
       item
         Name = 'VLRBC_IPI'
@@ -569,27 +570,26 @@ object dmPdv: TdmPdv
       end    
       item
         Name = 'ORIGEM'
-        DataType = ftFixedChar
+        DataType = ftInteger
         Precision = -1
-        Size = 8
       end    
       item
         Name = 'NCM'
         DataType = ftString
         Precision = -1
-        Size = 32
+        Size = 8
       end    
       item
         Name = 'ALIQ_CUPOM'
         DataType = ftFixedChar
         Precision = -1
-        Size = 16
+        Size = 4
       end    
       item
         Name = 'CEST'
         DataType = ftString
         Precision = -1
-        Size = 28
+        Size = 7
       end    
       item
         Name = 'ESTOQUEATUAL'
@@ -600,60 +600,61 @@ object dmPdv: TdmPdv
         Name = 'COD_BARRA'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'TIPO'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'CODPRO'
         DataType = ftString
         Precision = -1
-        Size = 60
+        Size = 15
       end    
       item
         Name = 'USA'
         DataType = ftString
         Precision = -1
-        Size = 12
+        Size = 3
       end    
       item
         Name = 'LOCALIZACAO'
         DataType = ftString
         Precision = -1
-        Size = 200
+        Size = 50
       end    
       item
         Name = 'TIPOPRECOVENDA'
         DataType = ftFixedChar
         Precision = -1
-        Size = 4
+        Size = 1
       end    
       item
         Name = 'UNIDADEMEDIDA'
         DataType = ftFixedChar
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'ORIGEM_1'
-        DataType = ftInteger
+        DataType = ftFixedChar
         Precision = -1
+        Size = 2
       end    
       item
         Name = 'OBS_PROD'
         DataType = ftString
         Precision = -1
-        Size = 1200
+        Size = 300
       end    
       item
         Name = 'CEST_1'
         DataType = ftString
         Precision = -1
-        Size = 28
+        Size = 7
       end    
       item
         Name = 'PRECOATACADO'
@@ -662,7 +663,7 @@ object dmPdv: TdmPdv
       end    
       item
         Name = 'QTDEATACADO'
-        DataType = ftFloat
+        DataType = ftInteger
         Precision = -1
       end    
       item
@@ -679,18 +680,24 @@ object dmPdv: TdmPdv
         Name = 'NOMECLIENTE'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'RATEIO'
         DataType = ftFixedChar
         Precision = -1
-        Size = 4
+        Size = 1
       end    
       item
         Name = 'DATA_SISTEMA'
         DataType = ftDateTime
         Precision = -1
+      end    
+      item
+        Name = 'CORTESIA'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 1
       end>
     Database = IbCon
     Transaction = sTrans
@@ -711,7 +718,7 @@ object dmPdv: TdmPdv
       '    p.USA, p.LOCALIZACAO,  p.TIPOPRECOVENDA, p.UNIDADEMEDIDA,'
       '    a.ORIGEM, p.OBS OBS_PROD, p.CEST, p.PRECOATACADO, p.QTDEATACADO,'
       '    (COALESCE(A.VALTOTAL,0) - COALESCE(A.VALOR_DESCONTO, 0)) AS TOTALITEM ,'
-      '    a.ICMS_SUBST, c.NOMECLIENTE, p.RATEIO, m.DATA_SISTEMA'
+      '    a.ICMS_SUBST, c.NOMECLIENTE, p.RATEIO, m.DATA_SISTEMA, a.CORTESIA'
       'FROM MOVIMENTO m'
       '  INNER JOIN CLIENTES c ON  c.CODCLIENTE = m.CODCLIENTE'
       '  LEFT OUTER JOIN MOVIMENTODETALHE a ON M.CODMOVIMENTO = a.CODMOVIMENTO'
@@ -1447,6 +1454,16 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
+    end
+    object sqLancamentosCORTESIA: TStringField
+      FieldKind = fkData
+      FieldName = 'CORTESIA'
+      Index = 73
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 1
     end
   end
   object SQLQuery1: TSQLQuery
@@ -13670,6 +13687,7 @@ object dmPdv: TdmPdv
     Top = 328
   end
   object Timer1: TTimer
+    Enabled = False
     Interval = 10000
     OnTimer = Timer1Timer
     Left = 131
