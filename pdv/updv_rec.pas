@@ -898,6 +898,7 @@ begin
           if ItemDesc > 0 then
             texto3 := texto3 + Format(' %6.2n',[ItemDesc]);
           texto3 := texto3 + Format('   %6.2n',[dmPdv.sqLancamentosVALTOTAL.value-ItemDesc]);
+          //produto_cupomf := trim(RemoveAcento(dmPdv.sqLancamentosDESCPRODUTO.Value));
           produto_cupomf := trim(RemoveAcento(dmPdv.sqLancamentosCODPRO.Value)) + '-' + trim(RemoveAcento(dmPdv.sqLancamentosDESCPRODUTO.Value));
           texto6 := texto6 + '  ' + Copy(produto_cupomf, 0, dmPdv.tamanhoLinha);       //descrição do produto
           Writeln(Impressora, texto6);
@@ -996,7 +997,10 @@ begin
           Writeln(impressora, 'Vendedor: ' + RemoveAcento(edVendedor.Text));
         end
         else if ((lFile[i] = 'cliente') or (lFile[i] = 'clientecompleto')) then
-          Writeln(Impressora, clientecupom)
+        begin
+          clientecupom := '  ' + IntToStr(vCliente) + '-' + RemoveAcento(vClienteNome);
+          Writeln(Impressora, clientecupom);
+        end
         else if lFile[i] = 'doc' then
           Writeln(Impressora, '  ' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now) + ' Pedido : ' + IntToStr(vCodMovimento))
         else if lFile[i] = 'itens' then
@@ -2054,7 +2058,7 @@ begin
   begin
     imprimirTxtOutro();
     if (dmPdv.CupomImp <> 'Texto') then
-       imprimiAcbr();
+      imprimiAcbr();
   end;
   if (dmpdv.outro_cupom = 'P') then
   begin

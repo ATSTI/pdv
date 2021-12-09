@@ -6,7 +6,7 @@ object dmPdv: TdmPdv
   VerticalOffset = 0
   Width = 934
   object IbCon: TIBConnection
-    Connected = False
+    Connected = True
     LoginPrompt = False
     AfterConnect = IbConAfterConnect
     DatabaseName = 'c:\home\bd\ats_pdv_felicita.fdb'
@@ -25,7 +25,7 @@ object dmPdv: TdmPdv
     Top = 18
   end
   object sTrans: TSQLTransaction
-    Active = False
+    Active = True
     Database = IbCon
     Left = 136
     Top = 16
@@ -7012,37 +7012,37 @@ object dmPdv: TdmPdv
         Name = 'CFOP'
         DataType = ftFixedChar
         Precision = -1
-        Size = 16
+        Size = 4
       end    
       item
         Name = 'DESCPRODUTO'
         DataType = ftString
         Precision = -1
-        Size = 1200
+        Size = 300
       end    
       item
         Name = 'OBS'
         DataType = ftString
         Precision = -1
-        Size = 1200
+        Size = 300
       end    
       item
         Name = 'CODPRO'
         DataType = ftString
         Precision = -1
-        Size = 1016
+        Size = 254
       end    
       item
         Name = 'UNIDADEMEDIDA'
         DataType = ftFixedChar
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'CST'
         DataType = ftString
         Precision = -1
-        Size = 1016
+        Size = 254
       end    
       item
         Name = 'ICMS'
@@ -7053,7 +7053,7 @@ object dmPdv: TdmPdv
         Name = 'CSOSN'
         DataType = ftString
         Precision = -1
-        Size = 12
+        Size = 3
       end    
       item
         Name = 'PIPI'
@@ -7139,19 +7139,19 @@ object dmPdv: TdmPdv
         Name = 'CSTIPI'
         DataType = ftString
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'CSTPIS'
         DataType = ftString
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'CSTCOFINS'
         DataType = ftString
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'PPIS'
@@ -7172,7 +7172,7 @@ object dmPdv: TdmPdv
         Name = 'PEDIDO'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'VLRBC_IPI'
@@ -7198,7 +7198,7 @@ object dmPdv: TdmPdv
         Name = 'COD_BARRA'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'VBCUFDEST'
@@ -7244,13 +7244,13 @@ object dmPdv: TdmPdv
         Name = 'CST_IPI_CENQ'
         DataType = ftFixedChar
         Precision = -1
-        Size = 12
+        Size = 3
       end    
       item
         Name = 'CEST'
         DataType = ftString
         Precision = -1
-        Size = 28
+        Size = 7
       end    
       item
         Name = 'CODMOVIMENTO'
@@ -7366,7 +7366,7 @@ object dmPdv: TdmPdv
         Name = 'LOTE'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'DTAFAB'
@@ -7389,7 +7389,7 @@ object dmPdv: TdmPdv
       '          ELSE'
       '          pr.CODPRO'
       '          END as codpro,'
-      '          pr.UNIDADEMEDIDA,'
+      '          md.UN as UNIDADEMEDIDA,'
       '          UDF_TRIM(md.CST) CST,'
       '          md.ICMS, md.CSOSN,'
       '          UDF_ROUNDDEC(md.pIPI, 2) as pIPI,'
@@ -7538,25 +7538,25 @@ object dmPdv: TdmPdv
       Required = False
       Size = 1016
     end
-    object cdsItensNFUNIDADEMEDIDA: TStringField
+    object cdsItensNFCST: TStringField
       FieldKind = fkData
-      FieldName = 'UNIDADEMEDIDA'
+      FieldName = 'CST'
       Index = 8
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 8
+      Size = 1016
     end
-    object cdsItensNFCST: TStringField
+    object cdsItensNFUNIDADEMEDIDA: TStringField
       FieldKind = fkData
-      FieldName = 'CST'
+      FieldName = 'UNIDADEMEDIDA'
       Index = 9
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 1016
+      Size = 2
     end
     object cdsItensNFICMS: TFloatField
       FieldKind = fkData

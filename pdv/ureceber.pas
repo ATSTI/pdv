@@ -278,6 +278,7 @@ begin
     sql_rec += ' ELSE (r.VALOR_RESTO - COALESCE(r.VALORRECEBIDO,0)) END AS VALOR_RESTO, r.VALORTITULO ';
     sql_rec += ' AS VALORTITULO, c.NOMECLIENTE FROM RECEBIMENTO r, CLIENTES c ';
     sql_rec += ' WHERE r.CODCLIENTE = c.CODCLIENTE AND r.VALOR_RESTO > 0';
+    //sql_rec += ' AND r.DATARECEBIMENTO = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now));
     if (edCodCliente.Text <> '') then
     begin
       sql_rec += ' AND r.CODCLIENTE = ' + edCodCliente.Text;
@@ -481,6 +482,7 @@ begin
   ShowMessage('Baixa efetuada com sucesso.');
   edPago.Text:='0,00';
   edPago.Enabled:=False;
+  rgSituacao.ItemIndex := 1;
   btnProcurar.Click;
 end;
 
@@ -667,7 +669,6 @@ try
     end
     else
       Writeln(Impressora,lFile[i]);
-
   end;
 finally
   CloseFile(IMPRESSORA);

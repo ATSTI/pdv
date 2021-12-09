@@ -1,7 +1,7 @@
 object fPDV_Rec: TfPDV_Rec
-  Left = 456
+  Left = 292
   Height = 584
-  Top = 75
+  Top = 66
   Width = 776
   Caption = 'Frente De caixa'
   ClientHeight = 584
@@ -21,7 +21,6 @@ object fPDV_Rec: TfPDV_Rec
     ClientWidth = 772
     Color = clGradientActiveCaption
     ParentColor = False
-    ParentFont = False
     TabOrder = 0
     object Panel4: TPanel
       Left = 0
@@ -85,14 +84,7 @@ object fPDV_Rec: TfPDV_Rec
         Top = 15
         Width = 32
         Caption = '...'
-        Font.CharSet = ANSI_CHARSET
-        Font.Height = -21
-        Font.Name = '@Malgun Gothic'
-        Font.Pitch = fpVariable
-        Font.Quality = fqDraft
-        Font.Style = [fsBold]
         OnClick = BitBtn22Click
-        ParentFont = False
         TabOrder = 2
       end
       object Label9: TLabel
@@ -136,7 +128,6 @@ object fPDV_Rec: TfPDV_Rec
       ClientWidth = 536
       Color = clActiveBorder
       ParentColor = False
-      ParentFont = False
       PopupMenu = PopupMenu1
       TabOrder = 0
       object edDesconto: TMaskEdit
@@ -224,7 +215,6 @@ object fPDV_Rec: TfPDV_Rec
         Width = 32
         Caption = 'R$'
         OnClick = btnDscClick
-        ParentFont = False
         TabOrder = 3
       end
       object Label6: TLabel
@@ -302,7 +292,6 @@ object fPDV_Rec: TfPDV_Rec
         Top = 40
         Width = 84
         Action = acDescontoPercentual
-        ParentFont = False
         TabOrder = 4
       end
       object GroupBox2: TGroupBox
@@ -313,7 +302,6 @@ object fPDV_Rec: TfPDV_Rec
         Caption = 'Pagamentos'
         ClientHeight = 172
         ClientWidth = 508
-        ParentFont = False
         TabOrder = 5
         OnClick = GroupBox2Click
         object DBGrid1: TDBGrid
@@ -474,7 +462,6 @@ object fPDV_Rec: TfPDV_Rec
         Width = 30
         OnChange = edParcelaChange
         OnKeyPress = edParcelaKeyPress
-        ParentFont = False
         PopupMenu = PopupMenu1
         TabOrder = 8
         Text = '1'
@@ -507,7 +494,6 @@ object fPDV_Rec: TfPDV_Rec
         Width = 45
         Caption = 'lblStatus'
         ParentColor = False
-        ParentFont = False
         Visible = False
       end
       object edValorTotal: TMaskEdit
@@ -537,7 +523,6 @@ object fPDV_Rec: TfPDV_Rec
         Top = 251
         Width = 112
         OnKeyPress = edCupomKeyPress
-        ParentFont = False
         TabOrder = 11
         Visible = False
       end
@@ -1065,7 +1050,6 @@ object fPDV_Rec: TfPDV_Rec
         ClientWidth = 374
         Color = clInfoText
         ParentColor = False
-        ParentFont = False
         TabOrder = 12
         Visible = False
         object BitBtn1: TBitBtn
@@ -1348,7 +1332,6 @@ object fPDV_Rec: TfPDV_Rec
             55FF15A354FF09562FFF070907FF070903FF
           }
           OnClick = BitBtn1Click
-          ParentFont = False
           TabOrder = 0
         end
         object BitBtn2: TBitBtn
@@ -1562,7 +1545,6 @@ object fPDV_Rec: TfPDV_Rec
             01FF874A01FF874A01FF874A00FF874A00FF874A00FF874A00FF
           }
           OnClick = BitBtn2Click
-          ParentFont = False
           TabOrder = 1
         end
         object BitBtn4: TBitBtn
@@ -1572,7 +1554,6 @@ object fPDV_Rec: TfPDV_Rec
           Width = 152
           Caption = 'Outros Cartões'
           OnClick = BitBtn4Click
-          ParentFont = False
           TabOrder = 2
         end
         object BitBtn5: TBitBtn
@@ -1582,7 +1563,6 @@ object fPDV_Rec: TfPDV_Rec
           Width = 88
           Caption = 'Fechar'
           OnClick = BitBtn5Click
-          ParentFont = False
           TabOrder = 3
         end
       end
@@ -1593,7 +1573,6 @@ object fPDV_Rec: TfPDV_Rec
         Width = 34
         Caption = 'Label3'
         ParentColor = False
-        ParentFont = False
         Visible = False
       end
       object Label11: TLabel
@@ -1603,7 +1582,6 @@ object fPDV_Rec: TfPDV_Rec
         Width = 9
         Caption = '...'
         ParentColor = False
-        ParentFont = False
       end
     end
     object Panel3: TPanel
@@ -1616,7 +1594,6 @@ object fPDV_Rec: TfPDV_Rec
       ClientWidth = 112
       Color = clGradientInactiveCaption
       ParentColor = False
-      ParentFont = False
       TabOrder = 2
       object BitBtn25: TBitBtn
         Left = 8
@@ -2144,7 +2121,6 @@ object fPDV_Rec: TfPDV_Rec
         Width = 90
         Caption = 'Cadeiras'
         OnClick = btnCadeiraClick
-        ParentFont = False
         TabOrder = 3
         Visible = False
       end
@@ -2159,7 +2135,6 @@ object fPDV_Rec: TfPDV_Rec
       ClientWidth = 120
       Color = clGradientInactiveCaption
       ParentColor = False
-      ParentFont = False
       TabOrder = 1
       object BitBtn9: TBitBtn
         Left = 16
@@ -3405,7 +3380,6 @@ object fPDV_Rec: TfPDV_Rec
         Top = 264
         Width = 184
         Caption = 'BitBtn16'
-        ParentFont = False
         TabOrder = 4
       end
       object MemoImp: TMemo
@@ -3416,7 +3390,6 @@ object fPDV_Rec: TfPDV_Rec
         Lines.Strings = (
           'MemoImp'
         )
-        ParentFont = False
         ReadOnly = True
         TabOrder = 5
         Visible = False
@@ -3427,7 +3400,6 @@ object fPDV_Rec: TfPDV_Rec
         Top = 528
         Width = 189
         ItemHeight = 15
-        ParentFont = False
         Style = csDropDownList
         TabOrder = 6
         Visible = False
@@ -4192,7 +4164,6 @@ object fPDV_Rec: TfPDV_Rec
       Width = 34
       Caption = 'Label2'
       ParentColor = False
-      ParentFont = False
     end
   end
   object sqPagamento: TSQLQuery
