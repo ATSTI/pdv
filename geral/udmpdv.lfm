@@ -6,7 +6,7 @@ object dmPdv: TdmPdv
   VerticalOffset = 0
   Width = 934
   object IbCon: TIBConnection
-    Connected = True
+    Connected = False
     LoginPrompt = False
     AfterConnect = IbConAfterConnect
     DatabaseName = 'c:\home\bd\ats_pdv_felicita.fdb'
@@ -25,7 +25,7 @@ object dmPdv: TdmPdv
     Top = 18
   end
   object sTrans: TSQLTransaction
-    Active = True
+    Active = False
     Database = IbCon
     Left = 136
     Top = 16

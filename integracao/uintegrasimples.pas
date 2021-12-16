@@ -16,6 +16,7 @@ type
 
   TForm1 = class(TForm)
     BitBtn1: TBitBtn;
+    btnConecta: TBitBtn;
     btnCaixa: TButton;
     btnConsultaUltimoPedido: TButton;
     btnEnviandoPedido: TButton;
@@ -23,6 +24,7 @@ type
     btnProduto: TButton;
     btnCliente: TButton;
     edEste: TEdit;
+    edSessao: TEdit;
     edUltima: TEdit;
     edTentativa: TEdit;
     edtUltimpoPedido: TEdit;
@@ -39,6 +41,7 @@ type
     Timer2: TTimer;
     Timer3: TTimer;
     procedure BitBtn1Click(Sender: TObject);
+    procedure btnConectaClick(Sender: TObject);
     procedure btnCaixaClick(Sender: TObject);
     procedure btnEnviandoPedidoClick(Sender: TObject);
     procedure btnConsultaUltimoPedidoClick(Sender: TObject);
@@ -53,10 +56,12 @@ type
   private
     postJson : TJSONObject;
     httpClient : TFPHttpClient;
+    autenticacao: String;
     function ler_retorno(responseData:String): String;
     function monta_arquivo_movimento(arquivo_linha: TJsonNode):TJsonNode;
     function monta_arquivo_recebimento(vcodmovimento: String; arquivo_linha: TJsonNode):TJsonNode;
     function monta_arquivo_movimentodetalhe(vcodmovimento: String; arquivo_linha: TJsonNode):TJsonNode;
+    function logar():TFPHttpClient;
     procedure cria_json(ultimoPedido: String);
     procedure envia_json(dados_json:TJSONObject);
     procedure executa_sql;
@@ -80,6 +85,7 @@ Var
 begin
     postJson.Clear;
     postJson.Add('title', 'Consultando ultimo pedido');
+    httpClient := logar();
     With httpClient do
     begin
         AddHeader('Content-Type', 'application/json');
@@ -105,6 +111,7 @@ Var
  codproduto, data_alterado : String;
  FS: TFormatSettings;
  data_cad : TDateTime;
+ url : String;
 begin
   FS := DefaultFormatSettings;
   FS.DateSeparator := '/';
@@ -114,78 +121,76 @@ begin
   DecimalSeparator:='.';
   postJson.Clear;
   postJson.Add('title', 'Consultando Produto');
-  With httpClient do
-  begin
-      AddHeader('Content-Type', 'application/json');
-      RequestBody := TStringStream.Create(postJson.AsJSON);
-      responseData := Post(dmPdv.path_integra_url + '/produtoconsulta');
+  //postJson.Add('cookies', autenticacao);
+  httpClient := logar();
 
-      memoResult.Lines.Add(responseData);
-      jData := GetJSON(responseData);
-      for i := 0 to jData.Count - 1 do
+  httpClient.RequestBody := TStringStream.Create(postJson.AsJSON);
+  responseData := httpClient.Post(dmPdv.path_integra_url + '/produtoconsulta');
+  memoResult.Lines.Add(responseData);
+  jData := GetJSON(responseData);
+  for i := 0 to jData.Count - 1 do
+  begin
+    object_name := TJSONObject(jData).Names[i];
+    if object_name = 'result' then
+    begin
+      jDataB := GetJSON(jData.Items[i].Value);
+      for j := 0 to jDataB.Count - 1 do
       begin
-        object_name := TJSONObject(jData).Names[i];
-        if object_name = 'result' then
+        jItemB := jDataB.Items[j];
+        ver := '';
+        sql_campo := '';
+        sql_valor := '';
+        sql_update := '';
+        sql_update1 := '';
+        for k := 0 to jItemB.Count - 1 do
         begin
-          jDataB := GetJSON(jData.Items[i].Value);
-          for j := 0 to jDataB.Count - 1 do
+          field_name := TJSONObject(jItemB).Names[k];
+          field_value := jItemB.FindPath(TJSONObject(jItemB).Names[k]).Value;
+          if field_name = 'datacadastro' then
+            data_alterado := field_value;
+          if field_name = 'codproduto' then
           begin
-            jItemB := jDataB.Items[j];
-            ver := '';
-            sql_campo := '';
-            sql_valor := '';
-            sql_update := '';
-            sql_update1 := '';
-            for k := 0 to jItemB.Count - 1 do
+            // verifico se o caixa ja existe
+            dmpdv.busca_sql('SELECT CODPRODUTO, DATACADASTRO FROM PRODUTOS WHERE ' +
+              ' CODPRODUTO = ' + field_value);
+            codproduto := field_value;
+            if dmpdv.sqBusca.IsEmpty then
             begin
-              field_name := TJSONObject(jItemB).Names[k];
-              field_value := jItemB.FindPath(TJSONObject(jItemB).Names[k]).Value;
-              if field_name = 'datacadastro' then
-                data_alterado := field_value;
-              if field_name = 'codproduto' then
-              begin
-                // verifico se o caixa ja existe
-                dmpdv.busca_sql('SELECT CODPRODUTO, DATACADASTRO FROM PRODUTOS WHERE ' +
-                  ' CODPRODUTO = ' + field_value);
-                codproduto := field_value;
-                if dmpdv.sqBusca.IsEmpty then
-                begin
-                  // presico inserir
-                  ver := 'insere';
-                end;
-              end;
-              if sql_campo <> '' then
-              begin
-                sql_campo += ', ' +  field_name;
-                sql_valor += ', ' +  QuotedStr(field_value);
-              end
-              else begin
-                sql_campo += field_name;
-                sql_valor += QuotedStr(field_value);
-              end;
-              if ((sql_update1 <> '') and (field_name <> 'codproduto')) then
-              begin
-                  sql_update += ', ' + field_name + '=' + QuotedStr(field_value);
-              end;
-              if ((sql_update1 = '') and (field_name <> 'codproduto')) then
-              begin
-                sql_update1 += field_name + '=' + QuotedStr(field_value);
-              end;
+              // preciso inserir
+              ver := 'insere';
             end;
-             if ver = 'insere' then
-                memoDados.Lines.add('INSERT INTO PRODUTOS ('+ sql_campo + ') VALUES(' + sql_valor + ');')
-             else
-             begin
-               data_cad := StrToDateTime(data_alterado, FS);
-               if (dmpdv.sqBusca.FieldByName('DATACADASTRO').AsDateTime < data_cad) then
-               begin
-                 memoDados.Lines.add('UPDATE PRODUTOS SET ' + sql_update1 + sql_update +
-                   ' WHERE CODPRODUTO = ' + codproduto + ';');
-               end;
-             end;
+          end;
+          if sql_campo <> '' then
+          begin
+            sql_campo += ', ' +  field_name;
+            sql_valor += ', ' +  QuotedStr(field_value);
+          end
+          else begin
+            sql_campo += field_name;
+            sql_valor += QuotedStr(field_value);
+          end;
+          if ((sql_update1 <> '') and (field_name <> 'codproduto')) then
+          begin
+              sql_update += ', ' + field_name + '=' + QuotedStr(field_value);
+          end;
+          if ((sql_update1 = '') and (field_name <> 'codproduto')) then
+          begin
+            sql_update1 += field_name + '=' + QuotedStr(field_value);
           end;
         end;
+         if ver = 'insere' then
+            memoDados.Lines.add('INSERT INTO PRODUTOS ('+ sql_campo + ') VALUES(' + sql_valor + ');')
+         else
+         begin
+           data_cad := StrToDateTime(data_alterado, FS);
+           if (dmpdv.sqBusca.FieldByName('DATACADASTRO').AsDateTime < data_cad) then
+           begin
+             memoDados.Lines.add('UPDATE PRODUTOS SET ' + sql_update1 + sql_update +
+               ' WHERE CODPRODUTO = ' + codproduto + ';');
+           end;
+         end;
       end;
+    end;
   end;
   executa_sql;
 end;
@@ -305,6 +310,7 @@ begin
   memoDados.Lines.Clear;
   postJson.Clear;
   postJson.Add('title', 'Consultando Usuario');
+  httpClient := logar();
   With httpClient do
   begin
     AddHeader('Content-Type', 'application/json');
@@ -406,6 +412,7 @@ begin
   dados := '';
   memoDados.Lines.Clear;
   DecimalSeparator:='.';
+  httpClient := logar();
   With httpClient do
   begin
       AddHeader('Content-Type', 'application/json');
@@ -466,10 +473,76 @@ begin
   edEste.Text := '';
 end;
 
+procedure TForm1.btnConectaClick(Sender: TObject);
+var
+  responseData: String;
+  listaArquivos : TStringList;
+  logs:TextFile;
+  ver : String;
+  url: STring;
+  jData : TJSONData;
+  jItem : TJSONData;
+  jDataB : TJSONData;
+  jItemB : TJSONData;
+  i: integer;
+  J: integer;
+  K: integer;
+  object_name, field_name, field_value, object_type, object_items: String;
+begin
+  autenticacao := '{"jsonrpc": "2.0", "params": {"login": "' + dmpdv.odoo_user +
+    '", "password": "' + dmpdv.odoo_acesso + '", "db": "' +
+    dmPdv.odoo_database + '"}}';
+
+  httpClient.AllowRedirect := true;
+  httpClient.AddHeader('User-Agent', 'Mozilla/5.0(compatible; fpweb)');
+  url := dmPdv.path_integra_url + '/web/session/authenticate/';
+  With httpClient do
+  begin
+    AddHeader('Content-Type', 'application/json');
+    RequestBody := TStringStream.Create(autenticacao);
+    responseData := Post(url);
+    ver := httpClient.ResponseHeaders.Text;
+    memoDados.Lines.Add(responseData);
+    ver := IntToStr(httpClient.ResponseStatusCode);
+    ver := httpClient.ResponseStatusText;
+    ver := httpclient.Cookies.Text;
+    jData := GetJSON(responseData);
+    for i := 0 to jData.Count - 1 do
+    begin
+      jItem := jData.Items[i];
+      object_name := TJSONObject(jData).Names[i];
+      if object_name = 'result' then
+      begin
+        jItemB := jData.Items[i];
+        for k := 0 to jItemB.Count - 1 do
+        begin
+          field_name := TJSONObject(jItemB).Names[k];
+          field_value := jItemB.FindPath(TJSONObject(jItemB).Names[k]).Value;
+          if field_name = 'session_id' then
+          begin
+            edSessao.Text := field_value;
+            autenticacao := '"login": "' +
+              dmpdv.odoo_user + '", "session": "' +
+              edSessao.Text + '", "db": "' +
+              dmPdv.odoo_database + '"';
+            exit;
+          end;
+        end;
+      end;
+    end;
+  end;
+end;
+
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   httpClient := TFPHttpClient.Create(Nil);
   postJson := TJSONObject.Create;
+  if (dmPdv.NFE_Teste = 'S') then
+  begin
+    Timer1.Enabled:=False;
+    Timer2.Enabled:=False;
+    Timer3.Enabled:=False;
+  end;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
@@ -812,9 +885,24 @@ begin
   result := arquivo_linha;
 end;
 
+function TForm1.logar(): TFPHttpClient;
+begin
+  // retorna a session
+  autenticacao := '{"jsonrpc": "2.0", "params": {"login": "' + dmpdv.odoo_user +
+    '", "password": "' + dmpdv.odoo_acesso + '", "db": "' +
+    dmPdv.odoo_database + '"}}';
+  httpClient.AllowRedirect := true;
+  httpClient.AddHeader('User-Agent', 'Mozilla/5.0(compatible; fpweb)');
+  httpClient.AddHeader('Content-Type', 'application/json');
+  httpClient.RequestBody := TStringStream.Create(autenticacao);
+  httpClient.Post(dmPdv.path_integra_url + '/web/session/authenticate/');
+  result := httpClient;
+end;
+
 procedure TForm1.envia_json(dados_json: TJSONObject);
 var responseData: String;
 begin
+  httpClient := logar();
   With httpClient do
   begin
       AddHeader('Content-Type', 'application/json');

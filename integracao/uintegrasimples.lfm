@@ -224,6 +224,22 @@ object Form1: TForm1
     OnClick = btnClienteClick
     TabOrder = 12
   end
+  object btnConecta: TBitBtn
+    Left = 864
+    Height = 30
+    Top = 104
+    Width = 157
+    Caption = 'Conectando'
+    OnClick = btnConectaClick
+    TabOrder = 13
+  end
+  object edSessao: TEdit
+    Left = 186
+    Height = 23
+    Top = 4
+    Width = 744
+    TabOrder = 14
+  end
   object IdHTTP1: TIdHTTP
     IOHandler = IdSSL
     ProxyParams.BasicAuthentication = False

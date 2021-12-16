@@ -15,6 +15,12 @@
       </XPManifest>
       <Icon Value="0"/>
     </General>
+    <VersionInfo>
+      <UseVersionInfo Value="True"/>
+      <Language Value="0416"/>
+      <CharSet Value="04E2"/>
+      <StringTable Comments="Sistema de Integração PDV" CompanyName="ATSTi Soluções LTDA" FileDescription="Sistema de Integração PDV" InternalName="ATSTiIntegração"/>
+    </VersionInfo>
     <BuildModes Count="1">
       <Item1 Name="Default" Default="True"/>
     </BuildModes>

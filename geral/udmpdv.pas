@@ -1023,6 +1023,9 @@ type
     procedure campo_novo(tabela, campo, tipo: String);
     function existe_campo(tabela, campo: String): Boolean;
   public
+    odoo_database: String;
+    odoo_user: STring;
+    odoo_acesso: String;
     modoDesenvolvedor: String;
     usosistema : string;
     precoLivre : String; // o usuario pode alterar o preco do item
@@ -1204,6 +1207,9 @@ begin
   begin
     conf := TIniFile.Create(path_exe + 'conf.ini');
     try
+      odoo_database := conf.ReadString('SISTEMA', 'Database', '');
+      odoo_user := conf.ReadString('SISTEMA', 'User', '');
+      odoo_acesso := conf.ReadString('SISTEMA', 'Acesso', '');
       vstr := conf.ReadString('DATABASE', 'Name', '');
       Writeln(logs, 'BD conf.ini ' + vstr);
       IBCon.DatabaseName := vstr;
