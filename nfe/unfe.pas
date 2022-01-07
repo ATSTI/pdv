@@ -960,7 +960,7 @@ begin
         MessageDlg('Justificativa deve ter no mínimo 15 caracteres.', mtWarning, [mbOK], 0);
         exit;
       end;
-      NumeroLote := StrToInt(FormatDateTime('yymmddhhmm', NOW));
+      NumeroLote := StrToInt(FormatDateTime('mmddhhmm', NOW));
       ACBrNFe1.EventoNFe.Evento.Clear;
       ACBrNFe1.EventoNFe.idLote := NumeroLote;
       with ACBrNFe1.EventoNFe.Evento.Add do
@@ -1541,7 +1541,7 @@ begin
       envio := Now;
       AcbrNfe1.Configuracoes.Arquivos.PathNFe := edit3.Text;
       AcbrNfe1.Configuracoes.Arquivos.PathEvento := edit3.Text + '\Eventos';
-      NumeroLote := StrToInt(FormatDateTime('yymmddhhmm', NOW));
+      NumeroLote := StrToInt(FormatDateTime('mmddhhmm', NOW));
       ACBrNFe1.EventoNFe.Evento.Clear;
       Label28.Caption := diretorio_schema;
       ACBrNFe1.Configuracoes.Arquivos.PathSchemas := diretorio_schema;
@@ -2329,19 +2329,19 @@ procedure TfNFe.nfe_carregalogo;
 var tem_logo: String;
 begin
   tem_logo := '';
+  if ((tem_logo = '') and (FilesExists(diretorio + '\' +  Trim(dmPdv.qsEmpresaDIVERSOS2.AsString)))) then
+    tem_logo := diretorio + '\' +  Trim(dmPdv.qsEmpresaDIVERSOS2.AsString);
   if (FilesExists(diretorio + '\logo_nfe.jpg')) then
-    tem_logo := 'S';
-  if (FilesExists(diretorio + '\logo.bmp')) then
-    tem_logo := 'S';
+    tem_logo := diretorio + '\logo_nfe.jpg';
+  if (tem_logo = '') and (FilesExists(diretorio + '\logo.bmp')) then
+    tem_logo := diretorio + '\logo.bmp';
 
-  if (tem_logo = '') then
+  if (tem_logo <> '') then
   begin
-    if (FilesExists(diretorio + '\' +  Trim(dmPdv.qsEmpresaDIVERSOS2.AsString))) then
-    begin
-      //ACBrNFeDANFCeFortes1.Logo := diretorio + '\' +  Trim(dmPdv.qsEmpresaDIVERSOS2.AsString);
-      ACBrNFeDANFeRL1.Logo := diretorio + '\' + Trim(dmPdv.qsEmpresaDIVERSOS2.AsString);
-      Image1.Picture.LoadFromFile(diretorio + '\' + Trim(dmPdv.qsEmpresaDIVERSOS2.AsString));
-    end;
+    //ACBrNFeDANFCeFortes1.Logo := diretorio + '\' +  Trim(dmPdv.qsEmpresaDIVERSOS2.AsString);
+    ACBrNFeDANFeRL1.Logo := tem_logo;
+    Image1.Picture.LoadFromFile(tem_logo);
+    fNFe.Caption := dmPdv.qsEmpresaRAZAO.AsString + ', Logo ' + tem_logo;
   end;
 
 end;
@@ -3305,7 +3305,7 @@ begin
   else
     dmPdv.qsEmpresa.Params[0].AsInteger := dmPdv.sqBusca.FieldByName('CODIGO').AsInteger;
   dmPdv.qsEmpresa.Open;
-
+  fNFe.Caption := dmPdv.qsEmpresaEMPRESA.AsString;
 end;
 
 procedure TfNFe.getCli_Fornec;
