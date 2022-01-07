@@ -1224,11 +1224,11 @@ begin
       path_integra_url := conf.ReadString('PATH', 'PathIntegraUrl', path_exe);
       time_integra := conf.ReadInteger('PATH', 'TimeIntegra', 0);
       empresa_integra := conf.ReadString('PATH', 'EmpresaIntegra', 'ATS');
-      if time_integra = 0 then
-      begin
-        Timer1.Enabled := False;
-      end;
-      Timer1.Interval := time_integra * 60 * 1000;
+      //if time_integra = 0 then
+      //begin
+      Timer1.Enabled := False;
+      //end;
+      //Timer1.Interval := time_integra * 60 * 1000;
       IBCon.HostName := vstr;
       //ShowMessage('Hostname ' + vstr);
       snh:= conf.ReadString('DATABASE', 'Acesso', '');
@@ -1831,6 +1831,7 @@ var sqlP: String;
   c: TJsonNode;
   msg_erro: String;
 begin
+  {
   postJson := TJSONObject.Create;
   dadosJson := TJsonNode.Create;
   postJson.Add('title', 'Atualizando cliente');
@@ -1889,7 +1890,7 @@ begin
       Free;
     end;
   except
-  end;
+  end;}
 end;
 
 procedure TdmPdv.integra_caixa;
@@ -1901,6 +1902,7 @@ var sqlP: String;
   c: TJsonNode;
   caixa_int : Integer;
 begin
+  {
   postJson := TJSONObject.Create;
   dadosJson := TJsonNode.Create;
   postJson.Add('title', 'Atualizando Caixa');
@@ -1958,6 +1960,7 @@ begin
     end;
   except
   end;
+  }
 end;
 
 procedure TdmPdv.integra_caixa_mov;
@@ -1970,7 +1973,7 @@ var
   ver : String;
 begin
   // Envia ENTRADAS e SAIDAS do CAIXA para o Odoo
-
+  {
   // envia o arquivo
   postJson := TJSONObject.Create;
   dadosJson := TJsonNode.Create;
@@ -2009,7 +2012,7 @@ begin
 
    listaArquivos.Free;
   except
-  end;
+  end;}
 end;
 
 procedure TdmPdv.gera_integra_caixa_mov;
@@ -2025,7 +2028,7 @@ var
   campos: String;
 begin
   // Envia ENTRADAS e SAIDAS do CAIXA para o Odoo
-
+  {
   // Cria o arquivo
   arquivo := TJsonNode.Create;
   dmPdv.busca_sql('SELECT CODFORMA, COD_VENDA, ID_ENTRADA, FORMA_PGTO' +
@@ -2036,7 +2039,9 @@ begin
   num := 0;
   while not dmPdv.sqBusca.EOF do
   begin
-    itens += '[{';
+  }
+   // itens += '[{';
+  {
     num += 1;
     for i:=0 to dmPdv.sqBusca.FieldDefs.Count-1 do
     begin
@@ -2072,7 +2077,9 @@ begin
             end;
             if (valor <> '') then
             begin
-              if itens <> '[{' then
+  }
+   //           if itens <> '[{' then
+  {
                 itens += ',';
               itens += '"' + campo + '": "' + valor + '"';
             end;
@@ -2086,7 +2093,9 @@ begin
       end;
     end;
     itens += ', "CODFORMA": "' + IntToStr(dmpdv.sqBusca.FieldByName('CODFORMA').AsInteger) + '"';
-    itens += '}]';
+  }
+    //itens += '}]';
+  {
     arquivo.add('caixa-'+IntTostr(num), itens);
     itens := '';
     dmPdv.sqBusca.Next;
@@ -2095,7 +2104,7 @@ begin
   arquivo.SaveToFile(campo);
   arquivo.Free;
 
-
+   }
 end;
 
 procedure TdmPdv.integra_produtos;
@@ -2108,6 +2117,7 @@ var sqlP: String;
   codbarra: string;
   uso : string;
 begin
+  {
   postJson := TJSONObject.Create;
   dadosJson := TJsonNode.Create;
   postJson.Add('title', 'Atualizando Produto');
@@ -2191,6 +2201,7 @@ begin
     end;
   except
   end;
+  }
 end;
 
 procedure TdmPdv.integra_usuario;
@@ -2201,6 +2212,7 @@ var sqlP: String;
   dados: String;
   c: TJsonNode;
 begin
+  {
   if (DirectoryExists(path_integra) = False) then
     ShowMessage('Crie o diretorio do Path Integra.');
   postJson := TJSONObject.Create;
@@ -2260,7 +2272,7 @@ begin
     end;
   except
   end;
-
+   }
 end;
 
 function TdmPdv.executaSql(strSql: String): Boolean;
