@@ -7,9 +7,9 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, Buttons, DBGrids, MaskEdit, ActnList, Menus, ACBrPosPrinter, udmpdv,
-  uvenda, uRecebimento, uClienteBusca, uNfce, sqldb, db, math,
-  StrUtils, IniFiles, uCadeira, uPermissao, uIntegracaoOdoo,
-  typinfo, LConvEncoding, fphttpclient, JsonTools, fpjson, jsonparser;
+  uvenda, uRecebimento, uClienteBusca, uNfce, sqldb, db, math, StrUtils,
+  IniFiles, uCadeira, uPermissao, uIntegracaoOdoo, typinfo, LConvEncoding,
+  fphttpclient, JsonTools, uIntegraSimples, fpjson, jsonparser;
 
 type
 
@@ -1960,6 +1960,7 @@ begin
 end;
 
 procedure TfPDV_Rec.acFecharExecute(Sender: TObject);
+var ult_pedido: String;
 begin
   if (vResto > 0.009) then
   begin
@@ -2000,6 +2001,15 @@ begin
   // 26/11/21 Carlos
   //if (dmpdv.empresa_integra <> 'ATS') then
   //  gerarjson;
+
+  {if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
+  begin
+    try
+      ult_pedido := fIntegracaoOdoo.consultaUltimoPedido();
+      fIntegracaoOdoo.cria_json(' NOT IN ' + ult_pedido);
+    except
+    end;
+  end;}
   Close;
   // sendo chamado pelo dmpdv
   //IntegracaoOdoo := TIntegracaoOdoo.Create(True);

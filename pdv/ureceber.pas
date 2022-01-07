@@ -155,7 +155,7 @@ var
 begin
   if (UpperCase(dmpdv.usoSistema) = 'ODOO') then
   begin
-    conOdoo.Connected:=False;
+    {conOdoo.Connected:=False;
     if FileExists(dmPdv.path_exe  + 'conf.ini') then
     begin
        conf := TIniFile.Create(dmPdv.path_exe + 'conf.ini');
@@ -172,7 +172,7 @@ begin
       conOdoo.Connected:=True;
     except
       ShowMessage('Erro conexao Database: ' + vstr + ' HostName: ' + vstrhost);
-    end;
+    end;}
   end;
   DBGrid1.Columns[0].FieldName:='CODRECEBIMENTO';
   DBGrid1.Columns[1].FieldName:='TITULO';
@@ -422,8 +422,8 @@ begin
             QuotedStr('7-') + ', VALORRECEBIDO = ' + FloattoStr(vlr_pg) +
             ' , JUROS = ' + FloattoStr(vlr_juro) +
             ' , FORMARECEBIMENTO = ' + QuotedStr(vr_formaRec) +
-            ' , DATARECEBIMENTO = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now)) +
-            ' , DATABAIXA = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now)) +
+            ' , DATARECEBIMENTO = ' + QuotedStr(FormatDateTime('mm/dd/2022', Now)) +
+            ' , DATABAIXA = ' + QuotedStr(FormatDateTime('mm/dd/2022', Now)) +
             ' , CAIXA = ' + dmPdv.idcaixa +
             ' , CODALMOXARIFADO = ' + dmPdv.ccusto +
             ' , CODUSUARIO = ' + dmPdv.varLogado +
@@ -555,7 +555,7 @@ begin
   sql_rec += ' AND r.CODCLIENTE = ' + edCodCliente.Text;
 end;
 sql_rec += ' AND r.STATUS  = ' + QuotedStr('7-');
-sql_rec += ' AND r.DATARECEBIMENTO = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now));
+sql_rec += ' AND r.DATARECEBIMENTO = ' + QuotedStr(FormatDateTime('mm/dd/2022', Now));
 sql_rec += ' ORDER BY r.DATAVENCIMENTO, r.EMISSAO, r.TITULO';
 dmPdv.busca_sql(sql_rec);
 While not dmPdv.sqBusca.EOF do
@@ -646,7 +646,7 @@ try
       end;
     end
     else if lFile[i] = 'doc' then
-      Writeln(Impressora,'Recebido Dia.' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now))
+      Writeln(Impressora,'Recebido Dia.' + FormatDateTime('dd/mm/2022 hh:MM:ss', Now))
     else if lFile[i] = 'itens' then
     begin
       vtotalR := 0 ;

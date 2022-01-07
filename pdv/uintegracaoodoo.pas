@@ -28,7 +28,7 @@ implementation
 
 procedure TIntegracaoOdoo.Execute;
 begin
-  atualiza;
+  //atualiza;
 end;
 
 procedure TIntegracaoOdoo.atualiza;
@@ -46,6 +46,7 @@ var
   controle_arquivo: string;
 begin
   // log
+  {
   exit;
 
   ver := 'C:\home\log_integracao.txt';
@@ -125,6 +126,7 @@ begin
     listaEnvia.Free;
     CloseFile(logs);
   end;
+  }
 end;
 
 end.

@@ -74,18 +74,42 @@ var
 
 implementation
 
+uses uIntegraSimples;
+
 {$R *.lfm}
 
 { TfAbrirCaixa }
 
 procedure TfAbrirCaixa.btnAbrefechaClick(Sender: TObject);
+var
+  ult_pedido_geral: String;
+  fInteg: TfIntegracaoOdoo;
 begin
   if (AbrirFechar = 'Abrir') then
   begin
-    AbrirCaixa();
+    if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
+    begin
+      ShowMessage('Caixa dever ser aberto pelo ODOO.');
+    end
+    else
+      AbrirCaixa();
   end
   else begin
     FecharCaixa();
+    if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
+    begin
+      try
+        fInteg := TfIntegracaoOdoo.Create(Self);
+        ult_pedido_geral := fInteg.consultaUltimoPedidoGeral();
+        if (ult_pedido_geral <> '()') then
+          fInteg.cria_json(' IN ' + ult_pedido_geral);
+        fInteg.comunica_server('CAIXA_CONTROLE', 'CODCAIXA', 'CODCAIXA, SITUACAO', '');
+        //fIntegracaoOdoo.Destroy;
+        //FreeAndNil(fIntegracaoOdoo);
+        fInteg.Free;
+      except
+      end;
+    end;
   end;
 end;
 

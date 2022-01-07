@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, LazHelpCHM, Forms, Controls, Graphics, Dialogs,
   Buttons, ExtCtrls, StdCtrls, udmpdv, uSenhaNova, uPdv, uabrircaixa,
-  uAbrirCaixa2, base64, Process;
+  uAbrirCaixa2, base64, Process, IniFiles;
 
 type
 
@@ -52,6 +52,7 @@ procedure TfLogin.btnLoginClick(Sender: TObject);
 var senha: String;
   snh: String;
   situacao: String;
+  ArquivoINI: TIniFile;
 begin
   dmPdv.idcaixa:='0';
   if (edLogin.Text = '') then
@@ -106,6 +107,10 @@ begin
       dmPdv.nomeCaixa := dmPdv.sqBusca.Fields.FieldByName('NOMECAIXA').AsString;
       dmPdv.ccusto := IntToStr(dmPdv.sqBusca.Fields.FieldByName('CODCAIXA').AsInteger);
       dmPdv.idcaixa := IntToStr(dmPdv.sqBusca.Fields.FieldByName('IDCAIXACONTROLE').AsInteger);
+      //ArquivoINI: TIniFile;
+      ArquivoINI := TIniFile.Create('pdv_caixa.ini');
+      ArquivoINI.WriteString('PDV', 'caixa', dmPdv.ccusto);
+      ArquivoINI.Free;
     end;
     fPdv.ShowModal;
     Close;

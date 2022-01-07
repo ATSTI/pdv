@@ -22,7 +22,7 @@ object fRecebimento: TfRecebimento
       Left = 592
       Height = 15
       Top = 15
-      Width = 54
+      Width = 57
       Caption = 'Valor Total'
       ParentColor = False
     end
@@ -57,7 +57,7 @@ object fRecebimento: TfRecebimento
       Left = 397
       Height = 15
       Top = 15
-      Width = 56
+      Width = 57
       Caption = 'Valor Pago'
       ParentColor = False
     end
@@ -2654,7 +2654,7 @@ object fRecebimento: TfRecebimento
     LoginPrompt = False
     DatabaseName = '20_clube1'
     KeepConnection = False
-    Password = 'a2t00s7'
+    Password = 'xxxxxx'
     Transaction = transODoo
     UserName = 'odoo'
     HostName = '127.0.0.1'

@@ -20,7 +20,7 @@
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
       <MinorVersionNr Value="4"/>
-      <BuildNr Value="4"/>
+      <BuildNr Value="5"/>
       <Language Value="0416"/>
       <StringTable CompanyName="ATS Soluções"/>
     </VersionInfo>
@@ -80,7 +80,7 @@
         <PackageName Value="LCL"/>
       </Item14>
     </RequiredPackages>
-    <Units Count="34">
+    <Units Count="35">
       <Unit0>
         <Filename Value="prjPDV.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -315,6 +315,14 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="JsonTools"/>
       </Unit33>
+      <Unit34>
+        <Filename Value="..\integra_odoo\uintegrasimples.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fIntegracaoOdoo"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uIntegraSimples"/>
+      </Unit34>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -325,7 +333,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="..\geral;.."/>
+      <OtherUnitFiles Value="..\geral;..;..\integra_odoo"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Parsing>
@@ -342,6 +350,7 @@
     </CodeGeneration>
     <Linking>
       <Debugging>
+        <GenerateDebugInfo Value="False"/>
         <UseExternalDbgSyms Value="True"/>
       </Debugging>
       <Options>
