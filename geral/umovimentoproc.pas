@@ -30,6 +30,8 @@ type
     edDataFim: TDateTimePicker;
     DBGrid1: TDBGrid;
     edValorBusca: TMaskEdit;
+    edTotalTroca: TMaskEdit;
+    edLiquido: TMaskEdit;
     edVendedor: TEdit;
     edVendedorNome: TEdit;
     Label1: TLabel;
@@ -41,6 +43,9 @@ type
     Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
     Memo1: TMemo;
     Panel1: TPanel;
     Panel3: TPanel;
@@ -103,9 +108,10 @@ end;
 
 procedure TfMovimentoProc.acBuscarExecute(Sender: TObject);
 var sqlProc: String;
-  total : Double;
+  total, troca, liquido : Double;
   qtde: Integer;
   vlrBusca : String;
+  cod_venda_str: String;
 begin
   sqlProc := 'SELECT m.CODMOVIMENTO, m.CONTROLE, m.DATA_SISTEMA as DATAMOVIMENTO, v.CODVENDA ';
   sqlProc += ' , u.NOMEUSUARIO as  VENDEDOR, c.NOMECLIENTE as CLIENTE ';
@@ -166,10 +172,18 @@ begin
   dmPdv.sqBusca.Active:=True;
   total := 0;
   qtde := 0;
+  cod_venda_str:='';
   while not dmPdv.sqBusca.EOF do
   begin
     qtde := qtde + 1;
     total := total + dmPdv.sqBusca.FieldByName('VALOR').AsFloat;
+    if (not dmPdv.sqBusca.FieldByName('CODVENDA').IsNull) then
+    begin
+      if (cod_venda_str = '') then
+        cod_venda_str += IntToStr(dmPdv.sqBusca.FieldByName('CODVENDA').AsInteger)
+      else
+        cod_venda_str += ',' + IntToStr(dmPdv.sqBusca.FieldByName('CODVENDA').AsInteger)
+    end;
     dmPdv.sqBusca.Next;
   end;
   edValorTotal.Text:= FormatFloat('#,,,0.00',total);
@@ -180,6 +194,24 @@ begin
     codMovimentoProc := dmPdv.sqBusca.FieldByName('CODMOVIMENTO').AsInteger;
     codVendaProc     := dmPdv.sqBusca.FieldByName('CODVENDA').AsInteger;
   end;
+  edTotalTroca.Text:='0,00';
+  troca := 0;
+  if (cod_venda_str <> '') then
+  begin
+    dmpdv.sqBusca1.Close;
+    dmpdv.sqBusca1.SQL.Clear;
+    dmpdv.sqBusca1.sql.Add('SELECT SUM(VALOR_PAGO) AS VLR FROM FORMA_ENTRADA ' +
+      'WHERE COD_VENDA IN (' + cod_venda_str + ')' +
+      '  AND N_DOC = ' + QuotedStr('9-Devol./Troca'));
+    dmpdv.sqBusca1.Open;
+    if (not dmpdv.sqBusca1.IsEmpty) then
+    begin
+      troca := dmPdv.sqBusca1.FieldByName('VLR').AsFloat;
+      edTotalTroca.Text:= FormatFloat('#,,,0.00',troca);
+    end;
+  end;
+  liquido := total - troca;
+  edLiquido.Text:= FormatFloat('#,,,0.00',liquido);
 end;
 
 procedure TfMovimentoProc.acFecharExecute(Sender: TObject);

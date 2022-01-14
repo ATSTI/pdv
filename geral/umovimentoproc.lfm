@@ -9,7 +9,7 @@ object fMovimentoProc: TfMovimentoProc
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '2.0.10.0'
+  LCLVersion = '2.0.12.0'
   object Panel1: TPanel
     Left = 0
     Height = 72
@@ -31,7 +31,7 @@ object fMovimentoProc: TfMovimentoProc
       Left = 16
       Height = 21
       Top = 4
-      Width = 59
+      Width = 62
       Caption = 'Periodo:'
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
@@ -103,7 +103,7 @@ object fMovimentoProc: TfMovimentoProc
       Top = 4
       Width = 80
       EditLabel.Height = 21
-      EditLabel.Width = 50
+      EditLabel.Width = 52
       EditLabel.Caption = 'Pedido'
       EditLabel.ParentColor = False
       Font.CharSet = ANSI_CHARSET
@@ -130,7 +130,7 @@ object fMovimentoProc: TfMovimentoProc
       ChildSizing.ShrinkVertical = crsScaleChilds
       ChildSizing.Layout = cclLeftToRightThenTopToBottom
       ChildSizing.ControlsPerLine = 2
-      ClientHeight = 51
+      ClientHeight = 53
       ClientWidth = 230
       Columns = 2
       Font.CharSet = ANSI_CHARSET
@@ -166,7 +166,7 @@ object fMovimentoProc: TfMovimentoProc
       Left = 200
       Height = 21
       Top = 4
-      Width = 22
+      Width = 23
       Caption = 'ate'
       ParentColor = False
     end
@@ -586,7 +586,7 @@ object fMovimentoProc: TfMovimentoProc
       Left = 16
       Height = 21
       Top = 43
-      Width = 41
+      Width = 42
       Caption = 'Valor:'
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
@@ -640,7 +640,7 @@ object fMovimentoProc: TfMovimentoProc
       Left = 348
       Height = 21
       Top = 40
-      Width = 70
+      Width = 73
       Caption = 'Vendedor'
       ParentColor = False
     end
@@ -694,7 +694,7 @@ object fMovimentoProc: TfMovimentoProc
         Alignment = taRightJustify
         Title.Alignment = taRightJustify
         Title.Caption = 'Tempo'
-        Width = 118
+        Width = 117
       end>
     DataSource = dsMovProc
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
@@ -711,10 +711,10 @@ object fMovimentoProc: TfMovimentoProc
     ClientWidth = 1120
     TabOrder = 2
     object edValorTotal: TMaskEdit
-      Left = 912
-      Height = 29
+      Left = 672
+      Height = 26
       Top = 2
-      Width = 80
+      Width = 89
       Alignment = taRightJustify
       CharCase = ecNormal
       Font.CharSet = ANSI_CHARSET
@@ -730,10 +730,10 @@ object fMovimentoProc: TfMovimentoProc
       SpaceChar = '_'
     end
     object edQtdeLancamento: TMaskEdit
-      Left = 696
-      Height = 29
+      Left = 571
+      Height = 26
       Top = 2
-      Width = 80
+      Width = 51
       Alignment = taRightJustify
       CharCase = ecNormal
       Font.CharSet = ANSI_CHARSET
@@ -749,13 +749,13 @@ object fMovimentoProc: TfMovimentoProc
       SpaceChar = '_'
     end
     object Label2: TLabel
-      Left = 528
-      Height = 19
-      Top = 8
-      Width = 150
+      Left = 443
+      Height = 16
+      Top = 2
+      Width = 123
       Caption = 'Qtde Lançamentos:'
       Font.CharSet = ANSI_CHARSET
-      Font.Height = -16
+      Font.Height = -13
       Font.Name = 'Arial'
       Font.Pitch = fpVariable
       Font.Quality = fqDraft
@@ -764,13 +764,13 @@ object fMovimentoProc: TfMovimentoProc
       ParentFont = False
     end
     object Label3: TLabel
-      Left = 808
-      Height = 19
-      Top = 8
-      Width = 88
-      Caption = 'Valor Total:'
+      Left = 632
+      Height = 16
+      Top = 2
+      Width = 35
+      Caption = 'Total:'
       Font.CharSet = ANSI_CHARSET
-      Font.Height = -16
+      Font.Height = -13
       Font.Name = 'Arial'
       Font.Pitch = fpVariable
       Font.Quality = fqDraft
@@ -779,9 +779,9 @@ object fMovimentoProc: TfMovimentoProc
       ParentFont = False
     end
     object btnFecharCaixa: TBitBtn
-      Left = 24
+      Left = 8
       Height = 30
-      Top = 1
+      Top = 0
       Width = 144
       Caption = 'Fechar Caixa'
       Font.CharSet = ANSI_CHARSET
@@ -928,9 +928,9 @@ object fMovimentoProc: TfMovimentoProc
       TabOrder = 2
     end
     object btnSangria: TBitBtn
-      Left = 168
+      Left = 152
       Height = 30
-      Top = 1
+      Top = 0
       Width = 144
       Caption = 'Sangria(-)'
       Font.CharSet = ANSI_CHARSET
@@ -1077,9 +1077,9 @@ object fMovimentoProc: TfMovimentoProc
       TabOrder = 3
     end
     object btnReforco: TBitBtn
-      Left = 312
+      Left = 296
       Height = 30
-      Top = 1
+      Top = 0
       Width = 144
       Caption = 'Reforço Caixa(+)'
       Font.CharSet = ANSI_CHARSET
@@ -1225,6 +1225,74 @@ object fMovimentoProc: TfMovimentoProc
       ParentFont = False
       TabOrder = 4
     end
+    object Label7: TLabel
+      Left = 768
+      Height = 16
+      Top = 2
+      Width = 45
+      Caption = 'Trocas:'
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -13
+      Font.Name = 'Arial'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+    end
+    object edTotalTroca: TMaskEdit
+      Left = 824
+      Height = 26
+      Top = 2
+      Width = 80
+      Alignment = taRightJustify
+      CharCase = ecNormal
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -16
+      Font.Name = 'Arial Unicode MS'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      MaxLength = 0
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 5
+      Text = '0,00'
+      SpaceChar = '_'
+    end
+    object edLiquido: TMaskEdit
+      Left = 1008
+      Height = 26
+      Top = 2
+      Width = 91
+      Alignment = taRightJustify
+      CharCase = ecNormal
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -16
+      Font.Name = 'Arial Unicode MS'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      MaxLength = 0
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 6
+      Text = '0,00'
+      SpaceChar = '_'
+    end
+    object Label9: TLabel
+      Left = 925
+      Height = 16
+      Top = 2
+      Width = 67
+      Caption = 'Resultado:'
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -13
+      Font.Name = 'Arial'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+    end
   end
   object pnMemo: TPanel
     Left = 121
@@ -1247,6 +1315,21 @@ object fMovimentoProc: TfMovimentoProc
       OnChange = Memo1Change
       TabOrder = 0
     end
+  end
+  object Label8: TLabel
+    Left = 840
+    Height = 19
+    Top = 2
+    Width = 43
+    Caption = 'Total:'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -16
+    Font.Name = 'Arial'
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
   end
   object dsMovProc: TDataSource
     DataSet = dmPdv.sqBusca
