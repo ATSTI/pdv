@@ -437,8 +437,8 @@ begin
             begin
               field_name := TJSONObject(jItemB).Names[k];
               field_value := jItemB.FindPath(TJSONObject(jItemB).Names[k]).Value;
-              if field_name = 'idcaixacontrole' then
-                ver := '';
+              //if field_name = 'idcaixacontrole' then
+              //  ver := '';
               if field_name = 'codcaixa' then
               begin
                 // verifico se o caixa ja existe
@@ -460,7 +460,10 @@ begin
               end;
             end;
             if ver = 'insere' then
+            begin
               memoDados.Lines.add('INSERT INTO CAIXA_CONTROLE ('+ sql_campo + ') VALUES(' + sql_valor + ');');
+              ver := '';
+            end;
           end;
         end;
       end;

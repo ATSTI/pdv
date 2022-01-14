@@ -20,15 +20,16 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uIntegraSimples"/>
-        <TopLine Value="799"/>
-        <CursorPos X="58" Y="889"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="406"/>
+        <CursorPos Y="419"/>
         <UsageCount Value="111"/>
         <Bookmarks Count="5">
-          <Item0 X="34" Y="569" ID="4"/>
-          <Item1 X="26" Y="920" ID="5"/>
+          <Item0 X="34" Y="572" ID="4"/>
+          <Item1 X="26" Y="923" ID="5"/>
           <Item2 Y="126" ID="2"/>
-          <Item3 X="32" Y="479" ID="1"/>
-          <Item4 X="3" Y="890" ID="3"/>
+          <Item3 X="32" Y="482" ID="1"/>
+          <Item4 X="3" Y="893" ID="3"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -39,10 +40,9 @@
         <ComponentName Value="dmPdv"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="7"/>
         <TopLine Value="1198"/>
-        <CursorPos X="29" Y="1203"/>
+        <CursorPos X="62" Y="1207"/>
         <UsageCount Value="111"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -118,123 +118,127 @@
         <Loaded Value="True"/>
       </Unit10>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="541" Column="6" TopLine="539"/>
+        <Caret Line="440" TopLine="433"/>
       </Position1>
       <Position2>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="384" Column="45" TopLine="367"/>
+        <Caret Line="442" TopLine="433"/>
       </Position2>
       <Position3>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="135" Column="64" TopLine="116"/>
+        <Caret Line="452" TopLine="433"/>
       </Position3>
       <Position4>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="526" Column="39" TopLine="520"/>
+        <Caret Line="454" TopLine="434"/>
       </Position4>
       <Position5>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="120" TopLine="100"/>
+        <Caret Line="455" TopLine="435"/>
       </Position5>
       <Position6>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="121" TopLine="101"/>
+        <Caret Line="462" TopLine="450"/>
       </Position6>
       <Position7>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="122" TopLine="102"/>
+        <Caret Line="432" TopLine="420"/>
       </Position7>
       <Position8>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="121" Column="5" TopLine="110"/>
+        <Caret Line="433" TopLine="420"/>
       </Position8>
       <Position9>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="504" TopLine="480"/>
+        <Caret Line="434" TopLine="420"/>
       </Position9>
       <Position10>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="137" Column="5" TopLine="120"/>
+        <Caret Line="435" TopLine="420"/>
       </Position10>
       <Position11>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="64" Column="36" TopLine="51"/>
+        <Caret Line="436" TopLine="420"/>
       </Position11>
       <Position12>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="903" Column="3" TopLine="899"/>
+        <Caret Line="438" TopLine="420"/>
       </Position12>
       <Position13>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="125" TopLine="120"/>
+        <Caret Line="439" TopLine="420"/>
       </Position13>
       <Position14>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="901" Column="4" TopLine="878"/>
+        <Caret Line="440" TopLine="420"/>
       </Position14>
       <Position15>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="197" Column="3" TopLine="184"/>
+        <Caret Line="442" TopLine="422"/>
       </Position15>
       <Position16>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="901" Column="4" TopLine="878"/>
+        <Caret Line="445" TopLine="425"/>
       </Position16>
       <Position17>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="197" Column="3" TopLine="184"/>
+        <Caret Line="446" TopLine="426"/>
       </Position17>
       <Position18>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="901" Column="15" TopLine="878"/>
+        <Caret Line="449" TopLine="429"/>
       </Position18>
       <Position19>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="197" Column="3" TopLine="184"/>
+        <Caret Line="452" TopLine="432"/>
       </Position19>
       <Position20>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="894" Column="33" TopLine="881"/>
+        <Caret Line="458" TopLine="446"/>
       </Position20>
       <Position21>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="193" TopLine="170"/>
+        <Caret Line="459" TopLine="446"/>
       </Position21>
       <Position22>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="152" Column="15" TopLine="141"/>
+        <Caret Line="438" TopLine="426"/>
       </Position22>
       <Position23>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="158" Column="24" TopLine="146"/>
+        <Caret Line="439" TopLine="426"/>
       </Position23>
       <Position24>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="901" Column="37" TopLine="884"/>
+        <Caret Line="440" TopLine="426"/>
       </Position24>
       <Position25>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="313" Column="53" TopLine="300"/>
+        <Caret Line="465" Column="25" TopLine="447"/>
       </Position25>
       <Position26>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="417" Column="70" TopLine="405"/>
+        <Caret Line="398" TopLine="386"/>
       </Position26>
       <Position27>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="88" Column="27" TopLine="80"/>
+        <Caret Line="399" TopLine="386"/>
       </Position27>
       <Position28>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="373" Column="12" TopLine="368"/>
+        <Caret Line="420" Column="14" TopLine="406"/>
       </Position28>
       <Position29>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="666" Column="17" TopLine="660"/>
+        <Caret Line="419" TopLine="406"/>
       </Position29>
+      <Position30>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="418" TopLine="406"/>
+      </Position30>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
