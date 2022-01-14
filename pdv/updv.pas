@@ -2217,15 +2217,15 @@ begin
   lFile := TStringList.Create;
   //Aqui uso o ACBR pra imprimir , entao nao precisa disto 10/11/2020
 
-  //if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
-  //begin
+  if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
+  begin
     //v_log := 'Log portaImp - ' + dmPdv.portaIMP;
-  //  AssignFile(IMPRESSORA, dmPdv.portaIMP);
-  //end
-  //else begin
+    AssignFile(IMPRESSORA, dmPdv.portaIMP);
+  end
+  else begin
     //v_log := 'Log path_imp - ' + dmPdv.path_imp;
-  AssignFile(IMPRESSORA, dmPdv.path_imp);
-  //end;
+    AssignFile(IMPRESSORA, dmPdv.path_imp);
+  end;
 
 
   //AssignFile(IMPRESSORA, dmpdv.path_imp);
