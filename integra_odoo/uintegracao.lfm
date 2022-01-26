@@ -1,0 +1,149 @@
+object fIntegracao: TfIntegracao
+  Left = 446
+  Height = 515
+  Top = 125
+  Width = 766
+  Caption = 'Integração'
+  ClientHeight = 515
+  ClientWidth = 766
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
+  LCLVersion = '2.0.8.0'
+  object BitBtn1: TBitBtn
+    Left = 16
+    Height = 30
+    Top = 11
+    Width = 75
+    Caption = 'BitBtn1'
+    Enabled = False
+    OnClick = BitBtn1Click
+    TabOrder = 0
+  end
+  object Memo1: TMemo
+    Left = 24
+    Height = 377
+    Top = 128
+    Width = 731
+    Lines.Strings = (
+      ''
+    )
+    ReadOnly = True
+    ScrollBars = ssBoth
+    TabOrder = 1
+  end
+  object Memo2: TMemo
+    Left = 96
+    Height = 101
+    Top = 8
+    Width = 400
+    Lines.Strings = (
+      ''
+    )
+    TabOrder = 2
+  end
+  object lblMsg: TLabel
+    Left = 26
+    Height = 15
+    Top = 113
+    Width = 9
+    Caption = '...'
+    ParentColor = False
+  end
+  object BitBtn2: TBitBtn
+    Left = 16
+    Height = 30
+    Top = 53
+    Width = 75
+    Caption = 'BitBtn2'
+    Enabled = False
+    OnClick = BitBtn2Click
+    TabOrder = 3
+  end
+  object BitBtn3: TBitBtn
+    Left = 16
+    Height = 30
+    Top = 88
+    Width = 75
+    Caption = 'BitBtn3'
+    Enabled = False
+    OnClick = BitBtn3Click
+    TabOrder = 4
+  end
+  object btnProduto: TBitBtn
+    Left = 584
+    Height = 30
+    Top = 40
+    Width = 75
+    Caption = 'Produto'
+    OnClick = btnProdutoClick
+    TabOrder = 5
+  end
+  object btnCliente: TBitBtn
+    Left = 584
+    Height = 30
+    Top = 72
+    Width = 75
+    Caption = 'Cliente'
+    OnClick = btnClienteClick
+    TabOrder = 6
+  end
+  object btnCaixa: TBitBtn
+    Left = 584
+    Height = 30
+    Top = 8
+    Width = 75
+    Caption = 'Caixa'
+    OnClick = btnCaixaClick
+    TabOrder = 7
+  end
+  object btnVenda: TBitBtn
+    Left = 664
+    Height = 30
+    Top = 8
+    Width = 75
+    Caption = 'Vendas'
+    OnClick = btnVendaClick
+    TabOrder = 8
+  end
+  object Memo3: TMemo
+    Left = 104
+    Height = 373
+    Top = 115
+    Width = 630
+    Color = clGradientActiveCaption
+    Lines.Strings = (
+      'Instalar :  PYHTON 3.7.9  (32 BiTS) '
+      ''
+      'Instalar na Pasta :  C:\Python'
+    )
+    TabOrder = 9
+    Visible = False
+  end
+  object BitBtn4: TBitBtn
+    Left = 664
+    Height = 30
+    Top = 72
+    Width = 32
+    Caption = '?'
+    OnClick = BitBtn4Click
+    TabOrder = 10
+  end
+  object OpenDialog1: TOpenDialog
+    FileName = '''C:\home\programas\lazarus\pdv\pdv\atsProduto.py'''
+    left = 685
+    top = 64
+  end
+  object Timer1: TTimer
+    Interval = 2400000
+    OnTimer = Timer1Timer
+    left = 726
+    top = 44
+  end
+  object Timer2: TTimer
+    Interval = 900000
+    OnTimer = Timer2Timer
+    left = 577
+    top = 109
+  end
+end

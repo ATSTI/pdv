@@ -1,0 +1,1233 @@
+unit uIntegraSimples;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
+  ExtCtrls, Buttons, udmpdv, JsonTools, fpjson, fphttpclient,
+  DB, StrUtils, opensslsockets, openssl, IniFiles;
+
+type
+
+  { TfIntegracaoOdoo }
+
+  TfIntegracaoOdoo = class(TForm)
+    BitBtn1: TBitBtn;
+    btnSangria_Rec: TButton;
+    btnConecta: TBitBtn;
+    btnCaixa: TButton;
+    btnConsultaUltimoPedido: TButton;
+    btnConsultaUltimoPedidoGeral: TButton;
+    btnEnviandoPedido: TButton;
+    btnUsuario: TButton;
+    btnProduto: TButton;
+    btnCliente: TButton;
+    edEste: TEdit;
+    edSessao: TEdit;
+    edUltima: TEdit;
+    edTentativa: TEdit;
+    edtUltimpoPedidoA: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    memoDados: TMemo;
+    memoResult: TMemo;
+    TimerPedido: TTimer;
+    Timer2: TTimer;
+    Timer3: TTimer;
+    TimerGeral: TTimer;
+    procedure BitBtn1Click(Sender: TObject);
+    procedure btnSangria_RecClick(Sender: TObject);
+    procedure btnConectaClick(Sender: TObject);
+    procedure btnCaixaClick(Sender: TObject);
+    procedure btnConsultaUltimoPedidoGeralClick(Sender: TObject);
+    procedure btnEnviandoPedidoClick(Sender: TObject);
+    procedure btnConsultaUltimoPedidoClick(Sender: TObject);
+    procedure btnProdutoClick(Sender: TObject);
+    procedure btnClienteClick(Sender: TObject);
+    procedure btnUsuarioClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure TimerGeralTimer(Sender: TObject);
+    procedure TimerPedidoTimer(Sender: TObject);
+    procedure Timer2Timer(Sender: TObject);
+    procedure Timer3Timer(Sender: TObject);
+  private
+    c_caixa: String;
+    postJson : TJSONObject;
+    httpClient : TFPHttpClient;
+    autenticacao: String;
+    edtUltimpoPedido: String;
+    edEste_str: String;
+    exibe_sql : TStringList;
+    function ler_retorno(responseData:String): String;
+    function monta_arquivo_movimento(arquivo_linha: TJsonNode):TJsonNode;
+    function monta_arquivo_recebimento(vcodmovimento: String; arquivo_linha: TJsonNode):TJsonNode;
+    function monta_arquivo_movimentodetalhe(vcodmovimento: String; arquivo_linha: TJsonNode):TJsonNode;
+    function logar():TFPHttpClient;
+  public
+    function consultaUltimoPedido(): String;
+    function consultaUltimoPedidoGeral(): String;
+    procedure cria_json(ultimoPedido: String);
+    procedure envia_json(dados_json:TJSONObject);
+    procedure executa_sql;
+    procedure comunica_server(tabela: String; campo_chave: String; campos_select: String; campo_data: String);
+  end;
+
+var
+  fIntegracaoOdoo: TfIntegracaoOdoo;
+
+implementation
+
+{$R *.lfm}
+
+{ TfIntegracaoOdoo }
+
+procedure TfIntegracaoOdoo.btnConsultaUltimoPedidoClick(Sender: TObject);
+begin
+  edtUltimpoPedidoA.Text := consultaUltimoPedido;
+  memoResult.Lines.Assign(exibe_sql);
+end;
+
+procedure TfIntegracaoOdoo.btnProdutoClick(Sender: TObject);
+{Var
+ responseData: String;
+ object_name, field_name, field_value: String;
+ jData : TJSONData;
+ jDataB : TJSONData;
+ jItemB : TJSONData;
+ i: integer;
+ J: integer;
+ K: integer;
+ ver: String;
+ sql_campo, sql_valor, sql_update, sql_update1: String;
+ codproduto, data_alterado : String;
+ FS: TFormatSettings;
+ data_cad : TDateTime;
+ url : String;}
+begin
+  comunica_server('PRODUTOS', 'CODPRODUTO', 'DATACADASTRO, CODPRODUTO', 'DATACADASTRO');
+  exit;
+
+  {
+  FS := DefaultFormatSettings;
+  FS.DateSeparator := '/';
+  FS.ShortDateFormat := 'mm/dd/yyyy';
+  FS.ShortTimeFormat := 'hh:mm:ss';
+  memoDados.Lines.Clear;
+  DecimalSeparator:='.';
+  postJson.Clear;
+  postJson.Add('title', 'Consultando Produto');
+  //postJson.Add('cookies', autenticacao);
+  httpClient := logar();
+
+  httpClient.RequestBody := TStringStream.Create(postJson.AsJSON);
+  responseData := httpClient.Post(dmPdv.path_integra_url + '/produtoconsulta');
+  memoResult.Lines.Add(responseData);
+  jData := GetJSON(responseData);
+  for i := 0 to jData.Count - 1 do
+  begin
+    object_name := TJSONObject(jData).Names[i];
+    if object_name = 'result' then
+    begin
+      jDataB := GetJSON(jData.Items[i].Value);
+      for j := 0 to jDataB.Count - 1 do
+      begin
+        jItemB := jDataB.Items[j];
+        ver := '';
+        sql_campo := '';
+        sql_valor := '';
+        sql_update := '';
+        sql_update1 := '';
+        for k := 0 to jItemB.Count - 1 do
+        begin
+          field_name := TJSONObject(jItemB).Names[k];
+          field_value := jItemB.FindPath(TJSONObject(jItemB).Names[k]).Value;
+          if field_name = 'datacadastro' then
+            data_alterado := field_value;
+          if field_name = 'codproduto' then
+          begin
+            // verifico se o caixa ja existe
+            dmpdv.busca_sql('SELECT CODPRODUTO, DATACADASTRO FROM PRODUTOS WHERE ' +
+              ' CODPRODUTO = ' + field_value);
+            codproduto := field_value;
+            if dmpdv.sqBusca.IsEmpty then
+            begin
+              // preciso inserir
+              ver := 'insere';
+            end;
+          end;
+          if sql_campo <> '' then
+          begin
+            sql_campo += ', ' +  field_name;
+            sql_valor += ', ' +  QuotedStr(field_value);
+          end
+          else begin
+            sql_campo += field_name;
+            sql_valor += QuotedStr(field_value);
+          end;
+          if ((sql_update1 <> '') and (field_name <> 'codproduto')) then
+          begin
+              sql_update += ', ' + field_name + '=' + QuotedStr(field_value);
+          end;
+          if ((sql_update1 = '') and (field_name <> 'codproduto')) then
+          begin
+            sql_update1 += field_name + '=' + QuotedStr(field_value);
+          end;
+        end;
+         if ver = 'insere' then
+            memoDados.Lines.add('INSERT INTO PRODUTOS ('+ sql_campo + ') VALUES(' + sql_valor + ');')
+         else
+         begin
+           data_cad := StrToDateTime(data_alterado, FS);
+           if (dmpdv.sqBusca.FieldByName('DATACADASTRO').AsDateTime < data_cad) then
+           begin
+             memoDados.Lines.add('UPDATE PRODUTOS SET ' + sql_update1 + sql_update +
+               ' WHERE CODPRODUTO = ' + codproduto + ';');
+           end;
+         end;
+      end;
+    end;
+  end;
+  executa_sql;
+  }
+end;
+
+procedure TfIntegracaoOdoo.btnClienteClick(Sender: TObject);
+{Var
+  responseData: String;
+  object_name, field_name, field_value: String;
+  jData : TJSONData;
+  jDataB : TJSONData;
+  jItemB : TJSONData;
+  i: integer;
+  J: integer;
+  K: integer;
+  ver: String;
+  sql_campo, sql_valor, sql_update, sql_update1: String;
+  codproduto, data_alterado : String;
+  FS: TFormatSettings;
+  data_cad : TDateTime;}
+begin
+  comunica_server('CLIENTES', 'CODCLIENTE', 'DATA_MATRICULA, CODCLIENTE', 'DATA_MATRICULA');
+  exit;
+
+{  FS := DefaultFormatSettings;
+  FS.DateSeparator := '/';
+  FS.ShortDateFormat := 'mm/dd/yyyy';
+  FS.ShortTimeFormat := 'hh:mm:ss';
+  memoDados.Lines.Clear;
+  DecimalSeparator:='.';
+  postJson.Clear;
+  postJson.Add('title', 'Consultando Clientes');
+  With httpClient do
+  begin
+      AddHeader('Content-Type', 'application/json');
+      RequestBody := TStringStream.Create(postJson.AsJSON);
+      responseData := Post(dmPdv.path_integra_url + '/clienteconsulta');
+      memoResult.Lines.Add(responseData);
+      jData := GetJSON(responseData);
+      for i := 0 to jData.Count - 1 do
+      begin
+        object_name := TJSONObject(jData).Names[i];
+        if object_name = 'result' then
+        begin
+          jDataB := GetJSON(jData.Items[i].Value);
+          for j := 0 to jDataB.Count - 1 do
+          begin
+            jItemB := jDataB.Items[j];
+            ver := '';
+            sql_campo := '';
+            sql_valor := '';
+            sql_update := '';
+            sql_update1 := '';
+            for k := 0 to jItemB.Count - 1 do
+            begin
+              field_name := TJSONObject(jItemB).Names[k];
+              field_value := jItemB.FindPath(TJSONObject(jItemB).Names[k]).Value;
+              if field_name = 'data_matricula' then
+                data_alterado := field_value;
+              if field_name = 'codcliente' then
+              begin
+                // verifico se o caixa ja existe
+                dmpdv.busca_sql('SELECT CODCLIENTE, DATA_MATRICULA FROM CLIENTES WHERE ' +
+                  ' CODCLIENTE = ' + field_value);
+                codproduto := field_value;
+                if dmpdv.sqBusca.IsEmpty then
+                begin
+                  // presico inserir
+                  ver := 'insere';
+                end;
+              end;
+              if sql_campo <> '' then
+              begin
+                sql_campo += ', ' +  field_name;
+                sql_valor += ', ' +  QuotedStr(field_value);
+              end
+              else begin
+                sql_campo += field_name;
+                sql_valor += QuotedStr(field_value);
+              end;
+              if ((sql_update1 <> '') and (field_name <> 'codcliente')) then
+              begin
+                  sql_update += ', ' + field_name + '=' + QuotedStr(field_value);
+              end;
+              if ((sql_update1 = '') and (field_name <> 'codcliente')) then
+              begin
+                sql_update1 += field_name + '=' + QuotedStr(field_value);
+              end;
+            end;
+             if ver = 'insere' then
+                memoDados.Lines.add('INSERT INTO CLIENTES ('+ sql_campo + ') VALUES(' + sql_valor + ');')
+             else
+             begin
+               data_cad := StrToDateTime(data_alterado, FS);
+               if (dmpdv.sqBusca.FieldByName('DATA_MATRICULA').AsDateTime < data_cad) then
+               begin
+                 memoDados.Lines.add('UPDATE CLIENTES SET ' + sql_update1 + sql_update +
+                   ' WHERE CODCLIENTE = ' + codproduto + ';');
+               end;
+             end;
+          end;
+        end;
+      end;
+  end;
+  executa_sql;}
+end;
+
+procedure TfIntegracaoOdoo.btnUsuarioClick(Sender: TObject);
+{Var
+  responseData: String;
+  object_name, field_name, field_value: String;
+ jData : TJSONData;
+ jDataB : TJSONData;
+ jItemB : TJSONData;
+ i: integer;
+ J: integer;
+ K: integer;
+ ver: String;
+ sql_campo, sql_valor: String;}
+begin
+  comunica_server('USUARIO', 'CODUSUARIO', 'CODUSUARIO', '');
+  exit;
+
+   {
+
+  memoDados.Lines.Clear;
+  postJson.Clear;
+  postJson.Add('title', 'Consultando Usuario');
+  httpClient := logar();
+  With httpClient do
+  begin
+    AddHeader('Content-Type', 'application/json');
+    RequestBody := TStringStream.Create(postJson.AsJSON);
+    responseData := Post(dmPdv.path_integra_url + '/usuarioconsulta');
+    memoResult.Lines.Add(responseData);
+    jData := GetJSON(responseData);
+    // #TODO colocar update
+    for i := 0 to jData.Count - 1 do
+    begin
+      object_name := TJSONObject(jData).Names[i];
+      if object_name = 'result' then
+      begin
+        jDataB := GetJSON(jData.Items[i].Value);
+        for j := 0 to jDataB.Count - 1 do
+        begin
+          jItemB := jDataB.Items[j];
+          ver := '';
+          sql_campo := '';
+          sql_valor := '';
+          for k := 0 to jItemB.Count - 1 do
+          begin
+            field_name := TJSONObject(jItemB).Names[k];
+            field_value := jItemB.FindPath(TJSONObject(jItemB).Names[k]).Value;
+            if field_name = 'codusuario' then
+            begin
+              // verifico se o caixa ja existe
+                dmpdv.busca_sql('SELECT CODUSUARIO FROM USUARIO WHERE CODUSUARIO = ' + field_value);
+                if dmpdv.sqBusca.IsEmpty then
+                begin
+                  // presico inserir
+                  ver := 'insere';
+                end;
+              end;
+              if sql_campo <> '' then
+              begin
+                sql_campo += ', ' +  field_name;
+                sql_valor += ', ' +  QuotedStr(field_value);
+              end
+              else begin
+                sql_campo += field_name;
+                sql_valor += QuotedStr(field_value);
+              end;
+            end;
+             if ver = 'insere' then
+                memoDados.Lines.add('INSERT INTO USUARIO ('+ sql_campo + ') VALUES(' + sql_valor + ');');
+            //result := field_value;
+          end;
+        end;
+      end;
+    end;
+  executa_sql;
+  }
+end;
+
+procedure TfIntegracaoOdoo.btnEnviandoPedidoClick(Sender: TObject);
+begin
+  if (edEste.Text <> '') then
+    edEste_str:= edEste.Text;
+  btnConsultaUltimoPedido.Click;
+  memoResult.Lines.Clear;
+  memoDados.Lines.Clear;
+  exibe_sql.Clear;
+  cria_json(' NOT IN ' + edtUltimpoPedidoA.Text);
+  edtUltimpoPedidoA.Text := edtUltimpoPedido;
+  memoResult.Lines.Assign(exibe_sql);
+  edEste.Text := edEste_str;
+end;
+
+procedure TfIntegracaoOdoo.btnCaixaClick(Sender: TObject);
+{Var
+  responseData: String;
+  result: String;
+  c: TJsonNode;
+  sqlD: String;
+  sqlP: String;
+  dados: String;
+  object_name, field_name, field_value, object_type, object_items: String;
+ jData : TJSONData;
+ jItem : TJSONData;
+ jDataB : TJSONData;
+ jItemB : TJSONData;
+ i: integer;
+ J: integer;
+ K: integer;
+ ver: String;
+ sql_campo, sql_valor: String;}
+begin
+  btnConsultaUltimoPedidoGeral.Click;
+  if (edtUltimpoPedidoA.Text <> '') then
+  begin
+    ShowMessage('Execute o botão Cons. Pedido Geral');
+    Exit;
+  end;
+  comunica_server('CAIXA_CONTROLE', 'CODCAIXA', 'CODCAIXA, SITUACAO', '');
+  exit;
+
+  //dados:= '[{';
+  {postJson.Clear;
+  postJson.Add('title', 'Consultando Caixa');
+  dmpdv.busca_sql('SELECT FIRST 3 CODCAIXA, SITUACAO FROM CAIXA_CONTROLE ORDER BY CODCAIXA DESC');
+
+
+
+  While not dmpdv.sqBusca.EOF do
+  begin
+    if (dmPdv.sqBusca.FieldByName('SITUACAO').AsString = 'F') then
+    begin}
+  //    if (dados <> '[{') then
+  //      dados += '}, {';
+  {    dados += '"CODCAIXA": ' + IntToStr(dmPdv.sqBusca.FieldByName('CODCAIXA').AsInteger);
+      dados += ', "SITUACAO": "' + dmPdv.sqBusca.FieldByName('SITUACAO').AsString +'"';
+    end;
+    dmpdv.sqBusca.Next;
+  end;}
+  //dados += '}]';
+  {postJson.Add('caixa', dados);
+  dados := '';
+  memoDados.Lines.Clear;
+  DecimalSeparator:='.';
+  httpClient := logar();
+  With httpClient do
+  begin
+      AddHeader('Content-Type', 'application/json');
+      RequestBody := TStringStream.Create(postJson.AsJSON);
+      responseData := Post(dmPdv.path_integra_url + '/caixaconsulta');
+      memoResult.Lines.Add(responseData);
+      jData := GetJSON(responseData);
+      for i := 0 to jData.Count - 1 do
+      begin
+        jItem := jData.Items[i];
+        object_name := TJSONObject(jData).Names[i];
+        if object_name = 'result' then
+        begin
+          jDataB := GetJSON(jData.Items[i].Value);
+          for j := 0 to jDataB.Count - 1 do
+          begin
+            jItemB := jDataB.Items[j];
+            ver := '';
+            sql_campo := '';
+            sql_valor := '';
+            for k := 0 to jItemB.Count - 1 do
+            begin
+              field_name := TJSONObject(jItemB).Names[k];
+              field_value := jItemB.FindPath(TJSONObject(jItemB).Names[k]).Value;
+              //if field_name = 'idcaixacontrole' then
+              //  ver := '';
+              if field_name = 'codcaixa' then
+              begin
+                // verifico se o caixa ja existe
+                dmpdv.busca_sql('SELECT CODCAIXA FROM CAIXA_CONTROLE WHERE CODCAIXA = ' + field_value);
+                if dmpdv.sqBusca.IsEmpty then
+                begin
+                  // presico inserir
+                  ver := 'insere';
+                end;
+              end;
+              if sql_campo <> '' then
+              begin
+                sql_campo += ', ' +  field_name;
+                sql_valor += ', ' +  QuotedStr(field_value);
+              end
+              else begin
+                sql_campo += field_name;
+                sql_valor += QuotedStr(field_value);
+              end;
+            end;
+            if ver = 'insere' then
+            begin
+              memoDados.Lines.add('INSERT INTO CAIXA_CONTROLE ('+ sql_campo + ') VALUES(' + sql_valor + ');');
+              ver := '';
+            end;
+          end;
+        end;
+      end;
+      executa_sql;
+  end;}
+end;
+
+procedure TfIntegracaoOdoo.btnConsultaUltimoPedidoGeralClick(Sender: TObject);
+begin
+  edtUltimpoPedidoA.Text := consultaUltimoPedidoGeral();
+  fIntegracaoOdoo.Caption:= 'Integrando Caixa : ' + c_caixa;
+  if (edtUltimpoPedidoA.Text = '()') then
+    edtUltimpoPedidoA.Text := '';
+  memoResult.Lines.Clear;
+  memoDados.Lines.Clear;
+  //memoResult.Lines.Assign(exibe_sql);
+  if (edtUltimpoPedidoA.Text <> '') then
+    cria_json(' IN ' + edtUltimpoPedidoA.Text);
+end;
+
+procedure TfIntegracaoOdoo.BitBtn1Click(Sender: TObject);
+begin
+  edEste.Text := '';
+end;
+
+procedure TfIntegracaoOdoo.btnSangria_RecClick(Sender: TObject);
+begin
+ // comunica_server('FORMA_ENTRADA', 'CODCAIXA, SITUACAO', 'CODCAIXA', '');
+ { SELECT f.CAIXA, f.CODFORMA, f.COD_VENDA, \
+                f.VALOR_PAGO, f.N_DOC FROM FORMA_ENTRADA f \
+                where f.CAIXA = %s and f.COD_VENDA = 1' %(str(ses.id))}
+end;
+
+procedure TfIntegracaoOdoo.btnConectaClick(Sender: TObject);
+var
+  responseData: String;
+  listaArquivos : TStringList;
+  logs:TextFile;
+  ver : String;
+  url: STring;
+  jData : TJSONData;
+  jItem : TJSONData;
+  jDataB : TJSONData;
+  jItemB : TJSONData;
+  i: integer;
+  J: integer;
+  K: integer;
+  object_name, field_name, field_value, object_type, object_items: String;
+begin
+  autenticacao := '{"jsonrpc": "2.0", "params": {"login": "' + dmpdv.odoo_user +
+    '", "password": "' + dmpdv.odoo_acesso + '", "db": "' +
+    dmPdv.odoo_database + '"}}';
+
+  httpClient.AllowRedirect := true;
+  httpClient.AddHeader('User-Agent', 'Mozilla/5.0(compatible; fpweb)');
+  url := dmPdv.path_integra_url + '/web/session/authenticate/';
+  With httpClient do
+  begin
+    AddHeader('Content-Type', 'application/json');
+    RequestBody := TStringStream.Create(autenticacao);
+    responseData := Post(url);
+    ver := httpClient.ResponseHeaders.Text;
+    memoDados.Lines.Add(responseData);
+    ver := IntToStr(httpClient.ResponseStatusCode);
+    ver := httpClient.ResponseStatusText;
+    ver := httpclient.Cookies.Text;
+    jData := GetJSON(responseData);
+    for i := 0 to jData.Count - 1 do
+    begin
+      jItem := jData.Items[i];
+      object_name := TJSONObject(jData).Names[i];
+      if object_name = 'result' then
+      begin
+        jItemB := jData.Items[i];
+        for k := 0 to jItemB.Count - 1 do
+        begin
+          field_name := TJSONObject(jItemB).Names[k];
+          field_value := jItemB.FindPath(TJSONObject(jItemB).Names[k]).Value;
+          if field_name = 'session_id' then
+          begin
+            edSessao.Text := field_value;
+            autenticacao := '"login": "' +
+              dmpdv.odoo_user + '", "session": "' +
+              edSessao.Text + '", "db": "' +
+              dmPdv.odoo_database + '"';
+            exit;
+          end;
+        end;
+      end;
+    end;
+  end;
+end;
+
+procedure TfIntegracaoOdoo.FormCreate(Sender: TObject);
+var
+  ArquivoINI: TIniFile;
+begin
+  exibe_sql:=TStringList.Create;
+  ArquivoINI := TIniFile.Create('pdv_caixa.ini');
+  c_caixa := ArquivoINI.ReadString('PDV', 'caixa', dmPdv.ccusto);
+  ArquivoINI.Free;
+  httpClient := TFPHttpClient.Create(Nil);
+  postJson := TJSONObject.Create;
+end;
+
+procedure TfIntegracaoOdoo.FormDestroy(Sender: TObject);
+begin
+  httpClient.Free;
+  postJson.Free;
+  exibe_sql.Free;
+end;
+
+procedure TfIntegracaoOdoo.FormShow(Sender: TObject);
+begin
+  if (dmPdv.NFE_Teste = 'S') then
+  begin
+    TimerPedido.Enabled:=False;
+    Timer2.Enabled:=False;
+    Timer3.Enabled:=False;
+    TimerGeral.Enabled:=False;
+  end;
+  fIntegracaoOdoo.Caption:= 'Integrando Caixa : ' + c_caixa;
+end;
+
+procedure TfIntegracaoOdoo.TimerGeralTimer(Sender: TObject);
+begin
+  TimerPedido.Enabled:=False;
+  Sleep(5000);
+  btnConsultaUltimoPedidoGeral.Click;
+  TimerPedido.Enabled:=True;
+end;
+
+procedure TfIntegracaoOdoo.TimerPedidoTimer(Sender: TObject);
+begin
+  btnEnviandoPedido.Click;
+end;
+
+procedure TfIntegracaoOdoo.Timer2Timer(Sender: TObject);
+begin
+  btnProduto.Click;
+end;
+
+procedure TfIntegracaoOdoo.Timer3Timer(Sender: TObject);
+begin
+  btnCliente.Click;
+end;
+
+function TfIntegracaoOdoo.ler_retorno(responseData: String): String;
+var object_name, field_name, field_value, object_type, object_items: String;
+ jData : TJSONData;
+ jItem : TJSONData;
+ jDataB : TJSONData;
+ jItemB : TJSONData;
+ i: integer;
+ J: integer;
+ K: integer;
+begin
+  jData := GetJSON(responseData);
+  for i := 0 to jData.Count - 1 do
+  begin
+    jItem := jData.Items[i];
+    object_name := TJSONObject(jData).Names[i];
+    if object_name = 'result' then
+    begin
+      jDataB := GetJSON(jData.Items[i].Value);
+      for j := 0 to jDataB.Count - 1 do
+      begin
+        jItemB := jDataB.Items[j];
+        for k := 0 to jItemB.Count - 1 do
+        begin
+          field_name := TJSONObject(jItemB).Names[k];
+          field_value := jItemB.FindPath(TJSONObject(jItemB).Names[k]).Value;
+          //MemoResult.Lines.Append(' - ' + field_name + ': ' + field_value);
+        end;
+        result := field_value;
+      end;
+    end;
+  end;
+end;
+
+procedure TfIntegracaoOdoo.cria_json(ultimoPedido: String);
+Var
+  responseData: String;
+  result: String;
+  arquivo: TJsonNode;
+  cod_mov: Integer;
+  ver_str: String;
+  sql_str: String;
+begin
+  postJson.Clear;
+  postJson.Add('title', 'Enviando Movimento');
+  arquivo := TJsonNode.Create;
+  // buscando no odoo o ultimo integrado
+  dmPdv.sqLancamentos.Close;
+  dmPdv.sqBusca1.Close;
+  dmPdv.sqBusca1.Sql.Clear;
+  sql_str := 'SELECT FIRST 10 m.CODMOVIMENTO ';
+  sql_str += ' FROM MOVIMENTO m , VENDA v';
+  sql_str += ' WHERE m.CODMOVIMENTO = v.CODMOVIMENTO';
+  if (edEste_str <> '') then
+  begin
+    sql_str += ' AND m.CODMOVIMENTO = ' + edEste_str;
+    edEste_str := IntToStr(StrToInt(edEste_str) + 1);
+  end
+  else begin
+    sql_str += '   AND m.CODMOVIMENTO ' + ultimoPedido;
+    sql_str += '   AND m.CODALMOXARIFADO = ' + c_caixa;
+  end;
+  sql_str += '   AND m.STATUS = 1 ';
+  sql_str += ' ORDER BY m.CODMOVIMENTO DESC ';
+  dmPdv.sqBusca1.SQL.Add(sql_str);
+  dmPdv.sqBusca1.Open;
+  while not dmPdv.sqBusca1.EOF do
+  begin
+      ver_str := dmPdv.sqBusca1.Fields[0].DisplayName;
+      cod_mov := dmPdv.sqBusca1.Fields[0].AsInteger;
+      {if (edUltima.Text = IntToStr(cod_mov)) then
+      begin
+        edTentativa.Text := IntToStr(StrToInt(edTentativa.Text)+1);
+        edUltima.Text := IntToStr(cod_mov);
+      end;
+      if (edTentativa.Text = '0') then
+      begin
+        edUltima.Text := IntToStr(cod_mov);
+      end;
+      if (edTentativa.Text = '4') then
+      begin
+        edTentativa.Text := '0';
+        cod_mov := StrToInt(edUltima.Text);
+      end;}
+      dmPdv.sqLancamentos.Close;
+      dmPdv.sqLancamentos.Params.ParamByName('PMOV').AsInteger := cod_mov;
+
+      dmPdv.sqLancamentos.Open;
+      arquivo := monta_arquivo_movimento(arquivo);
+      arquivo := monta_arquivo_recebimento(IntToStr(cod_mov), arquivo);
+      arquivo := monta_arquivo_movimentodetalhe(IntToStr(cod_mov), arquivo);
+      if not dmPdv.sqLancamentos.IsEmpty then
+      begin
+        if (dmPdv.sqLancamentosSTATUS.AsInteger = 1) then
+        begin
+          memoDados.Lines.Add(arquivo.ToString);
+          postJson.Add('pedido', arquivo.ToString);
+          envia_json(postJson);
+          arquivo.Clear;
+          postJson.Clear;
+        end;
+      end
+      else begin
+        exibe_sql.Add('Último pedido enviado: ' + ultimoPedido + '. Sem mais pedidos para enviar.');
+      end;
+      dmPdv.sqBusca1.Next;
+  end;
+  arquivo.Free;
+end;
+
+function TfIntegracaoOdoo.monta_arquivo_movimento(arquivo_linha: TJsonNode): TJsonNode;
+var i: Integer;
+  campo: String;
+  campos: String;
+  valor: String;
+  tipo : TFieldType;
+begin
+  for i:=0 to dmPdv.sqLancamentos.FieldDefs.Count-1 do
+  begin
+    campo := dmPdv.sqLancamentos.FieldDefs.Items[i].Name;
+    campos := 'CODMOVIMENTO DATA_SISTEMA CODCLIENTE CONTROLE CODUSUARIO';
+    campos += ' CODVENDEDOR CODALMOXARIFADO';
+    if (pos(campo, Campos) <> 0) then
+    begin
+      if (not dmPdv.sqLancamentos.Fields[i].IsNull) then
+      begin
+        valor := '';
+        if (Trim(dmPdv.sqLancamentos.Fields[i].Value) <> '') then
+        begin
+          tipo := dmPdv.sqLancamentos.Fields[i].DataType;
+          if dmPdv.sqLancamentos.Fields[i].DataType = ftDateTime then
+            valor := FormatDateTime('mm/dd/yyyy hh:MM', dmPdv.sqLancamentos.Fields[i].Value);
+          if dmPdv.sqLancamentos.Fields[i].DataType = ftString then
+            valor := dmPdv.sqLancamentos.Fields[i].Value;
+          if dmPdv.sqLancamentos.Fields[i].DataType = ftInteger then
+            valor := IntToStr(dmPdv.sqLancamentos.Fields[i].Value);
+          if dmPdv.sqLancamentos.Fields[i].DataType = ftSmallint then
+            valor := IntToStr(dmPdv.sqLancamentos.Fields[i].Value);
+          if dmPdv.sqLancamentos.Fields[i].DataType = ftFloat then
+          begin
+            try
+              valor := FloatToStr(dmPdv.sqLancamentos.Fields[i].Value);
+            except
+              valor := '';
+            end;
+          end;
+          if (valor <> '') then
+            arquivo_linha.Add(dmPdv.sqLancamentos.Fields[i].FieldName, valor);
+          valor := '';
+        end;
+      end;
+    end;
+  end;
+  result := arquivo_linha;
+end;
+
+function TfIntegracaoOdoo.monta_arquivo_recebimento(vcodmovimento: String;
+  arquivo_linha: TJsonNode): TJsonNode;
+var i: Integer;
+  campo: String;
+  campos: String;
+  valor: String;
+  tipo : TFieldType;
+  itens : String;
+  item : String;
+  num: Integer;
+begin
+  // PAGAMENTOS
+  dmPdv.busca_sql('SELECT CODFORMA, COD_VENDA, ID_ENTRADA, FORMA_PGTO' +
+    ' , CAIXA , N_DOC, VALOR_PAGO, CAIXINHA, TROCO, DESCONTO, STATE' +
+    ' FROM FORMA_ENTRADA WHERE STATE < 2 AND ID_ENTRADA = ' +
+    vCodMovimento + ' ORDER BY FORMA_PGTO');
+  item := '';
+  itens := '[';
+  num := 0;
+  while not dmPdv.sqBusca.EOF do
+  begin
+    item += '{';
+    num += 1;
+    for i:=0 to dmPdv.sqBusca.FieldDefs.Count-1 do
+    begin
+      try
+      campo := dmPdv.sqBusca.FieldDefs.Items[i].Name;
+      campos := 'FORMA_PGTO VALOR_PAGO CODCLIENTE DESCONTO ID_ENTRADA';
+      if (pos(campo, Campos) <> 0) then
+      begin
+        if (not dmPdv.sqBusca.Fields[i].IsNull) then
+        begin
+          valor := '';
+          if (Trim(dmPdv.sqBusca.Fields[i].Value) <> '') then
+          begin
+            tipo := dmPdv.sqBusca.Fields[i].DataType;
+            if dmPdv.sqBusca.Fields[i].DataType = ftDate then
+               valor := FormatDateTime('mm/dd/yyyy', dmPdv.sqBusca.Fields[i].Value);
+            if dmPdv.sqBusca.Fields[i].DataType = ftString then
+               valor := dmPdv.sqBusca.Fields[i].Value;
+            if dmPdv.sqBusca.Fields[i].DataType = ftInteger then
+               valor := IntToStr(dmPdv.sqBusca.Fields[i].Value);
+            if dmPdv.sqBusca.Fields[i].DataType = ftSmallint then
+               valor := IntToStr(dmPdv.sqBusca.Fields[i].Value);
+            if dmPdv.sqBusca.Fields[i].DataType = ftFixedChar then
+               valor := dmPdv.sqBusca.Fields[i].Value;
+
+            if dmPdv.sqBusca.Fields[i].DataType = ftFloat then
+            begin
+              try
+                 valor := FloatToStr(dmPdv.sqBusca.Fields[i].Value);
+              except
+                valor := '';
+              end;
+            end;
+            if (valor <> '') then
+            begin
+              if item <> '{' then
+                item += ',';
+              item += '"' + campo + '": "' + valor + '"';
+            end;
+            valor := '';
+          end;
+        end;
+      end;
+      except
+         ShowMessage('Erro Campo : ' + campo + ' Valor : ' + valor);
+         valor := '0';
+      end;
+    end;
+    item += ', "CODMOVIMENTO": "' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) + '"';
+    item += '}';
+    if itens <> '[' then
+      itens += ',' + item
+    else
+      itens += item;
+    item := '';
+    dmPdv.sqBusca.Next;
+  end;
+  itens += ']';
+  arquivo_linha.add('pagamentos', itens);
+  result := arquivo_linha;
+end;
+
+function TfIntegracaoOdoo.monta_arquivo_movimentodetalhe(vcodmovimento: String;
+  arquivo_linha: TJsonNode): TJsonNode;
+var i: Integer;
+  campo: String;
+  campos: String;
+  valor: String;
+  tipo : TFieldType;
+  itens : String;
+  item : String;
+  num: Integer;
+begin
+  // ITENS
+  itens := '[';
+  item := '';
+  dmPdv.sqLancamentos.First;
+  while not dmPdv.sqLancamentos.Eof do
+  begin
+    item += '{';
+    num += 1;
+    for i:=0 to dmPdv.sqLancamentos.FieldDefs.Count-1 do
+    begin
+      try
+        campo := dmPdv.sqLancamentos.FieldDefs.Items[i].Name;
+        campos := 'CODPRODUTO PRECO QUANTIDADE';
+        campos += ' VALOR_DESCONTO DESCPRODUTO CORTESIA';
+        if (pos(campo, Campos) <> 0) then
+        begin
+          valor := '';
+          if (campo = 'VALOR_DESCONTO') then
+          begin
+            valor := FloatToStr(dmPdv.sqLancamentosVALOR_DESCONTO.Value);
+          end;
+          if (campo = 'CODPRODUTO') then
+          begin
+            valor := IntToStr(dmPdv.sqLancamentosCODPRODUTO.Value);
+          end;
+          if (campo = 'PRECO') then
+          begin
+            valor := FloatToStr(dmPdv.sqLancamentosPRECO.Value);
+          end;
+          if (campo = 'QUANTIDADE') then
+          begin
+            valor := FloatToStr(dmPdv.sqLancamentosQUANTIDADE.Value);
+          end;
+          if (campo = 'CODPRO') then
+          begin
+            valor := dmPdv.sqLancamentosCODPRO.Value;
+          end;
+          if (campo = 'DESCPRODUTO') then
+          begin
+            valor := dmPdv.sqLancamentosDESCPRODUTO.Value;
+          end;
+          if (campo = 'CORTESIA') then
+          begin
+            valor := dmPdv.sqLancamentosCORTESIA.Value;
+          end;
+          if (valor <> '') then
+          begin
+            if item <> '{' then
+              item += ',';
+            item += '"' + campo + '": "' + valor + '"';
+          end;
+          valor := '';
+        end;
+      except
+         ShowMessage('Erro Campo : ' + campo + ' Valor : ' + valor);
+         valor := '0';
+      end;
+    end;
+    item += ', "CODMOVIMENTO": "' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) + '"';
+    item += '}';
+    if itens <> '[' then
+      itens += ',' + item
+    else
+      itens += item;
+    item := '';
+    dmPdv.sqLancamentos.Next;
+  end;
+  itens += ']';
+  arquivo_linha.add('itens', itens);
+  result := arquivo_linha;
+end;
+
+function TfIntegracaoOdoo.logar(): TFPHttpClient;
+begin
+  // retorna a session
+  autenticacao := '{"jsonrpc": "2.0", "params": {"login": "' + dmpdv.odoo_user +
+    '", "password": "' + dmpdv.odoo_acesso + '", "db": "' +
+    dmPdv.odoo_database + '"}}';
+  httpClient.AllowRedirect := true;
+  httpClient.AddHeader('User-Agent', 'Mozilla/5.0(compatible; fpweb)');
+  httpClient.AddHeader('Content-Type', 'application/json');
+  httpClient.RequestBody := TStringStream.Create(autenticacao);
+  httpClient.Post(dmPdv.path_integra_url + '/web/session/authenticate/');
+  result := httpClient;
+end;
+
+function TfIntegracaoOdoo.consultaUltimoPedido(): String;
+Var
+  responseData: String;
+  ArquivoINI: TIniFile;
+begin
+  edtUltimpoPedido:='';
+    ArquivoINI := TIniFile.Create('pdv_caixa.ini');
+    c_caixa := ArquivoINI.ReadString('PDV', 'caixa', dmPdv.ccusto);
+    fIntegracaoOdoo.Caption:= 'Integrando Caixa : ' + c_caixa;
+    ArquivoINI.Free;
+    postJson.Clear;
+    postJson.Add('title', 'Consultando ultimo pedido');
+    postJson.Add('caixa', c_caixa);
+    exibe_sql.Clear;
+    httpClient := logar();
+    With httpClient do
+    begin
+        AddHeader('Content-Type', 'application/json');
+        RequestBody := TStringStream.Create(postJson.AsJSON);
+        responseData := Post(dmPdv.path_integra_url + '/pedidoconsulta');
+        exibe_sql.Add(responseData);
+        edtUltimpoPedido := ler_retorno(responseData);
+    end;
+    result := edtUltimpoPedido;
+end;
+
+function TfIntegracaoOdoo.consultaUltimoPedidoGeral(): String;
+Var
+  responseData: String;
+  ArquivoINI: TIniFile;
+  sql_str: string;
+  pedidos : string;
+begin
+    ArquivoINI := TIniFile.Create('pdv_caixa.ini');
+    c_caixa := ArquivoINI.ReadString('PDV', 'caixa', dmPdv.ccusto);
+    ArquivoINI.Free;
+    postJson.Clear;
+
+    dmPdv.sqBusca1.Close;
+    dmPdv.sqBusca1.Sql.Clear;
+    sql_str := 'SELECT m.CODMOVIMENTO ';
+    sql_str += ' FROM MOVIMENTO m , VENDA v';
+    sql_str += ' WHERE m.CODMOVIMENTO = v.CODMOVIMENTO';
+    sql_str += '   AND m.STATUS = 1 ';
+    sql_str += '   AND m.CODALMOXARIFADO = ' + c_caixa;
+    sql_str += ' ORDER BY m.CODMOVIMENTO DESC ';
+    dmPdv.sqBusca1.SQL.Add(sql_str);
+    dmPdv.sqBusca1.Open;
+    pedidos := '[';
+    while not dmPdv.sqBusca1.EOF do
+    begin
+      if pedidos <> '[' then
+        pedidos += ', ';
+      pedidos += IntToStr(dmPdv.sqBusca1.Fields[0].AsInteger);
+      dmPdv.sqBusca1.Next;
+    end;
+    postJson.Add('title', 'Consultando todos pedidos');
+    postJson.Add('todos', pedidos + ']');
+    postJson.Add('caixa', c_caixa);
+
+    httpClient := logar();
+    With httpClient do
+    begin
+        AddHeader('Content-Type', 'application/json');
+        RequestBody := TStringStream.Create(postJson.AsJSON);
+        responseData := Post(dmPdv.path_integra_url + '/pedidoconsultageral');
+        exibe_sql.Add(responseData);
+        edtUltimpoPedido := ler_retorno(responseData);
+    end;
+  result := edtUltimpoPedido;
+end;
+
+procedure TfIntegracaoOdoo.envia_json(dados_json: TJSONObject);
+var responseData: String;
+begin
+  httpClient := logar();
+  With httpClient do
+  begin
+      AddHeader('Content-Type', 'application/json');
+      RequestBody := TStringStream.Create(dados_json.AsJSON);
+      responseData := Post(dmPdv.path_integra_url + '/pedidoinsere');
+      if (responseData <> 'N') then
+      begin
+      end;
+  end;
+end;
+
+procedure TfIntegracaoOdoo.executa_sql;
+var   Linha: string;
+  i: Integer;
+  sql: String;
+begin
+    sql := '';
+    for i := 0 to memoDados.Lines.Count-1 do
+    begin
+      linha := memoDados.Lines.Strings[i];
+      sql += linha;
+      if AnsiEndsText(';', linha) then
+      begin
+        dmPdv.IbCon.ExecuteDirect(sql);
+        dmPdv.sTrans.Commit;
+        sql := '';
+      end;
+    end;
+    //memoDados.Lines.Clear;
+end;
+
+procedure TfIntegracaoOdoo.comunica_server(tabela: String; campo_chave: String;
+  campos_select: String; campo_data: String);
+Var
+  responseData: String;
+  result: String;
+  //c: TJsonNode;
+  sqlD: String;
+  sqlP: String;
+  dados: String;
+  object_name, field_name, field_value, object_type, object_items: String;
+  jData : TJSONData;
+  jItem : TJSONData;
+  jDataB : TJSONData;
+  jItemB : TJSONData;
+  i: integer;
+  J: integer;
+  K: integer;
+  ver: String;
+  sql_campo, sql_valor, sql_update, sql_update1: String;
+  url_server : String;
+  FS: TFormatSettings;
+  data_cad, data_ultimo : TDateTime;
+  cod_chave, data_alterado : String;
+begin
+  FS := DefaultFormatSettings;
+  FS.DateSeparator := '/';
+  FS.ShortDateFormat := 'mm/dd/yyyy';
+  FS.ShortTimeFormat := 'hh:mm:ss';
+  memoDados.Lines.Clear;
+  DecimalSeparator:='.';
+
+  dados:= '[{';
+  postJson.Clear;
+  postJson.Add('title', tabela);
+
+  if (tabela = 'CAIXA_CONTROLE') then
+  begin
+    dmpdv.busca_sql('SELECT FIRST 3 ' + campos_select + ' FROM ' + tabela + ' ORDER BY CODCAIXA DESC');
+    While not dmpdv.sqBusca.EOF do
+    begin
+      if (dmPdv.sqBusca.Fields[1].AsString = 'F') then
+      begin
+        if (dados <> '[{') then
+          dados += '}, {';
+        dados += '"CODCAIXA": ' + IntToStr(dmPdv.sqBusca.Fields[0].AsInteger);
+        dados += ', "SITUACAO": "' + dmPdv.sqBusca.Fields[1].AsString +'"';
+      end;
+      dmpdv.sqBusca.Next;
+    end;
+    dados += '}]';
+    postJson.Add('caixa', dados);
+  end;
+
+  if (tabela = 'CAIXA_CONTROLE') then
+    url_server := '/caixaconsulta';
+  if (tabela = 'PRODUTOS') then
+    url_server := '/produtoconsulta';
+  if (tabela = 'CLIENTES') then
+    url_server := '/clienteconsulta';
+  if (tabela = 'USUARIO') then
+    url_server := '/usuarioconsulta';
+
+  dados := '';
+  memoDados.Lines.Clear;
+  DecimalSeparator:='.';
+  httpClient := logar();
+  With httpClient do
+  begin
+    AddHeader('Content-Type', 'application/json');
+    RequestBody := TStringStream.Create(postJson.AsJSON);
+    responseData := Post(dmPdv.path_integra_url + url_server);
+    memoResult.Lines.Add(responseData);
+    jData := GetJSON(responseData);
+    for i := 0 to jData.Count - 1 do
+    begin
+      jItem := jData.Items[i];
+      object_name := TJSONObject(jData).Names[i];
+      if object_name = 'result' then
+      begin
+        jDataB := GetJSON(jData.Items[i].Value);
+        for j := 0 to jDataB.Count - 1 do
+        begin
+          jItemB := jDataB.Items[j];
+          ver := '';
+          sql_campo := '';
+          sql_valor := '';
+          for k := 0 to jItemB.Count - 1 do
+          begin
+            field_name := TJSONObject(jItemB).Names[k];
+            field_value := jItemB.FindPath(TJSONObject(jItemB).Names[k]).Value;
+            if field_name = LowerCase(campo_chave) then
+            begin
+              dmpdv.busca_sql('SELECT ' + campos_select + ' FROM ' + tabela +
+                ' WHERE ' + campo_chave + ' = ' + field_value);
+              if dmpdv.sqBusca.IsEmpty then
+              begin
+                ver := 'insere';
+              end;
+              cod_chave := field_value;
+            end;
+            if (field_name = LowerCase(campo_data)) then
+              data_alterado := field_value;
+            if sql_campo <> '' then
+            begin
+              sql_campo += ', ' +  field_name;
+              sql_valor += ', ' +  QuotedStr(field_value);
+            end
+            else begin
+              sql_campo += field_name;
+              sql_valor += QuotedStr(field_value);
+            end;
+            if ((sql_update1 <> '') and (field_name <> LowerCase(campo_chave))) then
+            begin
+                sql_update += ', ' + field_name + '=' + QuotedStr(field_value);
+            end;
+            if ((sql_update1 = '') and (field_name <> LowerCase(campo_chave))) then
+            begin
+              sql_update1 += field_name + '=' + QuotedStr(field_value);
+            end;
+          end;
+          if ver = 'insere' then
+          begin
+            memoDados.Lines.add('INSERT INTO ' + tabela + '('+ sql_campo +
+              ') VALUES(' + sql_valor + ');');
+            ver := '';
+          end
+          else begin
+            if (campo_data <> '') then
+            begin
+              data_cad := StrToDateTime(data_alterado, FS);
+              if (dmpdv.sqBusca.Fields[0].AsDateTime < data_cad) then
+              begin
+                memoDados.Lines.add('UPDATE ' + tabela + ' SET ' + sql_update1 + sql_update +
+                  ' WHERE ' + campo_chave + ' = ' + cod_chave + ';');
+              end;
+              sql_update := '';
+              sql_update1 := '';
+            end;
+          end;
+        end;
+      end;
+    end;
+    executa_sql;
+  end;
+end;
+
+end.
+
