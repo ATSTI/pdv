@@ -1,13 +1,14 @@
 object fRecebimento: TfRecebimento
-  Left = 569
+  Left = 312
   Height = 482
-  Top = 125
+  Top = 129
   Width = 809
   Caption = 'Recebimento'
   ClientHeight = 482
   ClientWidth = 809
   OnCreate = FormCreate
   OnShow = FormShow
+  Position = poDesktopCenter
   LCLVersion = '2.0.12.0'
   object Panel1: TPanel
     Left = 0
@@ -22,7 +23,7 @@ object fRecebimento: TfRecebimento
       Left = 592
       Height = 15
       Top = 15
-      Width = 57
+      Width = 54
       Caption = 'Valor Total'
       ParentColor = False
     end
@@ -57,7 +58,7 @@ object fRecebimento: TfRecebimento
       Left = 397
       Height = 15
       Top = 15
-      Width = 57
+      Width = 56
       Caption = 'Valor Pago'
       ParentColor = False
     end
@@ -2440,6 +2441,50 @@ object fRecebimento: TfRecebimento
       OnClick = BitBtn5Click
       TabOrder = 3
     end
+  end
+  object memoResult: TMemo
+    Left = 520
+    Height = 32
+    Top = 112
+    Width = 212
+    TabOrder = 4
+    Visible = False
+  end
+  object StringGrid1: TStringGrid
+    Left = 0
+    Height = 325
+    Top = 80
+    Width = 804
+    ColCount = 6
+    FixedCols = 0
+    RowCount = 1
+    TabOrder = 5
+    ColWidths = (
+      60
+      200
+      146
+      142
+      176
+      2
+    )
+    Cells = (
+      5
+      0
+      0
+      'Codigo'
+      1
+      0
+      'Fatura'
+      2
+      0
+      'Data Emissão'
+      3
+      0
+      'Data Vencimento'
+      4
+      0
+      'Valor'
+    )
   end
   object dsRec: TDataSource
     DataSet = dmPdv.sqBusca

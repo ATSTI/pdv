@@ -6,8 +6,9 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
-  StdCtrls, DBGrids, MaskEdit, ActnList, uClienteBusca, udmpdv, db, math, sqldb,
-  pqconnection, IniFiles;
+  StdCtrls, DBGrids, MaskEdit, ActnList, Grids, uClienteBusca, udmpdv,
+  uIntegraSimples, db, math, sqldb, pqconnection, IniFiles, fpjson,
+  fphttpclient;
 
 type
 
@@ -44,6 +45,7 @@ type
     edPago: TMaskEdit;
     lblForma: TLabel;
     Memo1: TMemo;
+    memoResult: TMemo;
     Panel1: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
@@ -61,6 +63,7 @@ type
     sqlOdootitulo: TStringField;
     sqlOdoovalortitulo: TBCDField;
     sqlOdoovalor_resto: TBCDField;
+    StringGrid1: TStringGrid;
     transODoo: TSQLTransaction;
     sqPagamento: TSQLQuery;
     sqPagamentoCAIXA: TSmallintField;
@@ -153,9 +156,9 @@ var
   conf: TIniFile;
   vstr, vstrhost: String;
 begin
-  if (UpperCase(dmpdv.usoSistema) = 'ODOO') then
+ { if (UpperCase(dmpdv.usoSistema) = 'ODOO') then
   begin
-    {conOdoo.Connected:=False;
+    conOdoo.Connected:=False;
     if FileExists(dmPdv.path_exe  + 'conf.ini') then
     begin
        conf := TIniFile.Create(dmPdv.path_exe + 'conf.ini');
@@ -172,25 +175,45 @@ begin
       conOdoo.Connected:=True;
     except
       ShowMessage('Erro conexao Database: ' + vstr + ' HostName: ' + vstrhost);
-    end;}
+    end;
   end;
-  DBGrid1.Columns[0].FieldName:='CODRECEBIMENTO';
-  DBGrid1.Columns[1].FieldName:='TITULO';
-  DBGrid1.Columns[2].FieldName:='EMISSAO';
-  DBGrid1.Columns[3].FieldName:='DATAVENCIMENTO';
-  DBGrid1.Columns[4].FieldName:='DATARECEBIMENTO';
-  DBGrid1.Columns[5].FieldName:='NOMECLIENTE';
-  DBGrid1.Columns[6].FieldName:='VALORTITULO';
-  DBGrid1.Columns[7].FieldName:='VALOR_RESTO';
-  DBGrid1.Columns[0].Title.Caption := 'Código';
-  DBGrid1.Columns[1].Title.Caption := 'Título';
-  DBGrid1.Columns[2].Title.Caption := 'Emissão';
-  DBGrid1.Columns[3].Title.Caption := 'Vencimento';
-  DBGrid1.Columns[5].Title.Caption := 'Recebido';
-  DBGrid1.Columns[5].Title.Caption := 'Cliente';
+  }
+  if (UpperCase(dmpdv.usoSistema) = 'ODOO') then
+  begin
+    StringGrid1.Visible := True;
+    DBGrid1.Visible     := False;
+    rgSituacao.Enabled  := False;
+    btnConfirma.Enabled := False;
+    BitBtn24.Enabled    := False;
+    BitBtn9.Enabled     := False;
+    BitBtn18.Enabled    := False;
+    BitBtn20.Enabled    := False;
+    BitBtn21.Enabled    := False;
+  end;
 
-  DBGrid1.Columns[6].DisplayFormat:=',##0.00';
-  DBGrid1.Columns[7].DisplayFormat:=',##0.00';
+  if (UpperCase(dmpdv.usoSistema) = 'ATS') then
+  begin
+    DBGrid1.Visible     := True;
+    StringGrid1.Visible := False;
+    DBGrid1.Columns[0].FieldName:='CODRECEBIMENTO';
+    DBGrid1.Columns[1].FieldName:='TITULO';
+    DBGrid1.Columns[2].FieldName:='EMISSAO';
+    DBGrid1.Columns[3].FieldName:='DATAVENCIMENTO';
+    DBGrid1.Columns[4].FieldName:='DATARECEBIMENTO';
+    DBGrid1.Columns[5].FieldName:='NOMECLIENTE';
+    DBGrid1.Columns[6].FieldName:='VALORTITULO';
+    DBGrid1.Columns[7].FieldName:='VALOR_RESTO';
+    DBGrid1.Columns[0].Title.Caption := 'Código';
+    DBGrid1.Columns[1].Title.Caption := 'Título';
+    DBGrid1.Columns[2].Title.Caption := 'Emissão';
+    DBGrid1.Columns[3].Title.Caption := 'Vencimento';
+    DBGrid1.Columns[5].Title.Caption := 'Recebido';
+    DBGrid1.Columns[5].Title.Caption := 'Cliente';
+
+    DBGrid1.Columns[6].DisplayFormat:=',##0.00';
+    DBGrid1.Columns[7].DisplayFormat:=',##0.00';
+  end;
+
 end;
 
 procedure TfRecebimento.FormShow(Sender: TObject);
@@ -198,7 +221,8 @@ begin
   pnCartoes.Visible:=False;
   edPago.Enabled:=False;
   lblForma.Caption := '...';
-end;
+  memoResult.Clear;
+ end;
 
 procedure TfRecebimento.rgSituacaoClick(Sender: TObject);
 begin
@@ -258,80 +282,178 @@ end;
 procedure TfRecebimento.btnProcurarClick(Sender: TObject);
 var
   sql_rec: String;
-  total_rec : Double;
+  total_rec , total_odoo : Double;
   juros_str: String;
+  postJson : TJSONObject;
+  httpClient : TFPHttpClient;
+  fInteg: TfIntegracaoOdoo;
+  responseData: String;
+  i: integer;
+  J: integer;
+  K: integer;
+  jData : TJSONData;
+  jItem : TJSONData;
+  jDataB : TJSONData;
+  jItemB : TJSONData;
+  a , b , c , d ,e, f , g ,v,vTotal: String;
+  object_name, field_name, field_value, object_type, object_items: String;
 begin
-  total_rec := 0;
-//  total_juromulta := dmPdv.RecJuro;
- // juros_str := FormatFloat('#0.00000',total_juromulta);
-  //juros_str := StringReplace(juros_str, ',', '.', [rfReplaceAll]);
-  if ((UpperCase(dmpdv.usoSistema) = 'ATS') or (UpperCase(dmpdv.usoSistema) = 'ODOO')) then
+  if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
   begin
-    // buscar contas (recebimento)
-    total_rec := 0;
-    sql_rec := 'SELECT r.CODCLIENTE, r.CODRECEBIMENTO, r.TITULO, r.EMISSAO';
-    sql_rec += ', r.DATAVENCIMENTO, r.DATARECEBIMENTO ';
-    sql_rec += ' ,(r.VALOR_RESTO - COALESCE(r.VALORRECEBIDO,0)) AS RESTO ';
-    sql_rec += ' , CASE WHEN r.DATAVENCIMENTO < (CURRENT_DATE - 30) THEN ';
-    sql_rec += ' ((r.VALOR_RESTO * (1+(' + dmPdv.RecJuro + '*(current_date - r.datavencimento))))';
-    sql_rec += ' - COALESCE(r.VALORRECEBIDO,0)) ';
-    sql_rec += ' ELSE (r.VALOR_RESTO - COALESCE(r.VALORRECEBIDO,0)) END AS VALOR_RESTO, r.VALORTITULO ';
-    sql_rec += ' AS VALORTITULO, c.NOMECLIENTE FROM RECEBIMENTO r, CLIENTES c ';
-    sql_rec += ' WHERE r.CODCLIENTE = c.CODCLIENTE AND r.VALOR_RESTO > 0';
-    //sql_rec += ' AND r.DATARECEBIMENTO = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now));
-    if (edCodCliente.Text <> '') then
-    begin
-      sql_rec += ' AND r.CODCLIENTE = ' + edCodCliente.Text;
+    memoResult.Clear;
+    StringGrid1.Clear;
+    StringGrid1.RowCount := StringGrid1.RowCount + 1;
+    StringGrid1.Cells[0, StringGrid1.RowCount - 1] := 'Codigo';
+    StringGrid1.Cells[1, StringGrid1.RowCount - 1] := 'Fatura';
+    StringGrid1.Cells[2, StringGrid1.RowCount - 1] := 'Data Emissão';
+    StringGrid1.Cells[3, StringGrid1.RowCount - 1] := 'Data Vencimento' ;
+    StringGrid1.Cells[4, StringGrid1.RowCount - 1] := 'Valor';
+    //  StringGrid1.Cells[5, StringGrid1.RowCount - 1] := 'Codigo';
+    StringGrid1.ColWidths[1]:= 250;
+    StringGrid1.ColWidths[2]:= 100;
+    StringGrid1.ColWidths[3]:= 100;
+    StringGrid1.ColWidths[4]:= 100;
+    StringGrid1.ColWidths[5]:= 100;
+
+    httpClient := TFPHttpClient.Create(Nil);
+    postJson := TJSONObject.Create;
+    try
+      postJson.Add('title', 'Contas a Receber');
+      postJson.Add('cod_cliente', edCodCliente.Text);
+      fInteg := TfIntegracaoOdoo.Create(Self);
+      httpClient := fInteg.logar();
+      With httpClient do
+      begin
+        AddHeader('Content-Type', 'application/json');
+        RequestBody := TStringStream.Create(postJson.AsJSON);
+        responseData := Post(dmPdv.path_integra_url + '/contasconsulta');
+        memoResult.Lines.Add(responseData);
+      end;
+      fInteg.Free;
+      postJson.Free;
+    except
     end;
-    Case rgSituacao.ItemIndex of
-      0 : sql_rec += ' AND r.STATUS  = ' + QuotedStr('5-');
-      1 : sql_rec += ' AND r.STATUS  = ' + QuotedStr('7-');
-      2 : sql_rec += ' AND r.STATUS  IN (' +
-         QuotedStr('5-') + ',' + QuotedStr('7-') + ')';
-    end;
-    sql_rec += ' ORDER BY r.DATAVENCIMENTO, r.EMISSAO, r.TITULO';
-    dmPdv.busca_sql(sql_rec);
-    While not dmPdv.sqBusca.EOF do
-    begin
-      total_rec += dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat;
-      dmPdv.sqBusca.Next;
-    end;
-    dmPdv.sqBusca.First;
-    edTotalGeral.Text := FormatFloat('#,,,0.00',total_rec);
   end;
-  if (UpperCase(dmpdv.usoSistema) = 'ODOO-LOCAL') then
+  if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
   begin
-    sqlOdoo.Close;
-    dsRec.DataSet := sqlOdoo;
-    sql_rec := 'select aml.id as CODRECEBIMENTO, aml.ref as TITULO, aml.date as EMISSAO, ';
-    sql_rec += 'aml.date_maturity as DATAVENCIMENTO, NULL as DATARECEBIMENTO, ';
-    sql_rec += ' rp.id || ' + '-' + ' || rp.name as NOMECLIENTE,';
-    sql_rec += 'aml.amount_residual as VALORTITULO, aml.amount_residual as VALOR_RESTO,';
-    sql_rec += ' aml.reconciled, aml.invoice_id ';
-    sql_rec += ' FROM account_move_line aml, account_account aa, account_account_type aat, res_partner rp';
-    sql_rec += ' WHERE aa.id = aml.account_id and aat.id = aa.user_type_id ';
-    sql_rec += '   AND aml.invoice_id IS NOT NULL ';
-    sql_rec += '   AND rp.id = aml.partner_id and aat.type = ' + QuotedStr('receivable');
-    if (edNomeCliente.Text <> '') then
+    jData := GetJSON(responseData);
+    for i := 0 to jData.Count - 1 do
     begin
-      sql_rec += ' AND rp.NAME ILIKE ' + QuotedStr('%' + edNomeCliente.Text + '%');
+      jItem := jData.Items[i];
+      object_name := TJSONObject(jData).Names[i];
+      if object_name = 'result' then
+      begin
+        jDataB := GetJSON(jData.Items[i].Value);
+        for j := 0 to jDataB.Count - 1 do
+        begin
+          jItemB := jDataB.Items[j];
+          for k := 0 to jItemB.Count - 1 do
+            begin
+              field_name := TJSONObject(jItemB).Names[k];
+              field_value := jItemB.FindPath(TJSONObject(jItemB).Names[k]).Value;
+              if (k = 0)then
+              a := field_value;
+              if (k = 1)then
+              b := field_value;
+              if (k = 2)then
+              c := field_value;
+              if (k = 3)then
+              d := field_value;
+              if (k = 4)then
+              e := field_value;
+              if (k = 5)then
+              f := field_value;
+            end;
+
+          total_odoo := total_odoo + StrToFloat(b) ;
+
+          StringGrid1.RowCount := StringGrid1.RowCount + 1;
+          StringGrid1.Cells[0, StringGrid1.RowCount - 1] := f;
+          StringGrid1.Cells[1, StringGrid1.RowCount - 1] := e;
+          StringGrid1.Cells[2, StringGrid1.RowCount - 1] := c;
+          StringGrid1.Cells[3, StringGrid1.RowCount - 1] := d;
+          StringGrid1.Cells[4, StringGrid1.RowCount - 1] := FormatFloat('R$ ###0.00', StrToFloat(b));
+          //StringGrid1.Cells[5, StringGrid1.RowCount - 1] := a;
+          edTotalGeral.Caption:= FormatFloat('###0.00', total_odoo);
+        end;
+      end;
     end;
-    Case rgSituacao.ItemIndex of
-      0 : sql_rec += ' AND aml.amount_residual > 0.0';
-      1 : sql_rec += ' AND aml.amount_residual = 0.0';
-    end;
-    sql_rec += ' ORDER BY aml.date_maturity, aml.date, aml.ref LIMIT ' + edLimit.Text;
-    sqlOdoo.SQL.Clear;
-    sqlOdoo.SQL.Add(sql_rec);
-    sqlOdoo.Open;
-    While not sqlOdoo.EOF do
-    begin
-      total_rec += sqlOdoo.FieldByName('VALOR_RESTO').AsFloat;
-      sqlOdoo.Next;
-    end;
-    sqlOdoo.First;
-    edTotalGeral.Text := FormatFloat('#,,,0.00',total_rec);
   end;
+
+ if (UpperCase(dmPdv.usoSistema) = 'ATS') then
+ begin
+   total_rec := 0;
+   //  total_juromulta := dmPdv.RecJuro;
+   // juros_str := FormatFloat('#0.00000',total_juromulta);
+   //juros_str := StringReplace(juros_str, ',', '.', [rfReplaceAll]);
+   if ((UpperCase(dmpdv.usoSistema) = 'ATS') or (UpperCase(dmpdv.usoSistema) = 'ODOO')) then
+   begin
+     // buscar contas (recebimento)
+     total_rec := 0;
+     sql_rec := 'SELECT r.CODCLIENTE, r.CODRECEBIMENTO, r.TITULO, r.EMISSAO';
+     sql_rec += ', r.DATAVENCIMENTO, r.DATARECEBIMENTO ';
+     sql_rec += ' ,(r.VALOR_RESTO - COALESCE(r.VALORRECEBIDO,0)) AS RESTO ';
+     sql_rec += ' , CASE WHEN r.DATAVENCIMENTO < (CURRENT_DATE - 30) THEN ';
+     sql_rec += ' ((r.VALOR_RESTO * (1+(' + dmPdv.RecJuro + '*(current_date - r.datavencimento))))';
+     sql_rec += ' - COALESCE(r.VALORRECEBIDO,0)) ';
+     sql_rec += ' ELSE (r.VALOR_RESTO - COALESCE(r.VALORRECEBIDO,0)) END AS VALOR_RESTO, r.VALORTITULO ';
+     sql_rec += ' AS VALORTITULO, c.NOMECLIENTE FROM RECEBIMENTO r, CLIENTES c ';
+     sql_rec += ' WHERE r.CODCLIENTE = c.CODCLIENTE AND r.VALOR_RESTO > 0';
+     //sql_rec += ' AND r.DATARECEBIMENTO = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now));
+     if (edCodCliente.Text <> '') then
+     begin
+       sql_rec += ' AND r.CODCLIENTE = ' + edCodCliente.Text;
+     end;
+     Case rgSituacao.ItemIndex of
+       0 : sql_rec += ' AND r.STATUS  = ' + QuotedStr('5-');
+       1 : sql_rec += ' AND r.STATUS  = ' + QuotedStr('7-');
+       2 : sql_rec += ' AND r.STATUS  IN (' +
+       QuotedStr('5-') + ',' + QuotedStr('7-') + ')';
+     end;
+     sql_rec += ' ORDER BY r.DATAVENCIMENTO, r.EMISSAO, r.TITULO';
+     dmPdv.busca_sql(sql_rec);
+     While not dmPdv.sqBusca.EOF do
+     begin
+       total_rec += dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat;
+       dmPdv.sqBusca.Next;
+     end;
+     dmPdv.sqBusca.First;
+     edTotalGeral.Text := FormatFloat('#,,,0.00',total_rec);
+   end;
+   if (UpperCase(dmpdv.usoSistema) = 'ODOO-LOCAL') then
+   begin
+     sqlOdoo.Close;
+     dsRec.DataSet := sqlOdoo;
+     sql_rec := 'select aml.id as CODRECEBIMENTO, aml.ref as TITULO, aml.date as EMISSAO, ';
+     sql_rec += 'aml.date_maturity as DATAVENCIMENTO, NULL as DATARECEBIMENTO, ';
+     sql_rec += ' rp.id || ' + '-' + ' || rp.name as NOMECLIENTE,';
+     sql_rec += 'aml.amount_residual as VALORTITULO, aml.amount_residual as VALOR_RESTO,';
+     sql_rec += ' aml.reconciled, aml.invoice_id ';
+     sql_rec += ' FROM account_move_line aml, account_account aa, account_account_type aat, res_partner rp';
+     sql_rec += ' WHERE aa.id = aml.account_id and aat.id = aa.user_type_id ';
+     sql_rec += '   AND aml.invoice_id IS NOT NULL ';
+     sql_rec += '   AND rp.id = aml.partner_id and aat.type = ' + QuotedStr('receivable');
+     if (edNomeCliente.Text <> '') then
+     begin
+       sql_rec += ' AND rp.NAME ILIKE ' + QuotedStr('%' + edNomeCliente.Text + '%');
+     end;
+     Case rgSituacao.ItemIndex of
+       0 : sql_rec += ' AND aml.amount_residual > 0.0';
+       1 : sql_rec += ' AND aml.amount_residual = 0.0';
+     end;
+     sql_rec += ' ORDER BY aml.date_maturity, aml.date, aml.ref LIMIT ' + edLimit.Text;
+     sqlOdoo.SQL.Clear;
+     sqlOdoo.SQL.Add(sql_rec);
+     sqlOdoo.Open;
+     While not sqlOdoo.EOF do
+     begin
+       total_rec += sqlOdoo.FieldByName('VALOR_RESTO').AsFloat;
+     sqlOdoo.Next;
+     end;
+     sqlOdoo.First;
+     edTotalGeral.Text := FormatFloat('#,,,0.00',total_rec);
+   end;
+ end;
 end;
 
 procedure TfRecebimento.btnConfirmaClick(Sender: TObject);
