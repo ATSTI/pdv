@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
   StdCtrls, DBGrids, MaskEdit, ActnList, Grids, uClienteBusca, udmpdv,
   uIntegraSimples, db, math, sqldb, pqconnection, IniFiles, fpjson,
-  fphttpclient;
+  fphttpclient, Types;
 
 type
 
@@ -43,6 +43,8 @@ type
     edTotalGeral: TMaskEdit;
     Label2: TLabel;
     edPago: TMaskEdit;
+    Label3: TLabel;
+    Label4: TLabel;
     lblForma: TLabel;
     Memo1: TMemo;
     memoResult: TMemo;
@@ -98,8 +100,14 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure rgSituacaoClick(Sender: TObject);
+    procedure StringGrid1Click(Sender: TObject);
+    procedure StringGrid1DrawCell(Sender: TObject; aCol, aRow: Integer;
+      aRect: TRect; aState: TGridDrawState);
+    procedure StringGrid1SelectCell(Sender: TObject; aCol, aRow: Integer;
+      var CanSelect: Boolean);
   private
     codClienteR : Integer;
+    pCod : string; /// codigo do Odoo
     procedure enviar_caixa(valor_pago: Double; codRec: Integer);
         function RemoveAcento(Str: string): string;
   public
@@ -108,6 +116,7 @@ type
 
 var
   fRecebimento: TfRecebimento;
+  C, R :integer;
 
 implementation
 
@@ -129,6 +138,7 @@ procedure TfRecebimento.edCodClienteExit(Sender: TObject);
 begin
   if (edCodCliente.Text <> '') then
   begin
+    edPago.Text:= '0,00';
     fClienteBusca.cCodCliente := StrToInt(edCodCliente.Text);
     fClienteBusca.BuscaCliente;
     edNomeCliente.Text := fClienteBusca.cNomeCliente;
@@ -143,6 +153,7 @@ begin
     Key := #0;
     if (edCodCliente.Text <> '') then
     begin
+      edPago.Text:= '0,00';
       fClienteBusca.cCodCliente := StrToInt(edCodCliente.Text);
       fClienteBusca.BuscaCliente;
       edNomeCliente.Text := fClienteBusca.cNomeCliente;
@@ -182,6 +193,7 @@ begin
   begin
     StringGrid1.Visible := True;
     DBGrid1.Visible     := False;
+    {
     rgSituacao.Enabled  := False;
     btnConfirma.Enabled := False;
     BitBtn24.Enabled    := False;
@@ -189,6 +201,7 @@ begin
     BitBtn18.Enabled    := False;
     BitBtn20.Enabled    := False;
     BitBtn21.Enabled    := False;
+    }
   end;
 
   if (UpperCase(dmpdv.usoSistema) = 'ATS') then
@@ -229,6 +242,30 @@ begin
   btnProcurar.Click;
 end;
 
+procedure TfRecebimento.StringGrid1Click(Sender: TObject);
+begin
+   pCod := (StringGrid1.Cells[StringGrid1.Col, StringGrid1.Row]);
+   Label3.Caption := pCod ;
+end;
+
+procedure TfRecebimento.StringGrid1DrawCell(Sender: TObject; aCol,
+  aRow: Integer; aRect: TRect; aState: TGridDrawState);
+begin
+  if(Acol=0)and(Arow=R)then
+  begin
+    StringGrid1.Canvas.Brush.Color:= clbtnFace;
+    StringGrid1.Canvas.FillRect(aRect);
+    StringGrid1.Canvas.TextOut(aRect.Left+2,aRect.Top+2,StringGrid1.Cells[ACol,ARow]);
+  end;
+end;
+
+procedure TfRecebimento.StringGrid1SelectCell(Sender: TObject; aCol,
+  aRow: Integer; var CanSelect: Boolean);
+begin
+  R := ARow;
+  C := ACol;
+end;
+
 procedure TfRecebimento.enviar_caixa(valor_pago: Double; codRec: Integer);
 var rv_codForma: Integer;
 begin
@@ -249,6 +286,7 @@ begin
   sqPagamentoDESCONTO.AsFloat    := 0;
   sqPagamentoTROCO.AsFloat       := 0;
   sqPagamento.ApplyUpdates;
+  dmPdv.sTrans.Commit;
 end;
 
 function TfRecebimento.RemoveAcento(Str: string): string;
@@ -295,7 +333,7 @@ var
   jItem : TJSONData;
   jDataB : TJSONData;
   jItemB : TJSONData;
-  a , b , c , d ,e, f , g ,v,vTotal: String;
+  a , b , c , d ,e ,f , g ,v,vTotal: String;
   object_name, field_name, field_value, object_type, object_items: String;
 begin
   if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
@@ -320,6 +358,9 @@ begin
     try
       postJson.Add('title', 'Contas a Receber');
       postJson.Add('cod_cliente', edCodCliente.Text);
+      postJson.Add('valor_pago', edPago.Text);
+      postJson.Add('diario', lblForma.Caption);
+      postJson.Add('caixa', dmPdv.idcaixa);
       fInteg := TfIntegracaoOdoo.Create(Self);
       httpClient := fInteg.logar();
       With httpClient do
@@ -454,6 +495,7 @@ begin
      edTotalGeral.Text := FormatFloat('#,,,0.00',total_rec);
    end;
  end;
+ edPago.Text:= '0,00';
 end;
 
 procedure TfRecebimento.btnConfirmaClick(Sender: TObject);
@@ -490,6 +532,15 @@ begin
     ShowMessage('Informe o Valor Pago');
     Exit;
   end;
+
+  vlr_pg := StrToFloat(edPago.Text);
+  if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
+  begin
+    enviar_caixa(vlr_pg,StrToInt(pCod)); // o codigo que foi selecionado no grid
+    btnProcurar.Click;
+    edPago.Text:= '0,00';
+  end
+  else begin
   if ((UpperCase(dmpdv.usoSistema) = 'ATS') or (UpperCase(dmpdv.usoSistema) = 'ODOO')) then
   begin
     dmPdv.sqBusca.First;
@@ -503,7 +554,7 @@ begin
       end;
       dmPdv.sqBusca.Next;
     end;
-    vlr_pg := StrToFloat(edPago.Text);
+
     vlr_rt := vlr_pg;
     dmPdv.sqBusca.First;
     str_rec := '';
@@ -606,6 +657,8 @@ begin
   edPago.Enabled:=False;
   rgSituacao.ItemIndex := 1;
   btnProcurar.Click;
+  end;
+
 end;
 
 procedure TfRecebimento.BitBtn1Click(Sender: TObject);

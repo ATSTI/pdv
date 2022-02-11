@@ -1133,16 +1133,16 @@ object fRecebimento: TfRecebimento
   end
   object Panel2: TPanel
     Left = 0
-    Height = 328
-    Top = 80
+    Height = 319
+    Top = 89
     Width = 809
     Align = alClient
-    ClientHeight = 328
+    ClientHeight = 319
     ClientWidth = 809
     TabOrder = 1
     object DBGrid1: TDBGrid
       Left = 1
-      Height = 326
+      Height = 317
       Top = 1
       Width = 807
       Align = alClient
@@ -1198,11 +1198,11 @@ object fRecebimento: TfRecebimento
   end
   object Panel3: TPanel
     Left = 0
-    Height = 80
+    Height = 89
     Top = 0
     Width = 809
     Align = alTop
-    ClientHeight = 80
+    ClientHeight = 89
     ClientWidth = 809
     TabOrder = 2
     object btnProcurar: TBitBtn
@@ -1916,6 +1916,24 @@ object fRecebimento: TfRecebimento
       ShowHint = True
       TabOrder = 9
     end
+    object Label4: TLabel
+      Left = 8
+      Height = 15
+      Top = 72
+      Width = 173
+      Caption = '* Clique no Codigo a Ser Pago = '
+      ParentColor = False
+    end
+    object Label3: TLabel
+      Left = 184
+      Height = 15
+      Top = 72
+      Width = 9
+      Caption = '...'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+    end
   end
   object pnCartoes: TPanel
     Left = 216
@@ -2452,13 +2470,16 @@ object fRecebimento: TfRecebimento
   end
   object StringGrid1: TStringGrid
     Left = 0
-    Height = 325
-    Top = 80
+    Height = 321
+    Top = 89
     Width = 804
     ColCount = 6
     FixedCols = 0
     RowCount = 1
     TabOrder = 5
+    OnClick = StringGrid1Click
+    OnDrawCell = StringGrid1DrawCell
+    OnSelectCell = StringGrid1SelectCell
     ColWidths = (
       60
       200
