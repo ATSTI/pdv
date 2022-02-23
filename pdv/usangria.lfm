@@ -1,13 +1,13 @@
 object fSangria: TfSangria
-  Left = 530
+  Left = 708
   Height = 206
-  Top = 228
+  Top = 304
   Width = 483
   Caption = 'Sangria'
   ClientHeight = 206
   ClientWidth = 483
   OnShow = FormShow
-  LCLVersion = '2.0.8.0'
+  LCLVersion = '2.0.12.0'
   object btnGravar: TBitBtn
     Left = 264
     Height = 44
@@ -340,6 +340,14 @@ object fSangria: TfSangria
     Caption = 'Tipo'
     ParentColor = False
   end
+  object memoResult: TMemo
+    Left = 40
+    Height = 44
+    Top = 136
+    Width = 171
+    TabOrder = 5
+    Visible = False
+  end
   object sqPagamento: TSQLQuery
     FieldDefs = <    
       item
@@ -415,8 +423,8 @@ object fSangria: TfSangria
         Name = 'PCODMOV'
         ParamType = ptInput
       end>
-    left = 64
-    top = 16
+    Left = 64
+    Top = 16
     object sqPagamentoCOD_VENDA: TLongintField
       FieldKind = fkData
       FieldName = 'COD_VENDA'
@@ -473,8 +481,6 @@ object fSangria: TfSangria
       ReadOnly = False
       Required = False
       DisplayFormat = ',##0.00'
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqPagamentoCAIXINHA: TFloatField
@@ -485,8 +491,6 @@ object fSangria: TfSangria
       ProviderFlags = [pfInUpdate]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqPagamentoTROCO: TFloatField
@@ -498,8 +502,6 @@ object fSangria: TfSangria
       ReadOnly = False
       Required = False
       DisplayFormat = ',##0.00'
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqPagamentoDESCONTO: TFloatField
@@ -511,8 +513,6 @@ object fSangria: TfSangria
       ReadOnly = False
       Required = False
       DisplayFormat = ',##0.00'
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqPagamentoSTATE: TSmallintField

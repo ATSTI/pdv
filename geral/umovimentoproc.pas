@@ -98,6 +98,7 @@ procedure TfMovimentoProc.btnReforcoClick(Sender: TObject);
 begin
   // Reforco
   fSangria.SangriaReforco:= 'Reforco';
+  fSangria.Caption := 'Reforço';
   fSangria.ShowModal;
 end;
 
@@ -325,6 +326,7 @@ procedure TfMovimentoProc.btnSangriaClick(Sender: TObject);
 begin
   //fSangria.ShowModal;
   fSangria.SangriaReforco:= 'Sangria';
+  fSangria.Caption := 'Sangria';  ;
   fSangria.ShowModal;
 end;
 

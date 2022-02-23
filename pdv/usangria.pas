@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, sqldb, db, FileUtil, Forms, Controls, Graphics, Dialogs,
-  Buttons, MaskEdit, StdCtrls, udmpdv;
+  Buttons, MaskEdit, StdCtrls, udmpdv,fphttpclient,fpjson,uIntegraSimples;
 
 type
 
@@ -21,6 +21,7 @@ type
     edMotivo: TMaskEdit;
     edValor: TMaskEdit;
     Label3: TLabel;
+    memoResult: TMemo;
     sqPagamento: TSQLQuery;
     sqPagamentoCAIXA: TSmallintField;
     sqPagamentoCAIXINHA: TFloatField;
@@ -41,6 +42,7 @@ type
   public
     SangriaReforco: String;
     procedure Sangria();
+    procedure EnviaSangria;
 
   end;
 
@@ -116,6 +118,10 @@ begin
   end;
 
   close;
+  if (UpperCase(dmpdv.usoSistema) = 'ODOO') then
+  begin
+    EnviaSangria;
+  end;
 end;
 
 procedure TfSangria.FormShow(Sender: TObject);
@@ -136,6 +142,11 @@ var
   Campo : String;
   forma_pag : String;
   Valor : String;
+  tipo :integer;
+  postJson : TJSONObject;
+  httpClient : TFPHttpClient;
+  fInteg: TfIntegracaoOdoo;
+  responseData: String;
 begin
   if (dmPdv.sqGenerator.Active) then
     dmPdv.sqGenerator.Close;
@@ -150,9 +161,14 @@ begin
   sqPagamentoCODFORMA.AsInteger  := codForma;
   sqPagamentoCAIXA.AsInteger     := StrToInt(dmPdv.idcaixa);
   if SangriaReforco = 'Sangria' then
-    sqPagamentoCOD_VENDA.AsInteger := 1
-  else
+  begin
+    sqPagamentoCOD_VENDA.AsInteger := 1;
+    tipo := 1;
+  end
+  else begin
     sqPagamentoCOD_VENDA.AsInteger := 0;
+    tipo := 0;
+  end;
   {Sangria
    Recebimento Cliente
    Pagamento Fornecedor
@@ -181,8 +197,102 @@ begin
   sqPagamentoTROCO.AsFloat       := 0;
   sqPagamento.ApplyUpdates;
   dmPdv.sTrans.Commit;
-  dmpdv.gera_integra_caixa_mov;
-  dmpdv.integra_caixa_mov;
+  //dmpdv.gera_integra_caixa_mov;
+  //dmpdv.integra_caixa_mov;
+
+  // rotina de envio para o ODoo se usar o odoo
+  if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
+  begin
+      httpClient := TFPHttpClient.Create(Nil);
+    postJson := TJSONObject.Create;
+    try
+      postJson.Add('title', 'Sangria/Reforço');
+      postJson.Add('caixa',dmPdv.idcaixa);
+      postJson.Add('cod_venda',tipo);
+      postJson.Add('valor',edValor.Text);
+      postJson.Add('cod_forma',codForma);
+      postJson.Add('diario','1-');
+      postJson.Add('situacao','O');
+
+      fInteg := TfIntegracaoOdoo.Create(Self);
+      httpClient := fInteg.logar();
+      With httpClient do
+      begin
+        AddHeader('Content-Type', 'application/json');
+        RequestBody := TStringStream.Create(postJson.AsJSON);
+        responseData := Post(dmPdv.path_integra_url + '/caixaconsulta');
+        //memoResult.Lines.Add(responseData);
+      end;
+      fInteg.Free;
+      postJson.Free;
+    except
+    end;
+  end;
+end;
+
+procedure TfSangria.EnviaSangria;
+  var
+  codForma, x : integer;
+  vlrSangria: double;
+  Campo : String;
+  forma_pag : String;
+  Valor : String;
+  tipo :integer;
+  fInteg: TfIntegracaoOdoo;
+  responseData: String;
+  sql_str , pedidos: string;
+  postJson : TJSONObject;
+  httpClient : TFPHttpClient;
+begin
+  x := 1;
+  dmPdv.sqBusca1.Close;
+  dmPdv.sqBusca1.Sql.Clear;
+  sql_str := 'SELECT CAIXA,N_DOC,VALOR_PAGO,CODFORMA ,COD_VENDA ';
+  sql_str += 'FROM FORMA_ENTRADA  ';
+  sql_str += 'WHERE CAIXA = ' + QuotedStr(dmPdv.idcaixa);
+  sql_str += 'AND COD_VENDA IN (0,1,2)';
+  sql_str += 'ORDER BY CODFORMA DESC ';
+  dmPdv.sqBusca1.SQL.Add(sql_str);
+  dmPdv.sqBusca1.Open;
+  DecimalSeparator:='.';
+  pedidos := '[{';
+  while not dmPdv.sqBusca1.EOF do
+  begin
+    //if x = 1 then
+    //  pedidos += '{';
+    if pedidos <> '[{' then
+      pedidos += '}, {';
+    pedidos += '"caixa": "' + IntToStr(dmPdv.sqBusca1.Fields[0].AsInteger) + '",' +
+      '"motivo": "' + dmPdv.sqBusca1.Fields[1].AsString + '",' +
+      '"valor": "' + FloatToStr(dmPdv.sqBusca1.Fields[2].AsFloat) + '",' +
+      '"codforma": "' + IntToStr(dmPdv.sqBusca1.Fields[3].AsInteger) + '",'+
+     '"codvenda": "' + IntToStr(dmPdv.sqBusca1.Fields[4].AsInteger) + '"';
+    dmPdv.sqBusca1.Next;
+    //x := 2;
+    //pedidos += '}';
+  end;
+  pedidos += '}]';
+  memoResult.Lines.Add(pedidos);
+
+  httpClient := TFPHttpClient.Create(Nil);
+  postJson := TJSONObject.Create;
+  try
+    postJson.Add('title', 'Sangria/Reforço');
+    postJson.Add('todos', pedidos);
+    fInteg := TfIntegracaoOdoo.Create(Self);
+    httpClient := fInteg.logar();
+    With httpClient do
+    begin
+      AddHeader('Content-Type', 'application/json');
+      RequestBody := TStringStream.Create(postJson.AsJSON);
+      responseData := Post(dmPdv.path_integra_url + '/enviasangria');
+      //memoDados.Lines.Add(responseData);
+    end;
+    fInteg.Free;
+    postJson.Free;
+  except
+  end;
+
 end;
 
 end.
