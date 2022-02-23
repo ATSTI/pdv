@@ -68,10 +68,10 @@ type
     function monta_arquivo_movimento(arquivo_linha: TJsonNode):TJsonNode;
     function monta_arquivo_recebimento(vcodmovimento: String; arquivo_linha: TJsonNode):TJsonNode;
     function monta_arquivo_movimentodetalhe(vcodmovimento: String; arquivo_linha: TJsonNode):TJsonNode;
-    function logar():TFPHttpClient;
   public
     function consultaUltimoPedido(): String;
     function consultaUltimoPedidoGeral(): String;
+    function logar():TFPHttpClient;
     procedure cria_json(ultimoPedido: String);
     procedure envia_json(dados_json:TJSONObject);
     procedure executa_sql;
@@ -519,11 +519,66 @@ begin
 end;
 
 procedure TfIntegracaoOdoo.btnSangria_RecClick(Sender: TObject);
+var
+  codForma, x : integer;
+  vlrSangria: double;
+  Campo : String;
+  forma_pag : String;
+  Valor : String;
+  tipo :integer;
+  fInteg: TfIntegracaoOdoo;
+  responseData: String;
+  sql_str , pedidos: string;
 begin
- // comunica_server('FORMA_ENTRADA', 'CODCAIXA, SITUACAO', 'CODCAIXA', '');
- { SELECT f.CAIXA, f.CODFORMA, f.COD_VENDA, \
-                f.VALOR_PAGO, f.N_DOC FROM FORMA_ENTRADA f \
-                where f.CAIXA = %s and f.COD_VENDA = 1' %(str(ses.id))}
+  x := 1;
+  dmPdv.sqBusca1.Close;
+  dmPdv.sqBusca1.Sql.Clear;
+  sql_str := 'SELECT CAIXA,N_DOC,VALOR_PAGO,CODFORMA ,COD_VENDA ';
+  sql_str += 'FROM FORMA_ENTRADA  ';
+  sql_str += 'WHERE CAIXA = ' + QuotedStr(c_caixa);
+  sql_str += 'AND COD_VENDA IN (0,1,2)';
+  sql_str += 'ORDER BY CODFORMA DESC ';
+  dmPdv.sqBusca1.SQL.Add(sql_str);
+  dmPdv.sqBusca1.Open;
+  DecimalSeparator:='.';
+  pedidos := '[{';
+  while not dmPdv.sqBusca1.EOF do
+  begin
+    //if x = 1 then
+    //  pedidos += '{';
+    if pedidos <> '[{' then
+      pedidos += '}, {';
+    pedidos += '"caixa": "' + IntToStr(dmPdv.sqBusca1.Fields[0].AsInteger) + '",' +
+      '"motivo": "' + dmPdv.sqBusca1.Fields[1].AsString + '",' +
+      '"valor": "' + FloatToStr(dmPdv.sqBusca1.Fields[2].AsFloat) + '",' +
+      '"codforma": "' + IntToStr(dmPdv.sqBusca1.Fields[3].AsInteger) + '",'+
+     '"codvenda": "' + IntToStr(dmPdv.sqBusca1.Fields[4].AsInteger) + '"';
+    dmPdv.sqBusca1.Next;
+    //x := 2;
+    //pedidos += '}';
+  end;
+  pedidos += '}]';
+  memoResult.Lines.Add(pedidos);
+
+  httpClient := TFPHttpClient.Create(Nil);
+  postJson := TJSONObject.Create;
+  try
+    postJson.Add('title', 'Sangria/Reforço');
+    postJson.Add('todos', pedidos);
+    fInteg := TfIntegracaoOdoo.Create(Self);
+    httpClient := fInteg.logar();
+    With httpClient do
+    begin
+      AddHeader('Content-Type', 'application/json');
+      RequestBody := TStringStream.Create(postJson.AsJSON);
+      responseData := Post(dmPdv.path_integra_url + '/enviasangria');
+      //memoDados.Lines.Add(responseData);
+    end;
+    fInteg.Free;
+    postJson.Free;
+  except
+  end;
+
 end;
 
 procedure TfIntegracaoOdoo.btnConectaClick(Sender: TObject);
@@ -1123,13 +1178,13 @@ begin
     dmpdv.busca_sql('SELECT FIRST 3 ' + campos_select + ' FROM ' + tabela + ' ORDER BY CODCAIXA DESC');
     While not dmpdv.sqBusca.EOF do
     begin
-      if (dmPdv.sqBusca.Fields[1].AsString = 'F') then
-      begin
+      //if (dmPdv.sqBusca.Fields[1].AsString = 'F') then   // comentado dia 22/02/20
+      //begin
         if (dados <> '[{') then
           dados += '}, {';
         dados += '"CODCAIXA": ' + IntToStr(dmPdv.sqBusca.Fields[0].AsInteger);
         dados += ', "SITUACAO": "' + dmPdv.sqBusca.Fields[1].AsString +'"';
-      end;
+      //end;
       dmpdv.sqBusca.Next;
     end;
     dados += '}]';
@@ -1144,7 +1199,8 @@ begin
     url_server := '/clienteconsulta';
   if (tabela = 'USUARIO') then
     url_server := '/usuarioconsulta';
-
+  //if (tabela = 'RECEBER') then
+  //  url_server := '/contasconsulta';
   dados := '';
   memoDados.Lines.Clear;
   DecimalSeparator:='.';
