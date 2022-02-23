@@ -2461,17 +2461,17 @@ object fRecebimento: TfRecebimento
     end
   end
   object memoResult: TMemo
-    Left = 520
+    Left = 328
     Height = 32
-    Top = 112
-    Width = 212
+    Top = 120
+    Width = 420
     TabOrder = 4
     Visible = False
   end
   object StringGrid1: TStringGrid
     Left = 0
     Height = 321
-    Top = 89
+    Top = 88
     Width = 804
     ColCount = 6
     FixedCols = 0

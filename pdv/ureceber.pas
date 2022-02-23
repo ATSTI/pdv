@@ -105,7 +105,9 @@ type
       aRect: TRect; aState: TGridDrawState);
     procedure StringGrid1SelectCell(Sender: TObject; aCol, aRow: Integer;
       var CanSelect: Boolean);
+
   private
+    rv_codForma: Integer;
     codClienteR : Integer;
     pCod : string; /// codigo do Odoo
     procedure enviar_caixa(valor_pago: Double; codRec: Integer);
@@ -267,7 +269,7 @@ begin
 end;
 
 procedure TfRecebimento.enviar_caixa(valor_pago: Double; codRec: Integer);
-var rv_codForma: Integer;
+
 begin
   codRec := codRec + 9000000;
   // enviando o recebimento para o CAIXA
@@ -277,7 +279,7 @@ begin
   sqPagamento.Insert;
   sqPagamentoCODFORMA.AsInteger  := rv_codForma;
   sqPagamentoCAIXA.AsInteger     := StrToInt(dmPdv.idcaixa);
-  sqPagamentoCOD_VENDA.AsInteger := codRec;
+  sqPagamentoCOD_VENDA.AsInteger := 2;  // POR RECEBIMENTO
   sqPagamentoFORMA_PGTO.AsString := Copy(lblForma.Caption,1,1);
   sqPagamentoID_ENTRADA.AsInteger:= codRec;
   sqPagamentoN_DOC.AsString      := lblForma.Caption;
@@ -361,6 +363,7 @@ begin
       postJson.Add('valor_pago', edPago.Text);
       postJson.Add('diario', lblForma.Caption);
       postJson.Add('caixa', dmPdv.idcaixa);
+      postJson.Add('cod_forma', rv_codForma);
       fInteg := TfIntegracaoOdoo.Create(Self);
       httpClient := fInteg.logar();
       With httpClient do
