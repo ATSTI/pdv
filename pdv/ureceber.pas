@@ -111,7 +111,7 @@ type
     codClienteR : Integer;
     pCod : string; /// codigo do Odoo
     procedure enviar_caixa(valor_pago: Double; codRec: Integer);
-        function RemoveAcento(Str: string): string;
+    function RemoveAcento(Str: string): string;
   public
 
   end;

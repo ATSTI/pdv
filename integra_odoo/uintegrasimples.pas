@@ -76,6 +76,7 @@ type
     procedure envia_json(dados_json:TJSONObject);
     procedure executa_sql;
     procedure comunica_server(tabela: String; campo_chave: String; campos_select: String; campo_data: String);
+    procedure envia_sangria_reforco;
   end;
 
 var
@@ -409,6 +410,7 @@ procedure TfIntegracaoOdoo.btnCaixaClick(Sender: TObject);
  ver: String;
  sql_campo, sql_valor: String;}
 begin
+  btnSangria_Rec.Click;
   btnConsultaUltimoPedidoGeral.Click;
   if (edtUltimpoPedidoA.Text <> '') then
   begin
@@ -519,66 +521,8 @@ begin
 end;
 
 procedure TfIntegracaoOdoo.btnSangria_RecClick(Sender: TObject);
-var
-  codForma, x : integer;
-  vlrSangria: double;
-  Campo : String;
-  forma_pag : String;
-  Valor : String;
-  tipo :integer;
-  fInteg: TfIntegracaoOdoo;
-  responseData: String;
-  sql_str , pedidos: string;
 begin
-  x := 1;
-  dmPdv.sqBusca1.Close;
-  dmPdv.sqBusca1.Sql.Clear;
-  sql_str := 'SELECT CAIXA,N_DOC,VALOR_PAGO,CODFORMA ,COD_VENDA ';
-  sql_str += 'FROM FORMA_ENTRADA  ';
-  sql_str += 'WHERE CAIXA = ' + QuotedStr(c_caixa);
-  sql_str += 'AND COD_VENDA IN (0,1,2)';
-  sql_str += 'ORDER BY CODFORMA DESC ';
-  dmPdv.sqBusca1.SQL.Add(sql_str);
-  dmPdv.sqBusca1.Open;
-  DecimalSeparator:='.';
-  pedidos := '[{';
-  while not dmPdv.sqBusca1.EOF do
-  begin
-    //if x = 1 then
-    //  pedidos += '{';
-    if pedidos <> '[{' then
-      pedidos += '}, {';
-    pedidos += '"caixa": "' + IntToStr(dmPdv.sqBusca1.Fields[0].AsInteger) + '",' +
-      '"motivo": "' + dmPdv.sqBusca1.Fields[1].AsString + '",' +
-      '"valor": "' + FloatToStr(dmPdv.sqBusca1.Fields[2].AsFloat) + '",' +
-      '"codforma": "' + IntToStr(dmPdv.sqBusca1.Fields[3].AsInteger) + '",'+
-     '"codvenda": "' + IntToStr(dmPdv.sqBusca1.Fields[4].AsInteger) + '"';
-    dmPdv.sqBusca1.Next;
-    //x := 2;
-    //pedidos += '}';
-  end;
-  pedidos += '}]';
-  memoResult.Lines.Add(pedidos);
-
-  httpClient := TFPHttpClient.Create(Nil);
-  postJson := TJSONObject.Create;
-  try
-    postJson.Add('title', 'Sangria/Reforço');
-    postJson.Add('todos', pedidos);
-    fInteg := TfIntegracaoOdoo.Create(Self);
-    httpClient := fInteg.logar();
-    With httpClient do
-    begin
-      AddHeader('Content-Type', 'application/json');
-      RequestBody := TStringStream.Create(postJson.AsJSON);
-      responseData := Post(dmPdv.path_integra_url + '/enviasangria');
-      //memoDados.Lines.Add(responseData);
-    end;
-    fInteg.Free;
-    postJson.Free;
-  except
-  end;
-
+  envia_sangria_reforco;
 end;
 
 procedure TfIntegracaoOdoo.btnConectaClick(Sender: TObject);
@@ -693,6 +637,7 @@ end;
 procedure TfIntegracaoOdoo.Timer3Timer(Sender: TObject);
 begin
   btnCliente.Click;
+  btnSangria_Rec.Click;
 end;
 
 function TfIntegracaoOdoo.ler_retorno(responseData: String): String;
@@ -1282,6 +1227,62 @@ begin
       end;
     end;
     executa_sql;
+  end;
+end;
+
+procedure TfIntegracaoOdoo.envia_sangria_reforco;
+var
+  codForma: integer;
+  vlrSangria: double;
+  Campo : String;
+  forma_pag : String;
+  Valor : String;
+  tipo :integer;
+  fInteg: TfIntegracaoOdoo;
+  responseData: String;
+  sql_str , pedidos: string;
+begin
+  dmPdv.sqBusca1.Close;
+  dmPdv.sqBusca1.Sql.Clear;
+  sql_str := 'SELECT CAIXA,N_DOC,VALOR_PAGO,CODFORMA ,COD_VENDA ';
+  sql_str += 'FROM FORMA_ENTRADA  ';
+  sql_str += 'WHERE CAIXA = ' + QuotedStr(c_caixa);
+  sql_str += 'AND COD_VENDA IN (0,1,2)';
+  sql_str += 'ORDER BY CODFORMA DESC ';
+  dmPdv.sqBusca1.SQL.Add(sql_str);
+  dmPdv.sqBusca1.Open;
+  DecimalSeparator:='.';
+  pedidos := '[{';
+  while not dmPdv.sqBusca1.EOF do
+  begin
+    if pedidos <> '[{' then
+      pedidos += '}, {';
+    pedidos += '"caixa": "' + IntToStr(dmPdv.sqBusca1.Fields[0].AsInteger) + '",' +
+      '"motivo": "' + dmPdv.sqBusca1.Fields[1].AsString + '",' +
+      '"valor": "' + FloatToStr(dmPdv.sqBusca1.Fields[2].AsFloat) + '",' +
+      '"codforma": "' + IntToStr(dmPdv.sqBusca1.Fields[3].AsInteger) + '",'+
+     '"codvenda": "' + IntToStr(dmPdv.sqBusca1.Fields[4].AsInteger) + '"';
+    dmPdv.sqBusca1.Next;
+  end;
+  pedidos += '}]';
+  memoResult.Lines.Add(pedidos);
+  httpClient := TFPHttpClient.Create(Nil);
+  postJson := TJSONObject.Create;
+  try
+    postJson.Add('title', 'Sangria/Reforço');
+    postJson.Add('todos', pedidos);
+    fInteg := TfIntegracaoOdoo.Create(Self);
+    httpClient := fInteg.logar();
+    With httpClient do
+    begin
+      AddHeader('Content-Type', 'application/json');
+      RequestBody := TStringStream.Create(postJson.AsJSON);
+      responseData := Post(dmPdv.path_integra_url + '/enviasangria');
+      //memoDados.Lines.Add(responseData);
+    end;
+    fInteg.Free;
+    postJson.Free;
+  except
   end;
 end;
 

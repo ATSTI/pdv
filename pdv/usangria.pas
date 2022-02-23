@@ -232,7 +232,6 @@ end;
 
 procedure TfSangria.EnviaSangria;
   var
-  codForma, x : integer;
   vlrSangria: double;
   Campo : String;
   forma_pag : String;
@@ -244,7 +243,6 @@ procedure TfSangria.EnviaSangria;
   postJson : TJSONObject;
   httpClient : TFPHttpClient;
 begin
-  x := 1;
   dmPdv.sqBusca1.Close;
   dmPdv.sqBusca1.Sql.Clear;
   sql_str := 'SELECT CAIXA,N_DOC,VALOR_PAGO,CODFORMA ,COD_VENDA ';
@@ -258,8 +256,6 @@ begin
   pedidos := '[{';
   while not dmPdv.sqBusca1.EOF do
   begin
-    //if x = 1 then
-    //  pedidos += '{';
     if pedidos <> '[{' then
       pedidos += '}, {';
     pedidos += '"caixa": "' + IntToStr(dmPdv.sqBusca1.Fields[0].AsInteger) + '",' +
@@ -268,8 +264,6 @@ begin
       '"codforma": "' + IntToStr(dmPdv.sqBusca1.Fields[3].AsInteger) + '",'+
      '"codvenda": "' + IntToStr(dmPdv.sqBusca1.Fields[4].AsInteger) + '"';
     dmPdv.sqBusca1.Next;
-    //x := 2;
-    //pedidos += '}';
   end;
   pedidos += '}]';
   memoResult.Lines.Add(pedidos);
