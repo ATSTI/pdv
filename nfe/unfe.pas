@@ -1503,6 +1503,7 @@ var   xCond :string;
     NumeroLote : Integer;
     tamanho: Integer;
     nfe_arquivo : String;
+    ver_var: String;
 begin
   ACBrNFe1.Configuracoes.Arquivos.SalvarEvento := True;
   if (edtNumSerie2.Text = '') then
@@ -1534,6 +1535,8 @@ begin
   dmPdv.qsCCE.First;
   While not dmPdv.qsCCE.EOF do
   begin
+    ver_var := dmPdv.qsCCECHAVE.AsString;
+    ver_var := Trim(dmPdv.qsCCESELECIONOU.AsString);
     if (Trim(dmPdv.qsCCESELECIONOU.AsString) = 'S') then
     begin
       nfe_carregalogo;
@@ -1613,6 +1616,7 @@ begin
         end;
     end;
     end;
+    dmPdv.qsCCE.Next;
   end;
   //end;
   ACBrNFe1.ImprimirEvento;
@@ -2226,7 +2230,7 @@ begin
 
   if (edtChaveNfeCCe.Text <> '') then
   begin
-    btnListar.Click;
+    //btnListar.Click;
     StatusBar1.SimpleText := dmPdv.qcdsnfNFE_FINNFE.AsString + '-' + dmPdv.qcdsnfNFE_MODELO.AsString + '-' + dmPdv.qcdsnfNFE_VERSAO.AsString + '-' +
     dmPdv.qcdsnfNFE_DESTOPERACAO.AsString + '-' + dmPdv.qcdsnfNFE_FORMATODANFE.AsString + '-' + dmPdv.qcdsnfNFE_TIPOEMISSAO.AsString + '-' +
     dmPdv.qcdsnfNFE_INDFINAL.AsString + '-' + dmPdv.qcdsnfNFE_INDPRES.AsString + '-' + dmPdv.qcdsNFIND_IEDEST.AsString;
@@ -2591,7 +2595,6 @@ procedure TfNFe.sbtnGetCert1Click(Sender: TObject);
 var
   I: Integer;
 begin
-
   //edCertificado.Text := ACBrNFe1.SSL.SelecionarCertificado;
     frSelecionarCertificado := TfrSelecionarCertificado.Create(Self);
     try
@@ -2623,6 +2626,7 @@ begin
         edtNumSerie.Text := frSelecionarCertificado.StringGrid1.Cells[ 0,
                               frSelecionarCertificado.StringGrid1.Row];
         edtNumSerieABA.Text := edtNumSerie.Text;
+        edtNumSerie2.Text := edtNumSerie.Text;
         ACBrNFe1.Configuracoes.Certificados.NumeroSerie := edtNumSerie.Text;
       end;
     finally
@@ -4916,6 +4920,7 @@ begin
       begin
         edtNumSerie.Text := Trim(dmPdv.qsEmpresaCERTIFICADO.AsString);
         edtNumSerie1.Text := Trim(dmPdv.qsEmpresaCERTIFICADO.AsString);
+        edtNumSerie2.Text := Trim(dmPdv.qsEmpresaCERTIFICADO.AsString);
       end;
       Edit1.Text := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString);
       Edit3.Text := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString);

@@ -4,7 +4,7 @@
     <PathDelim Value="\"/>
     <Version Value="11"/>
     <BuildModes Active="Default"/>
-    <Units Count="46">
+    <Units Count="47">
       <Unit0>
         <Filename Value="prjNFe.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -20,18 +20,19 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uNFe"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="2316"/>
-        <CursorPos X="34" Y="2334"/>
+        <TopLine Value="2666"/>
+        <CursorPos X="36" Y="2677"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="7">
-          <Item0 X="9" Y="4544" ID="5"/>
+          <Item0 X="9" Y="4548" ID="5"/>
           <Item1 Y="687" ID="6"/>
           <Item2 Y="1006" ID="7"/>
           <Item3 X="5" Y="1054" ID="4"/>
           <Item4 X="3" Y="429" ID="3"/>
-          <Item5 X="27" Y="2356" ID="2"/>
-          <Item6 X="75" Y="2344" ID="1"/>
+          <Item5 X="27" Y="2360" ID="2"/>
+          <Item6 X="75" Y="2348" ID="1"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -42,7 +43,6 @@
         <ComponentName Value="dmPdv"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <IsVisibleTab Value="True"/>
         <TopLine Value="515"/>
         <CursorPos X="56" Y="522"/>
         <UsageCount Value="201"/>
@@ -69,7 +69,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="85"/>
         <CursorPos X="24" Y="109"/>
-        <UsageCount Value="192"/>
+        <UsageCount Value="197"/>
       </Unit4>
       <Unit5>
         <Filename Value="..\pdv\uintegracaoodoo.pas"/>
@@ -78,7 +78,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="62"/>
         <CursorPos Y="79"/>
-        <UsageCount Value="85"/>
+        <UsageCount Value="90"/>
       </Unit5>
       <Unit6>
         <Filename Value="C:\lazarus\lcl\lresources.pp"/>
@@ -369,124 +369,136 @@
         <CursorPos Y="1404"/>
         <UsageCount Value="12"/>
       </Unit45>
+      <Unit46>
+        <Filename Value="C:\lazarus12\lcl\include\bitbtn.inc"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="55"/>
+        <CursorPos Y="68"/>
+        <UsageCount Value="13"/>
+        <Loaded Value="True"/>
+      </Unit46>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="unfe.pas"/>
-        <Caret Line="1539" Column="22" TopLine="1519"/>
+        <Caret Line="2628" Column="43" TopLine="2608"/>
       </Position1>
       <Position2>
         <Filename Value="unfe.pas"/>
-        <Caret Line="2344" Column="33" TopLine="2323"/>
+        <Caret Line="2629" Column="71" TopLine="2609"/>
       </Position2>
       <Position3>
         <Filename Value="unfe.pas"/>
-        <Caret Line="4592" Column="17" TopLine="4571"/>
+        <Caret Line="2681" Column="18" TopLine="2661"/>
       </Position3>
       <Position4>
         <Filename Value="unfe.pas"/>
-        <Caret Line="588" Column="15" TopLine="419"/>
+        <Caret Line="2683" Column="41" TopLine="2663"/>
       </Position4>
       <Position5>
         <Filename Value="unfe.pas"/>
-        <Caret Line="2183" Column="3" TopLine="2163"/>
+        <Caret Line="2684" Column="39" TopLine="2664"/>
       </Position5>
       <Position6>
         <Filename Value="unfe.pas"/>
-        <Caret Line="2238" Column="17" TopLine="2224"/>
+        <Caret Line="2685" Column="39" TopLine="2665"/>
       </Position6>
       <Position7>
         <Filename Value="unfe.pas"/>
-        <Caret Line="2344" Column="33" TopLine="2323"/>
+        <Caret Line="2731" Column="20" TopLine="2711"/>
       </Position7>
       <Position8>
         <Filename Value="unfe.pas"/>
-        <Caret Line="588" Column="15" TopLine="425"/>
+        <Caret Line="2733" Column="43" TopLine="2713"/>
       </Position8>
       <Position9>
         <Filename Value="unfe.pas"/>
-        <Caret Line="2183" Column="15" TopLine="2132"/>
+        <Caret Line="2734" Column="41" TopLine="2714"/>
       </Position9>
       <Position10>
         <Filename Value="unfe.pas"/>
-        <Caret Line="2238" Column="17" TopLine="2208"/>
+        <Caret Line="4368" Column="21" TopLine="4348"/>
       </Position10>
       <Position11>
         <Filename Value="unfe.pas"/>
-        <Caret Line="2327" Column="16" TopLine="2323"/>
+        <Caret Line="4369" Column="20" TopLine="4350"/>
       </Position11>
       <Position12>
         <Filename Value="unfe.pas"/>
-        <Caret Line="3309" Column="19" TopLine="3287"/>
+        <Caret Line="4371" Column="21" TopLine="4351"/>
       </Position12>
       <Position13>
         <Filename Value="unfe.pas"/>
-        <Caret Line="2331" TopLine="2318"/>
+        <Caret Line="4372" Column="20" TopLine="4352"/>
       </Position13>
       <Position14>
         <Filename Value="unfe.pas"/>
-        <Caret Line="2332" TopLine="2318"/>
+        <Caret Line="4374" Column="21" TopLine="4354"/>
       </Position14>
       <Position15>
         <Filename Value="unfe.pas"/>
-        <Caret Line="2334" TopLine="2318"/>
+        <Caret Line="4375" Column="20" TopLine="4355"/>
       </Position15>
       <Position16>
         <Filename Value="unfe.pas"/>
-        <Caret Line="2335" TopLine="2318"/>
+        <Caret Line="4379" Column="69" TopLine="4359"/>
       </Position16>
       <Position17>
         <Filename Value="unfe.pas"/>
-        <Caret Line="2336" TopLine="2318"/>
+        <Caret Line="4429" Column="58" TopLine="4409"/>
       </Position17>
       <Position18>
         <Filename Value="unfe.pas"/>
-        <Caret Line="2339" TopLine="2318"/>
+        <Caret Line="4652" Column="18" TopLine="4632"/>
       </Position18>
       <Position19>
         <Filename Value="unfe.pas"/>
-        <Caret Line="2338" Column="31" TopLine="2321"/>
+        <Caret Line="4922" Column="72" TopLine="4906"/>
       </Position19>
       <Position20>
         <Filename Value="unfe.pas"/>
-        <Caret Line="3306" Column="35" TopLine="3290"/>
+        <Caret Line="225" Column="16" TopLine="214"/>
       </Position20>
       <Position21>
         <Filename Value="unfe.pas"/>
-        <Caret Line="4899" Column="17" TopLine="4891"/>
+        <Caret Line="226" Column="16" TopLine="214"/>
       </Position21>
       <Position22>
         <Filename Value="unfe.pas"/>
-        <Caret Line="5010" Column="15" TopLine="4990"/>
+        <Caret Line="227" Column="16" TopLine="214"/>
       </Position22>
       <Position23>
         <Filename Value="unfe.pas"/>
-        <Caret Line="5026" Column="18" TopLine="5006"/>
+        <Caret Line="228" Column="16" TopLine="214"/>
       </Position23>
       <Position24>
         <Filename Value="unfe.pas"/>
-        <Caret Line="314" Column="30" TopLine="302"/>
+        <Caret Line="318" Column="26" TopLine="298"/>
       </Position24>
       <Position25>
         <Filename Value="unfe.pas"/>
-        <Caret Line="662" Column="22" TopLine="641"/>
+        <Caret Line="319" Column="26" TopLine="299"/>
       </Position25>
       <Position26>
         <Filename Value="unfe.pas"/>
-        <Caret Line="746" Column="22" TopLine="726"/>
+        <Caret Line="320" Column="26" TopLine="300"/>
       </Position26>
       <Position27>
         <Filename Value="unfe.pas"/>
-        <Caret Line="898" Column="22" TopLine="877"/>
+        <Caret Line="2594" Column="28" TopLine="2574"/>
       </Position27>
       <Position28>
         <Filename Value="unfe.pas"/>
-        <Caret Line="1029" Column="22" TopLine="1008"/>
+        <Caret Line="2639" Column="28" TopLine="2619"/>
       </Position28>
       <Position29>
         <Filename Value="unfe.pas"/>
-        <Caret Line="1539" Column="22" TopLine="1519"/>
+        <Caret Line="2644" Column="28" TopLine="2624"/>
       </Position29>
+      <Position30>
+        <Filename Value="unfe.pas"/>
+        <Caret Line="225" Column="16" TopLine="214"/>
+      </Position30>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
@@ -494,7 +506,7 @@
     </RunParams>
   </ProjectSession>
   <Debugging>
-    <BreakPoints Count="10">
+    <BreakPoints Count="13">
       <Item1>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
@@ -528,43 +540,64 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfe.pas"/>
-        <Line Value="2568"/>
+        <Line Value="2572"/>
       </Item5>
       <Item6>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfe.pas"/>
-        <Line Value="2561"/>
+        <Line Value="2565"/>
       </Item6>
       <Item7>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfe.pas"/>
-        <Line Value="2480"/>
+        <Line Value="2484"/>
       </Item7>
       <Item8>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfe.pas"/>
-        <Line Value="2551"/>
+        <Line Value="2555"/>
       </Item8>
       <Item9>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfe.pas"/>
-        <Line Value="2492"/>
+        <Line Value="2496"/>
       </Item9>
       <Item10>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfe.pas"/>
-        <Line Value="2524"/>
+        <Line Value="2528"/>
       </Item10>
+      <Item11>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="unfe.pas"/>
+        <Line Value="2215"/>
+      </Item11>
+      <Item12>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="unfe.pas"/>
+        <Line Value="857"/>
+      </Item12>
+      <Item13>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="unfe.pas"/>
+        <Line Value="1508"/>
+      </Item13>
     </BreakPoints>
     <Watches Count="3">
       <Item1>
