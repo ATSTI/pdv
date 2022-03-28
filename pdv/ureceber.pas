@@ -99,6 +99,7 @@ type
     procedure edCodClienteKeyPress(Sender: TObject; var Key: char);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure Label3Click(Sender: TObject);
     procedure rgSituacaoClick(Sender: TObject);
     procedure StringGrid1Click(Sender: TObject);
     procedure StringGrid1DrawCell(Sender: TObject; aCol, aRow: Integer;
@@ -238,6 +239,11 @@ begin
   lblForma.Caption := '...';
   memoResult.Clear;
  end;
+
+procedure TfRecebimento.Label3Click(Sender: TObject);
+begin
+
+end;
 
 procedure TfRecebimento.rgSituacaoClick(Sender: TObject);
 begin
@@ -509,6 +515,30 @@ var
   str_rec : String;
   //vRec : TRecebimento;
   vr_formaRec: String;
+
+  IMPRESSORA:TextFile;
+ lFile   : TStringList;
+ i      : Integer;
+ logradouro: String;
+ cep: String;
+ fone: String;
+ clientecupom: string;
+ texto3: String;
+ texto6: String;
+ produto_cupomf: String;
+ linhaTxt : String;
+ prazo : String;
+ totalP: Double;
+ totalD: Double;
+ ItemDesc: Double;
+ totalR: Double;
+ sql_rec: string;
+ v_log: string;
+ dataRec: string;
+ vtotalR: Double;
+
+
+
 begin
   memo1.Lines.Clear;
   // baixar pagamentos
@@ -540,6 +570,79 @@ begin
   if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
   begin
     enviar_caixa(vlr_pg,StrToInt(pCod)); // o codigo que foi selecionado no grid
+
+    v_log := 'Log de impressão - ';
+    totalP := 0;
+    totalD := 0;
+    totalR := 0;
+    if (not dmPdv.sqEmpresa.Active) then
+      dmPdv.sqEmpresa.Open;
+    v_log := 'Log de impressão 3 ';
+    {----- aqui monto o endereço-----}
+    logradouro := '  ' + dmPdv.sqEmpresaENDERECO.Value +
+       ', ' + dmPdv.sqEmpresaBAIRRO.Value;
+    cep :=  '  ' + dmPdv.sqEmpresaCIDADE.Value + ' - ' + dmPdv.sqEmpresaUF.Value +
+    ' - ' + dmPdv.sqEmpresaCEP.Value;
+    fone := '  (19)' + dmPdv.sqEmpresaFONE.Value + ' / ' + dmPdv.sqEmpresaFONE_1.Value +
+    ' / ' + dmPdv.sqEmpresaFONE_2.Value;
+    {------------------------DADOS DO CLIENTE--------------------------}
+   // clientecupom := '  ' + IntToStr(dmPdv.sqBusca.FieldByName('CODCLIENTE').asInteger) +
+    //    '-' + RemoveAcento(dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString);
+    clientecupom := '  ' + edCodCliente.Text +
+        '-' + edNomeCliente.Text;
+
+    // leio um arquivo txt e imprimo
+    v_log := 'Log de impressão - criando lFile ';
+    lFile := TStringList.Create;
+    if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
+    begin
+      v_log := 'Log portaImp - ' + dmPdv.portaIMP;
+      AssignFile(IMPRESSORA, dmPdv.portaIMP);
+    end
+    else begin
+      v_log := 'Log path_imp - ' + dmPdv.path_imp;
+      AssignFile(IMPRESSORA, dmPdv.path_imp);
+    end;
+    v_log := 'Log abrindo cupomRec.txt ' + dmpdv.path_exe + 'cupomRec_Odoo.txt';
+    try
+      Rewrite(IMPRESSORA);
+      lFile.LoadFromFile(dmpdv.path_exe + 'cupomRec_Odoo.txt');
+      for i:=0 to lFile.Count-1 do
+      begin
+        v_log := 'Log lendo cupomRec.txt ';
+        linhaTxt := Copy(lFile[i],0,1);
+        if lFile[i] = 'empresa' then
+          Writeln(Impressora, RemoveAcento(Format('  %-36s',[dmPdv.sqEmpresaRAZAO.Value])))
+        else if lFile[i] = 'logradouro' then
+          Writeln(Impressora, logradouro)
+        else if lFile[i] = 'cep' then
+          Writeln(Impressora, cep)
+        else if lFile[i] = 'fone' then
+        begin
+          Writeln(Impressora, fone);
+        end
+        else if lFile[i] = 'usuario' then
+        begin
+          Writeln(Impressora,'');
+          Writeln(Impressora,'-------------------------');
+          Writeln(impressora, 'Usuario: ' + dmpdv.nomeLogado);
+          Writeln(Impressora,'-------------------------');
+          Writeln(Impressora, clientecupom);
+        end
+        else if lFile[i] = 'doc' then
+          Writeln(Impressora,'Recebido Dia.' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now));
+        ///else
+         if lFile[i] = 'recebi' then
+         begin
+           Writeln(Impressora,'-------------------------');
+           Writeln(Impressora,'  Valor Pago : ' + edPago.Text);
+           Writeln(Impressora,'--------------------------');
+         end;
+      end;
+    finally
+      CloseFile(IMPRESSORA);
+      lFile.Free;
+    end;
     btnProcurar.Click;
     edPago.Text:= '0,00';
   end
@@ -654,13 +757,16 @@ begin
     end;
     transODoo.Commit;
   end;
+  end;
+
   DecimalSeparator:=',';
-  ShowMessage('Baixa efetuada com sucesso.');
+  ShowMessage('Baixa efetuada com sucesso.'+#13+
+             'Se a Baixa foi Parcial o valor Sera Corrigido');
   edPago.Text:='0,00';
   edPago.Enabled:=False;
   rgSituacao.ItemIndex := 1;
   btnProcurar.Click;
-  end;
+
 
 end;
 
@@ -721,137 +827,145 @@ begin
   Button1.Click;
   Exit;
 end;
-
-
-sql_rec := 'SELECT r.CODCLIENTE, r.CODRECEBIMENTO, r.TITULO, r.EMISSAO';
-sql_rec += ', r.DATAVENCIMENTO, r.DATARECEBIMENTO ';
-sql_rec += ' ,COALESCE(r.VALORRECEBIDO,0) AS VALOR_RECEBIDO, ';
-sql_rec += ' c.NOMECLIENTE FROM RECEBIMENTO r, CLIENTES c ';
-sql_rec += ' WHERE r.CODCLIENTE = c.CODCLIENTE ';
-if (edCodCliente.Text <> '') then
-begin
-  sql_rec += ' AND r.CODCLIENTE = ' + edCodCliente.Text;
-end;
-sql_rec += ' AND r.STATUS  = ' + QuotedStr('7-');
-sql_rec += ' AND r.DATARECEBIMENTO = ' + QuotedStr(FormatDateTime('mm/dd/2022', Now));
-sql_rec += ' ORDER BY r.DATAVENCIMENTO, r.EMISSAO, r.TITULO';
-dmPdv.busca_sql(sql_rec);
-While not dmPdv.sqBusca.EOF do
-begin
-  totalR += dmPdv.sqBusca.FieldByName('VALOR_RECEBIDO').AsFloat;
-  dmPdv.sqBusca.Next;
-end;
-dmPdv.sqBusca.First;
-
-v_log := 'Log de impressão - ';
-totalP := 0;
-totalD := 0;
-totalR := 0;
-if (not dmPdv.sqEmpresa.Active) then
-  dmPdv.sqEmpresa.Open;
-v_log := 'Log de impressão 3 ';
-{----- aqui monto o endereço-----}
-logradouro := '  ' + dmPdv.sqEmpresaENDERECO.Value +
-   ', ' + dmPdv.sqEmpresaBAIRRO.Value;
-cep :=  '  ' + dmPdv.sqEmpresaCIDADE.Value + ' - ' + dmPdv.sqEmpresaUF.Value +
-' - ' + dmPdv.sqEmpresaCEP.Value;
-fone := '  (19)' + dmPdv.sqEmpresaFONE.Value + ' / ' + dmPdv.sqEmpresaFONE_1.Value +
-' / ' + dmPdv.sqEmpresaFONE_2.Value;
-{------------------------DADOS DO CLIENTE--------------------------}
-clientecupom := '  ' + IntToStr(dmPdv.sqBusca.FieldByName('CODCLIENTE').asInteger) +
-    '-' + RemoveAcento(dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString);
-// leio um arquivo txt e imprimo
-v_log := 'Log de impressão - criando lFile ';
-lFile := TStringList.Create;
-if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
-begin
-  v_log := 'Log portaImp - ' + dmPdv.portaIMP;
-  AssignFile(IMPRESSORA, dmPdv.portaIMP);
-end
-else begin
-  v_log := 'Log path_imp - ' + dmPdv.path_imp;
-  AssignFile(IMPRESSORA, dmPdv.path_imp);
-end;
-v_log := 'Log abrindo cupomRec.txt ' + dmpdv.path_exe + 'cupomRec.txt';
-try
-  Rewrite(IMPRESSORA);
-  lFile.LoadFromFile(dmpdv.path_exe + 'cupomRec.txt');
-  for i:=0 to lFile.Count-1 do
+  if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
   begin
-    v_log := 'Log lendo cupomRec.txt ';
-    linhaTxt := Copy(lFile[i],0,1);
-    if lFile[i] = 'empresa' then
-      Writeln(Impressora, RemoveAcento(Format('  %-36s',[dmPdv.sqEmpresaRAZAO.Value])))
-    else if lFile[i] = 'logradouro' then
-      Writeln(Impressora, logradouro)
-    else if lFile[i] = 'cep' then
-      Writeln(Impressora, cep)
-    else if lFile[i] = 'fone' then
-    begin
-      Writeln(Impressora, fone);
-    end
-    else if lFile[i] = 'linha' then
-    begin
-      Writeln(IMPRESSORA, '');
-    end
-    else if lFile[i] = 'usuario' then
-    begin
-      Writeln(impressora, 'Usuario: ' + dmpdv.nomeLogado);
-    end
-    else if ((lFile[i] = 'cliente') or (lFile[i] = 'clientecompleto')) then
-    begin
-      if lFile[i] = 'clientecompleto' then
-      begin
-        dmPdv.qsCliente.Close;
-        dmPdv.qsCliente.Params.ParamByName('ID').AsInteger := StrToInt(edCodCliente.Text);
-        dmPdv.qsCliente.Open;
-        if dmPdv.qsCliente.IsEmpty then
-        begin
-          Writeln(Impressora, clientecupom);
-        end
-        else begin
-          Writeln(Impressora, clientecupom);
-          clientecupom := ' Doc.: ' + dmPdv.qsClienteCNPJ.AsString + ', ' + dmPdv.qsClienteINSCESTADUAL.AsString;
-          Writeln(Impressora, clientecupom);
-          clientecupom := ' End.: ' + dmPdv.qsClienteLOGRADOURO.AsString + ', ' + dmPdv.qsClienteNUMERO.AsString;
-          Writeln(Impressora, clientecupom);
-          clientecupom := ' ' + dmPdv.qsClienteBAIRRO.AsString + ', ' + dmPdv.qsClienteCIDADE.AsString + ', ' + dmPdv.qsClienteUF.AsString;
-          Writeln(Impressora, clientecupom);
-        end;
-      end
-      else begin
-        Writeln(Impressora, clientecupom);
-      end;
-    end
-    else if lFile[i] = 'doc' then
-      Writeln(Impressora,'Recebido Dia.' + FormatDateTime('dd/mm/2022 hh:MM:ss', Now))
-    else if lFile[i] = 'itens' then
-    begin
-      vtotalR := 0 ;
-      while not dmPdv.sqBusca.EOF do
-      begin
-        vtotalR := vtotalR + dmPdv.sqBusca.FieldByName('VALOR_RECEBIDO').asFloat;
-        texto3 := ' ';
-        texto6 := ' ';
-        dataRec := dmPdv.sqBusca.FieldByName('DATAVENCIMENTO').AsString +
-                '  -  ' + dmPdv.sqBusca.FieldByName('TITULO').AsString ;
-        texto3 := texto3 + dataRec;
-        texto3 := texto3 + Format('   %6.2n',[dmPdv.sqBusca.FieldByName('VALOR_RECEBIDO').asFloat]);
-        Writeln(Impressora, texto3);
-        dmPdv.sqBusca.next;
-        texto6 := texto6 + 'Total                   :' + Format('   %6.2n',[vtotalR]);
-
-      end;
-      Writeln(Impressora,texto6);
-
-    end
-    else
-      Writeln(Impressora,lFile[i]);
+    ShowMessage('A Impressão pelo Odoo é Executada Quando Recebe !');
+    exit;
   end;
-finally
-  CloseFile(IMPRESSORA);
-  lFile.Free;
-end;
+
+  if (UpperCase(dmPdv.usoSistema) <> 'ODOO') then
+  begin
+    sql_rec := 'SELECT r.CODCLIENTE, r.CODRECEBIMENTO, r.TITULO, r.EMISSAO';
+    sql_rec += ', r.DATAVENCIMENTO, r.DATARECEBIMENTO ';
+    sql_rec += ' ,COALESCE(r.VALORRECEBIDO,0) AS VALOR_RECEBIDO, ';
+    sql_rec += ' c.NOMECLIENTE FROM RECEBIMENTO r, CLIENTES c ';
+    sql_rec += ' WHERE r.CODCLIENTE = c.CODCLIENTE ';
+    if (edCodCliente.Text <> '') then
+    begin
+      sql_rec += ' AND r.CODCLIENTE = ' + edCodCliente.Text;
+    end;
+    sql_rec += ' AND r.STATUS  = ' + QuotedStr('7-');
+    sql_rec += ' AND r.DATARECEBIMENTO = ' + QuotedStr(FormatDateTime('mm/dd/2022', Now));
+    sql_rec += ' ORDER BY r.DATAVENCIMENTO, r.EMISSAO, r.TITULO';
+    dmPdv.busca_sql(sql_rec);
+    While not dmPdv.sqBusca.EOF do
+    begin
+      totalR += dmPdv.sqBusca.FieldByName('VALOR_RECEBIDO').AsFloat;
+      dmPdv.sqBusca.Next;
+    end;
+    dmPdv.sqBusca.First;
+
+    v_log := 'Log de impressão - ';
+    totalP := 0;
+    totalD := 0;
+    totalR := 0;
+    if (not dmPdv.sqEmpresa.Active) then
+      dmPdv.sqEmpresa.Open;
+    v_log := 'Log de impressão 3 ';
+    {----- aqui monto o endereço-----}
+    logradouro := '  ' + dmPdv.sqEmpresaENDERECO.Value +
+       ', ' + dmPdv.sqEmpresaBAIRRO.Value;
+    cep :=  '  ' + dmPdv.sqEmpresaCIDADE.Value + ' - ' + dmPdv.sqEmpresaUF.Value +
+    ' - ' + dmPdv.sqEmpresaCEP.Value;
+    fone := '  (19)' + dmPdv.sqEmpresaFONE.Value + ' / ' + dmPdv.sqEmpresaFONE_1.Value +
+    ' / ' + dmPdv.sqEmpresaFONE_2.Value;
+    {------------------------DADOS DO CLIENTE--------------------------}
+    clientecupom := '  ' + IntToStr(dmPdv.sqBusca.FieldByName('CODCLIENTE').asInteger) +
+        '-' + RemoveAcento(dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString);
+    // leio um arquivo txt e imprimo
+    v_log := 'Log de impressão - criando lFile ';
+    lFile := TStringList.Create;
+    if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
+    begin
+      v_log := 'Log portaImp - ' + dmPdv.portaIMP;
+      AssignFile(IMPRESSORA, dmPdv.portaIMP);
+    end
+    else begin
+      v_log := 'Log path_imp - ' + dmPdv.path_imp;
+      AssignFile(IMPRESSORA, dmPdv.path_imp);
+    end;
+    v_log := 'Log abrindo cupomRec.txt ' + dmpdv.path_exe + 'cupomRec.txt';
+    try
+      Rewrite(IMPRESSORA);
+      lFile.LoadFromFile(dmpdv.path_exe + 'cupomRec.txt');
+      for i:=0 to lFile.Count-1 do
+      begin
+        v_log := 'Log lendo cupomRec.txt ';
+        linhaTxt := Copy(lFile[i],0,1);
+        if lFile[i] = 'empresa' then
+          Writeln(Impressora, RemoveAcento(Format('  %-36s',[dmPdv.sqEmpresaRAZAO.Value])))
+        else if lFile[i] = 'logradouro' then
+          Writeln(Impressora, logradouro)
+        else if lFile[i] = 'cep' then
+          Writeln(Impressora, cep)
+        else if lFile[i] = 'fone' then
+        begin
+          Writeln(Impressora, fone);
+        end
+        else if lFile[i] = 'linha' then
+        begin
+          Writeln(IMPRESSORA, '');
+        end
+        else if lFile[i] = 'usuario' then
+        begin
+          Writeln(impressora, 'Usuario: ' + dmpdv.nomeLogado);
+        end
+
+        else if ((lFile[i] = 'cliente') or (lFile[i] = 'clientecompleto')) then
+        begin
+          if lFile[i] = 'clientecompleto' then
+          begin
+            dmPdv.qsCliente.Close;
+            dmPdv.qsCliente.Params.ParamByName('ID').AsInteger := StrToInt(edCodCliente.Text);
+            dmPdv.qsCliente.Open;
+            if dmPdv.qsCliente.IsEmpty then
+            begin
+              Writeln(Impressora, clientecupom);
+            end
+            else begin
+              Writeln(Impressora, clientecupom);
+              clientecupom := ' Doc.: ' + dmPdv.qsClienteCNPJ.AsString + ', ' + dmPdv.qsClienteINSCESTADUAL.AsString;
+              Writeln(Impressora, clientecupom);
+              clientecupom := ' End.: ' + dmPdv.qsClienteLOGRADOURO.AsString + ', ' + dmPdv.qsClienteNUMERO.AsString;
+              Writeln(Impressora, clientecupom);
+              clientecupom := ' ' + dmPdv.qsClienteBAIRRO.AsString + ', ' + dmPdv.qsClienteCIDADE.AsString + ', ' + dmPdv.qsClienteUF.AsString;
+              Writeln(Impressora, clientecupom);
+            end;
+          end
+          else begin
+            Writeln(Impressora, clientecupom);
+          end;
+        end
+        else if lFile[i] = 'doc' then
+          Writeln(Impressora,'Recebido Dia.' + FormatDateTime('dd/mm/2022 hh:MM:ss', Now))
+        else if lFile[i] = 'itens' then
+        begin
+          vtotalR := 0 ;
+          while not dmPdv.sqBusca.EOF do
+          begin
+            vtotalR := vtotalR + dmPdv.sqBusca.FieldByName('VALOR_RECEBIDO').asFloat;
+            texto3 := ' ';
+            texto6 := ' ';
+            dataRec := dmPdv.sqBusca.FieldByName('DATAVENCIMENTO').AsString +
+                    '  -  ' + dmPdv.sqBusca.FieldByName('TITULO').AsString ;
+            texto3 := texto3 + dataRec;
+            texto3 := texto3 + Format('   %6.2n',[dmPdv.sqBusca.FieldByName('VALOR_RECEBIDO').asFloat]);
+            Writeln(Impressora, texto3);
+            dmPdv.sqBusca.next;
+            texto6 := texto6 + 'Total                   :' + Format('   %6.2n',[vtotalR]);
+
+          end;
+          Writeln(Impressora,texto6);
+
+        end
+        else
+          Writeln(Impressora,lFile[i]);
+      end;
+    finally
+      CloseFile(IMPRESSORA);
+      lFile.Free;
+    end;
+ end;
 end;
 
 procedure TfRecebimento.BitBtn2Click(Sender: TObject);
