@@ -805,17 +805,32 @@ var i: Integer;
   itens : String;
   item : String;
   num: Integer;
+  codproduto : String;
+  forma_pagamento : Integer;
 begin
   // PAGAMENTOS
   dmPdv.busca_sql('SELECT CODFORMA, COD_VENDA, ID_ENTRADA, FORMA_PGTO' +
     ' , CAIXA , N_DOC, VALOR_PAGO, CAIXINHA, TROCO, DESCONTO, STATE' +
     ' FROM FORMA_ENTRADA WHERE STATE < 2 AND ID_ENTRADA = ' +
     vCodMovimento + ' ORDER BY FORMA_PGTO');
+
+  forma_pagamento := dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsInteger;
+
   item := '';
   itens := '[';
   num := 0;
   while not dmPdv.sqBusca.EOF do
   begin
+    codproduto := '' ;
+    if forma_pagamento = 9 then
+    begin
+      //busca movimentodetalhe o codproduto devolvido
+      dmPdv.busca_sql('SELECT CODPRODUTO' +
+        ' FROM MOVIMENTODETALHE WHERE CODMOVIMENTO = ' +
+      vCodMovimento );
+      //busca movimentodetalhe o codproduto devolvido
+      codproduto := dmPdv.sqBusca.FieldByName('CODPRODUTO').AsString;
+    end;
     item += '{';
     num += 1;
     for i:=0 to dmPdv.sqBusca.FieldDefs.Count-1 do
@@ -866,6 +881,7 @@ begin
       end;
     end;
     item += ', "CODMOVIMENTO": "' + IntToStr(dmpdv.sqLancamentosCODMOVIMENTO.AsInteger) + '"';
+    item += ', "PROD_TROCA": "' + codproduto + '"';
     item += '}';
     if itens <> '[' then
       itens += ',' + item
@@ -1100,7 +1116,7 @@ Var
   i: integer;
   J: integer;
   K: integer;
-  ver: String;
+  ver, ver_x: String;
   sql_campo, sql_valor, sql_update, sql_update1: String;
   url_server : String;
   FS: TFormatSettings;
@@ -1156,6 +1172,7 @@ begin
     RequestBody := TStringStream.Create(postJson.AsJSON);
     responseData := Post(dmPdv.path_integra_url + url_server);
     memoResult.Lines.Add(responseData);
+   // memo2.Lines.Add(responseData);
     jData := GetJSON(responseData);
     for i := 0 to jData.Count - 1 do
     begin
@@ -1195,6 +1212,8 @@ begin
               sql_campo += field_name;
               sql_valor += QuotedStr(field_value);
             end;
+            //if ((field_name = 'codpro') and (copy(field_value,0,15) = 'Q471A0286PMARIN')) then
+            //   ver_x:= sql_campo;
             if ((sql_update1 <> '') and (field_name <> LowerCase(campo_chave))) then
             begin
                 sql_update += ', ' + field_name + '=' + QuotedStr(field_value);
@@ -1209,6 +1228,8 @@ begin
             memoDados.Lines.add('INSERT INTO ' + tabela + '('+ sql_campo +
               ') VALUES(' + sql_valor + ');');
             ver := '';
+            sql_update := '';
+            sql_update1 := '';
           end
           else begin
             if (campo_data <> '') then
@@ -1219,9 +1240,9 @@ begin
                 memoDados.Lines.add('UPDATE ' + tabela + ' SET ' + sql_update1 + sql_update +
                   ' WHERE ' + campo_chave + ' = ' + cod_chave + ';');
               end;
-              sql_update := '';
-              sql_update1 := '';
             end;
+            sql_update := '';
+            sql_update1 := '';
           end;
         end;
       end;
