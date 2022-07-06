@@ -6,11 +6,12 @@ object fNFe: TfNFe
   Caption = 'ATS-NFe'
   ClientHeight = 662
   ClientWidth = 1069
-  DefaultMonitor = dmDesktop
+  DefaultMonitor = dmMainForm
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poDesktopCenter
   LCLVersion = '2.0.12.0'
+  Scaled = False
   object StatusBar1: TStatusBar
     Left = 0
     Height = 23
@@ -2364,6 +2365,14 @@ object fNFe: TfNFe
           OnClick = btnGeraNFeClick
           ParentFont = False
           TabOrder = 2
+        end
+        object lblMsgSuframa: TLabel
+          Left = 15
+          Height = 15
+          Top = 14
+          Width = 9
+          Caption = '...'
+          ParentColor = False
         end
       end
     end

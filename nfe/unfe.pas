@@ -192,6 +192,7 @@ type
     Label53: TLabel;
     Label54: TLabel;
     Label55: TLabel;
+    lblMsgSuframa: TLabel;
     lblVencimentoCert: TLabel;
     Label6: TLabel;
     Label7: TLabel;
@@ -3409,11 +3410,12 @@ begin
         Dest.CNPJCPF := RemoveChar(Trim(dmPdv.qsClienteCNPJ.AsString));
       Dest.xNome             := Trim(dmPdv.qsClienteRAZAOSOCIAL.AsString);
 
-
+      lblMsgSuframa.Caption := Trim(dmPdv.qsClienteSUFRAMA.AsString);
       if (Length(Trim(dmPdv.qsClienteSUFRAMA.AsString)) = 9) then
       begin
         pSuframa  := Trim(dmPdv.qsClienteSUFRAMA.AsString);
         Dest.ISUF := Trim(dmPdv.qsClienteSUFRAMA.AsString);
+        lblMsgSuframa.Caption := lblMsgSuframa.Caption + ' SUFRAMA';
       end;
       Dest.EnderDest.xLgr := Trim(dmPdv.qsClienteLOGRADOURO.AsString);
 
@@ -5488,7 +5490,8 @@ begin
         end;
         if ((cstSuframa <> '00') and ( pSuframa <> '')) then
         begin
-          if (cst_utilizado <> '101') then
+          // comentei o if abaixo por causa da DNZ
+          //if (cst_utilizado <> '101') then
             Total.ICMSTot.vICMSDeson := dmPdv.qcdsNFVALOR_ICMS.AsVariant;
         end;
       end;

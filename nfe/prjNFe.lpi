@@ -21,7 +21,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
-      <BuildNr Value="21"/>
+      <BuildNr Value="23"/>
       <Language Value="0416"/>
       <StringTable Comments="Nota Fiscal Eletrônica" CompanyName="ATS Ti Soluções" FileDescription="Envio de Nota Fiscal Eletrônica" LegalCopyright="ATS Soluções"/>
     </VersionInfo>
