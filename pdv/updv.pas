@@ -9,7 +9,7 @@ uses
   Graphics, Dialogs, ExtCtrls, StdCtrls, Buttons, MaskEdit, DBGrids, ActnList,
   Menus, dateutils, uMovimento, uCompraCls, uUtil, uVendedorBusca,
   uClienteBusca, uPermissao, uComandaJuntar, uReceber, Grids, ComCtrls,
-  ACBrPosPrinter, MTProcs, strutils, fphttpclient, JsonTools, fpjson;
+  ACBrPosPrinter, MTProcs, strutils, fphttpclient, JsonTools, fpjson,uIntegraSimples;
 
 type
 
@@ -104,6 +104,7 @@ type
     Memo1: TMemo;
     Memo2: TMemo;
     memoImp: TMemo;
+    memoDevolucao: TMemo;
     MemoIntegra: TMemo;
     MenuItem1: TMenuItem;
     MenuItem10: TMenuItem;
@@ -1362,6 +1363,7 @@ begin
 
 end;
 
+
 procedure TfPdv.TIButton2Click(Sender: TObject);
 begin
   if (edMotivo.Text = '') then
@@ -2121,7 +2123,12 @@ procedure TfPdv.trocaDevolucao;
 var
    fCpr : TCompraCls;
    num_cp: Integer;
+   postJson : TJSONObject;
+   httpClient : TFPHttpClient;
+   fInteg: TfIntegracaoOdoo;
+   responseData: String;
 begin
+
   if (statusPedido > 0) then
   begin
     ShowMessage('Pedido ja finalizado.');
@@ -2170,6 +2177,39 @@ begin
   imprimirCupomTroca;
   if (dmPdv.CupomImp <> 'Texto') then
     imprimirAcbr;
+
+
+  // devolucao  odooo;
+
+  if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
+  begin
+    httpClient := TFPHttpClient.Create(Nil);
+    postJson := TJSONObject.Create;
+    try
+      postJson.Add('title', 'Devolucao');
+      postJson.Add('motivo', edMotivo.Text);
+      postJson.Add('origin', codMov);
+      postJson.Add('quantidade',dmPdv.sqLancamentosQUANTIDADE.Value);
+      postJson.Add('produto', dmPdv.sqLancamentosCODPRODUTO.Value);
+      postJson.Add('nproduto', dmPdv.sqLancamentosDESCPRODUTO.Value);
+     // postJson.Add('caixa', dmPdv.idcaixa);
+     // postJson.Add('cod_forma', rv_codForma);
+      fInteg := TfIntegracaoOdoo.Create(Self);
+      httpClient := fInteg.logar();
+      With httpClient do
+      begin
+        AddHeader('Content-Type', 'application/json');
+        RequestBody := TStringStream.Create(postJson.AsJSON);
+        responseData := Post(dmPdv.path_integra_url + '/devolucao');
+        //memoDevolucao.Lines.Add(responseData); //para ver o json
+      end;
+      fInteg.Free;
+      postJson.Free;
+      ShowMessage('Devolução de Produto Realizada' );
+    except
+      ShowMessage('Devolução em Processo, Rodar o Integração Para Finalizar' );
+    end;
+  end;
   edMotivo.Text:='';
 end;
 
