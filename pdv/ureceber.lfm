@@ -1,24 +1,39 @@
 object fRecebimento: TfRecebimento
-  Left = 312
-  Height = 482
-  Top = 129
-  Width = 809
+  Left = 270
+  Height = 565
+  Top = 86
+  Width = 845
   Caption = 'Recebimento'
-  ClientHeight = 482
-  ClientWidth = 809
+  ClientHeight = 565
+  ClientWidth = 845
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poDesktopCenter
   LCLVersion = '2.0.12.0'
   object Panel1: TPanel
     Left = 0
-    Height = 74
-    Top = 408
-    Width = 809
+    Height = 133
+    Top = 432
+    Width = 845
     Align = alBottom
-    ClientHeight = 74
-    ClientWidth = 809
+    ClientHeight = 133
+    ClientWidth = 845
     TabOrder = 0
+    object edJurosMulta: TMaskEdit
+      Left = 664
+      Height = 23
+      Hint = 'Clique na forma de pagamento primeiro.'
+      Top = 43
+      Width = 120
+      Alignment = taRightJustify
+      CharCase = ecNormal
+      MaxLength = 0
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 6
+      Text = '0,00'
+      SpaceChar = '_'
+    end
     object Label1: TLabel
       Left = 592
       Height = 15
@@ -40,10 +55,10 @@ object fRecebimento: TfRecebimento
       SpaceChar = '_'
     end
     object edPago: TMaskEdit
-      Left = 456
+      Left = 475
       Height = 23
       Hint = 'Clique na forma de pagamento primeiro.'
-      Top = 15
+      Top = 58
       Width = 88
       Alignment = taRightJustify
       CharCase = ecNormal
@@ -55,9 +70,9 @@ object fRecebimento: TfRecebimento
       SpaceChar = '_'
     end
     object Label2: TLabel
-      Left = 397
+      Left = 393
       Height = 15
-      Top = 15
+      Top = 62
       Width = 56
       Caption = 'Valor Pago'
       ParentColor = False
@@ -65,7 +80,7 @@ object fRecebimento: TfRecebimento
     object lblForma: TLabel
       Left = 456
       Height = 15
-      Top = 40
+      Top = 88
       Width = 9
       Caption = '...'
       ParentColor = False
@@ -1130,21 +1145,76 @@ object fRecebimento: TfRecebimento
       ParentFont = False
       TabOrder = 5
     end
+    object Label5: TLabel
+      Left = 592
+      Height = 15
+      Top = 45
+      Width = 66
+      Caption = 'Multa /Juros'
+      ParentColor = False
+    end
+    object edPago1: TMaskEdit
+      Left = 474
+      Height = 23
+      Hint = 'Clique na forma de pagamento primeiro.'
+      Top = 4
+      Width = 88
+      Alignment = taRightJustify
+      CharCase = ecNormal
+      MaxLength = 0
+      ParentShowHint = False
+      ReadOnly = True
+      ShowHint = True
+      TabOrder = 7
+      Text = '0,00'
+      SpaceChar = '_'
+    end
+    object Label6: TLabel
+      Left = 393
+      Height = 15
+      Top = 8
+      Width = 68
+      Caption = 'Valor a Pagar'
+      ParentColor = False
+    end
+    object edJuros: TMaskEdit
+      Left = 475
+      Height = 23
+      Hint = 'Clique na forma de pagamento primeiro.'
+      Top = 30
+      Width = 88
+      Alignment = taRightJustify
+      CharCase = ecNormal
+      MaxLength = 0
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 8
+      Text = '0,00'
+      SpaceChar = '_'
+    end
+    object Label7: TLabel
+      Left = 393
+      Height = 15
+      Top = 34
+      Width = 59
+      Caption = 'Valor Juros '
+      ParentColor = False
+    end
   end
   object Panel2: TPanel
     Left = 0
-    Height = 319
+    Height = 343
     Top = 89
-    Width = 809
+    Width = 845
     Align = alClient
-    ClientHeight = 319
-    ClientWidth = 809
+    ClientHeight = 343
+    ClientWidth = 845
     TabOrder = 1
     object DBGrid1: TDBGrid
       Left = 1
-      Height = 317
+      Height = 341
       Top = 1
-      Width = 807
+      Width = 843
       Align = alClient
       Color = clWindow
       Columns = <      
@@ -1200,10 +1270,10 @@ object fRecebimento: TfRecebimento
     Left = 0
     Height = 89
     Top = 0
-    Width = 809
+    Width = 845
     Align = alTop
     ClientHeight = 89
-    ClientWidth = 809
+    ClientWidth = 845
     TabOrder = 2
     object btnProcurar: TBitBtn
       Left = 624
@@ -2478,11 +2548,11 @@ object fRecebimento: TfRecebimento
     Visible = False
   end
   object StringGrid1: TStringGrid
-    Left = 0
-    Height = 313
+    Left = 4
+    Height = 308
     Top = 89
     Width = 804
-    ColCount = 6
+    ColCount = 7
     FixedCols = 0
     RowCount = 1
     TabOrder = 5
@@ -2494,11 +2564,12 @@ object fRecebimento: TfRecebimento
       200
       146
       142
-      176
-      2
+      91
+      71
+      64
     )
     Cells = (
-      5
+      6
       0
       0
       'Codigo'
@@ -2514,6 +2585,9 @@ object fRecebimento: TfRecebimento
       4
       0
       'Valor'
+      5
+      0
+      'Multa/Juros'
     )
   end
   object dsRec: TDataSource

@@ -6,9 +6,9 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
-  StdCtrls, DBGrids, MaskEdit, ActnList, Grids, uClienteBusca, udmpdv,
-  uIntegraSimples, db, math, sqldb, pqconnection, IniFiles, fpjson,
-  fphttpclient, Types;
+  StdCtrls, DBGrids, MaskEdit, ActnList, Grids, DBCtrls, DBDateTimePicker,
+  DateTimePicker, uClienteBusca, udmpdv, uIntegraSimples, db, math, sqldb,
+  pqconnection, IniFiles, fpjson, fphttpclient, Types, DateUtils;
 
 type
 
@@ -33,18 +33,25 @@ type
     btnProcurar: TBitBtn;
     btnSair: TBitBtn;
     Button1: TButton;
+    DateTimePicker1: TDateTimePicker;
     dsRec: TDataSource;
     DBGrid1: TDBGrid;
     edCodCliente: TEdit;
     edLimit: TEdit;
     edNomeCliente: TEdit;
     Cliente: TLabel;
+    edJurosMulta: TMaskEdit;
+    edPago1: TMaskEdit;
+    edJuros: TMaskEdit;
     Label1: TLabel;
     edTotalGeral: TMaskEdit;
     Label2: TLabel;
     edPago: TMaskEdit;
     Label3: TLabel;
     Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
     lblForma: TLabel;
     Memo1: TMemo;
     memoResult: TMemo;
@@ -108,6 +115,7 @@ type
       var CanSelect: Boolean);
 
   private
+
     rv_codForma: Integer;
     codClienteR : Integer;
     pCod : string; /// codigo do Odoo
@@ -251,9 +259,27 @@ begin
 end;
 
 procedure TfRecebimento.StringGrid1Click(Sender: TObject);
+var a , c: string;
+    b , d: integer;
+    vt : Double;
 begin
+   b:= StringGrid1.Row;
+   a:= StringGrid1.Cells[5,b];
+   edJuros.Text:= a;
+
+   d:= StringGrid1.Row;
+   c:= StringGrid1.Cells[4,d];
+
+
+   vt:=(StrToFloat(a) + StrToFloat(c)) ;
+
+   edPago1.Text:= FloatToStr(vt);
+
+
+
    pCod := (StringGrid1.Cells[StringGrid1.Col, StringGrid1.Row]);
    Label3.Caption := pCod ;
+  // edJuros.Text:= (StringGrid1.Cells[StringGrid1.Col, StringGrid1.Row]);
 end;
 
 procedure TfRecebimento.StringGrid1DrawCell(Sender: TObject; aCol,
@@ -261,7 +287,7 @@ procedure TfRecebimento.StringGrid1DrawCell(Sender: TObject; aCol,
 begin
   if(Acol=0)and(Arow=R)then
   begin
-    StringGrid1.Canvas.Brush.Color:= clbtnFace;
+    StringGrid1.Canvas.Brush.Color:= clSkyBlue;
     StringGrid1.Canvas.FillRect(aRect);
     StringGrid1.Canvas.TextOut(aRect.Left+2,aRect.Top+2,StringGrid1.Cells[ACol,ARow]);
   end;
@@ -287,12 +313,12 @@ begin
   sqPagamentoCAIXA.AsInteger     := StrToInt(dmPdv.idcaixa);
   sqPagamentoCOD_VENDA.AsInteger := 2;  // POR RECEBIMENTO
   sqPagamentoFORMA_PGTO.AsString := Copy(lblForma.Caption,1,1);
-  sqPagamentoID_ENTRADA.AsInteger:= codRec;
+  sqPagamentoID_ENTRADA.AsInteger:= StrToInt(pCod); //codRec;
   sqPagamentoN_DOC.AsString      := lblForma.Caption;
   sqPagamentoSTATE.AsInteger     := 1;
   sqPagamentoVALOR_PAGO.AsFloat  := valor_pago;
   sqPagamentoDESCONTO.AsFloat    := 0;
-  sqPagamentoTROCO.AsFloat       := 0;
+  sqPagamentoTROCO.AsFloat       := StrToFloat(edJuros.Text);
   sqPagamento.ApplyUpdates;
   dmPdv.sTrans.Commit;
 end;
@@ -328,7 +354,7 @@ end;
 procedure TfRecebimento.btnProcurarClick(Sender: TObject);
 var
   sql_rec: String;
-  total_rec , total_odoo : Double;
+  total_rec , total_odoo , juros ,dias, multa , vJuros, tt: Double;
   juros_str: String;
   postJson : TJSONObject;
   httpClient : TFPHttpClient;
@@ -341,7 +367,7 @@ var
   jItem : TJSONData;
   jDataB : TJSONData;
   jItemB : TJSONData;
-  a , b , c , d ,e ,f , g ,v,vTotal: String;
+  a , b , c , d ,e ,f , g ,h ,v,vTotal: String;
   object_name, field_name, field_value, object_type, object_items: String;
 begin
   if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
@@ -354,13 +380,14 @@ begin
     StringGrid1.Cells[2, StringGrid1.RowCount - 1] := 'Data Emissão';
     StringGrid1.Cells[3, StringGrid1.RowCount - 1] := 'Data Vencimento' ;
     StringGrid1.Cells[4, StringGrid1.RowCount - 1] := 'Valor';
+    StringGrid1.Cells[5, StringGrid1.RowCount - 1] := 'Multa/Juros';
     //  StringGrid1.Cells[5, StringGrid1.RowCount - 1] := 'Codigo';
     StringGrid1.ColWidths[1]:= 250;
     StringGrid1.ColWidths[2]:= 100;
     StringGrid1.ColWidths[3]:= 100;
     StringGrid1.ColWidths[4]:= 100;
     StringGrid1.ColWidths[5]:= 100;
-
+    StringGrid1.ColWidths[6]:= 100;
     httpClient := TFPHttpClient.Create(Nil);
     postJson := TJSONObject.Create;
     try
@@ -370,6 +397,8 @@ begin
       postJson.Add('diario', lblForma.Caption);
       postJson.Add('caixa', dmPdv.idcaixa);
       postJson.Add('cod_forma', rv_codForma);
+      postJson.Add('juro', edJuros.Text);
+      postJson.Add('aml_id', pCod);
       fInteg := TfIntegracaoOdoo.Create(Self);
       httpClient := fInteg.logar();
       With httpClient do
@@ -413,17 +442,33 @@ begin
               e := field_value;
               if (k = 5)then
               f := field_value;
+              if (k = 6)then
+              h := field_value;
+
             end;
 
+          h := '0';
           total_odoo := total_odoo + StrToFloat(b) ;
+          dias := (today - StrToDate(d)); // conto os dias
+          juros := (0.03 * dias); //  mostra juros por dia
+          vJuros := ((juros * StrToFloat(b))/100);  // mostra juros mora
+          if(dias <> 0) then
+          begin
+            multa := StrToFloat(b) * (2/100);
+            h := FloatToStr(multa+vJuros) ;
+          end;
+
+          tt := tt + StrToFloat(h);
+          edJurosMulta.Text := FormatFloat('###0.00',(tt));  // FloatToStr(tt) ;
 
           StringGrid1.RowCount := StringGrid1.RowCount + 1;
           StringGrid1.Cells[0, StringGrid1.RowCount - 1] := f;
           StringGrid1.Cells[1, StringGrid1.RowCount - 1] := e;
           StringGrid1.Cells[2, StringGrid1.RowCount - 1] := c;
           StringGrid1.Cells[3, StringGrid1.RowCount - 1] := d;
-          StringGrid1.Cells[4, StringGrid1.RowCount - 1] := FormatFloat('R$ ###0.00', StrToFloat(b));
+          StringGrid1.Cells[4, StringGrid1.RowCount - 1] := FormatFloat('###0.00', StrToFloat(b));
           //StringGrid1.Cells[5, StringGrid1.RowCount - 1] := a;
+          StringGrid1.Cells[5, StringGrid1.RowCount - 1] := FormatFloat('###0.00', StrToFloat(h));
           edTotalGeral.Caption:= FormatFloat('###0.00', total_odoo);
         end;
       end;
@@ -763,7 +808,13 @@ begin
   ShowMessage('Baixa efetuada com sucesso.'+#13+
              'Se a Baixa foi Parcial o valor Sera Corrigido');
   edPago.Text:='0,00';
+  edPago1.Text:='0,00';
+  edJuros.Text:='0,00';
   edPago.Enabled:=False;
+  if (UpperCase(dmpdv.usoSistema) = 'ODOO') then
+  begin
+     rgSituacao.ItemIndex := 0;
+  end else
   rgSituacao.ItemIndex := 1;
   btnProcurar.Click;
 
