@@ -15,6 +15,7 @@ type
 
   TfIntegracaoOdoo = class(TForm)
     BitBtn1: TBitBtn;
+    btnDevolucao: TButton;
     btnSangria_Rec: TButton;
     btnConecta: TBitBtn;
     btnCaixa: TButton;
@@ -24,6 +25,7 @@ type
     btnUsuario: TButton;
     btnProduto: TButton;
     btnCliente: TButton;
+    Button1: TButton;
     edEste: TEdit;
     edSessao: TEdit;
     edUltima: TEdit;
@@ -40,6 +42,7 @@ type
     Timer3: TTimer;
     TimerGeral: TTimer;
     procedure BitBtn1Click(Sender: TObject);
+    procedure btnDevolucaoClick(Sender: TObject);
     procedure btnSangria_RecClick(Sender: TObject);
     procedure btnConectaClick(Sender: TObject);
     procedure btnCaixaClick(Sender: TObject);
@@ -49,6 +52,7 @@ type
     procedure btnProdutoClick(Sender: TObject);
     procedure btnClienteClick(Sender: TObject);
     procedure btnUsuarioClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -77,6 +81,7 @@ type
     procedure executa_sql;
     procedure comunica_server(tabela: String; campo_chave: String; campos_select: String; campo_data: String);
     procedure envia_sangria_reforco;
+    procedure envia_devolucao;
   end;
 
 var
@@ -377,6 +382,29 @@ begin
   }
 end;
 
+procedure TfIntegracaoOdoo.Button1Click(Sender: TObject);
+    procedure Executa ;
+    begin
+      fIntegracaoOdoo.edtUltimpoPedidoA.Text := consultaUltimoPedidoGeral();
+      fIntegracaoOdoo.Caption:= 'Integrando Caixa : ' + c_caixa;
+      if (fIntegracaoOdoo.edtUltimpoPedidoA.Text = '()') then
+        fIntegracaoOdoo.edtUltimpoPedidoA.Text := '';
+      fIntegracaoOdoo.memoResult.Lines.Clear;
+      fIntegracaoOdoo.memoDados.Lines.Clear;
+      //memoResult.Lines.Assign(exibe_sql);
+      if (fIntegracaoOdoo.edtUltimpoPedidoA.Text <> '') then
+        cria_json(' IN ' + fIntegracaoOdoo.edtUltimpoPedidoA.Text);
+      Sleep(1000);
+    end;
+begin
+ with TThread.CreateAnonymousThread(TProcedure(@Executa))do
+ begin
+   FreeOnTerminate:= True;
+   Start;
+ end;
+
+end;
+
 procedure TfIntegracaoOdoo.btnEnviandoPedidoClick(Sender: TObject);
 begin
   if (edEste.Text <> '') then
@@ -518,6 +546,11 @@ end;
 procedure TfIntegracaoOdoo.BitBtn1Click(Sender: TObject);
 begin
   edEste.Text := '';
+end;
+
+procedure TfIntegracaoOdoo.btnDevolucaoClick(Sender: TObject);
+begin
+  envia_devolucao;
 end;
 
 procedure TfIntegracaoOdoo.btnSangria_RecClick(Sender: TObject);
@@ -1259,7 +1292,7 @@ var
   forma_pag : String;
   Valor : String;
   tipo :integer;
-  fInteg: TfIntegracaoOdoo;
+  //fInteg: TfIntegracaoOdoo;
   responseData: String;
   sql_str , pedidos: string;
 begin
@@ -1287,25 +1320,98 @@ begin
   end;
   pedidos += '}]';
   memoResult.Lines.Add(pedidos);
-  httpClient := TFPHttpClient.Create(Nil);
-  postJson := TJSONObject.Create;
-  try
-    postJson.Add('title', 'Sangria/Reforço');
-    postJson.Add('todos', pedidos);
-    fInteg := TfIntegracaoOdoo.Create(Self);
-    httpClient := fInteg.logar();
-    With httpClient do
-    begin
-      AddHeader('Content-Type', 'application/json');
-      RequestBody := TStringStream.Create(postJson.AsJSON);
-      responseData := Post(dmPdv.path_integra_url + '/enviasangria');
-      //memoDados.Lines.Add(responseData);
+
+  if(pedidos <> '[{}]') then
+  begin
+    //httpClient := TFPHttpClient.Create(Nil);
+    //postJson := TJSONObject.Create;
+    try
+      postJson.Add('title', 'Sangria/Reforço');
+      postJson.Add('todos', pedidos);
+      //fInteg := TfIntegracaoOdoo.Create(Self);
+      httpClient := logar();
+      With httpClient do
+      begin
+        AddHeader('Content-Type', 'application/json');
+        RequestBody := TStringStream.Create(postJson.AsJSON);
+        responseData := Post(dmPdv.path_integra_url + '/enviasangria');
+        //memoDados.Lines.Add(responseData);
+      end;
+      //fInteg.Free;
+      //postJson.Free;
+    except
     end;
-    fInteg.Free;
-    postJson.Free;
-  except
+
   end;
+
 end;
 
+procedure TfIntegracaoOdoo.envia_devolucao;
+var
+  codForma: integer;
+  vlrSangria: double;
+  Campo : String;
+  forma_pag : String;
+  Valor : String;
+  tipo :integer;
+  //fInteg: TfIntegracaoOdoo;
+  responseData: String;
+  sql_str , devolucao: string;
+begin
+  dmPdv.sqBusca1.Close;
+  dmPdv.sqBusca1.Sql.Clear;
+  sql_str := 'select first 1 mov.codmovimento,mov.codnatureza,mov.hist_mov, ';
+  sql_str += 'movd.quantidade,movd.codproduto, p.produto ';
+  sql_str += 'from produtos p ';
+  sql_str += 'inner join movimentodetalhe movd on (p.codproduto = movd.codproduto) ';
+  sql_str += 'inner join movimento mov on (movd.codmovimento = mov.codmovimento) ';
+  sql_str += 'where mov.codnatureza = ' + QuotedStr('1');
+  sql_str += 'order by mov.codmovimento desc ';
+  dmPdv.sqBusca1.SQL.Add(sql_str);
+  dmPdv.sqBusca1.Open;
+  DecimalSeparator:='.';
+  devolucao := '[{';
+  while not dmPdv.sqBusca1.EOF do
+  begin
+    if devolucao <> '[{' then
+      devolucao += '}, {';
+    devolucao += '"motivo": "' + dmPdv.sqBusca1.Fields[2].AsString + '",' +
+      '"origin": "' + IntToStr(dmPdv.sqBusca1.Fields[0].AsInteger)+ '",' +
+      '"quantidade": "' + FloatToStr(dmPdv.sqBusca1.Fields[3].AsFloat) + '",' +
+      '"produto": "' + IntToStr(dmPdv.sqBusca1.Fields[4].AsInteger) + '",'+
+     '"nproduto": "' + dmPdv.sqBusca1.Fields[5].AsString + '"';
+
+    dmPdv.sqBusca1.Next;
+  end;
+  devolucao += '}]';
+  memoResult.Lines.Add(devolucao);
+
+  if(devolucao <> '[{}]') then
+  begin
+    //httpClient := TFPHttpClient.Create(Nil);
+    //postJson := TJSONObject.Create;
+    try
+      postJson.Add('title', 'Devolucao');
+      postJson.Add('motivo', dmPdv.sqBusca1.Fields[2].AsString);
+      postJson.Add('origin', IntToStr(dmPdv.sqBusca1.Fields[0].AsInteger));
+      postJson.Add('quantidade',FloatToStr(dmPdv.sqBusca1.Fields[3].AsFloat));
+      postJson.Add('produto', IntToStr(dmPdv.sqBusca1.Fields[4].AsInteger));
+      postJson.Add('nproduto', dmPdv.sqBusca1.Fields[5].AsString);
+      //fInteg := TfIntegracaoOdoo.Create(Self);
+      httpClient := logar();
+      With httpClient do
+      begin
+        AddHeader('Content-Type', 'application/json');
+        RequestBody := TStringStream.Create(postJson.AsJSON);
+        responseData := Post(dmPdv.path_integra_url + '/devolucao');
+        memoDados.Lines.Add(responseData);
+      end;
+      //fInteg.Free;
+      //postJson.Free;
+    except
+    end;
+  end;
+
+end;
 end.
 
