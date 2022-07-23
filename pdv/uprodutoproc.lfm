@@ -9,7 +9,7 @@ object fProdutoProc: TfProdutoProc
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  LCLVersion = '2.0.8.0'
+  LCLVersion = '2.0.12.0'
   object Panel1: TPanel
     Left = 0
     Height = 64
@@ -882,7 +882,7 @@ object fProdutoProc: TfProdutoProc
   end
   object dsProc: TDataSource
     DataSet = dmPdv.sqBusca
-    left = 665
-    top = 276
+    Left = 665
+    Top = 276
   end
 end

@@ -6,6 +6,7 @@ object dExecutaIntegracao: TdExecutaIntegracao
   VerticalOffset = 250
   Width = 766
   object Timer1: TTimer
+    Enabled = False
     Interval = 100000
     OnTimer = Timer1Timer
     Left = 159

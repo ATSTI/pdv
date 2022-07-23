@@ -9,7 +9,7 @@ uses
   Graphics, Dialogs, ExtCtrls, StdCtrls, Buttons, MaskEdit, DBGrids, ActnList,
   Menus, dateutils, uMovimento, uCompraCls, uUtil, uVendedorBusca,
   uClienteBusca, uPermissao, uComandaJuntar, uReceber, Grids, ComCtrls,
-  ACBrPosPrinter, MTProcs, strutils, fphttpclient, JsonTools, fpjson,uIntegraSimples;
+  ACBrPosPrinter, MTProcs, strutils, fphttpclient, JsonTools, fpjson,uIntegraSimples, crt;
 
 type
 
@@ -268,6 +268,7 @@ type
     procedure imprimirCupomTroca;
     procedure imprimirAcbr;
     procedure imprime_envio;
+    procedure buscaProduto();
   public
 
   end;
@@ -844,6 +845,8 @@ begin
     ShowMessage('Pedido ja finalizado.');
     Exit;
   end;
+  // 23/07/2022 vou buscar o produto novamente, pois, preciso dos precos
+  buscaProduto();
   pnAltera.Visible:=True;
   edQtde1.Enabled:= True;
   edQtde.Enabled:= True;
@@ -1020,103 +1023,13 @@ begin
 end;
 
 procedure TfPdv.edProdutoKeyPress(Sender: TObject; var Key: char);
-var i: Integer;
-  str_bsc: String;
 begin
   if (dmPdv.IbCon.Connected = False) then
     dmPdv.IbCon.Connected := True;
   if Key = #13 then
   begin
     Key := #0;
-    if ((statusPedido > 0) and (dmPdv.usaComanda = 0)) then
-    begin
-      ShowMessage('Pedido ja finalizado. Clique no Incluir para novo pedido.');
-      Exit;
-    end;
-    if (edProduto.Text <> '') then
-    begin
-      str_bsc := Copy(edProduto.Text,0,1);
-      if (dmpdv.usaComanda > 0) then
-      begin
-        if (str_bsc = '0') then
-        begin
-          str_bsc := edProduto.Text;
-          buscaPedidoComanda(edProduto.Text);
-          if (e_comanda = 'V') then // comanda vazia , sai
-          begin
-            edProduto.Text:='';
-            exit;
-          end;
-          if ((codMov > 0) and (e_comanda = 'S')) then
-          begin
-            abrePedido(codMov);
-            pnComanda.Caption := edClienteNome.Text;//'Comanda ' + str_bsc;
-            e_comanda:='N';
-            exit;
-          end;
-        end
-        else begin
-          if ((statusPedido > 0) and (dmPdv.usaComanda > 0)) then
-          begin
-            ShowMessage('Informe a comanda/mesa.');
-            Exit;
-          end;
-        end;
-      end;
-      fProdutoProc.num_busca:=0;
-      // TODO - preciso definir aqui, qdo e codigo de barra qdo e codigo
-      // do produto, se codigo comecar com 'X' e codigo produto ???!!!
-      // se o codigo tiver mais q 'X' caracter e codigo de barras ??!!
-
-      // digitou letras entao busca pela descricao
-      if (dmpdv.tipo_buscaProd = 'CODPRO') then
-      begin
-        fProdutoProc.busca(edProduto.Text, '','', False);
-      end
-      else begin
-        if not TryStrToInt(Copy(edProduto.Text,0,1),i) then
-        begin
-          fProdutoProc.busca('', '',edProduto.Text, False);
-        end
-        else if ((Copy(edProduto.Text,0,2)='04') and (Length(edProduto.Text) > 6)) then
-        begin
-          buscaVendedor(edProduto.Text);
-          Exit;
-        end
-        else if Length(edProduto.Text) > 7 then
-          fProdutoProc.busca('',edProduto.Text, '', False)
-        else
-          fProdutoProc.busca(edProduto.Text, '','', False);
-      end;
-      if (fProdutoProc.codProduto = 0) then
-      begin
-        //ShowMessage('Produto não Localizado.');
-        pnProdutoNaoLocalizado.Visible:=True;
-        edProdNao.SetFocus;
-        fProdutoProc.Edit2.Text := edProduto.Text;
-        //btnProdutoProc.Click;
-      end;
-    end;
-    if fProdutoProc.num_busca > 1 then
-    begin
-      pnProdBusca.Visible:=True;
-      DBGrid2.SetFocus;
-      Beep;
-      Beep;
-    end;
-    //pnProdBusca.Visible:=False;
-    if fProdutoProc.num_busca = 1 then
-    begin
-      if (consultaItem = 'NAO') then
-        adicionaProduto();
-    end;
-    if fProdutoProc.num_busca = 0 then
-    begin
-      edProduto.Text:='';
-      Beep;
-      Beep;
-      Beep;
-    end;
+    buscaProduto();
   end;
 end;
 
@@ -1592,6 +1505,7 @@ end;
 procedure TfPdv.alterar_item();
 var qAtac:Double;
   calc_desc: Double;
+  calc_atacado: Double;
 begin
   if not dmPdv.sqLancamentos.Active then
   begin
@@ -1612,6 +1526,17 @@ begin
     if ((qtdeAtacado > 0) and (qAtac >= qtdeAtacado)) then
     begin
       FMov.MovDetalhe.Ii    := preco;
+      // o preco de atacado e somente para as qtdes de acado
+      // ex.: qtde atacado = 10, e comprei 12, somente 10 com  preco de atacado
+      // as outras 2 unidades preco normal
+
+      // verifico se tem unidades fora da qtde atacado
+      calc_atacado := Trunc(qAtac) mod Trunc(qtdeAtacado);
+      if (calc_atacado > 0) then
+      begin
+        calc_atacado := ((calc_atacado * preco) + ((qAtac - calc_atacado) * precoAtacado)) / qAtac;
+        precoAtacado := calc_atacado
+      end;
       FMov.MovDetalhe.Preco := precoAtacado;
       edPreco.Text := FormatFloat('#,,,0.00',precoAtacado);
     end
@@ -2471,6 +2396,101 @@ begin
     Writeln(Impressora, '<code128>' + barcode + '</code128>');//Motivo
   finally
     CloseFile(IMPRESSORA);
+  end;
+end;
+
+procedure TfPdv.buscaProduto();
+var i: Integer;
+  str_bsc: String;
+begin
+  if ((statusPedido > 0) and (dmPdv.usaComanda = 0)) then
+  begin
+    ShowMessage('Pedido ja finalizado. Clique no Incluir para novo pedido.');
+    Exit;
+  end;
+  if (edProduto.Text <> '') then
+  begin
+    str_bsc := Copy(edProduto.Text,0,1);
+    if (dmpdv.usaComanda > 0) then
+    begin
+      if (str_bsc = '0') then
+      begin
+        str_bsc := edProduto.Text;
+        buscaPedidoComanda(edProduto.Text);
+        if (e_comanda = 'V') then // comanda vazia , sai
+        begin
+          edProduto.Text:='';
+          exit;
+        end;
+        if ((codMov > 0) and (e_comanda = 'S')) then
+        begin
+          abrePedido(codMov);
+          pnComanda.Caption := edClienteNome.Text;//'Comanda ' + str_bsc;
+          e_comanda:='N';
+          exit;
+        end;
+      end
+      else begin
+        if ((statusPedido > 0) and (dmPdv.usaComanda > 0)) then
+        begin
+          ShowMessage('Informe a comanda/mesa.');
+          Exit;
+        end;
+      end;
+    end;
+    fProdutoProc.num_busca:=0;
+    // TODO - preciso definir aqui, qdo e codigo de barra qdo e codigo
+    // do produto, se codigo comecar com 'X' e codigo produto ???!!!
+    // se o codigo tiver mais q 'X' caracter e codigo de barras ??!!
+
+    // digitou letras entao busca pela descricao
+    if (dmpdv.tipo_buscaProd = 'CODPRO') then
+    begin
+      fProdutoProc.busca(edProduto.Text, '','', False);
+    end
+    else begin
+      if not TryStrToInt(Copy(edProduto.Text,0,1),i) then
+      begin
+        fProdutoProc.busca('', '',edProduto.Text, False);
+      end
+      else if ((Copy(edProduto.Text,0,2)='04') and (Length(edProduto.Text) > 6)) then
+      begin
+        buscaVendedor(edProduto.Text);
+        Exit;
+      end
+      else if Length(edProduto.Text) > 7 then
+        fProdutoProc.busca('',edProduto.Text, '', False)
+      else
+        fProdutoProc.busca(edProduto.Text, '','', False);
+    end;
+    if (fProdutoProc.codProduto = 0) then
+    begin
+      //ShowMessage('Produto não Localizado.');
+      pnProdutoNaoLocalizado.Visible:=True;
+      edProdNao.SetFocus;
+      fProdutoProc.Edit2.Text := edProduto.Text;
+      //btnProdutoProc.Click;
+    end;
+  end;
+  if fProdutoProc.num_busca > 1 then
+  begin
+    pnProdBusca.Visible:=True;
+    DBGrid2.SetFocus;
+    Beep;
+    Beep;
+  end;
+  //pnProdBusca.Visible:=False;
+  if fProdutoProc.num_busca = 1 then
+  begin
+    if (consultaItem = 'NAO') then
+      adicionaProduto();
+  end;
+  if fProdutoProc.num_busca = 0 then
+  begin
+    edProduto.Text:='';
+    Beep;
+    Beep;
+    Beep;
   end;
 end;
 

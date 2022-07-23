@@ -319,11 +319,11 @@ begin
 
   if (codigo <> '') then
   begin
-    sqlProc := sqlProc + ' AND UPPER(CODPRO) LIKE UPPER(' +
+    sqlProc := sqlProc + ' AND (UPPER(CODPRO) LIKE UPPER(' +
       QuotedStr(codigo + '%') + ')';
     sqlProc := sqlProc + ' OR UPPER(CAST(PRODUTO AS VARCHAR(300) ' +
       ' character set UTF8)) LIKE UPPER(' +
-      QuotedStr('%' + codigo + '%') + ')';
+      QuotedStr('%' + codigo + '%') + '))';
   end;
   if (barCode <> '') then
   begin

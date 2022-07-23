@@ -34,8 +34,8 @@
         <UnitName Value="daemonIntegracao"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="99"/>
-        <CursorPos Y="118"/>
+        <TopLine Value="60"/>
+        <CursorPos X="33" Y="47"/>
         <UsageCount Value="22"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -77,7 +77,7 @@
         <UsageCount Value="10"/>
       </Unit6>
     </Units>
-    <JumpHistory Count="21" HistoryIndex="20">
+    <JumpHistory Count="20" HistoryIndex="19">
       <Position1>
         <Filename Value="..\geral\udmpdv.pas"/>
       </Position1>
@@ -142,25 +142,21 @@
         <Caret Line="45" TopLine="22"/>
       </Position16>
       <Position17>
-        <Filename Value="daemonintegra.pas"/>
-        <Caret Line="5" Column="44" TopLine="11"/>
-      </Position17>
-      <Position18>
         <Filename Value="daemonintegracao.pas"/>
         <Caret Line="88" Column="25" TopLine="7"/>
+      </Position17>
+      <Position18>
+        <Filename Value="daemonintegra.pas"/>
+        <Caret Line="38" Column="3" TopLine="22"/>
       </Position18>
       <Position19>
         <Filename Value="daemonintegra.pas"/>
-        <Caret Line="38" Column="3" TopLine="22"/>
+        <Caret Line="39" Column="23" TopLine="22"/>
       </Position19>
       <Position20>
         <Filename Value="daemonintegra.pas"/>
-        <Caret Line="39" Column="23" TopLine="22"/>
-      </Position20>
-      <Position21>
-        <Filename Value="daemonintegra.pas"/>
         <Caret Line="40" Column="17" TopLine="24"/>
-      </Position21>
+      </Position20>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>

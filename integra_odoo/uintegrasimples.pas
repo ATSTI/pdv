@@ -857,12 +857,15 @@ begin
     codproduto := '' ;
     if forma_pagamento = 9 then
     begin
+      dmPdv.sqBusca1.Close;
       //busca movimentodetalhe o codproduto devolvido
-      dmPdv.busca_sql('SELECT CODPRODUTO' +
+      dmPdv.sqBusca1.SQL.Clear;
+      dmPdv.sqBusca1.SQL.Add('SELECT CODPRODUTO' +
         ' FROM MOVIMENTODETALHE WHERE CODMOVIMENTO = ' +
       vCodMovimento );
+      dmPdv.sqBusca1.Open;
       //busca movimentodetalhe o codproduto devolvido
-      codproduto := dmPdv.sqBusca.FieldByName('CODPRODUTO').AsString;
+      codproduto := dmPdv.sqBusca1.FieldByName('CODPRODUTO').AsString;
     end;
     item += '{';
     num += 1;
@@ -870,7 +873,7 @@ begin
     begin
       try
       campo := dmPdv.sqBusca.FieldDefs.Items[i].Name;
-      campos := 'FORMA_PGTO VALOR_PAGO CODCLIENTE DESCONTO ID_ENTRADA';
+      campos := 'FORMA_PGTO VALOR_PAGO CODCLIENTE DESCONTO ID_ENTRADA PROD_TROCA';
       if (pos(campo, Campos) <> 0) then
       begin
         if (not dmPdv.sqBusca.Fields[i].IsNull) then
