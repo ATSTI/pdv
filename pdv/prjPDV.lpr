@@ -7,12 +7,12 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, runtimetypeinfocontrols, datetimectrls, lhelpcontrolpkg,
-  uPdv, updv_rec, uMovimento, uMovimentoDetalhe, udmpdv, uprodutoproc,
-  uMovimentoProc, uvenda, uRecebimento, uExecutaIntegracao, uLogin,
-  uVendedorBusca, uClienteBusca, uSenhaNova, uPermissao, uExcluirItem, uNfce,
-  uabrircaixa, uCadeira, usangria, uAbrirCaixa2, uCursoBusca, uAlunoBusca,
-  uComandaJuntar, uReceber, uEstoqueExecuta, uIntegracaoOdoo, uIntegraSimples;
+  Forms, runtimetypeinfocontrols, datetimectrls, lhelpcontrolpkg, uPdv,
+  updv_rec, uMovimento, uMovimentoDetalhe, udmpdv, uprodutoproc, uMovimentoProc,
+  uvenda, uRecebimento, uExecutaIntegracao, uLogin, uVendedorBusca,
+  uClienteBusca, uSenhaNova, uPermissao, uExcluirItem, uNfce, uabrircaixa,
+  uCadeira, usangria, uAbrirCaixa2, uCursoBusca, uAlunoBusca, uComandaJuntar,
+  uReceber, uEstoqueExecuta, uIntegracaoOdoo, uIntegraSimples;
 
 {$R *.res}
 

@@ -4,13 +4,12 @@
     <PathDelim Value="\"/>
     <Version Value="11"/>
     <BuildModes Active="Default"/>
-    <Units Count="72">
+    <Units Count="73">
       <Unit0>
         <Filename Value="prjPDV.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="8"/>
-        <TopLine Value="22"/>
-        <CursorPos Y="45"/>
+        <CursorPos X="62" Y="15"/>
         <UsageCount Value="206"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -23,15 +22,15 @@
         <UnitName Value="uPdv"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="1519"/>
-        <CursorPos X="60" Y="1541"/>
+        <TopLine Value="680"/>
+        <CursorPos X="3" Y="682"/>
         <UsageCount Value="206"/>
         <Bookmarks Count="5">
-          <Item0 X="36" Y="2244" ID="5"/>
-          <Item1 X="61" Y="1541" ID="1"/>
-          <Item2 X="73" Y="848" ID="2"/>
-          <Item3 X="3" Y="1027" ID="3"/>
-          <Item4 X="9" Y="2494" ID="4"/>
+          <Item0 X="36" Y="2272" ID="5"/>
+          <Item1 X="3" Y="1047" ID="3"/>
+          <Item2 X="9" Y="2522" ID="4"/>
+          <Item3 Y="1325" ID="2"/>
+          <Item4 X="29" Y="856" ID="1"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -43,11 +42,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="5"/>
-        <TopLine Value="1279"/>
-        <CursorPos X="32" Y="1281"/>
+        <TopLine Value="1453"/>
+        <CursorPos X="35" Y="1484"/>
         <UsageCount Value="205"/>
         <Bookmarks Count="1">
-          <Item0 X="58" Y="642" ID="6"/>
+          <Item0 X="58" Y="644" ID="6"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -76,11 +75,11 @@
         <ComponentName Value="dmPdv"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <TopLine Value="2204"/>
-        <CursorPos X="7" Y="2213"/>
+        <TopLine Value="1122"/>
+        <CursorPos X="17" Y="1138"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="1">
-          <Item0 X="3" Y="1414" ID="7"/>
+          <Item0 X="3" Y="1491" ID="7"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -119,7 +118,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uExecutaIntegracao"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="27"/>
+        <TopLine Value="2"/>
         <CursorPos X="53" Y="39"/>
         <UsageCount Value="211"/>
       </Unit8>
@@ -260,7 +259,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="7"/>
-        <TopLine Value="107"/>
+        <TopLine Value="106"/>
         <CursorPos X="3" Y="63"/>
         <UsageCount Value="263"/>
         <Loaded Value="True"/>
@@ -354,8 +353,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uReceber"/>
         <EditorIndex Value="6"/>
-        <TopLine Value="470"/>
-        <CursorPos X="6" Y="342"/>
+        <TopLine Value="356"/>
+        <CursorPos X="3" Y="361"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -392,10 +391,11 @@
         <Filename Value="uintegracaoodoo.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uIntegracaoOdoo"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="5"/>
-        <CursorPos X="41" Y="21"/>
+        <EditorIndex Value="11"/>
+        <TopLine Value="433"/>
+        <CursorPos X="30" Y="438"/>
         <UsageCount Value="200"/>
+        <Loaded Value="True"/>
       </Unit32>
       <Unit33>
         <Filename Value="..\geral\jsontools.pas"/>
@@ -414,9 +414,9 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uIntegraSimples"/>
         <EditorIndex Value="9"/>
-        <TopLine Value="61"/>
-        <CursorPos Y="977"/>
-        <UsageCount Value="110"/>
+        <TopLine Value="609"/>
+        <CursorPos X="43" Y="629"/>
+        <UsageCount Value="122"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit34>
@@ -429,7 +429,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="67" Y="21"/>
-        <UsageCount Value="183"/>
+        <UsageCount Value="182"/>
       </Unit35>
       <Unit36>
         <Filename Value="updv2.pas"/>
@@ -440,14 +440,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="15"/>
         <CursorPos X="28" Y="21"/>
-        <UsageCount Value="143"/>
+        <UsageCount Value="142"/>
       </Unit36>
       <Unit37>
         <Filename Value="C:\lazarus\lcl\include\customform.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="624"/>
         <CursorPos Y="651"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="11"/>
       </Unit37>
       <Unit38>
         <Filename Value="C:\lazarus\lcl\forms.pp"/>
@@ -455,14 +455,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1892"/>
         <CursorPos X="53" Y="1898"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="0"/>
       </Unit38>
       <Unit39>
         <Filename Value="C:\lazarus\lcl\include\control.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3537"/>
         <CursorPos Y="3548"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit39>
       <Unit40>
         <Filename Value="C:\lazarus\lcl\dialogs.pp"/>
@@ -470,21 +470,21 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="680"/>
         <CursorPos X="46" Y="688"/>
-        <UsageCount Value="54"/>
+        <UsageCount Value="53"/>
       </Unit40>
       <Unit41>
         <Filename Value="C:\lazarus20\lcl\include\control.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2231"/>
         <CursorPos Y="2244"/>
-        <UsageCount Value="23"/>
+        <UsageCount Value="22"/>
       </Unit41>
       <Unit42>
         <Filename Value="Z:\programas\lazarus\acbr\Fontes\ACBrDFe\ACBrDFeSSL.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1171"/>
         <CursorPos Y="1184"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit42>
       <Unit43>
         <Filename Value="C:\users\carlos\Meus Documentos\acbr\Fontes\ACBrDFe\ACBrNFe\DANFE\NFCe\Fortes\ACBrDANFCeFortesFr.pas"/>
@@ -494,117 +494,117 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="299"/>
         <CursorPos X="38" Y="310"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit43>
       <Unit44>
         <Filename Value="Z:\programas\lazarus\acbr\Fontes\ACBrSerial\ACBrPosPrinter.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="149"/>
         <CursorPos X="3" Y="162"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit44>
       <Unit45>
         <Filename Value="Z:\lazarus\acbr\Pacotes\Lazarus\ACBrOpenSSL\ACBrOpenSSL.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="40" Y="10"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit45>
       <Unit46>
         <Filename Value="Z:\lazarus\acbr\Fontes\ACBrDFe\ACBrDFeXsLibXml2.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="32"/>
         <CursorPos X="15" Y="43"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit46>
       <Unit47>
         <Filename Value="Z:\acbr\Fontes\ACBrDFe\ACBrDFeSSL.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="52"/>
         <CursorPos X="17" Y="201"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit47>
       <Unit48>
         <Filename Value="Z:\acbr\Fontes\ACBrComum\ACBr.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="282"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit48>
       <Unit49>
         <Filename Value="Z:\acbr\Fontes\ACBrDFe\ACBrDFeWinCrypt.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="833"/>
         <CursorPos X="11" Y="845"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit49>
       <Unit50>
         <Filename Value="Z:\lazarus\acbr\Fontes\ACBrSerial\ACBrEscPosEpson.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="202"/>
         <CursorPos X="73" Y="212"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit50>
       <Unit51>
         <Filename Value="Z:\lazarus\acbr\Fontes\ACBrDFe\ACBrNFe\DANFE\NFCe\Fortes\ACBrDANFCeFortesFr.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="299"/>
         <CursorPos X="38" Y="310"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit51>
       <Unit52>
         <Filename Value="Z:\acbr\Fontes\ACBrComum\ACBrImage.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="60"/>
         <CursorPos X="36" Y="79"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit52>
       <Unit53>
         <Filename Value="Z:\acbr\Fontes\ACBrComum\ACBrBase.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="158"/>
         <CursorPos Y="169"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit53>
       <Unit54>
         <Filename Value="Z:\lazarus\acbr\Pacotes\Lazarus\ACBrDFe\ACBrNFe\DANFE\NFCe\Fortes\ACBr_NFCe_DanfeRL.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2"/>
         <CursorPos X="58" Y="17"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit54>
       <Unit55>
         <Filename Value="D:\lazarus\lcl\include\control.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3555"/>
         <CursorPos Y="3566"/>
-        <UsageCount Value="16"/>
+        <UsageCount Value="15"/>
       </Unit55>
       <Unit56>
         <Filename Value="D:\lazarus\lcl\include\buttoncontrol.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="11"/>
         <CursorPos Y="22"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="10"/>
       </Unit56>
       <Unit57>
         <Filename Value="D:\lazarus\lcl\include\buttons.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="159"/>
         <CursorPos Y="170"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="10"/>
       </Unit57>
       <Unit58>
         <Filename Value="D:\lazarus\lcl\include\bitbtn.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="58"/>
         <CursorPos Y="68"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="10"/>
       </Unit58>
       <Unit59>
         <Filename Value="D:\lazarus\lcl\include\wincontrol.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="5402"/>
         <CursorPos Y="5412"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="10"/>
       </Unit59>
       <Unit60>
         <Filename Value="D:\lazarus\lcl\lclmessageglue.pas"/>
@@ -612,77 +612,78 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="112"/>
         <CursorPos Y="123"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="10"/>
       </Unit60>
       <Unit61>
         <Filename Value="D:\lazarus\lcl\interfaces\win32\win32callback.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2669"/>
         <CursorPos X="50" Y="2679"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="10"/>
       </Unit61>
       <Unit62>
         <Filename Value="Z:\trunk2\Fontes\ACBrDFe\ACBrNFe\PCNNFe\pcnNFeR.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="980"/>
         <CursorPos X="9" Y="995"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit62>
       <Unit63>
         <Filename Value="Z:\trunk2\Fontes\ACBrDFe\ACBrNFe\PCNNFe\pcnNFeW.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2798"/>
         <CursorPos X="7" Y="2812"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit63>
       <Unit64>
         <Filename Value="Z:\trunk2\Fontes\ACBrDFe\ACBrNFe\ACBrNFeNotasFiscais.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3362"/>
         <CursorPos X="3" Y="3377"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit64>
       <Unit65>
         <Filename Value="Z:\trunk2\Fontes\ACBrDFe\ACBrNFe\DANFE\ACBrNFeDANFEClass.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="774"/>
         <CursorPos X="60" Y="782"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit65>
       <Unit66>
         <Filename Value="C:\lazarus\components\lazutils\fileutil.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="622"/>
         <CursorPos Y="637"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit66>
       <Unit67>
         <Filename Value="..\..\trunk2\Fontes\ACBrDFe\ACBrDFeXsLibXml2.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="114"/>
         <CursorPos Y="126"/>
-        <UsageCount Value="13"/>
+        <UsageCount Value="12"/>
       </Unit67>
       <Unit68>
         <Filename Value="..\..\trunk2\Fontes\Terceiros\synalist\synafpc.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="77"/>
         <CursorPos X="58" Y="95"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="0"/>
       </Unit68>
       <Unit69>
         <Filename Value="C:\lazarus12\lcl\include\control.inc"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="10"/>
         <TopLine Value="3535"/>
         <CursorPos Y="3548"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="14"/>
+        <Loaded Value="True"/>
       </Unit69>
       <Unit70>
         <Filename Value="C:\lazarus\fpc\3.2.0\source\packages\fcl-json\src\fpjson.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="692"/>
         <CursorPos X="14" Y="701"/>
-        <UsageCount Value="42"/>
+        <UsageCount Value="41"/>
       </Unit70>
       <Unit71>
         <Filename Value="C:\lazarus\lcl\grids.pas"/>
@@ -690,129 +691,137 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="2334"/>
         <CursorPos Y="2344"/>
-        <UsageCount Value="35"/>
+        <UsageCount Value="34"/>
       </Unit71>
+      <Unit72>
+        <Filename Value="..\geral\luijsonutils.pas"/>
+        <UnitName Value="LuiJSONUtils"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="139"/>
+        <CursorPos X="31" Y="155"/>
+        <UsageCount Value="20"/>
+      </Unit72>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="updv.pas"/>
-        <Caret Line="1778" Column="32" TopLine="1765"/>
+        <Caret Line="1554" Column="67" TopLine="1536"/>
       </Position1>
       <Position2>
         <Filename Value="updv.pas"/>
-        <Caret Line="259" Column="30" TopLine="245"/>
+        <Caret Line="1047" Column="32" TopLine="1024"/>
       </Position2>
       <Position3>
         <Filename Value="updv.pas"/>
-        <Caret Line="483" Column="22" TopLine="456"/>
+        <Caret Line="599" Column="15" TopLine="593"/>
       </Position3>
       <Position4>
         <Filename Value="updv.pas"/>
-        <Caret Line="515" Column="22" TopLine="488"/>
+        <Caret Line="856" Column="29" TopLine="847"/>
       </Position4>
       <Position5>
         <Filename Value="updv.pas"/>
-        <Caret Line="559" Column="20" TopLine="532"/>
+        <Caret Line="32" Column="34" TopLine="9"/>
       </Position5>
       <Position6>
         <Filename Value="updv.pas"/>
-        <Caret Line="1111" Column="24" TopLine="1085"/>
+        <Caret Line="93" Column="15" TopLine="67"/>
       </Position6>
       <Position7>
         <Filename Value="updv.pas"/>
-        <Caret Line="1778" Column="53" TopLine="1751"/>
+        <Caret Line="240" Column="17" TopLine="214"/>
       </Position7>
       <Position8>
         <Filename Value="updv.pas"/>
-        <Caret Line="1026" Column="3" TopLine="1022"/>
+        <Caret Line="241" Column="16" TopLine="215"/>
       </Position8>
       <Position9>
         <Filename Value="updv.pas"/>
-        <Caret Line="595" Column="3" TopLine="593"/>
+        <Caret Line="427" Column="54" TopLine="400"/>
       </Position9>
       <Position10>
         <Filename Value="updv.pas"/>
-        <Caret Line="848" Column="3" TopLine="840"/>
+        <Caret Line="428" Column="53" TopLine="401"/>
       </Position10>
       <Position11>
         <Filename Value="updv.pas"/>
-        <Caret Line="271" Column="30" TopLine="252"/>
+        <Caret Line="442" Column="32" TopLine="415"/>
       </Position11>
       <Position12>
         <Filename Value="updv.pas"/>
-        <Caret Line="2497" Column="3" TopLine="2470"/>
+        <Caret Line="449" Column="35" TopLine="422"/>
       </Position12>
       <Position13>
         <Filename Value="updv.pas"/>
-        <Caret Line="1036" TopLine="1006"/>
+        <Caret Line="482" Column="80" TopLine="455"/>
       </Position13>
       <Position14>
         <Filename Value="updv.pas"/>
-        <Caret Line="2409" Column="7" TopLine="2402"/>
+        <Caret Line="483" Column="72" TopLine="456"/>
       </Position14>
       <Position15>
         <Filename Value="updv.pas"/>
-        <Caret Line="849" Column="18" TopLine="832"/>
+        <Caret Line="514" Column="80" TopLine="487"/>
       </Position15>
       <Position16>
         <Filename Value="updv.pas"/>
-        <Caret Line="2413" Column="43" TopLine="2400"/>
+        <Caret Line="515" Column="72" TopLine="488"/>
       </Position16>
       <Position17>
         <Filename Value="updv.pas"/>
-        <Caret Line="1026" TopLine="1013"/>
+        <Caret Line="553" Column="49" TopLine="526"/>
       </Position17>
       <Position18>
         <Filename Value="updv.pas"/>
-        <Caret Line="2407" Column="19" TopLine="2387"/>
+        <Caret Line="554" Column="43" TopLine="527"/>
       </Position18>
       <Position19>
         <Filename Value="updv.pas"/>
-        <Caret Line="1528" TopLine="1513"/>
+        <Caret Line="1047" Column="15" TopLine="1020"/>
       </Position19>
       <Position20>
         <Filename Value="updv.pas"/>
-        <Caret Line="1530" TopLine="1513"/>
+        <Caret Line="1532" Column="15" TopLine="1511"/>
       </Position20>
       <Position21>
         <Filename Value="updv.pas"/>
-        <Caret Line="1528" TopLine="1513"/>
+        <Caret Line="1549" Column="49" TopLine="1539"/>
       </Position21>
       <Position22>
         <Filename Value="updv.pas"/>
-        <Caret Line="1530" TopLine="1513"/>
+        <Caret Line="856" Column="29" TopLine="839"/>
       </Position22>
       <Position23>
         <Filename Value="updv.pas"/>
-        <Caret Line="1536" TopLine="1513"/>
+        <Caret Line="1321" TopLine="1305"/>
       </Position23>
       <Position24>
         <Filename Value="updv.pas"/>
-        <Caret Line="1528" TopLine="1513"/>
+        <Caret Line="1048" Column="17" TopLine="1026"/>
       </Position24>
       <Position25>
         <Filename Value="updv.pas"/>
-        <Caret Line="1530" TopLine="1513"/>
+        <Caret Line="2426" Column="29" TopLine="2491"/>
       </Position25>
       <Position26>
         <Filename Value="updv.pas"/>
-        <Caret Line="1528" TopLine="1513"/>
+        <Caret Line="274" Column="27" TopLine="260"/>
       </Position26>
       <Position27>
         <Filename Value="updv.pas"/>
-        <Caret Line="1530" TopLine="1513"/>
+        <Caret Line="865" Column="17" TopLine="846"/>
       </Position27>
       <Position28>
         <Filename Value="updv.pas"/>
-        <Caret Line="1528" TopLine="1513"/>
+        <Caret Line="868" Column="19" TopLine="846"/>
       </Position28>
       <Position29>
         <Filename Value="updv.pas"/>
-        <Caret Line="1530" TopLine="1513"/>
+        <Caret Line="1051" Column="15" TopLine="1025"/>
       </Position29>
       <Position30>
         <Filename Value="updv.pas"/>
-        <Caret Line="1528" TopLine="1513"/>
+        <Caret Line="871" Column="49" TopLine="850"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -821,6 +830,15 @@
     </RunParams>
   </ProjectSession>
   <Debugging>
+    <BreakPoints Count="1">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\integra_odoo\uintegrasimples.pas"/>
+        <Line Value="577"/>
+      </Item1>
+    </BreakPoints>
     <Watches Count="6">
       <Item2>
         <Expression Value="ibcon.password"/>

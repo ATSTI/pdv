@@ -333,7 +333,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="..\geral;..;..\integra_odoo"/>
+      <OtherUnitFiles Value="..\geral;..;..\integra_odoo;..\dataset_serialize"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Parsing>

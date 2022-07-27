@@ -90,6 +90,7 @@ type
     Label2: TLabel;
     Label20: TLabel;
     Label21: TLabel;
+    lblAtacadoQtde: TLabel;
     Label6: TLabel;
     Label7: TLabel;
     lblMSG: TLabel;
@@ -146,6 +147,7 @@ type
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
     TIButton2: TTIButton;
+    Timer1: TTimer;
     procedure acComandaJuntarExecute(Sender: TObject);
     procedure acConsultaItemExecute(Sender: TObject);
     procedure acEnviarPedidoExecute(Sender: TObject);
@@ -233,6 +235,7 @@ type
     codPro: String;
     proDesc: String;
     num_pedido: String;
+    executou_integracao: Integer;
     preco: Double;
     precoAtacado: Double;
     qtdeAtacado: Double;
@@ -602,6 +605,7 @@ begin
 end;
 
 procedure TfPdv.acReceberExecute(Sender: TObject);
+var Integra_odoo: TIntegracaoOdoo;
 begin
   if (dmpdv.sqLancamentosSTATUS.AsInteger = 2) then
   begin
@@ -660,6 +664,17 @@ begin
      statusPedido:=9;
   end;
   Memo2.Text := fPDV_Rec.v_log;
+
+  // a ideia e nao fazer em todo pedido
+  // pois a integracao pega os ultimos 10
+  if executou_integracao > 0 then
+  begin
+    Integra_odoo := TIntegracaoOdoo.Create(True);
+    Integra_odoo.c_caixa := IntToStr(caixa_local);
+    Integra_odoo.Start;
+    executou_integracao:=0;
+  end;
+  //Integra_odoo.Terminate;
 end;
 
 procedure TfPdv.BitBtn10Click(Sender: TObject);
@@ -847,6 +862,11 @@ begin
   end;
   // 23/07/2022 vou buscar o produto novamente, pois, preciso dos precos
   buscaProduto();
+  lblAtacadoQtde.Caption:= '';
+  if (qtdeAtacado > 0) then
+  begin
+    lblAtacadoQtde.Caption:= 'Atacado ' + FloatToStr(qtdeAtacado);
+  end;
   pnAltera.Visible:=True;
   edQtde1.Enabled:= True;
   edQtde.Enabled:= True;
@@ -1117,6 +1137,10 @@ begin
   DBGrid1.Columns[2].Width := dmPdv.tamanhoDescProd;
   DBGrid1.Columns[1].Width := dmPdv.tamanhoCodProd;
   Image1.Picture.LoadFromFile('logo.png');
+  if dmpdv.time_integra = 0 then
+     Timer1.Interval := 60000
+  else
+    Timer1.Interval := dmpdv.time_integra;
 end;
 
 procedure TfPdv.FormShow(Sender: TObject);
@@ -1298,6 +1322,10 @@ procedure TfPdv.Timer1Timer(Sender: TObject);
 begin
   //lblMSG.Caption:='Integrando pedidos ...';
   //executa('atsOrder.py');
+  if executou_integracao >= 1 then
+    executou_integracao:=0
+  else
+    Inc(executou_integracao);
 end;
 
 procedure TfPdv.Timer2Timer(Sender: TObject);

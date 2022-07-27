@@ -9,7 +9,7 @@ uses
   ExtCtrls, Buttons, DBGrids, MaskEdit, ActnList, Menus, ACBrPosPrinter, udmpdv,
   uvenda, uRecebimento, uClienteBusca, uNfce, sqldb, db, math, StrUtils,
   IniFiles, uCadeira, uPermissao, uIntegracaoOdoo, typinfo, LConvEncoding,
-  fphttpclient, JsonTools, uIntegraSimples, fpjson, jsonparser;
+  fphttpclient, JsonTools, uIntegraSimples, fpjson, jsonparser, DataSet.Serialize;
 
 type
 
@@ -198,6 +198,7 @@ var
 
 implementation
 
+
 {$R *.lfm}
 
 { TfPDV_Rec }
@@ -269,6 +270,7 @@ begin
       end;
     end;
   end;
+  //gerarjson; // coloquei pra testar com o Dataset to Json dataset_serialize datasettojson
 end;
 
 procedure TfPDV_Rec.GroupBox2Click(Sender: TObject);
@@ -1443,7 +1445,11 @@ var
   i: Integer;
   num: Integer;
   campos: String;
-    responseData: String;
+  responseData: String;
+  LJSONArray: TJSONArray;
+  LJSONObject: TJSONObject;
+  httpClient : TFPHttpClient;
+  fInteg: TfIntegracaoOdoo;
 begin
   // novo 16/11/21
   postJson := TJSONObject.Create;
@@ -1453,6 +1459,43 @@ begin
   if ( not dmPdv.sqLancamentos.Active) then
     dmPdv.sqLancamentos.Open;
   dmPdv.sqLancamentos.First;
+
+
+  //LJSONArray := dmPdv.sqLancamentos.ToJSONArray(); // export all records
+
+  //Memo1.Lines.Text := LJSONArray.AsJSON;
+  //httpClient := TFPHttpClient.Create(Nil);
+  //postJson := TJSONObject.Create;
+  fInteg := TfIntegracaoOdoo.Create(Self);
+  httpClient := fInteg.logar();
+  try
+    While not dmPdv.sqLancamentos.EOF do
+    begin
+      //postJson.Add('title', 'Contas a Receber');
+      With httpClient do
+      begin
+        AddHeader('Content-Type', 'application/json');
+        LJSONObject := dmPdv.sqLancamentos.ToJSONObject(); // export a single record
+        RequestBody := TStringStream.Create(LJSONObject.AsJSON);
+        responseData := Post(dmPdv.path_integra_url + '/pedidoconsulta');
+        //memoResult.Lines.Add(responseData);
+      end;
+      dmPdv.sqLancamentos.Next;
+    end;
+    fInteg.Free;
+    //httpClient.Free;
+    //postJson.Free;
+  except
+  end;
+
+  // coloquei este exit aqui pq nao preciso do resto do codigo
+  exit;
+
+
+
+
+
+
   while not dmPdv.sqLancamentos.Eof do
   begin
     for i:=0 to dmPdv.sqLancamentos.FieldDefs.Count-1 do
@@ -2000,7 +2043,7 @@ begin
   //EstoqueExe.Resume;
   // 26/11/21 Carlos
   //if (dmpdv.empresa_integra <> 'ATS') then
-  //  gerarjson;
+
 
   {if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
   begin
@@ -2010,6 +2053,7 @@ begin
     except
     end;
   end;}
+
   Close;
   // sendo chamado pelo dmpdv
   //IntegracaoOdoo := TIntegracaoOdoo.Create(True);

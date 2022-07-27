@@ -12410,9 +12410,9 @@ object fPdv: TfPdv
       end
     end
     object pnAltera: TPanel
-      Left = 32
+      Left = 104
       Height = 247
-      Top = 216
+      Top = 176
       Width = 413
       BorderStyle = bsSingle
       ClientHeight = 243
@@ -12573,11 +12573,26 @@ object fPdv: TfPdv
         OnClick = BitBtn10Click
         TabOrder = 4
       end
+      object lblAtacadoQtde: TLabel
+        Left = 64
+        Height = 1
+        Top = 200
+        Width = 1
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clWhite
+        Font.Height = -19
+        Font.Name = 'Comic Sans MS'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
     end
     object pnProdutoNaoLocalizado: TPanel
-      Left = 104
+      Left = 108
       Height = 162
-      Top = 216
+      Top = 224
       Width = 409
       ClientHeight = 162
       ClientWidth = 409
@@ -12758,5 +12773,11 @@ object fPdv: TfPdv
     LinhasBuffer = 30
     Left = 607
     Top = 15
+  end
+  object Timer1: TTimer
+    Interval = 10000
+    OnTimer = Timer1Timer
+    Left = 703
+    Top = 3
   end
 end
