@@ -585,6 +585,7 @@ begin
   ACBrPosPrinter1.Modelo:= TACBrPosPrinterModelo(cbxModeloPosPrinter.ItemIndex);
   ACBrPosPrinter1.LinhasEntreCupons := dmPdv.espacoEntreLinhas;
   ACBrNFeDANFeESCPOS1.LarguraBobina := dmPdv.imp_larguraBobina;
+  ACBrNFeDANFeESCPOS1.NumCopias := dmPdv.imp_numcopias;
   if (cbxModeloPosPrinter.ItemIndex = 4) then
   begin
     ACBrPosPrinter1.ConfigQRCode.LarguraModulo:=3;
@@ -825,11 +826,11 @@ begin
   //begin
   if (chkmudarnumero.Checked) then
   begin
-    num_nfce := StrToInt(edNFce.Text);
-  end
-  else begin
     num_nfce := dmPdv.sqBusca.FieldByName('NUM').AsInteger+1;
     edNFce.Text:=IntToStr(num_nfce);
+  end
+  else begin
+    num_nfce := StrToInt(edNFce.Text);
   end;
   //end;
   with ACBrNFe1.NotasFiscais.Add.NFe do
@@ -847,6 +848,8 @@ begin
     ////else
      //// Ide.indPag    := ipPrazo;
     Ide.modelo    := 65;
+    if (serie_nfce = 0) then
+      serie_nfce := 1;
     Ide.serie     := serie_nfce;
     Ide.nNF       := num_nfce;
     Ide.dEmi      := now;
@@ -1990,6 +1993,7 @@ begin
     SSLXmlSignLib:= TSSLXmlSignLib(cbXmlSignLib.ItemIndex);
   end;
   ACBrNFe1.SSL.CarregarCertificado;
+  ACBrNFeDANFeESCPOS1.NumCopias := dmPdv.imp_numcopias;
   ACBrNFe1.DANFE := ACBrNFeDANFeESCPOS1;
   ACBrNFeDANFeESCPOS1.PosPrinter := ACBrPosPrinter1;
 end;

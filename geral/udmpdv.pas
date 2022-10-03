@@ -1088,6 +1088,7 @@ type
     imp_ColunaFonteNormal: Integer;
     imp_larguraBobina: Integer;
     imp_desconto_item: String;
+    imp_numcopias: Integer;
     function executaSql(strSql: String): Boolean;
     procedure executaDSQL(strDSQL: String); // criei pra executar o atualiza Bd
     procedure gravaLog(DataLog: TDateTime; usuario: String; tipoMovimento: String;
@@ -1134,6 +1135,7 @@ begin
   clientePadrao := 1;
   tipo_buscaProd := 'NORMAL';
   tipo_CodBarra := 'PRECO';
+  imp_numcopias:=0;
   MICRO := GetEnvironmentVariable('COMPUTERNAME');
   path_exe := ExtractFilePath(ParamStr(0));
   path_xml := path_exe;
@@ -1177,6 +1179,7 @@ begin
       imp_vias := conf.ReadInteger('IMPRESSORA', 'NumeroVias', 1);
       imp_LinhasBuffer:= conf.ReadInteger('IMPRESSORA', 'LinhasBuffer', 10);
       imp_larguraBobina:= conf.ReadInteger('IMPRESSORA', 'LarguraBobina', 302);
+      imp_numcopias:= conf.ReadInteger('IMPRESSORA', 'NumCopiasDanfe', 0);
       SSLLib     := conf.ReadInteger( 'Certificado','SSLLib' ,0) ;
       CryptLib   := conf.ReadInteger( 'Certificado','CryptLib' , 0) ;
       HttpLib    := conf.ReadInteger( 'Certificado','HttpLib' , 0) ;
@@ -1244,6 +1247,7 @@ begin
       imp_vias := conf.ReadInteger('IMPRESSORA', 'NumeroVias', 1);
       imp_LinhasBuffer:= conf.ReadInteger('IMPRESSORA', 'LinhasBuffer', 10);
       imp_larguraBobina:= conf.ReadInteger('IMPRESSORA', 'LarguraBobina', 10);
+      imp_numcopias:= conf.ReadInteger('IMPRESSORA', 'NumCopiasDanfe', 0);
       //snh:= EncodeStringBase64(snh); // Ver a senha Encryptada
       snh:= DecodeStringBase64(snh);
       IBCon.Password := snh;

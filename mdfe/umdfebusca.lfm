@@ -6,7 +6,7 @@ object fMDFeBusca: TfMDFeBusca
   Caption = 'MDFe Geradas'
   ClientHeight = 518
   ClientWidth = 1103
-  LCLVersion = '2.0.6.0'
+  LCLVersion = '2.0.12.0'
   object Panel1: TPanel
     Left = 0
     Height = 88
@@ -22,22 +22,22 @@ object fMDFeBusca: TfMDFeBusca
       Top = 5
       Width = 321
       Caption = 'Por período'
-      ClientHeight = 58
+      ClientHeight = 56
       ClientWidth = 317
       TabOrder = 0
       object CheckBox1: TCheckBox
         Left = 62
-        Height = 17
+        Height = 19
         Top = 4
-        Width = 77
+        Width = 78
         Caption = 'CheckBox1'
         TabOrder = 0
       end
       object DateTimePicker1: TDateTimePicker
         Left = 61
-        Height = 21
+        Height = 23
         Top = 32
-        Width = 89
+        Width = 83
         CenturyFrom = 1941
         MaxDate = 2958465
         MinDate = -53780
@@ -57,9 +57,9 @@ object fMDFeBusca: TfMDFeBusca
       end
       object DateTimePicker2: TDateTimePicker
         Left = 184
-        Height = 21
+        Height = 23
         Top = 32
-        Width = 89
+        Width = 83
         CenturyFrom = 1941
         MaxDate = 2958465
         MinDate = -53780
@@ -79,9 +79,9 @@ object fMDFeBusca: TfMDFeBusca
       end
       object Label1: TLabel
         Left = 165
-        Height = 13
+        Height = 15
         Top = 37
-        Width = 7
+        Width = 6
         Caption = 'a'
         ParentColor = False
       end
@@ -92,6 +92,7 @@ object fMDFeBusca: TfMDFeBusca
       Top = 20
       Width = 75
       Caption = 'btnProcurar'
+      OnClick = btnProcurarClick
       TabOrder = 1
     end
     object btnEditar: TBitBtn
@@ -100,6 +101,7 @@ object fMDFeBusca: TfMDFeBusca
       Top = 20
       Width = 75
       Caption = 'btnEditar'
+      OnClick = btnEditarClick
       TabOrder = 2
     end
     object btnIncluir: TBitBtn
@@ -108,6 +110,7 @@ object fMDFeBusca: TfMDFeBusca
       Top = 20
       Width = 75
       Caption = 'btnIncluir'
+      OnClick = btnIncluirClick
       TabOrder = 3
     end
     object btnFechar: TBitBtn
@@ -205,8 +208,8 @@ object fMDFeBusca: TfMDFeBusca
   end
   object dsMDFe: TDataSource
     DataSet = sqMDFe
-    left = 552
-    top = 24
+    Left = 552
+    Top = 24
   end
   object sqMDFe: TSQLQuery
     IndexName = 'DEFAULT_ORDER'
@@ -845,9 +848,8 @@ object fMDFeBusca: TfMDFeBusca
       'SELECT * FROM MDFE'
     )
     Params = <>
-    DataSource = dsMDFe
-    left = 496
-    top = 24
+    Left = 496
+    Top = 24
     object sqMDFeCOD_MDFE: TLongintField
       DisplayLabel = 'Cód.'
       DisplayWidth = 6
@@ -1173,8 +1175,6 @@ object fMDFeBusca: TfMDFeBusca
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqMDFeUNID_PESO: TSmallintField
@@ -1194,8 +1194,6 @@ object fMDFeBusca: TfMDFeBusca
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqMDFeCNPJ_AUTORIZADO1: TStringField
@@ -1555,8 +1553,6 @@ object fMDFeBusca: TfMDFeBusca
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqMDFePESO_VOLUME2: TFloatField
@@ -1567,8 +1563,6 @@ object fMDFeBusca: TfMDFeBusca
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqMDFePESO_VOLUME3: TFloatField
@@ -1579,8 +1573,6 @@ object fMDFeBusca: TfMDFeBusca
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqMDFePESO_VOLUME4: TFloatField
@@ -1591,8 +1583,6 @@ object fMDFeBusca: TfMDFeBusca
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqMDFePESO_VOLUME5: TFloatField
@@ -1603,8 +1593,6 @@ object fMDFeBusca: TfMDFeBusca
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqMDFePESO_VOLUME6: TFloatField
@@ -1615,8 +1603,6 @@ object fMDFeBusca: TfMDFeBusca
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqMDFePESO_VOLUME7: TFloatField
@@ -1627,8 +1613,6 @@ object fMDFeBusca: TfMDFeBusca
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqMDFeCHAVE_MDFE: TStringField
@@ -1696,8 +1680,6 @@ object fMDFeBusca: TfMDFeBusca
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqMDFeNF2_CNPJ: TStringField
@@ -1755,8 +1737,6 @@ object fMDFeBusca: TfMDFeBusca
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqMDFeNF3_CNPJ: TStringField
@@ -1814,8 +1794,6 @@ object fMDFeBusca: TfMDFeBusca
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqMDFePROTOCOLOENC: TStringField

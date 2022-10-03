@@ -141,6 +141,9 @@ type
     sqMDFeUNID_TRANSP: TStringField;
     sqMDFeVALOR_CARGA: TFloatField;
     sqMDFeVERSAO_APLICATIVO: TStringField;
+    procedure btnEditarClick(Sender: TObject);
+    procedure btnIncluirClick(Sender: TObject);
+    procedure btnProcurarClick(Sender: TObject);
   private
 
   public
@@ -153,6 +156,23 @@ var
 implementation
 
 {$R *.lfm}
+
+{ TfMDFeBusca }
+
+procedure TfMDFeBusca.btnEditarClick(Sender: TObject);
+begin
+
+end;
+
+procedure TfMDFeBusca.btnIncluirClick(Sender: TObject);
+begin
+
+end;
+
+procedure TfMDFeBusca.btnProcurarClick(Sender: TObject);
+begin
+
+end;
 
 end.
 

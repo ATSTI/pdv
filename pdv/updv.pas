@@ -233,9 +233,9 @@ type
     codPro: String;
     proDesc: String;
     num_pedido: String;
-    preco: Double;
-    precoAtacado: Double;
-    qtdeAtacado: Double;
+    precoL: Double;
+    precoAtacadoL: Double;
+    qtdeAtacadoL: Double;
     estoque: Double;
     vTotDesc: Double;
     vTotGeral: Double;
@@ -389,7 +389,7 @@ begin
       end;
     end;
     edPreco.Text := edPreco1.Text;
-    preco := fPDV_Rec.strParaFloat(edPreco.Text);
+    //precoL := fPDV_Rec.strParaFloat(edPreco.Text);
     edDesconto.SetFocus;
   end;
 
@@ -406,7 +406,7 @@ begin
   if Key = #13 then
   begin
     Key := #0;
-    preco := fPDV_Rec.strParaFloat(edPreco.Text);
+    precoL := fPDV_Rec.strParaFloat(edPreco.Text);
     alterar_item();
     calculaTotalGeral();
   end;
@@ -420,9 +420,9 @@ begin
     edProduto.Text := dmPdv.sqLancamentosCODPRO.AsString;
     edQtde.Text    := FormatFloat('#,,,0.00',dmPdv.sqLancamentosQUANTIDADE.AsFloat);
     edPreco.Text   := FormatFloat('#,,,0.00',dmPdv.sqLancamentosPRECO.AsFloat);
-    preco          := dmPdv.sqLancamentosPRECO.AsFloat;
-    precoAtacado   := dmPdv.sqLancamentosPRECOATACADO.AsFloat;
-    qtdeAtacado    := dmPdv.sqLancamentosQTDEATACADO.AsInteger;
+    precoL         := dmPdv.sqLancamentosPRECO.AsFloat;
+    precoAtacadoL   := dmPdv.sqLancamentosPRECOATACADO.AsFloat;
+    qtdeAtacadoL    := dmPdv.sqLancamentosQTDEATACADO.AsFloat;
     edDesconto.Text:= FormatFloat('#,,,0.00',dmPdv.sqLancamentosDESCONTO.AsFloat);
     buscaVendedor(IntToStr(dmPdv.sqLancamentosCODVENDEDOR.AsInteger));
     preencherDescItem(dmPdv.sqLancamentosDESCPRODUTO.AsString);
@@ -546,14 +546,14 @@ begin
     codproduto := fProdutoProc.codProduto;
     codPro     := fProdutoProc.codProd;
     edProduto.Text := codPro;
-    preco      := fProdutoProc.precoVenda;
-    precoAtacado:=fProdutoProc.precoVendaAtacado;
-    qtdeAtacado:= fProdutoProc.qtdeAtacado;
+    precoL     := fProdutoProc.precoVenda;
+    precoAtacadoL:=fProdutoProc.precoVendaAtacado;
+    qtdeAtacadoL:= fProdutoProc.qtdeAtacado;
     estoque    := fProdutoProc.estoque;
     proDesc    := fProdutoProc.produto;
     //edProdutoDescX.Text := proDesc;
     preencherDescItem(proDesc);
-    edPreco.Text:= FormatFloat('#,,,0.00',preco);
+    edPreco.Text:= FormatFloat('#,,,0.00',precoL);
     edQtde.Text:='1,00';
     edProduto.Text := codPro;
     edProduto.SetFocus;
@@ -839,14 +839,39 @@ begin
 end;
 
 procedure TfPdv.acQuantidadeExecute(Sender: TObject);
+var i: Integer;
 begin
+  if (edProduto.Text = '') then
+  begin
+    ShowMessage('Selecione o ITEM.');
+    Exit;
+  end;
+
   if (statusPedido > 0) then
   begin
     ShowMessage('Pedido ja finalizado.');
     Exit;
   end;
   // 23/07/2022 vou buscar o produto novamente, pois, preciso dos precos
-  buscaProduto();
+  //buscaProduto();
+  if (dmpdv.tipo_buscaProd = 'CODPRO') then
+  begin
+    fProdutoProc.busca(edProduto.Text, '','', False);
+  end
+  else begin
+    if not TryStrToInt(Copy(edProduto.Text,0,1),i) then
+    begin
+      fProdutoProc.busca('', '',edProduto.Text, False);
+    end
+    else if Length(edProduto.Text) > 7 then
+      fProdutoProc.busca('',edProduto.Text, '', False)
+    else
+      fProdutoProc.busca(edProduto.Text, '','', False);
+  end;
+  qtdeAtacadoL := fProdutoProc.qtdeAtacado;
+  precoAtacadoL:= fProdutoProc.precoVendaAtacado;
+  precoL := fProdutoProc.precoVenda;
+  //consultaItem := 'SIM';
   pnAltera.Visible:=True;
   edQtde1.Enabled:= True;
   edQtde.Enabled:= True;
@@ -1026,7 +1051,7 @@ procedure TfPdv.edProdutoKeyPress(Sender: TObject; var Key: char);
 begin
   if (dmPdv.IbCon.Connected = False) then
     dmPdv.IbCon.Connected := True;
-  if Key = #13 then
+  if ((Key = #13) and (edProduto.Text <> '')) then
   begin
     Key := #0;
     buscaProduto();
@@ -1523,22 +1548,27 @@ begin
     fMov.MovDetalhe.CodDet := codDet;
     FMov.MovDetalhe.Qtde   := fPDV_Rec.strParaFloat(edQtde.Text);
     qAtac := fPDV_Rec.strParaFloat(edQtde.Text);
-    if ((qtdeAtacado > 0) and (qAtac >= qtdeAtacado)) then
+    if ((qtdeAtacadoL > 0) and (qAtac >= qtdeAtacadoL)) then
     begin
-      FMov.MovDetalhe.Ii    := preco;
-      // o preco de atacado e somente para as qtdes de acado
+      FMov.MovDetalhe.Ii    := precoL;
+      // o preco de atacado e somente para as qtdes de atacado
       // ex.: qtde atacado = 10, e comprei 12, somente 10 com  preco de atacado
       // as outras 2 unidades preco normal
 
       // verifico se tem unidades fora da qtde atacado
-      calc_atacado := Trunc(qAtac) mod Trunc(qtdeAtacado);
+      try
+        calc_atacado := Trunc(qAtac) mod Trunc(qtdeAtacadoL);
+      except
+        calc_atacado := 0;
+        precoAtacadoL := precoL;
+      end;
       if (calc_atacado > 0) then
       begin
-        calc_atacado := ((calc_atacado * preco) + ((qAtac - calc_atacado) * precoAtacado)) / qAtac;
-        precoAtacado := calc_atacado
+        calc_atacado := ((calc_atacado * precoL) + ((qAtac - calc_atacado) * precoAtacadoL)) / qAtac;
+        precoAtacadoL := calc_atacado;
       end;
-      FMov.MovDetalhe.Preco := precoAtacado;
-      edPreco.Text := FormatFloat('#,,,0.00',precoAtacado);
+      FMov.MovDetalhe.Preco := precoAtacadoL;
+      edPreco.Text := FormatFloat('#,,,0.00',precoAtacadoL);
     end
     else begin
       FMov.MovDetalhe.Ii    := 0;
@@ -1555,7 +1585,6 @@ begin
       else
         FMov.MovDetalhe.Desconto:=fPDV_Rec.strParaFloat(edDesconto.Text);
     end;
-
     FMov.MovDetalhe.Status := '0';
     fMov.MovDetalhe.alterarMovDet();
     dmPdv.sTrans.Commit;
@@ -1689,15 +1718,15 @@ procedure TfPdv.adicionaProduto();
 begin
     codproduto := fProdutoProc.codProduto;
     codPro     := fProdutoProc.codProd;
-    preco      := fProdutoProc.precoVenda;
-    precoAtacado:=fProdutoProc.precoVendaAtacado;
-    qtdeAtacado:= fProdutoProc.qtdeAtacado;
+    precoL     := fProdutoProc.precoVenda;
+    precoAtacadoL:=fProdutoProc.precoVendaAtacado;
+    qtdeAtacadoL:= fProdutoProc.qtdeAtacado;
     estoque    := fProdutoProc.estoque;
     proDesc    := fProdutoProc.produto;
     //edProdutoDescX.Text := proDesc;
     preencherDescItem(proDesc);
-    edPreco.Text:= FormatFloat('#,,,0.00',preco);
-    edPreco1.Text:= FormatFloat('#,,,0.00',preco);
+    edPreco.Text:= FormatFloat('#,,,0.00',precoL);
+    edPreco1.Text:= FormatFloat('#,,,0.00',precoL);
     edQtde.Text  := FormatFloat('#,,,0.000', fProdutoProc.quantidadeVenda);
     edQtde1.Text := FormatFloat('#,,,0.000', fProdutoProc.quantidadeVenda);
     edDesconto.Text:='0,00';

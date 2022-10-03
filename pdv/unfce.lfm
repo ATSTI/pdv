@@ -3526,6 +3526,7 @@ object fNfce: TfNfce
     end
   end
   object ACBrNFeDANFeESCPOS1: TACBrNFeDANFeESCPOS
+    MostraSetup = True
     Sistema = 'Projeto ACBr - www.projetoacbr.com.br'
     MargemInferior = 0.2
     MargemSuperior = 0.2

@@ -2,8 +2,8 @@ object dmPdv: TdmPdv
   OnCreate = DataModuleCreate
   OldCreateOrder = False
   Height = 684
-  HorizontalOffset = 440
-  VerticalOffset = 0
+  HorizontalOffset = 519
+  VerticalOffset = 153
   Width = 934
   object IbCon: TIBConnection
     Connected = False
