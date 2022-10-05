@@ -38,7 +38,7 @@ object fRecebimento: TfRecebimento
       Left = 592
       Height = 15
       Top = 15
-      Width = 54
+      Width = 57
       Caption = 'Valor Total'
       ParentColor = False
     end
@@ -73,7 +73,7 @@ object fRecebimento: TfRecebimento
       Left = 393
       Height = 15
       Top = 62
-      Width = 56
+      Width = 57
       Caption = 'Valor Pago'
       ParentColor = False
     end
@@ -1173,7 +1173,7 @@ object fRecebimento: TfRecebimento
       Left = 393
       Height = 15
       Top = 8
-      Width = 68
+      Width = 69
       Caption = 'Valor a Pagar'
       ParentColor = False
     end
@@ -1196,7 +1196,7 @@ object fRecebimento: TfRecebimento
       Left = 393
       Height = 15
       Top = 34
-      Width = 59
+      Width = 60
       Caption = 'Valor Juros '
       ParentColor = False
     end

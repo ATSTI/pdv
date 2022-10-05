@@ -274,10 +274,8 @@ begin
    vt:=(StrToFloat(a) + StrToFloat(c)) ;
 
    edPago1.Text:= FloatToStr(vt);
-
-
-
-   pCod := (StringGrid1.Cells[StringGrid1.Col, StringGrid1.Row]);
+   //pCod := (StringGrid1.Cells[StringGrid1.Col, StringGrid1.Row]);
+   pCod := StringGrid1.Cells[0,d];
    Label3.Caption := pCod ;
   // edJuros.Text:= (StringGrid1.Cells[StringGrid1.Col, StringGrid1.Row]);
 end;
@@ -581,9 +579,6 @@ var
  v_log: string;
  dataRec: string;
  vtotalR: Double;
-
-
-
 begin
   memo1.Lines.Clear;
   // baixar pagamentos
@@ -615,7 +610,6 @@ begin
   if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
   begin
     enviar_caixa(vlr_pg,StrToInt(pCod)); // o codigo que foi selecionado no grid
-
     v_log := 'Log de impressão - ';
     totalP := 0;
     totalD := 0;
@@ -651,6 +645,11 @@ begin
     v_log := 'Log abrindo cupomRec.txt ' + dmpdv.path_exe + 'cupomRec_Odoo.txt';
     try
       Rewrite(IMPRESSORA);
+      if not (FileExists(dmpdv.path_exe + 'cupomRec_Odoo.txt')) then
+      begin
+        ShowMessage('Crie o arquivo cupomRec_Odoo.txt');
+        Exit;
+      end;
       lFile.LoadFromFile(dmpdv.path_exe + 'cupomRec_Odoo.txt');
       for i:=0 to lFile.Count-1 do
       begin
@@ -817,8 +816,6 @@ begin
   end else
   rgSituacao.ItemIndex := 1;
   btnProcurar.Click;
-
-
 end;
 
 procedure TfRecebimento.BitBtn1Click(Sender: TObject);

@@ -875,8 +875,9 @@ begin
   pnAltera.Visible:=True;
   edQtde1.Enabled:= True;
   edQtde.Enabled:= True;
-  edQtde1.Text:=edQtde.Text;
-  edPreco1.Text:=edPreco.Text;
+  edQtde1.Text := edQtde.Text;
+  edPreco1.Text:= FormatFloat('#,,,0.00',precoL);
+  edPreco.Text:= FormatFloat('#,,,0.00',precoL);
   edDesconto.Text:=edDesconto.Text;
   edQtde1.SetFocus;
 end;
