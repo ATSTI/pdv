@@ -1469,7 +1469,7 @@ begin
     postJson.Add('diario', dmPdv.sqBusca1.Fields[1].AsString);
     postJson.Add('caixa', IntToStr(dmPdv.sqBusca1.Fields[0].AsInteger));
     postJson.Add('cod_forma', IntToStr(dmPdv.sqBusca1.Fields[3].AsInteger));
-    postJson.Add('juro', FloatToStr(dmPdv.sqBusca1.Fields[2].AsFloat));
+    postJson.Add('juro', FloatToStr(dmPdv.sqBusca1.Fields[5].AsFloat));
     postJson.Add('aml_id', IntToStr(dmPdv.sqBusca1.Fields[6].AsInteger));
     With httpClient do
     begin
