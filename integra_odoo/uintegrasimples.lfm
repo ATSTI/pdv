@@ -12,273 +12,316 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
   OnShow = FormShow
   Position = poDesktopCenter
   LCLVersion = '2.0.12.0'
-  object btnConsultaUltimoPedido: TButton
-    Left = 120
-    Height = 43
-    Top = 32
-    Width = 118
-    Caption = 'Consultar Pedido'
-    OnClick = btnConsultaUltimoPedidoClick
-    TabOrder = 0
-  end
-  object Label1: TLabel
-    Left = 16
-    Height = 15
-    Top = 80
-    Width = 130
-    Caption = 'Último pedido integrado'
-    ParentColor = False
-  end
-  object edtUltimpoPedidoA: TEdit
-    Left = 177
-    Height = 23
-    Top = 80
-    Width = 844
-    ReadOnly = True
-    TabOrder = 1
-  end
-  object memoResult: TMemo
-    Left = 8
+  object Panel1: TPanel
+    Left = 0
     Height = 144
-    Top = 136
-    Width = 1072
-    Lines.Strings = (
-      ''
-    )
+    Top = 0
+    Width = 1090
+    Align = alTop
+    ClientHeight = 144
+    ClientWidth = 1090
+    TabOrder = 0
+    object btnConsultaUltimoPedido: TButton
+      Left = 120
+      Height = 43
+      Top = 32
+      Width = 100
+      Caption = 'Consultar Pedido'
+      OnClick = btnConsultaUltimoPedidoClick
+      TabOrder = 0
+    end
+    object Label1: TLabel
+      Left = 16
+      Height = 15
+      Top = 80
+      Width = 130
+      Caption = 'Último pedido integrado'
+      ParentColor = False
+    end
+    object edtUltimpoPedidoA: TEdit
+      Left = 177
+      Height = 23
+      Top = 80
+      Width = 844
+      ReadOnly = True
+      TabOrder = 1
+    end
+    object btnEnviandoPedido: TButton
+      Left = 221
+      Height = 43
+      Top = 32
+      Width = 100
+      Caption = 'Enviar Pedidos'
+      OnClick = btnEnviandoPedidoClick
+      TabOrder = 2
+    end
+    object btnUsuario: TButton
+      Left = 322
+      Height = 43
+      Top = 32
+      Width = 100
+      Caption = 'Usuários'
+      OnClick = btnUsuarioClick
+      TabOrder = 3
+    end
+    object btnCaixa: TButton
+      Left = 960
+      Height = 43
+      Top = 32
+      Width = 100
+      Caption = 'Caixa'
+      OnClick = btnCaixaClick
+      TabOrder = 4
+    end
+    object edEste: TEdit
+      Left = 177
+      Height = 23
+      Top = 104
+      Width = 111
+      TabOrder = 5
+    end
+    object Label2: TLabel
+      Left = 76
+      Height = 15
+      Top = 104
+      Width = 70
+      Caption = 'Importar este'
+      ParentColor = False
+    end
+    object Label3: TLabel
+      Left = 370
+      Height = 15
+      Top = 104
+      Width = 69
+      Caption = 'Última busca'
+      ParentColor = False
+    end
+    object edUltima: TEdit
+      Left = 456
+      Height = 23
+      Top = 104
+      Width = 80
+      ReadOnly = True
+      TabOrder = 6
+    end
+    object Label4: TLabel
+      Left = 640
+      Height = 15
+      Top = 104
+      Width = 54
+      Caption = 'Tentativas'
+      ParentColor = False
+    end
+    object edTentativa: TEdit
+      Left = 704
+      Height = 23
+      Top = 104
+      Width = 80
+      ReadOnly = True
+      TabOrder = 7
+      Text = '0'
+    end
+    object BitBtn1: TBitBtn
+      Left = 288
+      Height = 26
+      Hint = 'Limpar'
+      Top = 103
+      Width = 40
+      Glyph.Data = {
+        1E070000424D1E070000000000003600000028000000160000001A0000000100
+        180000000000E8060000C30E0000C30E00000000000000000000BFBFBFBFBFBF
+        BFBFBFBFBFBF7F7F7F7F7F7FBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF
+        BFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF0000BFBF
+        BFBFBFBF7F7F7F7F7F7F7F7F7F7F7F7F7F7F7FBFBFBFBFBFBFBFBFBFBFBFBFBF
+        BFBFBFBFBFBFBFBF7F7F7F7F7F7FBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF
+        0000BFBFBFBFBFBF0000000000007F7F7F7F7F7F7F7F7FBFBFBFBFBFBFBFBFBF
+        BFBFBFBFBFBFBFBFBF7F7F7F7F7F7F7F7F7F7F7F7FBFBFBFBFBFBFBFBFBFBFBF
+        BFBFBFBF00000000FF00007F00007F0000000000007F7F7F7F7F7F7F7F7FBFBF
+        BFBFBFBFBFBFBFBFBFBF0000FF0000007F7F7F7F7F7F7F7F7F7F7F7FBFBFBFBF
+        BFBFBFBFBFBFBFBF00000000FF00007F00007F00007F0000007F7F7F7F7F7F7F
+        7F7F7F7F7FBFBFBFBFBFBF0000FF00007F0000000000007F7F7F7F7F7F7F7F7F
+        7F7F7FBFBFBFBFBFBFBFBFBF00000000FF00007F00007F00007F000000000000
+        7F7F7F7F7F7F7F7F7F7F7F7FBFBFBF0000FF00007F00007F0000000000007F7F
+        7F7F7F7F7F7F7F7F7F7FBFBFBFBFBFBF00000000FF00007F00007F00007F0000
+        7F0000000000007F7F7F7F7F7F7F7F7F0000FF00007F00007F00007F00007F00
+        00000000007F7F7F7F7F7FBFBFBFBFBFBFBFBFBF00000000FF0000FF00007F00
+        007F00007F00007F0000000000007F7F7F0000FF00007F00007F00007F00007F
+        00007F00007F000000000000BFBFBFBFBFBFBFBFBFBFBFBF0000BFBFBF0000FF
+        00007F00007F00007F00007F00007F00000000000000007F00007F00007F0000
+        7F00007F00007F00007F000000BFBFBFBFBFBFBFBFBFBFBFBFBFBFBF0000BFBF
+        BF0000FF0000FF00007F00007F00007F00007F00007F00007F00007F00007F00
+        007F00007F00007F00007F000000BFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF
+        0000BFBFBFBFBFBF0000FF0000FF00007F00007F00007F00007F00007F00007F
+        00007F00007F00007F00007F000000BFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF
+        BFBFBFBF0000BFBFBFBFBFBFBFBFBF0000FF0000FF00007F00007F00007F0000
+        7F00007F00007F00007F00007F0000007F7F7FBFBFBFBFBFBFBFBFBFBFBFBFBF
+        BFBFBFBFBFBFBFBF0000BFBFBFBFBFBFBFBFBFBFBFBF0000FF0000FF00007F00
+        007F00007F00007F00007F00007F0000007F7F7F7F7F7F7F7F7FBFBFBFBFBFBF
+        BFBFBFBFBFBFBFBFBFBFBFBF0000BFBFBFBFBFBFBFBFBFBFBFBFBFBFBF0000FF
+        00007F00007F00007F00007F00007F00007F0000007F7F7F7F7F7F7F7F7F7F7F
+        7FBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF0000BFBFBFBFBFBFBFBFBFBFBFBFBFBF
+        BF0000FF00007F00007F00007F00007F00007F00007F0000000000007F7F7F7F
+        7F7F7F7F7FBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF0000BFBFBFBFBFBFBFBFBFBF
+        BFBFBFBFBF0000FF00007F00007F00007F00007F00007F00007F00007F000000
+        0000007F7F7F7F7F7F7F7F7FBFBFBFBFBFBFBFBFBFBFBFBF0000BFBFBFBFBFBF
+        BFBFBFBFBFBF0000FF00007F00007F00007F00007F00007F00007F00007F0000
+        7F00007F0000007F7F7F7F7F7F7F7F7F7F7F7FBFBFBFBFBFBFBFBFBF0000BFBF
+        BFBFBFBFBFBFBFBFBFBF0000FF00007F00007F00007F00007F0000FF0000FF00
+        007F00007F00007F0000000000007F7F7F7F7F7F7F7F7FBFBFBFBFBFBFBFBFBF
+        0000BFBFBFBFBFBFBFBFBF0000FF00007F00007F00007F00007F0000007F7F7F
+        0000FF0000FF00007F00007F00007F0000000000007F7F7F7F7F7F7F7F7F7F7F
+        7FBFBFBF0000BFBFBFBFBFBFBFBFBF0000FF00007F00007F00007F0000007F7F
+        7FBFBFBFBFBFBF0000FF0000FF00007F00007F00007F0000000000007F7F7F7F
+        7F7F7F7F7F7F7F7F0000BFBFBFBFBFBF0000FF00007F00007F00007F00007F00
+        00007F7F7FBFBFBFBFBFBFBFBFBF0000FF0000FF00007F00007F00007F000000
+        0000007F7F7F7F7F7F7F7F7F0000BFBFBFBFBFBF0000FF00007F00007F00007F
+        0000007F7F7FBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF0000FF0000FF00007F0000
+        7F00007F0000000000007F7F7FBFBFBF0000BFBFBF0000FF0000FF0000FF0000
+        7F00007F000000BFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF0000FF00
+        00FF00007F00007F00007F000000BFBFBFBFBFBF0000BFBFBFBFBFBFBFBFBF00
+        00FF0000FF0000FFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF
+        BFBFBF0000FF0000FF00007F00007FBFBFBFBFBFBFBFBFBF0000BFBFBFBFBFBF
+        BFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF
+        BFBFBFBFBFBFBFBFBFBF0000FF0000FFBFBFBFBFBFBFBFBFBFBFBFBF0000BFBF
+        BFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF
+        BFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF
+        0000
+      }
+      OnClick = BitBtn1Click
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 8
+    end
+    object btnProduto: TButton
+      Left = 525
+      Height = 43
+      Top = 32
+      Width = 100
+      Caption = 'Produtos'
+      OnClick = btnProdutoClick
+      TabOrder = 9
+    end
+    object btnCliente: TButton
+      Left = 628
+      Height = 43
+      Top = 32
+      Width = 100
+      Caption = 'Clientes'
+      OnClick = btnClienteClick
+      TabOrder = 10
+    end
+    object btnConecta: TBitBtn
+      Left = 864
+      Height = 30
+      Top = 104
+      Width = 157
+      Caption = 'Conectando'
+      OnClick = btnConectaClick
+      TabOrder = 11
+    end
+    object edSessao: TEdit
+      Left = 186
+      Height = 23
+      Top = 4
+      Width = 744
+      TabOrder = 12
+    end
+    object btnSangria_Rec: TButton
+      Left = 840
+      Height = 43
+      Top = 32
+      Width = 100
+      Caption = 'Sangria/Rec'
+      OnClick = btnSangria_RecClick
+      TabOrder = 13
+    end
+    object btnConsultaUltimoPedidoGeral: TButton
+      Left = 2
+      Height = 43
+      Top = 32
+      Width = 118
+      Caption = 'Cons. Pedido Geral'
+      OnClick = btnConsultaUltimoPedidoGeralClick
+      TabOrder = 14
+    end
+    object btnDevolucao: TButton
+      Left = 424
+      Height = 43
+      Top = 32
+      Width = 100
+      Caption = 'Devolução'
+      OnClick = btnDevolucaoClick
+      TabOrder = 15
+    end
+    object Button1: TButton
+      Left = 32
+      Height = 25
+      Top = 4
+      Width = 75
+      Caption = 'Button1'
+      OnClick = Button1Click
+      TabOrder = 16
+      Visible = False
+    end
+    object btnRecebimento: TButton
+      Left = 728
+      Height = 43
+      Top = 32
+      Width = 100
+      Caption = 'Recebimento'
+      OnClick = btnRecebimentoClick
+      TabOrder = 17
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Height = 136
+    Top = 144
+    Width = 1090
+    Align = alClient
+    Caption = 'Panel2'
+    ClientHeight = 136
+    ClientWidth = 1090
+    TabOrder = 1
+    object memoResult: TMemo
+      Left = 1
+      Height = 134
+      Top = 1
+      Width = 1088
+      Align = alClient
+      Lines.Strings = (
+        ''
+      )
+      ScrollBars = ssAutoBoth
+      TabOrder = 0
+    end
+  end
+  object Panel3: TPanel
+    Left = 0
+    Height = 231
+    Top = 280
+    Width = 1090
+    Align = alBottom
+    ClientHeight = 231
+    ClientWidth = 1090
     TabOrder = 2
-  end
-  object memoDados: TMemo
-    Left = 10
-    Height = 208
-    Top = 288
-    Width = 1070
-    Font.CharSet = ANSI_CHARSET
-    Font.Color = clBlack
-    Font.Height = -11
-    Font.Name = 'Segoe UI'
-    Font.Pitch = fpVariable
-    Font.Quality = fqDraft
-    ParentFont = False
-    ScrollBars = ssHorizontal
-    TabOrder = 3
-    WantReturns = False
-  end
-  object btnEnviandoPedido: TButton
-    Left = 238
-    Height = 43
-    Top = 32
-    Width = 118
-    Caption = 'Enviar Pedidos'
-    OnClick = btnEnviandoPedidoClick
-    TabOrder = 4
-  end
-  object btnUsuario: TButton
-    Left = 357
-    Height = 43
-    Top = 32
-    Width = 118
-    Caption = 'Usuários'
-    OnClick = btnUsuarioClick
-    TabOrder = 5
-  end
-  object btnCaixa: TButton
-    Left = 960
-    Height = 43
-    Top = 32
-    Width = 122
-    Caption = 'Caixa'
-    OnClick = btnCaixaClick
-    TabOrder = 6
-  end
-  object edEste: TEdit
-    Left = 177
-    Height = 23
-    Top = 104
-    Width = 111
-    TabOrder = 7
-  end
-  object Label2: TLabel
-    Left = 76
-    Height = 15
-    Top = 104
-    Width = 70
-    Caption = 'Importar este'
-    ParentColor = False
-  end
-  object Label3: TLabel
-    Left = 370
-    Height = 15
-    Top = 104
-    Width = 69
-    Caption = 'Última busca'
-    ParentColor = False
-  end
-  object edUltima: TEdit
-    Left = 456
-    Height = 23
-    Top = 104
-    Width = 80
-    ReadOnly = True
-    TabOrder = 8
-  end
-  object Label4: TLabel
-    Left = 640
-    Height = 15
-    Top = 104
-    Width = 54
-    Caption = 'Tentativas'
-    ParentColor = False
-  end
-  object edTentativa: TEdit
-    Left = 704
-    Height = 23
-    Top = 104
-    Width = 80
-    ReadOnly = True
-    TabOrder = 9
-    Text = '0'
-  end
-  object BitBtn1: TBitBtn
-    Left = 288
-    Height = 26
-    Hint = 'Limpar'
-    Top = 103
-    Width = 40
-    Glyph.Data = {
-      1E070000424D1E070000000000003600000028000000160000001A0000000100
-      180000000000E8060000C30E0000C30E00000000000000000000BFBFBFBFBFBF
-      BFBFBFBFBFBF7F7F7F7F7F7FBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF
-      BFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF0000BFBF
-      BFBFBFBF7F7F7F7F7F7F7F7F7F7F7F7F7F7F7FBFBFBFBFBFBFBFBFBFBFBFBFBF
-      BFBFBFBFBFBFBFBF7F7F7F7F7F7FBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF
-      0000BFBFBFBFBFBF0000000000007F7F7F7F7F7F7F7F7FBFBFBFBFBFBFBFBFBF
-      BFBFBFBFBFBFBFBFBF7F7F7F7F7F7F7F7F7F7F7F7FBFBFBFBFBFBFBFBFBFBFBF
-      BFBFBFBF00000000FF00007F00007F0000000000007F7F7F7F7F7F7F7F7FBFBF
-      BFBFBFBFBFBFBFBFBFBF0000FF0000007F7F7F7F7F7F7F7F7F7F7F7FBFBFBFBF
-      BFBFBFBFBFBFBFBF00000000FF00007F00007F00007F0000007F7F7F7F7F7F7F
-      7F7F7F7F7FBFBFBFBFBFBF0000FF00007F0000000000007F7F7F7F7F7F7F7F7F
-      7F7F7FBFBFBFBFBFBFBFBFBF00000000FF00007F00007F00007F000000000000
-      7F7F7F7F7F7F7F7F7F7F7F7FBFBFBF0000FF00007F00007F0000000000007F7F
-      7F7F7F7F7F7F7F7F7F7FBFBFBFBFBFBF00000000FF00007F00007F00007F0000
-      7F0000000000007F7F7F7F7F7F7F7F7F0000FF00007F00007F00007F00007F00
-      00000000007F7F7F7F7F7FBFBFBFBFBFBFBFBFBF00000000FF0000FF00007F00
-      007F00007F00007F0000000000007F7F7F0000FF00007F00007F00007F00007F
-      00007F00007F000000000000BFBFBFBFBFBFBFBFBFBFBFBF0000BFBFBF0000FF
-      00007F00007F00007F00007F00007F00000000000000007F00007F00007F0000
-      7F00007F00007F00007F000000BFBFBFBFBFBFBFBFBFBFBFBFBFBFBF0000BFBF
-      BF0000FF0000FF00007F00007F00007F00007F00007F00007F00007F00007F00
-      007F00007F00007F00007F000000BFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF
-      0000BFBFBFBFBFBF0000FF0000FF00007F00007F00007F00007F00007F00007F
-      00007F00007F00007F00007F000000BFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF
-      BFBFBFBF0000BFBFBFBFBFBFBFBFBF0000FF0000FF00007F00007F00007F0000
-      7F00007F00007F00007F00007F0000007F7F7FBFBFBFBFBFBFBFBFBFBFBFBFBF
-      BFBFBFBFBFBFBFBF0000BFBFBFBFBFBFBFBFBFBFBFBF0000FF0000FF00007F00
-      007F00007F00007F00007F00007F0000007F7F7F7F7F7F7F7F7FBFBFBFBFBFBF
-      BFBFBFBFBFBFBFBFBFBFBFBF0000BFBFBFBFBFBFBFBFBFBFBFBFBFBFBF0000FF
-      00007F00007F00007F00007F00007F00007F0000007F7F7F7F7F7F7F7F7F7F7F
-      7FBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF0000BFBFBFBFBFBFBFBFBFBFBFBFBFBF
-      BF0000FF00007F00007F00007F00007F00007F00007F0000000000007F7F7F7F
-      7F7F7F7F7FBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF0000BFBFBFBFBFBFBFBFBFBF
-      BFBFBFBFBF0000FF00007F00007F00007F00007F00007F00007F00007F000000
-      0000007F7F7F7F7F7F7F7F7FBFBFBFBFBFBFBFBFBFBFBFBF0000BFBFBFBFBFBF
-      BFBFBFBFBFBF0000FF00007F00007F00007F00007F00007F00007F00007F0000
-      7F00007F0000007F7F7F7F7F7F7F7F7F7F7F7FBFBFBFBFBFBFBFBFBF0000BFBF
-      BFBFBFBFBFBFBFBFBFBF0000FF00007F00007F00007F00007F0000FF0000FF00
-      007F00007F00007F0000000000007F7F7F7F7F7F7F7F7FBFBFBFBFBFBFBFBFBF
-      0000BFBFBFBFBFBFBFBFBF0000FF00007F00007F00007F00007F0000007F7F7F
-      0000FF0000FF00007F00007F00007F0000000000007F7F7F7F7F7F7F7F7F7F7F
-      7FBFBFBF0000BFBFBFBFBFBFBFBFBF0000FF00007F00007F00007F0000007F7F
-      7FBFBFBFBFBFBF0000FF0000FF00007F00007F00007F0000000000007F7F7F7F
-      7F7F7F7F7F7F7F7F0000BFBFBFBFBFBF0000FF00007F00007F00007F00007F00
-      00007F7F7FBFBFBFBFBFBFBFBFBF0000FF0000FF00007F00007F00007F000000
-      0000007F7F7F7F7F7F7F7F7F0000BFBFBFBFBFBF0000FF00007F00007F00007F
-      0000007F7F7FBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF0000FF0000FF00007F0000
-      7F00007F0000000000007F7F7FBFBFBF0000BFBFBF0000FF0000FF0000FF0000
-      7F00007F000000BFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF0000FF00
-      00FF00007F00007F00007F000000BFBFBFBFBFBF0000BFBFBFBFBFBFBFBFBF00
-      00FF0000FF0000FFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF
-      BFBFBF0000FF0000FF00007F00007FBFBFBFBFBFBFBFBFBF0000BFBFBFBFBFBF
-      BFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF
-      BFBFBFBFBFBFBFBFBFBF0000FF0000FFBFBFBFBFBFBFBFBFBFBFBFBF0000BFBF
-      BFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF
-      BFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBFBF
-      0000
-    }
-    OnClick = BitBtn1Click
-    ParentShowHint = False
-    ShowHint = True
-    TabOrder = 10
-  end
-  object btnProduto: TButton
-    Left = 600
-    Height = 43
-    Top = 32
-    Width = 118
-    Caption = 'Produtos'
-    OnClick = btnProdutoClick
-    TabOrder = 11
-  end
-  object btnCliente: TButton
-    Left = 720
-    Height = 43
-    Top = 32
-    Width = 118
-    Caption = 'Clientes'
-    OnClick = btnClienteClick
-    TabOrder = 12
-  end
-  object btnConecta: TBitBtn
-    Left = 864
-    Height = 30
-    Top = 104
-    Width = 157
-    Caption = 'Conectando'
-    OnClick = btnConectaClick
-    TabOrder = 13
-  end
-  object edSessao: TEdit
-    Left = 186
-    Height = 23
-    Top = 4
-    Width = 744
-    TabOrder = 14
-  end
-  object btnSangria_Rec: TButton
-    Left = 840
-    Height = 43
-    Top = 32
-    Width = 118
-    Caption = 'Sangria/Rec'
-    OnClick = btnSangria_RecClick
-    TabOrder = 15
-  end
-  object btnConsultaUltimoPedidoGeral: TButton
-    Left = 2
-    Height = 43
-    Top = 32
-    Width = 118
-    Caption = 'Cons. Pedido Geral'
-    OnClick = btnConsultaUltimoPedidoGeralClick
-    TabOrder = 16
-  end
-  object btnDevolucao: TButton
-    Left = 476
-    Height = 43
-    Top = 32
-    Width = 122
-    Caption = 'Devolução'
-    OnClick = btnDevolucaoClick
-    TabOrder = 17
-  end
-  object Button1: TButton
-    Left = 32
-    Height = 25
-    Top = 4
-    Width = 75
-    Caption = 'Button1'
-    OnClick = Button1Click
-    TabOrder = 18
-    Visible = False
+    object memoDados: TMemo
+      Left = 1
+      Height = 229
+      Top = 1
+      Width = 1088
+      Align = alClient
+      Font.CharSet = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Segoe UI'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      ParentFont = False
+      ScrollBars = ssAutoBoth
+      TabOrder = 0
+      WantReturns = False
+    end
   end
   object TimerPedido: TTimer
     Interval = 30000
@@ -286,20 +329,22 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
     Left = 72
     Top = 184
   end
-  object Timer2: TTimer
-    Interval = 3600000
-    OnTimer = Timer2Timer
-    Left = 616
-  end
-  object Timer3: TTimer
-    Interval = 4600000
-    OnTimer = Timer3Timer
-    Left = 758
-  end
   object TimerGeral: TTimer
     Interval = 1800000
     OnTimer = TimerGeralTimer
     Left = 208
     Top = 184
+  end
+  object Timer2: TTimer
+    Interval = 3600000
+    OnTimer = Timer2Timer
+    Left = 643
+    Top = 28
+  end
+  object Timer3: TTimer
+    Interval = 4600000
+    OnTimer = Timer3Timer
+    Left = 786
+    Top = 28
   end
 end

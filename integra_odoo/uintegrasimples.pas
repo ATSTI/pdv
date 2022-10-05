@@ -15,33 +15,38 @@ type
 
   TfIntegracaoOdoo = class(TForm)
     BitBtn1: TBitBtn;
-    btnDevolucao: TButton;
-    btnSangria_Rec: TButton;
-    btnConecta: TBitBtn;
     btnCaixa: TButton;
+    btnCliente: TButton;
+    btnConecta: TBitBtn;
     btnConsultaUltimoPedido: TButton;
     btnConsultaUltimoPedidoGeral: TButton;
+    btnDevolucao: TButton;
     btnEnviandoPedido: TButton;
-    btnUsuario: TButton;
     btnProduto: TButton;
-    btnCliente: TButton;
+    btnRecebimento: TButton;
+    btnSangria_Rec: TButton;
+    btnUsuario: TButton;
     Button1: TButton;
     edEste: TEdit;
     edSessao: TEdit;
-    edUltima: TEdit;
     edTentativa: TEdit;
     edtUltimpoPedidoA: TEdit;
+    edUltima: TEdit;
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
     memoDados: TMemo;
     memoResult: TMemo;
-    TimerPedido: TTimer;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
     Timer2: TTimer;
     Timer3: TTimer;
+    TimerPedido: TTimer;
     TimerGeral: TTimer;
     procedure BitBtn1Click(Sender: TObject);
+    procedure btnRecebimentoClick(Sender: TObject);
     procedure btnDevolucaoClick(Sender: TObject);
     procedure btnSangria_RecClick(Sender: TObject);
     procedure btnConectaClick(Sender: TObject);
@@ -67,6 +72,7 @@ type
     autenticacao: String;
     edtUltimpoPedido: String;
     edEste_str: String;
+    limpa_memo: String;
     exibe_sql : TStringList;
     function ler_retorno(responseData:String): String;
     function monta_arquivo_movimento(arquivo_linha: TJsonNode):TJsonNode;
@@ -82,6 +88,7 @@ type
     procedure comunica_server(tabela: String; campo_chave: String; campos_select: String; campo_data: String);
     procedure envia_sangria_reforco;
     procedure envia_devolucao;
+    procedure envia_recebimentos;
   end;
 
 var
@@ -438,7 +445,9 @@ procedure TfIntegracaoOdoo.btnCaixaClick(Sender: TObject);
  ver: String;
  sql_campo, sql_valor: String;}
 begin
+  limpa_memo := 'N';
   btnSangria_Rec.Click;
+  btnRecebimento.Click;
   btnConsultaUltimoPedidoGeral.Click;
   if (edtUltimpoPedidoA.Text <> '') then
   begin
@@ -536,8 +545,11 @@ begin
   fIntegracaoOdoo.Caption:= 'Integrando Caixa : ' + c_caixa;
   if (edtUltimpoPedidoA.Text = '()') then
     edtUltimpoPedidoA.Text := '';
-  memoResult.Lines.Clear;
-  memoDados.Lines.Clear;
+  if (limpa_memo = 'S') then
+  begin
+    memoResult.Lines.Clear;
+    memoDados.Lines.Clear;
+  end;
   //memoResult.Lines.Assign(exibe_sql);
   if (edtUltimpoPedidoA.Text <> '') then
     cria_json(' IN ' + edtUltimpoPedidoA.Text);
@@ -546,6 +558,11 @@ end;
 procedure TfIntegracaoOdoo.BitBtn1Click(Sender: TObject);
 begin
   edEste.Text := '';
+end;
+
+procedure TfIntegracaoOdoo.btnRecebimentoClick(Sender: TObject);
+begin
+  envia_recebimentos;
 end;
 
 procedure TfIntegracaoOdoo.btnDevolucaoClick(Sender: TObject);
@@ -639,6 +656,7 @@ end;
 
 procedure TfIntegracaoOdoo.FormShow(Sender: TObject);
 begin
+  limpa_memo := 'S';
   if (dmPdv.NFE_Teste = 'S') then
   begin
     TimerPedido.Enabled:=False;
@@ -1163,7 +1181,10 @@ begin
   FS.DateSeparator := '/';
   FS.ShortDateFormat := 'mm/dd/yyyy';
   FS.ShortTimeFormat := 'hh:mm:ss';
-  memoDados.Lines.Clear;
+
+  if (limpa_memo = 'S') then
+    memoDados.Lines.Clear;
+
   DecimalSeparator:='.';
 
   dados:= '[{';
@@ -1199,7 +1220,10 @@ begin
   //if (tabela = 'RECEBER') then
   //  url_server := '/contasconsulta';
   dados := '';
-  memoDados.Lines.Clear;
+
+  if (limpa_memo = 'S') then
+    memoDados.Lines.Clear;
+
   DecimalSeparator:='.';
   httpClient := logar();
   With httpClient do
@@ -1415,6 +1439,47 @@ begin
     end;
   end;
 
+end;
+
+procedure TfIntegracaoOdoo.envia_recebimentos;
+var
+  responseData: String;
+  sql_str: string;
+begin
+  dmPdv.sqBusca1.Close;
+  dmPdv.sqBusca1.Sql.Clear;
+  sql_str := 'SELECT CAIXA, N_DOC, VALOR_PAGO ,CODFORMA ,COD_VENDA, TROCO, ID_ENTRADA ';
+  sql_str += 'FROM FORMA_ENTRADA  ';
+  sql_str += 'WHERE CAIXA = ' + QuotedStr(c_caixa);
+  sql_str += 'AND COD_VENDA = 2';
+  sql_str += 'ORDER BY CODFORMA DESC ';
+  dmPdv.sqBusca1.SQL.Add(sql_str);
+  dmPdv.sqBusca1.Open;
+  DecimalSeparator:='.';
+  if (limpa_memo = 'S') then
+    memoDados.Lines.Clear;
+  httpClient := logar();
+  while not dmPdv.sqBusca1.EOF do
+  begin
+    // Envia os Recebimentos novamente
+    postJson.Clear;
+    postJson.Add('title', 'Contas a Receber');
+    postJson.Add('cod_cliente', '0');
+    postJson.Add('valor_pago', FloatToStr(dmPdv.sqBusca1.Fields[2].AsFloat));
+    postJson.Add('diario', dmPdv.sqBusca1.Fields[1].AsString);
+    postJson.Add('caixa', IntToStr(dmPdv.sqBusca1.Fields[0].AsInteger));
+    postJson.Add('cod_forma', IntToStr(dmPdv.sqBusca1.Fields[3].AsInteger));
+    postJson.Add('juro', FloatToStr(dmPdv.sqBusca1.Fields[2].AsFloat));
+    postJson.Add('aml_id', IntToStr(dmPdv.sqBusca1.Fields[6].AsInteger));
+    With httpClient do
+    begin
+      AddHeader('Content-Type', 'application/json');
+      RequestBody := TStringStream.Create(postJson.AsJSON);
+      responseData := Post(dmPdv.path_integra_url + '/contasconsulta');
+      memoDados.Lines.Add(responseData);
+    end;
+    dmPdv.sqBusca1.Next;
+  end;
 end;
 end.
 

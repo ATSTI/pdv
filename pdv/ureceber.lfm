@@ -2549,11 +2549,12 @@ object fRecebimento: TfRecebimento
   end
   object StringGrid1: TStringGrid
     Left = 4
-    Height = 308
+    Height = 319
     Top = 89
-    Width = 804
+    Width = 820
     ColCount = 7
     FixedCols = 0
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSelect, goSmoothScroll]
     RowCount = 1
     TabOrder = 5
     OnClick = StringGrid1Click

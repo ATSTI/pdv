@@ -242,10 +242,20 @@ end;
 
 procedure TfRecebimento.FormShow(Sender: TObject);
 begin
+  StringGrid1.Clear;
   pnCartoes.Visible:=False;
   edPago.Enabled:=False;
   lblForma.Caption := '...';
   memoResult.Clear;
+  edCodCliente.Text := '';
+  edNomeCliente.Text:= '';
+  pCod:='';
+  label3.Caption:='...';
+  edPago.Text:= '0,00';
+  edPago1.Text:= '0,00';
+  edJuros.Text:= '0,00';
+  edJurosMulta.Text := '0,00';
+  edTotalGeral.Text := '0,00';
  end;
 
 procedure TfRecebimento.Label3Click(Sender: TObject);
@@ -368,6 +378,11 @@ var
   a , b , c , d ,e ,f , g ,h ,v,vTotal: String;
   object_name, field_name, field_value, object_type, object_items: String;
 begin
+  if (edCodCliente.Text = '') then
+  begin
+    ShowMessage('Informe o Código do Cliente.');
+    Exit;
+  end;
   if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
   begin
     memoResult.Clear;
@@ -580,6 +595,11 @@ var
  dataRec: string;
  vtotalR: Double;
 begin
+  if (edCodCliente.Text = '') then
+  begin
+    ShowMessage('Informe o Código do Cliente.');
+    Exit;
+  end;
   memo1.Lines.Clear;
   // baixar pagamentos
   if (rgSituacao.ItemIndex > 0) then
@@ -820,6 +840,11 @@ end;
 
 procedure TfRecebimento.BitBtn1Click(Sender: TObject);
 begin
+  StringGrid1.Clear;
+  pnCartoes.Visible:=False;
+  edPago.Enabled:=False;
+  lblForma.Caption := '...';
+  memoResult.Clear;
   edCodCliente.Text := '';
   edNomeCliente.Text := '';
 end;
@@ -896,6 +921,7 @@ end;
     sql_rec += ' AND r.DATARECEBIMENTO = ' + QuotedStr(FormatDateTime('mm/dd/2022', Now));
     sql_rec += ' ORDER BY r.DATAVENCIMENTO, r.EMISSAO, r.TITULO';
     dmPdv.busca_sql(sql_rec);
+    totalR := 0;
     While not dmPdv.sqBusca.EOF do
     begin
       totalR += dmPdv.sqBusca.FieldByName('VALOR_RECEBIDO').AsFloat;
