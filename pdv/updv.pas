@@ -417,7 +417,14 @@ begin
   if (dmPdv.sqLancamentos.Active) then
   begin
     codDet := dmPdv.sqLancamentosCODDETALHE.AsInteger;
-    edProduto.Text := dmPdv.sqLancamentosCODPRO.AsString;
+    if (dmPdv.sqLancamentosCOD_BARRA.AsString <> '') then
+      edProduto.Text := dmPdv.sqLancamentosCOD_BARRA.AsString
+    else
+      edProduto.Text := dmPdv.sqLancamentosCODPRO.AsString;
+    if (dmpdv.tipo_buscaProd = 'CODPRO') then
+    begin
+      edProduto.Text := dmPdv.sqLancamentosCODPRO.AsString;
+    end;
     edQtde.Text    := FormatFloat('#,,,0.00',dmPdv.sqLancamentosQUANTIDADE.AsFloat);
     edPreco.Text   := FormatFloat('#,,,0.00',dmPdv.sqLancamentosPRECO.AsFloat);
     precoL         := dmPdv.sqLancamentosPRECO.AsFloat;
