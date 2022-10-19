@@ -10,7 +10,7 @@ uses
   uCertificadoLer, ufrmStatus, ACBrNFe, ACBrNFeDANFeESCPOS,
   pcnConversao, pcnConversaoNFe, ACBrDFeSSL, ACBrPosPrinter, ACBrIntegrador,
   ACBrValidador, ACBrEnterTab, ACBrUtil, ACBrSAT, StrUtils, IniFiles, math,
-  ACBrSATClass, ACBrSATExtratoESCPOS, dateutils, ACBrBase, ACBrDFe, ACBrDFeUtil;
+  ACBrSATClass, ACBrSATExtratoESCPOS, dateutils, ACBrBase, ACBrDFe, ACBrDFeUtil, blcksock;
 
 type
 
@@ -51,6 +51,7 @@ type
     cbHttpLib: TComboBox;
     cbSSLLib: TComboBox;
     cbXmlSignLib: TComboBox;
+    cbSSLType: TComboBox;
     cbxModeloPosPrinter: TComboBox;
     chkmudarnumero: TCheckBox;
     edAno: TEdit;
@@ -68,6 +69,7 @@ type
     edNFce: TLabeledEdit;
     Label1: TLabel;
     Label10: TLabel;
+    Label11: TLabel;
     lblCancelamento2: TLabel;
     lblCancelamento: TLabel;
     Label2: TLabel;
@@ -524,6 +526,7 @@ begin
     cbXmlSignLib.Items.Add( GetEnumName(TypeInfo(TSSLXmlSignLib), integer(X) ) ) ;
   cbXmlSignLib.ItemIndex := dmPdv.XmlSignLib;
   ver := cbXmlSignLib.ItemIndex;
+  cbSSLType.ItemIndex := dmPdv.SSLType;
 
   edtCaminho.Text := dmPdv.CaminhoCert;
   edtSenha.Text   := dmPdv.SenhaCert;
@@ -1980,7 +1983,18 @@ begin
   else
     ACBrNFe1.Configuracoes.WebServices.Ambiente := taHomologacao;
 
+  Case cbSSLType.ItemIndex of
+    0: ACBrNFe1.Configuracoes.WebServices.SSLType := LT_all;
+    1: ACBrNFe1.Configuracoes.WebServices.SSLType := LT_SSLv2;
+    2: ACBrNFe1.Configuracoes.WebServices.SSLType := LT_SSLv3;
+    3: ACBrNFe1.Configuracoes.WebServices.SSLType := LT_TLSv1;
+    4: ACBrNFe1.Configuracoes.WebServices.SSLType := LT_TLSv1_1;
+    5: ACBrNFe1.Configuracoes.WebServices.SSLType := LT_TLSv1_2;
+    6: ACBrNFe1.Configuracoes.WebServices.SSLType := LT_SSHv2;
+  end;
   //edtPathSchemas.Text  := Ini.ReadString( 'Geral','PathSchemas'  ,PathWithDelim(ExtractFilePath(Application.ExeName))+'Schemas\') ;
+  ver_strc := GetEnumName(TypeInfo(TSSLType), Integer(LT_TLSv1_2));
+
 
   with ACBrNFe1.Configuracoes.Geral do
   begin
@@ -2054,6 +2068,7 @@ begin
     Ini.WriteInteger( 'Certificado','CryptLib' , cbCryptLib.ItemIndex) ;
     Ini.WriteInteger( 'Certificado','HttpLib' , cbHttpLib.ItemIndex) ;
     Ini.WriteInteger( 'Certificado','XmlSignLib' , cbXmlSignLib.ItemIndex) ;
+    Ini.WriteInteger( 'Certificado','SSLType' , cbSSLType.ItemIndex) ;
     Ini.WriteInteger( 'IMPRESSORA','Modelo' , cbxModeloPosPrinter.ItemIndex) ;
   finally
     Ini.Free;
@@ -2075,7 +2090,9 @@ begin
 end;
 
 procedure TfNfce.BitBtn4Click(Sender: TObject);
+//var btn_str:string;
 begin
+  //btn_str := GetEnumName(TypeInfo(TSSLType), Integer(LT_TLSv1_2));
   btnNFce.Click;
 end;
 

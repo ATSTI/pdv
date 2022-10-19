@@ -1075,6 +1075,7 @@ type
     CryptLib :Integer;
     HttpLib :Integer;
     XmlSignLib :Integer;
+    SSLType :Integer;
     CaminhoCert:String;
     SenhaCert :String;
     NumSerieCert :String;
@@ -1184,6 +1185,7 @@ begin
       CryptLib   := conf.ReadInteger( 'Certificado','CryptLib' , 0) ;
       HttpLib    := conf.ReadInteger( 'Certificado','HttpLib' , 0) ;
       XmlSignLib := conf.ReadInteger( 'Certificado','XmlSignLib' , 0) ;
+      SSLType    := conf.ReadInteger( 'Certificado','SSLType' , 0) ;
       CaminhoCert:= conf.ReadString( 'Certificado','Caminho' ,'') ;
       SenhaCert  := conf.ReadString( 'Certificado','Senha'   ,'') ;
       NumSerieCert:= conf.ReadString( 'Certificado','NumSerie','');
@@ -1255,6 +1257,7 @@ begin
       CryptLib   := conf.ReadInteger( 'Certificado','CryptLib' , 0) ;
       HttpLib    := conf.ReadInteger( 'Certificado','HttpLib' , 0) ;
       XmlSignLib := conf.ReadInteger( 'Certificado','XmlSignLib' , 0) ;
+      SSLType    := conf.ReadInteger( 'Certificado','SSLType' , 0) ;
       CaminhoCert:= conf.ReadString( 'Certificado','Caminho' ,'') ;
       SenhaCert  := conf.ReadString( 'Certificado','Senha'   ,'') ;
       NumSerieCert:= conf.ReadString( 'Certificado','NumSerie','');

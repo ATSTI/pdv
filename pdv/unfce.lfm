@@ -2876,7 +2876,7 @@ object fNfce: TfNfce
     end
     object TabSheet5: TTabSheet
       Caption = 'Geral'
-      ClientHeight = 380
+      ClientHeight = 372
       ClientWidth = 638
       object Panel1: TPanel
         Left = 72
@@ -3162,8 +3162,8 @@ object fNfce: TfNfce
         Height = 280
         Top = 104
         Width = 641
-        ActivePage = TabSheet1
-        TabIndex = 0
+        ActivePage = TabSheet3
+        TabIndex = 2
         TabOrder = 4
         object TabSheet1: TTabSheet
           Caption = 'Retorno'
@@ -3301,22 +3301,22 @@ object fNfce: TfNfce
           object BitBtn2: TBitBtn
             Left = 320
             Height = 30
-            Top = 150
+            Top = 208
             Width = 200
             Caption = 'Gravar Configurações'
             OnClick = BitBtn2Click
             TabOrder = 7
           end
           object cbxModeloPosPrinter: TComboBox
-            Left = 83
+            Left = 320
             Height = 23
-            Top = 144
+            Top = 160
             Width = 172
             ItemHeight = 15
             TabOrder = 8
           end
           object Label4: TLabel
-            Left = 19
+            Left = 320
             Height = 15
             Top = 144
             Width = 55
@@ -3386,6 +3386,33 @@ object fNfce: TfNfce
               'Homologação'
             )
             TabOrder = 10
+          end
+          object cbSSLType: TComboBox
+            Left = 83
+            Height = 23
+            Top = 140
+            Width = 172
+            ItemHeight = 15
+            Items.Strings = (
+              'LT_all'
+              'LT_SSLv2'
+              'LT_SSLv3'
+              'LT_TLSv1'
+              'LT_TLSv1_1'
+              'LT_TLSv1_2'
+              'LT_SSHv2'
+            )
+            OnChange = cbXmlSignLibChange
+            TabOrder = 11
+            Text = 'cbSSLType'
+          end
+          object Label11: TLabel
+            Left = 24
+            Height = 15
+            Top = 139
+            Width = 47
+            Caption = 'SSL Type'
+            ParentColor = False
           end
         end
       end
@@ -3630,6 +3657,7 @@ object fNfce: TfNfce
     Configuracoes.WebServices.QuebradeLinha = '|'
     Configuracoes.WebServices.TimeZoneConf.ModoDeteccao = tzManual
     Configuracoes.WebServices.TimeZoneConf.TimeZoneStr = '-03:00'
+    Configuracoes.WebServices.SSLType = LT_TLSv1_2
     Configuracoes.RespTec.IdCSRT = 0
     DANFE = ACBrNFeDANFeESCPOS1
     Left = 49
