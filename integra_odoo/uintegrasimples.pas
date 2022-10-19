@@ -1456,8 +1456,8 @@ begin
   dmPdv.sqBusca1.SQL.Add(sql_str);
   dmPdv.sqBusca1.Open;
   DecimalSeparator:='.';
-  if (limpa_memo = 'S') then
-    memoDados.Lines.Clear;
+  //if (limpa_memo = 'S') then
+  memoResult.Lines.Clear;
   httpClient := logar();
   while not dmPdv.sqBusca1.EOF do
   begin
@@ -1476,7 +1476,7 @@ begin
       AddHeader('Content-Type', 'application/json');
       RequestBody := TStringStream.Create(postJson.AsJSON);
       responseData := Post(dmPdv.path_integra_url + '/contasconsulta');
-      memoDados.Lines.Add(responseData);
+      memoResult.Lines.Add(responseData);
     end;
     dmPdv.sqBusca1.Next;
   end;
