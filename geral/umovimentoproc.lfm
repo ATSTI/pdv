@@ -9,7 +9,7 @@ object fMovimentoProc: TfMovimentoProc
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '2.2.4.0'
   object Panel1: TPanel
     Left = 0
     Height = 72
@@ -156,7 +156,6 @@ object fMovimentoProc: TfMovimentoProc
       Top = 40
       Width = 104
       Alignment = taRightJustify
-      CharCase = ecNormal
       MaxLength = 0
       TabOrder = 4
       Text = '0,00'
@@ -716,7 +715,6 @@ object fMovimentoProc: TfMovimentoProc
       Top = 2
       Width = 89
       Alignment = taRightJustify
-      CharCase = ecNormal
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
       Font.Name = 'Arial Unicode MS'
@@ -735,7 +733,6 @@ object fMovimentoProc: TfMovimentoProc
       Top = 2
       Width = 51
       Alignment = taRightJustify
-      CharCase = ecNormal
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
       Font.Name = 'Arial Unicode MS'
@@ -1246,7 +1243,6 @@ object fMovimentoProc: TfMovimentoProc
       Top = 2
       Width = 80
       Alignment = taRightJustify
-      CharCase = ecNormal
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
       Font.Name = 'Arial Unicode MS'
@@ -1265,7 +1261,6 @@ object fMovimentoProc: TfMovimentoProc
       Top = 2
       Width = 91
       Alignment = taRightJustify
-      CharCase = ecNormal
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
       Font.Name = 'Arial Unicode MS'

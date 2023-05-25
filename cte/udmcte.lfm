@@ -1,10 +1,9 @@
 object dmCte: TdmCte
   OldCreateOrder = False
-  Height = 512
+  Height = 474
   HorizontalOffset = 343
   VerticalOffset = 36
   Width = 808
-  PPI = 96
   object cdsCte: TSQLQuery
     FieldDefs = <    
       item
@@ -1116,8 +1115,9 @@ object dmCte: TdmCte
         Name = 'Data2'
         ParamType = ptInput
       end>
-    left = 80
-    top = 88
+    Macros = <>
+    Left = 80
+    Top = 88
     object cdsCteCOD_CTE: TLongintField
       FieldKind = fkData
       FieldName = 'COD_CTE'
@@ -2332,8 +2332,6 @@ object dmCte: TdmCte
       ReadOnly = False
       Required = False
       DisplayFormat = ',##0.00'
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsCteVREC: TFloatField
@@ -2345,8 +2343,6 @@ object dmCte: TdmCte
       ReadOnly = False
       Required = False
       DisplayFormat = ',##0.00'
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsCteCOMPONENTE: TStringField
@@ -2367,8 +2363,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsCteVALTOTTRI: TFloatField
@@ -2380,8 +2374,6 @@ object dmCte: TdmCte
       ReadOnly = False
       Required = False
       DisplayFormat = ',##0.00'
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsCteCOMBCODSITTRIB: TLongintField
@@ -2412,8 +2404,6 @@ object dmCte: TdmCte
       ReadOnly = False
       Required = False
       DisplayFormat = ',##0.00'
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsCtePROPRED: TStringField
@@ -2710,8 +2700,6 @@ object dmCte: TdmCte
       ReadOnly = False
       Required = False
       DisplayFormat = ',##0.00'
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsCteANT_CNPJ: TStringField
@@ -2782,8 +2770,6 @@ object dmCte: TdmCte
       ReadOnly = False
       Required = False
       DisplayFormat = ',##0.00'
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsCteVALVBC: TFloatField
@@ -2795,8 +2781,6 @@ object dmCte: TdmCte
       ReadOnly = False
       Required = False
       DisplayFormat = ',##0.00'
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsCteVALPICMS: TFloatField
@@ -2808,8 +2792,6 @@ object dmCte: TdmCte
       ReadOnly = False
       Required = False
       DisplayFormat = ',##0.00'
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsCteVALVICMS: TFloatField
@@ -2821,8 +2803,6 @@ object dmCte: TdmCte
       ReadOnly = False
       Required = False
       DisplayFormat = ',##0.00'
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsCteVALVCRED: TFloatField
@@ -2834,8 +2814,6 @@ object dmCte: TdmCte
       ReadOnly = False
       Required = False
       DisplayFormat = ',##0.00'
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsCteNPROTCANCEL: TStringField
@@ -2886,8 +2864,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsCteVCOFINS: TFloatField
@@ -2898,8 +2874,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsCteVIR: TFloatField
@@ -2910,8 +2884,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsCteVINSS: TFloatField
@@ -2922,8 +2894,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsCteVCSLL: TFloatField
@@ -2934,8 +2904,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsCteXDESCSERV: TStringField
@@ -2956,8 +2924,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object cdsCteTPSERV: TLongintField
@@ -3184,8 +3150,9 @@ object dmCte: TdmCte
         Name = 'pCTE'
         ParamType = ptInput
       end>
-    left = 149
-    top = 88
+    Macros = <>
+    Left = 149
+    Top = 88
     object sqQCCOD_CTE_QC: TLongintField
       FieldKind = fkData
       FieldName = 'COD_CTE_QC'
@@ -3233,8 +3200,6 @@ object dmCte: TdmCte
       ReadOnly = False
       Required = False
       DisplayFormat = ',##0.0'
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqQCUNIDADE: TStringField
@@ -3276,6 +3241,7 @@ object dmCte: TdmCte
         DataType = ftDate
         Precision = -1
       end>
+    AutoCalcFields = False
     Database = dmPdv.IbCon
     Transaction = dmPdv.sTrans
     SQL.Strings = (
@@ -3287,8 +3253,9 @@ object dmCte: TdmCte
         Name = 'pCTE'
         ParamType = ptInput
       end>
-    left = 216
-    top = 88
+    Macros = <>
+    Left = 216
+    Top = 88
     object sqNFeCOD_CTE_NFE: TLongintField
       FieldKind = fkData
       FieldName = 'COD_CTE_NFE'
@@ -3370,8 +3337,9 @@ object dmCte: TdmCte
         Name = 'pCTE'
         ParamType = ptInput
       end>
-    left = 288
-    top = 88
+    Macros = <>
+    Left = 288
+    Top = 88
     object sqCompCOD_CTE_COMP: TLongintField
       FieldKind = fkData
       FieldName = 'COD_CTE_COMP'
@@ -3409,8 +3377,6 @@ object dmCte: TdmCte
       ReadOnly = False
       Required = False
       DisplayFormat = ',##0.00'
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
   end
@@ -3465,8 +3431,9 @@ object dmCte: TdmCte
         Name = 'pCTE'
         ParamType = ptInput
       end>
-    left = 352
-    top = 88
+    Macros = <>
+    Left = 352
+    Top = 88
     object sqSegCOD_CTE_SEGURO: TLongintField
       FieldKind = fkData
       FieldName = 'COD_CTE_SEGURO'
@@ -3522,8 +3489,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
     object sqSegNUMERO_AVERBACAO: TStringField
@@ -3663,8 +3628,9 @@ object dmCte: TdmCte
         Name = 'pCTE'
         ParamType = ptInput
       end>
-    left = 416
-    top = 88
+    Macros = <>
+    Left = 416
+    Top = 88
     object sqVeicCOD_CTE_VEICULOS: TLongintField
       FieldKind = fkData
       FieldName = 'COD_CTE_VEICULOS'
@@ -3857,8 +3823,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      MaxValue = 0
-      MinValue = 0
       Precision = -1
     end
   end
@@ -3875,37 +3839,38 @@ object dmCte: TdmCte
         Name = 'pCTE'
         ParamType = ptInput
       end>
-    left = 480
-    top = 88
+    Macros = <>
+    Left = 480
+    Top = 88
   end
   object dsCte: TDataSource
     DataSet = cdsCte
-    left = 82
-    top = 147
+    Left = 82
+    Top = 147
   end
   object dsQC: TDataSource
     DataSet = sqQC
-    left = 147
-    top = 147
+    Left = 147
+    Top = 147
   end
   object dsComp: TDataSource
     DataSet = sqComp
-    left = 288
-    top = 147
+    Left = 288
+    Top = 147
   end
   object dsNFe: TDataSource
     DataSet = sqNFe
-    left = 216
-    top = 147
+    Left = 216
+    Top = 147
   end
   object dsVeiculo: TDataSource
     DataSet = sqVeic
-    left = 415
-    top = 154
+    Left = 415
+    Top = 154
   end
   object dsSeguro: TDataSource
     DataSet = sqSeg
-    left = 352
-    top = 147
+    Left = 352
+    Top = 147
   end
 end

@@ -1,17 +1,17 @@
 object fIntegracaoOdoo: TfIntegracaoOdoo
   Left = 233
-  Height = 511
+  Height = 530
   Top = 149
   Width = 1090
   Caption = 'fIntegracaoOdoo'
-  ClientHeight = 511
+  ClientHeight = 530
   ClientWidth = 1090
   DefaultMonitor = dmDesktop
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '2.2.4.0'
   object Panel1: TPanel
     Left = 0
     Height = 144
@@ -108,7 +108,7 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       Left = 640
       Height = 15
       Top = 104
-      Width = 54
+      Width = 52
       Caption = 'Tentativas'
       ParentColor = False
     end
@@ -272,20 +272,29 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       OnClick = btnRecebimentoClick
       TabOrder = 17
     end
+    object btnTest: TButton
+      Left = 560
+      Height = 25
+      Top = 120
+      Width = 75
+      Caption = 'btnTeste'
+      OnClick = btnTestClick
+      TabOrder = 18
+    end
   end
   object Panel2: TPanel
     Left = 0
-    Height = 136
+    Height = 155
     Top = 144
     Width = 1090
     Align = alClient
     Caption = 'Panel2'
-    ClientHeight = 136
+    ClientHeight = 155
     ClientWidth = 1090
     TabOrder = 1
     object memoResult: TMemo
       Left = 1
-      Height = 134
+      Height = 153
       Top = 1
       Width = 1088
       Align = alClient
@@ -299,7 +308,7 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
   object Panel3: TPanel
     Left = 0
     Height = 231
-    Top = 280
+    Top = 299
     Width = 1090
     Align = alBottom
     ClientHeight = 231
@@ -321,6 +330,16 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       ScrollBars = ssAutoBoth
       TabOrder = 0
       WantReturns = False
+    end
+    object Memo1: TMemo
+      Left = 16
+      Height = 48
+      Top = 168
+      Width = 1032
+      Lines.Strings = (
+        ''
+      )
+      TabOrder = 1
     end
   end
   object TimerPedido: TTimer

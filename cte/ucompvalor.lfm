@@ -7,7 +7,7 @@ object fCompValor: TfCompValor
   ClientHeight = 240
   ClientWidth = 320
   OnShow = FormShow
-  LCLVersion = '2.0.4.0'
+  LCLVersion = '2.2.4.0'
   object btnOk: TBitBtn
     Left = 144
     Height = 30
@@ -43,8 +43,7 @@ object fCompValor: TfCompValor
     Top = 48
     Width = 248
     DataField = 'COMP_NOME'
-    DataSource = dmCte.dsComp
-    CharCase = ecNormal
+    DataSource = fCTePrincipal.DSZsqcomp
     MaxLength = 0
     TabOrder = 2
   end
@@ -54,8 +53,7 @@ object fCompValor: TfCompValor
     Top = 104
     Width = 80
     DataField = 'COMP_VALOR'
-    DataSource = dmCte.dsComp
-    CharCase = ecNormal
+    DataSource = fCTePrincipal.DSZsqcomp
     MaxLength = 0
     TabOrder = 3
   end

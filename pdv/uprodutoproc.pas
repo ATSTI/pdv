@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, db, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  DBGrids, StdCtrls, Buttons, udmpdv, strutils;
+  DBGrids, StdCtrls, Buttons, udmpdv, uMsg, strutils;
 
 type
 
@@ -157,6 +157,15 @@ end;
 
 procedure TfProdutoProc.btnSairClick(Sender: TObject);
 begin
+  codProduto:= 0;
+  produto   := '';
+  codProd   := '';
+  precoVenda:= 0;
+  estoque   := 0;
+  precoVendaAtacado := 0;
+  qtdeAtacado:= 0;
+  tipo_venda := '';
+
   close;
 end;
 
@@ -187,6 +196,12 @@ begin
   produto   := dmPdv.sqBusca.FieldByName('PRODUTO').AsString;
   codProd   := dmPdv.sqBusca.FieldByName('CODPRO').AsString;
   precoVenda:= dmPdv.sqBusca.FieldByName('VALOR_PRAZO').AsFloat;
+
+  if(precoVenda = 0.0 )then
+  begin
+   fMsg.ShowModal;
+  end;
+
   estoque   := dmPdv.sqBusca.FieldByName('ESTOQUEATUAL').AsFloat;
   precoVendaAtacado := dmPdv.sqBusca.FieldByName('PRECOATACADO').AsFloat;
   qtdeAtacado:= dmPdv.sqBusca.FieldByName('QTDEATACADO').AsFloat;

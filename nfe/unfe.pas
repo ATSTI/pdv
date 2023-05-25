@@ -84,6 +84,7 @@ type
     CheckBox1: TCheckBox;
     chkScan: TCheckBox;
     chkTodas: TCheckBox;
+    ckImpEAN: TCheckBox;
     ComboBox1: TComboBox;
     ComboBox2: TComboBox;
     ComboBox3: TComboBox;
@@ -340,6 +341,7 @@ type
     tot1: double;
     tot2: double;
     tot3: double;
+    totIPIDevol: double;
     cst_utilizado: String;
     c_custo_open: String;
     nota_selec: String;
@@ -2320,6 +2322,7 @@ end;
 procedure TfNFe.FormShow(Sender: TObject);
 begin
   abrindoSistema;
+  totIPIDevol:= 0;
 end;
 
 procedure TfNFe.Label5Click(Sender: TObject);
@@ -3256,7 +3259,7 @@ begin
 end;
 
 procedure TfNFe.abrirEmpresa;
-var v_semp: String;
+var a, v_semp: String;
 begin
   //if (dmPdv.qcds_ccusto.Active) then
   //  dmPdv.qcds_ccusto.Close;
@@ -3265,11 +3268,12 @@ begin
   v_semp := 'select CODIGO, CONTA, NOME from PLANO ' +
     ' WHERE CONTAPAI = ' + QuotedStr(Trim(conta_local)) +
     '   AND CONSOLIDA = ' + QuotedStr('S');
-  //dmPdv.qcds_ccusto.sql.Add(v_semp);
+ // dmPdv.qcds_ccusto.sql.Add(v_semp);
 
 
+  //ComboBox1.ItemIndex := 0 ;
   ///*
-  //if (PageControl1.ActivePageIndex = 0) then
+  {if (PageControl1.ActivePageIndex = 0) then
   begin
     if(ComboBox1.Text = '') then
     begin
@@ -3277,7 +3281,7 @@ begin
     end;
     v_semp += ' AND NOME = ' + QuotedStr(Trim(ComboBox1.Text));
   end;
-
+  }
   if (PageControl1.ActivePageIndex = 1) then
   begin
     if(ComboBox2.Text = '') then
@@ -3551,9 +3555,9 @@ procedure TfNFe.getItens(contador: integer);
 var
   BC, BCST, desc : Variant;
   cst_parte: String;
-  inf_add_prd: String;
-  nfe_itens_tottrib: String;
-  ver_valor: Double;
+  inf_add_prd, prd : String;
+  nfe_itens_tottrib ,vu, valun ,vt, vUnTrib: String;
+  ver_valor : Double;
 begin
   BC := 0;
   BCST := 4;
@@ -3584,11 +3588,43 @@ begin
       Prod.CFOP     := Trim(dmPdv.cdsItensNFCFOP.AsString);
       Prod.uCom     := Trim(dmPdv.cdsItensNFUNIDADEMEDIDA.AsString);
       Prod.qCom     := dmPdv.cdsItensNFQUANTIDADE.AsFloat;
-      ver_valor := dmPdv.cdsItensNFVLR_BASE.AsFloat;
-      Prod.vUnCom   := dmPdv.cdsItensNFVLR_BASE.AsFloat;
+      ver_valor     := dmPdv.cdsItensNFVLR_BASE.AsFloat;
+
+
+      ACBrNFeDANFeRL1.CasasDecimais.vUnCom := danfeDec;
+      Case danfeDec of
+         2 : vu := ',0.00';
+         3 : vu := ',0.000';
+         4 : vu := ',0.0000';
+         5 : vu := ',0.00000';
+         6 : vu := ',0.000000';
+         7 : vu := ',0.0000000';
+         8 : vu := ',0.00000000';
+      end;
+
+      // Prod.vUnCom   := dmPdv.cdsItensNFVLR_BASE.AsFloat;
+      valun  :=  formatfloat(vu,dmPdv.cdsItensNFVLR_BASE.Value);
+      Prod.vUnCom := StrToFloat(StringReplace(valun, '.', '', [rfReplaceAll]));
+
       Prod.uTrib    := Trim(dmPdv.qsProdutosUNIDADEMEDIDA.AsString);
       Prod.qTrib    := dmPdv.cdsItensNFQUANTIDADE.AsFloat;
-      Prod.vUnTrib  := dmPdv.cdsItensNFVLR_BASE.AsFloat;
+
+      ACBrNFeDANFeRL1.CasasDecimais.vUnCom := danfeDec;
+      Case danfeDec of
+         2 : vt := ',0.00';
+         3 : vt := ',0.000';
+         4 : vt := ',0.0000';
+         5 : vt := ',0.00000';
+         6 : vt := ',0.000000';
+         7 : vt := ',0.0000000';
+         8 : vt := ',0.00000000';
+      end;
+
+      //Prod.vUnTrib  := dmPdv.cdsItensNFVLR_BASE.AsFloat;
+      vUnTrib  :=  formatfloat(vt,dmPdv.cdsItensNFVLR_BASE.Value);
+      Prod.vUnTrib  :=  StrToFloat(StringReplace(vUnTrib, '.', '', [rfReplaceAll]));
+
+
 
       if((Trim(dmPdv.cdsItensNFLOTE.AsString) <> '0')and(Trim(dmPdv.cdsItensNFLOTE.AsString) <> '')) then
       begin
@@ -3601,6 +3637,8 @@ begin
           cAgreg := Trim(dmPdv.cdsItensNFCODPRO.AsString);
         end;
       end;
+
+      prd := dmPdv.cdsItensNFCOD_BARRA.AsString ;
 
       if (EAN13Valido(Trim(dmPdv.cdsItensNFCOD_BARRA.AsString))) then
       begin
@@ -3642,6 +3680,13 @@ begin
 
       Prod.vOutro   := dmPdv.cdsItensNFVALOR_OUTROS.AsCurrency;
       Prod.vSeg     := dmPdv.cdsItensNFVALOR_SEGURO.AsCurrency;
+
+      if (dmPdv.cdsItensNFVALORIPIDEVOL.AsFloat > 0) then
+      begin
+        totIPIDevol := totIPIDevol + dmPdv.cdsItensNFVALORIPIDEVOL.AsFloat;
+        vIPIDevol := dmPdv.cdsItensNFVALORIPIDEVOL.AsFloat;
+        pDevol := dmPdv.cdsItensNFPERCIPIDEVOL.AsFloat;
+      end;
 
       if(dmPdv.qsFornec.Active) then
         if (Trim(dmPdv.qsFornecUF.AsString) = 'EX') then
@@ -3835,6 +3880,7 @@ begin
               vBCFCPST := dmPdv.cdsItensNFV_B_FCPST.Value;
               pFCPST   := dmPdv.cdsItensNFP_FCPST.Value;
               vFCPST   := dmPdv.cdsItensNFV_FCPST.Value;
+
             end;
           end;
 
@@ -4443,6 +4489,9 @@ begin
     Ini.WriteFloat( 'NFe','MargemInferior' , FloatSpinEdit2.Value);
     Ini.WriteFloat( 'NFe','MargemEsquerda' , FloatSpinEdit3.Value);
     Ini.WriteFloat( 'NFe','MargemDireita' , FloatSpinEdit4.Value);
+    Ini.WriteBool('NFe','ImprimeCodigoEan',ckImpEAN.Checked);
+
+
    // Ini.WriteString( 'Geral','PathSchemas'  ,PathWithDelim(ExtractFilePath(Application.ExeName))+'Schemas\') ;
 
    // edtPathSchemas.Text  := Ini.ReadString( 'Geral','PathSchemas'  ,PathWithDelim(ExtractFilePath(Application.ExeName))+'Schemas\') ;
@@ -4584,7 +4633,7 @@ end;
 
 procedure TfNFe.carregaTudo;
 var Ini: TIniFile;
-    IniFile , onde   : String;
+    IniFile , onde : String;
     ImpressoraDet: TIniFile;
 
     T: TSSLLib;
@@ -4593,6 +4642,7 @@ var Ini: TIniFile;
     X: TSSLXmlSignLib;
     Y: TSSLType;
 begin
+  //messagedlg('inicio carrega tudo!',mterror,[mbok],0);
   if (label26.Caption = '...') then
   begin
     fNFe.Caption := 'ATS-NFe ' + GetVersion;
@@ -4668,9 +4718,20 @@ begin
       FloatSpinEdit2.Value := ImpressoraDet.ReadFloat('NFe','MargemInferior',0.7);
       FloatSpinEdit3.Value := ImpressoraDet.ReadFloat('NFe','MargemEsquerda',5.0);
       FloatSpinEdit4.Value := ImpressoraDet.ReadFloat('NFe','MargemDireita',0.7);
+
+      ckImpEAN.Checked   := Ini.ReadBool('NFe','ImprimeCodigoEan',False);
+
+      if ckImpEAN.Checked = True then
+      begin
+        ACBrNFeDANFeRL1.TipoDANFE := tiPaisagem ;
+        ACBrNFeDANFeRL1.ImprimeCodigoEan := True;
+        ACBrNFeDANFeRL1.ExibeEAN := True;
+      end;
+
     finally
       ImpressoraDet.Free;
     end;
+
     dmPdv.IbCon.ExecuteDirect('ALTER TRIGGER PROIBE_ALT_DEL_NF INACTIVE');
     dmPdv.sTrans.Commit;
     dmPdv.IbCon.ExecuteDirect('UPDATE NOTAFISCAL SET SELECIONOU = null '
@@ -4842,6 +4903,7 @@ begin
 
     dmPdv.qcds_parametro.Close;
   end;
+  //messagedlg('Fim carrega tudo!',mterror,[mbok],0);
 end;
 
 procedure TfNFe.abrindoSistema;
@@ -4849,6 +4911,7 @@ var  CSize: DWORD;
      ccusto_emp : Integer;
      sq, sq_condicao, sq_condicao1: string;
 begin
+  //messagedlg('inicio abrindo sistema!',mterror,[mbok],0);
   edtChaveNfeCCe.Text := '';
   if (label26.Caption = '...') then
   begin
@@ -4968,7 +5031,7 @@ begin
   LerConfiguracao;
   cstSuframa := '';
   nfe_carregalogo;
-
+  //messagedlg('Fim abrindo sistema!',mterror,[mbok],0);
 end;
 
 {
@@ -5483,6 +5546,10 @@ begin
         Total.ICMSTot.vNF   := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant;
         Total.ICMSTot.vTotTrib := dmPdv.qcdsNFVLRTOT_TRIB.AsVariant;
         Total.ICMSTot.vICMSUFDest:=tot2;
+
+
+        if (totIPIDevol > 0) then
+           Total.ICMSTot.vIPIDevol := totIPIDevol;
 
         if (dmPdv.qcdsNFII.AsFloat > 0) then
         begin

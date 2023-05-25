@@ -10,7 +10,7 @@ object fPDV_Rec: TfPDV_Rec
   OnShow = FormShow
   PopupMenu = PopupMenu1
   Position = poScreenCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '2.2.4.0'
   object GroupBox1: TGroupBox
     Left = 0
     Height = 584
@@ -20,6 +20,7 @@ object fPDV_Rec: TfPDV_Rec
     ClientHeight = 564
     ClientWidth = 772
     Color = clGradientActiveCaption
+    ParentBackground = False
     ParentColor = False
     TabOrder = 0
     object Panel4: TPanel
@@ -45,7 +46,6 @@ object fPDV_Rec: TfPDV_Rec
         Height = 29
         Top = 18
         Width = 350
-        CharCase = ecNormal
         Enabled = False
         Font.CharSet = ANSI_CHARSET
         Font.Height = -17
@@ -64,7 +64,6 @@ object fPDV_Rec: TfPDV_Rec
         Height = 29
         Top = 18
         Width = 248
-        CharCase = ecNormal
         Enabled = False
         Font.CharSet = ANSI_CHARSET
         Font.Height = -17
@@ -127,6 +126,7 @@ object fPDV_Rec: TfPDV_Rec
       ClientHeight = 494
       ClientWidth = 536
       Color = clActiveBorder
+      ParentBackground = False
       ParentColor = False
       PopupMenu = PopupMenu1
       TabOrder = 0
@@ -136,7 +136,6 @@ object fPDV_Rec: TfPDV_Rec
         Top = 216
         Width = 112
         Alignment = taRightJustify
-        CharCase = ecNormal
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
         Font.Name = 'Tahoma'
@@ -158,7 +157,6 @@ object fPDV_Rec: TfPDV_Rec
         Top = 80
         Width = 112
         Alignment = taRightJustify
-        CharCase = ecNormal
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
         Font.Name = 'Tahoma'
@@ -194,7 +192,6 @@ object fPDV_Rec: TfPDV_Rec
         Top = 43
         Width = 112
         Alignment = taRightJustify
-        CharCase = ecNormal
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
         Font.Name = 'Tahoma'
@@ -239,7 +236,6 @@ object fPDV_Rec: TfPDV_Rec
         Width = 86
         Alignment = taRightJustify
         Anchors = [akTop, akLeft, akRight]
-        CharCase = ecNormal
         Color = clGradientInactiveCaption
         Enabled = False
         Font.CharSet = ANSI_CHARSET
@@ -401,7 +397,6 @@ object fPDV_Rec: TfPDV_Rec
         Top = 150
         Width = 112
         Alignment = taRightJustify
-        CharCase = ecNormal
         Color = clGradientInactiveCaption
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
@@ -423,7 +418,6 @@ object fPDV_Rec: TfPDV_Rec
         Top = 185
         Width = 112
         Alignment = taRightJustify
-        CharCase = ecNormal
         Color = clGradientActiveCaption
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
@@ -472,7 +466,6 @@ object fPDV_Rec: TfPDV_Rec
         Top = 115
         Width = 112
         Alignment = taRightJustify
-        CharCase = ecNormal
         Color = clGradientInactiveCaption
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
@@ -502,7 +495,6 @@ object fPDV_Rec: TfPDV_Rec
         Top = 8
         Width = 112
         Alignment = taRightJustify
-        CharCase = ecNormal
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
         Font.Name = 'Tahoma'
@@ -1042,11 +1034,11 @@ object fPDV_Rec: TfPDV_Rec
         Visible = False
       end
       object pnCartoes: TPanel
-        Left = 48
-        Height = 226
-        Top = 150
+        Left = 40
+        Height = 258
+        Top = 240
         Width = 374
-        ClientHeight = 226
+        ClientHeight = 258
         ClientWidth = 374
         Color = clInfoText
         ParentColor = False
@@ -1550,7 +1542,7 @@ object fPDV_Rec: TfPDV_Rec
         object BitBtn4: TBitBtn
           Left = 80
           Height = 45
-          Top = 128
+          Top = 184
           Width = 152
           Caption = 'Outros Cartões'
           OnClick = BitBtn4Click
@@ -1559,11 +1551,74 @@ object fPDV_Rec: TfPDV_Rec
         object BitBtn5: TBitBtn
           Left = 272
           Height = 45
-          Top = 168
+          Top = 184
           Width = 88
           Caption = 'Fechar'
           OnClick = BitBtn5Click
           TabOrder = 3
+        end
+        object BitBtn3: TBitBtn
+          Left = 80
+          Height = 54
+          Top = 125
+          Width = 152
+          Glyph.Data = {
+            8E060000424D8E060000000000007600000028000000630000001E0000000100
+            04000000000018060000C40E0000C40E00000000000000000000000000000000
+            8000008000000080800080000000800080008080000080808000C0C0C0000000
+            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00FFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFF00000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFF7776FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0
+            0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7666
+            8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000FFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF86668FFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFF00000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFF6667FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000FFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF6666FFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFF6666FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFF00000FF87777778FFFFFFFF7777778FFFF8777FFFFFFFF66668FFFFFF
+            7777F7666FFF76668FFFFFFF6666667FF6666FFFFFFFFFF00000F7777777777F
+            FFFF8777777777FFF87778FFFFFF866666FFFFFF6666F86668F86666668FFFF6
+            66666666766668FFFFFFFFF00000777777777777FFF877777777777FFF7777FF
+            FFFF7666667FFFFF6666FF6667FF66666668FF7666678876666688FFFFFFFFF0
+            00007777FFFFF8777FF7777FFFFF7777FF7777FFFFFF6666666FFFFF7666FF66
+            66FF8FF76666FF7666FFFFFF6666FFFFFFFFFFF00000777FFFFFFF7778F777FF
+            FFFFF8778F7777FFFFFF66666667FFFF86668F6666FFFFFF76666F8666FFFFFF
+            F6668FFFFFFFFFF00000FFFFFFFFFF7778F777FFFFFFFFFFFF8777FFFFFF6667
+            7666FFFFF6667F7666FFFFFFF66668F6668FFFFFF6667FFFFFFFFFF00000FFFF
+            FFFF877778F777FFFFFFFFFFFF87778FFFF86668F6666FFFF6666F86668FFFFF
+            FF6666F76667FFFFF7667FFFFFFFFFF00000FFFF877777777FF7777777777777
+            78F7778FFFF7666FF76668FFF6666FF6667FFFFFFF6666FF7666666677666FFF
+            FFFFFFF00000FF8777777777FFF777777777777777F7777FFFF6666FFF6666FF
+            F7666FF6666FFFFFFF6666FFFF76666666666FFFFFFFFFF00000F877777778FF
+            FFF777788888888777F7777FFFF6662FFFF6666FF86668F6666FFFFFFF76668F
+            FFFFFFF886666FFFFFFFFFF00000F77378FFFFFFFFFF777FFFFFFF8777F77777
+            FFF6262FFFF76666FF6667F76667FFFFFF76668FFFFFFFFFFF6668FFFFFFFFF0
+            0000F8777FFFFFF888FF7778FFFFFF8777F877777FF888FFFFFF666668FF88F7
+            6666FFFFFF66668FF888FFFFFF7667FFFFFFFFF00000F8777FFFFF8777FFF777
+            8FFFFF7778FF77777778888FFFFFF666666788F8666668FFF76666FFF6666FFF
+            FF6666FFFFFFFFF00000FF777788877777FFFF77778887777FFF77787333778F
+            FFFFFF66666666FF66686666666667FFF8666667666667FFFFFFFFF00000FFF7
+            7777777778FFFFF7777777778FFF7778F777778FFFFFFFF86666668F6667F666
+            66666FFFFFF6666666666FFFFFFFFFF00000FFFF87777777FFFFFFFF8733337F
+            FFFF8888FF8777FFFFFFFFFFFFF8778F7777FF862267FFFFFFFF87666678FFFF
+            FFFFFFF00000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000FFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF8FFFFFFF8FFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFF00000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFF22787767FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0
+            0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF76666
+            6FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000FFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF76666FFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFF00000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFF766666FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000FFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF667FFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000
+          }
+          OnClick = BitBtn3Click
+          TabOrder = 4
         end
       end
       object Label3: TLabel
@@ -4241,6 +4296,7 @@ object fPDV_Rec: TfPDV_Rec
         Name = 'PCODMOV'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 200
     object sqPagamentoCOD_VENDA: TLongintField
       FieldKind = fkData

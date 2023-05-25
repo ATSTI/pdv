@@ -20,12 +20,12 @@ begin
   Application.CreateForm(TdmPdv, dmPdv);
   Application.CreateForm(TdmCte, dmCte);
   Application.CreateForm(TfCTePrincipal, fCTePrincipal);
-  Application.CreateForm(TfNFe, fNFe);
   Application.CreateForm(TfCompValor, fCompValor);
   Application.CreateForm(TfQuantCarga, fQuantCarga);
   Application.CreateForm(TfClienteBusca, fClienteBusca);
   Application.CreateForm(TfMunicipioBusca, fMunicipioBusca);
   Application.CreateForm(TfVeiculoCte, fVeiculoCte);
+  Application.CreateForm(TfNFe, fNFe);
   Application.Run;
 end.
 
