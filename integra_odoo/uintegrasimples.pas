@@ -319,15 +319,17 @@ procedure TfIntegracaoOdoo.btnTestClick(Sender: TObject);
   var
   Client: TFPHttpClient;
   Response: TStringStream;
-  Params: string = '{"db": "felicita","login": "ats@atsti.com.br", "password": "a2t00s7"}';
+  Params: string;
 begin
+  Params := '{"db": "' + dmPdv.odoo_database + '", "login": "' + dmpdv.odoo_user +
+    '", "password": "' + dmpdv.odoo_acesso + '"}'
   Client := TFPHttpClient.Create(nil);
   Client.AddHeader('User-Agent', 'Mozilla/5.0 (compatible; fpweb)');
   Client.AddHeader('Content-Type', 'application/json; charset=UTF-8');
   Client.AddHeader('Accept', 'application/json');
   Client.AllowRedirect := true;
-  Client.UserName := 'ats@atsti.com.br';
-  Client.Password := 'a2t00s7';
+  Client.UserName := dmpdv.odoo_user;
+  Client.Password := dmpdv.odoo_acesso;
   Client.RequestBody := TRawByteStringStream.Create(Params);
   Response := TStringStream.Create('');
   try
