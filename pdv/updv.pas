@@ -92,6 +92,7 @@ type
     Label21: TLabel;
     Label6: TLabel;
     Label7: TLabel;
+    Label8: TLabel;
     lblMSG: TLabel;
     lblPedido: TLabel;
     lblProdBusca: TLabel;
@@ -185,6 +186,8 @@ type
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure DBGrid2CellClick(Column: TColumn);
+    procedure DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure DBGrid2Enter(Sender: TObject);
     procedure DBGrid2KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState
       );
@@ -244,7 +247,7 @@ type
     codCaixa: Integer; // cod Usuario
     codVendedor: Integer;
     codVendedorAnterior : Integer;
-    codMov: Integer;
+
     codDet: Integer;
     qtde_ped: Integer;
     num_item: Integer;
@@ -270,7 +273,9 @@ type
     procedure imprime_envio;
     procedure buscaProduto();
   public
-
+     codMov: Integer;
+     pSemValor : integer;
+     pStatus : integer;
   end;
 
 var
@@ -440,6 +445,21 @@ procedure TfPdv.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
   DataCol: Integer; Column: TColumn; State: TGridDrawState);
 var bmp: TBitmap;
 begin
+
+
+  {alterando a cor da fonte dos produtos cancelados}
+  //if dmPdv.sqBusca.FieldByName('VALOR_PRAZO').AsFloat = 0 then
+  if   dmPdv.sqLancamentosPRECO.AsFloat = 0 then
+  //if cdsProdutosCANCELADO.AsString=’S’ then {substituir pela sua condição}
+      TDBGrid(Sender).Canvas.Font.Color:=clRed
+          else TDBGrid(Sender).Canvas.Font.Color:=clBlack;
+
+
+
+  {atualizando a visualização do DBGrid}
+  DBGrid1.Canvas.FillRect(Rect);
+  TDBGrid(Sender).DefaultDrawColumnCell(Rect,DataCol,Column,State);
+
   bmp := TBitmap.Create;
   try
     try
@@ -460,6 +480,12 @@ end;
 procedure TfPdv.DBGrid2CellClick(Column: TColumn);
 begin
   lblProdBusca.Caption:=dmPdv.sqBusca.FieldByName('PRODUTO').AsString;
+end;
+
+procedure TfPdv.DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
+  DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+
 end;
 
 procedure TfPdv.DBGrid2Enter(Sender: TObject);
@@ -610,6 +636,20 @@ end;
 
 procedure TfPdv.acReceberExecute(Sender: TObject);
 begin
+  if(codMov = 0) then
+  begin
+    exit;
+  end;
+  dmPdv.sqLancZero.Close;
+  dmPdv.sqLancZero.Params[0].AsInteger:= CodMov;
+  dmPdv.sqLancZero.Open;
+  pSemValor := dmPdv.sqLancZeroCODMOVIMENTO.AsInteger;
+  if(pSemValor > 0 )then
+  begin
+    if  MessageDlg('Confirma Receber com Produtos Sem Preços ?',
+    mtConfirmation, [mbYes, mbNo],0) = mrNo then exit;
+  end;
+
   if (dmpdv.sqLancamentosSTATUS.AsInteger = 2) then
   begin
     ShowMessage('Pedido Cancelado;');
@@ -694,6 +734,16 @@ begin
   fPermissao.Permissao_Fazer := 'PRECO';
   edProduto.SetFocus;
   pnAltera.Visible:=False;
+
+
+  dmPdv.sqLancZero.Close;
+  dmPdv.sqLancZero.Params[0].AsInteger:= CodMov;
+  dmPdv.sqLancZero.Open;
+  pSemValor := dmPdv.sqLancZeroCODMOVIMENTO.AsInteger;
+  if(pSemValor > 0 )then
+     Label8.Caption:= 'LINHAS EM VERMELHO  PRODUTOS PREÇO  0,00'
+  else
+     Label8.Caption:= '...';
 end;
 
 procedure TfPdv.BitBtn11Click(Sender: TObject);
@@ -738,12 +788,14 @@ end;
 
 procedure TfPdv.acConsultaItemExecute(Sender: TObject);
 begin
+  statusPedido := 0;  //manoel
   if (edProduto.Color = clYellow) then
   begin
     edProduto.Color := $00E1E1E1;
     consultaItem := 'NAO';
     pnProdBusca.Visible:=False;
     abrePedido(ultimo_pedido);
+
   end
   else begin
     edProduto.Color := clYellow;
@@ -860,8 +912,8 @@ begin
     Exit;
   end;
   // 23/07/2022 vou buscar o produto novamente, pois, preciso dos precos
-  //buscaProduto();
-  if (dmpdv.tipo_buscaProd = 'CODPRO') then
+ // buscaProduto();
+ if (dmpdv.tipo_buscaProd = 'CODPRO') then
   begin
     fProdutoProc.busca(edProduto.Text, '','', False);
   end
@@ -887,6 +939,7 @@ begin
   edPreco.Text:= FormatFloat('#,,,0.00',precoL);
   edDesconto.Text:=edDesconto.Text;
   edQtde1.SetFocus;
+
 end;
 
 procedure TfPdv.BitBtn8Click(Sender: TObject);
@@ -1345,6 +1398,20 @@ procedure TfPdv.abrePedido(apCodMov: Integer);
 var  logs:TextFile;
   vdr: String;
 begin
+
+  dmPdv.sqUltimoLanc.Close;
+  dmPdv.sqUltimoLanc.Params[0].AsInteger:= CodMov;
+  dmPdv.sqUltimoLanc.Open;
+  pStatus := dmPdv.sqUltimoLancSTATUS.AsInteger;
+
+  if(pStatus = 1 )then
+  begin
+    edProduto.Text:= '';
+    lblPedido.Caption:= '';
+    edTotalGeral.Text:= '';
+    exit;
+  end;
+
   statusPedido:=0;
   edProdutoDesc.Lines.Clear;
   edQtde.Text:='0';
@@ -1490,6 +1557,29 @@ procedure TfPdv.registrar_item();
 begin
   if (codProduto = 0)  then
      exit;
+  if(CodMov = 0 )then
+  begin
+    ShowMessage('Atenção Iniciar uma Venda Para Continuar. ' );
+    edProduto.text := '';
+    exit;
+  end;
+
+  dmPdv.sqUltimoLanc.Close;
+  dmPdv.sqUltimoLanc.Params[0].AsInteger:= CodMov;
+  dmPdv.sqUltimoLanc.Open;
+  pStatus := dmPdv.sqUltimoLancSTATUS.AsInteger;
+  // manoel
+  if(pStatus = 1 )then
+  begin
+    edProduto.Text:= '';
+    lblPedido.Caption:= '';
+    edTotalGeral.Text:= '';
+    edQtde.Text:= '';
+    edPreco.Text:= '';
+    lblNumItem.Caption:= '';
+    exit;
+  end;
+  { manoel
   if not dmPdv.sqLancamentos.Active then
   begin
     if dmPdv.sqLancamentosSTATUS.AsInteger > 0 then
@@ -1498,6 +1588,7 @@ begin
       Exit;
     end;
   end;
+  }
   if (fPDV_Rec.strParaFloat(edQtde.Text) > 1000) then
   begin
     ShowMessage('Quantidade parece errada.');
@@ -1520,6 +1611,7 @@ begin
     //edTotal.Text := FloatToStr(FMov.MovDetalhe.Qtde * FMov.MovDetalhe.Preco);
     //FMov.MovDetalhe.Baixa         := '1';
     codDet := Fmov.MovDetalhe.inserirMovDet();
+
     dmPdv.sTrans.Commit;
     dmPdv.sqLancamentos.Close;
     dmPdv.sqLancamentos.DisableControls;
@@ -1723,7 +1815,15 @@ begin
 end;
 
 procedure TfPdv.adicionaProduto();
+ var nprod : string;
 begin
+    nprod := fProdutoProc.produto ;
+    {
+    if(fProdutoProc.precoVenda = 0)then
+    begin
+      ShowMessage('Atenção  Produto  ' + nprod + '. Sem Preço! ' );
+    end;
+    }
     codproduto := fProdutoProc.codProduto;
     codPro     := fProdutoProc.codProd;
     precoL     := fProdutoProc.precoVenda;
@@ -1740,6 +1840,16 @@ begin
     edDesconto.Text:='0,00';
     edDesconto.Text:='0,00';
     registrar_item();
+
+    dmPdv.sqLancZero.Close;
+    dmPdv.sqLancZero.Params[0].AsInteger:= CodMov;
+    dmPdv.sqLancZero.Open;
+    pSemValor := dmPdv.sqLancZeroCODMOVIMENTO.AsInteger;
+
+    if(pSemValor > 0 )then
+       Label8.Caption:= 'LINHAS EM VERMELHO  PRODUTOS PREÇO  0,00'
+    else
+      Label8.Caption:= '...' ;
 end;
 
 procedure TfPdv.controlaPedidos(cpCodMov: Integer; cpStatus: Integer; cpTipo: Integer);
@@ -2440,6 +2550,7 @@ procedure TfPdv.buscaProduto();
 var i: Integer;
   str_bsc: String;
 begin
+
   if ((statusPedido > 0) and (dmPdv.usaComanda = 0)) then
   begin
     ShowMessage('Pedido ja finalizado. Clique no Incluir para novo pedido.');
@@ -2528,6 +2639,10 @@ begin
     Beep;
     Beep;
     Beep;
+  end;
+  if fProdutoProc.num_busca > 0 then
+  begin
+ //   btnVnd1.Click;
   end;
 end;
 

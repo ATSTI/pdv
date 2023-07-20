@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="11"/>
+    <Version Value="12"/>
     <PathDelim Value="\"/>
     <General>
+      <Flags>
+        <CompatibilityMode Value="True"/>
+      </Flags>
       <SessionStorage Value="InProjectDir"/>
-      <MainUnit Value="0"/>
       <Title Value="ATS-NFe Nota Fiscal Eletrônica"/>
       <Scaled Value="True"/>
       <ResourceType Value="res"/>
@@ -34,36 +36,41 @@
     </PublishOptions>
     <RunParams>
       <FormatVersion Value="2"/>
-      <Modes Count="0"/>
     </RunParams>
-    <RequiredPackages Count="9">
+    <RequiredPackages Count="11">
       <Item1>
-        <PackageName Value="ACBr_Integrador"/>
+        <PackageName Value="zcomponent"/>
       </Item1>
       <Item2>
-        <PackageName Value="SynEdit"/>
+        <PackageName Value="PCNComum"/>
       </Item2>
       <Item3>
-        <PackageName Value="ACBrTCP"/>
+        <PackageName Value="ACBr_Integrador"/>
       </Item3>
       <Item4>
-        <PackageName Value="ACBr_NFe_DanfeRL"/>
+        <PackageName Value="SynEdit"/>
       </Item4>
       <Item5>
-        <PackageName Value="ACBrDiversos"/>
+        <PackageName Value="ACBrTCP"/>
       </Item5>
       <Item6>
-        <PackageName Value="ACBr_NFe"/>
+        <PackageName Value="ACBr_NFe_DanfeRL"/>
       </Item6>
       <Item7>
-        <PackageName Value="DateTimeCtrls"/>
+        <PackageName Value="ACBrDiversos"/>
       </Item7>
       <Item8>
-        <PackageName Value="FCL"/>
+        <PackageName Value="ACBr_NFe"/>
       </Item8>
       <Item9>
-        <PackageName Value="LCL"/>
+        <PackageName Value="DateTimeCtrls"/>
       </Item9>
+      <Item10>
+        <PackageName Value="FCL"/>
+      </Item10>
+      <Item11>
+        <PackageName Value="LCL"/>
+      </Item11>
     </RequiredPackages>
     <Units Count="6">
       <Unit0>
@@ -112,7 +119,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="C:\home\sisadmin\NFe.exe"/>
+      <Filename Value="D:\clientes\aaaa\NFe.exe"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
@@ -121,7 +128,7 @@
     </SearchPaths>
     <Linking>
       <Debugging>
-        <GenerateDebugInfo Value="False"/>
+        <DebugInfoType Value="dsDwarf2Set"/>
         <UseExternalDbgSyms Value="True"/>
       </Debugging>
       <Options>

@@ -267,6 +267,7 @@ type
     sqVeicVALINFCARGA: TFloatField;
     sqVeicVTPPROP: TLongintField;
     sqVeicVUF: TStringField;
+
   private
 
   public

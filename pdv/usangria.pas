@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, sqldb, db, FileUtil, Forms, Controls, Graphics, Dialogs,
-  Buttons, MaskEdit, StdCtrls, udmpdv,fphttpclient,fpjson,uIntegraSimples;
+  Buttons, MaskEdit, StdCtrls, ExtCtrls, DBGrids, udmpdv, fphttpclient, fpjson,
+  uIntegraSimples;
 
 type
 
@@ -15,13 +16,21 @@ type
   TfSangria = class(TForm)
     btnFechar: TBitBtn;
     btnGravar: TBitBtn;
+    btnReimprimir: TButton;
     ComboBox1: TComboBox;
+    DBGrid1: TDBGrid;
+    dsSangrias: TDataSource;
     Label1: TLabel;
     Label2: TLabel;
     edMotivo: TMaskEdit;
     edValor: TMaskEdit;
     Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
     memoResult: TMemo;
+    PanelSangria: TPanel;
+    sqSangrias: TSQLQuery;
     sqPagamento: TSQLQuery;
     sqPagamentoCAIXA: TSmallintField;
     sqPagamentoCAIXINHA: TFloatField;
@@ -34,8 +43,21 @@ type
     sqPagamentoSTATE: TSmallintField;
     sqPagamentoTROCO: TFloatField;
     sqPagamentoVALOR_PAGO: TFloatField;
+    sqSangriasCAIXA: TSmallintField;
+    sqSangriasCAIXINHA: TFloatField;
+    sqSangriasCODFORMA: TLongintField;
+    sqSangriasCOD_VENDA: TLongintField;
+    sqSangriasDESCONTO: TFloatField;
+    sqSangriasFORMA_PGTO: TStringField;
+    sqSangriasID_ENTRADA: TLongintField;
+    sqSangriasN_DOC: TStringField;
+    sqSangriasSTATE: TSmallintField;
+    sqSangriasTROCO: TFloatField;
+    sqSangriasVALOR_PAGO: TFloatField;
     procedure btnFecharClick(Sender: TObject);
     procedure btnGravarClick(Sender: TObject);
+    procedure btnReimprimirClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormShow(Sender: TObject);
   private
 
@@ -113,6 +135,10 @@ begin
     Writeln(IMPRESSORA, '');
     Writeln(IMPRESSORA, '------------------------------');
     Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
   finally
     CloseFile(IMPRESSORA);
   end;
@@ -124,10 +150,65 @@ begin
   end;
 end;
 
+procedure TfSangria.btnReimprimirClick(Sender: TObject);
+var
+  IMPRESSORA:TextFile;
+begin
+    if (dmPdv.CupomImp = 'Texto') then
+  begin
+    AssignFile(IMPRESSORA, dmPdv.portaIMP);
+  end
+  else begin
+    AssignFile(IMPRESSORA, dmPdv.path_imp);
+  end;
+
+  try
+    Rewrite(IMPRESSORA);
+    //lFile.LoadFromFile('caixa.txt');
+    Writeln(IMPRESSORA, 'Reimpressao');
+    Writeln(Impressora, 'Sangria' + ' CAIXA');
+    Writeln(IMPRESSORA, FormatDateTime('dd/mm/yyyy hh:MM:ss', Now));
+    Writeln(IMPRESSORA, '');
+    Writeln(Impressora, 'CAIXA : ' + sqSangriasCAIXA.AsString);
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, 'Valor  - ' + FormatFloat(',##0.00', sqSangriasVALOR_PAGO.AsCurrency));
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, 'Motivo :');
+    if (Length(sqSangriasN_DOC.AsString) > dmPdv.tamanhoLinha) then
+    begin
+      Writeln(IMPRESSORA, Copy(sqSangriasN_DOC.AsString,0,dmPdv.tamanhoLinha));
+      Writeln(IMPRESSORA, Copy(sqSangriasN_DOC.AsString,dmPdv.tamanhoLinha+1,dmPdv.tamanhoLinha));
+    end
+    else begin
+        Writeln(IMPRESSORA,sqSangriasN_DOC.AsString);
+    end;
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, 'Assinatura :');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '------------------------------');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+  finally
+    CloseFile(IMPRESSORA);
+  end;
+end;
+
+
+
+procedure TfSangria.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  sqSangrias.Active:= False;
+end;
+
 procedure TfSangria.FormShow(Sender: TObject);
 begin
   edMotivo.Text := '';
   edValor.Text := '0,00';
+  fSangria.sqSangrias.Active:= True;
 end;
 
 procedure TfSangria.btnFecharClick(Sender: TObject);

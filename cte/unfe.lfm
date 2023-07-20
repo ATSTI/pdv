@@ -6,11 +6,11 @@ object fNFe: TfNFe
   Caption = 'fNFe'
   ClientHeight = 321
   ClientWidth = 490
-  LCLVersion = '2.0.4.0'
+  LCLVersion = '2.2.4.0'
   object btnEdita: TBitBtn
     Left = 389
     Height = 30
-    Top = 232
+    Top = 216
     Width = 75
     Caption = 'Fechar'
     OnClick = btnEditaClick
@@ -19,7 +19,7 @@ object fNFe: TfNFe
   object btnOk: TBitBtn
     Left = 296
     Height = 30
-    Top = 232
+    Top = 216
     Width = 75
     Default = True
     DefaultCaption = True
@@ -40,10 +40,9 @@ object fNFe: TfNFe
     Left = 32
     Height = 23
     Top = 88
-    Width = 328
+    Width = 336
     DataField = 'CHAVE'
-    DataSource = dmCte.dsNFe
-    CharCase = ecNormal
+    DataSource = fCTePrincipal.DSZsqNFe
     MaxLength = 0
     TabOrder = 2
   end
@@ -51,9 +50,9 @@ object fNFe: TfNFe
     Left = 32
     Height = 23
     Top = 32
-    Width = 223
+    Width = 160
     DataField = 'DPREV'
-    DataSource = dmCte.dsNFe
+    DataSource = fCTePrincipal.DSZsqNFe
     ReadOnly = False
     CenturyFrom = 1941
     MaxDate = 2958465
@@ -77,8 +76,7 @@ object fNFe: TfNFe
     Top = 152
     Width = 432
     DataField = 'PIN'
-    DataSource = dmCte.dsNFe
-    CharCase = ecNormal
+    DataSource = fCTePrincipal.DSZsqNFe
     MaxLength = 0
     TabOrder = 4
   end
@@ -99,7 +97,7 @@ object fNFe: TfNFe
     ParentColor = False
   end
   object sbtnLerXmlCte1: TSpeedButton
-    Left = 360
+    Left = 368
     Height = 23
     Hint = 'Importar CTe , em Configurações , '#13#10'coloque o Caminho das CTes a serem '#13#10'importadas.'
     Top = 88
@@ -124,6 +122,10 @@ object fNFe: TfNFe
     ShowHint = True
     ParentShowHint = False
   end
+  object OpenDialog1: TOpenDialog
+    Left = 432
+    Top = 24
+  end
   object ACBrNFe1: TACBrNFe
     Configuracoes.Geral.SSLLib = libNone
     Configuracoes.Geral.SSLCryptLib = cryNone
@@ -136,11 +138,7 @@ object fNFe: TfNFe
     Configuracoes.WebServices.AguardarConsultaRet = 0
     Configuracoes.WebServices.QuebradeLinha = '|'
     Configuracoes.RespTec.IdCSRT = 0
-    left = 152
-    top = 192
-  end
-  object OpenDialog1: TOpenDialog
-    left = 321
-    top = 24
+    Left = 152
+    Top = 192
   end
 end

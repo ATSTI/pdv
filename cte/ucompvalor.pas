@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Buttons, ExtCtrls,
-  EditBtn, StdCtrls, DBCtrls, db;
+  EditBtn, StdCtrls, DBCtrls, uCtePrincipal, db;
 
 type
 
@@ -27,6 +27,7 @@ type
 
   public
     fvalor : integer;
+    pcompInsere , pcompEdit : string;
   end;
 
 var
@@ -45,6 +46,45 @@ var vstr_sql :string;
   num_cod_comp: Integer;
 begin
   vstr_sql := '';
+  pcompInsere := '';
+  pcompEdit := '';
+  FormatSettings.DecimalSeparator := '.';
+  if (fCTePrincipal.ZsqComp.State in [dsInsert]) then
+  begin
+    if (fCTePrincipal.ZsqCompCOMP_NOME.AsString <> '') then
+    begin
+      num_cod_comp := fCTePrincipal.busca_generator('GEN_CTE_COMP_ID');
+      vstr_sql := 'INSERT INTO CTE_COMP (COD_CTE_COMP, COD_CTE ,COMP_NOME, ' +
+        ' COMP_VALOR) VALUES ( ' + IntToStr(num_cod_comp);
+      vstr_sql := vstr_sql + ', ' + IntToStr(fCTePrincipal.ZsqCompCOD_CTE.AsInteger) ;
+      vstr_sql := vstr_sql + ',';
+      vstr_sql := vstr_sql +  QuotedStr(fCTePrincipal.ZsqCompCOMP_NOME.AsString);
+      vstr_sql := vstr_sql + ','  + FloatToStr(fCTePrincipal.ZsqCompCOMP_VALOR.AsFloat);
+      vstr_sql := vstr_sql + ')';
+      fCTePrincipal.ZsqCompCOD_CTE_COMP.AsInteger := num_cod_comp;
+      pcompInsere := vstr_sql ;
+    end;
+  end;
+  if (fCTePrincipal.ZsqComp.State in [dsEdit]) then
+  begin
+    vstr_sql := 'UPDATE CTE_COMP SET COMP_NOME = ';
+    vstr_sql := vstr_sql + QuotedStr(fCTePrincipal.ZsqCompCOMP_NOME.AsString);
+    vstr_sql := vstr_sql + ', COMP_VALOR = ';
+    vstr_sql := vstr_sql +  FloatToStr(fCTePrincipal.ZsqCompCOMP_VALOR.AsFloat)  ; // +  Format('%8.2f', [valComp.Value]);
+    vstr_sql := vstr_sql + ' WHERE COD_CTE_COMP = ';
+    vstr_sql := vstr_sql + IntToStr(fCTePrincipal.ZsqCOMPCOD_CTE_COMP.AsInteger);
+    if (vstr_sql <> '') then
+    pcompEdit := vstr_sql ;
+    //  dmPdv.Ibcon.ExecuteDirect(vstr_sql);
+  end;
+  FormatSettings.DecimalSeparator := ',';
+  Close;
+
+  fCTePrincipal.btnInsertComp.Click;
+  {
+  vstr_sql := '';
+  pcompInsere := '';
+  pcompEdit := '';
   FormatSettings.DecimalSeparator := '.';
   if (dmCte.dsComp.State in [dsInsert]) then
   begin
@@ -54,10 +94,12 @@ begin
       vstr_sql := 'INSERT INTO CTE_COMP (COD_CTE_COMP, COD_CTE ,COMP_NOME, ' +
         ' COMP_VALOR) VALUES ( ' + IntToStr(num_cod_comp);
       vstr_sql := vstr_sql + ', ' + IntToStr(dmCte.sqCompCOD_CTE.AsInteger) ;
-      vstr_sql := vstr_sql + ', ' + QuotedStr(dmCte.sqCompCOMP_NOME.AsString);
-      vstr_sql := vstr_sql + ', '  + FloatToStr(dmCte.sqCompCOMP_VALOR.AsFloat);
+      vstr_sql := vstr_sql + ',';
+      vstr_sql := vstr_sql +  QuotedStr(dmCte.sqCompCOMP_NOME.AsString);
+      vstr_sql := vstr_sql + ','  + FloatToStr(dmCte.sqCompCOMP_VALOR.AsFloat);
       vstr_sql := vstr_sql + ')';
       dmCte.sqCompCOD_CTE_COMP.AsInteger := num_cod_comp;
+      pcompInsere := vstr_sql ;
     end;
   end;
   if (dmCte.dsComp.State in [dsEdit]) then
@@ -68,11 +110,14 @@ begin
     vstr_sql := vstr_sql +  FloatToStr(dmCte.sqCompCOMP_VALOR.AsFloat)  ; // +  Format('%8.2f', [valComp.Value]);
     vstr_sql := vstr_sql + ' WHERE COD_CTE_COMP = ';
     vstr_sql := vstr_sql + IntToStr(dmCte.sqCOMPCOD_CTE_COMP.AsInteger);
+    if (vstr_sql <> '') then
+    pcompEdit := vstr_sql ;
+    //  dmPdv.Ibcon.ExecuteDirect(vstr_sql);
   end;
   FormatSettings.DecimalSeparator := ',';
-  if (vstr_sql <> '') then
-    dmPdv.Ibcon.ExecuteDirect(vstr_sql);
   Close;
+  fCTePrincipal.btnInsertComp.Click;
+  }
 end;
 
 procedure TfCompValor.FormShow(Sender: TObject);

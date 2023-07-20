@@ -99,6 +99,8 @@ begin
   // Reforco
   fSangria.SangriaReforco:= 'Reforco';
   fSangria.Caption := 'Reforço';
+  fSangria.Label6.Caption := 'Incluir Reforço';
+  fSangria.PanelSangria.Visible := False;
   fSangria.ShowModal;
 end;
 
@@ -326,7 +328,9 @@ procedure TfMovimentoProc.btnSangriaClick(Sender: TObject);
 begin
   //fSangria.ShowModal;
   fSangria.SangriaReforco:= 'Sangria';
-  fSangria.Caption := 'Sangria';  ;
+  fSangria.Caption := 'Sangria';
+  fSangria.Label6.Caption := 'Incluir Sangria';
+  fSangria.PanelSangria.Visible := True;
   fSangria.ShowModal;
 end;
 

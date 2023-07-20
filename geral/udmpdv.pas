@@ -818,6 +818,7 @@ type
     sqEmpresaWEB: TStringField;
     sqGenerator: TSQLQuery;
     sqLancamentos: TSQLQuery;
+    sqLancZero: TSQLQuery;
     sqLancamentosALIQ_CUPOM: TStringField;
     sqLancamentosBAIXA: TStringField;
     sqLancamentosCEST: TStringField;
@@ -892,6 +893,8 @@ type
     sqLancamentosVLRTOT_TRIB: TFloatField;
     sqLancamentosVLR_BASE: TFloatField;
     sqLancamentosVLR_BASEICMS: TFloatField;
+    sqUltimoLanc: TSQLQuery;
+    sqLancZeroCODMOVIMENTO: TLongintField;
     SQLQuery1: TSQLQuery;
     sqEmpresa: TSQLQuery;
     qcds_ccusto: TSQLQuery;
@@ -980,6 +983,8 @@ type
     qsCCEPROTOCOLO: TStringField;
     qsCCESELECIONOU: TStringField;
     qsCCESEQUENCIA: TLongintField;
+    sqUltimoLancCODMOVIMENTO: TLongintField;
+    sqUltimoLancSTATUS: TSmallintField;
     sTabIBGE: TSQLQuery;
     sqlTotal_tributos: TSQLQuery;
     sqCliente: TSQLQuery;
@@ -1218,8 +1223,12 @@ begin
       vstr := conf.ReadString('DATABASE', 'Name', '');
       Writeln(logs, 'BD conf.ini ' + vstr);
       IBCon.DatabaseName := vstr;
+      IbCon.CharSet := conf.ReadString('DATABASE', 'charset', '');
+      vstr := conf.ReadString('DATABASE', 'charset', '');
+      Writeln(logs, 'charset ' + vstr);
       //ShowMessage('BD ' + vstr);
       vstr := conf.ReadString('DATABASE', 'HostName', '');
+
       Writeln(logs, 'Host conf.ini ' + vstr);
       path_python := conf.ReadString('PATH', 'PathPython', '');
       path_script := conf.ReadString('PATH', 'PathScript', '');
@@ -1278,6 +1287,18 @@ begin
       ccusto := conf.ReadString( 'Outros','CentroCusto','');
       //imp_desconto_item := conf.ReadString( 'Outros','ImprimeDescontoItem','N');
       modoDesenvolvedor := conf.ReadString( 'Outros','modoDesenvolvedor','N');
+     {
+      ZCon.Connected       := False;
+      ZCon.HostName        := conf.ReadString('ZConn', 'Hostname', '');
+      ZCon.Port            := conf.ReadInteger('ZConn', 'Port', 0);
+      ZCon.Protocol        := conf.ReadString('ZConn', 'Protocol', '');
+      ZCon.LibraryLocation := conf.ReadString('ZConn', 'LibraryLocation', '');
+      ZCon.User            := conf.ReadString('ZConn', 'User', '');
+      ZCon.Password        := conf.ReadString('ZConn', 'Password', '');
+      ZCon.Database        := conf.ReadString('ZConn', 'Database', '');
+      ZCon.ClientCodepage  := conf.ReadString('ZConn', 'Charset', '');
+    }
+
     finally
       conf.free;
     end;

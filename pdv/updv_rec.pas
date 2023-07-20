@@ -35,6 +35,7 @@ type
     BitBtn19: TBitBtn;
     BitBtn2: TBitBtn;
     BitBtn21: TBitBtn;
+    BitBtn3: TBitBtn;
     BitBtn4: TBitBtn;
     BitBtn5: TBitBtn;
     btnCupom: TBitBtn;
@@ -131,6 +132,7 @@ type
     procedure BitBtn22Click(Sender: TObject);
     procedure BitBtn26Click(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
+    procedure BitBtn3Click(Sender: TObject);
     procedure BitBtn4Click(Sender: TObject);
     procedure BitBtn5Click(Sender: TObject);
     procedure btnCadeiraClick(Sender: TObject);
@@ -970,6 +972,8 @@ begin
         Writeln(Impressora,lFile[i]);
     end;
 
+
+
     // CUPOM PRAZO
     if prazo = 'S' then
     begin
@@ -1027,6 +1031,7 @@ begin
             Writeln(Impressora, texto3);//NOME DO PRODUTO
             dmPdv.sqLancamentos.next;
           end;
+
         end
         else if linhaTxt = 'D' then
         begin
@@ -1044,6 +1049,7 @@ begin
           linhaTxt := Copy(lFile[i],2,Length(lFile[i])-1);
           Writeln(Impressora, linhaTxt + FormatFloat('#,,,0.00', totalR));
         end
+
         else if linhaTxt = 'V' then
         begin
           linhaTxt := 'Pedido: ' + IntToStr(dmPdv.sqLancamentosCODMOVIMENTO.AsInteger);  // Copy(lFile[i],2,Length(lFile[i])-1);
@@ -1066,6 +1072,7 @@ begin
         begin
           linhaTxt := Copy(lFile[i],2,Length(lFile[i])-1);
           Writeln(Impressora, linhaTxt);
+
         end
         else if linhaTxt = '4' then
         begin
@@ -1080,7 +1087,24 @@ begin
         else
           Writeln(Impressora,lFile[i]);
       end;
+             /////
+      linhaTxt := 'P' ;
+      if linhaTxt = 'P' then
+      begin
+        sqPagamento.First;
+        Writeln(Impressora, 'Forma de Pagamento');
+        while not sqPagamento.Eof do
+        begin
+          Writeln(Impressora, 'R$ ' + FormatFloat('#,,,0.00',sqPagamentoVALOR_PAGO.AsFloat) +
+          ' - ' + RemoveAcento(sqPagamentoN_DOC.AsString));
+          sqPagamento.Next;
+        end;
+       end
+
+       ////
+
     end;
+
   finally
     CloseFile(IMPRESSORA);
     lFile.Free;
@@ -2208,6 +2232,13 @@ end;
 procedure TfPDV_Rec.BitBtn2Click(Sender: TObject);
 begin
   lblForma.Caption:='8-Brasil Card';
+  pnCartoes.Visible:=False;
+  edPagamento.SetFocus;
+end;
+
+procedure TfPDV_Rec.BitBtn3Click(Sender: TObject);
+begin
+  lblForma.Caption:='0-Cartao Servipa';
   pnCartoes.Visible:=False;
   edPagamento.SetFocus;
 end;

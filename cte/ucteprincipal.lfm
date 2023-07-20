@@ -1,21 +1,20 @@
 object fCTePrincipal: TfCTePrincipal
-  Left = 19
-  Height = 699
-  Top = 21
+  Left = 23
+  Height = 649
+  Top = 18
   Width = 1305
   Caption = 'CTe - Conhecimento de Transporte Eletrônico'
-  ClientHeight = 699
+  ClientHeight = 649
   ClientWidth = 1305
-  OnClose = FormClose
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '2.0.8.0'
+  LCLVersion = '2.2.4.0'
   object Panel1: TPanel
     Left = 0
     Height = 66
-    Top = 633
+    Top = 583
     Width = 1305
     Align = alBottom
     ClientHeight = 66
@@ -681,27 +680,27 @@ object fCTePrincipal: TfCTePrincipal
   end
   object pcPrincipal: TPageControl
     Left = 0
-    Height = 633
+    Height = 583
     Top = 0
     Width = 1305
-    ActivePage = TabCteGeradas
+    ActivePage = TabCte
     Align = alClient
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     OnChange = pcPrincipalChange
     object TabCteGeradas: TTabSheet
       Caption = 'CT-e Geradas'
-      ClientHeight = 605
+      ClientHeight = 555
       ClientWidth = 1297
       OnContextPopup = TabCteGeradasContextPopup
       OnShow = TabCteGeradasShow
       object Panel2: TPanel
         Left = 0
-        Height = 501
+        Height = 451
         Top = 104
         Width = 1297
         Align = alClient
-        ClientHeight = 501
+        ClientHeight = 451
         ClientWidth = 1297
         TabOrder = 0
         object dgGridCTE: TDBGrid
@@ -759,7 +758,6 @@ object fCTePrincipal: TfCTePrincipal
         ClientHeight = 104
         ClientWidth = 1297
         TabOrder = 1
-        OnClick = Panel3Click
         object Label9: TLabel
           Left = 40
           Height = 15
@@ -787,52 +785,6 @@ object fCTePrincipal: TfCTePrincipal
           Align = alCustom
           Caption = 'Período:'
           ParentColor = False
-        end
-        object DateTimePicker1: TDateTimePicker
-          Left = 608
-          Height = 23
-          Top = 32
-          Width = 152
-          CenturyFrom = 1941
-          MaxDate = 2958465
-          MinDate = -53780
-          AutoSize = False
-          TabOrder = 1
-          TrailingSeparator = False
-          TextForNullDate = 'NULL'
-          LeadingZeros = True
-          Kind = dtkDateTime
-          TimeFormat = tf24
-          TimeDisplay = tdHMS
-          DateMode = dmComboBox
-          Date = 43714
-          Time = 0.712287094909698
-          UseDefaultSeparators = True
-          HideDateTimeParts = []
-          MonthNames = 'Long'
-        end
-        object DateTimePicker2: TDateTimePicker
-          Left = 608
-          Height = 23
-          Top = 64
-          Width = 152
-          CenturyFrom = 1941
-          MaxDate = 2958465
-          MinDate = -53780
-          AutoSize = False
-          TabOrder = 2
-          TrailingSeparator = False
-          TextForNullDate = 'NULL'
-          LeadingZeros = True
-          Kind = dtkDateTime
-          TimeFormat = tf24
-          TimeDisplay = tdHMS
-          DateMode = dmComboBox
-          Date = 43714
-          Time = 0.712325428241456
-          UseDefaultSeparators = True
-          HideDateTimeParts = []
-          MonthNames = 'Long'
         end
         object btnListarCte: TBitBtn
           Left = 800
@@ -918,7 +870,7 @@ object fCTePrincipal: TfCTePrincipal
           }
           GlyphShowMode = gsmAlways
           OnClick = btnListarCteClick
-          TabOrder = 3
+          TabOrder = 1
         end
         object btnDuplicar: TBitBtn
           Left = 992
@@ -974,7 +926,7 @@ object fCTePrincipal: TfCTePrincipal
             3A55B0405EB7385DB23D62B74160BD4462BB85A8F2CFEEFFECFAFFF6FDFF
           }
           OnClick = btnDuplicarClick
-          TabOrder = 4
+          TabOrder = 2
         end
         object btnIncCte: TBitBtn
           Left = 896
@@ -1039,7 +991,7 @@ object fCTePrincipal: TfCTePrincipal
             F7FCFDF4FFFAF9FFFBF8FDFBFFFDFF000000
           }
           OnClick = btnIncCteClick
-          TabOrder = 5
+          TabOrder = 3
         end
         object btnEditarCte: TBitBtn
           Left = 1088
@@ -1134,7 +1086,7 @@ object fCTePrincipal: TfCTePrincipal
             F4FF
           }
           OnClick = btnEditarCteClick
-          TabOrder = 6
+          TabOrder = 4
         end
         object BitBtn5: TBitBtn
           Left = 1184
@@ -1225,7 +1177,7 @@ object fCTePrincipal: TfCTePrincipal
             94FF515095FF515195FF515194FF6C6C92FFB2B2C0FFF8F8F9FFFEFEFEFF
           }
           OnClick = BitBtn5Click
-          TabOrder = 7
+          TabOrder = 5
         end
         object BitBtn13: TBitBtn
           Left = 8
@@ -1445,7 +1397,7 @@ object fCTePrincipal: TfCTePrincipal
             FCFFFCFFFAFFFCFEF8FFFFFEFFFFFFFEFFFFFEFDF9FFFFFFFBFF
           }
           OnClick = BitBtn13Click
-          TabOrder = 8
+          TabOrder = 6
         end
         object Label156: TLabel
           Left = 40
@@ -1544,7 +1496,7 @@ object fCTePrincipal: TfCTePrincipal
             94FF515095FF515195FF515194FF6C6C92FFB2B2C0FFF8F8F9FFFEFEFEFF
           }
           OnClick = btnLimpaBuscaClick
-          TabOrder = 9
+          TabOrder = 7
         end
         object edtDestNome1: TEdit
           Left = 40
@@ -1552,17 +1504,72 @@ object fCTePrincipal: TfCTePrincipal
           Top = 72
           Width = 520
           OnKeyPress = edtDestNome1KeyPress
+          TabOrder = 8
+        end
+        object DateTimePicker1: TDateTimePicker
+          Left = 632
+          Height = 23
+          Top = 24
+          Width = 137
+          CenturyFrom = 1941
+          MaxDate = 2958465
+          MinDate = -53780
+          TabOrder = 9
+          TrailingSeparator = False
+          TextForNullDate = 'NULL'
+          LeadingZeros = True
+          Kind = dtkDateTime
+          TimeFormat = tf24
+          TimeDisplay = tdHMS
+          DateMode = dmComboBox
+          Date = 44869
+          Time = 0.738184374997218
+          UseDefaultSeparators = True
+          HideDateTimeParts = []
+          MonthNames = 'Long'
+        end
+        object DateTimePicker2: TDateTimePicker
+          Left = 632
+          Height = 23
+          Top = 72
+          Width = 137
+          CenturyFrom = 1941
+          MaxDate = 2958465
+          MinDate = -53780
           TabOrder = 10
+          TrailingSeparator = False
+          TextForNullDate = 'NULL'
+          LeadingZeros = True
+          Kind = dtkDateTime
+          TimeFormat = tf24
+          TimeDisplay = tdHMS
+          DateMode = dmComboBox
+          Date = 44869
+          Time = 0.738347500002419
+          UseDefaultSeparators = True
+          HideDateTimeParts = []
+          MonthNames = 'Long'
+        end
+        object DBEdit6: TDBEdit
+          Left = 807
+          Height = 23
+          Top = 7
+          Width = 368
+          DataField = 'RAZAO'
+          DataSource = DataSource1
+          ReadOnly = True
+          MaxLength = 0
+          TabOrder = 11
         end
       end
     end
     object TabCte: TTabSheet
       Caption = 'CT-e'
-      ClientHeight = 605
+      ClientHeight = 555
       ClientWidth = 1297
       object pcCte: TPageControl
         Left = 0
-        Height = 605
+        Height = 555
         Top = 0
         Width = 1297
         ActivePage = TabDados
@@ -1575,11 +1582,11 @@ object fCTePrincipal: TfCTePrincipal
           Cursor = crHandPoint
           BorderWidth = 1
           Caption = 'Dados'
-          ClientHeight = 577
+          ClientHeight = 527
           ClientWidth = 1289
           object PageControl3: TPageControl
             Left = 0
-            Height = 577
+            Height = 527
             Top = 0
             Width = 1289
             ActivePage = TabDadosCte
@@ -1588,7 +1595,7 @@ object fCTePrincipal: TfCTePrincipal
             TabOrder = 0
             object TabDadosCte: TTabSheet
               Caption = 'Dados CT-e'
-              ClientHeight = 549
+              ClientHeight = 499
               ClientWidth = 1281
               OnShow = TabDadosCteShow
               object Panel12: TPanel
@@ -1747,10 +1754,10 @@ object fCTePrincipal: TfCTePrincipal
                   TabOrder = 7
                 end
                 object rgTipoServico: TRadioGroup
-                  Left = 128
-                  Height = 45
+                  Left = 129
+                  Height = 44
                   Top = 212
-                  Width = 621
+                  Width = 620
                   AutoFill = True
                   Caption = 'Tipo de Serviço'
                   ChildSizing.LeftRightSpacing = 6
@@ -1759,10 +1766,10 @@ object fCTePrincipal: TfCTePrincipal
                   ChildSizing.ShrinkHorizontal = crsScaleChilds
                   ChildSizing.ShrinkVertical = crsScaleChilds
                   ChildSizing.Layout = cclLeftToRightThenTopToBottom
-                  ChildSizing.ControlsPerLine = 5
-                  ClientHeight = 25
-                  ClientWidth = 617
-                  Columns = 5
+                  ChildSizing.ControlsPerLine = 6
+                  ClientHeight = 24
+                  ClientWidth = 616
+                  Columns = 6
                   Items.Strings = (
                     'Normal'
                     'SubContratação'
@@ -1824,7 +1831,7 @@ object fCTePrincipal: TfCTePrincipal
                 object StaticText1: TStaticText
                   Left = 248
                   Height = 17
-                  Top = 264
+                  Top = 270
                   Width = 248
                   Caption = 'Chave de Acesso CT-e Referenciada'
                   TabOrder = 11
@@ -1832,7 +1839,7 @@ object fCTePrincipal: TfCTePrincipal
                 object edtCteReferenciada: TEdit
                   Left = 248
                   Height = 23
-                  Top = 286
+                  Top = 292
                   Width = 502
                   TabOrder = 12
                 end
@@ -2599,7 +2606,7 @@ object fCTePrincipal: TfCTePrincipal
                   Left = 129
                   Height = 23
                   Hint = 'Importar CTe , em Configurações , '#13#10'coloque o Caminho das CTes a serem '#13#10'importadas.'
-                  Top = 286
+                  Top = 292
                   Width = 104
                   Caption = 'Importar CTe'
                   Enabled = False
@@ -2622,14 +2629,38 @@ object fCTePrincipal: TfCTePrincipal
                   ShowHint = True
                   ParentShowHint = False
                 end
+                object Edit1: TEdit
+                  Left = 130
+                  Height = 23
+                  Top = 266
+                  Width = 38
+                  TabOrder = 25
+                  Text = 'Edit1'
+                end
+                object Label177: TLabel
+                  Left = 180
+                  Height = 15
+                  Top = 258
+                  Width = 29
+                  Caption = 'Valor '
+                  ParentColor = False
+                end
+                object Label178: TLabel
+                  Left = 176
+                  Height = 15
+                  Top = 272
+                  Width = 35
+                  Caption = 'Por KG'
+                  ParentColor = False
+                end
               end
               object Panel13: TPanel
                 Left = 1025
-                Height = 549
+                Height = 499
                 Top = 0
                 Width = 256
                 Align = alRight
-                ClientHeight = 549
+                ClientHeight = 499
                 ClientWidth = 256
                 TabOrder = 1
                 object Image1: TImage
@@ -3696,7 +3727,7 @@ object fCTePrincipal: TfCTePrincipal
                 end
                 object Image2: TImage
                   Left = 1
-                  Height = 231
+                  Height = 181
                   Top = 163
                   Width = 254
                   Align = alClient
@@ -4463,7 +4494,7 @@ object fCTePrincipal: TfCTePrincipal
                 object Image3: TImage
                   Left = 1
                   Height = 154
-                  Top = 394
+                  Top = 344
                   Width = 254
                   Align = alBottom
                   Picture.Data = {
@@ -4757,10 +4788,19 @@ object fCTePrincipal: TfCTePrincipal
                 ParentBidiMode = False
                 TabOrder = 2
               end
+              object Label176: TLabel
+                Left = 144
+                Height = 15
+                Top = 224
+                Width = 46
+                Caption = 'Label176'
+                ParentColor = False
+                OnClick = Label176Click
+              end
             end
             object TabDadosComplementares: TTabSheet
               Caption = 'Dados Complementares'
-              ClientHeight = 549
+              ClientHeight = 499
               ClientWidth = 1281
               OnShow = TabDadosComplementaresShow
               object edtCaracAdTrans: TEdit
@@ -4866,7 +4906,7 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabSheet3: TTabSheet
           Caption = 'Emitente'
-          ClientHeight = 577
+          ClientHeight = 527
           ClientWidth = 1289
           object edtCodEmitente: TEdit
             Left = 64
@@ -5394,7 +5434,7 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabTomador: TTabSheet
           Caption = 'Tomador'
-          ClientHeight = 577
+          ClientHeight = 527
           ClientWidth = 1289
           OnShow = TabTomadorShow
           object rgTomador: TRadioGroup
@@ -5889,7 +5929,7 @@ object fCTePrincipal: TfCTePrincipal
             object RadioGroup3: TRadioGroup
               Left = 24
               Height = 57
-              Top = 343
+              Top = 309
               Width = 556
               AutoFill = True
               Caption = 'Indicador da IE do Tomador quando Destinatário ou Outros'
@@ -5992,7 +6032,7 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabSheet6: TTabSheet
           Caption = 'Remetente'
-          ClientHeight = 577
+          ClientHeight = 527
           ClientWidth = 1289
           object rgRem: TRadioGroup
             Left = 8
@@ -6565,7 +6605,7 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabExpedidor: TTabSheet
           Caption = 'Expedidor'
-          ClientHeight = 577
+          ClientHeight = 527
           ClientWidth = 1289
           OnShow = TabExpedidorShow
           object rgExp: TRadioGroup
@@ -7129,7 +7169,7 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabRecebedor: TTabSheet
           Caption = 'Recebedor'
-          ClientHeight = 577
+          ClientHeight = 527
           ClientWidth = 1289
           OnShow = TabRecebedorShow
           object rgRec: TRadioGroup
@@ -7156,6 +7196,7 @@ object fCTePrincipal: TfCTePrincipal
               'Sem Recebedor'
             )
             OnClick = rgRecClick
+            ParentBackground = False
             ParentFont = False
             ParentColor = False
             TabOrder = 0
@@ -7695,7 +7736,7 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabDestinatario: TTabSheet
           Caption = 'Destinatário'
-          ClientHeight = 577
+          ClientHeight = 527
           ClientWidth = 1289
           OnShow = TabDestinatarioShow
           object rgDest: TRadioGroup
@@ -8268,7 +8309,7 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabServicosImpostos: TTabSheet
           Caption = 'Serviços e Impostos'
-          ClientHeight = 577
+          ClientHeight = 527
           ClientWidth = 1289
           OnContextPopup = TabServicosImpostosContextPopup
           OnShow = TabServicosImpostosShow
@@ -8294,7 +8335,7 @@ object fCTePrincipal: TfCTePrincipal
                 Width = 249
                 FieldName = 'COMP_VALOR'
               end>
-            DataSource = dmCte.dsComp
+            DataSource = DSZsqcomp
             Scrollbars = ssVertical
             TabOrder = 3
             OnCellClick = dbGridCompCellClick
@@ -8335,7 +8376,7 @@ object fCTePrincipal: TfCTePrincipal
           object StaticText14: TStaticText
             Left = 32
             Height = 19
-            Top = 306
+            Top = 319
             Width = 216
             Caption = 'CST - ICMS'
             TabOrder = 8
@@ -8489,7 +8530,7 @@ object fCTePrincipal: TfCTePrincipal
           end
           object memInfAdFisco: TMemo
             Left = 616
-            Height = 148
+            Height = 142
             Top = 346
             Width = 600
             TabOrder = 28
@@ -8505,7 +8546,7 @@ object fCTePrincipal: TfCTePrincipal
           object combCodSitTrib: TComboBox
             Left = 120
             Height = 23
-            Top = 306
+            Top = 316
             Width = 440
             ItemHeight = 15
             Items.Strings = (
@@ -8808,7 +8849,6 @@ object fCTePrincipal: TfCTePrincipal
             Width = 196
             DataField = 'VPREST'
             DataSource = dmCte.dsCte
-            CharCase = ecNormal
             MaxLength = 0
             TabOrder = 0
             OnChange = dbValTotPrestChange
@@ -8822,7 +8862,6 @@ object fCTePrincipal: TfCTePrincipal
             Width = 196
             DataField = 'VREC'
             DataSource = dmCte.dsCte
-            CharCase = ecNormal
             MaxLength = 0
             TabOrder = 1
           end
@@ -8833,7 +8872,6 @@ object fCTePrincipal: TfCTePrincipal
             Width = 196
             DataField = 'VALTOTTRI'
             DataSource = dmCte.dsCte
-            CharCase = ecNormal
             MaxLength = 0
             TabOrder = 2
             OnChange = dbValTotTriChange
@@ -8845,7 +8883,6 @@ object fCTePrincipal: TfCTePrincipal
             Width = 196
             DataField = 'VALPREDBC'
             DataSource = dmCte.dsCte
-            CharCase = ecNormal
             MaxLength = 0
             TabOrder = 36
           end
@@ -8856,7 +8893,6 @@ object fCTePrincipal: TfCTePrincipal
             Width = 196
             DataField = 'VALVBC'
             DataSource = dmCte.dsCte
-            CharCase = ecNormal
             MaxLength = 0
             TabOrder = 37
           end
@@ -8867,7 +8903,6 @@ object fCTePrincipal: TfCTePrincipal
             Width = 196
             DataField = 'VALPICMS'
             DataSource = dmCte.dsCte
-            CharCase = ecNormal
             MaxLength = 0
             TabOrder = 38
           end
@@ -8878,7 +8913,6 @@ object fCTePrincipal: TfCTePrincipal
             Width = 196
             DataField = 'VALVICMS'
             DataSource = dmCte.dsCte
-            CharCase = ecNormal
             MaxLength = 0
             TabOrder = 39
           end
@@ -8889,7 +8923,6 @@ object fCTePrincipal: TfCTePrincipal
             Width = 196
             DataField = 'VALVCRED'
             DataSource = dmCte.dsCte
-            CharCase = ecNormal
             MaxLength = 0
             TabOrder = 40
           end
@@ -8899,7 +8932,6 @@ object fCTePrincipal: TfCTePrincipal
             Top = 36
             Width = 224
             DataSource = dmCte.dsCte
-            CharCase = ecNormal
             MaxLength = 0
             TabOrder = 41
           end
@@ -8909,7 +8941,6 @@ object fCTePrincipal: TfCTePrincipal
             Top = 68
             Width = 224
             DataSource = dmCte.dsCte
-            CharCase = ecNormal
             MaxLength = 0
             TabOrder = 42
           end
@@ -9021,7 +9052,6 @@ object fCTePrincipal: TfCTePrincipal
               Width = 80
               DataField = 'VPIS'
               DataSource = dmCte.dsCte
-              CharCase = ecNormal
               MaxLength = 0
               TabOrder = 0
             end
@@ -9032,7 +9062,6 @@ object fCTePrincipal: TfCTePrincipal
               Width = 80
               DataField = 'VCOFINS'
               DataSource = dmCte.dsCte
-              CharCase = ecNormal
               MaxLength = 0
               TabOrder = 1
             end
@@ -9043,7 +9072,6 @@ object fCTePrincipal: TfCTePrincipal
               Width = 80
               DataField = 'VIR'
               DataSource = dmCte.dsCte
-              CharCase = ecNormal
               MaxLength = 0
               TabOrder = 2
             end
@@ -9054,7 +9082,6 @@ object fCTePrincipal: TfCTePrincipal
               Width = 80
               DataField = 'VINSS'
               DataSource = dmCte.dsCte
-              CharCase = ecNormal
               MaxLength = 0
               TabOrder = 3
             end
@@ -9065,7 +9092,6 @@ object fCTePrincipal: TfCTePrincipal
               Width = 80
               DataField = 'VCSLL'
               DataSource = dmCte.dsCte
-              CharCase = ecNormal
               MaxLength = 0
               TabOrder = 4
             end
@@ -9110,15 +9136,34 @@ object fCTePrincipal: TfCTePrincipal
               ParentColor = False
             end
           end
+          object btnInsertComp: TButton
+            Left = 432
+            Height = 25
+            Top = 267
+            Width = 99
+            Caption = 'btnInsertComp'
+            OnClick = btnInsertCompClick
+            TabOrder = 46
+            Visible = False
+          end
+          object edtComp: TEdit
+            Left = 36
+            Height = 23
+            Top = 295
+            Width = 520
+            OnChange = edtCompChange
+            TabOrder = 47
+            Visible = False
+          end
         end
         object TabSheet11: TTabSheet
           Caption = 'Documentação Carga'
-          ClientHeight = 577
+          ClientHeight = 527
           ClientWidth = 1289
           OnShow = TabSheet11Show
           object PageControl4: TPageControl
             Left = 0
-            Height = 577
+            Height = 527
             Top = 0
             Width = 1289
             ActivePage = TabInfoCarga
@@ -9127,32 +9172,32 @@ object fCTePrincipal: TfCTePrincipal
             TabOrder = 0
             object TabInfoCarga: TTabSheet
               Caption = 'Inf. da Carga'
-              ClientHeight = 549
+              ClientHeight = 499
               ClientWidth = 1281
               OnContextPopup = TabInfoCargaContextPopup
               OnShow = TabInfoCargaShow
               object Panel6: TPanel
                 Left = 681
-                Height = 549
+                Height = 499
                 Top = 0
                 Width = 600
                 Align = alRight
-                ClientHeight = 549
+                ClientHeight = 499
                 ClientWidth = 600
                 TabOrder = 0
                 object GroupBox8: TGroupBox
                   Left = 1
-                  Height = 497
+                  Height = 447
                   Top = 1
                   Width = 598
                   Align = alClient
                   Caption = 'Inf. do Seguro'
-                  ClientHeight = 477
+                  ClientHeight = 427
                   ClientWidth = 594
                   TabOrder = 0
                   object DBGrid3: TDBGrid
                     Left = 0
-                    Height = 477
+                    Height = 427
                     Top = 0
                     Width = 594
                     Align = alClient
@@ -9164,7 +9209,7 @@ object fCTePrincipal: TfCTePrincipal
                 object Panel7: TPanel
                   Left = 1
                   Height = 50
-                  Top = 498
+                  Top = 448
                   Width = 598
                   Align = alBottom
                   ClientHeight = 50
@@ -9438,11 +9483,11 @@ object fCTePrincipal: TfCTePrincipal
               end
               object Panel8: TPanel
                 Left = 0
-                Height = 549
+                Height = 499
                 Top = 0
                 Width = 681
                 Align = alClient
-                ClientHeight = 549
+                ClientHeight = 499
                 ClientWidth = 681
                 TabOrder = 1
                 object Panel9: TPanel
@@ -9469,7 +9514,6 @@ object fCTePrincipal: TfCTePrincipal
                     Width = 192
                     DataField = 'VALINFCARGA'
                     DataSource = dmCte.dsCte
-                    CharCase = ecNormal
                     MaxLength = 0
                     TabOrder = 1
                     OnChange = dbValInfCargaChange
@@ -9507,19 +9551,18 @@ object fCTePrincipal: TfCTePrincipal
                 end
                 object Panel10: TPanel
                   Left = 1
-                  Height = 321
+                  Height = 271
                   Top = 177
                   Width = 679
                   Align = alClient
-                  ClientHeight = 321
+                  ClientHeight = 271
                   ClientWidth = 679
                   TabOrder = 1
                   object dbGridQC: TDBGrid
                     Left = 1
-                    Height = 319
+                    Height = 199
                     Top = 1
                     Width = 677
-                    Align = alClient
                     AutoAdvance = aaRight
                     AutoFillColumns = True
                     Color = clWindow
@@ -9543,16 +9586,24 @@ object fCTePrincipal: TfCTePrincipal
                         Width = 216
                         FieldName = 'QUANT'
                       end>
-                    DataSource = dmCte.dsQC
+                    DataSource = DSZqsQC
                     Scrollbars = ssVertical
                     TabOrder = 0
                     OnCellClick = dbGridQCCellClick
+                  end
+                  object edtQC: TEdit
+                    Left = 9
+                    Height = 23
+                    Top = 203
+                    Width = 638
+                    TabOrder = 1
+                    Visible = False
                   end
                 end
                 object Panel11: TPanel
                   Left = 1
                   Height = 50
-                  Top = 498
+                  Top = 448
                   Width = 679
                   Align = alBottom
                   ClientHeight = 50
@@ -9735,7 +9786,7 @@ object fCTePrincipal: TfCTePrincipal
                   object btnInfCargaExclui: TBitBtn
                     Left = 304
                     Height = 34
-                    Top = 9
+                    Top = 8
                     Width = 130
                     Caption = 'Excluir'
                     Glyph.Data = {
@@ -9900,12 +9951,22 @@ object fCTePrincipal: TfCTePrincipal
                     ParentBidiMode = False
                     TabOrder = 3
                   end
+                  object btnInserirQC: TButton
+                    Left = 461
+                    Height = 25
+                    Top = 9
+                    Width = 75
+                    Caption = 'btnInserirQC'
+                    OnClick = btnInserirQCClick
+                    TabOrder = 4
+                    Visible = False
+                  end
                 end
               end
             end
             object TabSheet18: TTabSheet
-              Caption = 'Doc.Transp.Anterior'
-              ClientHeight = 549
+              Caption = 'Doc.Transp.Anterior   :  CTe Complementar'
+              ClientHeight = 499
               ClientWidth = 1281
               object edtAntNome: TEdit
                 Left = 32
@@ -10088,24 +10149,88 @@ object fCTePrincipal: TfCTePrincipal
                 NumGlyphs = 2
                 OnClick = sbtnLerXmlCteClick
               end
+              object edtAntCHNFE: TEdit
+                Left = 32
+                Height = 23
+                Top = 296
+                Width = 664
+                TabOrder = 6
+              end
+              object Label173: TLabel
+                Left = 32
+                Height = 15
+                Top = 280
+                Width = 188
+                Align = alCustom
+                Caption = 'Chave de Acesso do NF-e Anulação'
+                ParentColor = False
+              end
+              object Label174: TLabel
+                Left = 32
+                Height = 15
+                Top = 232
+                Width = 187
+                Align = alCustom
+                Caption = 'Chave de Acesso do CT-e Anulação'
+                ParentColor = False
+              end
+              object edtAntCHCTEAnula: TEdit
+                Left = 32
+                Height = 23
+                Top = 248
+                Width = 664
+                TabOrder = 7
+              end
+              object dataEmissaoCte: TDateTimePicker
+                Left = 704
+                Height = 23
+                Top = 247
+                Width = 136
+                CenturyFrom = 1941
+                MaxDate = 2958465
+                MinDate = -53780
+                AutoSize = False
+                TabOrder = 8
+                TrailingSeparator = False
+                TextForNullDate = 'NULL'
+                LeadingZeros = True
+                Kind = dtkDateTime
+                TimeFormat = tf24
+                TimeDisplay = tdHMS
+                DateMode = dmComboBox
+                Date = 43714
+                Time = 0.633231273146521
+                UseDefaultSeparators = True
+                HideDateTimeParts = []
+                MonthNames = 'Long'
+              end
+              object Label175: TLabel
+                Left = 704
+                Height = 15
+                Top = 232
+                Width = 101
+                Align = alCustom
+                Caption = 'Data/Hora Emissão'
+                ParentColor = False
+              end
             end
             object TabNfe: TTabSheet
-              Caption = 'NF-e /Outros Documentos'
-              ClientHeight = 549
+              Caption = 'NF-e /Outros Documentos '
+              ClientHeight = 499
               ClientWidth = 1281
               OnShow = TabNfeShow
               object DBGridNFe: TDBGrid
                 Left = 40
-                Height = 296
-                Top = 24
-                Width = 1160
+                Height = 312
+                Top = 8
+                Width = 1088
                 AutoFillColumns = True
                 Color = clWindow
                 Columns = <                
                   item
                     Alignment = taCenter
                     Title.Caption = 'Chave de Acesso NF-e'
-                    Width = 375
+                    Width = 351
                     FieldName = 'CHAVE'
                   end                
                   item
@@ -10113,16 +10238,16 @@ object fCTePrincipal: TfCTePrincipal
                     MinSize = 50
                     MaxSize = 50
                     Title.Caption = 'PIN'
-                    Width = 375
+                    Width = 351
                     FieldName = 'PIN'
                   end                
                   item
                     Alignment = taCenter
                     Title.Caption = 'Data Prevista de Entrega'
-                    Width = 377
+                    Width = 353
                     FieldName = 'DPREV'
                   end>
-                DataSource = dmCte.dsNFe
+                DataSource = DSZsqNFe
                 Scrollbars = ssVertical
                 TabOrder = 0
               end
@@ -10477,8 +10602,8 @@ object fCTePrincipal: TfCTePrincipal
                 TimeFormat = tf24
                 TimeDisplay = tdHMS
                 DateMode = dmComboBox
-                Date = 1.7E308
-                Time = 1.7E308
+                Date = 44869
+                Time = 0.73271598379506
                 UseDefaultSeparators = True
                 HideDateTimeParts = []
                 MonthNames = 'Long'
@@ -10490,7 +10615,6 @@ object fCTePrincipal: TfCTePrincipal
                 Width = 144
                 DataField = 'OUVDOCFISC'
                 DataSource = dmCte.dsCte
-                CharCase = ecNormal
                 MaxLength = 0
                 TabOrder = 8
               end
@@ -10571,10 +10695,31 @@ object fCTePrincipal: TfCTePrincipal
                 ParentBidiMode = False
                 TabOrder = 9
               end
+              object btnInserirvNfe: TButton
+                Left = 440
+                Height = 25
+                Top = 328
+                Width = 123
+                Caption = 'btnInserirvNfe'
+                OnClick = btnInserirvNfeClick
+                TabOrder = 10
+                Visible = False
+              end
+              object edtnfe: TMemo
+                Left = 800
+                Height = 30
+                Top = 352
+                Width = 235
+                Lines.Strings = (
+                  'edtnfe'
+                )
+                TabOrder = 11
+                Visible = False
+              end
             end
             object tabSeguro: TTabSheet
               Caption = 'Seguro'
-              ClientHeight = 549
+              ClientHeight = 499
               ClientWidth = 1281
               TabVisible = False
               object rgSeguroResp: TRadioGroup
@@ -10644,7 +10789,6 @@ object fCTePrincipal: TfCTePrincipal
                 Width = 432
                 DataField = 'NOME_SEGURADORA'
                 DataSource = dmCte.dsSeguro
-                CharCase = ecNormal
                 MaxLength = 0
                 TabOrder = 1
               end
@@ -10655,7 +10799,6 @@ object fCTePrincipal: TfCTePrincipal
                 Width = 432
                 DataField = 'NUMERO_APOLICE'
                 DataSource = dmCte.dsSeguro
-                CharCase = ecNormal
                 MaxLength = 0
                 TabOrder = 2
               end
@@ -10666,7 +10809,6 @@ object fCTePrincipal: TfCTePrincipal
                 Width = 433
                 DataField = 'NUMERO_AVERBACAO'
                 DataSource = dmCte.dsSeguro
-                CharCase = ecNormal
                 MaxLength = 0
                 TabOrder = 3
               end
@@ -10677,7 +10819,6 @@ object fCTePrincipal: TfCTePrincipal
                 Width = 139
                 DataField = 'VALOR'
                 DataSource = dmCte.dsSeguro
-                CharCase = ecNormal
                 MaxLength = 0
                 TabOrder = 4
               end
@@ -10951,17 +11092,17 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabRodoviario: TTabSheet
           Caption = 'Rodoviário'
-          ClientHeight = 577
+          ClientHeight = 527
           ClientWidth = 1289
           OnShow = TabRodoviarioShow
           object Panel4: TPanel
             Left = 0
-            Height = 577
+            Height = 527
             Top = 0
             Width = 732
             Align = alClient
             Caption = 'Panel4'
-            ClientHeight = 577
+            ClientHeight = 527
             ClientWidth = 732
             TabOrder = 0
             object Label123: TLabel
@@ -11010,8 +11151,8 @@ object fCTePrincipal: TfCTePrincipal
               TimeFormat = tf24
               TimeDisplay = tdHMS
               DateMode = dmComboBox
-              Date = 1.7E308
-              Time = 1.7E308
+              Date = 44869
+              Time = 0.733119270829775
               UseDefaultSeparators = True
               HideDateTimeParts = []
               MonthNames = 'Long'
@@ -11058,11 +11199,11 @@ object fCTePrincipal: TfCTePrincipal
           end
           object Panel5: TPanel
             Left = 732
-            Height = 577
+            Height = 527
             Top = 0
             Width = 557
             Align = alRight
-            ClientHeight = 577
+            ClientHeight = 527
             ClientWidth = 557
             TabOrder = 1
             object GroupBox5: TGroupBox
@@ -11351,7 +11492,7 @@ object fCTePrincipal: TfCTePrincipal
             object GroupBox6: TGroupBox
               Left = 1
               Height = 235
-              Top = 341
+              Top = 291
               Width = 555
               Align = alBottom
               Caption = 'Veículo'
@@ -11637,7 +11778,7 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabSheet1: TTabSheet
           Caption = 'OS Serviço'
-          ClientHeight = 577
+          ClientHeight = 527
           ClientWidth = 1289
           object RadioGroup1: TRadioGroup
             Left = 65
@@ -11692,7 +11833,7 @@ object fCTePrincipal: TfCTePrincipal
     end
     object TabSheet12: TTabSheet
       Caption = 'Importar Cliente'
-      ClientHeight = 605
+      ClientHeight = 555
       ClientWidth = 1297
       OnContextPopup = TabSheet12ContextPopup
       object edtXMLCod: TEdit
@@ -11941,7 +12082,7 @@ object fCTePrincipal: TfCTePrincipal
     end
     object TabSheet17: TTabSheet
       Caption = 'Carta de Correção'
-      ClientHeight = 605
+      ClientHeight = 555
       ClientWidth = 1297
       object btnCC: TButton
         Left = 280
@@ -11949,44 +12090,46 @@ object fCTePrincipal: TfCTePrincipal
         Top = 48
         Width = 269
         Caption = 'Carta de Correção'
+        Enabled = False
+        OnClick = btnCCClick
         TabOrder = 0
       end
-      object edtNumCte13: TEdit
+      object edtCceChave: TEdit
         Left = 280
         Height = 23
         Top = 144
         Width = 736
         TabOrder = 1
       end
-      object edtNumCte15: TEdit
+      object edtCceGrupo: TEdit
         Left = 280
         Height = 23
         Top = 240
         Width = 736
         TabOrder = 2
       end
-      object edtNumCte16: TEdit
+      object edtCceSequencia: TEdit
         Left = 280
         Height = 23
         Top = 192
         Width = 80
         TabOrder = 3
       end
-      object edtNumCte17: TEdit
+      object edtCceTextoVelho: TEdit
         Left = 280
         Height = 23
         Top = 288
         Width = 736
         TabOrder = 4
       end
-      object edtNumCte18: TEdit
+      object edtCceTextoNovo: TEdit
         Left = 280
         Height = 23
         Top = 336
         Width = 736
         TabOrder = 5
       end
-      object edtNumCte19: TEdit
+      object edtCceNumItem: TEdit
         Left = 280
         Height = 23
         Top = 384
@@ -12068,7 +12211,7 @@ object fCTePrincipal: TfCTePrincipal
     end
     object TabSheet19: TTabSheet
       Caption = 'Serviços'
-      ClientHeight = 605
+      ClientHeight = 555
       ClientWidth = 1297
       object btnEnvEPEC: TBitBtn
         Left = 872
@@ -12110,9 +12253,9 @@ object fCTePrincipal: TfCTePrincipal
         TabOrder = 2
       end
       object MemoDados: TMemo
-        Left = 752
+        Left = 872
         Height = 176
-        Top = 8
+        Top = 0
         Width = 353
         Lines.Strings = (
           'MemoDados'
@@ -12120,9 +12263,9 @@ object fCTePrincipal: TfCTePrincipal
         TabOrder = 3
       end
       object memoRespWS: TMemo
-        Left = 752
+        Left = 872
         Height = 117
-        Top = 195
+        Top = 184
         Width = 353
         Lines.Strings = (
           'memoRespWS'
@@ -12130,9 +12273,9 @@ object fCTePrincipal: TfCTePrincipal
         TabOrder = 4
       end
       object memoResp: TMemo
-        Left = 752
+        Left = 872
         Height = 117
-        Top = 328
+        Top = 312
         Width = 353
         Lines.Strings = (
           'memoResp'
@@ -12140,7 +12283,7 @@ object fCTePrincipal: TfCTePrincipal
         TabOrder = 5
       end
       object btnEnviarEventoEmail: TBitBtn
-        Left = 872
+        Left = 928
         Height = 28
         Top = 448
         Width = 249
@@ -12152,11 +12295,11 @@ object fCTePrincipal: TfCTePrincipal
       object GroupBox14: TGroupBox
         Left = 336
         Height = 70
-        Top = 64
-        Width = 290
+        Top = 88
+        Width = 296
         Caption = 'Cancelar CTe'
         ClientHeight = 50
-        ClientWidth = 286
+        ClientWidth = 292
         TabOrder = 8
         object btnCancelarCte: TBitBtn
           Left = 96
@@ -12264,7 +12407,7 @@ object fCTePrincipal: TfCTePrincipal
       object GroupBox15: TGroupBox
         Left = 336
         Height = 200
-        Top = 166
+        Top = 186
         Width = 335
         Caption = 'Inutilizar Numeração'
         ClientHeight = 180
@@ -12716,7 +12859,7 @@ object fCTePrincipal: TfCTePrincipal
       object lblCteAtual: TLabel
         Left = 144
         Height = 35
-        Top = 8
+        Top = -2
         Width = 30
         Caption = '...'
         Font.CharSet = ANSI_CHARSET
@@ -12747,8 +12890,8 @@ object fCTePrincipal: TfCTePrincipal
       end
     end
     object TabSheet20: TTabSheet
-      Caption = 'Configurações'
-      ClientHeight = 605
+      Caption = 'Configurações : Finalidades da Emissão'
+      ClientHeight = 555
       ClientWidth = 1297
       object GroupBox3: TGroupBox
         Left = 19
@@ -12759,6 +12902,7 @@ object fCTePrincipal: TfCTePrincipal
         ClientHeight = 140
         ClientWidth = 468
         Color = clWindow
+        ParentBackground = False
         ParentColor = False
         TabOrder = 0
         object sbtnGetCert: TSpeedButton
@@ -13048,6 +13192,7 @@ object fCTePrincipal: TfCTePrincipal
         ClientHeight = 316
         ClientWidth = 416
         Color = clWindow
+        ParentBackground = False
         ParentColor = False
         TabOrder = 7
         object Label133: TLabel
@@ -13525,10 +13670,28 @@ object fCTePrincipal: TfCTePrincipal
         OnClick = btnGravarCTe1Click
         TabOrder = 12
       end
+      object GroupBox22: TGroupBox
+        Left = 20
+        Height = 47
+        Top = 552
+        Width = 471
+        Caption = 'Se Anulação, tem alteração do Tomador ?'
+        ClientHeight = 27
+        ClientWidth = 467
+        TabOrder = 13
+        object rbAlteradoTomador: TRadioButton
+          Left = 8
+          Height = 19
+          Top = 0
+          Width = 140
+          Caption = 'Alterado pelo tomador'
+          TabOrder = 0
+        end
+      end
     end
     object TabSheet2: TTabSheet
-      Caption = 'TabSheet2'
-      ClientHeight = 605
+      Caption = 'CTe -OS'
+      ClientHeight = 555
       ClientWidth = 1297
       OnContextPopup = TabSheet2ContextPopup
       TabVisible = False
@@ -14439,8 +14602,8 @@ object fCTePrincipal: TfCTePrincipal
     end
   end
   object OpenDialog1: TOpenDialog
-    left = 632
-    top = 256
+    Left = 664
+    Top = 184
   end
   object ACBrNFe1: TACBrNFe
     Configuracoes.Geral.SSLLib = libNone
@@ -14454,8 +14617,8 @@ object fCTePrincipal: TfCTePrincipal
     Configuracoes.WebServices.AguardarConsultaRet = 0
     Configuracoes.WebServices.QuebradeLinha = '|'
     Configuracoes.RespTec.IdCSRT = 0
-    left = 728
-    top = 256
+    Left = 768
+    Top = 192
   end
   object ACBrCTe1: TACBrCTe
     Configuracoes.Geral.SSLLib = libWinCrypt
@@ -14473,11 +14636,10 @@ object fCTePrincipal: TfCTePrincipal
     Configuracoes.WebServices.QuebradeLinha = '|'
     Configuracoes.WebServices.TimeZoneConf.ModoDeteccao = tzManual
     Configuracoes.WebServices.TimeZoneConf.TimeZoneStr = '-03:00'
-    Configuracoes.WebServices.SSLType = LT_TLSv1_2
     Configuracoes.RespTec.IdCSRT = 0
     DACTE = ACBrCTeDACTeRL1
-    left = 304
-    top = 208
+    Left = 304
+    Top = 208
   end
   object ACBrCTeDACTeRL1: TACBrCTeDACTeRL
     UsaSeparadorPathPDF = True
@@ -14506,8 +14668,8 @@ object fCTePrincipal: TfCTePrincipal
     EPECEnviado = False
     ImprimeDescPorc = False
     PrintDialog = True
-    left = 552
-    top = 192
+    Left = 552
+    Top = 192
   end
   object ACBrCTe2: TACBrCTe
     Configuracoes.Geral.SSLLib = libNone
@@ -14520,7 +14682,280 @@ object fCTePrincipal: TfCTePrincipal
     Configuracoes.WebServices.AguardarConsultaRet = 0
     Configuracoes.WebServices.QuebradeLinha = '|'
     Configuracoes.RespTec.IdCSRT = 0
-    left = 808
-    top = 256
+    Left = 848
+    Top = 184
+  end
+  object ZConn: TZConnection
+    ControlsCodePage = cCP_UTF8
+    AutoEncodeStrings = True
+    Properties.Strings = (
+      'AutoEncodeStrings=True'
+      'controls_cp=CP_UTF8'
+    )
+    HostName = 'localhost'
+    Port = 3050
+    User = 'sysdba'
+    Password = 'masterkey'
+    Protocol = 'firebirdd-2.5'
+    Left = 456
+    Top = 424
+  end
+  object ZQuery1: TZQuery
+    Connection = ZConn
+    SQL.Strings = (
+      'select razao from empresa'
+    )
+    Params = <>
+    Left = 512
+    Top = 424
+    object ZQuery1RAZAO: TStringField
+      FieldKind = fkData
+      FieldName = 'RAZAO'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+      Size = 80
+    end
+  end
+  object DataSource1: TDataSource
+    DataSet = ZQuery1
+    Left = 576
+    Top = 424
+  end
+  object ZsqNFe: TZQuery
+    Connection = ZConn
+    SQL.Strings = (
+      'select * from CTE_NFE where CTE_NFE =:pCTE  '
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'pCTE'
+        ParamType = ptUnknown
+      end>
+    Left = 640
+    Top = 424
+    ParamData = <    
+      item
+        DataType = ftInteger
+        Name = 'pCTE'
+        ParamType = ptUnknown
+      end>
+    object ZsqNFeCOD_CTE_NFE: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_CTE_NFE'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object ZsqNFeCTE_NFE: TLongintField
+      FieldKind = fkData
+      FieldName = 'CTE_NFE'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object ZsqNFeCHAVE: TStringField
+      FieldKind = fkData
+      FieldName = 'CHAVE'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object ZsqNFePIN: TLongintField
+      FieldKind = fkData
+      FieldName = 'PIN'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object ZsqNFeDPREV: TDateField
+      FieldKind = fkData
+      FieldName = 'DPREV'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+  end
+  object DSZsqNFe: TDataSource
+    DataSet = ZsqNFe
+    Left = 696
+    Top = 424
+  end
+  object ZsqGenerator: TZQuery
+    Connection = ZConn
+    Params = <>
+    Left = 776
+    Top = 432
+  end
+  object ZsqComp: TZQuery
+    Connection = ZConn
+    SQL.Strings = (
+      'select * from CTE_COMP where COD_CTE  = :pCTE  '
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'pCTE'
+        ParamType = ptUnknown
+      end>
+    Left = 456
+    Top = 480
+    ParamData = <    
+      item
+        DataType = ftInteger
+        Name = 'pCTE'
+        ParamType = ptUnknown
+      end>
+    object ZsqCompCOD_CTE_COMP: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_CTE_COMP'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object ZsqCompCOD_CTE: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_CTE'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object ZsqCompCOMP_NOME: TStringField
+      FieldKind = fkData
+      FieldName = 'COMP_NOME'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 15
+    end
+    object ZsqCompCOMP_VALOR: TFloatField
+      FieldKind = fkData
+      FieldName = 'COMP_VALOR'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      DisplayFormat = ',##0.00'
+      EditFormat = ',##0.00'
+      Precision = 2
+    end
+  end
+  object DSZsqcomp: TDataSource
+    DataSet = ZsqComp
+    Left = 536
+    Top = 488
+  end
+  object ZsqQC: TZQuery
+    Connection = ZConn
+    SQL.Strings = (
+      'select'
+      '  COD_CTE_QC'
+      ', COD_CTE'
+      ', UNID'
+      ', MEDIDA'
+      ', QUANT, CASE WHEN UNID = ''00'' THEN ''uM3'' WHEN UNID = ''01'' THEN ''uKG'''
+      ' WHEN UNID = ''02'' THEN ''uTON'' WHEN UNID = ''03'' THEN ''uUNIDADE'''
+      ' WHEN UNID = ''04'' THEN ''uLITROS'' WHEN UNID = ''05'' THEN ''uMMBTU'' END AS UNIDADE'
+      'from CTE_QC   where COD_CTE = :pCTE  '
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'pCTE'
+        ParamType = ptUnknown
+      end>
+    Left = 457
+    Top = 545
+    ParamData = <    
+      item
+        DataType = ftInteger
+        Name = 'pCTE'
+        ParamType = ptUnknown
+      end>
+    object ZsqQCCOD_CTE_QC: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_CTE_QC'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object ZsqQCCOD_CTE: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_CTE'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object ZsqQCUNID: TStringField
+      FieldKind = fkData
+      FieldName = 'UNID'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 2
+    end
+    object ZsqQCMEDIDA: TStringField
+      FieldKind = fkData
+      FieldName = 'MEDIDA'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object ZsqQCQUANT: TFloatField
+      FieldKind = fkData
+      FieldName = 'QUANT'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      DisplayFormat = ',##0.0'
+      EditFormat = ',##0.0'
+      Precision = 2
+    end
+    object ZsqQCUNIDADE: TStringField
+      FieldKind = fkData
+      FieldName = 'UNIDADE'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = True
+      Required = False
+      Size = 8
+    end
+  end
+  object DSZqsQC: TDataSource
+    DataSet = ZsqQC
+    Left = 536
+    Top = 545
   end
 end

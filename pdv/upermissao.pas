@@ -32,6 +32,7 @@ var
   fPermissao: TfPermissao;
 
 implementation
+uses uPdv ;
 
 {$R *.lfm}
 
@@ -73,6 +74,17 @@ begin
     Permissao_Fazer := 'SIM';
     Close;
   end;
+
+  dmPdv.sqLancZero.Close;
+  dmPdv.sqLancZero.Params[0].AsInteger:= fPdv.CodMov;
+  dmPdv.sqLancZero.Open;
+  fPdv.pSemValor := dmPdv.sqLancZeroCODMOVIMENTO.AsInteger;
+
+  if(fPdv.pSemValor > 0 )then
+    fPdv.Label8.Caption:= 'LINHAS EM VERMELHO  PRODUTOS PREÇO  0,00'
+  else
+     fPdv.Label8.Caption:= '...' ;
+
 end;
 
 procedure TfPermissao.edSenhaKeyPress(Sender: TObject; var Key: char);

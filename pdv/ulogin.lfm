@@ -4,11 +4,11 @@ object fLogin: TfLogin
   Top = 180
   Width = 550
   Caption = 'Acesso ao Sistema'
-  ClientHeight = 361
-  ClientWidth = 550
+  ClientHeight = 0
+  ClientWidth = 0
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '2.2.4.0'
   object pnInfo: TPanel
     Left = 29
     Height = 306
@@ -160,7 +160,7 @@ object fLogin: TfLogin
     Left = 48
     Height = 16
     Top = 48
-    Width = 139
+    Width = 115
     Caption = 'Cadastrar/Alterar Senha'
     DragCursor = crHandPoint
     Font.CharSet = ANSI_CHARSET
@@ -174,7 +174,7 @@ object fLogin: TfLogin
     OnClick = Label1Click
   end
   object Memo1: TMemo
-    Left = 47
+    Left = 48
     Height = 240
     Top = 72
     Width = 467
@@ -201,7 +201,7 @@ object fLogin: TfLogin
   end
   object Label3: TLabel
     Left = 208
-    Height = 24
+    Height = 25
     Top = 328
     Width = 19
     Caption = '...'

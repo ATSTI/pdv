@@ -1,13 +1,16 @@
 object fSangria: TfSangria
-  Left = 708
-  Height = 206
-  Top = 304
-  Width = 483
+  Left = 392
+  Height = 472
+  Top = 183
+  Width = 533
   Caption = 'Sangria'
-  ClientHeight = 206
-  ClientWidth = 483
+  ClientHeight = 472
+  ClientWidth = 533
+  Color = clInactiveCaption
+  OnClose = FormClose
   OnShow = FormShow
-  LCLVersion = '2.0.12.0'
+  Position = poDesktopCenter
+  LCLVersion = '2.2.4.0'
   object btnGravar: TBitBtn
     Left = 264
     Height = 44
@@ -161,7 +164,6 @@ object fSangria: TfSangria
     Height = 23
     Top = 97
     Width = 306
-    CharCase = ecNormal
     MaxLength = 0
     TabOrder = 1
     SpaceChar = '_'
@@ -172,7 +174,6 @@ object fSangria: TfSangria
     Top = 64
     Width = 173
     Alignment = taRightJustify
-    CharCase = ecNormal
     MaxLength = 0
     TabOrder = 0
     Text = '0,00'
@@ -336,7 +337,7 @@ object fSangria: TfSangria
     Left = 40
     Height = 15
     Top = 16
-    Width = 24
+    Width = 23
     Caption = 'Tipo'
     ParentColor = False
   end
@@ -347,6 +348,75 @@ object fSangria: TfSangria
     Width = 171
     TabOrder = 5
     Visible = False
+  end
+  object Label6: TLabel
+    Left = 192
+    Height = 15
+    Top = 0
+    Width = 75
+    Caption = 'Incluir Sangria'
+    ParentColor = False
+  end
+  object PanelSangria: TPanel
+    Left = 0
+    Height = 266
+    Top = 200
+    Width = 531
+    ClientHeight = 266
+    ClientWidth = 531
+    TabOrder = 6
+    object btnReimprimir: TButton
+      Left = 192
+      Height = 25
+      Top = 240
+      Width = 134
+      Caption = 'Imprimir a Selecionada'
+      OnClick = btnReimprimirClick
+      TabOrder = 0
+    end
+    object DBGrid1: TDBGrid
+      Left = 13
+      Height = 204
+      Top = 34
+      Width = 493
+      Color = clWindow
+      Columns = <      
+        item
+          Title.Caption = 'Caixa'
+          Width = 40
+          FieldName = 'CAIXA'
+        end      
+        item
+          Title.Caption = 'Drescrição'
+          Width = 340
+          FieldName = 'N_DOC'
+        end      
+        item
+          Title.Caption = 'Valor'
+          Width = 60
+          FieldName = 'VALOR_PAGO'
+        end>
+      DataSource = dsSangrias
+      TabOrder = 1
+    end
+    object Label4: TLabel
+      Left = 160
+      Height = 15
+      Top = 18
+      Width = 175
+      Caption = 'Ultimas Sangrias para Reimprimir'
+      ParentColor = False
+    end
+    object Label5: TLabel
+      Left = 3
+      Height = 15
+      Top = 3
+      Width = 520
+      Caption = '================================================================='
+      Color = clBlue
+      ParentColor = False
+      Transparent = False
+    end
   end
   object sqPagamento: TSQLQuery
     FieldDefs = <    
@@ -423,6 +493,7 @@ object fSangria: TfSangria
         Name = 'PCODMOV'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 64
     Top = 16
     object sqPagamentoCOD_VENDA: TLongintField
@@ -533,5 +604,200 @@ object fSangria: TfSangria
       ReadOnly = False
       Required = True
     end
+  end
+  object sqSangrias: TSQLQuery
+    MaxIndexesCount = 4
+    FieldDefs = <    
+      item
+        Name = 'COD_VENDA'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'ID_ENTRADA'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'FORMA_PGTO'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 1
+      end    
+      item
+        Name = 'CAIXA'
+        DataType = ftSmallint
+        Precision = -1
+      end    
+      item
+        Name = 'N_DOC'
+        DataType = ftString
+        Precision = -1
+        Size = 60
+      end    
+      item
+        Name = 'VALOR_PAGO'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'CAIXINHA'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'STATE'
+        DataType = ftSmallint
+        Precision = -1
+      end    
+      item
+        Name = 'TROCO'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'DESCONTO'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'CODFORMA'
+        DataType = ftInteger
+        Precision = -1
+      end>
+    Database = dmPdv.IbCon
+    Transaction = dmPdv.sTrans
+    SQL.Strings = (
+      'select first 10'
+      '    cod_venda,'
+      '    id_entrada,'
+      '    forma_pgto,'
+      '    caixa,'
+      '    n_doc,'
+      '    valor_pago,'
+      '    caixinha,'
+      '    state,'
+      '    troco,'
+      '    desconto,'
+      '    codforma'
+      'from forma_entrada'
+      'where cod_venda = 1 order by codforma desc'
+    )
+    Params = <>
+    Macros = <>
+    Left = 128
+    Top = 328
+    object sqSangriasCOD_VENDA: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_VENDA'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object sqSangriasID_ENTRADA: TLongintField
+      FieldKind = fkData
+      FieldName = 'ID_ENTRADA'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object sqSangriasFORMA_PGTO: TStringField
+      FieldKind = fkData
+      FieldName = 'FORMA_PGTO'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sqSangriasCAIXA: TSmallintField
+      FieldKind = fkData
+      FieldName = 'CAIXA'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqSangriasN_DOC: TStringField
+      FieldKind = fkData
+      FieldName = 'N_DOC'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 60
+    end
+    object sqSangriasVALOR_PAGO: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALOR_PAGO'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      DisplayFormat = ',##0.00'
+      EditFormat = ',##0.00'
+      Precision = -1
+    end
+    object sqSangriasCAIXINHA: TFloatField
+      FieldKind = fkData
+      FieldName = 'CAIXINHA'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqSangriasSTATE: TSmallintField
+      FieldKind = fkData
+      FieldName = 'STATE'
+      Index = 7
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqSangriasTROCO: TFloatField
+      FieldKind = fkData
+      FieldName = 'TROCO'
+      Index = 8
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqSangriasDESCONTO: TFloatField
+      FieldKind = fkData
+      FieldName = 'DESCONTO'
+      Index = 9
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqSangriasCODFORMA: TLongintField
+      FieldKind = fkData
+      FieldName = 'CODFORMA'
+      Index = 10
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+  end
+  object dsSangrias: TDataSource
+    DataSet = sqSangrias
+    Left = 288
+    Top = 320
   end
 end

@@ -27,6 +27,7 @@ type
     btnSangria_Rec: TButton;
     btnUsuario: TButton;
     Button1: TButton;
+    btnTest: TButton;
     edEste: TEdit;
     edSessao: TEdit;
     edTentativa: TEdit;
@@ -36,6 +37,7 @@ type
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
+    Memo1: TMemo;
     memoDados: TMemo;
     memoResult: TMemo;
     Panel1: TPanel;
@@ -56,6 +58,7 @@ type
     procedure btnConsultaUltimoPedidoClick(Sender: TObject);
     procedure btnProdutoClick(Sender: TObject);
     procedure btnClienteClick(Sender: TObject);
+    procedure btnTestClick(Sender: TObject);
     procedure btnUsuarioClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -310,6 +313,36 @@ begin
       end;
   end;
   executa_sql;}
+end;
+
+procedure TfIntegracaoOdoo.btnTestClick(Sender: TObject);
+  var
+  Client: TFPHttpClient;
+  Response: TStringStream;
+  Params: string = '{"db": "felicita","login": "ats@atsti.com.br", "password": "a2t00s7"}';
+begin
+  Client := TFPHttpClient.Create(nil);
+  Client.AddHeader('User-Agent', 'Mozilla/5.0 (compatible; fpweb)');
+  Client.AddHeader('Content-Type', 'application/json; charset=UTF-8');
+  Client.AddHeader('Accept', 'application/json');
+  Client.AllowRedirect := true;
+  Client.UserName := 'ats@atsti.com.br';
+  Client.Password := 'a2t00s7';
+  Client.RequestBody := TRawByteStringStream.Create(Params);
+  Response := TStringStream.Create('');
+  try
+    try
+      //Client.get('http://127.0.0.1:14069/web/session/authenticate',Response);
+      Client.Post('http://127.0.0.1:14069/session/auth/login',Response);
+      Memo1.Lines.Add('Response Code: ' + IntToStr(Client.ResponseStatusCode)); // better be 200
+    except on E: Exception do
+      Memo1.Lines.Add('Something bad happened: ' + E.Message);
+    end;
+  finally
+    Client.RequestBody.Free;
+    Client.Free;
+    Response.Free;
+  end;
 end;
 
 procedure TfIntegracaoOdoo.btnUsuarioClick(Sender: TObject);
@@ -591,13 +624,35 @@ var
   K: integer;
   object_name, field_name, field_value, object_type, object_items: String;
 begin
-  autenticacao := '{"jsonrpc": "2.0", "params": {"login": "' + dmpdv.odoo_user +
+    // odoo12
+   {
+   autenticacao := '{"jsonrpc": "2.0", "params": {"login": "' + dmpdv.odoo_user +
     '", "password": "' + dmpdv.odoo_acesso + '", "db": "' +
     dmPdv.odoo_database + '"}}';
+   }
+
+  autenticacao := '{"db": "' + dmPdv.odoo_database +
+                  '","login": "' + dmpdv.odoo_user +
+                  '", "password": "' + dmpdv.odoo_acesso + '"}';
+
 
   httpClient.AllowRedirect := true;
   httpClient.AddHeader('User-Agent', 'Mozilla/5.0(compatible; fpweb)');
-  url := dmPdv.path_integra_url + '/web/session/authenticate/';
+  {
+  url := dmPdv.path_integra_url + '/session/auth/logout';
+  With httpClient do
+  begin
+    AddHeader('Content-Type', 'application/json');
+    RequestBody := TStringStream.Create(autenticacao);
+    responseData := Post(url);
+    ver := httpClient.ResponseHeaders.Text;
+  end;
+  }
+
+  url := dmPdv.path_integra_url + '/session/auth/login';
+
+  //  url := dmPdv.path_integra_url + '/web/session/authenticate/';
+
   With httpClient do
   begin
     AddHeader('Content-Type', 'application/json');
@@ -605,10 +660,12 @@ begin
     responseData := Post(url);
     ver := httpClient.ResponseHeaders.Text;
     memoDados.Lines.Add(responseData);
+    Memo1.Lines.Add(responseData);
     ver := IntToStr(httpClient.ResponseStatusCode);
     ver := httpClient.ResponseStatusText;
     ver := httpclient.Cookies.Text;
     jData := GetJSON(responseData);
+
     for i := 0 to jData.Count - 1 do
     begin
       jItem := jData.Items[i];
@@ -619,7 +676,9 @@ begin
         for k := 0 to jItemB.Count - 1 do
         begin
           field_name := TJSONObject(jItemB).Names[k];
+          Memo1.Lines.Add(field_name);
           field_value := jItemB.FindPath(TJSONObject(jItemB).Names[k]).Value;
+          Memo1.Lines.Add(field_value);
           if field_name = 'session_id' then
           begin
             edSessao.Text := field_value;
@@ -627,6 +686,7 @@ begin
               dmpdv.odoo_user + '", "session": "' +
               edSessao.Text + '", "db": "' +
               dmPdv.odoo_database + '"';
+            Memo1.Lines.Add(autenticacao);
             exit;
           end;
         end;
@@ -741,8 +801,9 @@ begin
   dmPdv.sqBusca1.Close;
   dmPdv.sqBusca1.Sql.Clear;
   sql_str := 'SELECT FIRST 10 m.CODMOVIMENTO ';
-  sql_str += ' FROM MOVIMENTO m , VENDA v';
+  sql_str += ' FROM MOVIMENTO m , VENDA v, MOVIMENTODETALHE md';
   sql_str += ' WHERE m.CODMOVIMENTO = v.CODMOVIMENTO';
+  sql_str += '   AND md.CODMOVIMENTO = m.CODMOVIMENTO';
   if (edEste_str <> '') then
   begin
     sql_str += ' AND m.CODMOVIMENTO = ' + edEste_str;
@@ -753,6 +814,7 @@ begin
     sql_str += '   AND m.CODALMOXARIFADO = ' + c_caixa;
   end;
   sql_str += '   AND m.STATUS = 1 ';
+  sql_str += '   AND md.STATUS = ' + QuotedStr('0');
   sql_str += ' ORDER BY m.CODMOVIMENTO DESC ';
   dmPdv.sqBusca1.SQL.Add(sql_str);
   dmPdv.sqBusca1.Open;
@@ -1087,9 +1149,11 @@ begin
     dmPdv.sqBusca1.Close;
     dmPdv.sqBusca1.Sql.Clear;
     sql_str := 'SELECT m.CODMOVIMENTO ';
-    sql_str += ' FROM MOVIMENTO m , VENDA v';
+    sql_str += ' FROM MOVIMENTO m , VENDA v, MOVIMENTODETALHE md';
     sql_str += ' WHERE m.CODMOVIMENTO = v.CODMOVIMENTO';
+    sql_str += '   AND md.CODMOVIMENTO = m.CODMOVIMENTO';
     sql_str += '   AND m.STATUS = 1 ';
+    sql_str += '   AND md.STATUS = ' + QuotedStr('0');
     sql_str += '   AND m.CODALMOXARIFADO = ' + c_caixa;
     sql_str += ' ORDER BY m.CODMOVIMENTO DESC ';
     dmPdv.sqBusca1.SQL.Add(sql_str);
@@ -1446,6 +1510,8 @@ var
   responseData: String;
   sql_str: string;
 begin
+  memoResult.Lines.Clear;
+  memoResult.Lines.Add('Verificando baixa do Contas a Receber');
   dmPdv.sqBusca1.Close;
   dmPdv.sqBusca1.Sql.Clear;
   sql_str := 'SELECT CAIXA, N_DOC, VALOR_PAGO ,CODFORMA ,COD_VENDA, TROCO, ID_ENTRADA ';
@@ -1456,8 +1522,8 @@ begin
   dmPdv.sqBusca1.SQL.Add(sql_str);
   dmPdv.sqBusca1.Open;
   DecimalSeparator:='.';
+  sql_str := '';
   //if (limpa_memo = 'S') then
-  memoResult.Lines.Clear;
   httpClient := logar();
   while not dmPdv.sqBusca1.EOF do
   begin
@@ -1471,6 +1537,8 @@ begin
     postJson.Add('cod_forma', IntToStr(dmPdv.sqBusca1.Fields[3].AsInteger));
     postJson.Add('juro', FloatToStr(dmPdv.sqBusca1.Fields[5].AsFloat));
     postJson.Add('aml_id', IntToStr(dmPdv.sqBusca1.Fields[6].AsInteger));
+    memoResult.Lines.Add('Conta baixada: ' + IntToStr(dmPdv.sqBusca1.Fields[6].AsInteger));
+    sql_str := 'tem';
     With httpClient do
     begin
       AddHeader('Content-Type', 'application/json');
@@ -1480,6 +1548,8 @@ begin
     end;
     dmPdv.sqBusca1.Next;
   end;
+  if (sql_str = '') then
+    memoResult.Lines.Add('Sem contas para baixar.');
 end;
 end.
 

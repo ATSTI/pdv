@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="11"/>
+    <Version Value="12"/>
     <PathDelim Value="\"/>
     <General>
+      <Flags>
+        <CompatibilityMode Value="True"/>
+      </Flags>
       <SessionStorage Value="InProjectDir"/>
-      <MainUnit Value="0"/>
       <Title Value="ATS Conhecimento Transportes (CTe)"/>
       <Scaled Value="True"/>
       <UseAppBundle Value="False"/>
@@ -22,7 +24,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
-      <BuildNr Value="4"/>
+      <BuildNr Value="8"/>
       <Language Value="0416"/>
       <StringTable CompanyName="ATS Soluções" FileDescription="Conhecimento de Transporte Eletrônico" LegalCopyright="ATS Soluções" ProductName="ATS-CTe" ProductVersion="1.0/2020"/>
     </VersionInfo>
@@ -35,7 +37,6 @@
     </PublishOptions>
     <RunParams>
       <FormatVersion Value="2"/>
-      <Modes Count="0"/>
     </RunParams>
     <RequiredPackages Count="7">
       <Item1>
@@ -176,7 +177,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="\home\publico\tmp\ats_CTe"/>
+      <Filename Value="C:\home\jaba\ats_CTe"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
@@ -186,6 +187,7 @@
     <Linking>
       <Debugging>
         <GenerateDebugInfo Value="False"/>
+        <DebugInfoType Value="dsDwarf2Set"/>
       </Debugging>
       <Options>
         <Win32>

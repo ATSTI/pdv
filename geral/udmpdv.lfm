@@ -1,15 +1,15 @@
 object dmPdv: TdmPdv
   OnCreate = DataModuleCreate
   OldCreateOrder = False
-  Height = 684
-  HorizontalOffset = 519
-  VerticalOffset = 153
+  Height = 589
+  HorizontalOffset = 382
+  VerticalOffset = 0
   Width = 934
   object IbCon: TIBConnection
     Connected = False
     LoginPrompt = False
     AfterConnect = IbConAfterConnect
-    DatabaseName = 'c:\home\bd\ats_pdv_felicita.fdb'
+    DatabaseName = 'C:\home\sisadmin\bd\sge_martinelli.fdb'
     KeepConnection = False
     Params.Strings = (
       'port=3050'
@@ -17,7 +17,7 @@ object dmPdv: TdmPdv
     Password = 'masterkey'
     Transaction = sTrans
     UserName = 'SYSDBA'
-    CharSet = 'UTF8'
+    CharSet = 'WIN1252'
     HostName = 'localhost'
     CheckTransactionParams = False
     UseConnectionCharSetIfNone = False
@@ -35,6 +35,7 @@ object dmPdv: TdmPdv
     Database = IbCon
     Transaction = sTrans
     Params = <>
+    Macros = <>
     Left = 264
     Top = 16
   end
@@ -43,6 +44,7 @@ object dmPdv: TdmPdv
     Database = IbCon
     Transaction = sTrans
     Params = <>
+    Macros = <>
     Left = 536
     Top = 18
   end
@@ -143,6 +145,7 @@ object dmPdv: TdmPdv
       'SELECT * FROM PARAMETRO'
     )
     Params = <>
+    Macros = <>
     Left = 624
     Top = 18
     object sqParametroDESCRICAO: TStringField
@@ -733,6 +736,7 @@ object dmPdv: TdmPdv
         Name = 'PMOV'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 40
     Top = 256
     object sqLancamentosCODMOVIMENTO: TLongintField
@@ -1480,6 +1484,7 @@ object dmPdv: TdmPdv
         Name = 'PCODMOV'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 392
     Top = 18
   end
@@ -1951,6 +1956,7 @@ object dmPdv: TdmPdv
       'SELECT * FROM EMPRESA'
     )
     Params = <>
+    Macros = <>
     Left = 128
     Top = 88
     object sqEmpresaEMPRESA: TStringField
@@ -2744,6 +2750,7 @@ object dmPdv: TdmPdv
     Database = IbCon
     Transaction = sTrans
     Params = <>
+    Macros = <>
     Left = 464
     Top = 18
   end
@@ -2752,6 +2759,7 @@ object dmPdv: TdmPdv
     Database = IbCon
     Transaction = sTrans
     Params = <>
+    Macros = <>
     Left = 320
     Top = 16
   end
@@ -2789,6 +2797,7 @@ object dmPdv: TdmPdv
         Name = 'PCONTADESPESA'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 360
     Top = 88
     object qcds_ccustoCODIGO: TLongintField
@@ -3325,6 +3334,7 @@ object dmPdv: TdmPdv
         Name = 'pcusto'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 200
     Top = 88
     object qsEmpresaEMPRESA: TStringField
@@ -4201,6 +4211,7 @@ object dmPdv: TdmPdv
         Name = 'pserie'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 648
     Top = 520
     object qsMenorData_EXCLUIRMENORDATA: TDateField
@@ -4248,6 +4259,7 @@ object dmPdv: TdmPdv
         Name = 'pserie'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 848
     Top = 512
     object qsMaiorData_EXCLUIRMAIORDATA: TDateField
@@ -4263,8 +4275,8 @@ object dmPdv: TdmPdv
   object dsNF: TDataSource
     DataSet = qcdsNF
     OnDataChange = dsNFDataChange
-    Left = 88
-    Top = 328
+    Left = 40
+    Top = 400
   end
   object qcdsNF: TSQLQuery
     MaxIndexesCount = 4
@@ -4799,6 +4811,7 @@ object dmPdv: TdmPdv
         Name = 'ENV'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 40
     Top = 328
     object qcdsNFCFOP: TStringField
@@ -5725,6 +5738,7 @@ object dmPdv: TdmPdv
         Name = 'pPARAM'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 720
     Top = 16
     object qcds_parametroDESCRICAO: TStringField
@@ -6032,6 +6046,7 @@ object dmPdv: TdmPdv
         Name = 'id'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 448
     Top = 88
     object qsFornecCODCLIENTE: TLongintField
@@ -6408,6 +6423,7 @@ object dmPdv: TdmPdv
         Name = 'id'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 536
     Top = 88
     object qsClienteCODCLIENTE: TLongintField
@@ -6761,6 +6777,7 @@ object dmPdv: TdmPdv
         Name = 'id'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 624
     Top = 88
     object qsCFOPCFCOD: TStringField
@@ -6954,6 +6971,7 @@ object dmPdv: TdmPdv
         Name = 'SIGLA'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 688
     Top = 88
     object qsEstadoCODIGO: TLongintField
@@ -7458,6 +7476,7 @@ object dmPdv: TdmPdv
         Name = 'id'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 144
     Top = 328
     object cdsItensNFCODPRODUTO: TLongintField
@@ -8210,6 +8229,7 @@ object dmPdv: TdmPdv
     Database = IbCon
     Transaction = sTrans
     Params = <>
+    Macros = <>
     Left = 232
     Top = 328
   end
@@ -8262,6 +8282,7 @@ object dmPdv: TdmPdv
         Name = 'Cidade'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 856
     Top = 88
     object sTabIBGENM_LOCALIDADE: TStringField
@@ -8716,6 +8737,7 @@ object dmPdv: TdmPdv
         Name = 'Codpro'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 768
     Top = 88
     object qsProdutosCODPRODUTO: TLongintField
@@ -9424,6 +9446,7 @@ object dmPdv: TdmPdv
         Name = 'tipo'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 320
     Top = 328
     object qcdsFaturaDATAFATURA: TDateField
@@ -9505,6 +9528,7 @@ object dmPdv: TdmPdv
         Name = 'pnf'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 384
     Top = 328
     object qsNFCNUMNF: TLongintField
@@ -9696,6 +9720,7 @@ object dmPdv: TdmPdv
         Name = 'cli'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 120
     Top = 152
     object qsEndEntregaCODENDERECO: TLongintField
@@ -9969,6 +9994,7 @@ object dmPdv: TdmPdv
         Name = 'CODDET'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 440
     Top = 328
     object sAdicaoADIC_CODDET: TLongintField
@@ -10091,6 +10117,7 @@ object dmPdv: TdmPdv
         Name = 'CODDI'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 512
     Top = 328
     object sDiDI_CODDI: TLongintField
@@ -10211,6 +10238,7 @@ object dmPdv: TdmPdv
         Name = 'Codpro'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 216
     Top = 152
     object sdsProd_CombCPRODANP: TStringField
@@ -10484,6 +10512,7 @@ object dmPdv: TdmPdv
         Name = 'CODFISCAL'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 312
     Top = 152
     object sdsCfopNCMNCM: TStringField
@@ -11036,6 +11065,7 @@ object dmPdv: TdmPdv
         Name = 'codcfop'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 406
     Top = 152
     object sdsCfopProdCOD_PROD: TLongintField
@@ -11464,6 +11494,7 @@ object dmPdv: TdmPdv
         Name = 'pTRANSP'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 672
     Top = 152
     object qsTranspCODTRANSP: TLongintField
@@ -11858,6 +11889,7 @@ object dmPdv: TdmPdv
       ''
     )
     Params = <>
+    Macros = <>
     Left = 592
     Top = 152
     object qsListaTranspCODTRANSP: TLongintField
@@ -12148,6 +12180,7 @@ object dmPdv: TdmPdv
       ''
     )
     Params = <>
+    Macros = <>
     Left = 488
     Top = 152
     object qsCentroCustoCODEMPRESA: TLongintField
@@ -12268,6 +12301,7 @@ object dmPdv: TdmPdv
       'SELECT * FROM CCE'
     )
     Params = <>
+    Macros = <>
     Left = 568
     Top = 328
     object qsCCECHAVE: TStringField
@@ -12850,6 +12884,7 @@ object dmPdv: TdmPdv
       'select * from EMPRESA'
     )
     Params = <>
+    Macros = <>
     Left = 276
     Top = 88
     object qsEmpresa1EMPRESA: TStringField
@@ -13699,5 +13734,88 @@ object dmPdv: TdmPdv
     OnTimer = Timer2Timer
     Left = 216
     Top = 456
+  end
+  object sqLancZero: TSQLQuery
+    FieldDefs = <    
+      item
+        Name = 'CODMOVIMENTO'
+        DataType = ftInteger
+        Precision = -1
+      end>
+    Database = IbCon
+    Transaction = sTrans
+    SQL.Strings = (
+      'SELECT count(m.CODMOVIMENTO) as CODMOVIMENTO'
+      'FROM MOVIMENTO m'
+      '  LEFT OUTER JOIN MOVIMENTODETALHE a ON M.CODMOVIMENTO = a.CODMOVIMENTO'
+      'WHERE  M.CODMOVIMENTO = :PMOV'
+      '  and a.preco = 0'
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'PMOV'
+        ParamType = ptInput
+      end>
+    Macros = <>
+    Left = 152
+    Top = 256
+    object sqLancZeroCODMOVIMENTO: TLongintField
+      FieldKind = fkData
+      FieldName = 'CODMOVIMENTO'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+  end
+  object sqUltimoLanc: TSQLQuery
+    FieldDefs = <    
+      item
+        Name = 'CODMOVIMENTO'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'STATUS'
+        DataType = ftSmallint
+        Precision = -1
+      end>
+    Database = IbCon
+    Transaction = sTrans
+    SQL.Strings = (
+      'SELECT CODMOVIMENTO , status'
+      'FROM MOVIMENTO'
+      'WHERE  CODMOVIMENTO = :PMOV'
+      ''
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'PMOV'
+        ParamType = ptInput
+      end>
+    Macros = <>
+    Left = 232
+    Top = 256
+    object sqUltimoLancCODMOVIMENTO: TLongintField
+      FieldKind = fkData
+      FieldName = 'CODMOVIMENTO'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object sqUltimoLancSTATUS: TSmallintField
+      FieldKind = fkData
+      FieldName = 'STATUS'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
   end
 end
