@@ -108,7 +108,7 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       Left = 640
       Height = 15
       Top = 104
-      Width = 52
+      Width = 54
       Caption = 'Tentativas'
       ParentColor = False
     end

@@ -337,7 +337,7 @@ object fSangria: TfSangria
     Left = 40
     Height = 15
     Top = 16
-    Width = 23
+    Width = 24
     Caption = 'Tipo'
     ParentColor = False
   end
