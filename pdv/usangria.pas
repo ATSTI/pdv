@@ -282,7 +282,8 @@ begin
   //dmpdv.integra_caixa_mov;
 
   // rotina de envio para o ODoo se usar o odoo
-  if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
+  // 21/07/2023 parece errado abaixo esta executando a consulta do caixa
+  {if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
   begin
       httpClient := TFPHttpClient.Create(Nil);
     postJson := TJSONObject.Create;
@@ -308,7 +309,7 @@ begin
       postJson.Free;
     except
     end;
-  end;
+  end;}
 end;
 
 procedure TfSangria.EnviaSangria;
