@@ -510,7 +510,10 @@ begin
   str := 'insert into CAIXA_CONTROLE (IDCAIXACONTROLE, CODCAIXA, CODUSUARIO,' +
     'SITUACAO, NOMECAIXA, MAQUINA, DATAABERTURA, VALORABRE) values (';
   str := str + IntToStr(codCaixa);
-  str := str + ', ' + dmpdv.ccusto_padrao;
+  if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
+    str := str + ', ' + IntToStr(codCaixa)
+  else
+    str := str + ', ' + dmpdv.ccusto_padrao;
   str := str + ', ' + dmpdv.varLogado;
   str := str + ', ' + QuotedStr('o');
   str := str + ', ' + QuotedStr(FormatDateTime('dd/mm/yyyy', dtData.Date));
