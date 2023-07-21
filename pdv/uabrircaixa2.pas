@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
-  MaskEdit, StdCtrls, udmpdv, DateTimePicker, db;
+  MaskEdit, StdCtrls, udmpdv, DateTimePicker, db, IniFiles;
 
 type
 
@@ -44,16 +44,31 @@ procedure TfAbreCaixa.btnAbrefechaClick(Sender: TObject);
 var str:string;
   codCaixa:integer;
   vlrCaixa:double;
+  ArquivoINI: TIniFile;
 begin
   try
   codCaixa := dmPdv.busca_generator('GEN_CAIXA');
   str := 'insert into CAIXA_CONTROLE (IDCAIXACONTROLE, CODCAIXA, CODUSUARIO,' +
     'SITUACAO, NOMECAIXA, MAQUINA, DATAABERTURA, VALORABRE, DATAFECHAMENTO) values (';
   str := str + IntToStr(codCaixa);
-  str := str + ', ' + dmpdv.ccusto_padrao;
+  if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
+  begin
+    str := str + ', ' + IntToStr(codCaixa);
+    ArquivoINI := TIniFile.Create('pdv_caixa.ini');
+    ArquivoINI.WriteString('PDV', 'caixa', IntToStr(codCaixa));
+    ArquivoINI.Free;
+  end
+  else
+    str := str + ', ' + dmpdv.ccusto_padrao;
   str := str + ', ' + dmpdv.varLogado;
   str := str + ', ' + QuotedStr('o');
-  str := str + ', ' + QuotedStr(FormatDateTime('dd/mm/yyyy', dtData.Date));
+  if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
+  begin
+    str := str + ', ' + QuotedStr(dmpdv.nomeLogado + '/' +  IntToStr(codCaixa));
+    dmPdv.nomeCaixa := dmpdv.nomeLogado + '/' +  IntToStr(codCaixa);
+  end
+  else
+    str := str + ', ' + QuotedStr(FormatDateTime('dd/mm/yyyy', dtData.Date));
   str := str + ', ' + QuotedStr(dmpdv.MICRO);
   str := str + ', ' + QuotedStr(FormatDateTime('mm/dd/yyyy', dtData.Date));
   vlrCaixa := StrToFloat(edValor.Text);
@@ -64,7 +79,8 @@ begin
   dmPdv.IbCon.ExecuteDirect(str);
   dmPdv.sTrans.Commit;
   dmPdv.idcaixa := IntToStr(codCaixa);
-  dmPdv.nomeCaixa := FormatDateTime('dd/mm/yyyy', dtData.Date);
+  dmPdv.ccusto := IntToStr(codCaixa);
+
   ShowMessage('Caixa aberto com sucesso!');
         Except
         on dmPdv: EDatabaseError do
