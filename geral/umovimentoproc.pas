@@ -374,7 +374,8 @@ begin
   codVendaProc:=0;
   edDataIni.Date:=Now;
   edDataFim.Date:=Now;
-  if ((dmPdv.nomeCaixa = 'FECHADO')  and (UpperCase(dmPdv.usoSistema) <> 'ODOO'))then
+  //if ((dmPdv.nomeCaixa = 'FECHADO')  and (UpperCase(dmPdv.usoSistema) <> 'ODOO'))then
+  if (dmPdv.nomeCaixa = 'FECHADO') then
   begin
     btnFecharCaixa.Caption:= 'Abrir Caixa';
   end;

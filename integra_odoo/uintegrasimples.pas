@@ -322,7 +322,7 @@ procedure TfIntegracaoOdoo.btnTestClick(Sender: TObject);
   Params: string;
 begin
   Params := '{"db": "' + dmPdv.odoo_database + '", "login": "' + dmpdv.odoo_user +
-    '", "password": "' + dmpdv.odoo_acesso + '"}'
+    '", "password": "' + dmpdv.odoo_acesso + '"}';
   Client := TFPHttpClient.Create(nil);
   Client.AddHeader('User-Agent', 'Mozilla/5.0 (compatible; fpweb)');
   Client.AddHeader('Content-Type', 'application/json; charset=UTF-8');
