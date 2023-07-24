@@ -101,6 +101,7 @@ begin
   fSangria.Caption := 'Reforço';
   fSangria.Label6.Caption := 'Incluir Reforço';
   fSangria.PanelSangria.Visible := False;
+  fSangria.ComboBox1.ItemIndex := 1;
   fSangria.ShowModal;
 end;
 
@@ -331,6 +332,7 @@ begin
   fSangria.Caption := 'Sangria';
   fSangria.Label6.Caption := 'Incluir Sangria';
   fSangria.PanelSangria.Visible := True;
+  fSangria.ComboBox1.ItemIndex := 0;
   fSangria.ShowModal;
 end;
 

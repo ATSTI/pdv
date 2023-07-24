@@ -325,11 +325,7 @@ object fSangria: TfSangria
     ItemHeight = 15
     Items.Strings = (
       'Sangria'
-      'Recebimento Cliente'
-      'Pagamento Fornecedor'
-      'Retirada Uso'
-      'Pagamento Func.(Vale)'
-      'Outros'
+      'Reforço'
     )
     TabOrder = 4
   end
