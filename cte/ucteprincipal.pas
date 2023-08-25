@@ -453,6 +453,7 @@ type
     Label176: TLabel;
     Label177: TLabel;
     Label178: TLabel;
+    Label179: TLabel;
     lblCteAtual: TLabel;
     Label17: TLabel;
     Label19: TLabel;
@@ -3860,6 +3861,8 @@ begin
   btnEditarCte.Click;
 end;
 
+
+
 procedure TfCTePrincipal.edtBuscaTomadorExit(Sender: TObject);
 begin
   buscaTomador;
@@ -7062,7 +7065,7 @@ procedure TfCTePrincipal.sbtnLerXmlCteClick(Sender: TObject);
    num_cod_comp: Integer;
 begin
   // lendo xml
-  pvalordokilo := StrToFloat(Edit1.Text);
+                                                                        pvalordokilo := StrToFloat(Edit1.Text);
 
  if (modoGravacao = 'INCLUIR') then
  begin
@@ -7095,10 +7098,10 @@ begin
          nome += ', ' + QuotedStr(dest.xNome);
          nome += ', 1, ' + QuotedStr(v_lerxml);
          nome += ', ' + QuotedStr(dest.IE);
-         nome += ', 1, 1, ' + QuotedStr(FormatDateTime('mm/dd/yyyy',now));
+         nome += ', 1, 0, ' + QuotedStr(FormatDateTime('mm/dd/yyyy',now));
          nome += ', 1, 1';
 
-         strEndereco := QuotedStr(dest.enderDest.xLgr);
+         strEndereco := QuotedStr(Copy(dest.enderDest.xLgr,0,50));
          strEndereco += ', ' + QuotedStr(Copy(dest.enderDest.xBairro,0,29));
          strEndereco += ', ' + QuotedStr(Copy(dest.enderDest.xCpl,0,29));
          strEndereco += ', ' + QuotedStr(Copy(dest.enderDest.xMun,0,39));

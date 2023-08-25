@@ -639,7 +639,7 @@ object fCTePrincipal: TfCTePrincipal
     object Label161: TLabel
       Left = 14
       Height = 19
-      Top = 8
+      Top = 6
       Width = 73
       Caption = 'CTe atual :'
       Font.CharSet = ANSI_CHARSET
@@ -655,7 +655,7 @@ object fCTePrincipal: TfCTePrincipal
     object lblCteAtual1: TLabel
       Left = 96
       Height = 19
-      Top = 8
+      Top = 6
       Width = 18
       Caption = '...'
       Font.CharSet = ANSI_CHARSET
@@ -667,6 +667,14 @@ object fCTePrincipal: TfCTePrincipal
       Font.Style = [fsBold]
       ParentColor = False
       ParentFont = False
+    end
+    object Label179: TLabel
+      Left = 304
+      Height = 15
+      Top = 28
+      Width = 101
+      Caption = 'Versão : 25/08/2023'
+      ParentColor = False
     end
   end
   object Label18: TLabel
@@ -14688,9 +14696,11 @@ object fCTePrincipal: TfCTePrincipal
   object ZConn: TZConnection
     ControlsCodePage = cCP_UTF8
     AutoEncodeStrings = True
+    ClientCodepage = 'WIN1252'
     Properties.Strings = (
       'AutoEncodeStrings=True'
       'controls_cp=CP_UTF8'
+      'codepage=WIN1252'
     )
     HostName = 'localhost'
     Port = 3050
