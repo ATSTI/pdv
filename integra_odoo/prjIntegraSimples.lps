@@ -4,13 +4,13 @@
     <PathDelim Value="\"/>
     <Version Value="12"/>
     <BuildModes Active="Default"/>
-    <Units Count="15">
+    <Units Count="17">
       <Unit0>
         <Filename Value="prjIntegraSimples.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="3"/>
-        <CursorPos X="69" Y="15"/>
-        <UsageCount Value="198"/>
+        <EditorIndex Value="2"/>
+        <CursorPos X="94" Y="4"/>
+        <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
@@ -22,15 +22,15 @@
         <UnitName Value="uIntegraSimples"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="1350"/>
-        <CursorPos Y="1262"/>
-        <UsageCount Value="198"/>
+        <TopLine Value="1209"/>
+        <CursorPos X="5" Y="1219"/>
+        <UsageCount Value="200"/>
         <Bookmarks Count="5">
-          <Item0 X="5" Y="562" ID="4"/>
-          <Item1 Y="80" ID="5"/>
-          <Item2 Y="554" ID="3"/>
-          <Item3 X="54" Y="816" ID="1"/>
-          <Item4 Y="1152" ID="2"/>
+          <Item0 X="5" Y="569" ID="4"/>
+          <Item1 Y="84" ID="5"/>
+          <Item2 Y="561" ID="3"/>
+          <Item3 Y="1214" ID="2"/>
+          <Item4 X="46" Y="1337" ID="1"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -41,9 +41,9 @@
         <ComponentName Value="dmPdv"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <TopLine Value="1213"/>
-        <CursorPos Y="1327"/>
-        <UsageCount Value="198"/>
+        <TopLine Value="1739"/>
+        <CursorPos Y="1750"/>
+        <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit2>
@@ -54,7 +54,7 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="198"/>
+        <UsageCount Value="200"/>
       </Unit3>
       <Unit4>
         <Filename Value="..\geral\jsontools.pas"/>
@@ -63,199 +63,214 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="18"/>
         <CursorPos Y="23"/>
-        <UsageCount Value="197"/>
+        <UsageCount Value="200"/>
       </Unit4>
       <Unit5>
         <Filename Value="C:\Users\ats\AppData\Local\lazarus\onlinepackagemanager\packages\Indy10\Protocols\IdSSLOpenSSLHeaders.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="19476"/>
         <CursorPos Y="19489"/>
-        <UsageCount Value="42"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="36"/>
       </Unit5>
       <Unit6>
         <Filename Value="C:\Users\ats\AppData\Local\lazarus\onlinepackagemanager\packages\Indy10\Core\IdThread.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="300"/>
         <CursorPos X="116" Y="313"/>
-        <UsageCount Value="42"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="36"/>
       </Unit6>
       <Unit7>
         <Filename Value="C:\Users\ats\AppData\Local\lazarus\onlinepackagemanager\packages\Indy10\Protocols\IdHTTP.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="406"/>
         <CursorPos X="41" Y="404"/>
-        <UsageCount Value="42"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="36"/>
       </Unit7>
       <Unit8>
         <Filename Value="C:\lazarus12\lcl\include\control.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2901"/>
         <CursorPos Y="2915"/>
-        <UsageCount Value="27"/>
+        <UsageCount Value="21"/>
       </Unit8>
       <Unit9>
         <Filename Value="C:\lazarus12\lcl\include\buttoncontrol.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="43"/>
         <CursorPos Y="56"/>
-        <UsageCount Value="27"/>
+        <UsageCount Value="21"/>
       </Unit9>
       <Unit10>
         <Filename Value="C:\lazarus12\fpc\3.2.0\source\packages\fcl-web\src\base\fphttpclient.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="334"/>
         <CursorPos X="37" Y="340"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="14"/>
       </Unit10>
       <Unit11>
         <Filename Value="uintegraodoo.pas"/>
         <UnitName Value="uIntegraOdoo"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="55" Y="9"/>
-        <UsageCount Value="16"/>
+        <UsageCount Value="10"/>
       </Unit11>
       <Unit12>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-json\src\fpjson.pp"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="147"/>
+        <TopLine Value="97"/>
         <CursorPos X="3" Y="108"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="25"/>
       </Unit12>
       <Unit13>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-web\src\base\fphttpclient.pp"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="6" Y="15"/>
-        <UsageCount Value="13"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="9"/>
       </Unit13>
       <Unit14>
         <Filename Value="uintegrasimples.lfm"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="4"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit14>
+      <Unit15>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\rtl-objpas\src\inc\strutils.pp"/>
+        <UnitName Value="StrUtils"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="21"/>
+        <CursorPos X="10" Y="32"/>
+        <UsageCount Value="30"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\inc\varianth.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="494"/>
+        <CursorPos X="10" Y="504"/>
+        <UsageCount Value="19"/>
+      </Unit16>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="637" Column="41" TopLine="617"/>
+        <Caret Line="1214" TopLine="1209"/>
       </Position1>
       <Position2>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="638" Column="45" TopLine="618"/>
+        <Caret Line="1216" TopLine="1209"/>
       </Position2>
       <Position3>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="644" Column="15" TopLine="624"/>
+        <Caret Line="1217" Column="108" TopLine="1206"/>
       </Position3>
       <Position4>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="654" Column="15" TopLine="634"/>
+        <Caret Line="1394" TopLine="1384"/>
       </Position4>
       <Position5>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="656" Column="19" TopLine="636"/>
+        <Caret Line="1214" TopLine="1203"/>
       </Position5>
       <Position6>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="688" Column="20" TopLine="668"/>
+        <Caret Line="1216" TopLine="1209"/>
       </Position6>
       <Position7>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="690" Column="20" TopLine="670"/>
+        <Caret Line="1219" TopLine="1209"/>
       </Position7>
       <Position8>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="696" Column="63" TopLine="692"/>
+        <Caret Line="1220" TopLine="1209"/>
       </Position8>
       <Position9>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="484" TopLine="463"/>
+        <Caret Line="1221" TopLine="1209"/>
       </Position9>
       <Position10>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="485" TopLine="464"/>
+        <Caret Line="1216" TopLine="1209"/>
       </Position10>
       <Position11>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="486" TopLine="466"/>
+        <Caret Line="1219" TopLine="1209"/>
       </Position11>
       <Position12>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="487" TopLine="467"/>
+        <Caret Line="1220" TopLine="1209"/>
       </Position12>
       <Position13>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="492" TopLine="480"/>
+        <Caret Line="1221" TopLine="1209"/>
       </Position13>
       <Position14>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="1245" TopLine="1233"/>
+        <Caret Line="1216" TopLine="1209"/>
       </Position14>
       <Position15>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="1246" TopLine="1233"/>
+        <Caret Line="1219" TopLine="1209"/>
       </Position15>
       <Position16>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="1247" TopLine="1233"/>
+        <Caret Line="1220" TopLine="1209"/>
       </Position16>
       <Position17>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="1248" TopLine="1233"/>
+        <Caret Line="1221" TopLine="1209"/>
       </Position17>
       <Position18>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="1249" TopLine="1233"/>
+        <Caret Line="1216" TopLine="1209"/>
       </Position18>
       <Position19>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="1251" TopLine="1233"/>
+        <Caret Line="1219" TopLine="1209"/>
       </Position19>
       <Position20>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="1254" TopLine="1234"/>
+        <Caret Line="1220" TopLine="1209"/>
       </Position20>
       <Position21>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="1256" TopLine="1236"/>
+        <Caret Line="1221" TopLine="1209"/>
       </Position21>
       <Position22>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="1257" TopLine="1237"/>
+        <Caret Line="1216" TopLine="1209"/>
       </Position22>
       <Position23>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="1258" TopLine="1238"/>
+        <Caret Line="1219" TopLine="1209"/>
       </Position23>
       <Position24>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="1260" TopLine="1240"/>
+        <Caret Line="1220" TopLine="1209"/>
       </Position24>
       <Position25>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="490" TopLine="472"/>
+        <Caret Line="1221" TopLine="1209"/>
       </Position25>
       <Position26>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="1263" Column="71" TopLine="1250"/>
+        <Caret Line="1216" TopLine="1209"/>
       </Position26>
       <Position27>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="1262" TopLine="1250"/>
+        <Caret Line="1219" TopLine="1209"/>
       </Position27>
       <Position28>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="1263" TopLine="1250"/>
+        <Caret Line="1220" TopLine="1209"/>
       </Position28>
       <Position29>
         <Filename Value="uintegrasimples.pas"/>
-        <Caret Line="1267" Column="70" TopLine="1250"/>
+        <Caret Line="1221" TopLine="1209"/>
       </Position29>
+      <Position30>
+        <Filename Value="uintegrasimples.pas"/>
+        <Caret Line="1216" TopLine="1209"/>
+      </Position30>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
@@ -268,15 +283,8 @@
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
-        <Source Value="uintegrasimples.pas"/>
-        <Line Value="658"/>
-      </Item>
-      <Item>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="uintegrasimples.pas"/>
-        <Line Value="634"/>
+        <Source Value="..\geral\udmpdv.pas"/>
+        <Line Value="1674"/>
       </Item>
     </BreakPoints>
   </Debugging>

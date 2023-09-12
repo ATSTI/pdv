@@ -108,7 +108,7 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       Left = 640
       Height = 15
       Top = 104
-      Width = 54
+      Width = 52
       Caption = 'Tentativas'
       ParentColor = False
     end
@@ -280,6 +280,7 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       Caption = 'btnTeste'
       OnClick = btnTestClick
       TabOrder = 18
+      Visible = False
     end
   end
   object Panel2: TPanel
@@ -303,6 +304,20 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       )
       ScrollBars = ssAutoBoth
       TabOrder = 0
+    end
+    object Memo2: TMemo
+      Left = 39
+      Height = 29
+      Top = 115
+      Width = 998
+      TabOrder = 1
+    end
+    object Memo4: TMemo
+      Left = 426
+      Height = 90
+      Top = 39
+      Width = 150
+      TabOrder = 2
     end
   end
   object Panel3: TPanel
@@ -341,6 +356,13 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       )
       TabOrder = 1
     end
+    object Memo3: TMemo
+      Left = 384
+      Height = 88
+      Top = 80
+      Width = 320
+      TabOrder = 2
+    end
   end
   object TimerPedido: TTimer
     Interval = 30000
@@ -365,5 +387,11 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
     OnTimer = Timer3Timer
     Left = 786
     Top = 28
+  end
+  object sTrans: TSQLTransaction
+    Active = False
+    Database = dmPdv.IbCon
+    Left = 279
+    Top = 177
   end
 end

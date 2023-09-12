@@ -14,12 +14,14 @@ type
   { TfSangria }
 
   TfSangria = class(TForm)
+    btnInsereMotivo: TBitBtn;
     btnFechar: TBitBtn;
     btnGravar: TBitBtn;
     btnReimprimir: TButton;
     ComboBox1: TComboBox;
     DBGrid1: TDBGrid;
     dsSangrias: TDataSource;
+    Edit1: TEdit;
     Label1: TLabel;
     Label2: TLabel;
     edMotivo: TMaskEdit;
@@ -54,6 +56,7 @@ type
     sqSangriasSTATE: TSmallintField;
     sqSangriasTROCO: TFloatField;
     sqSangriasVALOR_PAGO: TFloatField;
+    procedure btnInsereMotivoClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure btnGravarClick(Sender: TObject);
     procedure btnReimprimirClick(Sender: TObject);
@@ -62,6 +65,7 @@ type
   private
 
   public
+    abri_cx : integer;
     SangriaReforco: String;
     procedure Sangria();
     procedure EnviaSangria;
@@ -72,7 +76,7 @@ var
   fSangria: TfSangria;
 
 implementation
-
+  uses uPdv,uMovimentoProc;
 {$R *.lfm}
 
 { TfSangria }
@@ -99,7 +103,7 @@ begin
   end;
 
   Sangria();
-  ShowMessage('Gravado com Sucesso!');
+
 
   if (dmPdv.CupomImp = 'Texto') then
   begin
@@ -143,11 +147,17 @@ begin
     CloseFile(IMPRESSORA);
   end;
 
-  close;
+  ShowMessage('Gravado com Sucesso!');
+ // close;
   if (UpperCase(dmpdv.usoSistema) = 'ODOO') then
   begin
     EnviaSangria;
   end;
+  abri_cx := 1;
+  btnFechar.Click;
+  fMovimentoProc.Close;
+  fPdv.procFormShow;
+
 end;
 
 procedure TfSangria.btnReimprimirClick(Sender: TObject);
@@ -209,11 +219,17 @@ begin
   edMotivo.Text := '';
   edValor.Text := '0,00';
   fSangria.sqSangrias.Active:= True;
+  Edit1.Text := dmPdv.nomeCaixa;
 end;
 
 procedure TfSangria.btnFecharClick(Sender: TObject);
 begin
   close;
+end;
+
+procedure TfSangria.btnInsereMotivoClick(Sender: TObject);
+begin
+  edMotivo.Text:= 'Abrir ' + Edit1.Text ;
 end;
 
 procedure TfSangria.Sangria();
@@ -313,7 +329,7 @@ begin
 end;
 
 procedure TfSangria.EnviaSangria;
-  var
+var
   vlrSangria: double;
   Campo : String;
   forma_pag : String;

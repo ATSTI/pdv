@@ -1,20 +1,21 @@
 object fAbreCaixa: TfAbreCaixa
   Left = 459
-  Height = 224
+  Height = 278
   Top = 210
   Width = 522
   Caption = 'Abertura do Caixa'
-  ClientHeight = 224
+  ClientHeight = 278
   ClientWidth = 522
+  OnCreate = FormCreate
   OnShow = FormShow
   LCLVersion = '2.2.4.0'
   object Panel1: TPanel
     Left = 0
-    Height = 85
+    Height = 139
     Top = 139
     Width = 522
     Align = alClient
-    ClientHeight = 85
+    ClientHeight = 139
     ClientWidth = 522
     TabOrder = 0
     object btnAbrefecha: TBitBtn
@@ -267,6 +268,27 @@ object fAbreCaixa: TfAbreCaixa
       OnClick = btnSairClick
       TabOrder = 1
     end
+    object btnAbreCX: TBitBtn
+      Left = 85
+      Height = 30
+      Top = 35
+      Width = 75
+      Caption = 'btnAbreCX'
+      OnClick = btnAbreCXClick
+      TabOrder = 2
+      Visible = False
+    end
+    object Label3: TLabel
+      Left = 88
+      Height = 21
+      Top = 96
+      Width = 357
+      Caption = 'Sempre que Abrir o CX o Sistema Será Reiniciado'
+      Font.Height = -16
+      Font.Style = [fsBold, fsItalic]
+      ParentColor = False
+      ParentFont = False
+    end
   end
   object Panel2: TPanel
     Left = 0
@@ -285,6 +307,7 @@ object fAbreCaixa: TfAbreCaixa
       Alignment = taRightJustify
       MaxLength = 0
       TabOrder = 0
+      Visible = False
       Text = '0,00'
       SpaceChar = '_'
     end
@@ -328,9 +351,10 @@ object fAbreCaixa: TfAbreCaixa
       Left = 120
       Height = 15
       Top = 72
-      Width = 74
+      Width = 73
       Caption = 'Valor abertura'
       ParentColor = False
+      Visible = False
     end
     object lblCaixa: TLabel
       Left = 64
@@ -347,6 +371,37 @@ object fAbreCaixa: TfAbreCaixa
       Font.Style = [fsBold]
       ParentColor = False
       ParentFont = False
+    end
+    object memoresult: TMemo
+      Left = 152
+      Height = 35
+      Top = 102
+      Width = 136
+      Lines.Strings = (
+        'memoresult'
+      )
+      TabOrder = 2
+      Visible = False
+    end
+    object memodados: TMemo
+      Left = 360
+      Height = 68
+      Top = 48
+      Width = 110
+      Lines.Strings = (
+        'memodados'
+      )
+      TabOrder = 3
+      Visible = False
+    end
+    object edSessao: TEdit
+      Left = 15
+      Height = 23
+      Top = 5
+      Width = 80
+      TabOrder = 4
+      Text = 'edSessao'
+      Visible = False
     end
   end
 end

@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, DateTimePicker, Forms, Controls, Graphics,
-  Dialogs, StdCtrls, MaskEdit, Buttons, ExtCtrls, ACBrPosPrinter, udmpdv;
+  Dialogs, StdCtrls, MaskEdit, Buttons, ExtCtrls, ACBrPosPrinter, udmpdv, SQLDB,
+  fphttpclient, fpjson, db;
 
 type
 
@@ -16,7 +17,9 @@ type
     ACBrPosPrinter1: TACBrPosPrinter;
     BitBtn24: TBitBtn;
     btnAbrefecha: TBitBtn;
+    btnEnvSangria: TBitBtn;
     btnSair: TBitBtn;
+    ComboBox1: TComboBox;
     dtData: TDateTimePicker;
     edPix: TMaskEdit;
     edReforco: TMaskEdit;
@@ -50,8 +53,21 @@ type
     Memo1: TMemo;
     Panel1: TPanel;
     Panel2: TPanel;
+    sqPagamento: TSQLQuery;
+    sqPagamentoCAIXA: TSmallintField;
+    sqPagamentoCAIXINHA: TFloatField;
+    sqPagamentoCODFORMA: TLongintField;
+    sqPagamentoCOD_VENDA: TLongintField;
+    sqPagamentoDESCONTO: TFloatField;
+    sqPagamentoFORMA_PGTO: TStringField;
+    sqPagamentoID_ENTRADA: TLongintField;
+    sqPagamentoN_DOC: TStringField;
+    sqPagamentoSTATE: TSmallintField;
+    sqPagamentoTROCO: TFloatField;
+    sqPagamentoVALOR_PAGO: TFloatField;
     procedure BitBtn24Click(Sender: TObject);
     procedure btnAbrefechaClick(Sender: TObject);
+    procedure btnEnvSangriaClick(Sender: TObject);
     procedure btnSairClick(Sender: TObject);
     procedure dtDataChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -65,8 +81,11 @@ type
 
 
   public
+    abri_cx : integer;
     AbrirFechar:string;
-
+    SangriaReforco: String;
+    procedure Sangria();
+    procedure EnviaSangria;
   end;
 
 var
@@ -74,7 +93,7 @@ var
 
 implementation
 
-uses uIntegraSimples;
+uses uIntegraSimples,uPdv,uMovimentoProc;
 
 {$R *.lfm}
 
@@ -111,7 +130,78 @@ begin
       end;
     end;
   end;
+  btnSair.Click;
 end;
+
+procedure TfAbrirCaixa.btnEnvSangriaClick(Sender: TObject);
+var
+  IMPRESSORA:TextFile;
+begin
+  if (ComboBox1.ItemIndex <> 0) then
+  begin
+    ShowMessage('Informar o Tipo de Sangria ' + SangriaReforco);
+    exit;
+  end;
+
+  if (edTCaixa.Text = '0,00') then
+  begin
+    ShowMessage('Valor Errado ou Sangria ja Enviada ' + SangriaReforco);
+    exit;
+  end;
+
+  Sangria();
+  ShowMessage('Gravado com Sucesso!');
+
+  if (dmPdv.CupomImp = 'Texto') then
+  begin
+    AssignFile(IMPRESSORA, dmPdv.portaIMP);
+  end
+  else begin
+    AssignFile(IMPRESSORA, dmPdv.path_imp);
+  end;
+
+  try
+    Rewrite(IMPRESSORA);
+    //lFile.LoadFromFile('caixa.txt');
+    Writeln(IMPRESSORA, '');
+    Writeln(Impressora, SangriaReforco + ' CAIXA');
+    Writeln(IMPRESSORA, FormatDateTime('dd/mm/yyyy hh:MM:ss', Now));
+    Writeln(IMPRESSORA, '');
+    Writeln(Impressora, 'CAIXA : ' + dmPdv.nomeCaixa);
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, 'Valor       - ' + edTCaixa.Text);
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, 'Motivo :');
+    if (Length('Sangria Fechar Caixa') > dmPdv.tamanhoLinha) then
+    begin
+      Writeln(IMPRESSORA, Copy('Sangria Fechar Caixa' ,0,dmPdv.tamanhoLinha));
+      Writeln(IMPRESSORA, Copy('Sangria Fechar Caixa' ,dmPdv.tamanhoLinha+1,dmPdv.tamanhoLinha));
+    end
+    else begin
+        Writeln(IMPRESSORA,'Sangria Fechar Caixa');
+    end;
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, 'Assinatura :');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '------------------------------');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+  finally
+    CloseFile(IMPRESSORA);
+  end;
+
+  if (UpperCase(dmpdv.usoSistema) = 'ODOO') then
+  begin
+    EnviaSangria;
+  end;
+   btnEnvSangria.Enabled := False;
+end;
+
+
 
 procedure TfAbrirCaixa.BitBtn24Click(Sender: TObject);
 var
@@ -284,6 +374,7 @@ end;
 
 procedure TfAbrirCaixa.FormShow(Sender: TObject);
 begin
+  btnEnvSangria.Enabled := True;
   if (AbrirFechar = 'Abrir') then
   begin
     fAbrirCaixa.Caption:= 'Abrir Caixa';
@@ -537,11 +628,12 @@ var str:string;
   vlrCaixa:double;
   IMPRESSORA:TextFile;
 begin
+  DecimalSeparator:=',';
   str := 'update CAIXA_CONTROLE set SITUACAO = ';
   str := str + QuotedStr('F');
   str := str + ', DATAFECHAMENTO = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', now));
   vlrCaixa := StrToFloat(edValor.Text);
-  DecimalSeparator:='.';
+
   if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
   begin
     str := str + ', VALORFECHA = 1';
@@ -613,7 +705,171 @@ begin
       ShowMessage('Erro para fechar o Caixa : ' + e.Message);
     end;
   end;
+
+
+  ShowMessage('Fechar o Programa Para Abrir Novo Caixa .');
+
+  fMovimentoProc.Close;
+  abri_cx := 1;
+  fPdv.procFormShow;
+
 end;
+
+procedure TfAbrirCaixa.Sangria;
+var
+  codForma: integer;
+  vlrSangria: double;
+  Campo : String;
+  forma_pag : String;
+  Valor : String;
+  tipo :integer;
+  postJson : TJSONObject;
+  httpClient : TFPHttpClient;
+  fInteg: TfIntegracaoOdoo;
+  responseData: String;
+begin
+  if (dmPdv.sqGenerator.Active) then
+    dmPdv.sqGenerator.Close;
+  dmPdv.sqGenerator.SQL.Clear;
+  dmPdv.sqGenerator.SQL.Text := 'SELECT CAST(GEN_ID(GEN_FORMA, 1) AS INTEGER) ' +
+    'AS CODIGO FROM RDB$DATABASE';
+  dmPdv.sqGenerator.Open;
+  codForma := dmPdv.sqGenerator.Fields[0].AsInteger;
+  dmPdv.sqGenerator.Close;
+  sqPagamento.Open;
+  sqPagamento.Insert;
+  sqPagamentoCODFORMA.AsInteger  := codForma;
+  sqPagamentoCAIXA.AsInteger     := StrToInt(dmPdv.idcaixa);
+ // if SangriaReforco = 'Sangria' then
+ // begin
+    sqPagamentoCOD_VENDA.AsInteger := 1;
+    tipo := 1;
+ // end
+ // else begin
+//    sqPagamentoCOD_VENDA.AsInteger := 0;
+//    tipo := 0;
+ // end;
+  {Sangria
+   Recebimento Cliente
+   Pagamento Fornecedor
+   Retirada Uso
+   Pagamento Func.(Vale)
+   Outros}
+  Case ComboBox1.ItemIndex of
+    0: forma_pag := 'S';
+  //  1: forma_pag := 'R';
+  //  2: forma_pag := 'F';
+  //  3: forma_pag := 'U';
+  //  4: forma_pag := 'V';
+  //  5: forma_pag := 'T';
+  end;
+
+  //ComboBox1.ItemIndex
+  sqPagamentoFORMA_PGTO.AsString := forma_pag;
+  sqPagamentoID_ENTRADA.AsInteger:= StrToINT(dmPdv.idcaixa);
+  sqPagamentoN_DOC.AsString      := 'Sangria Fechar Caixa :'+ dmPdv.idcaixa;
+  sqPagamentoSTATE.AsInteger     := 1;
+  vlrSangria := StrToFloat(edTCaixa.Text);
+  //DecimalSeparator:='.';
+  sqPagamentoVALOR_PAGO.AsFloat := vlrSangria;
+  //DecimalSeparator:=',';
+  sqPagamentoDESCONTO.AsFloat    := 0;
+  sqPagamentoTROCO.AsFloat       := 0;
+  sqPagamento.ApplyUpdates;
+  dmPdv.sTrans.Commit;
+  //dmpdv.gera_integra_caixa_mov;
+  //dmpdv.integra_caixa_mov;
+
+  // rotina de envio para o ODoo se usar o odoo
+  // 21/07/2023 parece errado abaixo esta executando a consulta do caixa
+  {if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
+  begin
+      httpClient := TFPHttpClient.Create(Nil);
+    postJson := TJSONObject.Create;
+    try
+      postJson.Add('title', 'Sangria/Reforço');
+      postJson.Add('caixa',dmPdv.idcaixa);
+      postJson.Add('cod_venda',tipo);
+      postJson.Add('valor',edValor.Text);
+      postJson.Add('cod_forma',codForma);
+      postJson.Add('diario','1-');
+      postJson.Add('situacao','O');
+
+      fInteg := TfIntegracaoOdoo.Create(Self);
+      httpClient := fInteg.logar();
+      With httpClient do
+      begin
+        AddHeader('Content-Type', 'application/json');
+        RequestBody := TStringStream.Create(postJson.AsJSON);
+        responseData := Post(dmPdv.path_integra_url + '/caixaconsulta');
+        //memoResult.Lines.Add(responseData);
+      end;
+      fInteg.Free;
+      postJson.Free;
+    except
+    end;
+  end;}
+end;
+
+procedure TfAbrirCaixa.EnviaSangria;
+var
+  vlrSangria: double;
+  Campo : String;
+  forma_pag : String;
+  Valor : String;
+  tipo :integer;
+  fInteg: TfIntegracaoOdoo;
+  responseData: String;
+  sql_str , pedidos: string;
+  postJson : TJSONObject;
+  httpClient : TFPHttpClient;
+begin
+  dmPdv.sqBusca1.Close;
+  dmPdv.sqBusca1.Sql.Clear;
+  sql_str := 'SELECT CAIXA,N_DOC,VALOR_PAGO,CODFORMA ,COD_VENDA ';
+  sql_str += 'FROM FORMA_ENTRADA  ';
+  sql_str += 'WHERE CAIXA = ' + QuotedStr(dmPdv.idcaixa);
+  sql_str += 'AND COD_VENDA IN (0,1,2)';
+  sql_str += 'ORDER BY CODFORMA DESC ';
+  dmPdv.sqBusca1.SQL.Add(sql_str);
+  dmPdv.sqBusca1.Open;
+  DecimalSeparator:='.';
+  pedidos := '[{';
+  while not dmPdv.sqBusca1.EOF do
+  begin
+    if pedidos <> '[{' then
+      pedidos += '}, {';
+    pedidos += '"caixa": "' + IntToStr(dmPdv.sqBusca1.Fields[0].AsInteger) + '",' +
+      '"motivo": "' + dmPdv.sqBusca1.Fields[1].AsString + '",' +
+      '"valor": "' + FloatToStr(dmPdv.sqBusca1.Fields[2].AsFloat) + '",' +
+      '"codforma": "' + IntToStr(dmPdv.sqBusca1.Fields[3].AsInteger) + '",'+
+     '"codvenda": "' + IntToStr(dmPdv.sqBusca1.Fields[4].AsInteger) + '"';
+    dmPdv.sqBusca1.Next;
+  end;
+  pedidos += '}]';
+  memo1.Lines.Add(pedidos);
+
+  httpClient := TFPHttpClient.Create(Nil);
+  postJson := TJSONObject.Create;
+  try
+    postJson.Add('title', 'Sangria/Reforço');
+    postJson.Add('todos', pedidos);
+    fInteg := TfIntegracaoOdoo.Create(Self);
+    httpClient := fInteg.logar();
+    With httpClient do
+    begin
+      AddHeader('Content-Type', 'application/json');
+      RequestBody := TStringStream.Create(postJson.AsJSON);
+      responseData := Post(dmPdv.path_integra_url + '/enviasangria');
+      //memoDados.Lines.Add(responseData);
+    end;
+    fInteg.Free;
+    postJson.Free;
+  except
+  end;
+
+end;
+
 
 end.
 
