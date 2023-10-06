@@ -3,29 +3,27 @@
 from datetime import datetime
 from datetime import date
 from datetime import timedelta
-from unidecode import unidecode
 import logging
 import psycopg2
 import re
 import json
-from . import atscon as con
+import configparser
+from atscon import Conexao as con
 
 
 _logger = logging.getLogger(__name__)
 
-class IntegracaoOdoo():
+class IntegracaoOdoo:
     _name = 'integracao.odoo'
-
-    def cron_integra_caixas(self):
-        session_ids = self.env['pos.session'].search([
-                ('state', '=', 'opened')])
-        for ses in session_ids:
-             self.action_atualiza_caixas(ses)
-
-    def action_integra_caixas(self):
-        # se nao for no pos enviar email com as msg_erro
-        self.msg_integracao = self.action_atualiza_caixas(self)
     
+    def __init__(self):
+        import pudb;pu.db
+        cfg = configparser.ConfigParser()
+        cfg.read('conf.ini')
+        self.path  = cfg.get('INTEGRA', 'Path')
+        self.action_atualiza_vendas()
+
+
     def action_atualiza_caixas(self, session):
         try:
             if session.config_id.ip_terminal:
@@ -721,9 +719,10 @@ class IntegracaoOdoo():
         for rcs in recs:
             # procura o pedido pdv odoo
             lanc = '%s-%s' %(str(rcs[7]), str(rcs[8]))
-            ppdv = self.env['pos.order'].search([
-                ('pos_reference','=',lanc)
-            ])
+            # ppdv = self.env['pos.order'].search([
+            #     ('pos_reference','=',lanc)
+            # ])
+            ppdv = ''
             if not ppdv:
                 continue
             msg_sis = 'Receber novos : %s<br>' %(str(rcs[0]))
@@ -747,15 +746,15 @@ class IntegracaoOdoo():
                 ('statement_id','=', stmt.id),
                 ('journal_id','=', jrn_id.id),
             ])
-            if lancado_id:
-                faturas_ids = self.env['account.invoice'].search([
-                    ('partner_id','=', rcs[6]),
-                    ('origin', '=', ppdv.name)
-                    ('state','=', 'open'),
-                ])
-                for ftr in faturas_ids:
-                    ftr.pay_and_reconcile(jrn_id.id, rcs[4])
-                continue
+            # if lancado_id:
+            #     faturas_ids = self.env['account.invoice'].search([
+            #         ('partner_id','=', rcs[6]),
+            #         ('origin', '=', ppdv.name)
+            #         ('state','=', 'open'),
+            #     ])
+            #     for ftr in faturas_ids:
+            #         ftr.pay_and_reconcile(jrn_id.id, rcs[4])
+            #     continue
             values = {}
             values['statement_id'] = stmt.id
             values['journal_id'] = jrn_id.id
@@ -772,40 +771,6 @@ class IntegracaoOdoo():
             ])
             for ftr in faturas_ids:
                 ftr.pay_and_reconcile(jrn_id.id, rcs[4])
-
-    def cron_integra_vendas(self):
-        session_ids = self.env['pos.session'].search([
-                ('state', '=', 'opened')])
-        for ses in session_ids:
-            if self.verifica_se_esta_rodando(ses):
-                ses.integracao_andamento = datetime.strftime(datetime.now(),'%Y-%m-%d %H:%M:%S')
-                self.action_atualiza_vendas(ses)
-
-    def action_integra_vendas(self):
-        # se nao for no pos enviar email com as msg_erro
-        if self.verifica_se_esta_rodando(self):
-            self.integracao_andamento = datetime.strftime(datetime.now(),'%Y-%m-%d %H:%M:%S')
-            self.msg_integracao = self.action_atualiza_vendas(self)
-        else:
-            raise UserError(
-                    u'Já existe Atualização em Andamento, aguarde.')
-        
-    def verifica_se_esta_rodando(self, session):
-        hj = datetime.now()
-        hj = hj - timedelta(minutes=1)
-        hora = datetime.strptime(session.integracao_andamento,'%Y-%m-%d %H:%M:%S')
-        if (hora < hj):
-            return True
-        else:
-            return False
-
-    def cron_integra_devolucao(self):
-        session_ids = self.env['pos.session'].search([
-                ('state', '=', 'opened')])
-        #session_ids = self.env['pos.session'].search([
-        #        ('id', '=', 3913)])
-        for ses in session_ids:
-            self.action_devolucao(ses)
 
     def action_devolucao(self, session):
         try:
@@ -905,52 +870,44 @@ class IntegracaoOdoo():
                     pick.do_new_transfer()
         return 'Sucesso'    
 
-    def action_atualiza_vendas(self, session):
-        try:
-            if session.config_id.ip_terminal:
-                db = con.Conexao(session.config_id.ip_terminal, session.config_id.database)
-            else:
-                return False
-        except:
-            msg_sis = u'Caminho ou nome do banco inválido.<br>'
+    def action_atualiza_vendas(self):
+        # try:
+        #     if session.config_id.ip_terminal:
+        #         db = con.Conexao(session.config_id.ip_terminal, session.config_id.database)
+        #     else:
+        #         return False
+        # except:
+            # msg_sis = u'Caminho ou nome do banco inválido.<br>'
         msg_erro = ''
         msg_sis = 'Integrando Vendas para o PDV<br>'
         hj = datetime.now()
-        hj = hj - timedelta(days=session.periodo_integracao)
+        # hj = hj - timedelta(days=session.periodo_integracao)
+        hj = hj - timedelta(days=3)
         hj = datetime.strftime(hj,'%m-%d-%Y')
         caixa_usado = 'None'
-        #ord_ids = self.env['pos.order'].search([(
-        #    'session_id','=',session.id)])
-        ord_ids = self.env['pos.order'].search([(
-            'session_id','=',session.id)])
-        str_ord = ",".join(str(x.sequence_number) for x in ord_ids)
-        if not str_ord:
-            str_ord = '1'
-        #sqld = 'SELECT FIRST 1 m.CODMOVIMENTO, m.DATAMOVIMENTO, ' \
-        #       'm.CODCLIENTE, m.STATUS, m.CODUSUARIO, m.CODVENDEDOR, ' \
-        #       'm.CODALMOXARIFADO, DATEADD(3 hour to m.DATA_SISTEMA) ' \
-        #       '  FROM MOVIMENTO m ' \
-        #       ' WHERE ' \
-        #       '   m.STATUS = 1 ' \
-        #       '   AND m.CODNATUREZA = 3 ORDER BY m.CODMOVIMENTO DESC'
-        #movs = db.query(sqld)
-        #import pudb;pu.db
-        #x_cod_sessao = '0'
-        #for mvs in movs:
-        #    print(movs)
-        #    x_cod_sessao = str(mvs[6])
-        num_sessao = session.name[len(session.name)-4:]
-        if num_sessao == '4561':
-            num_sessao = '5001'
-        
-        sqld = 'SELECT m.CODMOVIMENTO, m.DATAMOVIMENTO, ' \
+        import pudb;pu.db
+
+        # TODO le o ultimo arquivo de retorno com as ultimas atualizacos
+        retorno = open(self.path, 'r')
+
+
+
+        # TODO buscar caixa aberto
+        sqlc = "SELECT FIRST 3 r.IDCAIXACONTROLE, r.CODCAIXA,  \
+               r.VALORABRE, r.VALORFECHA  \
+               FROM CAIXA_CONTROLE r WHERE r.SITUACAO = '%s' \
+               AND DATA_ABERTURA < '%s' \
+               ORDER BY r.CODCAIXA DESC " %('o', hj)
+        caixa_aberto = db.query(sqlc)
+        for cx in caixa_aberto:
+            sqld = 'SELECT m.CODMOVIMENTO, m.DATAMOVIMENTO, ' \
                'm.CODCLIENTE, m.STATUS, m.CODUSUARIO, m.CODVENDEDOR, ' \
                'm.CODALMOXARIFADO, DATEADD(3 hour to m.DATA_SISTEMA) ' \
                '  FROM MOVIMENTO m ' \
                ' WHERE m.CODALMOXARIFADO = %s' \
                '   AND m.STATUS = 1 ' \
                '   AND m.CODNATUREZA = 3 ' \
-               '   AND m.CODMOVIMENTO NOT IN (%s)' %(str(num_sessao),str_ord)
+               '   AND m.CODMOVIMENTO NOT IN (%s)' %(str(cx[2]),str_ord)
         movs = db.query(sqld)
 
         if not len(movs):
@@ -1237,65 +1194,68 @@ class IntegracaoOdoo():
                 msg_sis = 'CAIXA FECHADO , COM SUCESSO.<br>'
         return msg_sis + '<br>' + msg_erro
 
-class PosConfig(models.Model):
-    _inherit = 'pos.config'
+# class PosConfig(models.Model):
+    # _inherit = 'pos.config'
     
-    ip_terminal = fields.Char(string='ip Terminal Vendas')
-    database = fields.Char(string='Banco de Dados')
+    # ip_terminal = fields.Char(string='ip Terminal Vendas')
+    # database = fields.Char(string='Banco de Dados')
     
-    def action_testar_acesso_terminal(self):
-        try:
-            db = con.Conexao(self.ip_terminal, self.database)
-        except:
-            raise UserError(u'Caminho ou nome do banco inválido.')
+    # def action_testar_acesso_terminal(self):
+    #     try:
+    #         db = con.Conexao(self.ip_terminal, self.database)
+    #     except:
+            # raise UserError(u'Caminho ou nome do banco inválido.')
 
-class PosOrder(models.Model):
-    _inherit = 'pos.order'
+# class PosOrder(models.Model):
+#     _inherit = 'pos.order'
 
-    def _payment_fields(self, ui_paymentline):
-        if 'date' in ui_paymentline:
-            dt = ui_paymentline['date']
-        else:
-            dt = ui_paymentline['name']
+#     def _payment_fields(self, ui_paymentline):
+#         if 'date' in ui_paymentline:
+#             dt = ui_paymentline['date']
+#         else:
+#             dt = ui_paymentline['name']
 
-        return {
-            'amount':       ui_paymentline['amount'] or 0.0,
-            'payment_date': dt,
-            'statement_id': ui_paymentline['statement_id'],
-            'payment_name': ui_paymentline.get('note', False),
-            'journal':      ui_paymentline['journal_id'],
-        }
+#         return {
+#             'amount':       ui_paymentline['amount'] or 0.0,
+#             'payment_date': dt,
+#             'statement_id': ui_paymentline['statement_id'],
+#             'payment_name': ui_paymentline.get('note', False),
+#             'journal':      ui_paymentline['journal_id'],
+#         }
 
-    @api.model
-    def create_order(self, orders, order):
-        # Keep only new orders
-        order_ids = []
-        to_invoice = False
-        for stm in orders:
-            if stm[2]['journal_id'] == 10:
-                to_invoice = True
-            amount = order.amount_total - order.amount_paid
-            data = stm[2]
-            if amount != 0.0:
-                order.add_payment(data)
-            if order.test_paid() and not to_invoice:
-                order.action_pos_order_paid()        
+#     @api.model
+#     def create_order(self, orders, order):
+#         # Keep only new orders
+#         order_ids = []
+#         to_invoice = False
+#         for stm in orders:
+#             if stm[2]['journal_id'] == 10:
+#                 to_invoice = True
+#             amount = order.amount_total - order.amount_paid
+#             data = stm[2]
+#             if amount != 0.0:
+#                 order.add_payment(data)
+#             if order.test_paid() and not to_invoice:
+#                 order.action_pos_order_paid()        
             
-        if to_invoice:
-            order.action_pos_order_invoice()
-            order.invoice_id.sudo().action_invoice_open()
-            order.create_picking()
+#         if to_invoice:
+#             order.action_pos_order_invoice()
+#             order.invoice_id.sudo().action_invoice_open()
+#             order.create_picking()
     
 
-    @api.model
-    def create(self, values):
-        if 'pos_session_id' in values:
-            stm_ids = values['statement_ids']
-            del values['statement_ids']
-            res = super(PosOrder, self).create(values)
-            #uso nb_print = 9 qdo importo pdv lazarus
-            if values['nb_print'] == 0:
-                self.create_order(stm_ids, res)
-        else:
-            res = super(PosOrder, self).create(values)
-        return res
+#     @api.model
+#     def create(self, values):
+#         if 'pos_session_id' in values:
+#             stm_ids = values['statement_ids']
+#             del values['statement_ids']
+#             res = super(PosOrder, self).create(values)
+#             #uso nb_print = 9 qdo importo pdv lazarus
+#             if values['nb_print'] == 0:
+#                 self.create_order(stm_ids, res)
+#         else:
+#             res = super(PosOrder, self).create(values)
+#         return res
+
+executa = IntegracaoOdoo()
+# executa
