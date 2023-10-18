@@ -21,147 +21,168 @@ class IntegracaoOdoo:
         cfg = configparser.ConfigParser()
         cfg.read('conf.ini')
         self.path  = cfg.get('INTEGRA', 'Path')
+        self.host = cfg.get('DATABASE', 'hostname' ),
+        self.db = cfg.get('DATABASE', 'database' ),
+        self.user = cfg.get('INTEGRA', 'user' ),
         self.action_atualiza_vendas()
 
 
     def action_atualiza_caixas(self, session):
         try:
-            if session.config_id.ip_terminal:
-                db = con.Conexao(session.config_id.ip_terminal, session.config_id.database)
-            else:
-                return False
+            db = con.Conexao(self.host, self.database)
         except:
             msg_sis = u'Caminho ou nome do banco inválido.<br>'
         msg_erro = ''
         msg_sis = 'Integrando Caixa com o PDV<br>'
         hj = datetime.now()
-        hj = hj - timedelta(days=self.periodo_integracao+1)
+        hj = hj - timedelta(days=10)
         hj = datetime.strftime(hj,'%Y-%m-%d %H:%M:%S')
-        user_ids = self.env['res.users'].search([('write_date', '>=', hj)])
-        for usr in user_ids:
-            sqlp = 'SELECT CODUSUARIO FROM USUARIO where CODUSUARIO = %s' %(str(usr.id))
-            usrq = db.query(sqlp)
-            barcode = ''
-            if usr.barcode:
-                barcode = usr.barcode
-            vendedor = unidecode(usr.name)
-            senha = 'CAIXA'
-            if usr.pos_security_pin:
-                senha = usr.pos_security_pin
-            if not len(usrq):
-                #log = 'Cadastrando Usuario novo : %s\n' %(usr.name.encode('ascii', 'ignore').decode('ascii'))
-                #arq.write(log)
-                insere = 'INSERT INTO USUARIO (CODUSUARIO, NOMEUSUARIO, '
-                insere += 'STATUS, PERFIL, SENHA, CODBARRA) VALUES ('
-                insere += '%s'
-                insere += ',\'%s\''
-                insere += ', 1'
-                insere += ',\'CAIXA\''
-                insere += ',\'%s\''
-                insere += ',\'%s\');'
-                insere = insere %(str(usr.id), str(vendedor), str(senha), str(barcode))
-                db.insert(insere)
-            else:
-                try:
-                    if usr.pos_security_pin:
-                        altera = 'UPDATE USUARIO SET NOMEUSUARIO = \'%s\' \
-                            , PERFIL = \'GERENTE\', \
-                            , CODBARRA = \'%s\' WHERE CODUSUARIO = %s' %(
-                            str(vendedor),  str(barcode), str(usr.id))
-                    else:
-                        altera = 'UPDATE USUARIO SET NOMEUSUARIO = \'%s\' \
-                           , CODBARRA = \'%s\' WHERE CODUSUARIO = %s' %(
-                           str(vendedor), str(barcode), str(usr.id))
-                    db.insert(altera)
-                except:
-                    print('erro usuario: %s' %(usr.name)) 
+        # user_ids = self.env['res.users'].search([('write_date', '>=', hj)])
+        # if self.user:
+        #     sqlp = 'SELECT CODUSUARIO FROM USUARIO where CODUSUARIO = %s' %(str(self.user))
+        #     usrq = db.query(sqlp)
+        #     barcode = ''
+            # if usr.barcode:
+            #     barcode = usr.barcode
+            # vendedor = unidecode(usr.name)
+            # senha = 'CAIXA'
+            # if usr.pos_security_pin:
+            #     senha = usr.pos_security_pin
+            # if not len(usrq):
+            #     #log = 'Cadastrando Usuario novo : %s\n' %(usr.name.encode('ascii', 'ignore').decode('ascii'))
+            #     #arq.write(log)
+            #     insere = 'INSERT INTO USUARIO (CODUSUARIO, NOMEUSUARIO, '
+            #     insere += 'STATUS, PERFIL, SENHA, CODBARRA) VALUES ('
+            #     insere += '%s'
+            #     insere += ',\'%s\''
+            #     insere += ', 1'
+            #     insere += ',\'CAIXA\''
+            #     insere += ',\'%s\''
+            #     insere += ',\'%s\');'
+            #     insere = insere %(str(usr.id), str(vendedor), str(senha), str(barcode))
+            #     db.insert(insere)
+            # else:
+            #     try:
+            #         if usr.pos_security_pin:
+            #             altera = 'UPDATE USUARIO SET NOMEUSUARIO = \'%s\' \
+            #                 , PERFIL = \'GERENTE\', \
+            #                 , CODBARRA = \'%s\' WHERE CODUSUARIO = %s' %(
+            #                 str(vendedor),  str(barcode), str(usr.id))
+            #         else:
+            #             altera = 'UPDATE USUARIO SET NOMEUSUARIO = \'%s\' \
+            #                , CODBARRA = \'%s\' WHERE CODUSUARIO = %s' %(
+            #                str(vendedor), str(barcode), str(usr.id))
+            #         db.insert(altera)
+            #     except:
+            #         print('erro usuario: %s' %(usr.name)) 
 
-        sessao_ids = self.env['pos.session'].search([
-            ('create_date', '>=', hj),   
-            ('state','=','opened')
-            ])
+        # sessao_ids = self.env['pos.session'].search([
+        #     ('create_date', '>=', hj),   
+        #     ('state','=','opened')
+        #     ])
         #('state','=','opened')
-        for ses in sessao_ids:           
-            num_sessao = int(session.name[len(ses.name)-4:])
-            num_sessao = ses.id
-            sqlp = 'SELECT CODCAIXA, SITUACAO FROM CAIXA_CONTROLE where CODCAIXA = %s' %(str(num_sessao))
+        # for ses in sessao_ids:
+        if self.user:
+            # TODO trocar os numeros abaixo pelas variaveis
+            user_temp = 11
+            sess_temp = 4564
+            # num_sessao = int(session.name[len(ses.name)-4:])
+            # num_sessao = ses.id
+            sqlp = 'SELECT IDCAIXACONTROLE \
+                ,CODCAIXA, CODUSUARIO, SITUACAO, DATAFECHAMENTO \
+                ,NOMECAIXA, DATAABERTURA FROM CAIXA_CONTROLE where CODUSUARIO = %s and CODCAIXA = %s' %(str(user_temp), str(sess_temp))
             sess = db.query(sqlp)
-            if not len(sess):
-                #state = 'c' # close
-                #if ses.state == 'opened':
-                #dta_abre = '%s.%s.%s' %(str(ses.start_at.month).zfill(2), str(ses.start_at.day).zfill(2), str(ses.start_at.year))
-                hj = datetime.now()
-                dta_abre = datetime.strftime(hj,'%m-%d-%Y')
-                if ses.start_at:
-                    dta_abre = '%s/%s/%s' %(str(ses.start_at[5:7]), str(ses.start_at[8:10]), str(ses.start_at[:4]))
-                state = 'o'
-                insere = 'INSERT INTO CAIXA_CONTROLE (IDCAIXACONTROLE, '
-                insere += 'CODCAIXA, CODUSUARIO, SITUACAO, DATAFECHAMENTO'
-                insere += ',NOMECAIXA, DATAABERTURA) VALUES ('
-                insere += '%s'
-                insere += ',%s'
-                insere += ',%s'
-                insere += ',\'%s\''
-                insere += ',\'%s\''
-                insere += ',\'%s\''
-                insere += ',\'%s\');'
-                
-                insere = insere %(str(ses.id), str(ses.id), str(ses.user_id.id), str(state) \
-                ,str('01.01.2018'), str(ses.name), str(dta_abre))
-                db.insert(insere)
-            else:
-                #if ses.state != 'opened':
-                #    altera = 'UPDATE CAIXA_CONTROLE SET SITUACAO = \'F\''
-                #    altera += ' WHERE IDCAIXACONTROLE = %s' %(str(ses.id))
-                #    db.insert(altera)
+            for ses in sess:
+                vals = {}
+                vals['user_id'] = ses[2]
+                vals['name'] = ses[5]
+                vals['caixa'] = ses[1]
+                # vals['config_id'] = ses.config_id.id
+                data_abertura = f"{ses[6]} 20:00:00"
+                vals['start_at'] = data_abertura
+                vals['state'] = 'draft'
 
-                if sess[0][1] == 'F':
-                    ses.venda_finalizada = True
-        # INSERINDO sangria
-        for ses in sessao_ids:           
-            hj = datetime.now()
-            #num_sessao = session.name[len(ses.name)-4:]
-            num_sessao = ses.id
-            sqlp = 'SELECT f.CAIXA, f.CODFORMA, f.COD_VENDA, \
-                f.VALOR_PAGO, f.N_DOC FROM FORMA_ENTRADA f \
-                where f.CAIXA = %s and f.COD_VENDA = 1' %(str(num_sessao))
-            sess_ids = db.query(sqlp)
-            amount = 0.0
-            for sess in sess_ids:
-                cod_caixa = sess[0]
-                cod_forma = sess[1]
-                cod_venda = sess[2]
-                valor = sess[3] or 0.0
-                if not valor:
-                    continue
-                motivo = sess[4]
-                if int(cod_caixa) != ses.id:
-                    continue
-                if int(cod_venda) == 1:
-                    amount = -valor
-                else:
-                    amount = valor
+                arquivo_nome = '/home/odoo/transf/caixa_%s.json' %(ses[5])
+                arquivo_json = open(arquivo_nome, 'w+')
+                dados_vals = json.dumps(vals)
+                arquivo_json.write(dados_vals)
+            # if not len(sess):
+            #     #state = 'c' # close
+            #     #if ses.state == 'opened':
+            #     #dta_abre = '%s.%s.%s' %(str(ses.start_at.month).zfill(2), str(ses.start_at.day).zfill(2), str(ses.start_at.year))
+            #     hj = datetime.now()
+            #     dta_abre = datetime.strftime(hj,'%m-%d-%Y')
+            #     if ses.start_at:
+            #         dta_abre = '%s/%s/%s' %(str(ses.start_at[5:7]), str(ses.start_at[8:10]), str(ses.start_at[:4]))
+            #     state = 'o'
+            #     insere = 'INSERT INTO CAIXA_CONTROLE (IDCAIXACONTROLE, '
+            #     insere += 'CODCAIXA, CODUSUARIO, SITUACAO, DATAFECHAMENTO'
+            #     insere += ',NOMECAIXA, DATAABERTURA) VALUES ('
+            #     insere += '%s'
+            #     insere += ',%s'
+            #     insere += ',%s'
+            #     insere += ',\'%s\''
+            #     insere += ',\'%s\''
+            #     insere += ',\'%s\''
+            #     insere += ',\'%s\');'
                 
-                lancamento = 'Caixa-%s-%s' %(cod_caixa, cod_forma)
-                vals = {
-                            'date': hj,
-                            'amount': amount,
-                            'ref': lancamento,
-                            'name': motivo,
-                }
-                ja_importou = self.env['account.bank.statement.line'].search([
-                      ('name', '=', motivo),
-                      ('ref', '=', lancamento)])
-                if ja_importou:
-                    continue
-                for cx in ses.statement_ids:
-                    if cx.journal_id.name[:2] == '1-':
-                         stt = cx
-                         jrn = cx.journal_id
-                         vals['statement_id'] = cx.id
-                         vals['journal_id'] = jrn.id
-                         vals['account_id'] = jrn.company_id.transfer_account_id.id,
-                         cx.write({'line_ids': [(0, False, vals)]})
+            #     insere = insere %(str(ses.id), str(ses.id), str(ses.user_id.id), str(state) \
+            #     ,str('01.01.2018'), str(ses.name), str(dta_abre))
+            #     db.insert(insere)
+            # else:
+            # if not len(sess):
+            #     #if ses.state != 'opened':
+            #     #    altera = 'UPDATE CAIXA_CONTROLE SET SITUACAO = \'F\''
+            #     #    altera += ' WHERE IDCAIXACONTROLE = %s' %(str(ses.id))
+            #     #    db.insert(altera)
+
+            #     if sess[0][1] == 'F':
+            #         ses.venda_finalizada = True
+        # INSERINDO sangria
+        # for ses in sessao_ids: 
+        #     hj = datetime.now()
+        #     #num_sessao = session.name[len(ses.name)-4:]
+        #     # num_sessao = ses.id
+        #     sqlp = 'SELECT f.CAIXA, f.CODFORMA, f.COD_VENDA, \
+        #         f.VALOR_PAGO, f.N_DOC FROM FORMA_ENTRADA f \
+        #         where f.CAIXA = %s and f.COD_VENDA = 1' %(str(num_sessao))
+        #     sess_ids = db.query(sqlp)
+        #     amount = 0.0
+        #     for sess in sess_ids:
+        #         cod_caixa = sess[0]
+        #         cod_forma = sess[1]
+        #         cod_venda = sess[2]
+        #         valor = sess[3] or 0.0
+        #         if not valor:
+        #             continue
+        #         motivo = sess[4]
+        #         if int(cod_caixa) != ses.id:
+        #             continue
+        #         if int(cod_venda) == 1:
+        #             amount = -valor
+        #         else:
+        #             amount = valor
+                
+        #         lancamento = 'Caixa-%s-%s' %(cod_caixa, cod_forma)
+        #         vals = {
+        #                     'date': hj,
+        #                     'amount': amount,
+        #                     'ref': lancamento,
+        #                     'name': motivo,
+        #         }
+        #         ja_importou = self.env['account.bank.statement.line'].search([
+        #               ('name', '=', motivo),
+        #               ('ref', '=', lancamento)])
+        #         if ja_importou:
+        #             continue
+        #         for cx in ses.statement_ids:
+        #             if cx.journal_id.name[:2] == '1-':
+        #                  stt = cx
+        #                  jrn = cx.journal_id
+        #                  vals['statement_id'] = cx.id
+        #                  vals['journal_id'] = jrn.id
+        #                  vals['account_id'] = jrn.company_id.transfer_account_id.id,
+        #                  cx.write({'line_ids': [(0, False, vals)]})
 
     def cron_integra_produtos(self):
         session_ids = self.env['pos.session'].search([
@@ -871,13 +892,7 @@ class IntegracaoOdoo:
         return 'Sucesso'    
 
     def action_atualiza_vendas(self):
-        # try:
-        #     if session.config_id.ip_terminal:
-        #         db = con.Conexao(session.config_id.ip_terminal, session.config_id.database)
-        #     else:
-        #         return False
-        # except:
-            # msg_sis = u'Caminho ou nome do banco inválido.<br>'
+        db = con.Conexao(self.host, self.database)
         msg_erro = ''
         msg_sis = 'Integrando Vendas para o PDV<br>'
         hj = datetime.now()
@@ -885,12 +900,10 @@ class IntegracaoOdoo:
         hj = hj - timedelta(days=3)
         hj = datetime.strftime(hj,'%m-%d-%Y')
         caixa_usado = 'None'
-        import pudb;pu.db
+        # import pudb;pu.db
 
         # TODO le o ultimo arquivo de retorno com as ultimas atualizacos
         retorno = open(self.path, 'r')
-
-
 
         # TODO buscar caixa aberto
         sqlc = "SELECT FIRST 3 r.IDCAIXACONTROLE, r.CODCAIXA,  \
@@ -899,12 +912,14 @@ class IntegracaoOdoo:
                AND DATA_ABERTURA < '%s' \
                ORDER BY r.CODCAIXA DESC " %('o', hj)
         caixa_aberto = db.query(sqlc)
-        for cx in caixa_aberto:
+        for cx in caixa_aberto:         
             sqld = 'SELECT m.CODMOVIMENTO, m.DATAMOVIMENTO, ' \
                'm.CODCLIENTE, m.STATUS, m.CODUSUARIO, m.CODVENDEDOR, ' \
                'm.CODALMOXARIFADO, DATEADD(3 hour to m.DATA_SISTEMA) ' \
-               '  FROM MOVIMENTO m ' \
-               ' WHERE m.CODALMOXARIFADO = %s' \
+               ', c.NOMECLIENTE ' \
+               '  FROM MOVIMENTO m, CLIENTES c ' \
+               ' WHERE c.CODCLIENTE = m.CODCLIENTE ' \
+               '   AND m.CODALMOXARIFADO = %s' \
                '   AND m.STATUS = 1 ' \
                '   AND m.CODNATUREZA = 3 ' \
                '   AND m.CODMOVIMENTO NOT IN (%s)' %(str(cx[2]),str_ord)
@@ -1083,8 +1098,10 @@ class IntegracaoOdoo:
                     vals['nb_print'] = 9
                 try:
                     arquivo_nome = '/home/odoo/transf/pedido_%s.json' %(ord_name)
-                    arquivo_json = open(arquivo_nome, 'w')
-                    dados_vals = json.dumps(vals)
+                    arquivo_json = open(arquivo_nome, 'w+')
+                    vals_ped = vals
+                    vals_ped['nomecliente'] = mvs[8]
+                    dados_vals = json.dumps(vals_ped)
                     arquivo_json.write(dados_vals)
                     arquivo_json.close()
                     ord_p = pos_ord.create(vals)
