@@ -20,10 +20,11 @@ class IntegracaoOdoo:
         import pudb;pu.db
         cfg = configparser.ConfigParser()
         cfg.read('conf.ini')
-        self.path  = cfg.get('INTEGRA', 'Path')
-        self.host = cfg.get('DATABASE', 'hostname' ),
-        self.db = cfg.get('DATABASE', 'database' ),
-        self.user = cfg.get('INTEGRA', 'user' ),
+        self.path_envio  = cfg.get('INTEGRA', 'path_envio')
+        self.path_retorno = cfg.get('INTEGRA', 'path_retorno' )
+        # self.host = cfg.get('DATABASE', 'hostname')
+        # self.db = cfg.get('DATABASE', 'path')
+        
         self.action_atualiza_vendas()
 
 
@@ -892,7 +893,8 @@ class IntegracaoOdoo:
         return 'Sucesso'    
 
     def action_atualiza_vendas(self):
-        db = con.Conexao(self.host, self.database)
+        import pudb;pu.db
+        db = con()
         msg_erro = ''
         msg_sis = 'Integrando Vendas para o PDV<br>'
         hj = datetime.now()
@@ -900,7 +902,6 @@ class IntegracaoOdoo:
         hj = hj - timedelta(days=3)
         hj = datetime.strftime(hj,'%m-%d-%Y')
         caixa_usado = 'None'
-        # import pudb;pu.db
 
         # TODO le o ultimo arquivo de retorno com as ultimas atualizacos
         retorno = open(self.path, 'r')

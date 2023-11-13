@@ -11,13 +11,14 @@ class Conexao:
     def __init__(self):
         cfg = configparser.ConfigParser()
         cfg.read('conf.ini')
-        psw = cfg.get('DATABASE', 'Acesso')
-        psw = base64.b64decode(psw)
-        host = cfg.get('DATABASE', 'HostName')
-        name = cfg.get('DATABASE', 'Name')
+        psw = cfg.get('DATABASE', 'Password')
+        # psw = base64.b64decode(psw)
+        host = cfg.get('DATABASE', 'Hostname')
+        user = cfg.get('DATABASE', 'User')
         #import pdb; pdb.set_trace()
-        self.connection = fdb.connect(dsn=host+':' + name, \
-            user='sysdba', password= psw.decode())
+        self.connection = fdb.connect(dsn=host, \
+            user=user, password= psw, charset='win1252')
+            # user='sysdba', password= psw.decode())
         self.cursor = self.connection.cursor()
 
         db = cfg.get('SISTEMA', 'Database')
