@@ -21,15 +21,15 @@ class Conexao:
             # user='sysdba', password= psw.decode())
         self.cursor = self.connection.cursor()
 
-        db = cfg.get('SISTEMA', 'Database')
-        user = cfg.get('SISTEMA', 'User')
-        psw = cfg.get('SISTEMA', 'Acesso')
-        host = cfg.get('SISTEMA', 'HostName')
-        port = cfg.get('SISTEMA', 'Port')
-        psw = base64.b64decode(psw)
-        self.odoo = odoorpc.ODOO(host, port=port)
+        #db = cfg.get('SISTEMA', 'Database')
+        #user = cfg.get('SISTEMA', 'User')
+        #psw = cfg.get('SISTEMA', 'Acesso')
+        #host = cfg.get('SISTEMA', 'HostName')
+        #port = cfg.get('SISTEMA', 'Port')
+        #psw = base64.b64decode(psw)
+        #self.odoo = odoorpc.ODOO(host, port=port)
         # Login
-        self.odoo.login(db, user, psw.decode())
+        #self.odoo.login(db, user, psw.decode())
 
     def insert(self, query):
         try:

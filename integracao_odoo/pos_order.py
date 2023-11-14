@@ -4,8 +4,11 @@ from datetime import datetime
 from datetime import date
 from datetime import timedelta
 import logging
-import psycopg2
+
 import re
+import time
+import os
+import unidecode
 import json
 import configparser
 from atscon import Conexao as con
@@ -17,7 +20,6 @@ class IntegracaoOdoo:
     _name = 'integracao.odoo'
     
     def __init__(self):
-        import pudb;pu.db
         cfg = configparser.ConfigParser()
         cfg.read('conf.ini')
         self.path_envio  = cfg.get('INTEGRA', 'path_envio')
@@ -25,8 +27,9 @@ class IntegracaoOdoo:
         # self.host = cfg.get('DATABASE', 'hostname')
         # self.db = cfg.get('DATABASE', 'path')
         
-        self.action_atualiza_vendas()
-
+        while(True):
+            self.action_atualiza_vendas()
+            time.sleep(3000)
 
     def action_atualiza_caixas(self, session):
         try:
@@ -893,27 +896,29 @@ class IntegracaoOdoo:
         return 'Sucesso'    
 
     def action_atualiza_vendas(self):
-        import pudb;pu.db
+        # Fazer um loop pela pasta de arquivos pegando o codigo dos pedidos
+        # Para remover do select da movimento
         db = con()
         msg_erro = ''
         msg_sis = 'Integrando Vendas para o PDV<br>'
         hj = datetime.now()
         # hj = hj - timedelta(days=session.periodo_integracao)
-        hj = hj - timedelta(days=3)
+        hj = hj - timedelta(days=0)
         hj = datetime.strftime(hj,'%m-%d-%Y')
         caixa_usado = 'None'
 
         # TODO le o ultimo arquivo de retorno com as ultimas atualizacos
-        retorno = open(self.path, 'r')
-
+        retorno = open(self.path_retorno, '+r')
+        str_ord = '0'
         # TODO buscar caixa aberto
-        sqlc = "SELECT FIRST 3 r.IDCAIXACONTROLE, r.CODCAIXA,  \
+        sqlc = "SELECT FIRST 1 r.IDCAIXACONTROLE, r.CODCAIXA,  \
                r.VALORABRE, r.VALORFECHA  \
                FROM CAIXA_CONTROLE r WHERE r.SITUACAO = '%s' \
-               AND DATA_ABERTURA < '%s' \
+               AND DATAABERTURA < '%s' \
                ORDER BY r.CODCAIXA DESC " %('o', hj)
         caixa_aberto = db.query(sqlc)
-        for cx in caixa_aberto:         
+        for cx in caixa_aberto:
+            print(cx[1])       
             sqld = 'SELECT m.CODMOVIMENTO, m.DATAMOVIMENTO, ' \
                'm.CODCLIENTE, m.STATUS, m.CODUSUARIO, m.CODVENDEDOR, ' \
                'm.CODALMOXARIFADO, DATEADD(3 hour to m.DATA_SISTEMA) ' \
@@ -923,17 +928,17 @@ class IntegracaoOdoo:
                '   AND m.CODALMOXARIFADO = %s' \
                '   AND m.STATUS = 1 ' \
                '   AND m.CODNATUREZA = 3 ' \
-               '   AND m.CODMOVIMENTO NOT IN (%s)' %(str(cx[2]),str_ord)
+               '   AND m.CODMOVIMENTO NOT IN (%s)' %(str(cx[1]),str_ord)
         movs = db.query(sqld)
-
+        import pudb;pu.db
         if not len(movs):
             msg_sis = 'Sem Pedidos para importar.<br>'
         for mvs in movs:
+            print ('cod mov: %s' %(str(mvs[0]))) 
+        for mvs in movs:
             msg_sis = 'Pedidos novos : %s<br>' %(str(mvs[0]))
-            caixa_usado = session.name
-            pos_ord = self.env['pos.order']
             ord_p = False
-            ord_name = '%s-%s' %(str(session.id),str(mvs[0]))
+            ord_name = '%s-%s' %(str(cx[1]),str(mvs[0]))
             teve_desconto = 'n'
             
             dt_ord = '2018.01.01'
@@ -943,34 +948,23 @@ class IntegracaoOdoo:
                 msg_sis = 'Importando : %s<br>' %(str(mvs[0]))
                 # cortesia = tipo_venda n
                 vals = {}               
-                
                 cli = mvs[2]
                 dt_ord = str(mvs[7])
                 vals['name'] = ord_name
                 vals['nb_print'] = 0
                 vals['pos_reference'] = ord_name
-                vals['session_id'] = session.id
-                vals['pos_session_id'] = session.id
-                vals['pricelist_id'] = session.config_id.pricelist_id.id
+                vals['session_id'] = cx[1]
+                vals['pos_session_id'] = cx[1]
+                # vals['pricelist_id'] = cx[2].config_id.pricelist_id.id
                 vals['create_date'] = dt_ord #datetime.strftime(datetime.now(),'%Y-%m-%d %H:%M:%S')
                 vals['date_order'] = dt_ord
                 vals['sequence_number'] = mvs[0]
                 #print('XXXXXX' + str(cli))
-                if cli != 1:
-                    if cli == 1336:
-                        cli = 4449
-                    vals['partner_id'] = cli
-                else:
-                    vals['partner_id'] = self.env['res.partner'].search([
-                        ('name','ilike','consumidor')],limit=1)[0].id
+                vals['partner_id'] = cli
                 userid = mvs[5]
                 #if userid == 17:
-                userid = self.env['res.users'].search([('id','=',userid)])
-                if userid:
-                    vals['user_id'] = userid.id
-                if not userid:
-                    vals['user_id'] = 1
-                vals['fiscal_position_id'] = session.config_id.default_fiscal_position_id.id
+                vals['user_id'] = userid
+                vals['user_id'] = 1
                 
                 sqld = 'SELECT f.CODFORMA, f.FORMA_PGTO, f.VALOR_PAGO, ' \
                     'f.STATE, f.TROCO, f.DESCONTO from FORMA_ENTRADA f' \
@@ -994,19 +988,12 @@ class IntegracaoOdoo:
                     if jrn == '9-':
                         troca = pg[2]
                         controle_troca = 1
-                    jrn_id = self.env['account.journal'].search([
-                        ('name','like', jrn)])[0]
-
-                    for stt in session.statement_ids:
-                        if stt.journal_id.id == jrn_id.id:
-                            pag['statement_id'] = stt.id
                         
-                    company_cxt =jrn_id.company_id.id
-                    pag['account_id'] = self.env['res.partner'].browse(cli).property_account_receivable_id.id
+                    #pag['account_id'] = self.env['res.partner'].browse(cli).property_account_receivable_id.id
                     pag['date'] = dt_ord
                     pag['amount'] = pg[2]
-                    pag['journal_id'] = jrn_id.id
-                    pag['journal'] = jrn_id.id
+                    # pag['journal_id'] = jrn_id.id
+                    pag['journal'] = jrn
                     pag['partner_id'] = cli
                     pag['name'] = ord_name
                     if controle_troca == 0:
@@ -1077,12 +1064,8 @@ class IntegracaoOdoo:
 
                     order_line.append((0, 0,prd))
                 if troca:
-                    trc_prd = self.env['product.template'].search([('name', 'ilike', 'desconto')])
                     prd = {}
-                    if trc_prd.id:
-                        prd['product_id'] = trc_prd.id
-                    else:
-                        prd['product_id'] = 2
+                    prd['product_id'] = 2
                     prd['qty'] = 1
                     prd['price_unit'] = troca * (-1)
                     prd['tipo_venda'] = tipo
@@ -1097,29 +1080,32 @@ class IntegracaoOdoo:
                 if teve_desconto == 's':
                     # uso nb_print pra saber q veio do pdv lazarus
                     vals['nb_print'] = 9
-                try:
-                    arquivo_nome = '/home/odoo/transf/pedido_%s.json' %(ord_name)
-                    arquivo_json = open(arquivo_nome, 'w+')
-                    vals_ped = vals
-                    vals_ped['nomecliente'] = mvs[8]
-                    dados_vals = json.dumps(vals_ped)
+                if ord_name == '4580-165440':
+                    import pudb; pu.db
+                # try:
+                arquivo_nome = self.path_envio + '/pedido_%s.json' %(ord_name)
+                vals_ped = vals 
+                nomecliente = mvs[8]
+                nomecliente = (nomecliente)
+                #nomecliente = normalize('NFKD', nomecliente).encode('ASCII','ignore').decode('ASCII')
+                #nomecliente = re.sub(u'[^a-zA-Z0-9áéíóúÁÉÍÓÚâêîôÂÊÎÔãõÃÕçÇ: ]', '', nomecliente.decode('utf-8'))
+                vals_ped['nomecliente'] = nomecliente
+                dados_vals = json.dumps(vals_ped)
+                if not os.path.exists(arquivo_nome):
+                    arquivo_json = open(arquivo_nome, 'w')
                     arquivo_json.write(dados_vals)
                     arquivo_json.close()
-                    ord_p = pos_ord.create(vals)
-                except:
-                    msg_erro += 'ERRO, não integrado pedido : %s<br>' %(prdname)
 
-                if teve_desconto == 's' and linhas == 's':
+                # except:
+                msg_erro += 'ERRO, não integrado pedido : %s<br>' %(prdname)
+
+                if teve_desconto == 's' and linhas == 's' and ord_p:
                     #ord_p = pos_ord.browse(ords)
                     if (total_g != ord_p.amount_total):
                         tam = len(ord_p.lines)
                         for line in ord_p.lines[tam-1]:
                             x = line.price_unit * line.qty
                             desconto = (ord_p.amount_total-round(total_g,2))/x*100
-                        pos_line = self.env['pos.order.line'].browse(ord_p.lines[tam-1].id)
-                        pos_line.write({'discount': desconto})
-                        # isso coloca como LANCADO
-                        #ord_p.action_pos_order_done()
                         
                 if teve_desconto == 's' and ord_p:
                     # coloquei isto aqui pq qdo tem desconto
@@ -1129,28 +1115,26 @@ class IntegracaoOdoo:
                     arquivo_json = open(arquivo_nome, 'w')
                     dados_vals = json.dumps(vals)
                     arquivo_json.write(dados_vals)
-                    arquivo_json.close()
-                    ord_p.create_order(pag_line, ord_p)                    
-                if ord_p and jrn == '4-':
-                    #import pudb;pu.db
-                    pedido_venda = self.env['sale.order']
-                    pv = {}
-                    pv['name'] = ord_p.pos_reference
-                    pv['partner_id'] = ord_p.partner_id.id
-                    pv['date_order'] = ord_p.date_order
-                    pv['user_id'] = ord_p.user_id.id
-                    pv['fiscal_position_id'] = 5
-                    pv['origin'] = ord_p.name
-                    pv_line = []
-                    pv_ln = {}
-                    for pvl in order_line:
-                        pv_ln['product_uom_qty'] = pvl[2]['qty']
-                        pv_ln['product_id'] = pvl[2]['product_id']
-                        pv_ln['price_unit'] = pvl[2]['price_unit']
-                        pv_ln['name'] = pvl[2]['name']
-                        pv_line.append((0, 0,pv_ln))
-                    pv['order_line'] = pv_line
-                    pedido_venda.create(pv)
+                    arquivo_json.close()                    
+                #if ord_p and jrn == '4-':
+                #    pedido_venda = self.env['sale.order']
+                #    pv = {}
+                #    pv['name'] = ord_p.pos_reference
+                #    pv['partner_id'] = ord_p.partner_id.id
+                #    pv['date_order'] = ord_p.date_order
+                #    pv['user_id'] = ord_p.user_id.id
+                #    pv['fiscal_position_id'] = 5
+                #    pv['origin'] = ord_p.name
+                #    pv_line = []
+                #    pv_ln = {}
+                #    for pvl in order_line:
+                #        pv_ln['product_uom_qty'] = pvl[2]['qty']
+                #        pv_ln['product_id'] = pvl[2]['product_id']
+                #        pv_ln['price_unit'] = pvl[2]['price_unit']
+                #        pv_ln['name'] = pvl[2]['name']
+                #        pv_line.append((0, 0,pv_ln))
+                #    pv['order_line'] = pv_line
+                #    pedido_venda.create(pv)
                     #ord_p.create_picking()
                 # 02/03/2023 Comentei as 3 linhas abaixo pq estava baixando o estoque 2x
                 #if teve_desconto == 's' and ord_p:
@@ -1158,58 +1142,58 @@ class IntegracaoOdoo:
                 #        ord_p.action_pos_order_paid()
         # 19/12/19
         # CRIAR FATURA - coloquei isso pq faturado nao esta entrando em faturas            
-        ord_ids = self.env['pos.order'].search([(
-            'session_id','=',session.id)])
-        str_ord = ",".join(str(x.sequence_number) for x in ord_ids)
-        if not str_ord:
-            str_ord = '1'
-        sqld = 'SELECT m.CODMOVIMENTO, m.DATAMOVIMENTO, ' \
-               'm.CODCLIENTE, m.STATUS, m.CODUSUARIO, m.CODVENDEDOR, ' \
-               'm.CODALMOXARIFADO, DATEADD(3 hour to m.DATA_SISTEMA) ' \
-               '  FROM MOVIMENTO m ' \
-               ' WHERE m.STATUS = 1 ' \
-               '   AND m.CODNATUREZA = 3 ' \
-               '   AND m.CODCLIENTE > 1 ' \
-               '   AND m.CODMOVIMENTO IN (%s)' %(str_ord)
-        movs = db.query(sqld)
+        #ord_ids = self.env['pos.order'].search([(
+        #    'session_id','=',session.id)])
+        #str_ord = ",".join(str(x.sequence_number) for x in ord_ids)
+        #if not str_ord:
+        #    str_ord = '1'
+        #sqld = 'SELECT m.CODMOVIMENTO, m.DATAMOVIMENTO, ' \
+        #       'm.CODCLIENTE, m.STATUS, m.CODUSUARIO, m.CODVENDEDOR, ' \
+        #       'm.CODALMOXARIFADO, DATEADD(3 hour to m.DATA_SISTEMA) ' \
+        #       '  FROM MOVIMENTO m ' \
+        #       ' WHERE m.STATUS = 1 ' \
+        #       '   AND m.CODNATUREZA = 3 ' \
+        #       '   AND m.CODCLIENTE > 1 ' \
+        #       '   AND m.CODMOVIMENTO IN (%s)' %(str_ord)
+        #movs = db.query(sqld)
 
-        if not len(movs):
-            msg_sis = 'Sem Pedidos para importar.<br>'
-        for mvs in movs:
-            pos_ord = self.env['pos.order']
-            ord_name = '%s-%s' %(str(mvs[6]),str(mvs[0]))
-            ords = pos_ord.search([('pos_reference','=', ord_name)])
-            for pdv in ords:
-                for sttm in pdv.statement_ids:
-                    if sttm.journal_id.id == 10:
-                        # procuro se existe a fatura
-                        ftr = self.env['account.invoice'].search([('origin','=', pdv.name)])
-                        if ftr:
-                            continue
-                        #pdv.create_order(pdv.statement_ids, pdv)
-                        pdv.action_pos_order_invoice()
-                        pdv.invoice_id.sudo().action_invoice_open()
-                        pdv.create_picking()
+        #if not len(movs):
+        #    msg_sis = 'Sem Pedidos para importar.<br>'
+        #for mvs in movs:
+        #    pos_ord = self.env['pos.order']
+        #    ord_name = '%s-%s' %(str(mvs[6]),str(mvs[0]))
+        #    ords = pos_ord.search([('pos_reference','=', ord_name)])
+        #    for pdv in ords:
+        #        for sttm in pdv.statement_ids:
+        #            if sttm.journal_id.id == 10:
+        #                # procuro se existe a fatura
+        #                ftr = self.env['account.invoice'].search([('origin','=', pdv.name)])
+        #                if ftr:
+        #                    continue
+        #                #pdv.create_order(pdv.statement_ids, pdv)
+        #                pdv.action_pos_order_invoice()
+        #                pdv.invoice_id.sudo().action_invoice_open()
+        #                pdv.create_picking()
 
         # Fim CRIAR FATURA
         
         #print ('Integracao realizada com sucesso.')
-        msg_sis += 'Integracao Finalizada.<br>'
+        #msg_sis += 'Integracao Finalizada.<br>'
 
-        sqlc = 'SELECT FIRST 3 r.IDCAIXACONTROLE, r.CODCAIXA,  \
-               r.VALORABRE, r.VALORFECHA  \
-               FROM CAIXA_CONTROLE r WHERE r.VALORFECHA = 1 \
-               ORDER BY r.CODCAIXA DESC '
-        caixa_fechado = db.query(sqlc)
-        for cx in caixa_fechado:
-            pos_ses = self.env['pos.session'].search([
-                ('id', '=', cx[1]), 
-                ('state','=','opened'),
-                ('venda_finalizada','=', False)])
+        #sqlc = 'SELECT FIRST 3 r.IDCAIXACONTROLE, r.CODCAIXA,  \
+        #       r.VALORABRE, r.VALORFECHA  \
+        #       FROM CAIXA_CONTROLE r WHERE r.VALORFECHA = 1 \
+        #       ORDER BY r.CODCAIXA DESC '
+        #caixa_fechado = db.query(sqlc)
+        #for cx in caixa_fechado:
+        #    pos_ses = self.env['pos.session'].search([
+        #        ('id', '=', cx[1]), 
+        #        ('state','=','opened'),
+        #        ('venda_finalizada','=', False)])
             #session = self.env['pos.session'].browse(pos_ses)
-            if pos_ses:
-                pos_ses.write({'venda_finalizada': True})
-                msg_sis = 'CAIXA FECHADO , COM SUCESSO.<br>'
+        #    if pos_ses:
+        #        pos_ses.write({'venda_finalizada': True})
+        #        msg_sis = 'CAIXA FECHADO , COM SUCESSO.<br>'
         return msg_sis + '<br>' + msg_erro
 
 # class PosConfig(models.Model):
