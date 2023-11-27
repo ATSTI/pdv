@@ -12,6 +12,7 @@ import unidecode
 import json
 import configparser
 from atscon import Conexao as con
+from conecta_server import EnviaServer as envia
 
 
 _logger = logging.getLogger(__name__)
@@ -29,7 +30,8 @@ class IntegracaoOdoo:
         
         while(True):
             self.action_atualiza_vendas()
-            time.sleep(3000)
+            envia()
+            time.sleep(30)
 
     def action_atualiza_caixas(self, session):
         try:
@@ -908,7 +910,7 @@ class IntegracaoOdoo:
         caixa_usado = 'None'
 
         # TODO le o ultimo arquivo de retorno com as ultimas atualizacos
-        retorno = open(self.path_retorno, '+r')
+        # retorno = open(self.path_retorno, '+r')
         str_ord = '0'
         # TODO buscar caixa aberto
         sqlc = "SELECT FIRST 1 r.IDCAIXACONTROLE, r.CODCAIXA,  \
@@ -930,17 +932,18 @@ class IntegracaoOdoo:
                '   AND m.CODNATUREZA = 3 ' \
                '   AND m.CODMOVIMENTO NOT IN (%s)' %(str(cx[1]),str_ord)
         movs = db.query(sqld)
-        import pudb;pu.db
         if not len(movs):
             msg_sis = 'Sem Pedidos para importar.<br>'
-        for mvs in movs:
-            print ('cod mov: %s' %(str(mvs[0]))) 
+        # for mvs in movs:
+        #    print ('cod mov: %s' %(str(mvs[0]))) 
         for mvs in movs:
             msg_sis = 'Pedidos novos : %s<br>' %(str(mvs[0]))
             ord_p = False
             ord_name = '%s-%s' %(str(cx[1]),str(mvs[0]))
+            arquivo_nome = self.path_envio + '/pedido_%s.json' %(ord_name)
+            if os.path.exists(arquivo_nome):
+                continue
             teve_desconto = 'n'
-            
             dt_ord = '2018.01.01'
             
             # coloquei so pra manter o if
@@ -1083,7 +1086,6 @@ class IntegracaoOdoo:
                 if ord_name == '4580-165440':
                     import pudb; pu.db
                 # try:
-                arquivo_nome = self.path_envio + '/pedido_%s.json' %(ord_name)
                 vals_ped = vals 
                 nomecliente = mvs[8]
                 nomecliente = (nomecliente)
