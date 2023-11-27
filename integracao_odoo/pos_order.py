@@ -1083,8 +1083,7 @@ class IntegracaoOdoo:
                 if teve_desconto == 's':
                     # uso nb_print pra saber q veio do pdv lazarus
                     vals['nb_print'] = 9
-                if ord_name == '4580-165440':
-                    import pudb; pu.db
+
                 # try:
                 vals_ped = vals 
                 nomecliente = mvs[8]

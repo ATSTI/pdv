@@ -1,7 +1,6 @@
 # -*- encoding: iso-8859-1 -*-
 
 import fdb
-import odoorpc
 import configparser
 import base64
 
@@ -15,21 +14,10 @@ class Conexao:
         # psw = base64.b64decode(psw)
         host = cfg.get('DATABASE', 'Hostname')
         user = cfg.get('DATABASE', 'User')
-        #import pdb; pdb.set_trace()
         self.connection = fdb.connect(dsn=host, \
             user=user, password= psw, charset='win1252')
             # user='sysdba', password= psw.decode())
         self.cursor = self.connection.cursor()
-
-        #db = cfg.get('SISTEMA', 'Database')
-        #user = cfg.get('SISTEMA', 'User')
-        #psw = cfg.get('SISTEMA', 'Acesso')
-        #host = cfg.get('SISTEMA', 'HostName')
-        #port = cfg.get('SISTEMA', 'Port')
-        #psw = base64.b64decode(psw)
-        #self.odoo = odoorpc.ODOO(host, port=port)
-        # Login
-        #self.odoo.login(db, user, psw.decode())
 
     def insert(self, query):
         try:
@@ -39,7 +27,6 @@ class Conexao:
             self.connection.rollback()
 
     def query(self, query):
-        #cursor = self.connection.cursor( MySQLdb.cursors.DictCursor )
         cur = self.cursor.execute(query)
 
         return cur.fetchall()

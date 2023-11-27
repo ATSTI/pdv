@@ -8,7 +8,6 @@ from atscon import Conexao as con
 class EnviaServer:
 
     def __init__(self):
-        import pudb;pu.db
         cfg = configparser.ConfigParser()
         cfg.read('conf.ini')
         self.path_envio  = cfg.get('INTEGRA', 'Path_envio')
@@ -54,15 +53,13 @@ class EnviaServer:
             'session_id':session_id
         }
 
-    
-        # import pudb;pu.db
         arquivo = open(self.path_envio + '/' + file_name, mode="r")
         vals = {}
         vals['params'] = json.load(arquivo)
         vals['tipo'] = arq
         json_data = json.dumps(vals)
         req = rq.post("http://{}".format(base_url), data=json_data, headers=json_headers, cookies=cookies)
-        # import pudb;pu.db
+
         if not retorno:
             file_retorno = f"{self.path_retorno}/retorno.json"
             with open(file_retorno, mode="w+") as arq_retorno:
@@ -81,10 +78,7 @@ class EnviaServer:
 
         for i in arquivos:
             nome_arq = i[:i.index('.')]
-            # if nome_arq[:3] == 'cai':
-            #     import pudb;pu.db
             retorno_ids = []
-            # file_retorno = f"{path_retorno}/{nome_arq[:3]}_retorno.json"
             file_retorno = f"{self.path_retorno}/retorno.json"
             if os.path.exists(file_retorno) and os.stat(file_retorno).st_size > 0:
                 x = open(file_retorno,'r')
@@ -93,11 +87,10 @@ class EnviaServer:
                 # le json 
                 retorno_ids = json.loads(json.dumps(eval(json.loads(x.read()))))
 
-            print('QQQQQQQQQQQQQQ: %s' %(nome_arq))
+            print('Arquivo: %s' %(nome_arq))
             if ((nome_arq[:3] != 'cai') and (nome_arq[:3] != 'ped')):
                 continue
             if len(retorno_ids):
-                # import pudb;pu.db
                 enviado = False
                 for arq in retorno_ids:
                     if nome_arq[:7] == 'pedido_' and 'codmovimento' in arq and nome_arq[7:] == arq['codmovimento']:
@@ -114,13 +107,11 @@ class EnviaServer:
                     # if nome_arq[7:] in arquivo_retorno:
                     # arq['codmovimento']:
                 if not enviado and ((nome_arq[:6] == 'caixa_') or (nome_arq[:7] == 'pedido_')):
-                    # import pudb;pu.db
                     self.enviando_arquivo(get_return, nome_arq[:3], i)
                     get_return = True
                 if enviado and ((nome_arq[:6] == 'caixa_') or (nome_arq[:7] == 'pedido_')):
                     # sql_t = 'UPDATE movimento SET codmovrateio = %s WHERE codmovimento = %s' %()
                     os.remove(self.path_envio + '/' + i)
             else:
-                # import pudb;pu.db
                 self.enviando_arquivo(get_return, nome_arq[:3], i)
                 get_return = True
