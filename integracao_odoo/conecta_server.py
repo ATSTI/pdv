@@ -62,7 +62,7 @@ class EnviaServer:
 
         if not retorno:
             file_retorno = f"{self.path_retorno}/retorno.json"
-            with open(file_retorno, mode="w+") as arq_retorno:
+            with open(file_retorno, mode="a") as arq_retorno:
                 dados = json.loads(req.content)
                 if len(dados['result']) > 2:
                     arq_retorno.write(dados["result"])
