@@ -5,7 +5,7 @@ unit uPdv;
 interface
 
 uses
-  Classes, SysUtils, db, FileUtil, SynEdit, RTTICtrls, Forms, Controls,
+  Classes, windows,SysUtils, db, FileUtil, SynEdit, RTTICtrls, Forms, Controls,
   Graphics, Dialogs, ExtCtrls, StdCtrls, Buttons, MaskEdit, DBGrids, ActnList,
   Menus, dateutils, uMovimento, uCompraCls, uUtil, uVendedorBusca,
   uClienteBusca, uPermissao, uComandaJuntar, uReceber,  Grids,
@@ -279,6 +279,7 @@ type
      codMov: Integer;
      pSemValor : integer;
      pStatus : integer;
+     bmp: TBitmap;
   end;
 
 var
@@ -446,7 +447,7 @@ end;
 
 procedure TfPdv.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
   DataCol: Integer; Column: TColumn; State: TGridDrawState);
-var bmp: TBitmap;
+
 begin
 
 
@@ -2575,7 +2576,7 @@ begin
 end;
 
 procedure TfPdv.procFormShow;
-var sqlP : String;
+var sqlP , camin : String;
   logs:TextFile;
 begin
   AssignFile(logs, 'log.txt');
@@ -2652,22 +2653,32 @@ begin
     CloseFile(logs);
   end;
 
+  camin := dmPdv.caminhoEXEpdv ;
+
   if(fSangria.abri_cx = 1)then
   begin
-    ShowMessage('O Progama Sera fechado para Iniciar o Caixa ');
-   fPdv.Close;
+    ShowMessage('O Progama Sera Reiniciado para Atualizar o Caixa ');
+    fPdv.Close;
+    //WINEXEC('C:\home\felicita_linux\prjPDV.exe',SW_SHOWNORMAL);
+    ShellExecute(Application.Handle, PChar('open'), PChar(camin), PChar(' /e,C:\temp'), nil, SW_NORMAL);
   end;
+
+
 
   if(fAbreCaixa.abri_cx = 1)then
   begin
-    ShowMessage('O Progama Sera fechado para Iniciar o Caixa ');
-   fPdv.Close;
+    ShowMessage('O Progama Sera Reiniciado para Atualizar o Caixa ');
+    fPdv.Close;
+   // WINEXEC('C:\home\felicita_linux\prjPDV.exe',SW_SHOWNORMAL);
+    ShellExecute(Application.Handle, PChar('open'), PChar(camin), PChar(' /e,C:\temp'), nil, SW_NORMAL);
   end;
 
   if(fAbrirCaixa.abri_cx = 1)then
   begin
-    ShowMessage('O Progama Sera fechado para Iniciar o Caixa ');
-   fPdv.Close;
+    ShowMessage('O Progama Sera Reiniciado para Atualizar o Caixa ');
+    fPdv.Close;
+    //WINEXEC('C:\home\felicita_linux\prjPDV.exe',SW_SHOWNORMAL);
+    ShellExecute(Application.Handle, PChar('open'), PChar(camin), PChar(' /e,C:\temp'), nil, SW_NORMAL);
   end;
 
 end;

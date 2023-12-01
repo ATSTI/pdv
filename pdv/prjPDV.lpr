@@ -12,7 +12,7 @@ uses
   uvenda, uRecebimento, uExecutaIntegracao, uLogin, uVendedorBusca,
   uClienteBusca, uSenhaNova, uPermissao, uExcluirItem, uNfce, uabrircaixa,
   uCadeira, usangria, uAbrirCaixa2, uCursoBusca, uAlunoBusca, uComandaJuntar,
-  uReceber, uEstoqueExecuta, uIntegracaoOdoo, uIntegraSimples, uMsg;
+  uReceber, uEstoqueExecuta, uIntegracaoOdoo, uIntegraSimples, uMsg, usaldo;
 
 {$R *.res}
 
@@ -42,6 +42,7 @@ begin
   Application.CreateForm(TfComandaJuntar, fComandaJuntar);
   Application.CreateForm(TfRecebimento, fRecebimento);
   Application.CreateForm(TfMsg, fMsg);
+  Application.CreateForm(Tfsaldo, fsaldo);
   Application.Run;
 end.
 

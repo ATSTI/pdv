@@ -81,9 +81,11 @@ type
 
 
   public
+    cxsangria : integer;
     abri_cx : integer;
     AbrirFechar:string;
     SangriaReforco: String;
+    disponivel_sangria : String;
     procedure Sangria();
     procedure EnviaSangria;
   end;
@@ -136,21 +138,24 @@ end;
 procedure TfAbrirCaixa.btnEnvSangriaClick(Sender: TObject);
 var
   IMPRESSORA:TextFile;
+  vlr : string;
 begin
   if (ComboBox1.ItemIndex <> 0) then
   begin
     ShowMessage('Informar o Tipo de Sangria ' + SangriaReforco);
     exit;
   end;
+  vlr := edTCaixa.Text;
 
-  if (edTCaixa.Text = '0,00') then
+  if (edTCaixa.Text = '  0,00') then
   begin
-    ShowMessage('Valor Errado ou Sangria ja Enviada ' + SangriaReforco);
+    ShowMessage('Valor 0,00 , Caixa ja Fechado ' + SangriaReforco);
+    btnEnvSangria.Enabled := False;
     exit;
   end;
 
   Sangria();
-  ShowMessage('Gravado com Sucesso!');
+ // ShowMessage('Gravado com Sucesso!');
 
   if (dmPdv.CupomImp = 'Texto') then
   begin
@@ -199,6 +204,8 @@ begin
     EnviaSangria;
   end;
    btnEnvSangria.Enabled := False;
+
+   btnAbrefecha.Click;
 end;
 
 
@@ -370,6 +377,7 @@ end;
 procedure TfAbrirCaixa.dtDataChange(Sender: TObject);
 begin
   mostrarCaixa(dmPdv.varLogado);
+  btnEnvSangria.Enabled := True;
 end;
 
 procedure TfAbrirCaixa.FormShow(Sender: TObject);
@@ -414,6 +422,9 @@ begin
   saldoini := 0;
   cx_m := dmpdv.idcaixa;
   data_hoje := FormatDateTime('dd/mm/yyyy', Now);
+  if(cxsangria = 1) then
+  data_sis := FormatDateTime('dd/mm/yyyy', Now)
+  else
   data_sis := FormatDateTime('dd/mm/yyyy', dtData.Date);
   if (data_sis <> data_hoje) then
   begin
@@ -580,6 +591,7 @@ begin
     edReforco.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
   end;
   edTCaixa.Text:= format('%6.2n',[totalcaixa]);
+  disponivel_sangria := format('%6.2n',[totalcaixa]);
   edTBruto.Text:= format('%6.2n',[total]);
   edTLiquido.Text:= format('%6.2n',[vendacaixa]);
 end;

@@ -14,14 +14,16 @@ type
   { TfSangria }
 
   TfSangria = class(TForm)
-    btnInsereMotivo: TBitBtn;
     btnFechar: TBitBtn;
     btnGravar: TBitBtn;
+    btnInsereMotivo: TBitBtn;
     btnReimprimir: TButton;
     ComboBox1: TComboBox;
     DBGrid1: TDBGrid;
     dsSangrias: TDataSource;
     Edit1: TEdit;
+    Edit2: TEdit;
+    GroupAbreCaixa: TGroupBox;
     Label1: TLabel;
     Label2: TLabel;
     edMotivo: TMaskEdit;
@@ -30,6 +32,7 @@ type
     Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
+    Label7: TLabel;
     memoResult: TMemo;
     PanelSangria: TPanel;
     sqSangrias: TSQLQuery;
@@ -76,7 +79,7 @@ var
   fSangria: TfSangria;
 
 implementation
-  uses uPdv,uMovimentoProc;
+  uses uPdv,uMovimentoProc,uabrircaixa;
 {$R *.lfm}
 
 { TfSangria }
@@ -218,8 +221,12 @@ procedure TfSangria.FormShow(Sender: TObject);
 begin
   edMotivo.Text := '';
   edValor.Text := '0,00';
+  fAbrirCaixa.cxsangria := 1 ;
+  fAbrirCaixa.mostrarCaixa(dmPdv.varLogado);
   fSangria.sqSangrias.Active:= True;
   Edit1.Text := dmPdv.nomeCaixa;
+  Edit2.Text := fAbrirCaixa.disponivel_sangria;
+
 end;
 
 procedure TfSangria.btnFecharClick(Sender: TObject);

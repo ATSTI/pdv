@@ -2578,11 +2578,12 @@ object fRecebimento: TfRecebimento
     )
   end
   object memoResult: TMemo
-    Left = 208
+    Left = 96
     Height = 176
     Top = 216
-    Width = 452
+    Width = 564
     TabOrder = 4
+    Visible = False
   end
   object dsRec: TDataSource
     DataSet = dmPdv.sqBusca
