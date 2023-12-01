@@ -311,6 +311,7 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       Top = 115
       Width = 998
       TabOrder = 1
+      Visible = False
     end
     object Memo4: TMemo
       Left = 426
@@ -318,6 +319,7 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       Top = 39
       Width = 150
       TabOrder = 2
+      Visible = False
     end
   end
   object Panel3: TPanel
@@ -355,6 +357,7 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
         ''
       )
       TabOrder = 1
+      Visible = False
     end
     object Memo3: TMemo
       Left = 384
@@ -362,6 +365,7 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       Top = 80
       Width = 320
       TabOrder = 2
+      Visible = False
     end
   end
   object TimerPedido: TTimer
