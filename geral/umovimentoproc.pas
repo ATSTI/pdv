@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, db, FileUtil, DateTimePicker, Forms, Controls, Graphics,
   Dialogs, ExtCtrls, StdCtrls, DBGrids, ActnList, MaskEdit, Buttons,
-   udmpdv, uabrircaixa, usangria, uVendedorBusca, uAbrirCaixa2;
+   udmpdv, uabrircaixa, usangria, uVendedorBusca, uAbrirCaixa2, usaldo;
 
 type
 
@@ -17,6 +17,7 @@ type
     acBuscar: TAction;
     acFechar: TAction;
     ActionList1: TActionList;
+    BitBtn1: TBitBtn;
     BitBtn3: TBitBtn;
     btnSair: TBitBtn;
     btnConfirma: TBitBtn;
@@ -53,6 +54,7 @@ type
     rgStatus: TRadioGroup;
     procedure acBuscarExecute(Sender: TObject);
     procedure acFecharExecute(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
     procedure btnConfirmaClick(Sender: TObject);
     procedure btnFecharCaixaOdooClick(Sender: TObject);
@@ -100,9 +102,11 @@ begin
   fSangria.SangriaReforco:= 'Reforco';
   fSangria.Caption := 'Reforço';
   fSangria.Label6.Caption := 'Incluir Reforço';
+  fSangria.Label7.Caption := 'Saldo em Caixa';
   fSangria.PanelSangria.Visible := False;
   fSangria.Edit1.Visible := True;
   fSangria.btnInsereMotivo.Visible := True;
+  fSangria.GroupAbreCaixa.Visible := True;
   fSangria.ComboBox1.ItemIndex := 1;
   fSangria.ShowModal;
 end;
@@ -225,6 +229,11 @@ begin
   Close;
 end;
 
+procedure TfMovimentoProc.BitBtn1Click(Sender: TObject);
+begin
+  fsaldo.ShowModal;
+end;
+
 procedure TfMovimentoProc.BitBtn3Click(Sender: TObject);
 begin
   if (edVendedor.Text <> '') then
@@ -317,6 +326,7 @@ begin
       ShowMessage('Existe pedidos nao Encerrados : ' + nao_fechado);
     end;
     fAbrirCaixa.AbrirFechar:= 'Fechar';
+    fAbrirCaixa.cxsangria := 0 ;
     fAbrirCaixa.ShowModal;
     acBuscar.Execute;
   end;
@@ -330,16 +340,18 @@ end;
 procedure TfMovimentoProc.btnSangriaClick(Sender: TObject);
 begin
   //fSangria.ShowModal;
+
   fSangria.SangriaReforco:= 'Sangria';
   fSangria.Caption := 'Sangria';
   fSangria.Label6.Caption := 'Incluir Sangria';
+  fSangria.Label7.Caption := 'Disponivel Sangria';
   fSangria.PanelSangria.Visible := True;
   fSangria.Edit1.Visible := False;
   fSangria.btnInsereMotivo.Visible := False;
+  fSangria.GroupAbreCaixa.Visible := False;
   fSangria.ComboBox1.ItemIndex := 0;
   fSangria.ShowModal;
 end;
-
 
 
 procedure TfMovimentoProc.DBGrid1CellClick(Column: TColumn);

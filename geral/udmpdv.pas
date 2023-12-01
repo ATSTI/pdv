@@ -1024,10 +1024,13 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
   private
+
     procedure atualiza_bd(sistema: String);
     procedure campo_novo(tabela, campo, tipo: String);
     function existe_campo(tabela, campo: String): Boolean;
+
   public
+    caminhoEXEpdv: String;
     odoo_database: String;
     odoo_user: STring;
     odoo_acesso: String;
@@ -1287,6 +1290,7 @@ begin
       ccusto := conf.ReadString( 'Outros','CentroCusto','');
       //imp_desconto_item := conf.ReadString( 'Outros','ImprimeDescontoItem','N');
       modoDesenvolvedor := conf.ReadString( 'Outros','modoDesenvolvedor','N');
+      caminhoEXEpdv  := conf.ReadString( 'Outros','caminhoEXEpdv','');
      {
       ZCon.Connected       := False;
       ZCon.HostName        := conf.ReadString('ZConn', 'Hostname', '');
