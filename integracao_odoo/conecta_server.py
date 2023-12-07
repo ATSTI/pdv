@@ -1,9 +1,11 @@
 import requests as rq
 import json
 import os
-import re
 import configparser
-from atscon import Conexao as con
+from datetime import datetime
+# from atscon import Conexao as con
+from sqlite_bd import Database as local_db
+
 
 class EnviaServer:
 
@@ -16,6 +18,8 @@ class EnviaServer:
         self.db = cfg.get('INTEGRA', 'db')
         self.login = cfg.get('INTEGRA', 'login')
         self.passwd = cfg.get('INTEGRA', 'password')
+        self.dblocal = local_db(filename = 'lancamento.db', table = 'lancamento')
+
         # host = cfg.get('DATABASE', 'hostname' ),
         # db = cfg.get('DATABASE', 'database' ),
 
@@ -58,38 +62,60 @@ class EnviaServer:
         vals['params'] = json.load(arquivo)
         vals['tipo'] = arq
         json_data = json.dumps(vals)
-        req = rq.post("http://{}".format(base_url), data=json_data, headers=json_headers, cookies=cookies)
-
-        if not retorno:
-            file_retorno = f"{self.path_retorno}/retorno.json"
-            with open(file_retorno, mode="a") as arq_retorno:
-                dados = json.loads(req.content)
-                if len(dados['result']) > 2:
-                    arq_retorno.write(dados["result"])
-                # dados = req.json()
-                print(req.content)
+        return rq.post("http://{}".format(base_url), data=json_data, headers=json_headers, cookies=cookies)
+        
+        # if not retorno:
+        #     file_retorno = f"{self.path_retorno}/retorno.json"
+        #     with open(file_retorno, mode="a") as arq_retorno:
+        #         dados = json.loads(req.content)
+        #         if len(dados['result']) > 2:
+        #             arq_retorno.write(dados["result"])
+        #         # dados = req.json()
+        #         print(req.content)
 
     def lendo_arquivos(self):
+        hj = datetime.now()       
+        hj = datetime.strftime(hj,'%m-%d-%Y')
+
         # lê arquivos na pasta
         arquivos = os.listdir(self.path_envio)
         # para cada arquivo na pasta
         # db = con.Conexao(host, db)
         get_return = False
-
         for i in arquivos:
             nome_arq = i[:i.index('.')]
             retorno_ids = []
-            file_retorno = f"{self.path_retorno}/retorno.json"
-            if os.path.exists(file_retorno) and os.stat(file_retorno).st_size > 0:
-                x = open(file_retorno,'r')
-                # data = [json.loads(line) for line in open(path_retorno,'r')]
-                # arquivo_retorno = x.read()
-                # le json 
-                retorno_ids = json.loads(json.dumps(eval(json.loads(x.read()))))
+            # file_retorno = f"{self.path_retorno}/retorno.json"
+            # if os.path.exists(file_retorno) and os.stat(file_retorno).st_size > 0:
+            #     x = open(file_retorno,'r')
+            #     # data = [json.loads(line) for line in open(path_retorno,'r')]
+            #     # arquivo_retorno = x.read()
+            #     # le json 
+            #     retorno_ids = json.loads(json.dumps(eval(json.loads(x.read()))))
 
             print('Arquivo: %s' %(nome_arq))
+            
             if ((nome_arq[:3] != 'cai') and (nome_arq[:3] != 'ped')):
                 continue
+
+            tipo = ''
+            caixa = 0
+            codigo = 0
+            if nome_arq[:7] == 'pedido_' and 'codmovimento':
+                tipo = 'pedido'
+                codigo = nome_arq[nome_arq.find('-')+1:]
+                caixa = nome_arq[7:nome_arq.find('-')]
+            if nome_arq[:6] == 'caixa_' and 'caixa':
+                tipo = 'sessao'
+                caixa = nome_arq[6:]
+            ja_enviado = self.dblocal.consulta(
+                tipo, caixa, codigo)
+            
+            if ja_enviado:
+                #import pudb;pu.db
+                os.remove(self.path_envio + '/' + i)
+                continue
+
             if len(retorno_ids):
                 enviado = False
                 for arq in retorno_ids:
@@ -107,11 +133,62 @@ class EnviaServer:
                     # if nome_arq[7:] in arquivo_retorno:
                     # arq['codmovimento']:
                 if not enviado and ((nome_arq[:6] == 'caixa_') or (nome_arq[:7] == 'pedido_')):
-                    self.enviando_arquivo(get_return, nome_arq[:3], i)
-                    get_return = True
+                    get_return = self.enviando_arquivo(get_return, nome_arq[:3], i)
+                    # get_return = True
                 if enviado and ((nome_arq[:6] == 'caixa_') or (nome_arq[:7] == 'pedido_')):
                     # sql_t = 'UPDATE movimento SET codmovrateio = %s WHERE codmovimento = %s' %()
                     os.remove(self.path_envio + '/' + i)
             else:
-                self.enviando_arquivo(get_return, nome_arq[:3], i)
-                get_return = True
+                get_return = self.enviando_arquivo(get_return, nome_arq[:3], i)
+                if tipo and caixa:
+                    self.dblocal.insert(dict(
+                            tipo = tipo,
+                            user = 1,
+                            nome = nome_arq,
+                            caixa = caixa,
+                            codigo = codigo,
+                            data_lancamento = hj
+                        ))
+                # get_return = True
+        if get_return:
+            file_json = get_return.json()
+            for item in file_json.values():
+                # print('item %s:' %(item))
+                if item != None and len(item)>5:
+                    item_json = json.loads(json.dumps(eval(eval(item))))
+                    # x = eval(item)
+                    for z in item_json:
+                        codigo = 0
+                        if 'name' in z:
+                            name = z['name']
+                        if 'codmovimento' in z:
+                            codigo = z['codmovimento']
+                            codigo = codigo[codigo.find('-')+1:]
+                            name = z['order_id']
+                        ja_enviado = self.dblocal.consulta(
+                            z['tipo'], z['caixa'], codigo)
+            
+                        if ja_enviado:
+                            continue
+                        self.dblocal.insert(dict(
+                            tipo = z['tipo'],
+                            user = z['user_id'],
+                            nome = name,
+                            caixa = z['caixa'],
+                            codigo = codigo,
+                            data_lancamento = hj
+                        ))
+
+                # if item.keys() == 'result':
+                #     print('valor %s:' %(item.values()))
+            # file_retorno = f"{self.path_retorno}/retorno.json"
+            # with open(file_retorno, mode="a") as arq_retorno:
+            #     dados = json.loads(get_return.content)
+            #     print("imprimindo dados")
+            #     print(dados)
+            #     json.dump(file_json, arq_retorno)
+            #     # if len(dados['result']) > 2:
+            #         # arq_retorno.write(dados["result"])
+            #     # dados = req.json()
+
+            #     print(get_return.content)

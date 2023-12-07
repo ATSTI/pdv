@@ -13,3 +13,5 @@ integracao/python37.dll
 *.pyc
 *.ini
 *.ppu
+integracao_odoo/lancamento.db-journal
+integracao_odoo/lancamento.db

@@ -28,59 +28,23 @@ class IntegracaoOdoo:
         # self.host = cfg.get('DATABASE', 'hostname')
         # self.db = cfg.get('DATABASE', 'path')
         
-        while(True):
-            self.action_atualiza_vendas()
-            envia()
-            time.sleep(30)
+        #while(True):
+        self.action_atualiza_vendas()
+        self.action_atualiza_caixas(None)
+        envia()
+        #    time.sleep(30)
 
     def action_atualiza_caixas(self, session):
         try:
-            db = con.Conexao(self.host, self.database)
+            # db = con.Conexao(self.host, self.database)
+            db = con()
         except:
             msg_sis = u'Caminho ou nome do banco inválido.<br>'
         msg_erro = ''
         msg_sis = 'Integrando Caixa com o PDV<br>'
         hj = datetime.now()
-        hj = hj - timedelta(days=10)
-        hj = datetime.strftime(hj,'%Y-%m-%d %H:%M:%S')
-        # user_ids = self.env['res.users'].search([('write_date', '>=', hj)])
-        # if self.user:
-        #     sqlp = 'SELECT CODUSUARIO FROM USUARIO where CODUSUARIO = %s' %(str(self.user))
-        #     usrq = db.query(sqlp)
-        #     barcode = ''
-            # if usr.barcode:
-            #     barcode = usr.barcode
-            # vendedor = unidecode(usr.name)
-            # senha = 'CAIXA'
-            # if usr.pos_security_pin:
-            #     senha = usr.pos_security_pin
-            # if not len(usrq):
-            #     #log = 'Cadastrando Usuario novo : %s\n' %(usr.name.encode('ascii', 'ignore').decode('ascii'))
-            #     #arq.write(log)
-            #     insere = 'INSERT INTO USUARIO (CODUSUARIO, NOMEUSUARIO, '
-            #     insere += 'STATUS, PERFIL, SENHA, CODBARRA) VALUES ('
-            #     insere += '%s'
-            #     insere += ',\'%s\''
-            #     insere += ', 1'
-            #     insere += ',\'CAIXA\''
-            #     insere += ',\'%s\''
-            #     insere += ',\'%s\');'
-            #     insere = insere %(str(usr.id), str(vendedor), str(senha), str(barcode))
-            #     db.insert(insere)
-            # else:
-            #     try:
-            #         if usr.pos_security_pin:
-            #             altera = 'UPDATE USUARIO SET NOMEUSUARIO = \'%s\' \
-            #                 , PERFIL = \'GERENTE\', \
-            #                 , CODBARRA = \'%s\' WHERE CODUSUARIO = %s' %(
-            #                 str(vendedor),  str(barcode), str(usr.id))
-            #         else:
-            #             altera = 'UPDATE USUARIO SET NOMEUSUARIO = \'%s\' \
-            #                , CODBARRA = \'%s\' WHERE CODUSUARIO = %s' %(
-            #                str(vendedor), str(barcode), str(usr.id))
-            #         db.insert(altera)
-            #     except:
-            #         print('erro usuario: %s' %(usr.name)) 
+        hj = hj - timedelta(days=2)
+        hj = datetime.strftime(hj,'%Y-%m-%d')
 
         # sessao_ids = self.env['pos.session'].search([
         #     ('create_date', '>=', hj),   
@@ -88,30 +52,32 @@ class IntegracaoOdoo:
         #     ])
         #('state','=','opened')
         # for ses in sessao_ids:
-        if self.user:
+        
             # TODO trocar os numeros abaixo pelas variaveis
-            user_temp = 11
-            sess_temp = 4564
+            #user_temp = 11
+            #sess_temp = 4564
             # num_sessao = int(session.name[len(ses.name)-4:])
             # num_sessao = ses.id
-            sqlp = 'SELECT IDCAIXACONTROLE \
+        sqlp = "SELECT IDCAIXACONTROLE \
                 ,CODCAIXA, CODUSUARIO, SITUACAO, DATAFECHAMENTO \
-                ,NOMECAIXA, DATAABERTURA FROM CAIXA_CONTROLE where CODUSUARIO = %s and CODCAIXA = %s' %(str(user_temp), str(sess_temp))
-            sess = db.query(sqlp)
-            for ses in sess:
-                vals = {}
-                vals['user_id'] = ses[2]
-                vals['name'] = ses[5]
-                vals['caixa'] = ses[1]
-                # vals['config_id'] = ses.config_id.id
-                data_abertura = f"{ses[6]} 20:00:00"
-                vals['start_at'] = data_abertura
-                vals['state'] = 'draft'
-
-                arquivo_nome = '/home/odoo/transf/caixa_%s.json' %(ses[5])
-                arquivo_json = open(arquivo_nome, 'w+')
-                dados_vals = json.dumps(vals)
-                arquivo_json.write(dados_vals)
+                ,NOMECAIXA, DATAABERTURA FROM CAIXA_CONTROLE \
+                WHERE SITUACAO = 'o' AND DATAABERTURA = '%s'" %(hj)
+        sess = db.query(sqlp)
+        for ses in sess:
+            vals = {}
+            vals['user_id'] = ses[2]
+            vals['name'] = ses[5]
+            vals['caixa'] = ses[1]
+            # vals['config_id'] = ses.config_id.id
+            data_abertura = f"{ses[6]} 20:00:00"
+            vals['start_at'] = data_abertura
+            vals['state'] = 'draft'
+            arquivo_nome = self.path_envio + '/caixa_%s.json' %(ses[1])
+            if os.path.exists(arquivo_nome):
+                continue
+            arquivo_json = open(arquivo_nome, 'w+')
+            dados_vals = json.dumps(vals)
+            arquivo_json.write(dados_vals)
             # if not len(sess):
             #     #state = 'c' # close
             #     #if ses.state == 'opened':
@@ -905,10 +871,9 @@ class IntegracaoOdoo:
         msg_sis = 'Integrando Vendas para o PDV<br>'
         hj = datetime.now()
         # hj = hj - timedelta(days=session.periodo_integracao)
-        hj = hj - timedelta(days=0)
+        hj = hj - timedelta(days=8)
         hj = datetime.strftime(hj,'%m-%d-%Y')
         caixa_usado = 'None'
-
         # TODO le o ultimo arquivo de retorno com as ultimas atualizacos
         # retorno = open(self.path_retorno, '+r')
         str_ord = '0'
@@ -916,11 +881,11 @@ class IntegracaoOdoo:
         sqlc = "SELECT FIRST 1 r.IDCAIXACONTROLE, r.CODCAIXA,  \
                r.VALORABRE, r.VALORFECHA  \
                FROM CAIXA_CONTROLE r WHERE r.SITUACAO = '%s' \
-               AND DATAABERTURA < '%s' \
-               ORDER BY r.CODCAIXA DESC " %('o', hj)
+               AND DATAABERTURA = '%s' \
+               ORDER BY r.CODCAIXA " %('o', hj)
         caixa_aberto = db.query(sqlc)
         for cx in caixa_aberto:
-            print(cx[1])       
+            print(cx[1])
             sqld = 'SELECT m.CODMOVIMENTO, m.DATAMOVIMENTO, ' \
                'm.CODCLIENTE, m.STATUS, m.CODUSUARIO, m.CODVENDEDOR, ' \
                'm.CODALMOXARIFADO, DATEADD(3 hour to m.DATA_SISTEMA) ' \
@@ -1006,9 +971,10 @@ class IntegracaoOdoo:
                 order_line = []
                 sqld = 'SELECT md.CODDETALHE, md.CODPRODUTO, ' \
                     ' md.QUANTIDADE, md.PRECO, COALESCE(md.VALOR_DESCONTO,0),' \
-                    ' md.BAIXA, UDF_COLLATEBR(md.DESCPRODUTO), md.CORTESIA ' \
-                    ' FROM MOVIMENTODETALHE md ' \
-                    ' WHERE md.STATUS = 0 AND md.CodMovimento = %s' %(str(mvs[0]))
+                    ' md.BAIXA, md.DESCPRODUTO, md.CORTESIA, p.CODPRO ' \
+                    ' FROM MOVIMENTODETALHE md, PRODUTOS p ' \
+                    ' WHERE p.CODPRODUTO = md.CODPRODUTO ' \
+                    ' AND   md.STATUS = 0 AND md.CodMovimento = %s' %(str(mvs[0]))
                 md_ids = db.query(sqld)
                 if not len(md_ids):
                     continue
@@ -1035,7 +1001,7 @@ class IntegracaoOdoo:
                     try:
                         prdname = unidecode(md[6])
                     except:
-                        prdname = 'Nada'
+                        prdname = md[6]
                     vlr_total += (md[2]*md[3])-md[4]
                     vlr_totprod = (md[2]*md[3])-md[4]
                     desconto = 0.0
@@ -1058,7 +1024,7 @@ class IntegracaoOdoo:
                     if md[7].strip():
                         tipo = md[7].strip()
 
-                    prd['product_id'] = md[1]
+                    prd['product_id'] = md[8]
                     prd['discount'] = desconto
                     prd['qty'] = md[2]
                     prd['price_unit'] = md[3]
@@ -1112,7 +1078,7 @@ class IntegracaoOdoo:
                     # coloquei isto aqui pq qdo tem desconto
                     # e era a prazo o desconto do ultimo item nao ia pra
                     # fatura estas duas linhas abaixo eram feitas no create
-                    arquivo_nome = '/home/odoo/transf/pagline_%s.json' %(ord_name)
+                    arquivo_nome = self.path_envio + '/pagline_%s.json' %(ord_name)
                     arquivo_json = open(arquivo_nome, 'w')
                     dados_vals = json.dumps(vals)
                     arquivo_json.write(dados_vals)
