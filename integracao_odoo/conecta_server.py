@@ -5,6 +5,10 @@ import configparser
 from datetime import datetime
 # from atscon import Conexao as con
 from sqlite_bd import Database as local_db
+import numpy as np
+import pandas as pd
+from pandas import DataFrame, Series
+import sqlite3 as db
 
 
 class EnviaServer:
@@ -18,13 +22,13 @@ class EnviaServer:
         self.db = cfg.get('INTEGRA', 'db')
         self.login = cfg.get('INTEGRA', 'login')
         self.passwd = cfg.get('INTEGRA', 'password')
-        self.dblocal = local_db(filename = 'lancamento.db', table = 'lancamento')
 
         # host = cfg.get('DATABASE', 'hostname' ),
         # db = cfg.get('DATABASE', 'database' ),
 
         # TODO path_retorno remover arquivos velhos
-        self.lendo_arquivos()
+        self.buscando_produtos()
+        # self.lendo_arquivos()
 
     def enviando_arquivo(self, retorno, arq, file_name):
         headers = {'Content-type': 'application/json'}
@@ -73,10 +77,84 @@ class EnviaServer:
         #         # dados = req.json()
         #         print(req.content)
 
+    def buscando_produtos(self):
+        # dblocal = local_db(filename = 'lancamento.db', table = 'lancamento')
+        conn = db.connect('lancamento.db')
+        # cur_db = conn.cursor()
+        headers = {'Content-type': 'application/json'}
+        AUTH_URL = "http://%s/web/session/authenticate" %(self.url)
+        data = {
+                "jsonrpc": "2.0",
+                "params": {
+                        "db": self.db,
+                        "login": self.login,
+                        "password": self.passwd,
+                    }
+                }  
+        parameter = {
+                        "db": self.db,
+                        "login": self.login,
+                        "password": self.passwd,
+                    }
+        res = rq.get(AUTH_URL, data=json.dumps(data),headers=headers)
+        session_id = res.cookies["session_id"]
+        base_url = '%s/produtoconsulta' %(self.url)
+        # base_url = "127.0.0.1:8072/api/v1/modules/" # your api 
+        json_data = json.dumps(parameter)
+        json_headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            }
+        cookies = {
+            'login': self.login, 
+            'password': self.passwd,
+            'session_id':session_id
+        }
+
+        # arquivo = open(self.path_envio + '/' + file_name, mode="r")
+        vals = {}
+        # vals['params'] = json.load(arquivo)
+        # vals['tipo'] = arq
+        json_data = json.dumps(vals)
+        retorno = rq.post("http://{}".format(base_url), data=json_data, headers=json_headers, cookies=cookies)
+        hj = datetime.now()       
+        hj = datetime.strftime(hj,'%m-%d-%Y')
+        # import pudb;pu.db
+        if retorno:
+            file_json = retorno.json()
+
+            for item in file_json.values():
+                print (item)
+                # import pudb;pu.db
+                if item != None and len(item)>5:
+                    item_json = eval(item)
+                    # for dado in item_json:
+                    m_df = pd.DataFrame(item_json)
+                    print(m_df)
+                    m_df.to_sql('produto', conn, if_exists='replace', index=False)
+
+            #         
+            #             ja_recebido = self.dblocal.consulta_nome(
+            #                 'produto', 1, 9, dado['codproduto'], hj)
+            #             if ja_recebido:
+            #                 continue                    
+            #             self.dblocal.insert(dict(
+            #                 tipo = 'produto',
+            #                 user = 1,
+            #                 nome = dado['codproduto'],
+            #                 caixa = 1,
+            #                 codigo = 9,
+            #                 data_lancamento = hj
+            #             ))
+            #             # Atualizar no banco de DADOS (firebird) ou fazer insert
+
+            #             # {'codproduto': 7505, 'unidademedida': 'UN', 'produto': 'MELHORADOR DE FARINHA GRANEL KG', 'valor_prazo': 12.72, 'datacadastro': '11/10/2023        executar_faturamento.py:5
+            #             # 00:20:14', 'codpro': '004900', 'origem': '0', 'ncm': '39249000', 'usa': 'S', 'cod_barra': '2004900000007'}
+
     def lendo_arquivos(self):
         hj = datetime.now()       
         hj = datetime.strftime(hj,'%m-%d-%Y')
-
+        dblocal = local_db(filename = 'lancamento.db', table = 'lancamento')
         # lê arquivos na pasta
         arquivos = os.listdir(self.path_envio)
         # para cada arquivo na pasta
@@ -108,7 +186,7 @@ class EnviaServer:
             if nome_arq[:6] == 'caixa_' and 'caixa':
                 tipo = 'sessao'
                 caixa = nome_arq[6:]
-            ja_enviado = self.dblocal.consulta(
+            ja_enviado = dblocal.consulta(
                 tipo, caixa, codigo)
             
             if ja_enviado:
@@ -141,7 +219,7 @@ class EnviaServer:
             else:
                 get_return = self.enviando_arquivo(get_return, nome_arq[:3], i)
                 if tipo and caixa:
-                    self.dblocal.insert(dict(
+                    dblocal.insert(dict(
                             tipo = tipo,
                             user = 1,
                             nome = nome_arq,
@@ -165,12 +243,12 @@ class EnviaServer:
                             codigo = z['codmovimento']
                             codigo = codigo[codigo.find('-')+1:]
                             name = z['order_id']
-                        ja_enviado = self.dblocal.consulta(
+                        ja_enviado = dblocal.consulta(
                             z['tipo'], z['caixa'], codigo)
             
                         if ja_enviado:
                             continue
-                        self.dblocal.insert(dict(
+                        dblocal.insert(dict(
                             tipo = z['tipo'],
                             user = z['user_id'],
                             nome = name,

@@ -9,7 +9,8 @@ class Database:
         # Create table
         self._db.execute('''CREATE TABLE IF NOT EXISTS lancamento
              (tipo VARCHAR(12), user INTEGER, nome VARCHAR(60), caixa integer, codigo integer, data_lancamento date)''')
-        self.table = kwargs.get('table', 'lancamento')
+        # self.table = kwargs.get('table', 'lancamento')
+        self.table = kwargs.get('table')
 
     def sql_do(self, sql, *params):
         self._db.execute(sql, params)
@@ -26,9 +27,31 @@ class Database:
         ))
         self._db.commit()
 
+    def consulta_produto(self):
+        cursor = self._db.execute('select * from {}'.format(
+            self._table))
+        dados = cursor.fetchall()
+        if not dados:
+            return False
+        list_accumulator = []
+        for item in dados:
+            list_accumulator.append({k: item[k] for k in item.keys()})
+        return list_accumulator
+
+
     def consulta(self, tipo, caixa, codigo):
-        cursor = self._db.execute('select * from {} where tipo = ? and caixa = ? and codigo = ?'.format(
+        cursor = self._db.execute('select * from {} where tipo = ? and caixa = ? and' \
+                ' codigo = ?'.format(
             self._table), (tipo, caixa, codigo))
+        dados = cursor.fetchone()
+        if not dados:
+            return False
+        return dict(dados)
+    
+    def consulta_nome(self, tipo, caixa, codigo, nome, data_lancado):
+        cursor = self._db.execute(
+            'select * from {} where tipo = ? and caixa = ? and codigo = ? and nome = ? and data_lancamento = ?'.format(
+            self._table), (tipo, caixa, codigo, nome, data_lancado))
         dados = cursor.fetchone()
         if not dados:
             return False

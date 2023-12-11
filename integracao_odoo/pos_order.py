@@ -13,6 +13,7 @@ import json
 import configparser
 from atscon import Conexao as con
 from conecta_server import EnviaServer as envia
+from sqlite_bd import Database as local_db
 
 
 _logger = logging.getLogger(__name__)
@@ -29,9 +30,10 @@ class IntegracaoOdoo:
         # self.db = cfg.get('DATABASE', 'path')
         
         #while(True):
-        self.action_atualiza_vendas()
-        self.action_atualiza_caixas(None)
-        envia()
+        # self.action_atualiza_vendas()
+        # self.action_atualiza_caixas(None)
+        # envia()
+        self.action_atualiza_produtos(None)
         #    time.sleep(30)
 
     def action_atualiza_caixas(self, session):
@@ -43,7 +45,7 @@ class IntegracaoOdoo:
         msg_erro = ''
         msg_sis = 'Integrando Caixa com o PDV<br>'
         hj = datetime.now()
-        hj = hj - timedelta(days=2)
+        hj = hj - timedelta(days=5)
         hj = datetime.strftime(hj,'%Y-%m-%d')
 
         # sessao_ids = self.env['pos.session'].search([
@@ -168,101 +170,103 @@ class IntegracaoOdoo:
 
     def action_atualiza_produtos(self, session):
         try:
-            if session.config_id.ip_terminal:
-                db = con.Conexao(session.config_id.ip_terminal, session.config_id.database)
-            else:
-                return False
+            # db = con.Conexao(self.host, self.database)
+            db = con()
+            dblocal = local_db(filename = 'lancamento.db', table = 'produto')
         except:
             msg_sis = u'Caminho ou nome do banco inválido.<br>'
         msg_erro = ''
-        msg_sis = 'Integrando Produtos para o PDV<br>'
         hj = datetime.now()
-        hj = hj - timedelta(days=self.periodo_integracao+3)
-        hj = datetime.strftime(hj,'%Y-%m-%d %H:%M:%S')
-        #    ('write_date', '>=', hj),
-        #    ('id', '>', 7999),
-        #    ('id', '<', 12000),
-        prod_tmpl = self.env['product.template'].search([
-            ('write_date', '>=', hj),
-            ('sale_ok', '=', True)], order='id')
-        prd_ids = set()
-        for pr in prod_tmpl:
-            prd_ids.add(pr.id)
-        prod_tmpl = self.env['product.template'].search([
-            ('write_date', '>=', hj),
-            ('active', '=', False),
-            ('sale_ok', '=', True)], order='id')
-        for pr in prod_tmpl:
-            prd_ids.add(pr.id)
-            #if pr.id == 9993:
-            #    x = 1
-             
-        prod_prod = self.env['product.product'].search([
-            ('write_date', '>=', hj)], order='id')
-        for pr in prod_prod:
-            if not pr.product_tmpl_id.id in prd_ids:
-                prd_ids.add(pr.product_tmpl_id.id)
-        prod_ids = []
-        if len(prd_ids):
-            prod_ids = self.env['product.product'].search([
-                '|',('product_tmpl_id','in',list(prd_ids)),
-                ('write_date', '>=', hj),
-                '|',('active', '=', False),('active', '=', True)
-            ], order='id')
-            msg_sis += 'Qtde de Produtos %s para importar/atualizar<br>' %(str(len(prod_ids)))
-        else:
-            msg_sis += 'Sem produtos pra importar/atualizar<br>'
-        #print ('Qtde de Produtos %s\n' %(str(len(prod_ids))))
+        hj = hj - timedelta(days=1)
+        hj = datetime.strftime(hj,'%Y-%m-%d')
+        msg_erro = ''
+        msg_sis = 'Integrando Produtos para o PDV<br>'
 
-        for product_id in prod_ids:
-            #if product_id.id == 9993:
-            #    x = 1
-            if not product_id.origin:
-                continue
+        # troquei esta rotina pq agora os dados estao no sqlite3 ja vindos do odoo
+
+        # # pegando alteracoes pelo log
+        # audit = self.env['auditlog.log'].sudo().search([
+        #     ('create_date', '>=', hj),
+        #     ('model_id', '=', 'product.template'),
+        # ])
+        # prod_ids = []
+        # prd_ids = set()
+        # for pr in audit:
+        #     if len(pr.line_ids):
+        #         prd_ids.add(pr.res_id)
+    
+        # audit = self.env['auditlog.log'].sudo().search([
+        #     ('create_date', '>=', hj),
+        #     ('model_id', '=', 'product.product'),
+        # ])
+        # for pr in audit:
+        #     if len(pr.line_ids):
+        #         prd_ids.add(pr.res_id)
+
+        # if len(prd_ids):
+        #     prod_ids = self.env['product.product'].sudo().search([
+        #         ('product_tmpl_id','in',list(prd_ids))])
+
+        # for product_id in prod_ids:
+        #     if not product_id.origin:
+        #         continue
             #print ('Produto %s\n' %(str(product_id.product_tmpl_id.id)))
+        prod_novo = dblocal.consulta_produto()
+        for pr in prod_novo:
             ncm = ''
-            if product_id.fiscal_classification_id:
-                ncm = product_id.fiscal_classification_id.code
+            if pr['ncm']:
+                ncm = pr['ncm']
                 if ncm:
                     ncm = re.sub('[^0-9]', '', ncm)
             if ncm and len(ncm) > 8:
                 ncm = '00000000'
             p_custo = 0.0
-            if product_id.standard_price:
-                p_custo = product_id.standard_price
+            if pr['custo']:
+                p_custo = pr['custo']
             p_venda = 0.0
-            if product_id.list_price:
-                p_venda = product_id.list_price
+            if pr['valor_prazo']:
+                p_venda = pr['valor_prazo']
             codbarra = ''
-            if product_id.barcode and len(product_id.barcode) < 14:
-                codbarra = product_id.barcode.strip()
-            produto = product_id.name.strip()
+            if pr['cod_barra'] and len(pr['cod_barra']) < 14:
+                codbarra = pr['cod_barra'].strip()
+            produto = pr['produto'].strip()
             produto = produto.replace("'"," ")
-            produto = unidecode(produto)
+            try:
+                produto = unidecode(produto)
+            except:
+                produto = produto
             produto = produto.replace("'","")
-            sqlp = 'select codproduto from produtos where codproduto = %s' %(product_id.id)
+            codp = str(pr['codproduto'])
+            sqlp = "select FIRST 1 CODPRODUTO,\
+                    DATACADASTRO from produtos where codpro = '%s'" %(pr["codpro"])
             prods = db.query(sqlp)
-            codp = str(product_id.id)
-            if product_id.default_code:
-                codp = product_id.default_code.strip()
+            if pr['codpro']:
+                codpro = pr['codpro'].strip()
             #sqlp = 'select codproduto from produtos where codpro like \'%s\'' %(codp+'%')
             if codbarra:
                 # 03/10/2022 limpando o codigo de barra qdo ja existe  
-                sql_bar = 'select codproduto from produtos where cod_barra = \'%s\'' %(codbarra)
+                sql_bar = 'select codpro from produtos where cod_barra = \'%s\'' %(codbarra)
                 barra = db.query(sql_bar)
                 up_bar = 'UPDATE PRODUTOS SET COD_BARRA = NULL WHERE COD_BARRA = \'%s\'' %(codbarra)
                 for sess_bar in barra:
                     cod_p_barra = str(sess_bar[0])
-                    if str(codp) == cod_p_barra:
+                    if str(codpro) == cod_p_barra:
                         up_bar = ''
                 if len(barra) and up_bar:
                     db.insert(up_bar)
             #prods = db.query(sqlp)
             #print ('TESTE - %s' %(product_id.name))
-            if not len(prods) and product_id.active:
+            data_cad = '2023/01/01 01:00:00'
+            if len(prods):
+                data_cad = datetime.strftime(prods[0][1],'%Y/%m/%d %H:%M:%S')
+            data_nova = pr['datacadastro']
+            data_nova = datetime.strptime(data_nova,'%m/%d/%Y %H:%M:%S')
+            data_fb = datetime.strftime(data_nova,'%Y.%m.%d, %H:%M:%S.0000')
+            data_nova = datetime.strftime(data_nova,'%Y/%m/%d %H:%M:%S')
+            if not len(prods) and pr['usa'] == 'S':
                 #print ('Incluindo - %s' %(product_id.name))
                 #sqlp = 'select codproduto from produtos where codpro like \'%s\'' %(codp+'%')
-                
+
                 #prodsa = db.query(sqlp)					
                 #if len(prodsa):
                 #    if product_id.default_code:
@@ -270,29 +274,29 @@ class IntegracaoOdoo:
                 #if len(codp) > 14:
                 #    codp = str(product_id.id) 
                 #print ('Incluindo - %s-%s' %(str(product_id.id),product_id.name))
-                un = product_id.uom_id.name[:2]
-                insere = 'INSERT INTO PRODUTOS (CODPRODUTO, UNIDADEMEDIDA, PRODUTO, PRECOMEDIO, CODPRO,\
+                un = pr['unidademedida'][:2]
+                insere = 'INSERT INTO PRODUTOS (UNIDADEMEDIDA, PRODUTO, PRECOMEDIO, CODPRO,\
                           TIPOPRECOVENDA, ORIGEM, NCM, VALORUNITARIOATUAL, VALOR_PRAZO, TIPO, RATEIO, \
-                          QTDEATACADO, PRECOATACADO'
+                          QTDEATACADO, PRECOATACADO, DATACADASTRO'
                 if codbarra:
                     insere += ', COD_BARRA'
                 insere += ') VALUES ('
-                insere += str(product_id.id)
-                insere += ', \'' + un + '\''
+                insere += '\'' + un + '\''
                 insere += ', \'' + produto + '\''
-                insere += ',' + str(p_custo)
-                insere += ', \'' + str(unidecode(codp)) + '\''
+                insere += ', ' + str(p_custo)
+                insere += ', \'' + str(codpro) + '\''
                 insere += ',\'F\''
-                insere += ',' + str(product_id.origin)
+                insere += ',' + str(pr['origem'])
                 insere += ',\'' + str(ncm) + '\''
-                insere += ',' + str(p_custo)
+                insere += ', ' + str(p_custo)
                 insere += ',' + str(p_venda)
                 insere += ',\'' + str('PROD') + '\''
-                insere += ', \'' + product_id.tipo_venda + '\''
-                insere += ',' + str(product_id.qtde_atacado)
-                insere += ',' + str(product_id.preco_atacado)
+                insere += ', \'' + pr['tipo_venda'] + '\''
+                insere += ',' + str(pr['qtdeatacado'])
+                insere += ',' + str(pr['precoatacado'])
+                insere += ', \'' + data_fb + '\''
                 if codbarra:
-                    insere += ', \'' + str(unidecode(codbarra)) + '\''
+                    insere += ', \'' + str(codbarra) + '\''
                 insere += ')'
                 #print (codp+'-'+produto)
                 try:
@@ -306,8 +310,11 @@ class IntegracaoOdoo:
                         x = 1
                     #print ('SQL %s' %str(insere))
             elif len(prods):
+                import pudb;pu.db
+                if data_cad == data_nova:
+                    continue
                 ativo = 'S'
-                if not product_id.active:
+                if pr['usa'] != 'S':
                    ativo = 'N'
                    codbarra = ''
                    codp = codp + 'x'
@@ -316,15 +323,16 @@ class IntegracaoOdoo:
                 altera += '\'' + produto + '\''
                 altera += ', VALOR_PRAZO = ' + str(p_venda)
                 altera += ', NCM = ' +  '\'' + str(ncm) + '\''
-                altera += ', CODPRO = ' +  '\'' + str(unidecode(codp)) + '\''
-                altera += ', ORIGEM = ' + str(product_id.origin) 
+                altera += ', CODPRO = ' +  '\'' + str(codp) + '\''
+                altera += ', ORIGEM = ' + str(pr['origem']) 
                 altera += ', USA = \'' + ativo + '\''  
-                altera += ', RATEIO = \'' + str(product_id.tipo_venda) + '\''
-                altera += ', QTDEATACADO = ' + str(product_id.qtde_atacado) 
-                altera += ', PRECOATACADO = ' + str(product_id.preco_atacado) 
+                altera += ', RATEIO = \'' + str(pr['tipo_venda']) + '\''
+                altera += ', QTDEATACADO = ' + str(pr['qtdeatacado']) 
+                altera += ', PRECOATACADO = ' + str(pr['precoatacado'])
+                altera += ', DATACADASTRO = \'' + data_fb + '\''
                 if codbarra:
-                    altera += ', COD_BARRA = \'' + str(unidecode(codbarra)) + '\''
-                altera += ' WHERE CODPRODUTO = ' + str(product_id.id)
+                    altera += ', COD_BARRA = \'' + str(codbarra) + '\''
+                altera += ' WHERE CODPRO = \'' + str(pr['codpro']) + '\''
                 retorno = db.insert(altera)
                 #print ('SQL : %s' %(altera))
                 if retorno:
@@ -871,7 +879,7 @@ class IntegracaoOdoo:
         msg_sis = 'Integrando Vendas para o PDV<br>'
         hj = datetime.now()
         # hj = hj - timedelta(days=session.periodo_integracao)
-        hj = hj - timedelta(days=8)
+        hj = hj - timedelta(days=5)
         hj = datetime.strftime(hj,'%m-%d-%Y')
         caixa_usado = 'None'
         # TODO le o ultimo arquivo de retorno com as ultimas atualizacos
