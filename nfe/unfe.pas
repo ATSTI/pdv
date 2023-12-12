@@ -3872,7 +3872,9 @@ begin
               vBCFCPSTRet      := dmPdv.cdsItensNFV_B_FCPSTRET.Value;
               pFCPSTRet        := dmPdv.cdsItensNFP_FCPSTRET.Value;
               vFCPSTRet        := dmPdv.cdsItensNFV_FCPSTRET.Value;
-              vICMSSubstituto  := 0;
+              vICMSSubstituto  := dmPdv.cdsItensNFICMS_SUBST.Value;
+              vICMSSTRet       := dmPdv.cdsItensNFVICMSSTRET.Value;
+              vBCSTRet         := dmPdv.cdsItensNFVBCSTRET.Value;
             end
             else if (Trim(dmPdv.cdsItensNFCSOSN.AsString) = '900') then
             begin
