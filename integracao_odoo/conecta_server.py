@@ -13,7 +13,7 @@ import sqlite3 as db
 
 class EnviaServer:
 
-    def __init__(self):
+    def __init__(self, tipo):
         cfg = configparser.ConfigParser()
         cfg.read('conf.ini')
         self.path_envio  = cfg.get('INTEGRA', 'Path_envio')
@@ -27,8 +27,10 @@ class EnviaServer:
         # db = cfg.get('DATABASE', 'database' ),
 
         # TODO path_retorno remover arquivos velhos
-        self.buscando_produtos()
-        # self.lendo_arquivos()
+        if tipo == "produto":
+            self.buscando_produtos()
+        if tipo == "pedido":
+            self.lendo_arquivos()
 
     def enviando_arquivo(self, retorno, arq, file_name):
         headers = {'Content-type': 'application/json'}
@@ -117,8 +119,8 @@ class EnviaServer:
         # vals['tipo'] = arq
         json_data = json.dumps(vals)
         retorno = rq.post("http://{}".format(base_url), data=json_data, headers=json_headers, cookies=cookies)
-        hj = datetime.now()       
-        hj = datetime.strftime(hj,'%m-%d-%Y')
+        # hj = datetime.now()       
+        # hj = datetime.strftime(hj,'%m-%d-%Y')
         # import pudb;pu.db
         if retorno:
             file_json = retorno.json()

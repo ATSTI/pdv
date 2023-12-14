@@ -28,13 +28,20 @@ class IntegracaoOdoo:
         self.path_retorno = cfg.get('INTEGRA', 'path_retorno' )
         # self.host = cfg.get('DATABASE', 'hostname')
         # self.db = cfg.get('DATABASE', 'path')
-        
-        #while(True):
-        # self.action_atualiza_vendas()
-        # self.action_atualiza_caixas(None)
-        # envia()
-        self.action_atualiza_produtos(None)
-        #    time.sleep(30)
+        rodou = 1
+        while(True):
+            # Cria o ARQUIVO JSON dos Pedidos para ser enviado
+            self.action_atualiza_vendas()
+            # Cria o ARQUIVO JSON dos Caixas para ser enviado
+            self.action_atualiza_caixas(None)
+            envia("pedido")
+            # Busca alterações dos produtos e grava no database local para ser comparado com o BD do PDV
+            envia("produto")
+            # Compara as ataulizacoes do produto com o BD do PDV e atualiza ou insere se necessario
+            self.action_atualiza_produtos(None)
+            print(f"Rodou : {rodou}")
+            rodou += 1
+            time.sleep(600)
 
     def action_atualiza_caixas(self, session):
         try:
@@ -45,7 +52,7 @@ class IntegracaoOdoo:
         msg_erro = ''
         msg_sis = 'Integrando Caixa com o PDV<br>'
         hj = datetime.now()
-        hj = hj - timedelta(days=5)
+        hj = hj - timedelta(days=4)
         hj = datetime.strftime(hj,'%Y-%m-%d')
 
         # sessao_ids = self.env['pos.session'].search([
@@ -310,7 +317,6 @@ class IntegracaoOdoo:
                         x = 1
                     #print ('SQL %s' %str(insere))
             elif len(prods):
-                import pudb;pu.db
                 if data_cad == data_nova:
                     continue
                 ativo = 'S'
@@ -879,7 +885,7 @@ class IntegracaoOdoo:
         msg_sis = 'Integrando Vendas para o PDV<br>'
         hj = datetime.now()
         # hj = hj - timedelta(days=session.periodo_integracao)
-        hj = hj - timedelta(days=5)
+        hj = hj - timedelta(days=4)
         hj = datetime.strftime(hj,'%m-%d-%Y')
         caixa_usado = 'None'
         # TODO le o ultimo arquivo de retorno com as ultimas atualizacos
