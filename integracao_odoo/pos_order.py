@@ -33,15 +33,21 @@ class IntegracaoOdoo:
             # Cria o ARQUIVO JSON dos Pedidos para ser enviado
             self.action_atualiza_vendas()
             # Cria o ARQUIVO JSON dos Caixas para ser enviado
-            self.action_atualiza_caixas(None)
+            if rodou == 1 or rodou % 10 == 0:
+                print ('CAIXA ATUALZADP')
+                self.action_atualiza_caixas(None)
             envia("pedido")
             # Busca alterações dos produtos e grava no database local para ser comparado com o BD do PDV
-            envia("produto")
-            # Compara as ataulizacoes do produto com o BD do PDV e atualiza ou insere se necessario
-            self.action_atualiza_produtos(None)
+            if rodou == 1 or rodou % 5 == 0:
+                print ('PRODUTO ATUALZADO')
+                envia("produto")
+                # Compara as ataulizacoes do produto com o BD do PDV e atualiza ou insere se necessario
+                self.action_atualiza_produtos(None)
             print(f"Rodou : {rodou} vezes")
-            envia("cliente")
-            self.action_atualiza_clientes()
+            if rodou == 1 or rodou % 4 == 0:
+                print ('CLIENTE ATUALIZADO')
+                envia("cliente")
+                self.action_atualiza_clientes()
             rodou += 1
             time.sleep(600)
 
@@ -807,6 +813,7 @@ class IntegracaoOdoo:
                AND DATAABERTURA = '%s' \
                ORDER BY r.CODCAIXA " %('o', hj)
         caixa_aberto = db.query(sqlc)
+        sqld = False
         for cx in caixa_aberto:
             print(cx[1])
             sqld = 'SELECT m.CODMOVIMENTO, m.DATAMOVIMENTO, ' \
@@ -819,6 +826,9 @@ class IntegracaoOdoo:
                '   AND m.STATUS = 1 ' \
                '   AND m.CODNATUREZA = 3 ' \
                '   AND m.CODMOVIMENTO NOT IN (%s)' %(str(cx[1]),str_ord)
+        if not sqld:
+            msg_sis = 'Sem Pedidos para importar.<br>'
+            return msg_sis
         movs = db.query(sqld)
         if not len(movs):
             msg_sis = 'Sem Pedidos para importar.<br>'

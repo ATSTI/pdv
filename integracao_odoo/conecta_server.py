@@ -128,13 +128,13 @@ class EnviaServer:
             file_json = retorno.json()
 
             for item in file_json.values():
-                print (item)
+                # print (item)
                 # import pudb;pu.db
                 if item != None and len(item)>5:
                     item_json = eval(item)
                     # for dado in item_json:
                     m_df = pd.DataFrame(item_json)
-                    print(m_df)
+                    # print(m_df)
                     m_df.to_sql('produto', conn, if_exists='replace', index=False)
 
             #         
@@ -192,11 +192,11 @@ class EnviaServer:
             file_json = retorno.json()
 
             for item in file_json.values():
-                print (item)
+                # print (item)
                 if item != None and len(item)>5:
                     item_json = eval(item)
                     m_df = pd.DataFrame(item_json)
-                    print(m_df)
+                    # print(m_df)
                     m_df.to_sql('cliente', conn, if_exists='replace', index=False)
 
     def lendo_arquivos(self):
