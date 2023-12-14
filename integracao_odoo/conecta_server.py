@@ -29,6 +29,8 @@ class EnviaServer:
         # TODO path_retorno remover arquivos velhos
         if tipo == "produto":
             self.buscando_produtos()
+        if tipo == "cliente":
+            self.buscando_clientes()
         if tipo == "pedido":
             self.lendo_arquivos()
 
@@ -152,6 +154,50 @@ class EnviaServer:
 
             #             # {'codproduto': 7505, 'unidademedida': 'UN', 'produto': 'MELHORADOR DE FARINHA GRANEL KG', 'valor_prazo': 12.72, 'datacadastro': '11/10/2023        executar_faturamento.py:5
             #             # 00:20:14', 'codpro': '004900', 'origem': '0', 'ncm': '39249000', 'usa': 'S', 'cod_barra': '2004900000007'}
+
+    def buscando_clientes(self):
+        conn = db.connect('lancamento.db')
+        headers = {'Content-type': 'application/json'}
+        AUTH_URL = "http://%s/web/session/authenticate" %(self.url)
+        data = {
+                "jsonrpc": "2.0",
+                "params": {
+                        "db": self.db,
+                        "login": self.login,
+                        "password": self.passwd,
+                    }
+                }  
+        parameter = {
+                        "db": self.db,
+                        "login": self.login,
+                        "password": self.passwd,
+                    }
+        res = rq.get(AUTH_URL, data=json.dumps(data),headers=headers)
+        session_id = res.cookies["session_id"]
+        base_url = '%s/clienteconsulta' %(self.url)
+        json_data = json.dumps(parameter)
+        json_headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            }
+        cookies = {
+            'login': self.login, 
+            'password': self.passwd,
+            'session_id':session_id
+        }
+        vals = {}
+        json_data = json.dumps(vals)
+        retorno = rq.post("http://{}".format(base_url), data=json_data, headers=json_headers, cookies=cookies)
+        if retorno:
+            file_json = retorno.json()
+
+            for item in file_json.values():
+                print (item)
+                if item != None and len(item)>5:
+                    item_json = eval(item)
+                    m_df = pd.DataFrame(item_json)
+                    print(m_df)
+                    m_df.to_sql('cliente', conn, if_exists='replace', index=False)
 
     def lendo_arquivos(self):
         hj = datetime.now()       

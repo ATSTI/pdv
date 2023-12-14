@@ -37,6 +37,17 @@ class Database:
         for item in dados:
             list_accumulator.append({k: item[k] for k in item.keys()})
         return list_accumulator
+    
+    def consulta_cliente(self):
+        cursor = self._db.execute('select * from {}'.format(
+            self._table))
+        dados = cursor.fetchall()
+        if not dados:
+            return False
+        list_accumulator = []
+        for item in dados:
+            list_accumulator.append({k: item[k] for k in item.keys()})
+        return list_accumulator
 
 
     def consulta(self, tipo, caixa, codigo):
