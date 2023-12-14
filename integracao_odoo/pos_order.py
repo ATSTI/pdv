@@ -227,6 +227,8 @@ class IntegracaoOdoo:
         #         continue
             #print ('Produto %s\n' %(str(product_id.product_tmpl_id.id)))
         prod_novo = dblocal.consulta_produto()
+        if not prod_novo:
+            return 'Sem produtos pra atualizar'
         for pr in prod_novo:
             ncm = ''
             if pr['ncm']:
@@ -379,6 +381,8 @@ class IntegracaoOdoo:
         hj = datetime.now()
         hj = datetime.strftime(hj,'%Y-%m-%d')
         cli_ids = dblocal.consulta_cliente()
+        if not cli_ids:
+            return  'Sem clientes pra atualizar'
         for partner_id in cli_ids:
             nome = partner_id['nomecliente']
             razao = nome  
