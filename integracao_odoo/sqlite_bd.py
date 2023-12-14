@@ -10,6 +10,10 @@ class Database:
         self._db.execute('''CREATE TABLE IF NOT EXISTS lancamento
              (tipo VARCHAR(12), user INTEGER, nome VARCHAR(60), caixa integer, codigo integer, data_lancamento date)''')
         # self.table = kwargs.get('table', 'lancamento')
+        self._db.execute('''CREATE TABLE IF NOT EXISTS produto
+             (codproduto VARCHAR(12), produto VARCHAR(60))''')
+        self._db.execute('''CREATE TABLE IF NOT EXISTS cliente
+             (codcliente INTEGER, nome VARCHAR(60))''')
         self.table = kwargs.get('table')
 
     def sql_do(self, sql, *params):
