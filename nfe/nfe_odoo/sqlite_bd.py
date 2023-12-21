@@ -4,6 +4,7 @@
 import sqlite3
 
 class Database:
+
     def __init__(self, **kwargs):
         self.filename = kwargs.get('filename')
         # Create table
@@ -11,7 +12,7 @@ class Database:
              (empresa_id INTEGER, nome VARCHAR(120), razao VARCHAR(120), cnpj VARCHAR(24))''')
         # self.table = kwargs.get('table', 'lancamento')
         self._db.execute('''CREATE TABLE IF NOT EXISTS nfe
-             (id_move INTEGER, xml_aenviar TEXT, xml_enviado TEXT, protocolo VARCHAR(30), chave VARCHAR(60))''')
+             (move_id INTEGER, empresa_id INTEGER, xml_aenviar TEXT, xml_enviado TEXT, protocolo VARCHAR(30), chave VARCHAR(60))''')
         self.table = kwargs.get('table')
 
     def sql_do(self, sql, *params):
@@ -19,23 +20,26 @@ class Database:
         self._db.commit()
 
     def insert_empresa(self, row):
-        self._db.execute('insert into {} (empresa_id, nome, razao, cnpj) values (?, ?, ?, ?)'.format(self._table), (
-            row['empresa_id'],
-            row['nome'],
-            row['razao'],
-            row['cnpj']
-        ))
+        sql = "insert into empresa (empresa_id, nome, razao, cnpj) values (%s, '%s', '%s', '%s')" \
+            %(row['empresa_id'], row['nome'], row['razao'], row['cnpj'])
+        self._db.execute(sql)
         self._db.commit()
     
+    def insert_nfe(self, row):
+        # import pudb;pu.db
+        sql = "insert into nfe (move_id, empresa_id, xml_aenviar, chave) values ('%s', %s, '%s', '%s')" \
+            %(row['move_id'], row['empresa_id'], row['xml_aenviar'], row['chave'])
+        self._db.execute(sql)
+        self._db.commit()
+
     def consulta_nfe(self, chave=None, empresa_id=None):
         if not empresa_id:
             # bloqueia a busca sem informar a empresa
             empresa_id = 1
         busca = "select * from {} where empresa_id = %s" %(str(empresa_id))
         if chave:
-            busca += " and chave like '/%%s/%'" %(chave)
-        cursor = self._db.execute(busca.format(
-            self._table))
+            busca += " and chave like '%s'" %(chave)
+        cursor = self._db.execute(busca.format(self._table))
         dados = cursor.fetchall()
         if not dados:
             return False
@@ -50,9 +54,9 @@ class Database:
         if empresa_id:
             busca += " where empresa_id = " + str(empresa_id)
         if nome:
-            busca += " where nome like '/%%s/%' or razao like '/%%s/%'" %(nome)
+            busca += " where nome like '%s' or razao like '%s'" %(nome)
         if cnpj:
-            busca += " where cnpj like '/%%s/%'" %(cnpj)
+            busca += " where cnpj like '%s'" %(cnpj)
         cursor = self._db.execute(busca.format(self._table))
         dados = cursor.fetchone()
         if not dados:
@@ -70,9 +74,9 @@ class Database:
         self._db.commit()
 
     def disp_rows(self):
-        cursor = self._db.execute('select * from {} order by tipo, caixa, codigo'.format(self._table))
+        cursor = self._db.execute('select * from {} order by nome, razao, cnpj'.format(self._table))
         for row in cursor:
-            print('  {}: {}'.format(row['tipo'], row['caixa'], row['codigo'], row['nome']))
+            print('  {}: {}'.format(row['empresa_id'], row['nome'], row['razao'], row['cnpj']))
 
     def __iter__(self):
         cursor = self._db.execute('select * from {} order by tipo'.format(self._table))
@@ -93,7 +97,7 @@ class Database:
     @table.setter
     def table(self, t): self._table = t
     @table.deleter
-    def table(self): self._table = 'lancamento'
+    def table(self): self._table = 'nfe'
 
     def close(self):
             self._db.close()
