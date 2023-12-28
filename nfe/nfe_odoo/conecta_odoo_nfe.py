@@ -60,7 +60,7 @@ class ConectaServerNFe():
             arquivo = f"{self.path_retorno}{prd.send_file_id.name}"
             save_file = open(arquivo, 'w')
             save_file.write(xml)
-            print ('id: %s , protocolo: %s ' % (xml ,prd.authorization_protocol))
+            print ('Chave: %s , protocolo: %s ' % (chave ,prd.authorization_protocol))
             db.insert_nfe(dict(
                     move_id = prd.id,
                     empresa_id = prd.company_id.id,
