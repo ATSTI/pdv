@@ -21,7 +21,8 @@ class ConectaServer():
         self.db = cfg.get('INTEGRA', 'db')
         self.porta = cfg.get('INTEGRA', 'porta')
         self.login = cfg.get('INTEGRA', 'login')
-        self.passwd = cfg.get('INTEGRA', 'password')        
+        self.passwd = cfg.get('INTEGRA', 'password')
+        print ("Verificando cadastro de empresas")        
         self.busca_empresa()
 
     def _conexao_odoo(self):
@@ -44,6 +45,7 @@ class ConectaServer():
             if emp.cnpj_cpf:
                 cnpj = emp.cnpj_cpf
             if not existe:
+                print (f"Cadastrando empresa : {emp.name}")
                 db.insert_empresa(dict(
                     empresa_id = emp.id,
                     nome = emp.name,
@@ -56,6 +58,7 @@ class ConectaServer():
             empresa_arquivo = f"{self.path_retorno}/{cnpj}.ini"
             if not os.path.isfile(empresa_arquivo):        
                 if cnpj:
+                    print (f"Criando o arquivo INI para a empresa: {emp.name}-{empresa_arquivo}")
                     # arquivo modelo
                     empresa_modelo = f"{self.path_retorno}/empresa.ini"
                     shutil.copyfile(empresa_modelo,empresa_arquivo) 
