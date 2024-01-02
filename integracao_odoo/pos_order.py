@@ -28,13 +28,14 @@ class IntegracaoOdoo:
         self.path_retorno = cfg.get('INTEGRA', 'path_retorno' )
         # self.host = cfg.get('DATABASE', 'hostname')
         # self.db = cfg.get('DATABASE', 'path')
+        self.caixa_user = cfg.get('INTEGRA', 'caixa_user')
         rodou = 1
         while(True):
             # Cria o ARQUIVO JSON dos Pedidos para ser enviado
             self.action_atualiza_vendas()
             # Cria o ARQUIVO JSON dos Caixas para ser enviado
             if rodou == 1 or rodou % 10 == 0:
-                print ('CAIXA ATUALZADP')
+                print ('CAIXA ATUALZA')
                 self.action_atualiza_caixas(None)
             envia("pedido")
             # Busca alterações dos produtos e grava no database local para ser comparado com o BD do PDV
@@ -53,32 +54,19 @@ class IntegracaoOdoo:
 
     def action_atualiza_caixas(self, session):
         try:
-            # db = con.Conexao(self.host, self.database)
             db = con()
         except:
             msg_sis = u'Caminho ou nome do banco inválido.<br>'
         msg_erro = ''
         msg_sis = 'Integrando Caixa com o PDV<br>'
         hj = datetime.now()
-        hj = hj - timedelta(days=4)
+        hj = hj - timedelta(days=9)
         hj = datetime.strftime(hj,'%Y-%m-%d')
 
-        # sessao_ids = self.env['pos.session'].search([
-        #     ('create_date', '>=', hj),   
-        #     ('state','=','opened')
-        #     ])
-        #('state','=','opened')
-        # for ses in sessao_ids:
-        
-            # TODO trocar os numeros abaixo pelas variaveis
-            #user_temp = 11
-            #sess_temp = 4564
-            # num_sessao = int(session.name[len(ses.name)-4:])
-            # num_sessao = ses.id
         sqlp = "SELECT IDCAIXACONTROLE \
                 ,CODCAIXA, CODUSUARIO, SITUACAO, DATAFECHAMENTO \
                 ,NOMECAIXA, DATAABERTURA FROM CAIXA_CONTROLE \
-                WHERE SITUACAO = 'o' AND DATAABERTURA = '%s'" %(hj)
+                WHERE DATAABERTURA >= '%s' AND CODUSUARIO = %s" %(hj, str(self.caixa_user))
         sess = db.query(sqlp)
         for ses in sess:
             vals = {}
@@ -88,45 +76,18 @@ class IntegracaoOdoo:
             # vals['config_id'] = ses.config_id.id
             data_abertura = f"{ses[6]} 20:00:00"
             vals['start_at'] = data_abertura
-            vals['state'] = 'draft'
+            if ses[3] == 'o':
+                vals['state'] = 'draft'
             arquivo_nome = self.path_envio + '/caixa_%s.json' %(ses[1])
+            if ses[3] == 'F':
+                vals['state'] = 'closed'
+                arquivo_nome = self.path_envio + '/caixaf_%s.json' %(ses[1])
             if os.path.exists(arquivo_nome):
                 continue
             arquivo_json = open(arquivo_nome, 'w+')
             dados_vals = json.dumps(vals)
             arquivo_json.write(dados_vals)
-            # if not len(sess):
-            #     #state = 'c' # close
-            #     #if ses.state == 'opened':
-            #     #dta_abre = '%s.%s.%s' %(str(ses.start_at.month).zfill(2), str(ses.start_at.day).zfill(2), str(ses.start_at.year))
-            #     hj = datetime.now()
-            #     dta_abre = datetime.strftime(hj,'%m-%d-%Y')
-            #     if ses.start_at:
-            #         dta_abre = '%s/%s/%s' %(str(ses.start_at[5:7]), str(ses.start_at[8:10]), str(ses.start_at[:4]))
-            #     state = 'o'
-            #     insere = 'INSERT INTO CAIXA_CONTROLE (IDCAIXACONTROLE, '
-            #     insere += 'CODCAIXA, CODUSUARIO, SITUACAO, DATAFECHAMENTO'
-            #     insere += ',NOMECAIXA, DATAABERTURA) VALUES ('
-            #     insere += '%s'
-            #     insere += ',%s'
-            #     insere += ',%s'
-            #     insere += ',\'%s\''
-            #     insere += ',\'%s\''
-            #     insere += ',\'%s\''
-            #     insere += ',\'%s\');'
                 
-            #     insere = insere %(str(ses.id), str(ses.id), str(ses.user_id.id), str(state) \
-            #     ,str('01.01.2018'), str(ses.name), str(dta_abre))
-            #     db.insert(insere)
-            # else:
-            # if not len(sess):
-            #     #if ses.state != 'opened':
-            #     #    altera = 'UPDATE CAIXA_CONTROLE SET SITUACAO = \'F\''
-            #     #    altera += ' WHERE IDCAIXACONTROLE = %s' %(str(ses.id))
-            #     #    db.insert(altera)
-
-            #     if sess[0][1] == 'F':
-            #         ses.venda_finalizada = True
         # INSERINDO sangria
         # for ses in sessao_ids: 
         #     hj = datetime.now()
@@ -804,7 +765,7 @@ class IntegracaoOdoo:
         msg_sis = 'Integrando Vendas para o PDV<br>'
         hj = datetime.now()
         # hj = hj - timedelta(days=session.periodo_integracao)
-        hj = hj - timedelta(days=4)
+        hj = hj - timedelta(days=9)
         hj = datetime.strftime(hj,'%m-%d-%Y')
         caixa_usado = 'None'
         # TODO le o ultimo arquivo de retorno com as ultimas atualizacos
@@ -814,8 +775,8 @@ class IntegracaoOdoo:
         sqlc = "SELECT FIRST 1 r.IDCAIXACONTROLE, r.CODCAIXA,  \
                r.VALORABRE, r.VALORFECHA  \
                FROM CAIXA_CONTROLE r WHERE r.SITUACAO = '%s' \
-               AND DATAABERTURA = '%s' \
-               ORDER BY r.CODCAIXA " %('o', hj)
+               AND DATAABERTURA >= '%s'  \
+               AND CODUSUARIO = %s ORDER BY r.CODCAIXA " %('o', hj, str(self.caixa_user))
         caixa_aberto = db.query(sqlc)
         sqld = False
         for cx in caixa_aberto:
