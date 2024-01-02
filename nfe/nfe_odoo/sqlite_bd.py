@@ -12,7 +12,10 @@ class Database:
              (empresa_id INTEGER, nome VARCHAR(120), razao VARCHAR(120), cnpj VARCHAR(24))''')
         # self.table = kwargs.get('table', 'lancamento')
         self._db.execute('''CREATE TABLE IF NOT EXISTS nfe
-             (move_id INTEGER, empresa_id INTEGER, xml_aenviar TEXT, xml_enviado TEXT, protocolo VARCHAR(30), chave VARCHAR(60))''')
+            (move_id INTEGER, empresa_id INTEGER, xml_aenviar TEXT, xml_enviado TEXT,\
+                protocolo VARCHAR(30), chave VARCHAR(60), \
+                destinatario VARCHAR(80), num_nfe VARCHAR(20), data_emissao DATE, situacao VARCHAR(20)
+            )''')
         self.table = kwargs.get('table')
 
     def sql_do(self, sql, *params):
@@ -27,8 +30,16 @@ class Database:
     
     def insert_nfe(self, row):
         # import pudb;pu.db
-        sql = "insert into nfe (move_id, empresa_id, xml_aenviar, chave) values ('%s', %s, '%s', '%s')" \
-            %(row['move_id'], row['empresa_id'], row['xml_aenviar'], row['chave'])
+        sql = "insert into nfe (move_id, empresa_id, xml_aenviar, chave, destinatario, \
+            num_nfe, data_emissao, situacao) values ('%s', %s, \
+            '%s', '%s', '%s', '%s', '%s', '%s')" \
+            %(row['move_id'], row['empresa_id'], row['xml_aenviar'],
+                row['chave'],
+                row['dest'],
+                row['num_nfe'],
+                row['data_emissao'],
+                row['situacao']
+            )
         self._db.execute(sql)
         self._db.commit()
 
@@ -36,17 +47,29 @@ class Database:
         if not empresa_id:
             # bloqueia a busca sem informar a empresa
             empresa_id = 1
-        busca = "select * from {} where empresa_id = %s" %(str(empresa_id))
+        busca = "select * from {} where empresa_id = %s " %(str(empresa_id))
         if chave:
             busca += " and chave like '%s'" %(chave)
+        busca += " order by num_nfe desc"
         cursor = self._db.execute(busca.format(self._table))
         dados = cursor.fetchall()
         if not dados:
             return False
         list_accumulator = []
+        # import pudb;pu.db
         for item in dados:
+            if item['situacao'] == 'A_enviar':
+                excluir = "DELETE FROM {} WHERE empresa_id = %s and num_nfe = %s" %(
+                    str(empresa_id),
+                    item['num_nfe']
+                )
+                self._db.execute(excluir.format(self._table))
+                continue
             list_accumulator.append({k: item[k] for k in item.keys()})
-        return list_accumulator
+        if len(list_accumulator):
+            return list_accumulator
+        else:
+            return False
 
 
     def consulta_empresa(self, empresa_id=None, nome=None, cnpj=None):

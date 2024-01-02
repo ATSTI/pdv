@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import odoorpc
 # import re
-# from datetime import datetime
+from datetime import datetime
 # from datetime import date
 # from datetime import timedelta
 # import sys
@@ -41,13 +41,13 @@ class ConectaServerNFe():
         p_xml = con.env['account.move']
         #nfe_ids = p_xml.search([('id', '=', 4)])
 
-        chave = '35231118880480000198550010000093411523728494'
-        nfe_ids = p_xml.search([('document_key', '=', chave)])
-        # nfe_ids = p_xml.search([
-            # ('document_type_id.code', '=', '55'),
-            # ('state_edoc', '=', 'a_enviar'),
-            # ('company_id', '=', empresa)
-        # ])
+        # chave = '35231118880480000198550010000093411523728494'
+        # nfe_ids = p_xml.search([('document_key', '=', chave)])
+        nfe_ids = p_xml.search([
+            ('document_type_id.code', '=', '55'),
+            ('state_edoc', '=', 'a_enviar'),
+            ('company_id', '=', empresa)
+        ])
 
         empresa_id = 1
         for prd in p_xml.browse(nfe_ids):
@@ -61,11 +61,17 @@ class ConectaServerNFe():
             save_file = open(arquivo, 'w')
             save_file.write(xml)
             print ('Chave: %s , protocolo: %s ' % (chave ,prd.authorization_protocol))
+            emissao = datetime.strftime(prd.document_date,'%Y-%m-%d')
+
             db.insert_nfe(dict(
                     move_id = prd.id,
                     empresa_id = prd.company_id.id,
                     xml_aenviar = xml,
-                    chave = prd.document_key
+                    chave = prd.document_key,
+                    dest = prd.partner_id.name,
+                    num_nfe = prd.document_number,
+                    data_emissao = emissao,
+                    situacao = 'A_enviar'
                 ))
             
 ConectaServerNFe()
