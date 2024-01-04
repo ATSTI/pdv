@@ -55,7 +55,13 @@ class ConectaServer():
             replace = ['-', ' ', '(',')', '/', '.', ':','º','+55']
             for i in replace:
                 cnpj = cnpj.replace(i, '')
-            empresa_arquivo = f"{self.path_retorno}/{cnpj}.ini"
+            empresa_arquivo = f"{self.path_retorno}/empresas"
+            # Check whether the specified path exists or not
+            isExist = os.path.exists(empresa_arquivo)
+            if not isExist:
+                # Create a new directory because it does not exist
+                os.makedirs(empresa_arquivo)
+            empresa_arquivo = f"{empresa_arquivo}/{cnpj}.ini"
             if not os.path.isfile(empresa_arquivo):        
                 if cnpj:
                     print (f"Criando o arquivo INI para a empresa: {emp.name}-{empresa_arquivo}")
