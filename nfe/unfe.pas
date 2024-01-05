@@ -3907,6 +3907,7 @@ begin
           end
           else
           begin
+            cst_parte :=  dmPdv.cdsItensNFCST.AsString;
             cst_parte := copy(Trim(dmPdv.cdsItensNFCST.AsString),2,2);
             if (cst_parte = '00') then
             begin

@@ -27,6 +27,7 @@ class EnviaServer:
         # db = cfg.get('DATABASE', 'database' ),
 
         # TODO path_retorno remover arquivos velhos
+        # self.buscando_script()
         if tipo == "produto":
             self.buscando_produtos()
         if tipo == "cliente":

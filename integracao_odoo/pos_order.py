@@ -28,6 +28,7 @@ class IntegracaoOdoo:
         self.path_retorno = cfg.get('INTEGRA', 'path_retorno' )
         # self.host = cfg.get('DATABASE', 'hostname')
         # self.db = cfg.get('DATABASE', 'path')
+        self.caixa_user = cfg.get('INTEGRA', 'caixa_user')
         rodou = 1
         while(True):
             # Cria o ARQUIVO JSON dos Pedidos para ser enviado
@@ -60,7 +61,7 @@ class IntegracaoOdoo:
         msg_erro = ''
         msg_sis = 'Integrando Caixa com o PDV<br>'
         hj = datetime.now()
-        hj = hj - timedelta(days=4)
+        hj = hj - timedelta(days=9)
         hj = datetime.strftime(hj,'%Y-%m-%d')
 
         # sessao_ids = self.env['pos.session'].search([
@@ -244,7 +245,7 @@ class IntegracaoOdoo:
             if pr['valor_prazo']:
                 p_venda = pr['valor_prazo']
             codbarra = ''
-            if pr['cod_barra'] and len(pr['cod_barra']) < 14:
+            if 'cod_barra' in pr and pr['cod_barra'] and len(pr['cod_barra']) < 14:
                 codbarra = pr['cod_barra'].strip()
             produto = pr['produto'].strip()
             produto = produto.replace("'"," ")
@@ -804,7 +805,7 @@ class IntegracaoOdoo:
         msg_sis = 'Integrando Vendas para o PDV<br>'
         hj = datetime.now()
         # hj = hj - timedelta(days=session.periodo_integracao)
-        hj = hj - timedelta(days=4)
+        hj = hj - timedelta(days=9)
         hj = datetime.strftime(hj,'%m-%d-%Y')
         caixa_usado = 'None'
         # TODO le o ultimo arquivo de retorno com as ultimas atualizacos
