@@ -11,6 +11,7 @@ import os
 import unidecode
 import json
 import configparser
+from main import Main as verifica_versao
 from atscon import Conexao as con
 from conecta_server import EnviaServer as envia
 from sqlite_bd import Database as local_db
@@ -22,6 +23,7 @@ class IntegracaoOdoo:
     _name = 'integracao.odoo'
     
     def __init__(self):
+        verifica_versao()
         cfg = configparser.ConfigParser()
         cfg.read('conf.ini')
         self.path_envio  = cfg.get('INTEGRA', 'path_envio')
