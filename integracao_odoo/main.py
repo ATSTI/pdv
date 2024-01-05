@@ -14,10 +14,8 @@ class Main():
         else:
             self.versao = '0.0.0.0'
         self.buscando_script()
-        # itr = integra()
 
     def buscando_script(self):
-        import pudb;pu.db
         path_url = f"https://github.com/ATSTI/pdv/raw/integracao_odoo_script/integracao_odoo/{self.versao_name}"
         retorno = rq.get(path_url)
         with open(self.versao_name, mode="w") as arq_retorno:
@@ -40,5 +38,3 @@ class Main():
             file_retorno = arq
             with open(file_retorno, mode="w") as arq_retorno:
                 arq_retorno.write(retorno.text)
-
-Main()
