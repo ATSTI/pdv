@@ -1,0 +1,161 @@
+<NFe xmlns="http://www.portalfiscal.inf.br/nfe">
+    <infNFe versao="4.00" Id="NFe35231218250221000183550010000000201763100832">
+        <ide>
+            <cUF>35</cUF>
+            <cNF>76310083</cNF>
+            <natOp>Venda</natOp>
+            <mod>55</mod>
+            <serie>1</serie>
+            <nNF>20</nNF>
+            <dhEmi>2023-12-26T15:47:02-02:00</dhEmi>
+            <dhSaiEnt>2023-12-26T15:48:20-02:00</dhSaiEnt>
+            <tpNF>1</tpNF>
+            <idDest>1</idDest>
+            <cMunFG>3503802</cMunFG>
+            <tpImp>1</tpImp>
+            <tpEmis>1</tpEmis>
+            <cDV>2</cDV>
+            <tpAmb>2</tpAmb>
+            <finNFe>1</finNFe>
+            <indFinal>0</indFinal>
+            <indPres>0</indPres>
+            <procEmi>0</procEmi>
+            <verProc>Odoo Brasil OCA v14</verProc>
+        </ide>
+        <emit>
+            <CNPJ>18250221000183</CNPJ>
+            <xNome>BRUNA DE OLIVEIRA PEREIRA</xNome>
+            <xFant>BRUNA DE OLIVEIRA PEREIRA</xFant>
+            <enderEmit>
+                <xLgr>RODOVIA SP 107</xLgr>
+                <nro>KM28, SN</nro>
+                <xCpl>BOX 06</xCpl>
+                <xBairro>FAZENDA UNIVERSO</xBairro>
+                <cMun>3503802</cMun>
+                <xMun>Artur Nogueira</xMun>
+                <UF>SP</UF>
+                <CEP>13167314</CEP>
+                <cPais>1058</cPais>
+                <xPais>Brasil</xPais>
+            </enderEmit>
+            <IE>187034678117</IE>
+            <CRT>1</CRT>
+        </emit>
+        <dest>
+            <CNPJ>03630560000118</CNPJ>
+            <xNome>NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL</xNome>
+            <enderDest>
+                <xLgr>RODOVIA 107 KM 27</xLgr>
+                <nro>S/N</nro>
+                <xBairro>ZONA RURAL</xBairro>
+                <cMun>3548005</cMun>
+                <xMun>Santo Antônio de Posse</xMun>
+                <UF>SP</UF>
+                <CEP>13833585</CEP>
+                <cPais>1058</cPais>
+                <xPais>Brasil</xPais>
+                <fone>1938029200</fone>
+            </enderDest>
+            <indIEDest>1</indIEDest>
+            <IE>630011957118</IE>
+            <email>faturamentomc@cvh.com.br;nfefiscal@cvh.com.br</email>
+        </dest>
+        <det nItem="1">
+            <prod>
+                <cProd>1000</cProd>
+                <cEAN>SEM GTIN</cEAN>
+                <xProd>COSTOS HELICONIA</xProd>
+                <NCM>06012000</NCM>
+                <CFOP>5101</CFOP>
+                <uCom>UNID</uCom>
+                <qCom>10.0000</qCom>
+                <vUnCom>1.5000000000</vUnCom>
+                <vProd>15.00</vProd>
+                <cEANTrib>SEM GTIN</cEANTrib>
+                <uTrib>UNID</uTrib>
+                <qTrib>10.0000</qTrib>
+                <vUnTrib>1.5000000000</vUnTrib>
+                <indTot>1</indTot>
+            </prod>
+            <imposto>
+                <ICMS>
+                    <ICMSSN101>
+                        <orig>0</orig>
+                        <CSOSN>101</CSOSN>
+                        <pCredSN>0.0000</pCredSN>
+                        <vCredICMSSN>0.00</vCredICMSSN>
+                    </ICMSSN101>
+                </ICMS>
+                <IPI>
+                    <cEnq>999</cEnq>
+                    <IPITrib>
+                        <CST>99</CST>
+                        <vBC>0.00</vBC>
+                        <pIPI>0.0000</pIPI>
+                        <vIPI>0.00</vIPI>
+                    </IPITrib>
+                </IPI>
+                <PIS>
+                    <PISOutr>
+                        <CST>49</CST>
+                        <vBC>0.00</vBC>
+                        <pPIS>0.0000</pPIS>
+                        <vPIS>0.00</vPIS>
+                    </PISOutr>
+                </PIS>
+                <COFINS>
+                    <COFINSOutr>
+                        <CST>49</CST>
+                        <vBC>0.00</vBC>
+                        <pCOFINS>0.0000</pCOFINS>
+                        <vCOFINS>0.00</vCOFINS>
+                    </COFINSOutr>
+                </COFINS>
+            </imposto>
+        </det>
+        <total>
+            <ICMSTot>
+                <vBC>0.00</vBC>
+                <vICMS>0.00</vICMS>
+                <vICMSDeson>0.00</vICMSDeson>
+                <vFCP>0.00</vFCP>
+                <vBCST>0.00</vBCST>
+                <vST>0.00</vST>
+                <vFCPST>0.00</vFCPST>
+                <vFCPSTRet>0.00</vFCPSTRet>
+                <vProd>15.00</vProd>
+                <vFrete>0.00</vFrete>
+                <vSeg>0.00</vSeg>
+                <vDesc>0.00</vDesc>
+                <vII>0.00</vII>
+                <vIPI>0.00</vIPI>
+                <vIPIDevol>0.00</vIPIDevol>
+                <vPIS>0.00</vPIS>
+                <vCOFINS>0.00</vCOFINS>
+                <vOutro>0.00</vOutro>
+                <vNF>15.00</vNF>
+            </ICMSTot>
+        </total>
+        <transp>
+            <modFrete>9</modFrete>
+        </transp>
+        <cobr>
+            <fat>
+                <vOrig>15.00</vOrig>
+                <vLiq>15.00</vLiq>
+            </fat>
+            <dup>
+                <nDup>001</nDup>
+                <dVenc>2023-12-26</dVenc>
+                <vDup>15.00</vDup>
+            </dup>
+        </cobr>
+        <pag>
+            <detPag>
+                <indPag>0</indPag>
+                <tPag>01</tPag>
+                <vPag>15.00</vPag>
+            </detPag>
+        </pag>
+    </infNFe>
+</NFe>
