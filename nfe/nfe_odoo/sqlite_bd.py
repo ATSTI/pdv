@@ -14,7 +14,8 @@ class Database:
         self._db.execute('''CREATE TABLE IF NOT EXISTS nfe
             (move_id INTEGER, empresa_id INTEGER, xml_aenviar TEXT, xml_enviado TEXT,\
                 protocolo VARCHAR(30), chave VARCHAR(60), \
-                destinatario VARCHAR(80), num_nfe VARCHAR(20), data_emissao DATE, situacao VARCHAR(20)
+                destinatario VARCHAR(80), num_nfe VARCHAR(20), data_emissao DATE,
+                situacao VARCHAR(20), situacao_odoo VARCHAR(20)
             )''')
         self.table = kwargs.get('table')
 
@@ -43,22 +44,22 @@ class Database:
         self._db.execute(sql)
         self._db.commit()
 
-    def consulta_nfe(self, chave=None, empresa_id=None):
+    def consulta_nfe(self, chave=None, empresa_id=None, limit=50):
         if not empresa_id:
             # bloqueia a busca sem informar a empresa
             empresa_id = 1
         busca = "select * from {} where empresa_id = %s " %(str(empresa_id))
         if chave:
             busca += " and chave like '%s'" %(chave)
-        busca += " order by num_nfe desc"
+        busca += " order by num_nfe desc LIMIT %s" %(limit)
         cursor = self._db.execute(busca.format(self._table))
         dados = cursor.fetchall()
         if not dados:
             return False
         list_accumulator = []
-        # import pudb;pu.db
         for item in dados:
-            if item['situacao'] == 'A_enviar':
+            # coloquei o limit > 5 pq qdo consulta pra enviar para o odoo nao pode exluir
+            if item['situacao'] == 'A_enviar' and limit > 5:
                 excluir = "DELETE FROM {} WHERE empresa_id = %s and num_nfe = %s" %(
                     str(empresa_id),
                     item['num_nfe']
