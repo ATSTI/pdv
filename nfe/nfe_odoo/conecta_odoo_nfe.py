@@ -37,8 +37,12 @@ class ConectaServerNFe():
         self.passwd = cfg.get('INTEGRA', 'password')
         empresa = int('999999') # ao executar o script substitui pelo id da empresa
         # empresa = '2'
-        self.pega_xml(int(empresa))
-        self.retorna_xml_validado(empresa)
+        funcao_exec = 'PEGA_XML'
+        if funcao_exec == 'ENVIA_AUTORIZADA':
+            self.retorna_xml_validado(int(empresa))
+        else:
+            self.pega_xml(int(empresa))
+            
 
     def _conexao_odoo(self):
         origem = odoorpc.ODOO(self.url, port=self.porta)
