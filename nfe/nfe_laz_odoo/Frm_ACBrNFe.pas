@@ -37,10 +37,10 @@ interface
 uses
   LCLIntf, LCLType, LMessages, Messages, SysUtils, Variants, Classes, Graphics,
   Controls, Forms, Dialogs, ComCtrls, StdCtrls, Spin, Buttons, ExtCtrls,
-  ZDataset, SynEdit, SynHighlighterXML, ACBrPosPrinter, ACBrNFeDANFeESCPOS,
-  ACBrNFeDANFEClass, ACBrDANFCeFortesFr, ACBrDFeReport, ACBrDFeDANFeReport,
-  ACBrNFeDANFeRLClass, ACBrBase, ACBrDFe, ACBrNFe, ACBrUtil, ACBrMail,
-  ACBrIntegrador, ACBrDANFCeFortesFrA4;
+  ZDataset, ZConnection, SynEdit, SynHighlighterXML, ACBrPosPrinter,
+  ACBrNFeDANFeESCPOS, ACBrNFeDANFEClass, ACBrDANFCeFortesFr, ACBrDFeReport,
+  ACBrDFeDANFeReport, ACBrNFeDANFeRLClass, ACBrBase, ACBrDFe, ACBrNFe, ACBrUtil,
+  ACBrMail, ACBrIntegrador, ACBrDANFCeFortesFrA4;
 
 type
 
@@ -57,6 +57,7 @@ type
     btnImprimirDANFCEOffline: TButton;
     Button1: TButton;
     btnTrocarEmitente: TButton;
+    Button2: TButton;
     Label53: TLabel;
     Label54: TLabel;
     pnlMenus: TPanel;
@@ -66,6 +67,7 @@ type
     TabSheet1: TTabSheet;
     PageControl4: TPageControl;
     TabSheet11: TTabSheet;
+    TabSheet15: TTabSheet;
     TabSheet3: TTabSheet;
     lSSLLib: TLabel;
     lCryptLib: TLabel;
@@ -296,11 +298,13 @@ type
     btnManifDestDesconnhecimento: TButton;
     btnManifDestCiencia: TButton;
     btnManifDestOperNaoRealizada: TButton;
+    ZConnP: TZConnection;
     ZQprotocolo: TZQuery;
 
     procedure btnAssinarXMLClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure btnTrocarEmitenteClick(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnSalvarConfigClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -382,6 +386,7 @@ type
   public
     chave : string;
     nomecliente : string;
+    nomeEmUso   : string;
     vAux1 :  string;
     { Public declarations }
   end;
@@ -2019,9 +2024,11 @@ begin
     MemoDados.Lines.Add('Recibo: '+ ACBrNFe1.WebServices.Retorno.Recibo);
     MemoDados.Lines.Add('Protocolo: '+ ACBrNFe1.WebServices.Retorno.Protocolo);
 
+    ZQprotocolo.Active := True;
     sSQL := ' UPDATE nfe' +
           ' SET' +
           ' protocolo = ' + QuotedStr(ACBrNFe1.WebServices.Retorno.Protocolo) +
+          ' , situacao = ' + QuotedStr('Autorizada') +
           ' WHERE chave = ' + QuotedStr(chave);
 
     ZQprotocolo.SQL.Clear;
@@ -3845,6 +3852,7 @@ begin
     fBusca:=TfBusca.Create(Application);
     fBusca.ShowModal;
     nomecliente := fBusca.Edit1.Text;
+    nomeEmUso:= fBusca.Edit5.Text; ;
     chave := fBusca.Edit2.Text;
   finally
     fBusca.Free;
@@ -4108,6 +4116,18 @@ begin
   end;
   LerConfiguracao;
   label53.Caption  :=   ACBrNFe1.SSL.CertRazaoSocial ;
+end;
+
+procedure TfrmACBrNFe.Button2Click(Sender: TObject);
+begin
+  try
+    fBusca:=TfBusca.Create(Application);
+   // fBusca.btnFechar.Click;
+    fBusca.Edit4.Text := nomeEmUso;
+    fBusca.ShowModal;
+  finally
+    fBusca.Free;
+  end;
 end;
 
 

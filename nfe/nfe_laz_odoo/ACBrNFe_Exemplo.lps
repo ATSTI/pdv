@@ -10,9 +10,8 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
         <CursorPos Y="17"/>
-        <UsageCount Value="183"/>
+        <UsageCount Value="188"/>
         <Loaded Value="True"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit0>
       <Unit1>
         <Filename Value="Frm_ACBrNFe.pas"/>
@@ -20,19 +19,16 @@
         <ComponentName Value="frmACBrNFe"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="3926"/>
-        <CursorPos Y="3936"/>
-        <ComponentState Value="1"/>
-        <UsageCount Value="183"/>
+        <TopLine Value="4113"/>
+        <CursorPos X="3" Y="4123"/>
+        <UsageCount Value="188"/>
         <Bookmarks Count="2">
-          <Item0 X="32" Y="3950" ID="1"/>
-          <Item1 X="2" Y="1962" ID="2"/>
+          <Item0 X="32" Y="3958" ID="1"/>
+          <Item1 X="2" Y="1967" ID="2"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit1>
       <Unit2>
         <Filename Value="Frm_SelecionarCertificado.pas"/>
@@ -43,7 +39,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="25"/>
         <CursorPos X="54" Y="30"/>
-        <UsageCount Value="183"/>
+        <UsageCount Value="188"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit2>
       <Unit3>
@@ -53,7 +49,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="183"/>
+        <UsageCount Value="188"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit3>
       <Unit4>
@@ -65,7 +61,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="32"/>
         <CursorPos X="57" Y="33"/>
-        <UsageCount Value="183"/>
+        <UsageCount Value="188"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit4>
       <Unit5>
@@ -75,12 +71,12 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Frm_Busca"/>
-        <TopLine Value="143"/>
-        <CursorPos X="3" Y="146"/>
-        <UsageCount Value="102"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="184"/>
+        <CursorPos X="55" Y="193"/>
+        <UsageCount Value="107"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit5>
       <Unit6>
         <Filename Value="C:\Fontes\ACBrDFe\ACBrNFe\PCNNFe\pcnNFe.pas"/>
@@ -634,123 +630,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="3968" Column="63" TopLine="3984"/>
+        <Caret Line="4126" TopLine="4120"/>
       </Position1>
       <Position2>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="3936" TopLine="3923"/>
+        <Caret Line="3855" TopLine="3840"/>
       </Position2>
       <Position3>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="3939" TopLine="3923"/>
+        <Caret Line="3856" TopLine="3840"/>
       </Position3>
       <Position4>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1970" TopLine="1960"/>
+        <Caret Line="3855" TopLine="3840"/>
       </Position4>
       <Position5>
-        <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1972" TopLine="1960"/>
+        <Filename Value="frm_busca.pas"/>
+        <Caret Line="125" Column="34" TopLine="119"/>
       </Position5>
       <Position6>
-        <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1974" TopLine="1960"/>
+        <Filename Value="frm_busca.pas"/>
+        <Caret Line="225" Column="3" TopLine="223"/>
       </Position6>
       <Position7>
-        <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1975" TopLine="1960"/>
+        <Filename Value="frm_busca.pas"/>
+        <Caret Line="219" Column="3" TopLine="217"/>
       </Position7>
       <Position8>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1977" TopLine="1960"/>
+        <Caret Line="4126" Column="38" TopLine="4113"/>
       </Position8>
       <Position9>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1978" TopLine="1961"/>
+        <Caret Line="3855" Column="31" TopLine="3840"/>
       </Position9>
       <Position10>
-        <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1979" TopLine="1962"/>
+        <Filename Value="frm_busca.pas"/>
+        <Caret Line="185" Column="3" TopLine="182"/>
       </Position10>
       <Position11>
-        <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1980" TopLine="1963"/>
+        <Filename Value="frm_busca.pas"/>
+        <Caret Line="188" Column="56" TopLine="183"/>
       </Position11>
       <Position12>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1982" TopLine="1965"/>
+        <Caret Line="4129" Column="4" TopLine="4120"/>
       </Position12>
       <Position13>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1983" TopLine="1966"/>
+        <Caret Line="3850" Column="3" TopLine="3840"/>
       </Position13>
       <Position14>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1984" TopLine="1967"/>
+        <Caret Line="3855" TopLine="3840"/>
       </Position14>
       <Position15>
-        <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1985" TopLine="1968"/>
+        <Filename Value="frm_busca.pas"/>
+        <Caret Line="220" Column="3" TopLine="218"/>
       </Position15>
       <Position16>
-        <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1986" TopLine="1969"/>
+        <Filename Value="frm_busca.pas"/>
+        <Caret Line="168" Column="3" TopLine="165"/>
       </Position16>
       <Position17>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1987" TopLine="1970"/>
+        <Caret Line="3848" Column="38" TopLine="3840"/>
       </Position17>
       <Position18>
-        <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1988" TopLine="1971"/>
+        <Filename Value="frm_busca.pas"/>
+        <Caret Line="168" TopLine="166"/>
       </Position18>
       <Position19>
-        <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1989" TopLine="1972"/>
+        <Filename Value="frm_busca.pas"/>
+        <Caret Line="169" TopLine="165"/>
       </Position19>
       <Position20>
-        <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1990" TopLine="1973"/>
+        <Filename Value="frm_busca.pas"/>
+        <Caret Line="170" TopLine="165"/>
       </Position20>
       <Position21>
-        <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1991" TopLine="1974"/>
+        <Filename Value="frm_busca.pas"/>
+        <Caret Line="171" TopLine="165"/>
       </Position21>
       <Position22>
-        <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1992" TopLine="1975"/>
+        <Filename Value="frm_busca.pas"/>
+        <Caret Line="172" TopLine="165"/>
       </Position22>
       <Position23>
-        <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1994" TopLine="1977"/>
+        <Filename Value="frm_busca.pas"/>
+        <Caret Line="173" TopLine="165"/>
       </Position23>
       <Position24>
-        <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1995" TopLine="1978"/>
+        <Filename Value="frm_busca.pas"/>
+        <Caret Line="175" TopLine="165"/>
       </Position24>
       <Position25>
-        <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1996" TopLine="1979"/>
+        <Filename Value="frm_busca.pas"/>
+        <Caret Line="176" TopLine="165"/>
       </Position25>
       <Position26>
-        <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1998" TopLine="1981"/>
+        <Filename Value="frm_busca.pas"/>
+        <Caret Line="168" TopLine="164"/>
       </Position26>
       <Position27>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2001" TopLine="1990"/>
+        <Caret Line="3855" TopLine="3845"/>
       </Position27>
       <Position28>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2002" TopLine="1990"/>
+        <Caret Line="3856" TopLine="3845"/>
       </Position28>
       <Position29>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2031" TopLine="2021"/>
+        <Caret Line="4124" TopLine="4113"/>
       </Position29>
       <Position30>
         <Filename Value="frm_busca.pas"/>
-        <Caret Line="146" Column="3" TopLine="143"/>
+        <Caret Line="168" TopLine="164"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -765,42 +761,56 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="Frm_ACBrNFe.pas"/>
-        <Line Value="4064"/>
+        <Line Value="4072"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="Frm_ACBrNFe.pas"/>
-        <Line Value="4084"/>
+        <Line Value="4092"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="Frm_ACBrNFe.pas"/>
-        <Line Value="4130"/>
+        <Line Value="4150"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="frm_busca.pas"/>
-        <Line Value="129"/>
+        <Line Value="152"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="Frm_ACBrNFe.pas"/>
-        <Line Value="1970"/>
+        <Line Value="4124"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="Frm_ACBrNFe.pas"/>
-        <Line Value="3936"/>
+        <Line Value="3855"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="frm_busca.pas"/>
+        <Line Value="189"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="frm_busca.pas"/>
+        <Line Value="169"/>
       </Item>
     </BreakPoints>
   </Debugging>

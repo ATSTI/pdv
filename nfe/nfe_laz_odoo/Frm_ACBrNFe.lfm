@@ -1812,9 +1812,9 @@ object frmACBrNFe: TfrmACBrNFe
       Height = 215
       Top = 1
       Width = 571
-      ActivePage = TabSheet11
+      ActivePage = TabSheet15
       Align = alTop
-      TabIndex = 5
+      TabIndex = 6
       TabOrder = 0
       object tsEnvios: TTabSheet
         Caption = 'Envios'
@@ -2220,6 +2220,20 @@ object frmACBrNFe: TfrmACBrNFe
           ParentColor = False
         end
       end
+      object TabSheet15: TTabSheet
+        Caption = 'Tecnico'
+        ClientHeight = 189
+        ClientWidth = 563
+        object Button2: TButton
+          Left = 155
+          Height = 25
+          Top = 103
+          Width = 117
+          Caption = 'Button2'
+          OnClick = Button2Click
+          TabOrder = 0
+        end
+      end
     end
     object pgRespostas: TPageControl
       Left = 1
@@ -2567,9 +2581,26 @@ object frmACBrNFe: TfrmACBrNFe
     Top = 312
   end
   object ZQprotocolo: TZQuery
-    Connection = fBusca.ZConn
+    Connection = ZConnP
+    SQL.Strings = (
+      'select * from nfe'
+    )
     Params = <>
     Left = 325
+    Top = 473
+  end
+  object ZConnP: TZConnection
+    ControlsCodePage = cCP_UTF8
+    AutoEncodeStrings = True
+    Properties.Strings = (
+      'AutoEncodeStrings=True'
+      'controls_cp=CP_UTF8'
+    )
+    Port = 0
+    Database = 'C:\home\odoo_nfe\lancamento.db'
+    Protocol = 'sqlite-3'
+    LibraryLocation = 'C:\home\odoo_nfe\sqlite3.dll'
+    Left = 248
     Top = 473
   end
 end

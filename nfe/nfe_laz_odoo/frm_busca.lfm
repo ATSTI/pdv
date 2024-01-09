@@ -44,9 +44,9 @@ object fBusca: TfBusca
         TabOrder = 1
       end
       object Label1: TLabel
-        Left = 376
+        Left = 368
         Height = 25
-        Top = 24
+        Top = -8
         Width = 78
         Caption = 'Emitente'
         Font.Height = -19
@@ -87,9 +87,9 @@ object fBusca: TfBusca
             FieldName = 'empresa_id'
           end        
           item
-            Title.Caption = 'Razão Social'
+            Title.Caption = 'NOME'
             Width = 300
-            FieldName = 'razao'
+            FieldName = 'nome'
           end        
           item
             Title.Caption = 'CNPJ'
@@ -127,15 +127,34 @@ object fBusca: TfBusca
         Top = 56
         Width = 160
         Caption = 'Carregar Notas da Empresa'
+        OnClick = Button3Click
         TabOrder = 7
       end
       object Edit2: TEdit
-        Left = 232
+        Left = 488
         Height = 23
-        Top = 0
-        Width = 392
+        Top = 24
+        Width = 296
         TabOrder = 8
         Text = 'Edit2'
+        Visible = False
+      end
+      object Label2: TLabel
+        Left = 128
+        Height = 15
+        Top = 24
+        Width = 69
+        Caption = 'Busca NOME'
+        ParentColor = False
+      end
+      object Edit3: TEdit
+        Left = 216
+        Height = 23
+        Top = 23
+        Width = 376
+        CharCase = ecUppercase
+        OnChange = Edit3Change
+        TabOrder = 9
       end
     end
     object TabSheet2: TTabSheet
@@ -172,12 +191,12 @@ object fBusca: TfBusca
           end        
           item
             Title.Caption = 'CHAVE'
-            Width = 300
+            Width = 295
             FieldName = 'chave'
           end        
           item
             Title.Caption = 'PROTOCOLO'
-            Width = 80
+            Width = 105
             FieldName = 'protocolo'
           end        
           item
@@ -358,8 +377,42 @@ object fBusca: TfBusca
           OnClick = btnImportaNfeOdooClick
           TabOrder = 1
         end
+        object btnNotasGeradas: TButton
+          Left = 660
+          Height = 25
+          Top = 38
+          Width = 124
+          Caption = 'Notas Geradas'
+          OnClick = btnNotasGeradasClick
+          TabOrder = 2
+        end
       end
     end
+  end
+  object btnFechar: TButton
+    Left = 761
+    Height = 25
+    Top = 505
+    Width = 75
+    Caption = 'Fechar'
+    OnClick = btnFecharClick
+    TabOrder = 1
+  end
+  object Edit4: TEdit
+    Left = 856
+    Height = 23
+    Top = 504
+    Width = 80
+    TabOrder = 2
+    Text = 'Edit4'
+  end
+  object Edit5: TEdit
+    Left = 377
+    Height = 23
+    Top = 503
+    Width = 80
+    TabOrder = 3
+    Text = 'Edit5'
   end
   object OpenDialog1: TOpenDialog
     Title = 'Selecione a NFe'
@@ -389,8 +442,9 @@ object fBusca: TfBusca
   end
   object ZQemp: TZQuery
     Connection = ZConn
+    OnFilterRecord = ZQempFilterRecord
     SQL.Strings = (
-      'select * from empresa'
+      'select * from empresa order by empresa_id'
     )
     Params = <>
     Left = 248
@@ -437,7 +491,7 @@ object fBusca: TfBusca
   end
   object PythonEngine1: TPythonEngine
     DllName = 'python38.dll'
-    DllPath = 'C:\home\FPC\Demo01'
+    DllPath = 'C:\home\odoo_nfe'
     APIVersion = 1013
     RegVersion = '3.11'
     UseLastKnownVersion = False
