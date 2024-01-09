@@ -36,8 +36,11 @@ class ConectaServerNFe():
         self.login = cfg.get('INTEGRA', 'login')
         self.passwd = cfg.get('INTEGRA', 'password')
         empresa = int('999999') # ao executar o script substitui pelo id da empresa
-        # empresa = '2'
+        # uso TESTE
+        #empresa = '2'
         funcao_exec = 'PEGA_XML'
+        # uso TESTE
+        #funcao_exec = 'ENVIA_AUTORIZADA'
         if funcao_exec == 'ENVIA_AUTORIZADA':
             self.retorna_xml_validado(int(empresa))
         else:
@@ -113,7 +116,6 @@ class ConectaServerNFe():
                 ('document_key', '=', nota['chave']),
                 ('company_id', '=', int(empresa))
             ])
-            
             if not nfe_ids:
                 continue
             nfe = n_xml.browse(nfe_ids)
