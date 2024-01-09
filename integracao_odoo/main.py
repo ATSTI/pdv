@@ -18,11 +18,13 @@ class Main():
     def buscando_script(self):
         path_url = f"https://github.com/ATSTI/pdv/raw/integracao_odoo_script/integracao_odoo/{self.versao_name}"
         retorno = rq.get(path_url)
+        print(retorno.text)
         with open(self.versao_name, mode="w") as arq_retorno:
             arq_retorno.write(retorno.text)
         cfg = configparser.ConfigParser()
         cfg.read(self.versao_name)
         versao_atual  = cfg.get('SISTEMA', 'versao')
+        print("versao atual " + versao_atual)
         if versao_atual == self.versao:
             return
         arquivos = [
@@ -33,8 +35,11 @@ class Main():
             'sqlite_bd.py'
         ]
         for arq in arquivos:
+            print ("Atualizando arquivos - " + arq) 
             path_url = f"https://github.com/ATSTI/pdv/raw/integracao_odoo_script/integracao_odoo/{arq}"
             retorno = rq.get(path_url)
+            if arq == "pos_order.py":
+                arq = "pos_order.pyw"
             file_retorno = arq
             with open(file_retorno, mode="w") as arq_retorno:
                 arq_retorno.write(retorno.text)

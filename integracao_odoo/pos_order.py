@@ -23,6 +23,7 @@ class IntegracaoOdoo:
     _name = 'integracao.odoo'
     
     def __init__(self):
+        print ("verificando versao")
         verifica_versao()
         cfg = configparser.ConfigParser()
         cfg.read('conf.ini')
