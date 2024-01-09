@@ -121,8 +121,8 @@ class ConectaServerNFe():
                 if nfe.state_edoc in ('autorizada', 'cancelada', 'denegada', 'inutilizada'):
                     continue
             if not nfe.authorization_file_id:
-                file_name = f"{nota['chave']}-nfe.xml"
-                arquivo = f"{self.path_retorno}/xml/{file_name}"
+                file_name = f"NFe{nota['chave']}-env.xml"
+                arquivo = f"{self.path_retorno}/notas/{file_name}"
                 xml_file = open(arquivo, 'r')
                 # envia o xml para o Odoo e altera a situacao
                 environment='prod' if nfe.nfe_environment == "1" else 'hml'
@@ -149,7 +149,7 @@ class ConectaServerNFe():
                     "mimetype": "application/xml",
                     "type": "binary",
                 })
-                event_id.file_response_id = False
+                # event_id.file_response_id = False
                 event_id.file_response_id = att_file
                 tree = ET.parse(arquivo)
                 root = tree.getroot()
@@ -169,12 +169,13 @@ class ConectaServerNFe():
                         "protocol_number": nProt.text,
                     }
                 )
-                nfe.authorization_event_id = event_id.id
-                # muda a situacao_odoo                
+                atualiza = {'authorization_event_id': event_id.id}
+                # muda a situacao_odoo
                 situacao = ''
                 if nota['situacao'] == 'Autorizada':
                     situacao = 'autorizada'
-                    nfe.write({'state_edoc': situacao,})
+                    atualiza['state_edoc'] = situacao
+                nfe.write(atualiza)
                 # muda situacao_odoo
                 sql_update = "update nfe set situacao_odoo = 'enviada' where chave = '%s' \
                     and empresa_id = %s" %(nota['chave'], empresa)
