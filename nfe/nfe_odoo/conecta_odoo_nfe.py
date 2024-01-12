@@ -23,10 +23,11 @@ logging.basicConfig(handlers=handlers,
                     format='%(levelname)s %(asctime)s %(message)s', 
                     datefmt='%d/%m/%Y%I:%M:%S %p')
 
+
 class ConectaServerNFe():
     _name = 'conecta.server.nfe'
 
-    def __init__(self):
+    def __init__(self, funcao_exec='PEGA_XML', empresa='999999'):
         cfg = configparser.ConfigParser()
         cfg.read('conf.ini')
         self.path_retorno  = cfg.get('INTEGRA', 'Path_retorno')
@@ -35,17 +36,16 @@ class ConectaServerNFe():
         self.porta = cfg.get('INTEGRA', 'porta')
         self.login = cfg.get('INTEGRA', 'login')
         self.passwd = cfg.get('INTEGRA', 'password')
-        empresa = int('999999') # ao executar o script substitui pelo id da empresa
+        # empresa = int('999999') # ao executar o script substitui pelo id da empresa
         # uso TESTE
-        #empresa = '2'
-        funcao_exec = 'PEGA_XML'
+        # empresa = '3'
+        # funcao_exec = 'PEGA_XML'
         # uso TESTE
-        #funcao_exec = 'ENVIA_AUTORIZADA'
-        if funcao_exec == 'ENVIA_AUTORIZADA':
-            self.retorna_xml_validado(int(empresa))
-        else:
-            self.pega_xml(int(empresa))
-            
+        # funcao_exec = 'ENVIA_AUTORIZADA'
+        #if funcao_exec == 'PEGA_XML':
+            # self.retorna_xml_validado(int(empresa))
+            # else:
+        #    self.pega_xml(int(empresa))
 
     def _conexao_odoo(self):
         origem = odoorpc.ODOO(self.url, port=self.porta)
@@ -53,6 +53,7 @@ class ConectaServerNFe():
         return origem
 
     def pega_xml(self, empresa):
+        _logger.info(f"Buscando no Odoo NFe para empresa: {str(empresa)}")
         con = self._conexao_odoo()
         db = local_db(filename = 'lancamento.db', table = 'nfe')
         p_xml = con.env['account.move']
@@ -64,7 +65,8 @@ class ConectaServerNFe():
             ('state_edoc', '=', 'a_enviar'),
             ('company_id', '=', int(empresa))
         ])
-
+        if not nfe_ids:
+            _logger.info(f"Sem NFe para a empresa: {str(empresa)}")
         arquivo = f"{self.path_retorno}/notas"
         # Check whether the specified path exists or not
         isExist = os.path.exists(arquivo)
@@ -73,14 +75,32 @@ class ConectaServerNFe():
             os.makedirs(arquivo)
         for prd in p_xml.browse(nfe_ids):
             chave = prd.document_key
+            _logger.info(f"NFe: {str(chave)}")
+            arquivo_name = f"{arquivo}/{prd.send_file_id.name}"
+            if Path(arquivo_name).is_file():
+                # verificar se xml tem protocolo
+                arquivo_protocol = arquivo_name
+                try:
+                    tree = ET.parse(arquivo_protocol)
+                    root = tree.getroot()
+                    protNFe = root.find('{http://www.portalfiscal.inf.br/nfe}protNFe')
+                    if protNFe:
+                        _logger.info(f"NFe com protocolo : {str(chave)}")
+                        continue
+                except:
+                    _logger.info(f"Erro para ler xml")
+                    arquivo_protocol = ''
             existe = db.consulta_nfe(chave, empresa)
             if existe:
+                _logger.info(f"NFe : {str(chave)} ja existe.")
                 continue
             xml = base64.b64decode(prd.send_file_id.datas).decode('iso-8859-1')
             arquivo_name = f"{arquivo}/{prd.send_file_id.name}"
             save_file = open(arquivo_name, 'w')
             save_file.write(xml)
-            print ('Chave: %s , protocolo: %s ' % (chave ,prd.authorization_protocol))
+            _logger.info(f"Arquivo {str(arquivo_name)} criado.")
+            if prd.authorization_protocol:
+                _logger.info(f"Chave: {chave}, protocolo: {prd.authorization_protocol}")
             emissao = datetime.strftime(prd.document_date,'%Y-%m-%d')
 
             db.insert_nfe(dict(
@@ -96,6 +116,7 @@ class ConectaServerNFe():
 
     def retorna_xml_validado(self, empresa):
         _logger.info('Iniciando envio para o odoo')
+        # import pudb;pu.db
         con = self._conexao_odoo()
         db = local_db(filename = 'lancamento.db', table = 'nfe')
         notas_empresa = db.consulta_nfe('', int(empresa), 5)
@@ -117,6 +138,7 @@ class ConectaServerNFe():
                 ('company_id', '=', int(empresa))
             ])
             if not nfe_ids:
+                _logger.info(f"NFe nao encontrada no odoo {nota['chave']}")
                 continue
             nfe = n_xml.browse(nfe_ids)
             if nota['situacao_odoo'] in ('enviada','cancelada'):
@@ -140,7 +162,8 @@ class ConectaServerNFe():
                 event = con.env['l10n_br_fiscal.event']
                 event_ids = event.create(vals)
                 event_id = event.browse(event_ids)
-                
+                if event_id:
+                    _logger.info(f"Evento criado com sucesso NFe: {nfe.document_number}")
                 attach = con.env["ir.attachment"]
                 file_name = f"{nota['chave']}-proc-env.xml"
                 att_file = attach.create({
@@ -182,5 +205,6 @@ class ConectaServerNFe():
                 sql_update = "update nfe set situacao_odoo = 'enviada' where chave = '%s' \
                     and empresa_id = %s" %(nota['chave'], empresa)
                 db.update(sql_update)
+                _logger.info(f"Situação alterada com sucesso, NFe: {nfe.document_number}")
 
-ConectaServerNFe()
+# ConectaServerNFe(empresa=3)

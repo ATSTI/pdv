@@ -22,7 +22,7 @@ class ConectaServer():
         self.porta = cfg.get('INTEGRA', 'porta')
         self.login = cfg.get('INTEGRA', 'login')
         self.passwd = cfg.get('INTEGRA', 'password')
-        print ("Verificando cadastro de empresas")        
+        #print ("Verificando cadastro de empresas")        
         self.busca_empresa()
 
     def _conexao_odoo(self):
@@ -37,6 +37,8 @@ class ConectaServer():
         empresas_ids = empresa.search([(1, '=', 1)])
         
         for emp in empresa.browse(empresas_ids):
+            if emp.certificate_nfe_id:
+                continue
             existe = db.consulta_empresa(empresa_id=None, nome=None, cnpj=emp.cnpj_cpf)
             razao = ''
             if emp.legal_name:
@@ -45,7 +47,7 @@ class ConectaServer():
             if emp.cnpj_cpf:
                 cnpj = emp.cnpj_cpf
             if not existe:
-                print (f"Cadastrando empresa : {emp.name}")
+                #print (f"Cadastrando empresa : {emp.name}")
                 db.insert_empresa(dict(
                     empresa_id = emp.id,
                     nome = emp.name,
@@ -64,12 +66,15 @@ class ConectaServer():
             empresa_arquivo = f"{empresa_arquivo}/{cnpj}.ini"
             if not os.path.isfile(empresa_arquivo):        
                 if cnpj:
-                    print (f"Criando o arquivo INI para a empresa: {emp.name}-{empresa_arquivo}")
+                    #print (f"Criando o arquivo INI para a empresa: {emp.name}-{empresa_arquivo}")
                     # arquivo modelo
                     empresa_modelo = f"{self.path_retorno}/empresa.ini"
+                    #print(f"Copiando o empresa.ini para a Empresa nova {empresa_arquivo}")
+                    # with open(empresa_modelo, 'r') as src, open('destination.txt', 'w') as dst:
                     shutil.copyfile(empresa_modelo,empresa_arquivo) 
-                    cfg = configparser.ConfigParser()
-                    cfg.read(empresa_arquivo)
+                    cfgx = configparser.ConfigParser()
+                    #print(f"Lendo arquivo - {empresa_arquivo}")
+                    cfgx.read(empresa_arquivo)
                     fone = ""
                     if emp.phone:
                         fone = emp.phone
@@ -81,7 +86,7 @@ class ConectaServer():
                         for i in replace:
                             cep = cep.replace(i, '')
 
-                    empresa_secao = cfg["Emitente"]
+                    empresa_secao = cfgx["Emitente"]
                     empresa_secao["CNPJ"] = cnpj
                     empresa_secao["IE"] = emp.inscr_est
                     empresa_secao["RazaoSocial"] = emp.legal_name
@@ -98,6 +103,6 @@ class ConectaServer():
                     empresa_secao["UF"] = emp.state_id.code
                     empresa_secao["CRT"] = emp.tax_framework # ou :  emp.fiscal_profile_id.tax_framework
                     with open(empresa_arquivo, 'w') as configfile:
-                        cfg.write(configfile)
+                        cfgx.write(configfile)
             
 ConectaServer()
