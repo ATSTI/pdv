@@ -16,8 +16,8 @@ class Main():
         self.buscando_script()
 
     def buscando_script(self):
-        import pudb;pu.db
-        path_url = f"https://github.com/ATSTI/pdv/raw/integracao_nfe_odoo_a3/nfe/nfe_odoo{self.versao_name}"
+        # import pudb;pu.db
+        path_url = f"https://github.com/ATSTI/pdv/raw/integracao_nfe_odoo_a3/nfe/nfe_odoo/{self.versao_name}"
         retorno = rq.get(path_url)
         print(retorno.text)
         with open(self.versao_name, mode="w") as arq_retorno:
@@ -37,10 +37,10 @@ class Main():
         ]
         for arq in arquivos:
             print ("Atualizando arquivos - " + arq) 
-            path_url = f"https://github.com/ATSTI/pdv/raw/integracao_odoo_script/integracao_odoo/{arq}"
+            path_url = f"https://github.com/ATSTI/pdv/raw/integracao_nfe_odoo_a3/nfe/nfe_odoo/{arq}"
             retorno = rq.get(path_url)
-            if arq == "pos_order.py":
-                arq = "pos_order.pyw"
             file_retorno = arq
+            if arq == 'executa_odoo_nfe_retorno.py':
+                file_retorno = 'executa_odoo_nfe_retorno.pyw'
             with open(file_retorno, mode="w") as arq_retorno:
                 arq_retorno.write(retorno.text)

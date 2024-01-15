@@ -72,6 +72,21 @@ class Database:
         else:
             return False
 
+    def consulta_nfe_autorizada(self, limit=50):
+        busca = f"select * from {self._table} where situacao = 'Autorizada'"
+        busca += f" and situacao_odoo is null"
+        busca += f" order by move_id LIMIT {str(limit)}"
+        cursor = self._db.execute(busca)
+        dados = cursor.fetchall()
+        if not dados:
+            return False
+        list_accumulator = []
+        for item in dados:
+            list_accumulator.append({k: item[k] for k in item.keys()})
+        if len(list_accumulator):
+            return list_accumulator
+        else:
+            return False
 
     def consulta_empresa(self, empresa_id=None, nome=None, cnpj=None):
         busca = "select * from {}"
@@ -124,8 +139,8 @@ class Database:
     def table(self): self._table = 'nfe'
 
     def close(self):
-            self._db.close()
-            del self._filename
+        self._db.close()
+        del self._filename
 
 # Exemplo de uso
 

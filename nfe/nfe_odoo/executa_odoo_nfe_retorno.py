@@ -1,3 +1,4 @@
+import time
 from conecta_odoo_nfe import ConectaServerNFe as nfe_envia
 
 class ExecutaOdooNFeRetorna():
@@ -9,6 +10,8 @@ class ExecutaOdooNFeRetorna():
         # uso TESTE
         # empresa = '3'
         conecta = nfe_envia(empresa=empresa, funcao_exec='ENVIA_AUTORIZADA')
-        conecta.retorna_xml_validado(int(empresa))
+        while(True):
+            conecta.retorna_xml_validado(int(empresa))
+            time.sleep(600)
 
 ExecutaOdooNFeRetorna()

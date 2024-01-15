@@ -106,5 +106,6 @@ class ConectaServer():
                     empresa_secao["CRT"] = emp.tax_framework # ou :  emp.fiscal_profile_id.tax_framework
                     with open(empresa_arquivo, 'w') as configfile:
                         cfgx.write(configfile)
-            
+        db.close()
+    
 ConectaServer()
