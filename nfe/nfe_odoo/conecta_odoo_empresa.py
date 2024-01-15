@@ -90,19 +90,23 @@ class ConectaServer():
 
                     empresa_secao = cfgx["Emitente"]
                     empresa_secao["CNPJ"] = cnpj
-                    empresa_secao["IE"] = emp.inscr_est
+                    if emp.inscr_est:
+                        empresa_secao["IE"] = emp.inscr_est
                     empresa_secao["RazaoSocial"] = emp.legal_name
                     empresa_secao["Fantasia"] = emp.name
                     empresa_secao["Fone"] = fone
                     empresa_secao["CEP"] = cep
-                    empresa_secao["Logradouro"] = emp.street_name
-                    empresa_secao["Numero"] = str(emp.street_number)
+                    if emp.street_name:
+                        empresa_secao["Logradouro"] = emp.street_name
+                        empresa_secao["Numero"] = str(emp.street_number)
                     if emp.street2:
                         empresa_secao["Complemento"] = emp.street2
-                    empresa_secao["Bairro"] = emp.district
-                    empresa_secao["CodCidade"] = emp.city_id.ibge_code
-                    empresa_secao["Cidade"] = emp.city_id.name
-                    empresa_secao["UF"] = emp.state_id.code
+                    if emp.district:
+                        empresa_secao["Bairro"] = emp.district
+                    if emp.city_id:
+                        empresa_secao["CodCidade"] = emp.city_id.ibge_code
+                        empresa_secao["Cidade"] = emp.city_id.name
+                        empresa_secao["UF"] = emp.state_id.code
                     empresa_secao["CRT"] = emp.tax_framework # ou :  emp.fiscal_profile_id.tax_framework
                     with open(empresa_arquivo, 'w') as configfile:
                         cfgx.write(configfile)
