@@ -8,6 +8,7 @@ import os
 import base64
 import shutil
 from sqlite_bd import Database as local_db
+from main import Main as verifica_versao
 import configparser
 
 class ConectaServer():
@@ -22,6 +23,7 @@ class ConectaServer():
         self.porta = cfg.get('INTEGRA', 'porta')
         self.login = cfg.get('INTEGRA', 'login')
         self.passwd = cfg.get('INTEGRA', 'password')
+        verifica_versao()
         #print ("Verificando cadastro de empresas")        
         self.busca_empresa()
 
