@@ -22,14 +22,7 @@ logging.basicConfig(handlers=handlers,
                     level=logging.INFO, 
                     format='%(levelname)s %(asctime)s %(message)s', 
                     datefmt='%d/%m/%Y%I:%M:%S %p',force=True)
-
-_logger_retorno = logging.getLogger(__name__)
-handlers_ret = [ RotatingFileHandler(filename='logs/log_retorno.txt',
-            mode='w',
-            maxBytes=512000,
-            backupCount=4)
-           ]
-_logger_retorno.addHandler(handlers_ret)
+_logger.setLevel(logging.INFO)
 
 
 class ConectaServerNFe():
@@ -61,7 +54,9 @@ class ConectaServerNFe():
         return origem
 
     def pega_xml(self, empresa):
-        _logger.info(f"Buscando no Odoo NFe para empresa: {str(empresa)}")
+        msg = 'Buscando no Odoo NFe para empresa: %s' %(str(empresa))
+        # print (msg)
+        _logger.info(msg)
         con = self._conexao_odoo()
         p_xml = con.env['account.move']
 
@@ -72,8 +67,8 @@ class ConectaServerNFe():
             ('state_edoc', '=', 'a_enviar'),
             ('company_id', '=', int(empresa))
         ])
-        if not nfe_ids:
-            _logger.info(f"Sem NFe para a empresa: {str(empresa)}")
+        # if not nfe_ids:
+        #     _logger.info(f"Sem NFe para a empresa: {str(empresa)}")
         arquivo = f"{self.path_retorno}/notas"
         # Check whether the specified path exists or not
         isExist = os.path.exists(arquivo)
@@ -83,7 +78,7 @@ class ConectaServerNFe():
         db = local_db(filename = 'lancamento.db', table = 'nfe')
         for prd in p_xml.browse(nfe_ids):
             chave = prd.document_key
-            _logger.info(f"NFe: {str(chave)}")
+            # _logger.info(f"NFe: {str(chave)}")
             arquivo_name = f"{arquivo}/{prd.send_file_id.name}"
             if Path(arquivo_name).is_file():
                 # verificar se xml tem protocolo
@@ -124,100 +119,103 @@ class ConectaServerNFe():
         db.close()
 
     def retorna_xml_validado(self, empresa):
-        _logger_retorno.info('Iniciando envio para o odoo')
+        _logger.info('Iniciando envio para o odoo')
         con = self._conexao_odoo()
         db = local_db(filename = 'lancamento.db', table = 'nfe')
         notas_empresa = db.consulta_nfe_autorizada(50)
 
         if not notas_empresa:
-            _logger_retorno.info('Sem notas para enviar')
-            return
+            _logger.info('Sem notas para enviar')
+        else:
+            # montando lista com o move_id das notas
+            lista_id = set()
+            for nota in notas_empresa:
+                lista_id.add(nota['move_id'])            
 
-        # montando lista com o move_id das notas
-        lista_id = set()
-        for nota in notas_empresa:
-            lista_id.add(nota['move_id'])            
-
-        for nota in notas_empresa:
-            if nota['situacao'] == 'A_enviar':
-                continue
-            # confirma situacao no odoo 
-            n_xml = con.env['account.move']
-            # chave = '35xxxxxxxxxxx8550010000093411523728494'
-            # nfe_ids = p_xml.search([('document_key', '=', chave)])
-            nfe_ids = n_xml.search([
-                ('id', 'in', list(lista_id)),
-                ('state_edoc', '=', 'a_enviar')
-            ])
-            if not nfe_ids:
-                _logger_retorno.info(f"NFe nao encontrada no odoo {nota['chave']}")
-                continue
-            for nfe in n_xml.browse(nfe_ids):
-                # if nota['situacao_odoo'] in ('enviada','cancelada'):
-                    # if nfe.state_edoc in ('autorizada', 'cancelada', 'denegada', 'inutilizada'):
-                        # continue
-                if not nfe.authorization_file_id:
-                    file_name = f"NFe{nota['chave']}-env.xml"
-                    arquivo = f"{self.path_retorno}/notas/{file_name}"
-                    xml_file = open(arquivo, 'r')
-                    # envia o xml para o Odoo e altera a situacao
-                    environment='prod' if nfe.nfe_environment == "1" else 'hml'
-                    vals = {
-                        "company_id": nfe.company_id.id,
-                        "environment": environment,
-                        "type": "0",
-                        "document_id": nfe.id,
-                        "document_type_id": nfe.document_type_id.id,
-                        "document_serie_id": nfe.document_serie_id.id,
-                        "document_number": nfe.document_number
-                    }
-                    event = con.env['l10n_br_fiscal.event']
-                    event_ids = event.create(vals)
-                    event_id = event.browse(event_ids)
-                    if event_id:
-                        _logger_retorno.info(f"Evento criado com sucesso NFe: {nfe.document_number}")
-                    attach = con.env["ir.attachment"]
-                    file_name = f"{nota['chave']}-proc-env.xml"
-                    att_file = attach.create({
-                        "name": file_name,
-                        "res_model": "l10n_br_fiscal.event",
-                        "res_id": event_id.id,
-                        "datas": base64.b64encode(xml_file.read().encode("utf-8")).decode(),
-                        "mimetype": "application/xml",
-                        "type": "binary",
-                    })
-                    # event_id.file_response_id = False
-                    event_id.file_response_id = att_file
-                    tree = ET.parse(arquivo)
-                    root = tree.getroot()
-                    protNFe = root.find('{http://www.portalfiscal.inf.br/nfe}protNFe')
-                    infProt = protNFe.find('{http://www.portalfiscal.inf.br/nfe}infProt')
-                    nProt = infProt.find('{http://www.portalfiscal.inf.br/nfe}nProt')
-                    protocol_date = infProt.find('{http://www.portalfiscal.inf.br/nfe}dhRecbto')
-                    dt_protocol = protocol_date.text
-                    dt_protocol = datetime.fromisoformat(dt_protocol)
-                    dt_protocol = dt_protocol.strftime('%Y-%m-%d %H:%M:%S')
-                    event_id.write(
-                        {
-                            "state": "done",
-                            "status_code": "100",
-                            "response": "Autorizado o uso da NF-e",
-                            "protocol_date": dt_protocol,
-                            "protocol_number": nProt.text,
+            for nota in notas_empresa:
+                if nota['situacao'] == 'A_enviar':
+                    continue
+                # confirma situacao no odoo 
+                n_xml = con.env['account.move']
+                # chave = '35xxxxxxxxxxx8550010000093411523728494'
+                # nfe_ids = p_xml.search([('document_key', '=', chave)])
+                nfe_ids = n_xml.search([
+                    ('id', 'in', list(lista_id)),
+                    ('state_edoc', '=', 'a_enviar')
+                ])
+                if not nfe_ids:
+                    _logger.info(f"NFe nao encontrada no odoo {nota['chave']}")
+                    continue
+                for nfe in n_xml.browse(nfe_ids):
+                    # if nota['situacao_odoo'] in ('enviada','cancelada'):
+                        # if nfe.state_edoc in ('autorizada', 'cancelada', 'denegada', 'inutilizada'):
+                            # continue
+                    if not nfe.authorization_file_id:
+                        file_name = f"NFe{nota['chave']}-env.xml"
+                        arquivo = f"{self.path_retorno}/notas/{file_name}"
+                        xml_file = open(arquivo, 'r')
+                        # envia o xml para o Odoo e altera a situacao
+                        environment='prod' if nfe.nfe_environment == "1" else 'hml'
+                        vals = {
+                            "company_id": nfe.company_id.id,
+                            "environment": environment,
+                            "type": "0",
+                            "document_id": nfe.id,
+                            "document_type_id": nfe.document_type_id.id,
+                            "document_serie_id": nfe.document_serie_id.id,
+                            "document_number": nfe.document_number
                         }
-                    )
-                    atualiza = {'authorization_event_id': event_id.id}
-                    # muda a situacao_odoo
-                    situacao = ''
-                    if nota['situacao'] == 'Autorizada':
-                        situacao = 'autorizada'
-                        atualiza['state_edoc'] = situacao
-                    nfe.write(atualiza)
-                    # muda situacao_odoo
-                    sql_update = "update nfe set situacao_odoo = 'enviada' where chave = '%s' \
-                        and empresa_id = %s" %(nota['chave'], nota['empresa_id'])
-                    db.update(sql_update)
-                    _logger_retorno.info(f"Situação alterada com sucesso, NFe: {nfe.document_number}")
+                        event = con.env['l10n_br_fiscal.event']
+                        event_ids = event.create(vals)
+                        event_id = event.browse(event_ids)
+                        if event_id:
+                            _logger.info(f"Evento criado com sucesso NFe: {nfe.document_number}")
+                        attach = con.env["ir.attachment"]
+                        file_name = f"{nota['chave']}-proc-env.xml"
+                        att_file = attach.create({
+                            "name": file_name,
+                            "res_model": "l10n_br_fiscal.event",
+                            "res_id": event_id.id,
+                            "datas": base64.b64encode(xml_file.read().encode("utf-8")).decode(),
+                            "mimetype": "application/xml",
+                            "type": "binary",
+                        })
+                        # event_id.file_response_id = False
+                        event_id.file_response_id = att_file
+                        tree = ET.parse(arquivo)
+                        root = tree.getroot()
+                        try:
+                            protNFe = root.find('{http://www.portalfiscal.inf.br/nfe}protNFe')
+                            infProt = protNFe.find('{http://www.portalfiscal.inf.br/nfe}infProt')
+                            nProt = infProt.find('{http://www.portalfiscal.inf.br/nfe}nProt')
+                            protocol_date = infProt.find('{http://www.portalfiscal.inf.br/nfe}dhRecbto')
+                            dt_protocol = protocol_date.text
+                            dt_protocol = datetime.fromisoformat(dt_protocol)
+                            dt_protocol = dt_protocol.strftime('%Y-%m-%d %H:%M:%S')
+                            event_id.write(
+                                {
+                                    "state": "done",
+                                    "status_code": "100",
+                                    "response": "Autorizado o uso da NF-e",
+                                    "protocol_date": dt_protocol,
+                                    "protocol_number": nProt.text,
+                                }
+                            )
+                            atualiza = {'authorization_event_id': event_id.id}
+                            # muda a situacao_odoo
+                            situacao = ''
+                            if nota['situacao'] == 'Autorizada':
+                                situacao = 'autorizada'
+                                atualiza['state_edoc'] = situacao
+                            nfe.write(atualiza)
+                            # muda situacao_odoo
+                            sql_update = "update nfe set situacao_odoo = 'enviada' where chave = '%s' \
+                                and empresa_id = %s" %(nota['chave'], nota['empresa_id'])
+                            db.update(sql_update)
+                            db.close()
+                            _logger.info(f"Situação alterada com sucesso, NFe: {nfe.document_number}")
+                        except:
+                            _logger.info(f"ERRO lendo protocolo no XML, NFe: {nfe.document_number}")
         db.close()
 
 # ConectaServerNFe(empresa=3)

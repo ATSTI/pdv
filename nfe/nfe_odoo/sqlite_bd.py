@@ -30,7 +30,6 @@ class Database:
         self._db.commit()
     
     def insert_nfe(self, row):
-        # import pudb;pu.db
         sql = "insert into nfe (move_id, empresa_id, xml_aenviar, chave, destinatario, \
             num_nfe, data_emissao, situacao) values ('%s', %s, \
             '%s', '%s', '%s', '%s', '%s', '%s')" \
@@ -127,7 +126,7 @@ class Database:
     @filename.setter
     def filename(self, fn):
         self._filename = fn
-        self._db = sqlite3.connect(fn)
+        self._db = sqlite3.connect(fn, timeout=10)
         self._db.row_factory = sqlite3.Row
     @filename.deleter
     def filename(self): self.close()

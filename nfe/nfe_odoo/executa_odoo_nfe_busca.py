@@ -4,7 +4,6 @@ class ExecutaOdooNFeBusca():
     _name = 'executa.odoo.nfe.busca'
 
     def __init__(self):
-        #import pudb;pu.db
         empresa = int('999999') # ao executar o script substitui pelo id da empresa
         # uso TESTE
         # empresa = '3'
