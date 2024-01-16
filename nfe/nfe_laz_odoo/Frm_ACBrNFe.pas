@@ -37,117 +37,182 @@ interface
 uses
   LCLIntf, LCLType, LMessages, Messages, SysUtils, Variants, Classes, Graphics,
   Controls, Forms, Dialogs, ComCtrls, StdCtrls, Spin, Buttons, ExtCtrls,
+  DBCtrls, DBGrids, PythonEngine, Lcl.PythonGUIInputOutput, ZConnection,
   ZDataset, SynEdit, SynHighlighterXML, ACBrPosPrinter, ACBrNFeDANFeESCPOS,
   ACBrNFeDANFEClass, ACBrDANFCeFortesFr, ACBrDFeReport, ACBrDFeDANFeReport,
   ACBrNFeDANFeRLClass, ACBrBase, ACBrDFe, ACBrNFe, ACBrUtil, ACBrMail,
-  ACBrIntegrador, ACBrDANFCeFortesFrA4;
+  ACBrIntegrador, DB, ACBrDANFCeFortesFrA4, Types;
 
 type
 
   { TfrmACBrNFe }
 
   TfrmACBrNFe = class(TForm)
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
+    BitBtn3: TBitBtn;
+    BitBtn4: TBitBtn;
+    BitBtn5: TBitBtn;
+    BitBtn6: TBitBtn;
+    BitBtn7: TBitBtn;
     btnAdicionarProtocolo: TButton;
-    btnAssinarXML: TButton;
+    BtnAssinar: TButton;
+    btnAtorInterNFeTransp: TButton;
+    btnCadastrar: TButton;
+    btnCancelarChave: TButton;
+    btnCancelarChave1: TButton;
+    btnCancelarXML: TButton;
+    btnCarregaNfeEmpresa: TButton;
+    btnCarregarXMLEnviar: TButton;
+    btnCartadeCorrecao: TButton;
+    btnCartadeCorrecao1: TButton;
+    btnCNPJ: TButton;
+    btnConsCad: TButton;
+    btnConsultar: TButton;
+    btnConsultarChave: TButton;
+    btnConsultarRecibo: TButton;
     btnCriarEnviar: TButton;
+    btnDataValidade: TButton;
+    btnDistrDFePorChave: TButton;
+    btnDistrDFePorNSU: TButton;
+    btnDistrDFePorUltNSU: TButton;
+    btnEnviarEmail: TButton;
+    btnEnviarEventoEmail: TButton;
+    btnFechar: TButton;
+    btnGerarPDF: TButton;
     btnGerarTXT: TButton;
     btnGerarXML: TButton;
+    btnHTTPS: TButton;
+    btnImportaNfeOdoo: TButton;
     btnImportarXML: TButton;
+    btnImprimir: TButton;
     btnImprimirDANFCE: TButton;
     btnImprimirDANFCEOffline: TButton;
-    Button1: TButton;
-    btnTrocarEmitente: TButton;
-    Label53: TLabel;
-    Label54: TLabel;
-    pnlMenus: TPanel;
-    pnlCentral: TPanel;
-    PageControl1: TPageControl;
-    SynXMLSyn1: TSynXMLSyn;
-    TabSheet1: TTabSheet;
-    PageControl4: TPageControl;
-    TabSheet11: TTabSheet;
-    TabSheet3: TTabSheet;
-    lSSLLib: TLabel;
-    lCryptLib: TLabel;
-    lHttpLib: TLabel;
-    lXmlSign: TLabel;
-    gbCertificado: TGroupBox;
-    Label1: TLabel;
-    Label2: TLabel;
-    sbtnCaminhoCert: TSpeedButton;
-    Label25: TLabel;
-    sbtnGetCert: TSpeedButton;
-    sbtnNumSerie: TSpeedButton;
-    edtCaminho: TEdit;
-    edtSenha: TEdit;
-    edtNumSerie: TEdit;
-    btnDataValidade: TButton;
-    btnNumSerie: TButton;
-    btnSubName: TButton;
-    btnCNPJ: TButton;
+    btnImprimirEvento: TButton;
+    btnInutilizar: TButton;
+    btnInutilizar1: TButton;
+    btnInutilizarImprimir: TButton;
     btnIssuerName: TButton;
-    GroupBox1: TGroupBox;
-    Edit1: TEdit;
-    btnSha256: TButton;
-    cbAssinar: TCheckBox;
-    btnHTTPS: TButton;
     btnLeituraX509: TButton;
-    cbSSLLib: TComboBox;
+    btnManifDestCiencia: TButton;
+    btnManifDestConfirmacao: TButton;
+    btnManifDestDesconnhecimento: TButton;
+    btnManifDestOperNaoRealizada: TButton;
+    btnNotasGeradas: TButton;
+    btnNumSerie: TButton;
+    btnSalvarConfig: TBitBtn;
+    btnSha256: TButton;
+    btnStatusServ: TButton;
+    btnSubName: TButton;
+    btnValidarAssinatura: TButton;
+    btnValidarRegrasNegocio: TButton;
+    btnValidarXML: TButton;
+    btnVoltaPrincipal: TButton;
+    btSerial: TBitBtn;
+    btVersao: TButton;
+    Button1: TButton;
+    Button2: TButton;
+    cbAssinar: TCheckBox;
+    cbCortarPapel: TCheckBox;
     cbCryptLib: TComboBox;
-    cbHttpLib: TComboBox;
-    cbXmlSignLib: TComboBox;
-    TabSheet4: TTabSheet;
-    GroupBox3: TGroupBox;
-    sbtnPathSalvar: TSpeedButton;
-    Label29: TLabel;
-    Label31: TLabel;
-    Label30: TLabel;
-    Label32: TLabel;
-    Label33: TLabel;
-    Label34: TLabel;
-    Label42: TLabel;
-    spPathSchemas: TSpeedButton;
-    edtPathLogs: TEdit;
-    ckSalvar: TCheckBox;
+    cbEmailSSL: TCheckBox;
     cbFormaEmissao: TComboBox;
-    cbxAtualizarXML: TCheckBox;
-    cbxExibirErroSchema: TCheckBox;
-    edtFormatoAlerta: TEdit;
+    cbHttpLib: TComboBox;
     cbModeloDF: TComboBox;
-    cbxRetirarAcentos: TCheckBox;
-    cbVersaoDF: TComboBox;
-    edtIdToken: TEdit;
-    edtToken: TEdit;
-    edtPathSchemas: TEdit;
-    TabSheet7: TTabSheet;
-    GroupBox4: TGroupBox;
-    Label6: TLabel;
-    lTimeOut: TLabel;
-    lSSLLib1: TLabel;
-    cbxVisualizar: TCheckBox;
-    cbUF: TComboBox;
-    rgTipoAmb: TRadioGroup;
-    cbxSalvarSOAP: TCheckBox;
-    seTimeOut: TSpinEdit;
+    cbSSLLib: TComboBox;
     cbSSLType: TComboBox;
-    gbProxy: TGroupBox;
-    Label8: TLabel;
-    Label9: TLabel;
-    Label10: TLabel;
-    Label11: TLabel;
+    cbTipoEmpresa: TComboBox;
+    cbUF: TComboBox;
+    cbVersaoDF: TComboBox;
+    cbxAdicionaLiteral: TCheckBox;
+    cbxAjustarAut: TCheckBox;
+    cbxAtualizarXML: TCheckBox;
+    cbxEmissaoPathNFe: TCheckBox;
+    cbxExibirErroSchema: TCheckBox;
+    cbXmlSignLib: TComboBox;
+    cbxModeloPosPrinter: TComboBox;
+    cbxPagCodigo: TComboBox;
+    cbxPastaMensal: TCheckBox;
+    cbxPorta: TComboBox;
+    cbxRetirarAcentos: TCheckBox;
+    cbxSalvaPathEvento: TCheckBox;
+    cbxSalvarArqs: TCheckBox;
+    cbxSalvarSOAP: TCheckBox;
+    cbxSepararPorCNPJ: TCheckBox;
+    cbxSepararPorModelo: TCheckBox;
+    cbxVisualizar: TCheckBox;
+    ckSalvar: TCheckBox;
+    Dados: TTabSheet;
+    DBEdit1: TDBEdit;
+    DBEdit2: TDBEdit;
+    DBEdit3: TDBEdit;
+    DBEdit4: TDBEdit;
+    DBEdit5: TDBEdit;
+    DBEdit6: TDBEdit;
+    DBEdit7: TDBEdit;
+    DBGrid1: TDBGrid;
+    DBGrid2: TDBGrid;
+    Dsemp: TDataSource;
+    DsNotas: TDataSource;
+    Edit1: TEdit;
+    Edit2: TEdit;
+    edCertificado: TEdit;
+    Edit3: TEdit;
+    Edit4: TEdit;
+    Edit5: TEdit;
+    Edit6: TEdit;
+    edtAguardar: TEdit;
+    edtCaminho: TEdit;
+    edtEmailAssunto: TEdit;
+    edtEmitBairro: TEdit;
+    edtEmitCEP: TEdit;
+    edtEmitCidade: TEdit;
+    edtEmitCNPJ: TEdit;
+    edtEmitCodCidade: TEdit;
+    edtEmitComp: TEdit;
+    edtEmitFantasia: TEdit;
+    edtEmitFone: TEdit;
+    edtEmitIE: TEdit;
+    edtEmitLogradouro: TEdit;
+    edtEmitNumero: TEdit;
+    edtEmitRazao: TEdit;
+    edtEmitUF: TEdit;
+    edtFormatoAlerta: TEdit;
+    edtIdToken: TEdit;
+    edtIntervalo: TEdit;
+    edtLogoMarca: TEdit;
+    edtNumSerie: TEdit;
+    edtPathCan: TEdit;
+    edtPathCCe: TEdit;
+    edtPathDPEC: TEdit;
+    edtPathEvento: TEdit;
+    edtPathInu: TEdit;
+    edtPathLogs: TEdit;
+    edtPathNFe: TEdit;
+    edtPathSchemas: TEdit;
     edtProxyHost: TEdit;
     edtProxyPorta: TEdit;
-    edtProxyUser: TEdit;
     edtProxySenha: TEdit;
-    gbxRetornoEnvio: TGroupBox;
-    Label36: TLabel;
-    Label37: TLabel;
-    Label38: TLabel;
-    cbxAjustarAut: TCheckBox;
+    edtProxyUser: TEdit;
+    edtSenha: TEdit;
+    edtSmtpHost: TEdit;
+    edtSmtpPass: TEdit;
+    edtSmtpPort: TEdit;
+    edtSmtpUser: TEdit;
     edtTentativas: TEdit;
-    edtIntervalo: TEdit;
-    edtAguardar: TEdit;
-    TabSheet12: TTabSheet;
+    edtToken: TEdit;
+    edtURLPFX: TEdit;
+    gbCertificado: TGroupBox;
+    gbEscPos: TGroupBox;
+    gbProxy: TGroupBox;
+    gbxRetornoEnvio: TGroupBox;
+    GroupBox1: TGroupBox;
+    GroupBox2: TGroupBox;
+    GroupBox3: TGroupBox;
+    GroupBox4: TGroupBox;
+    Label1: TLabel;
+    Label10: TLabel;
+    Label11: TLabel;
     Label12: TLabel;
     Label13: TLabel;
     Label14: TLabel;
@@ -156,109 +221,119 @@ type
     Label17: TLabel;
     Label18: TLabel;
     Label19: TLabel;
+    Label2: TLabel;
     Label20: TLabel;
     Label21: TLabel;
     Label22: TLabel;
     Label23: TLabel;
     Label24: TLabel;
-    edtEmitCNPJ: TEdit;
-    edtEmitIE: TEdit;
-    edtEmitRazao: TEdit;
-    edtEmitFantasia: TEdit;
-    edtEmitFone: TEdit;
-    edtEmitCEP: TEdit;
-    edtEmitLogradouro: TEdit;
-    edtEmitNumero: TEdit;
-    edtEmitComp: TEdit;
-    edtEmitBairro: TEdit;
-    edtEmitCodCidade: TEdit;
-    edtEmitCidade: TEdit;
-    edtEmitUF: TEdit;
-    TabSheet13: TTabSheet;
-    sbPathNFe: TSpeedButton;
-    Label35: TLabel;
-    Label39: TLabel;
-    sbPathCan: TSpeedButton;
-    Label46: TLabel;
-    sbPathCCe: TSpeedButton;
-    Label40: TLabel;
-    sbPathInu: TSpeedButton;
-    Label41: TLabel;
-    sbPathDPEC: TSpeedButton;
-    Label47: TLabel;
-    sbPathEvento: TSpeedButton;
-    cbxSalvarArqs: TCheckBox;
-    cbxPastaMensal: TCheckBox;
-    cbxAdicionaLiteral: TCheckBox;
-    cbxEmissaoPathNFe: TCheckBox;
-    cbxSalvaPathEvento: TCheckBox;
-    cbxSepararPorCNPJ: TCheckBox;
-    edtPathCCe: TEdit;
-    edtPathNFe: TEdit;
-    edtPathCan: TEdit;
-    edtPathInu: TEdit;
-    edtPathDPEC: TEdit;
-    edtPathEvento: TEdit;
-    cbxSepararPorModelo: TCheckBox;
-    TabSheet2: TTabSheet;
-    Label7: TLabel;
-    sbtnLogoMarca: TSpeedButton;
-    edtLogoMarca: TEdit;
-    rgTipoDanfe: TRadioGroup;
-    TabSheet14: TTabSheet;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
+    Label25: TLabel;
     Label26: TLabel;
     Label27: TLabel;
     Label28: TLabel;
-    edtSmtpHost: TEdit;
-    edtSmtpPort: TEdit;
-    edtSmtpUser: TEdit;
-    edtSmtpPass: TEdit;
-    edtEmailAssunto: TEdit;
-    cbEmailSSL: TCheckBox;
-    mmEmailMsg: TMemo;
-    btnSalvarConfig: TBitBtn;
-    pgcBotoes: TPageControl;
-    tsEnvios: TTabSheet;
-    tsConsultas: TTabSheet;
-    tsEventos: TTabSheet;
-    tsInutilizacao: TTabSheet;
-    btnConsultar: TButton;
-    btnConsultarChave: TButton;
-    btnConsCad: TButton;
-    btnConsultarRecibo: TButton;
-    btnInutilizar: TButton;
-    btnInutilizarImprimir: TButton;
-    btnValidarRegrasNegocio: TButton;
-    btnGerarPDF: TButton;
-    btnValidarXML: TButton;
-    btnImprimir: TButton;
-    btnEnviarEmail: TButton;
-    btnCarregarXMLEnviar: TButton;
-    btnValidarAssinatura: TButton;
-    btnCancelarXML: TButton;
-    btnCancelarChave: TButton;
-    btnCartadeCorrecao: TButton;
-    btnImprimirEvento: TButton;
-    btnEnviarEventoEmail: TButton;
-    tsDistribuicao: TTabSheet;
-    btnManifDestConfirmacao: TButton;
-    btnDistrDFePorUltNSU: TButton;
-    pgRespostas: TPageControl;
-    TabSheet5: TTabSheet;
-    MemoResp: TMemo;
-    TabSheet6: TTabSheet;
-    WBResposta: TSynEdit;
-    TabSheet8: TTabSheet;
-    memoLog: TMemo;
-    TabSheet9: TTabSheet;
-    trvwDocumento: TTreeView;
-    TabSheet10: TTabSheet;
-    memoRespWS: TMemo;
-    Dados: TTabSheet;
+    Label29: TLabel;
+    Label3: TLabel;
+    Label30: TLabel;
+    Label31: TLabel;
+    Label32: TLabel;
+    Label33: TLabel;
+    Label34: TLabel;
+    Label35: TLabel;
+    Label36: TLabel;
+    Label37: TLabel;
+    Label38: TLabel;
+    Label39: TLabel;
+    Label4: TLabel;
+    Label40: TLabel;
+    Label41: TLabel;
+    Label42: TLabel;
+    Label43: TLabel;
+    Label44: TLabel;
+    Label45: TLabel;
+    Label46: TLabel;
+    Label47: TLabel;
+    Label48: TLabel;
+    Label49: TLabel;
+    Label5: TLabel;
+    Label50: TLabel;
+    Label51: TLabel;
+    Label52: TLabel;
+    Label53: TLabel;
+    Label54: TLabel;
+    Label56: TLabel;
+    Label57: TLabel;
+    Label58: TLabel;
+    Label59: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    lCryptLib: TLabel;
+    lHttpLib: TLabel;
+    lSSLLib: TLabel;
+    lSSLLib1: TLabel;
+    lTimeOut: TLabel;
+    lXmlSign: TLabel;
+    Memo1: TMemo;
+    Memo2: TMemo;
+    Memo3: TMemo;
+    Memo4: TMemo;
     MemoDados: TMemo;
+    memoLog: TMemo;
+    MemoResp: TMemo;
+    memoRespWS: TMemo;
+    mmEmailMsg: TMemo;
+    OpenDialog2: TOpenDialog;
+    PageControl1: TPageControl;
+    PageControl2: TPageControl;
+    PageControl3: TPageControl;
+    PageControl4: TPageControl;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    pgcBotoes: TPageControl;
+    pgRespostas: TPageControl;
+    pnlCentral: TPanel;
+    pnlMenus: TPanel;
+    PythonEngine1: TPythonEngine;
+    PythonGUIInputOutput1: TPythonGUIInputOutput;
+    rgDANFCE: TRadioGroup;
+    rgTipoAmb: TRadioGroup;
+    rgTipoDanfe: TRadioGroup;
+    sbPathCan: TSpeedButton;
+    sbPathCCe: TSpeedButton;
+    sbPathDPEC: TSpeedButton;
+    sbPathEvento: TSpeedButton;
+    sbPathInu: TSpeedButton;
+    sbPathNFe: TSpeedButton;
+    sbtnCaminhoCert: TSpeedButton;
+    sbtnGetCert: TSpeedButton;
+    sbtnLogoMarca: TSpeedButton;
+    sbtnNumSerie: TSpeedButton;
+    sbtnNumSerie1: TSpeedButton;
+    sbtnPathSalvar: TSpeedButton;
+    seColunas: TSpinEdit;
+    seEspLinhas: TSpinEdit;
+    seLinhasPular: TSpinEdit;
+    seTimeOut: TSpinEdit;
+    spPathSchemas: TSpeedButton;
+    StaticText1: TStaticText;
+    SynXMLSyn1: TSynXMLSyn;
+    TabSheet1: TTabSheet;
+    TabSheet10: TTabSheet;
+    TabSheet11: TTabSheet;
+    TabSheet12: TTabSheet;
+    TabSheet13: TTabSheet;
+    TabSheet14: TTabSheet;
+    TabSheet16: TTabSheet;
+    tbsheet_empresa: TTabSheet;
+    tbsheet_nota: TTabSheet;
+    TabSheet2: TTabSheet;
+    TabSheet20: TTabSheet;
+    TabSheet3: TTabSheet;
+    TabSheet4: TTabSheet;
+    TabSheet5: TTabSheet;
+    TabSheet6: TTabSheet;
     ACBrNFe1: TACBrNFe;
     ACBrNFeDANFeRL1: TACBrNFeDANFeRL;
     ACBrNFeDANFCeFortes1: TACBrNFeDANFCeFortes;
@@ -266,44 +341,54 @@ type
     ACBrPosPrinter1: TACBrPosPrinter;
     ACBrMail1: TACBrMail;
     OpenDialog1: TOpenDialog;
-    gbEscPos: TGroupBox;
-    Label43: TLabel;
-    Label44: TLabel;
-    Label45: TLabel;
-    Label48: TLabel;
-    Label49: TLabel;
-    Label50: TLabel;
-    btSerial: TBitBtn;
-    cbxModeloPosPrinter: TComboBox;
-    cbxPorta: TComboBox;
-    cbxPagCodigo: TComboBox;
-    seColunas: TSpinEdit;
-    seEspLinhas: TSpinEdit;
-    seLinhasPular: TSpinEdit;
-    cbCortarPapel: TCheckBox;
-    rgDANFCE: TRadioGroup;
-    btnStatusServ: TButton;
     ACBrIntegrador1: TACBrIntegrador;
-    btVersao: TButton;
     ACBrNFeDANFCeFortesA41: TACBrNFeDANFCeFortesA4;
-    Label51: TLabel;
-    edtURLPFX: TEdit;
-    Label52: TLabel;
-    cbTipoEmpresa: TComboBox;
-    btnAtorInterNFeTransp: TButton;
-    btnDistrDFePorNSU: TButton;
-    btnDistrDFePorChave: TButton;
-    btnManifDestDesconnhecimento: TButton;
-    btnManifDestCiencia: TButton;
-    btnManifDestOperNaoRealizada: TButton;
+    TabSheet7: TTabSheet;
+    TabSheet8: TTabSheet;
+    TabSheet9: TTabSheet;
+    trvwDocumento: TTreeView;
+    tsConsultas: TTabSheet;
+    tsDistribuicao: TTabSheet;
+    tsEnvios: TTabSheet;
+    tsEventos: TTabSheet;
+    tsInutilizacao: TTabSheet;
+    WBResposta: TSynEdit;
+    ZConn: TZConnection;
+    ZQemp: TZQuery;
+    ZQempcnpj: TStringField;
+    ZQempempresa_id: TLargeintField;
+    ZQempnome: TStringField;
+    ZQemprazao: TStringField;
+    ZQnotas: TZQuery;
     ZQprotocolo: TZQuery;
 
-    procedure btnAssinarXMLClick(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
+    procedure BitBtn3Click(Sender: TObject);
+    procedure BitBtn4Click(Sender: TObject);
+    procedure BitBtn5Click(Sender: TObject);
+    procedure BtnAssinarClick(Sender: TObject);
+    procedure btnCadastrarClick(Sender: TObject);
+    procedure btnCadastroEmpresaClick(Sender: TObject);
+    procedure btnCarregaNfeEmpresaClick(Sender: TObject);
+    procedure btnExecEmpresaClick(Sender: TObject);
+    procedure btnImportaNfeOdooClick(Sender: TObject);
+    procedure btnNotasGeradasClick(Sender: TObject);
+    procedure btnVoltaPrincipalClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
-    procedure btnTrocarEmitenteClick(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure DBEdit2Change(Sender: TObject);
+    procedure DBGrid1CellClick(Column: TColumn);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure DBGrid2DblClick(Sender: TObject);
+    procedure Edit4Change(Sender: TObject);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure btnSalvarConfigClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure PageControl2Change(Sender: TObject);
+    procedure pgcBotoesChange(Sender: TObject);
+    procedure pnlCentralClick(Sender: TObject);
     procedure sbPathNFeClick(Sender: TObject);
     procedure sbPathCanClick(Sender: TObject);
     procedure sbPathCCeClick(Sender: TObject);
@@ -367,6 +452,10 @@ type
     procedure btnAtorInterNFeTranspClick(Sender: TObject);
     procedure btnDistrDFePorNSUClick(Sender: TObject);
     procedure btnDistrDFePorChaveClick(Sender: TObject);
+    procedure TabSheet11ContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
+    procedure tbsheet_notaShow(Sender: TObject);
+    procedure ZQempFilterRecord(DataSet: TDataSet; var Accept: Boolean);
   private
     { Private declarations }
     procedure GravarConfiguracao;
@@ -379,10 +468,10 @@ type
     procedure LoadXML(MyMemo: TMemo; SynEdit: TSynEdit);
     procedure AtualizarSSLLibsCombo;
     procedure PrepararImpressao;
+    procedure carregar_empresas;
+    procedure carregar_notas;
+    procedure envia_nota_odoo;
   public
-    chave : string;
-    nomecliente : string;
-    vAux1 :  string;
     { Public declarations }
   end;
 
@@ -397,7 +486,7 @@ uses
   pcnAuxiliar, pcnNFe, pcnConversao, pcnConversaoNFe, pcnNFeRTXT, pcnRetConsReciDFe,
   ACBrDFeConfiguracoes, ACBrDFeSSL, ACBrDFeOpenSSL, ACBrDFeUtil,
   ACBrNFeNotasFiscais, ACBrNFeConfiguracoes,
-  Frm_Status, Frm_SelecionarCertificado, Frm_ConfiguraSerial,Frm_Busca;
+  Frm_Status, Frm_SelecionarCertificado, Frm_ConfiguraSerial;
 
 const
   SELDIRHELP = 1000;
@@ -1871,9 +1960,15 @@ end;
 
 procedure TfrmACBrNFe.btnCancelarChaveClick(Sender: TObject);
 var
-  Chave, idLote, CNPJ, Protocolo, Justificativa: string;
+  Chave, Status ,idLote, CNPJ, Protocolo, Justificativa: string;
 begin
-  Chave := '';
+  Status := dbEdit6.Text;
+  if(Status = 'A_enviar')then
+  begin
+    ShowMessage('Somente Notas Autorizadas');
+    exit;
+  end;
+  Chave := dbEdit4.Text;
   if not(InputQuery('WebServices Eventos: Cancelamento', 'Chave da NF-e', Chave)) then
      exit;
   Chave := Trim(OnlyNumber(Chave));
@@ -1958,20 +2053,21 @@ procedure TfrmACBrNFe.btnCarregarXMLEnviarClick(Sender: TObject);
 var
   Ok: Boolean;
   sSQL : string;
+  path_nfe: String;
 begin
- // OpenDialog1.Title := 'Selecione a NFe';
- // OpenDialog1.DefaultExt := '*-nfe.XML';
- // OpenDialog1.Filter := 'Arquivos NFe (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+  {OpenDialog1.Title := 'Selecione a NFe';
+  OpenDialog1.DefaultExt := '*-nfe.XML';
+  OpenDialog1.Filter := 'Arquivos NFe (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
 
- // OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
 
- // if OpenDialog1.Execute then
- // begin
-    if (chave <> '') then
-    begin
+  if OpenDialog1.Execute then
+  begin}
+  path_nfe := ExtractFilePath(Application.ExeName) + 'notas\' + 'NFe'+ dbEdit4.Text + '-env.xml';
+  begin
     ACBrNFe1.NotasFiscais.Clear;
-    //ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName, False);
-    ACBrNFe1.NotasFiscais.LoadFromFile('C:\home\odoo_nfe\notas\'+ 'NFe'+ chave + '-env.xml', False);
+    ACBrNFe1.NotasFiscais.LoadFromFile(path_nfe, False);
+
     with ACBrNFe1.NotasFiscais.Items[0].NFe do
     begin
       Emit.CNPJCPF           := edtEmitCNPJ.Text;
@@ -2018,23 +2114,38 @@ begin
     MemoDados.Lines.Add('xMsg: '+ ACBrNFe1.WebServices.Retorno.xMsg);
     MemoDados.Lines.Add('Recibo: '+ ACBrNFe1.WebServices.Retorno.Recibo);
     MemoDados.Lines.Add('Protocolo: '+ ACBrNFe1.WebServices.Retorno.Protocolo);
-
+    ZQprotocolo.Active := True;
     sSQL := ' UPDATE nfe' +
           ' SET' +
           ' protocolo = ' + QuotedStr(ACBrNFe1.WebServices.Retorno.Protocolo) +
-          ' WHERE chave = ' + QuotedStr(chave);
+          ' , situacao = ' + QuotedStr('Autorizada') +
+          ' WHERE chave = ' + QuotedStr(dbEdit4.Text);
 
     ZQprotocolo.SQL.Clear;
     ZQprotocolo.SQL.Add(sSQL);
     ZQprotocolo.ExecSQL;
-    end;
+
+    ZQprotocolo.Close;
+    ZQprotocolo.SQL.Text := 'SELECT * FROM nfe';
+    ZQprotocolo.ExecSQL;
+    ZQprotocolo.Open;
+
+
+  end;
 end;
 
 procedure TfrmACBrNFe.btnCartadeCorrecaoClick(Sender: TObject);
 var
-  Chave, idLote, CNPJ, nSeqEvento, Correcao: string;
+  Chave, Status, idLote, CNPJ, nSeqEvento, Correcao: string;
 begin
-  Chave := '';
+  Status := dbEdit6.Text;
+  if(Status = 'A_enviar')then
+  begin
+    ShowMessage('Somente Notas Autorizadas');
+    exit;
+  end;
+
+  Chave := dbEdit4.Text;
   if not(InputQuery('WebServices Eventos: Carta de Correção', 'Chave da NF-e', Chave)) then
      exit;
   Chave := Trim(OnlyNumber(Chave));
@@ -2319,6 +2430,28 @@ begin
   memoRespWS.Lines.Text := ACBrNFe1.WebServices.DistribuicaoDFe.RetornoWS;
 
   LoadXML(MemoResp, WBResposta);
+end;
+
+procedure TfrmACBrNFe.TabSheet11ContextPopup(Sender: TObject; MousePos: TPoint;
+  var Handled: Boolean);
+begin
+
+end;
+
+procedure TfrmACBrNFe.tbsheet_notaShow(Sender: TObject);
+begin
+  if (DBEdit3.Text <> '') then
+  begin
+    if (ZQnotas.Active)then
+      ZQnotas.Close;
+    ZQnotas.Params[0].AsInteger := StrToInt(DBEdit3.Text);
+    ZQnotas.Open;
+  end;
+end;
+
+procedure TfrmACBrNFe.ZQempFilterRecord(DataSet: TDataSet; var Accept: Boolean);
+begin
+  Accept := Pos(UpperCase(Edit4.Text), UpperCase(DataSet.FieldByName('nome').AsString)) > 0;
 end;
 
 procedure TfrmACBrNFe.btnDistrDFePorNSUClick(Sender: TObject);
@@ -3344,7 +3477,6 @@ begin
     ACBrNFe1.NotasFiscais.Clear;
     ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName,False);
     ACBrNFe1.NotasFiscais.Imprimir;
-
   end;
 end;
 
@@ -3418,6 +3550,7 @@ procedure TfrmACBrNFe.btnInutilizarClick(Sender: TObject);
 var
   Modelo, Serie, Ano, NumeroInicial, NumeroFinal, Justificativa: String;
 begin
+
  Ano := '';
  if not(InputQuery('WebServices Inutilização ', 'Ano',    Ano)) then
     exit;
@@ -3427,6 +3560,7 @@ begin
  Serie := '';
  if not(InputQuery('WebServices Inutilização ', 'Serie',  Serie)) then
     exit;
+
  NumeroInicial := '';
  if not(InputQuery('WebServices Inutilização ', 'Número Inicial', NumeroInicial)) then
     exit;
@@ -3604,12 +3738,31 @@ end;
 
 procedure TfrmACBrNFe.FormShow(Sender: TObject);
 begin
-   label53.Caption  :=   ACBrNFe1.SSL.CertRazaoSocial ;
-   edtNumSerie.Text := '';
-   edtSenha.Text    := '';
+  // Edit4.SetFocus;
+  if FileExists('lancamento.db') then
+  begin
+      ZQemp.Active:= True;
+  end
+  else begin
+     carregar_empresas;
+  end;
+  zqprotocolo.active := True;
 end;
 
+procedure TfrmACBrNFe.PageControl2Change(Sender: TObject);
+begin
 
+end;
+
+procedure TfrmACBrNFe.pgcBotoesChange(Sender: TObject);
+begin
+
+end;
+
+procedure TfrmACBrNFe.pnlCentralClick(Sender: TObject);
+begin
+
+end;
 
 procedure TfrmACBrNFe.btnSha256Click(Sender: TObject);
 var
@@ -3838,31 +3991,7 @@ var
   Y: TSSLType;
   N: TACBrPosPrinterModelo;
   O: TACBrPosPaginaCodigo;
-
 begin
-
-  try
-    fBusca:=TfBusca.Create(Application);
-    fBusca.ShowModal;
-    nomecliente := fBusca.Edit1.Text;
-    chave := fBusca.Edit2.Text;
-  finally
-    fBusca.Free;
-  end;
-  {
-  if(nomecliente = '')then
-  begin
-     ShowMessage('Sistema Aberto sem Definir o Emitente');
-  end;
-   }
-  {
-   if(nomecliente = '')then
-   begin
-     nomecliente := 'ANTONIO.INI'
-   end;
-  }
-  Label54.Caption:= chave;
-
   cbSSLLib.Items.Clear;
   for T := Low(TSSLLib) to High(TSSLLib) do
     cbSSLLib.Items.Add( GetEnumName(TypeInfo(TSSLLib), integer(T) ) );
@@ -3931,201 +4060,196 @@ begin
   LerConfiguracao;
   pgRespostas.ActivePageIndex := 0;
   PageControl1.ActivePageIndex := 0;
-  PageControl4.ActivePageIndex := 3;
+  PageControl4.ActivePageIndex := 0;
+end;
 
-  if(chave <> '')then
-  begin
-    //frmACBrNFe.btnAssinarXML.Click;
-    frmACBrNFe.btnCarregarXMLEnviar.Click;
-  end;
-
+procedure TfrmACBrNFe.btnCarregaNfeEmpresaClick(Sender: TObject);
+begin
+  btnImportaNfeOdoo.Click;
+  PageControl3.ActivePage:= tbsheet_nota;
 
 end;
 
-procedure TfrmACBrNFe.btnAssinarXMLClick(Sender: TObject);
-var
-  Ok: Boolean;
-  sSQL : string;
+procedure TfrmACBrNFe.btnExecEmpresaClick(Sender: TObject);
 begin
-  //OpenDialog1.Title := 'Selecione a NFe';
-  //OpenDialog1.DefaultExt := '*-nfe.XML';
-  //OpenDialog1.Filter := 'Arquivos NFe (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
 
-  // OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
+end;
 
-  //if OpenDialog1.Execute then
-  if (chave <> '') then
-  begin
-   // chave_nfe1 := TfBusca.chave_nfe;
-    ACBrNFe1.NotasFiscais.Clear;
-   // ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName, False);
+procedure TfrmACBrNFe.btnImportaNfeOdooClick(Sender: TObject);
+begin
+  carregar_notas;
+end;
 
-    ACBrNFe1.NotasFiscais.LoadFromFile('C:\home\odoo_nfe\notas\'+ 'NFe'+ chave + '-env.xml', False);
-    with ACBrNFe1.NotasFiscais.Items[0].NFe do
-    begin
-      Emit.CNPJCPF           := edtEmitCNPJ.Text;
-      Emit.IE                := edtEmitIE.Text;
-      Emit.xNome             := edtEmitRazao.Text;
-      Emit.xFant             := edtEmitFantasia.Text;
+procedure TfrmACBrNFe.btnNotasGeradasClick(Sender: TObject);
+var  script  : TStringList;
+begin
+  script := TStringList.Create();
+  script.LoadFromFile('conecta_odoo_nfe.py');
+  script.Text := ReplaceStr(script.Text,'999999', DBEdit3.Text);
+  script.Text := ReplaceStr(script.Text,'PEGA_XML','ENVIA_AUTORIZADA');
+  Memo1.Clear;
+  Memo2.Clear;
+  Memo3.Clear;
+  memo2.Text:= script.Text;
+  Memo1.Append('Atualizando NFe enviada no Odoo, aguarde ...');
+  Memo3.Append('Atualizando NFe enviada no Odoo, aguarde ...');
+  PythonEngine1.ExecStrings(script);
+  Memo1.Append('Odoo atualizado com sucesso.');
+  Memo3.Append('Odoo atualizado com sucesso.');
+end;
 
-      Label53.Caption        := edtEmitRazao.Text +'-'+ edtEmitCNPJ.Text;
-
-      Emit.EnderEmit.fone    := edtEmitFone.Text;
-      Emit.EnderEmit.CEP     := StrToInt(edtEmitCEP.Text);
-      Emit.EnderEmit.xLgr    := edtEmitLogradouro.Text;
-      Emit.EnderEmit.nro     := edtEmitNumero.Text;
-      Emit.EnderEmit.xCpl    := edtEmitComp.Text;
-      Emit.EnderEmit.xBairro := edtEmitBairro.Text;
-      Emit.EnderEmit.cMun    := StrToInt(edtEmitCodCidade.Text);
-      Emit.EnderEmit.xMun    := edtEmitCidade.Text;
-      Emit.EnderEmit.UF      := edtEmitUF.Text;
-      Emit.enderEmit.cPais   := 1058;
-      Emit.enderEmit.xPais   := 'BRASIL';
-
-      Emit.IEST              := '';
-      Emit.IM                := ''; // Preencher no caso de existir serviços na nota
-      Emit.CNAE              := ''; // Verifique na cidade do emissor da NFe se é permitido
-                                    // a inclusão de serviços na NFe
-      Emit.CRT               := StrToCRT(Ok, IntToStr(cbTipoEmpresa.ItemIndex + 1));
-    end;
-
-    ACBrNFe1.NotasFiscais.Assinar;
-
-    MemoResp.Lines.Text := ACBrNFe1.WebServices.Retorno.RetWS;
-    memoRespWS.Lines.Text := ACBrNFe1.WebServices.Retorno.RetornoWS;
-    LoadXML(MemoResp, WBResposta);
-
-    MemoDados.Lines.Add('');
-    MemoDados.Lines.Add('Envio NFe');
-    MemoDados.Lines.Add('tpAmb: '+ TpAmbToStr(ACBrNFe1.WebServices.Retorno.TpAmb));
-    MemoDados.Lines.Add('verAplic: '+ ACBrNFe1.WebServices.Retorno.verAplic);
-    MemoDados.Lines.Add('cStat: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cStat));
-    MemoDados.Lines.Add('cUF: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cUF));
-    MemoDados.Lines.Add('xMotivo: '+ ACBrNFe1.WebServices.Retorno.xMotivo);
-    MemoDados.Lines.Add('cMsg: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cMsg));
-    MemoDados.Lines.Add('xMsg: '+ ACBrNFe1.WebServices.Retorno.xMsg);
-    MemoDados.Lines.Add('Recibo: '+ ACBrNFe1.WebServices.Retorno.Recibo);
-    MemoDados.Lines.Add('Protocolo: '+ ACBrNFe1.WebServices.Retorno.Protocolo);
-
-    sSQL := ' UPDATE nfe' +
-          ' SET' +
-          ' protocolo = ' + QuotedStr('123456789') +
-          ' WHERE chave = ' + QuotedStr(chave);
-
-    ZQprotocolo.SQL.Clear;
-    ZQprotocolo.SQL.Add(sSQL);
-    ZQprotocolo.ExecSQL;
-
-  end;
-
+procedure TfrmACBrNFe.btnVoltaPrincipalClick(Sender: TObject);
+begin
+  PageControl3.ActivePage:= tbsheet_empresa;
 end;
 
 procedure TfrmACBrNFe.Button1Click(Sender: TObject);
-var
-  i, j, k, n  : integer;
-  //Nota, Node, NodePai, NodeItem: TTreeNode;
-  //NFeRTXT: TNFeRTXT;
-  nome : string;
-  strEndereco: String;
 begin
-  //dm.cdsCli.Open;
-  //dm.cdsCli.Close;
-{  edtXMLCod.Text  := '';
-  edtXMLNome.Text  := '';
-  edtXMLRazao.Text  := '';
-  edtXMLCnpj.Text  := '';
-  edtXMLIE.Text  := '';
-  edtXMLLogradouro.Text  := '';
-  edtXMLNumero.Text  := '';
-  edtXMLComp.Text  := '';
-  edtXMLBairro.Text  := '';
-  edtXMLCEP.Text := '';
-  edtXMLCodCidade.Text := '';
-  edtXMLCidade.Text := '';
-  edtXMLUF.Text := '';
-  edtXMLFone.Text := '';
-
-  }
-  //trvwNFe.Items.Clear;
   OpenDialog1.FileName  :=  '';
-  OpenDialog1.Title := 'Selecione a NFE';
-  OpenDialog1.DefaultExt := '*-nfe.XML';
-  OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Arquivos TXT (*.TXT)|*.TXT|Todos os Arquivos (*.*)|*.*';
-  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
+  OpenDialog1.Title := 'Selecione Emitente ';
+  OpenDialog1.DefaultExt := '*.INI';
+  OpenDialog1.Filter := 'Todos os Arquivos (*.INI*)|*.INI*';
+
   if OpenDialog1.Execute then
   begin
-    //tenta TXT
-    //ACBrNFe1.NotasFiscais.Add;
-    //NFeRTXT := TNFeRTXT.Create(ACBrNFe1.NotasFiscais.Items[0].NFe);
-    //NFeRTXT.CarregarArquivo(OpenDialog1.FileName);
-    //if NFeRTXT.LerTxt then
-    //   NFeRTXT.Free
-    //else
-    //begin
-    //   NFeRTXT.Free;
-    //tenta XML
-    ACBrNFe1.NotasFiscais.Clear;
-    try
-      ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
-    except
-      ShowMessage('Arquivo NFe Inválido');
-      exit;
-    end;
+
+   Edit1.Text := ExtractFileName(OpenDialog1.FileName);
+
   end;
-
-  for n:=0 to ACBrNFe1.NotasFiscais.Count-1 do
-  begin
-    with ACBrNFe1.NotasFiscais.Items[n].NFe do
-    begin
-      edtEmitCNPJ.Text := Copy(Emit.CNPJCPF,1,2) + '.' + Copy(Emit.CNPJCPF,3,3) + '.' + Copy(Emit.CNPJCPF,6,3) + '/' + Copy(Emit.CNPJCPF,9,4) + '-' + Copy(Emit.CNPJCPF,13,2);
-      edtEmitRazao.Text := Emit.xNome ;
-      edtEmitFantasia.Text   := Emit.xFant ;
-      edtEmitIE .Text := Emit.IE ;
-
-      edtEmitLogradouro.Text := Emit.EnderEmit.xLgr;
-      edtEmitComp.Text   := Emit.EnderEmit.xCpl;
-      edtEmitCidade.Text := Emit.EnderEmit.xMun ;
-      edtEmitUF.Text     := Emit.EnderEmit.UF ;
-      edtEmitBairro.Text := Emit.EnderEmit.xBairro ;
-      edtEmitCEP.Text    := IntToStr(Emit.EnderEmit.CEP) ;
-      edtEmitFone.Text   := Emit.EnderEmit.Fone;
-      edtEmitNumero.Text := Emit.EnderEmit.nro ;
-      edtEmitCodCidade.Text := IntToStr(Emit.EnderEmit.cMun);
-
-    end;
-  end;
-
 end;
 
-procedure TfrmACBrNFe.btnTrocarEmitenteClick(Sender: TObject);
+procedure TfrmACBrNFe.Button2Click(Sender: TObject);
+var valor_x : String;
 begin
-  try
-    fBusca:=TfBusca.Create(Application);
-    fBusca.ShowModal;
-    nomecliente := fBusca.Edit1.Text;
-  finally
-    fBusca.Free;
-  end;
-  LerConfiguracao;
-  label53.Caption  :=   ACBrNFe1.SSL.CertRazaoSocial ;
+  valor_x := edCertificado.Text;
+  edtNumSerie.Text:= edCertificado.Text;
+  GravarConfiguracao;
 end;
 
+procedure TfrmACBrNFe.DBEdit2Change(Sender: TObject);
+var s : string;
+begin
+  {S:= DBEdit1.Text;
+  s:= stringReplace(S , '.',  '' ,[rfReplaceAll, rfIgnoreCase]);
+  s:= stringReplace(S , '-',  '' ,[rfReplaceAll, rfIgnoreCase]);
+  s:= stringReplace(S , '/',  '' ,[rfReplaceAll, rfIgnoreCase]);
+  Edit3.Text := S +'.ini';
+  edCertificado.Text:='';
+  LerConfiguracao;}
+end;
+
+procedure TfrmACBrNFe.DBGrid1CellClick(Column: TColumn);
+var s : string;
+begin
+  S:= DBEdit1.Text;
+  s:= stringReplace(S , '.',  '' ,[rfReplaceAll, rfIgnoreCase]);
+  s:= stringReplace(S , '-',  '' ,[rfReplaceAll, rfIgnoreCase]);
+  s:= stringReplace(S , '/',  '' ,[rfReplaceAll, rfIgnoreCase]);
+  Edit3.Text := S +'.ini';
+  edCertificado.Text:='';
+  LerConfiguracao;
+end;
+
+procedure TfrmACBrNFe.DBGrid1DblClick(Sender: TObject);
+begin
+    btnCarregaNfeEmpresa.Click;
+end;
+
+procedure TfrmACBrNFe.DBGrid2DblClick(Sender: TObject);
+var s : string;
+begin
+  S:= DBEdit1.Text;
+  s:= stringReplace(S , '.',  '' ,[rfReplaceAll, rfIgnoreCase]);
+  s:= stringReplace(S , '-',  '' ,[rfReplaceAll, rfIgnoreCase]);
+  s:= stringReplace(S , '/',  '' ,[rfReplaceAll, rfIgnoreCase]);
+  Edit1.Text := S +'.ini';
+  Edit2.Text:= DBEdit4.Text;
+  //BtnAssinar.Click;
+end;
+
+procedure TfrmACBrNFe.Edit4Change(Sender: TObject);
+begin
+  if Trim(Edit4.Text) <> '' then
+  begin
+    if not ZQemp.Filtered then
+      ZQemp.Filtered := True;
+    ZQemp.Refresh;
+  end
+  else
+    ZQemp.Filtered := False;
+end;
+
+procedure TfrmACBrNFe.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  //try
+  //  envia_nota_odoo;
+  //finally
+  //end;
+end;
+
+procedure TfrmACBrNFe.BtnAssinarClick(Sender: TObject);
+var s : string;
+begin
+  S:= DBEdit1.Text;
+  s:= stringReplace(S , '.',  '' ,[rfReplaceAll, rfIgnoreCase]);
+  s:= stringReplace(S , '-',  '' ,[rfReplaceAll, rfIgnoreCase]);
+  s:= stringReplace(S , '/',  '' ,[rfReplaceAll, rfIgnoreCase]);
+  Edit1.Text := S +'.ini';
+  //chave_nfe := Edit2.Text;
+  Edit2.Text:= DBEdit4.Text;
+  Edit5.Text:= DBEdit3.Text;
+end;
+
+procedure TfrmACBrNFe.btnCadastrarClick(Sender: TObject);
+begin
+
+end;
+
+procedure TfrmACBrNFe.btnCadastroEmpresaClick(Sender: TObject);
+begin
+
+end;
+
+procedure TfrmACBrNFe.BitBtn1Click(Sender: TObject);
+begin
+  // carrega empresa
+  carregar_empresas;
+end;
+
+procedure TfrmACBrNFe.BitBtn2Click(Sender: TObject);
+begin
+  btnCarregaNfeEmpresa.Click;
+end;
+
+procedure TfrmACBrNFe.BitBtn3Click(Sender: TObject);
+begin
+  // carregar notas
+  carregar_notas;
+end;
+
+procedure TfrmACBrNFe.BitBtn4Click(Sender: TObject);
+begin
+  btnCarregarXMLEnviar.Click;
+  btnNotasGeradas.Click;
+  // Retornando nota para o ODOO
+  envia_nota_odoo;
+end;
+
+procedure TfrmACBrNFe.BitBtn5Click(Sender: TObject);
+begin
+  envia_nota_odoo;
+  Close;
+end;
 
 procedure TfrmACBrNFe.GravarConfiguracao;
 var
   IniFile: String;
-  Ini,Ine: TIniFile;
+  ver_str: String;
+  Ini: TIniFile;
   StreamMemo: TMemoryStream;
 begin
- // IniFile := ChangeFileExt(ParamStr(0), '.ini');
-
- // Ini := TIniFile.Create(IniFile);
-
- // Ine := TIniFile.Create(ExtractFilePath(Application.ExeName) + edtEmitRazao.Text +'.ini');
-  Ine := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'empresas\'+ edtEmitCNPJ.Text +'.ini');
-
-  Ini := ine;
-
+  ver_str := ExtractFilePath(Application.ExeName) + 'empresas\'+ edit3.Text;
+  Ini := TIniFile.Create(ver_str);
   try
     Ini.WriteInteger('Certificado', 'SSLLib',     cbSSLLib.ItemIndex);
     Ini.WriteInteger('Certificado', 'CryptLib',   cbCryptLib.ItemIndex);
@@ -4242,15 +4366,14 @@ end;
 procedure TfrmACBrNFe.LerConfiguracao;
 var
   IniFile: String;
-  Ini,ine: TIniFile;
+  Ini: TIniFile;
   StreamMemo: TMemoryStream;
+  valor: String;
 begin
-
-
-  Ine := TIniFile.Create(ExtractFilePath(Application.ExeName) +  'empresas\' + nomecliente);
-
-
-  Ini := ine;
+  edCertificado.Text := '';
+  if Edit3.Text = '' then
+     exit;
+  Ini := TIniFile.Create(ExtractFilePath(Application.ExeName) +  'empresas\' + Edit3.Text);
   try
     cbSSLLib.ItemIndex     := Ini.ReadInteger('Certificado', 'SSLLib',     4);
     cbCryptLib.ItemIndex   := Ini.ReadInteger('Certificado', 'CryptLib',   0);
@@ -4260,7 +4383,9 @@ begin
     edtURLPFX.Text         := Ini.ReadString( 'Certificado', 'URL',        '');
     edtCaminho.Text        := Ini.ReadString( 'Certificado', 'Caminho',    '');
     edtSenha.Text          := Ini.ReadString( 'Certificado', 'Senha',      '');
-    edtNumSerie.Text       := Ini.ReadString( 'Certificado', 'NumSerie',   '');
+    valor :=                  Ini.ReadString( 'Certificado', 'NumSerie',   '');
+    edtNumSerie.Text       := valor;
+    edCertificado.Text     := valor;
 
     cbxAtualizarXML.Checked     := Ini.ReadBool(   'Geral', 'AtualizarXML',     True);
     cbxExibirErroSchema.Checked := Ini.ReadBool(   'Geral', 'ExibirErroSchema', True);
@@ -4491,7 +4616,7 @@ begin
   ACBrMail1.SetTLS := cbEmailSSL.Checked; // Auto TLS
   ACBrMail1.ReadingConfirmation := False; // Pede confirmacao de leitura do email
   ACBrMail1.UseThread := False;           // Aguarda Envio do Email(nao usa thread)
- /// ACBrMail1.FromName := 'Projeto ACBr - ACBrNFe';
+  ACBrMail1.FromName := 'Projeto ACBr - ACBrNFe';
 end;
 
 procedure TfrmACBrNFe.LoadXML(MyMemo: TMemo; SynEdit: TSynEdit);
@@ -4538,6 +4663,59 @@ begin
   ACBrPosPrinter1.CortaPapel         := cbCortarPapel.Checked;
 
   ACBrPosPrinter1.Ativar;
+end;
+
+procedure TfrmACBrNFe.carregar_empresas;
+begin
+  Memo1.Clear;
+  Memo2.Clear;
+  Memo4.Clear;
+  Memo2.Lines.LoadFromFile('conecta_odoo_empresa.py');
+  Memo1.Append('Buscando novas empresas cadastrada no Odoo ...');
+  Memo4.Lines.Add('Buscando novas empresas cadastrada no Odoo ...');
+  ZQemp.Active:= False;
+  PythonEngine1.ExecStrings( Memo2.Lines );
+  ZQemp.Active:= True;
+  Memo1.Append('Empresas atualizada com sucesso.');
+  Memo4.Lines.Add('Empresas atualizada com sucesso.');
+end;
+
+procedure TfrmACBrNFe.carregar_notas;
+var  script  : TStringList;
+begin
+  script := TStringList.Create();
+  // script.LoadFromFile('conecta_odoo_nfe.py');
+  script.LoadFromFile('executa_odoo_nfe_busca.py');
+  script.Text := ReplaceStr(script.Text,'999999', DBEdit3.Text);
+  Memo1.Clear;
+  Memo2.Clear;
+  Memo3.Clear;
+  memo2.Text:= script.Text;
+  if (ZQnotas.Active)then
+    ZQnotas.Close;
+  Memo1.Append('Buscando NFe a Enviar no Odoo ...');
+  Memo3.Lines.Add('Buscando NFe a Enviar no Odoo ...');
+  PythonEngine1.ExecStrings(script);
+  Memo1.Append('NFes atualizada com sucesso.');
+  Memo3.Lines.Add('NFes atualizada com sucesso.');
+  if (DBEdit3.Text <> '') then
+  begin
+    ZQnotas.Params[0].AsInteger := StrToInt(DBEdit3.Text);
+    ZQnotas.Open;
+  end;
+end;
+
+procedure TfrmACBrNFe.envia_nota_odoo;
+var script: TStringList;
+begin
+  script := TStringList.Create();
+  script.LoadFromFile('executa_odoo_nfe_retorno.py');
+  Memo2.Clear;
+  memo2.Text:= script.Text;
+  // Memo3.Lines.Add('Executando envio NFe para o Odoo ...');
+  Memo3.Lines.Add('Enviando notas Autorizadas...');
+  //PythonEngine1. := Memo4;
+  PythonEngine1.ExecStrings(script);
 end;
 
 procedure TfrmACBrNFe.sbPathCanClick(Sender: TObject);
@@ -4644,8 +4822,10 @@ begin
   frmSelecionarCertificado.ShowModal;
 
   if frmSelecionarCertificado.ModalResult = mrOK then
+  begin
     edtNumSerie.Text := frmSelecionarCertificado.StringGrid1.Cells[0, frmSelecionarCertificado.StringGrid1.Row];
-
+    edCertificado.Text := edtNumSerie.Text
+  end;
 end;
 
 procedure TfrmACBrNFe.sbtnPathSalvarClick(Sender: TObject);
