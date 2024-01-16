@@ -21,7 +21,15 @@ handlers = [ RotatingFileHandler(filename='logs/log.txt',
 logging.basicConfig(handlers=handlers, 
                     level=logging.INFO, 
                     format='%(levelname)s %(asctime)s %(message)s', 
-                    datefmt='%d/%m/%Y%I:%M:%S %p')
+                    datefmt='%d/%m/%Y%I:%M:%S %p',force=True)
+
+_logger_retorno = logging.getLogger(__name__)
+handlers_ret = [ RotatingFileHandler(filename='logs/log_retorno.txt',
+            mode='w',
+            maxBytes=512000,
+            backupCount=4)
+           ]
+_logger_retorno.addHandler(handlers_ret)
 
 
 class ConectaServerNFe():
@@ -116,13 +124,13 @@ class ConectaServerNFe():
         db.close()
 
     def retorna_xml_validado(self, empresa):
-        _logger.info('Iniciando envio para o odoo')
+        _logger_retorno.info('Iniciando envio para o odoo')
         con = self._conexao_odoo()
         db = local_db(filename = 'lancamento.db', table = 'nfe')
         notas_empresa = db.consulta_nfe_autorizada(50)
 
         if not notas_empresa:
-            _logger.info('Sem notas para enviar')
+            _logger_retorno.info('Sem notas para enviar')
             return
 
         # montando lista com o move_id das notas
@@ -142,7 +150,7 @@ class ConectaServerNFe():
                 ('state_edoc', '=', 'a_enviar')
             ])
             if not nfe_ids:
-                _logger.info(f"NFe nao encontrada no odoo {nota['chave']}")
+                _logger_retorno.info(f"NFe nao encontrada no odoo {nota['chave']}")
                 continue
             for nfe in n_xml.browse(nfe_ids):
                 # if nota['situacao_odoo'] in ('enviada','cancelada'):
@@ -167,7 +175,7 @@ class ConectaServerNFe():
                     event_ids = event.create(vals)
                     event_id = event.browse(event_ids)
                     if event_id:
-                        _logger.info(f"Evento criado com sucesso NFe: {nfe.document_number}")
+                        _logger_retorno.info(f"Evento criado com sucesso NFe: {nfe.document_number}")
                     attach = con.env["ir.attachment"]
                     file_name = f"{nota['chave']}-proc-env.xml"
                     att_file = attach.create({
@@ -209,7 +217,7 @@ class ConectaServerNFe():
                     sql_update = "update nfe set situacao_odoo = 'enviada' where chave = '%s' \
                         and empresa_id = %s" %(nota['chave'], nota['empresa_id'])
                     db.update(sql_update)
-                    _logger.info(f"Situação alterada com sucesso, NFe: {nfe.document_number}")
+                    _logger_retorno.info(f"Situação alterada com sucesso, NFe: {nfe.document_number}")
         db.close()
 
 # ConectaServerNFe(empresa=3)
