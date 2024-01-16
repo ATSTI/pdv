@@ -64,6 +64,7 @@ class Database:
                     item['num_nfe']
                 )
                 self._db.execute(excluir.format(self._table))
+                self._db.commit()
                 continue
             list_accumulator.append({k: item[k] for k in item.keys()})
         if len(list_accumulator):
@@ -134,8 +135,8 @@ class Database:
     def table(self): return self._table
     @table.setter
     def table(self, t): self._table = t
-    @table.deleter
-    def table(self): self._table = 'nfe'
+    # @table.deleter
+    # def table(self): self._table = 'nfe'
 
     def close(self):
         self._db.close()

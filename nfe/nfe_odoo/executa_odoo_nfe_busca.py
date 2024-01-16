@@ -6,7 +6,7 @@ class ExecutaOdooNFeBusca():
     def __init__(self):
         empresa = int('999999') # ao executar o script substitui pelo id da empresa
         # uso TESTE
-        # empresa = '3'
+        # empresa = '4'
         conecta = nfe_envia(empresa=empresa, funcao_exec='PEGA_XML')
         conecta.pega_xml(int(empresa))
 
