@@ -143,6 +143,7 @@ type
     cbxVisualizar: TCheckBox;
     ckSalvar: TCheckBox;
     Dados: TTabSheet;
+    dsProtocolo: TDataSource;
     DBEdit1: TDBEdit;
     DBEdit2: TDBEdit;
     DBEdit3: TDBEdit;
@@ -4125,6 +4126,9 @@ begin
   edtNumSerie.Text:= edCertificado.Text;
   GravarConfiguracao;
 end;
+
+
+
 
 procedure TfrmACBrNFe.DBEdit2Change(Sender: TObject);
 var s : string;
