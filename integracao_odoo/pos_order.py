@@ -60,9 +60,9 @@ class IntegracaoOdoo:
             # db = con.Conexao(self.host, self.database)
             db = con()
         except:
-            msg_sis = u'Caminho ou nome do banco inválido.<br>'
+            msg_sis = u'Caminho ou nome do banco inválido. '
         msg_erro = ''
-        msg_sis = 'Integrando Caixa com o PDV<br>'
+        msg_sis = 'Integrando Caixa com o PDV '
         hj = datetime.now()
         hj = hj - timedelta(days=9)
         hj = datetime.strftime(hj,'%Y-%m-%d')
@@ -193,13 +193,13 @@ class IntegracaoOdoo:
             db = con()
             dblocal = local_db(filename = 'lancamento.db', table = 'produto')
         except:
-            msg_sis = u'Caminho ou nome do banco inválido.<br>'
+            msg_sis = u'Caminho ou nome do banco inválido. '
         msg_erro = ''
         hj = datetime.now()
         hj = hj - timedelta(days=1)
         hj = datetime.strftime(hj,'%Y-%m-%d')
         msg_erro = ''
-        msg_sis = 'Integrando Produtos para o PDV<br>'
+        msg_sis = 'Integrando Produtos para o PDV '
 
         # troquei esta rotina pq agora os dados estao no sqlite3 ja vindos do odoo
 
@@ -326,7 +326,7 @@ class IntegracaoOdoo:
                     x = 0
                 # TODO tratar isso e enviar email
                 if retorno:
-                    msg_erro += 'ERRO : %s<br>' %(retorno)
+                    msg_erro += 'ERRO : %s ' %(retorno)
                     if 'ERRO' in msg_erro:
                         x = 1
                     #print ('SQL %s' %str(insere))
@@ -357,12 +357,12 @@ class IntegracaoOdoo:
                 #print ('SQL : %s' %(altera))
                 if retorno:
                     #print ('SQL erro : %s' %(altera))
-                    msg_erro += 'ERRO : %s<br>' %(retorno)
+                    msg_erro += 'ERRO : %s ' %(retorno)
                     if 'ERRO' in msg_erro:
                         x = 1
         #print ('Integracao realizada com sucesso.')
-        msg_sis += 'Integracao Finalizada.<br>'
-        return msg_sis + '<br>' + msg_erro
+        msg_sis += 'Integracao Finalizada. '
+        return msg_sis + ' ' + msg_erro
 
     def cron_integra_clientes(self):
         session_ids = self.env['pos.session'].search([
@@ -379,9 +379,9 @@ class IntegracaoOdoo:
             db = con()
             dblocal = local_db(filename = 'lancamento.db', table = 'cliente')
         except:
-            msg_sis = u'Caminho ou nome do banco inválido.<br>'
+            msg_sis = u'Caminho ou nome do banco inválido. '
         msg_erro = ''
-        msg_sis = 'Integrando Clientes para o PDV<br>'
+        msg_sis = 'Integrando Clientes para o PDV '
         hj = datetime.now()
         hj = datetime.strftime(hj,'%Y-%m-%d')
         cli_ids = dblocal.consulta_cliente()
@@ -403,7 +403,7 @@ class IntegracaoOdoo:
                     WHERE CODCLIENTE = %s" %(nome, hj, str(partner_id['codcliente']))
                 retorno = db.insert(altera )
                 if retorno:
-                    msg_erro += 'ERRO : %s<br>' %(retorno)
+                    msg_erro += 'ERRO : %s ' %(retorno)
             if not len(cli):
                 tipo = partner_id['tipofirma']
                 vendedor = partner_id['codusuario']
@@ -425,7 +425,7 @@ class IntegracaoOdoo:
                             'current_date', vendedor, '1', '1', fiscal)
                 retorno = db.insert(insere)
                 if retorno:
-                    msg_erro += 'ERRO : %s<br>' %(retorno)                
+                    msg_erro += 'ERRO : %s ' %(retorno)                
                 
                 #buscar Cidade/UF/Pais
                 ibge = 'Null'
@@ -495,7 +495,7 @@ class IntegracaoOdoo:
                 
                 retorno = db.insert(inserir)
                 if retorno:
-                    msg_erro += 'ERRO : %s<br>' %(retorno)
+                    msg_erro += 'ERRO : %s ' %(retorno)
             else:
                 regiao = partner_id['regiao']
                 altera =  'UPDATE CLIENTES SET REGIAO = %s \
@@ -503,10 +503,10 @@ class IntegracaoOdoo:
                     WHERE CODCLIENTE = %s' %(regiao, nome, str(partner_id['codcliente']))
                 retorno = db.insert(altera )
                 if retorno:
-                    msg_erro += 'ERRO : %s<br>' %(retorno)
+                    msg_erro += 'ERRO : %s ' %(retorno)
         
-        msg_sis += 'Integracao Finalizada.<br>'
-        return  msg_sis + '<br>' + msg_erro
+        msg_sis += 'Integracao Finalizada. '
+        return  msg_sis + ' ' + msg_erro
 
     def cron_integra_recebidos(self):
         session_ids = self.env['pos.session'].search([
@@ -532,9 +532,9 @@ class IntegracaoOdoo:
             else:
                 return False
         except:
-            msg_sis = u'Caminho ou nome do banco inválido.<br>'
+            msg_sis = u'Caminho ou nome do banco inválido. '
         msg_erro = ''
-        msg_sis = 'Integrando Contas a Receber para o PDV<br>'
+        msg_sis = 'Integrando Contas a Receber para o PDV '
         hj = datetime.now()
         hj = hj - timedelta(days=session.periodo_integracao+10)
         hj = datetime.strftime(hj,'%Y-%m-%d %H:%M:%S')
@@ -574,7 +574,7 @@ class IntegracaoOdoo:
                               WHERE CODRECEBIMENTO = %s' %(str(recs[0][0]))
                         retorno = db.insert(recebe)
                         if retorno:
-                            msg_erro += 'ERRO : %s<br>' %(retorno)
+                            msg_erro += 'ERRO : %s ' %(retorno)
                     """ PRECISO DISTO ABAIXO
                     else:
                         vlr := fatura_ids.amount_total - fatura_ids.residual
@@ -583,7 +583,7 @@ class IntegracaoOdoo:
                               WHERE CODRECEBIMENTO = %s' %(str(vlr),str(recs[0][0]))
                         retorno = db.insert(recebe)
                         if retorno:
-                            msg_erro += 'ERRO : %s<br>' %(retorno)
+                            msg_erro += 'ERRO : %s ' %(retorno)
                     """   
                 continue
             else:
@@ -631,7 +631,7 @@ class IntegracaoOdoo:
                     print(ins_rec)
                     retorno = db.insert(ins_rec)
                     if retorno:
-                        msg_erro += 'ERRO : %s<br>' %(retorno)
+                        msg_erro += 'ERRO : %s ' %(retorno)
         # contas recebidas colocar no PDV ODOO
         sqld = 'SELECT  r.CODRECEBIMENTO, r.DATARECEBIMENTO, \
                    r.CODALMOXARIFADO, r.FORMARECEBIMENTO, \
@@ -645,7 +645,7 @@ class IntegracaoOdoo:
         recs = db.query(sqld)
 
         if not len(recs):
-            msg_sis = 'Sem Contas Receber para importar.<br>'
+            msg_sis = 'Sem Contas Receber para importar. '
         for rcs in recs:
             # procura o pedido pdv odoo
             lanc = '%s-%s' %(str(rcs[7]), str(rcs[8]))
@@ -655,7 +655,7 @@ class IntegracaoOdoo:
             ppdv = ''
             if not ppdv:
                 continue
-            msg_sis = 'Receber novos : %s<br>' %(str(rcs[0]))
+            msg_sis = 'Receber novos : %s ' %(str(rcs[0]))
             jrn = '1-'
             # cartao Credito ATSAdmin    
             if rcs[3] == '6':
@@ -710,14 +710,14 @@ class IntegracaoOdoo:
             else:
                 return False
         except:
-            msg_sis = u'Caminho ou nome do banco inválido.<br>'
+            msg_sis = u'Caminho ou nome do banco inválido. '
         #db = con.Conexao('192.168.0.137:3050','C:\home\bd\ats_pdv_cx1.fdb')
         
         #db = con.Conexao (host='192.168.0.137', database='C:\\home\\bd\\sge_vitton_artur.fdb')
         #db = con.Conexao (host='192.168.0.137', database='C:\\home\\bd\\ats_pdv_cx1.fdb', user='sysdba', password='masterkey')
         #db = con.Conexao(session.config_id.ip_terminal, session.config_id.database)
         msg_erro = ''
-        msg_sis = 'Integrando Devolução PDV para Odoo <br>'
+        msg_sis = 'Integrando Devolução PDV para Odoo  '
         hj = datetime.now()
         # session.periodo_integracao
         hj = hj - timedelta(days=10)
@@ -744,7 +744,7 @@ class IntegracaoOdoo:
         movs = db.query(sqld)
 
         if not len(movs):
-            msg_sis = 'Sem Devolução para importar.<br>'
+            msg_sis = 'Sem Devolução para importar. '
         for mvs in movs:
             nome_busca = 'DEV-' + str(mvs[1])
             dev = self.env['stock.picking'].sudo().search([
@@ -805,7 +805,7 @@ class IntegracaoOdoo:
         # Para remover do select da movimento
         db = con()
         msg_erro = ''
-        msg_sis = 'Integrando Vendas para o PDV<br>'
+        msg_sis = 'Integrando Vendas para o PDV '
         hj = datetime.now()
         # hj = hj - timedelta(days=session.periodo_integracao)
         hj = hj - timedelta(days=9)
@@ -835,15 +835,15 @@ class IntegracaoOdoo:
                '   AND m.CODNATUREZA = 3 ' \
                '   AND m.CODMOVIMENTO NOT IN (%s)' %(str(cx[1]),str_ord)
         if not sqld:
-            msg_sis = 'Sem Pedidos para importar.<br>'
+            msg_sis = 'Sem Pedidos para importar. '
             return msg_sis
         movs = db.query(sqld)
         if not len(movs):
-            msg_sis = 'Sem Pedidos para importar.<br>'
+            msg_sis = 'Sem Pedidos para importar. '
         # for mvs in movs:
         #    print ('cod mov: %s' %(str(mvs[0]))) 
         for mvs in movs:
-            msg_sis = 'Pedidos novos : %s<br>' %(str(mvs[0]))
+            msg_sis = 'Pedidos novos : %s ' %(str(mvs[0]))
             ord_p = False
             ord_name = '%s-%s' %(str(cx[1]),str(mvs[0]))
             arquivo_nome = self.path_envio + '/pedido_%s.json' %(ord_name)
@@ -854,7 +854,7 @@ class IntegracaoOdoo:
             
             # coloquei so pra manter o if
             if ord_name:
-                msg_sis = 'Importando : %s<br>' %(str(mvs[0]))
+                msg_sis = 'Importando : %s ' %(str(mvs[0]))
                 # cortesia = tipo_venda n
                 vals = {}               
                 cli = mvs[2]
@@ -1005,7 +1005,7 @@ class IntegracaoOdoo:
                     arquivo_json.close()
 
                 # except:
-                msg_erro += 'ERRO, não integrado pedido : %s<br>' %(prdname)
+                msg_erro += 'ERRO, não integrado pedido : %s ' %(prdname)
 
                 if teve_desconto == 's' and linhas == 's' and ord_p:
                     #ord_p = pos_ord.browse(ords)
@@ -1066,7 +1066,7 @@ class IntegracaoOdoo:
         #movs = db.query(sqld)
 
         #if not len(movs):
-        #    msg_sis = 'Sem Pedidos para importar.<br>'
+        #    msg_sis = 'Sem Pedidos para importar. '
         #for mvs in movs:
         #    pos_ord = self.env['pos.order']
         #    ord_name = '%s-%s' %(str(mvs[6]),str(mvs[0]))
@@ -1086,7 +1086,7 @@ class IntegracaoOdoo:
         # Fim CRIAR FATURA
         
         #print ('Integracao realizada com sucesso.')
-        #msg_sis += 'Integracao Finalizada.<br>'
+        #msg_sis += 'Integracao Finalizada. '
 
         #sqlc = 'SELECT FIRST 3 r.IDCAIXACONTROLE, r.CODCAIXA,  \
         #       r.VALORABRE, r.VALORFECHA  \
@@ -1101,8 +1101,8 @@ class IntegracaoOdoo:
             #session = self.env['pos.session'].browse(pos_ses)
         #    if pos_ses:
         #        pos_ses.write({'venda_finalizada': True})
-        #        msg_sis = 'CAIXA FECHADO , COM SUCESSO.<br>'
-        return msg_sis + '<br>' + msg_erro
+        #        msg_sis = 'CAIXA FECHADO , COM SUCESSO. '
+        return msg_sis + ' ' + msg_erro
 
 # class PosConfig(models.Model):
     # _inherit = 'pos.config'
