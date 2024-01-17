@@ -163,7 +163,7 @@ class ConectaServerNFe():
             db.execute(sql)
 
     def consulta_nfe_autorizada(self, db=None, chave=None, limit=50):
-        busca = "select first %s num_nfe, situacao, data_alteracao from nfe " %(str(limit))
+        busca = "select first %s move_id, num_nfe, situacao, chave, empresa_id, data_alteracao from nfe " %(str(limit))
         busca += " WHERE situacao = 'Autorizada' AND situacao_odoo is null"
         if chave:
             busca += " AND chave like '%s'" %(chave)
@@ -171,13 +171,8 @@ class ConectaServerNFe():
         dados = db.query(busca)
         if not dados:
             return False
-        list_accumulator = []
-        for item in dados:
-            list_accumulator.append({k: item[k] for k in item.keys()})
-        if len(list_accumulator):
-            return list_accumulator
         else:
-            return False
+            return dados
 
     def retorna_xml_validado(self, empresa):
         _logger.info('Iniciando envio para o odoo')
@@ -187,7 +182,7 @@ class ConectaServerNFe():
         except:
             msg = u'Caminho ou nome do banco inválido.<br>'
             _logger.info(msg)
-        notas_empresa = db.consulta_nfe_autorizada(db=db, limit=50)
+        notas_empresa = self.consulta_nfe_autorizada(db=db, limit=50)
         # nao usando a classe sqlite_bd aqui erro database locked
         if not notas_empresa:
             _logger.info('Sem notas para enviar')
@@ -195,10 +190,10 @@ class ConectaServerNFe():
             # montando lista com o move_id das notas
             lista_id = set()
             for nota in notas_empresa:
-                lista_id.add(nota['move_id'])            
+                lista_id.add(nota[0])            
 
             for nota in notas_empresa:
-                if nota['situacao'] == 'A_enviar':
+                if nota[2] == 'A_enviar':
                     continue
                 # confirma situacao no odoo 
                 n_xml = con.env['account.move']
@@ -209,14 +204,14 @@ class ConectaServerNFe():
                     ('state_edoc', '=', 'a_enviar')
                 ])
                 if not nfe_ids:
-                    _logger.info(f"NFe nao encontrada no odoo {nota['chave']}")
+                    _logger.info(f"NFe nao encontrada no odoo {nota[3]}")
                     continue
                 for nfe in n_xml.browse(nfe_ids):
                     # if nota['situacao_odoo'] in ('enviada','cancelada'):
                         # if nfe.state_edoc in ('autorizada', 'cancelada', 'denegada', 'inutilizada'):
                             # continue
                     if not nfe.authorization_file_id:
-                        file_name = f"NFe{nota['chave']}-env.xml"
+                        file_name = f"NFe{nota[3]}-env.xml"
                         arquivo = f"{self.path_retorno}/notas/{file_name}"
                         xml_file = open(arquivo, 'r')
                         # envia o xml para o Odoo e altera a situacao
@@ -236,7 +231,7 @@ class ConectaServerNFe():
                         if event_id:
                             _logger.info(f"Evento criado com sucesso NFe: {nfe.document_number}")
                         attach = con.env["ir.attachment"]
-                        file_name = f"{nota['chave']}-proc-env.xml"
+                        file_name = f"{nota[3]}-proc-env.xml"
                         att_file = attach.create({
                             "name": file_name,
                             "res_model": "l10n_br_fiscal.event",
@@ -269,13 +264,13 @@ class ConectaServerNFe():
                             atualiza = {'authorization_event_id': event_id.id}
                             # muda a situacao no odoo
                             situacao = ''
-                            if nota['situacao'] == 'Autorizada':
+                            if nota[2] == 'Autorizada':
                                 situacao = 'autorizada'
                                 atualiza['state_edoc'] = situacao
                             nfe.write(atualiza)
                             # muda situacao_odoo bd local
                             sql_update = "update nfe set situacao_odoo = 'enviada' where chave = '%s' \
-                                and empresa_id = %s" %(nota['chave'], nota['empresa_id'])
+                                and empresa_id = %s" %(nota[3], nota[4])
                             db.execute(sql_update)
                             _logger.info(f"Situação alterada com sucesso, NFe: {str(nfe.document_number)}")
                         except:
