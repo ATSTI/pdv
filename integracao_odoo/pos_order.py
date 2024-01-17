@@ -60,7 +60,7 @@ class IntegracaoOdoo:
             # db = con.Conexao(self.host, self.database)
             db = con()
         except:
-            msg_sis = u'Caminho ou nome do banco inválido. '
+            msg_sis = u'Caminho ou nome do banco invalido. '
         msg_erro = ''
         msg_sis = 'Integrando Caixa com o PDV '
         hj = datetime.now()
@@ -193,7 +193,7 @@ class IntegracaoOdoo:
             db = con()
             dblocal = local_db(filename = 'lancamento.db', table = 'produto')
         except:
-            msg_sis = u'Caminho ou nome do banco inválido. '
+            msg_sis = u'Caminho ou nome do banco invalido. '
         msg_erro = ''
         hj = datetime.now()
         hj = hj - timedelta(days=1)
@@ -379,7 +379,7 @@ class IntegracaoOdoo:
             db = con()
             dblocal = local_db(filename = 'lancamento.db', table = 'cliente')
         except:
-            msg_sis = u'Caminho ou nome do banco inválido. '
+            msg_sis = u'Caminho ou nome do banco invalido. '
         msg_erro = ''
         msg_sis = 'Integrando Clientes para o PDV '
         hj = datetime.now()
@@ -532,7 +532,7 @@ class IntegracaoOdoo:
             else:
                 return False
         except:
-            msg_sis = u'Caminho ou nome do banco inválido. '
+            msg_sis = u'Caminho ou nome do banco invalido. '
         msg_erro = ''
         msg_sis = 'Integrando Contas a Receber para o PDV '
         hj = datetime.now()
@@ -710,7 +710,7 @@ class IntegracaoOdoo:
             else:
                 return False
         except:
-            msg_sis = u'Caminho ou nome do banco inválido. '
+            msg_sis = u'Caminho ou nome do banco invalido. '
         #db = con.Conexao('192.168.0.137:3050','C:\home\bd\ats_pdv_cx1.fdb')
         
         #db = con.Conexao (host='192.168.0.137', database='C:\\home\\bd\\sge_vitton_artur.fdb')
@@ -1114,7 +1114,7 @@ class IntegracaoOdoo:
     #     try:
     #         db = con.Conexao(self.ip_terminal, self.database)
     #     except:
-            # raise UserError(u'Caminho ou nome do banco inválido.')
+            # raise UserError(u'Caminho ou nome do banco invalido.')
 
 # class PosOrder(models.Model):
 #     _inherit = 'pos.order'
