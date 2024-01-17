@@ -1,3 +1,4 @@
 odoorpc
 configparser
 requests
+fdb

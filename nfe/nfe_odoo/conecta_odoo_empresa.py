@@ -5,11 +5,10 @@ import odoorpc
 # from datetime import date
 # from datetime import timedelta
 import os
-import base64
 import shutil
-from sqlite_bd import Database as local_db
 from main import Main as verifica_versao
 import configparser
+from atscon import Conexao as con_fdb
 
 class ConectaServer():
     _name = 'conecta.server'
@@ -32,16 +31,33 @@ class ConectaServer():
         origem.login(self.db, self.login, self.passwd)
         return origem
 
+    def consulta_empresa(self, db=None, empresa_id=None, nome=None, cnpj=None):
+        busca = "select * from EMPRESA"
+        if empresa_id:
+            busca += " where empresa_id = " + str(empresa_id)
+        if nome:
+            busca += " where nome like '%s' or razao like '%s'" %(nome)
+        if cnpj:
+            busca += " where cnpj like '%s'" %(cnpj)
+        dados = db.query_one(busca)
+        if not dados:
+            return False
+        return dados
+
     def busca_empresa(self):
+        try:
+            db = con_fdb()
+        except:
+            msg = u'Caminho ou nome do banco inválido.<br>'
         con = self._conexao_odoo()
-        db = local_db(filename = 'lancamento.db', table = 'empresa')
+        # db = local_db(filename = 'lancamento.db', table = 'empresa')
         empresa = con.env['res.company']
         empresas_ids = empresa.search([(1, '=', 1)])
         
         for emp in empresa.browse(empresas_ids):
             if emp.certificate_nfe_id:
                 continue
-            existe = db.consulta_empresa(empresa_id=None, nome=None, cnpj=emp.cnpj_cpf)
+            existe = self.consulta_empresa(db=db, empresa_id=None, nome=None, cnpj=emp.cnpj_cpf)
             razao = ''
             if emp.legal_name:
                 razao = emp.legal_name
@@ -50,12 +66,10 @@ class ConectaServer():
                 cnpj = emp.cnpj_cpf
             if not existe:
                 #print (f"Cadastrando empresa : {emp.name}")
-                db.insert_empresa(dict(
-                    empresa_id = emp.id,
-                    nome = emp.name,
-                    razao = razao,
-                    cnpj = cnpj
-                ))
+                sql = "insert into empresa (empresa_id, nome, razao, cnpj) values (%s, '%s', '%s', '%s')" %(
+                    str(emp.id), emp.name, razao, cnpj
+                )
+                db.execute(sql)
             replace = ['-', ' ', '(',')', '/', '.', ':','º','+55']
             for i in replace:
                 cnpj = cnpj.replace(i, '')
@@ -110,6 +124,5 @@ class ConectaServer():
                     empresa_secao["CRT"] = emp.tax_framework # ou :  emp.fiscal_profile_id.tax_framework
                     with open(empresa_arquivo, 'w') as configfile:
                         cfgx.write(configfile)
-        db.close()
     
 ConectaServer()
