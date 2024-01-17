@@ -17,6 +17,10 @@
       <UseAppBundle Value="False"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
+      <XPManifest>
+        <TextName Value="ATS"/>
+        <TextDesc Value="Integração Odoo"/>
+      </XPManifest>
       <Icon Value="0"/>
     </General>
     <BuildModes Count="3">
@@ -147,7 +151,7 @@
         <PackageName Value="LCL"/>
       </Item15>
     </RequiredPackages>
-    <Units Count="6">
+    <Units Count="5">
       <Unit0>
         <Filename Value="ACBrNFe_Exemplo.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -169,25 +173,13 @@
       <Unit3>
         <Filename Value="Frm_ConfiguraSerial.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="frmConfiguraSerial"/>
         <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
       </Unit3>
       <Unit4>
         <Filename Value="Frm_Status.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="frmStatus"/>
         <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
       </Unit4>
-      <Unit5>
-        <Filename Value="frm_busca.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="fBusca"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="Frm_Busca"/>
-      </Unit5>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

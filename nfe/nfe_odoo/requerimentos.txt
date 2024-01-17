@@ -1,0 +1,4 @@
+odoorpc
+configparser
+requests
+fdb
