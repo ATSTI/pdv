@@ -5,11 +5,10 @@ import logging
 from logging.handlers import RotatingFileHandler
 from datetime import datetime
 import base64
-from sqlite_bd import Database as local_db
 import configparser
 from pathlib import Path
 import xml.etree.ElementTree as ET
-import sqlite3
+from atscon import Conexao as con_fdb
 
 
 _logger = logging.getLogger(__name__)
@@ -54,33 +53,30 @@ class ConectaServerNFe():
         origem.login(self.db, self.login, self.passwd)
         return origem
 
-    def consulta_nfe(self, chave=None, empresa_id=None, limit=50):
-        consulta = sqlite3.connect('lancamento.db', timeout=1)
-        cursor = consulta.cursor()
+    def consulta_nfe(self, db=None, chave=None, empresa_id=None, limit=50):
         if not empresa_id:
             # bloqueia a busca sem informar a empresa
             empresa_id = 1
-        busca = "select num_nfe, situacao from nfe where empresa_id = %s " %(str(empresa_id))
+        busca = "select first %s num_nfe, situacao, data_alteracao from nfe " %(str(limit))
+        busca += " where empresa_id = %s " %(str(empresa_id))
         if chave:
             busca += " and chave like '%s'" %(chave)
-        busca += " order by num_nfe desc LIMIT %s" %(limit)
-        sql_exec = cursor.execute(busca)
-        dados = sql_exec.fetchall()
-
+        busca += " order by num_nfe desc "
+        dados = db.query(busca)
         if not dados:
             return False
         list_accumulator = []
-        # import pudb;pu.db
+
+        ultima_modificacao = datetime.now()
         for item in dados:
             situacao = item[1]
             # coloquei o limit > 5 pq qdo consulta pra enviar para o odoo nao pode exluir
-            if situacao == 'A_enviar' and limit > 5:
+            if situacao == 'A_enviar' and item[2] != ultima_modificacao:
                 excluir = "DELETE FROM nfe WHERE empresa_id = %s and num_nfe = %s" %(
                     str(empresa_id),
                     item[0]
                 )
-                cursor.execute(excluir)
-                consulta.commit()
+                db.execute(excluir)
                 continue
             list_accumulator.append({k: item[k] for k in item.keys()})
         if len(list_accumulator):
@@ -89,10 +85,11 @@ class ConectaServerNFe():
             return False
 
     def pega_xml(self, empresa):
-        # nao usando a classe sqlite_bd aqui erro database locked
-        con_2 = sqlite3.connect('lancamento.db', timeout=5)
-        db_2 = con_2.cursor()
-
+        try:
+            db = con_fdb()
+        except:
+            msg = u'Caminho ou nome do banco inválido.<br>'
+            _logger.info(msg)
         msg = 'Buscando no Odoo NFe para empresa: %s' %(str(empresa))
         # print (msg)
         _logger.info(msg)
@@ -117,14 +114,13 @@ class ConectaServerNFe():
 
         # db = local_db(filename = 'lancamento.db', table = 'nfe')
         # existe_notas = db.consulta_nfe(chave='', empresa_id=empresa, limit=50)
-        existe_notas = self.consulta_nfe(chave='', empresa_id=empresa, limit=50)
+        existe_notas = self.consulta_nfe(db=db, chave='', empresa_id=empresa, limit=50)
         
         notas_sistema = set()
         if notas_sistema:
             for nf in existe_notas:
                 notas_sistema.add(nf['chave'])
-        # db.close()
-        # db = local_db(filename = 'lancamento.db', table = 'nfe')
+
         for prd in p_xml.browse(nfe_ids):
             chave = prd.document_key
             # _logger.info(f"NFe: {str(chave)}")
@@ -155,29 +151,13 @@ class ConectaServerNFe():
                 _logger.info(f"Chave: {chave}, protocolo: {prd.authorization_protocol}")
             emissao = datetime.strftime(prd.document_date,'%Y-%m-%d')
 
+            data_fb = datetime.strftime(prd.write_date,'%Y.%m.%d, %H:%M:%S.0000')
             sql = "insert into nfe (move_id, empresa_id, xml_aenviar, chave, destinatario, \
-                num_nfe, data_emissao, situacao) values ('%s', %s, \
-                '%s', '%s', '%s', '%s', '%s', '%s')" \
-                %(prd.id, prd.company_id.id, xml,
-                    prd.document_key,
-                    prd.partner_id.name,
-                    prd.document_number,
-                    emissao,
-                    'A_enviar'
-                )
-            db_2.execute(sql)
-            # db.insert_nfe(dict(
-            #         move_id = prd.id,
-            #         empresa_id = prd.company_id.id,
-            #         xml_aenviar = xml,
-            #         chave = prd.document_key,
-            #         dest = prd.partner_id.name,
-            #         num_nfe = prd.document_number,
-            #         data_emissao = emissao,
-            #         situacao = 'A_enviar'
-            #     ))
-        con_2.commit()
-        con_2.close()
+                num_nfe, data_emissao, situacao, data_alteracao) values ('%s', %s, \
+                '%s', '%s', '%s', '%s', '%s', '%s', '%s')" %(
+                    str(prd.id), str(prd.company_id.id), xml, prd.document_key, 
+                    prd.partner_id.name, prd.document_number, emissao, 'A_enviar', data_fb)
+            db.execute(sql)
 
     def retorna_xml_validado(self, empresa):
         _logger.info('Iniciando envio para o odoo')
