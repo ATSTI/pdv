@@ -9,6 +9,7 @@ import configparser
 from pathlib import Path
 import xml.etree.ElementTree as ET
 from atscon import Conexao as con_fdb
+import fdb
 
 
 _logger = logging.getLogger(__name__)
@@ -150,23 +151,44 @@ class ConectaServerNFe():
             if prd.authorization_protocol:
                 _logger.info(f"Chave: {chave}, protocolo: {prd.authorization_protocol}")
             emissao = datetime.strftime(prd.document_date,'%Y-%m-%d')
-
+            
+            file_binary = fdb.binary(xml)
+            data_tuple = (1, file_binary)
             data_fb = datetime.strftime(prd.write_date,'%Y.%m.%d, %H:%M:%S.0000')
             sql = "insert into nfe (move_id, empresa_id, xml_aenviar, chave, destinatario, \
                 num_nfe, data_emissao, situacao, data_alteracao) values ('%s', %s, \
                 '%s', '%s', '%s', '%s', '%s', '%s', '%s')" %(
-                    str(prd.id), str(prd.company_id.id), xml, prd.document_key, 
+                    str(prd.id), str(prd.company_id.id), data_tuple, prd.document_key, 
                     prd.partner_id.name, prd.document_number, emissao, 'A_enviar', data_fb)
             db.execute(sql)
+
+    def consulta_nfe_autorizada(self, db=None, chave=None, limit=50):
+        busca = "select first %s num_nfe, situacao, data_alteracao from nfe " %(str(limit))
+        busca += " WHERE situacao = 'Autorizada' AND situacao_odoo is null"
+        if chave:
+            busca += " AND chave like '%s'" %(chave)
+        busca += " order by move_id desc "
+        dados = db.query(busca)
+        if not dados:
+            return False
+        list_accumulator = []
+        for item in dados:
+            list_accumulator.append({k: item[k] for k in item.keys()})
+        if len(list_accumulator):
+            return list_accumulator
+        else:
+            return False
 
     def retorna_xml_validado(self, empresa):
         _logger.info('Iniciando envio para o odoo')
         con = self._conexao_odoo()
-        db = local_db(filename = 'lancamento.db', table = 'nfe')
-        notas_empresa = db.consulta_nfe_autorizada(50)
+        try:
+            db = con_fdb()
+        except:
+            msg = u'Caminho ou nome do banco inválido.<br>'
+            _logger.info(msg)
+        notas_empresa = db.consulta_nfe_autorizada(db=db, limit=50)
         # nao usando a classe sqlite_bd aqui erro database locked
-        con_2 = sqlite3.connect('lancamento.db', timeout=5)
-        db_2 = con_2.cursor()
         if not notas_empresa:
             _logger.info('Sem notas para enviar')
         else:
@@ -245,22 +267,18 @@ class ConectaServerNFe():
                                 }
                             )
                             atualiza = {'authorization_event_id': event_id.id}
-                            # muda a situacao_odoo
+                            # muda a situacao no odoo
                             situacao = ''
                             if nota['situacao'] == 'Autorizada':
                                 situacao = 'autorizada'
                                 atualiza['state_edoc'] = situacao
                             nfe.write(atualiza)
-                            # muda situacao_odoo
+                            # muda situacao_odoo bd local
                             sql_update = "update nfe set situacao_odoo = 'enviada' where chave = '%s' \
                                 and empresa_id = %s" %(nota['chave'], nota['empresa_id'])
-                            # db.update(sql_update)
-                            # db.close()
-                            db_2.execute(sql_update)
-                            con_2.commit()
+                            db.execute(sql_update)
                             _logger.info(f"Situação alterada com sucesso, NFe: {str(nfe.document_number)}")
                         except:
                             _logger.info(f"ERRO lendo protocolo no XML, NFe: {str(nfe.document_number)}")
-        db.close()
 
 # ConectaServerNFe(empresa=3)
