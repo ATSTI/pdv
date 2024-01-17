@@ -58,7 +58,7 @@ class ConectaServerNFe():
         if not empresa_id:
             # bloqueia a busca sem informar a empresa
             empresa_id = 1
-        busca = "select first %s num_nfe, situacao, data_alteracao from nfe " %(str(limit))
+        busca = "select first %s num_nfe, situacao, data_alteracao, chave from nfe " %(str(limit))
         busca += " where empresa_id = %s " %(str(empresa_id))
         if chave:
             busca += " and chave like '%s'" %(chave)
@@ -66,8 +66,6 @@ class ConectaServerNFe():
         dados = db.query(busca)
         if not dados:
             return False
-        list_accumulator = []
-
         ultima_modificacao = datetime.now()
         for item in dados:
             situacao = item[1]
@@ -79,11 +77,7 @@ class ConectaServerNFe():
                 )
                 db.execute(excluir)
                 continue
-            list_accumulator.append({k: item[k] for k in item.keys()})
-        if len(list_accumulator):
-            return list_accumulator
-        else:
-            return False
+        return dados
 
     def pega_xml(self, empresa):
         try:
@@ -120,7 +114,7 @@ class ConectaServerNFe():
         notas_sistema = set()
         if notas_sistema:
             for nf in existe_notas:
-                notas_sistema.add(nf['chave'])
+                notas_sistema.add(nf[3])
 
         for prd in p_xml.browse(nfe_ids):
             chave = prd.document_key
@@ -152,13 +146,13 @@ class ConectaServerNFe():
                 _logger.info(f"Chave: {chave}, protocolo: {prd.authorization_protocol}")
             emissao = datetime.strftime(prd.document_date,'%Y-%m-%d')
             
-            file_binary = fdb.binary(xml)
-            data_tuple = (1, file_binary)
+            # file_binary = fdb.binary(xml)
+            # data_tuple = (1, file_binary)
             data_fb = datetime.strftime(prd.write_date,'%Y.%m.%d, %H:%M:%S.0000')
             sql = "insert into nfe (move_id, empresa_id, xml_aenviar, chave, destinatario, \
                 num_nfe, data_emissao, situacao, data_alteracao) values ('%s', %s, \
                 '%s', '%s', '%s', '%s', '%s', '%s', '%s')" %(
-                    str(prd.id), str(prd.company_id.id), data_tuple, prd.document_key, 
+                    str(prd.id), str(prd.company_id.id), xml, prd.document_key, 
                     prd.partner_id.name, prd.document_number, emissao, 'A_enviar', data_fb)
             db.execute(sql)
 
@@ -220,7 +214,7 @@ class ConectaServerNFe():
                             "company_id": nfe.company_id.id,
                             "environment": environment,
                             "type": "0",
-                            "document_id": nfe.id,
+                            "document_id": nfe.fiscal_document_id.id,
                             "document_type_id": nfe.document_type_id.id,
                             "document_serie_id": nfe.document_serie_id.id,
                             "document_number": nfe.document_number
