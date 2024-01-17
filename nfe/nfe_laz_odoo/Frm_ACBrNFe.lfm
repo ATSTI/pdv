@@ -4195,8 +4195,8 @@ object frmACBrNFe: TfrmACBrNFe
     Password = 'masterkey'
     Protocol = 'firebirdd-2.5'
     LibraryLocation = 'C:\home\odoo_nfe\fbclient.dll'
-    Left = 32
-    Top = 128
+    Left = 56
+    Top = 120
   end
   object OpenDialog2: TOpenDialog
     Title = 'Selecione a NFe'
