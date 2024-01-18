@@ -4,11 +4,10 @@ from datetime import datetime
 from datetime import date
 from datetime import timedelta
 import logging
-
+import unicodedata
 import re
 import time
 import os
-import unidecode
 import json
 import configparser
 from main import Main as verifica_versao
@@ -55,6 +54,19 @@ class IntegracaoOdoo:
             rodou += 1
             time.sleep(600)
 
+    """
+    A remoção de acentos foi baseada em uma resposta no Stack Overflow.
+    http://stackoverflow.com/a/517974/3464573
+    """
+    def removerAcentosECaracteresEspeciais(self, palavra):
+
+        # Unicode normalize transforma um caracter em seu equivalente em latin.
+        nfkd = unicodedata.normalize('NFKD', palavra)
+        palavraSemAcento = u"".join([c for c in nfkd if not unicodedata.combining(c)])
+
+        # Usa expressão regular para retornar a palavra apenas com números, letras e espaço
+        return re.sub('[^a-zA-Z0-9 \\\]', '', palavraSemAcento)    
+
     def action_atualiza_caixas(self, session):
         try:
             # db = con.Conexao(self.host, self.database)
@@ -64,7 +76,7 @@ class IntegracaoOdoo:
         msg_erro = ''
         msg_sis = 'Integrando Caixa com o PDV '
         hj = datetime.now()
-        hj = hj - timedelta(days=9)
+        hj = hj - timedelta(days=3)
         hj = datetime.strftime(hj,'%Y-%m-%d')
 
         # sessao_ids = self.env['pos.session'].search([
@@ -85,6 +97,8 @@ class IntegracaoOdoo:
                 WHERE SITUACAO = 'o' AND DATAABERTURA = '%s'" %(hj)
         sess = db.query(sqlp)
         for ses in sess:
+            nomecli = ses[5]
+            nomecli = self.removerAcentosECaracteresEspeciais(nomecli)
             vals = {}
             vals['user_id'] = ses[2]
             vals['name'] = ses[5]
@@ -253,7 +267,7 @@ class IntegracaoOdoo:
             produto = pr['produto'].strip()
             produto = produto.replace("'"," ")
             try:
-                produto = unidecode(produto)
+                produto = self.removerAcentosECaracteresEspeciais(produto)
             except:
                 produto = produto
             produto = produto.replace("'","")
@@ -389,6 +403,7 @@ class IntegracaoOdoo:
             return  'Sem clientes pra atualizar'
         for partner_id in cli_ids:
             nome = partner_id['nomecliente']
+            nome = self.removerAcentosECaracteresEspeciais(nome)
             razao = nome  
             sqlc = 'select codcliente, datacadastro from clientes where codcliente = %s' %(partner_id['codcliente'])
             cli = db.query(sqlc)
@@ -808,7 +823,7 @@ class IntegracaoOdoo:
         msg_sis = 'Integrando Vendas para o PDV '
         hj = datetime.now()
         # hj = hj - timedelta(days=session.periodo_integracao)
-        hj = hj - timedelta(days=9)
+        hj = hj - timedelta(days=3)
         hj = datetime.strftime(hj,'%m-%d-%Y')
         caixa_usado = 'None'
         # TODO le o ultimo arquivo de retorno com as ultimas atualizacos
@@ -940,9 +955,12 @@ class IntegracaoOdoo:
                     if linhas == 's': 
                         num_linha -= 1
                     try:
-                        prdname = unidecode(md[6])
+                        prdname = self.removerAcentosECaracteresEspeciais(md[6])
                     except:
-                        prdname = md[6]
+                        if md[6]:
+                            prdname = md[6]
+                        else:
+                            prdname = "Sem descricao"
                     vlr_total += (md[2]*md[3])-md[4]
                     vlr_totprod = (md[2]*md[3])-md[4]
                     desconto = 0.0
@@ -993,7 +1011,7 @@ class IntegracaoOdoo:
 
                 # try:
                 vals_ped = vals 
-                nomecliente = mvs[8]
+                nomecliente = self.removerAcentosECaracteresEspeciais(mvs[8])
                 nomecliente = (nomecliente)
                 #nomecliente = normalize('NFKD', nomecliente).encode('ASCII','ignore').decode('ASCII')
                 #nomecliente = re.sub(u'[^a-zA-Z0-9áéíóúÁÉÍÓÚâêîôÂÊÎÔãõÃÕçÇ: ]', '', nomecliente.decode('utf-8'))
