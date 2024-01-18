@@ -261,6 +261,7 @@ type
     Label52: TLabel;
     Label53: TLabel;
     Label54: TLabel;
+    lblEmpresa: TLabel;
     Label56: TLabel;
     Label57: TLabel;
     Label58: TLabel;
@@ -269,6 +270,8 @@ type
     Label7: TLabel;
     Label8: TLabel;
     Label9: TLabel;
+    lblEmpresa1: TLabel;
+    lblEmpresa2: TLabel;
     lCryptLib: TLabel;
     lHttpLib: TLabel;
     lSSLLib: TLabel;
@@ -472,6 +475,7 @@ type
     procedure carregar_empresas;
     procedure carregar_notas;
     procedure envia_nota_odoo;
+    procedure abrir_tabela_notas;
   public
     { Public declarations }
   end;
@@ -491,6 +495,7 @@ uses
 
 const
   SELDIRHELP = 1000;
+  IniFile = 'conf.ini';
 
 {$R *.lfm}
 
@@ -2443,10 +2448,7 @@ procedure TfrmACBrNFe.tbsheet_notaShow(Sender: TObject);
 begin
   if (DBEdit3.Text <> '') then
   begin
-    if (ZQnotas.Active)then
-      ZQnotas.Close;
-    ZQnotas.Params[0].AsInteger := StrToInt(DBEdit3.Text);
-    ZQnotas.Open;
+    abrir_tabela_notas;
   end;
 end;
 
@@ -3738,16 +3740,23 @@ begin
 end;
 
 procedure TfrmACBrNFe.FormShow(Sender: TObject);
+var
+  conf_file : TIniFile;
+  lendo: string;
 begin
+  conf_file := TIniFile.Create(IniFile);
+  lendo := conf_file.ReadString('FIREBIRD', 'database', '');
+  Zconn.Database := lendo;
+  lendo := conf_file.ReadString('FIREBIRD', 'hostname', '');
+  Zconn.Hostname := lendo;
+  lendo := conf_file.ReadString('FIREBIRD', 'password', '');
+  Zconn.Password := lendo;
+  lendo := conf_file.ReadString('FIREBIRD', 'user', '');
+  Zconn.User := lendo;
   // Edit4.SetFocus;
-  if FileExists('lancamento.db') then
-  begin
-      ZQemp.Active:= True;
-  end
-  else begin
-     carregar_empresas;
-  end;
-  zqprotocolo.active := True;
+  ZQemp.Active:= True;
+  carregar_empresas;
+  //zqprotocolo.active := True;
 end;
 
 procedure TfrmACBrNFe.PageControl2Change(Sender: TObject);
@@ -4152,6 +4161,9 @@ begin
   Edit3.Text := S +'.ini';
   edCertificado.Text:='';
   LerConfiguracao;
+  lblEmpresa.Caption := DBEdit2.Text;
+  lblEmpresa1.Caption:= DBEdit2.Text;
+  lblEmpresa2.Caption:= DBEdit2.Text;
 end;
 
 procedure TfrmACBrNFe.DBGrid1DblClick(Sender: TObject);
@@ -4704,8 +4716,7 @@ begin
   Memo3.Lines.Add('NFes atualizada com sucesso.');
   if (DBEdit3.Text <> '') then
   begin
-    ZQnotas.Params[0].AsInteger := StrToInt(DBEdit3.Text);
-    ZQnotas.Open;
+    abrir_tabela_notas;
   end;
 end;
 
@@ -4720,6 +4731,17 @@ begin
   Memo3.Lines.Add('Enviando notas Autorizadas...');
   //PythonEngine1. := Memo4;
   PythonEngine1.ExecStrings(script);
+end;
+
+procedure TfrmACBrNFe.abrir_tabela_notas;
+var sql_notas: string;
+begin
+  ZQNotas.Active:=False;
+  ZQNotas.SQL.Clear;
+  sql_notas := 'SELECT * FROM nfe WHERE empresa_id = ' + DBEdit3.Text;
+  ZQNotas.SQL.Add(sql_notas);
+  ZQNotas.ExecSQL;
+  ZQNotas.Active:=True;
 end;
 
 procedure TfrmACBrNFe.sbPathCanClick(Sender: TObject);

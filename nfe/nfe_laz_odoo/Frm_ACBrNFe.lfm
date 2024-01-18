@@ -15,7 +15,7 @@ object frmACBrNFe: TfrmACBrNFe
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '2.2.4.0'
+  LCLVersion = '2.2.6.0'
   object PageControl2: TPageControl
     Left = 0
     Height = 626
@@ -68,9 +68,9 @@ object frmACBrNFe: TfrmACBrNFe
           end
           object Label53: TLabel
             Left = 168
-            Height = 25
+            Height = 23
             Top = 0
-            Width = 134
+            Width = 149
             Caption = 'Busca Emitente'
             Font.Height = -19
             Font.Style = [fsBold]
@@ -160,7 +160,7 @@ object frmACBrNFe: TfrmACBrNFe
             Left = 128
             Height = 13
             Top = 24
-            Width = 29
+            Width = 31
             Caption = 'NOME'
             ParentColor = False
           end
@@ -205,7 +205,7 @@ object frmACBrNFe: TfrmACBrNFe
             Left = 120
             Height = 16
             Top = 473
-            Width = 99
+            Width = 105
             Caption = 'Certificado digital'
             Font.Color = clWindowText
             Font.Height = -13
@@ -406,9 +406,9 @@ object frmACBrNFe: TfrmACBrNFe
             ParentColor = False
             TabOrder = 15
             object BitBtn2: TBitBtn
-              Left = 440
+              Left = 784
               Height = 40
-              Top = 2
+              Top = 3
               Width = 179
               Caption = 'Carregar Notas'
               Glyph.Data = {
@@ -516,8 +516,8 @@ object frmACBrNFe: TfrmACBrNFe
             end
             object BitBtn5: TBitBtn
               Left = 976
-              Height = 38
-              Top = 4
+              Height = 40
+              Top = 3
               Width = 96
               Caption = 'Fechar'
               Glyph.Data = {
@@ -545,6 +545,17 @@ object frmACBrNFe: TfrmACBrNFe
               OnClick = BitBtn5Click
               TabOrder = 1
             end
+            object lblEmpresa: TLabel
+              Left = 8
+              Height = 23
+              Top = 8
+              Width = 18
+              Caption = '...'
+              Font.Height = -19
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+            end
           end
           object Edit3: TEdit
             Left = 691
@@ -558,7 +569,7 @@ object frmACBrNFe: TfrmACBrNFe
             Left = 120
             Height = 16
             Top = 429
-            Width = 50
+            Width = 53
             Caption = 'Empresa'
             Font.Color = clWindowText
             Font.Height = -13
@@ -813,7 +824,7 @@ object frmACBrNFe: TfrmACBrNFe
             ParentColor = False
             TabOrder = 5
             object BitBtn4: TBitBtn
-              Left = 448
+              Left = 824
               Height = 40
               Top = 2
               Width = 136
@@ -923,8 +934,8 @@ object frmACBrNFe: TfrmACBrNFe
             end
             object BitBtn6: TBitBtn
               Left = 976
-              Height = 38
-              Top = 4
+              Height = 40
+              Top = 2
               Width = 96
               Caption = 'Fechar'
               Glyph.Data = {
@@ -952,12 +963,23 @@ object frmACBrNFe: TfrmACBrNFe
               OnClick = BitBtn5Click
               TabOrder = 1
             end
+            object lblEmpresa1: TLabel
+              Left = 8
+              Height = 23
+              Top = 8
+              Width = 18
+              Caption = '...'
+              Font.Height = -19
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+            end
           end
           object Label58: TLabel
             Left = 16
             Height = 16
             Top = 433
-            Width = 26
+            Width = 28
             Caption = 'Nota'
             Font.Color = clWindowText
             Font.Height = -13
@@ -969,7 +991,7 @@ object frmACBrNFe: TfrmACBrNFe
             Left = 216
             Height = 16
             Top = 432
-            Width = 35
+            Width = 36
             Caption = 'Chave'
             Font.Color = clWindowText
             Font.Height = -13
@@ -1207,29 +1229,31 @@ object frmACBrNFe: TfrmACBrNFe
             Align = alBottom
             ClientHeight = 49
             ClientWidth = 1088
+            Color = clGrayText
+            ParentColor = False
             TabOrder = 2
             object btnImportaNfeOdoo: TButton
-              Left = 128
+              Left = 632
               Height = 40
-              Top = 8
-              Width = 153
+              Top = 4
+              Width = 160
               Caption = 'Importa Nfe Odoo'
               OnClick = btnImportaNfeOdooClick
               TabOrder = 0
             end
             object btnNotasGeradas: TButton
-              Left = 464
+              Left = 807
               Height = 40
-              Top = 8
-              Width = 220
+              Top = 4
+              Width = 160
               Caption = 'Atualizar Odoo Notas Geradas'
               OnClick = btnNotasGeradasClick
               TabOrder = 1
             end
             object BitBtn7: TBitBtn
-              Left = 968
+              Left = 982
               Height = 40
-              Top = 8
+              Top = 4
               Width = 96
               Caption = 'Fechar'
               Glyph.Data = {
@@ -1256,6 +1280,17 @@ object frmACBrNFe: TfrmACBrNFe
               }
               OnClick = BitBtn5Click
               TabOrder = 2
+            end
+            object lblEmpresa2: TLabel
+              Left = 8
+              Height = 23
+              Top = 8
+              Width = 18
+              Caption = '...'
+              Font.Height = -19
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
             end
           end
         end
@@ -2263,7 +2298,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Left = 39
                   Height = 13
                   Top = 16
-                  Width = 30
+                  Width = 33
                   Alignment = taRightJustify
                   Caption = 'SSLLib'
                   Color = clBtnFace
@@ -2274,7 +2309,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Left = 29
                   Height = 13
                   Top = 43
-                  Width = 40
+                  Width = 41
                   Alignment = taRightJustify
                   Caption = 'CryptLib'
                   Color = clBtnFace
@@ -2285,7 +2320,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Left = 35
                   Height = 13
                   Top = 70
-                  Width = 34
+                  Width = 37
                   Alignment = taRightJustify
                   Caption = 'HttpLib'
                   Color = clBtnFace
@@ -2296,7 +2331,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Left = 17
                   Height = 13
                   Top = 97
-                  Width = 52
+                  Width = 59
                   Alignment = taRightJustify
                   Caption = 'XMLSignLib'
                   Color = clBtnFace
@@ -2316,7 +2351,7 @@ object frmACBrNFe: TfrmACBrNFe
                     Left = 5
                     Height = 13
                     Top = 46
-                    Width = 41
+                    Width = 46
                     Caption = 'Caminho'
                     ParentColor = False
                   end
@@ -2324,7 +2359,7 @@ object frmACBrNFe: TfrmACBrNFe
                     Left = 5
                     Height = 13
                     Top = 86
-                    Width = 30
+                    Width = 34
                     Caption = 'Senha'
                     ParentColor = False
                   end
@@ -2354,7 +2389,7 @@ object frmACBrNFe: TfrmACBrNFe
                     Left = 5
                     Height = 13
                     Top = 126
-                    Width = 79
+                    Width = 88
                     Caption = 'Número de Série'
                     ParentColor = False
                   end
@@ -2406,7 +2441,7 @@ object frmACBrNFe: TfrmACBrNFe
                     Left = 5
                     Height = 13
                     Top = 3
-                    Width = 65
+                    Width = 68
                     Caption = 'URL para PFX'
                     ParentColor = False
                   end
@@ -2514,9 +2549,9 @@ object frmACBrNFe: TfrmACBrNFe
                   end
                   object cbAssinar: TCheckBox
                     Left = 142
-                    Height = 19
+                    Height = 17
                     Top = 27
-                    Width = 55
+                    Width = 58
                     Caption = 'Assinar'
                     Checked = True
                     State = cbChecked
@@ -2631,7 +2666,7 @@ object frmACBrNFe: TfrmACBrNFe
                     Left = 6
                     Height = 13
                     Top = 74
-                    Width = 86
+                    Width = 93
                     Caption = 'Forma de Emissão'
                     ParentColor = False
                   end
@@ -2639,7 +2674,7 @@ object frmACBrNFe: TfrmACBrNFe
                     Left = 6
                     Height = 13
                     Top = 36
-                    Width = 72
+                    Width = 77
                     Caption = 'Formato Alerta'
                     ParentColor = False
                   end
@@ -2647,7 +2682,7 @@ object frmACBrNFe: TfrmACBrNFe
                     Left = 6
                     Height = 13
                     Top = 112
-                    Width = 120
+                    Width = 133
                     Caption = 'Modelo Documento Fiscal'
                     ParentColor = False
                   end
@@ -2655,7 +2690,7 @@ object frmACBrNFe: TfrmACBrNFe
                     Left = 6
                     Height = 13
                     Top = 151
-                    Width = 119
+                    Width = 131
                     Caption = 'Versão Documento Fiscal'
                     ParentColor = False
                   end
@@ -2663,7 +2698,7 @@ object frmACBrNFe: TfrmACBrNFe
                     Left = 6
                     Height = 13
                     Top = 285
-                    Width = 184
+                    Width = 198
                     Caption = 'IdToken/IdCSC (Somente para NFC-e)'
                     ParentColor = False
                   end
@@ -2671,7 +2706,7 @@ object frmACBrNFe: TfrmACBrNFe
                     Left = 5
                     Height = 13
                     Top = 325
-                    Width = 164
+                    Width = 176
                     Caption = 'Token/CSC (Somente para NFC-e)'
                     ParentColor = False
                   end
@@ -2679,7 +2714,7 @@ object frmACBrNFe: TfrmACBrNFe
                     Left = 6
                     Height = 13
                     Top = 246
-                    Width = 198
+                    Width = 211
                     Caption = 'Diretórios com os arquivos XSD(Schemas)'
                     ParentColor = False
                   end
@@ -2714,7 +2749,7 @@ object frmACBrNFe: TfrmACBrNFe
                   end
                   object ckSalvar: TCheckBox
                     Left = 6
-                    Height = 19
+                    Height = 17
                     Top = 209
                     Width = 196
                     Caption = 'Salvar Arquivos de Envio e Resposta'
@@ -2734,17 +2769,17 @@ object frmACBrNFe: TfrmACBrNFe
                   end
                   object cbxAtualizarXML: TCheckBox
                     Left = 6
-                    Height = 19
+                    Height = 17
                     Top = 2
-                    Width = 84
+                    Width = 92
                     Caption = 'Atualizar XML'
                     TabOrder = 3
                   end
                   object cbxExibirErroSchema: TCheckBox
                     Left = 6
-                    Height = 19
+                    Height = 17
                     Top = 18
-                    Width = 109
+                    Width = 115
                     Caption = 'Exibir Erro Schema'
                     TabOrder = 4
                   end
@@ -2765,9 +2800,9 @@ object frmACBrNFe: TfrmACBrNFe
                   end
                   object cbxRetirarAcentos: TCheckBox
                     Left = 6
-                    Height = 19
+                    Height = 17
                     Top = 191
-                    Width = 188
+                    Width = 201
                     Caption = 'Retirar Acentos dos XMLs enviados'
                     TabOrder = 7
                   end
@@ -2832,7 +2867,7 @@ object frmACBrNFe: TfrmACBrNFe
                     Left = 165
                     Height = 13
                     Top = 102
-                    Width = 40
+                    Width = 45
                     Caption = 'TimeOut'
                     Color = clBtnFace
                     ParentColor = False
@@ -2842,7 +2877,7 @@ object frmACBrNFe: TfrmACBrNFe
                     Left = 17
                     Height = 13
                     Top = 154
-                    Width = 41
+                    Width = 43
                     Alignment = taRightJustify
                     Caption = 'SSLType'
                     Color = clBtnFace
@@ -2851,7 +2886,7 @@ object frmACBrNFe: TfrmACBrNFe
                   end
                   object cbxVisualizar: TCheckBox
                     Left = 6
-                    Height = 19
+                    Height = 17
                     Top = 104
                     Width = 119
                     Caption = 'Visualizar Mensagem'
@@ -2931,9 +2966,9 @@ object frmACBrNFe: TfrmACBrNFe
                   end
                   object cbxSalvarSOAP: TCheckBox
                     Left = 6
-                    Height = 19
+                    Height = 17
                     Top = 122
-                    Width = 127
+                    Width = 133
                     Caption = 'Salvar envelope SOAP'
                     TabOrder = 3
                   end
@@ -2973,7 +3008,7 @@ object frmACBrNFe: TfrmACBrNFe
                     Left = 6
                     Height = 13
                     Top = 2
-                    Width = 22
+                    Width = 23
                     Caption = 'Host'
                     ParentColor = False
                   end
@@ -2981,7 +3016,7 @@ object frmACBrNFe: TfrmACBrNFe
                     Left = 206
                     Height = 13
                     Top = 2
-                    Width = 26
+                    Width = 27
                     Caption = 'Porta'
                     ParentColor = False
                   end
@@ -2989,7 +3024,7 @@ object frmACBrNFe: TfrmACBrNFe
                     Left = 6
                     Height = 13
                     Top = 42
-                    Width = 36
+                    Width = 39
                     Caption = 'Usuário'
                     ParentColor = False
                   end
@@ -2997,7 +3032,7 @@ object frmACBrNFe: TfrmACBrNFe
                     Left = 136
                     Height = 13
                     Top = 42
-                    Width = 30
+                    Width = 34
                     Caption = 'Senha'
                     ParentColor = False
                   end
@@ -3045,7 +3080,7 @@ object frmACBrNFe: TfrmACBrNFe
                     Left = 91
                     Height = 13
                     Top = 13
-                    Width = 51
+                    Width = 56
                     Caption = 'Tentativas'
                     ParentColor = False
                   end
@@ -3053,7 +3088,7 @@ object frmACBrNFe: TfrmACBrNFe
                     Left = 174
                     Height = 13
                     Top = 13
-                    Width = 44
+                    Width = 47
                     Caption = 'Intervalo'
                     ParentColor = False
                   end
@@ -3062,15 +3097,15 @@ object frmACBrNFe: TfrmACBrNFe
                     Height = 13
                     Hint = 'Aguardar quantos segundos para primeira consulta de retorno de envio'
                     Top = 13
-                    Width = 45
+                    Width = 50
                     Caption = 'Aguardar'
                     ParentColor = False
                   end
                   object cbxAjustarAut: TCheckBox
                     Left = 6
-                    Height = 19
+                    Height = 17
                     Top = 0
-                    Width = 227
+                    Width = 245
                     Caption = 'Ajustar Automaticamente prop. "Aguardar"'
                     TabOrder = 0
                   end
@@ -3107,7 +3142,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Left = 8
                   Height = 13
                   Top = 4
-                  Width = 25
+                  Width = 26
                   Caption = 'CNPJ'
                   ParentColor = False
                 end
@@ -3123,7 +3158,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Left = 8
                   Height = 13
                   Top = 44
-                  Width = 60
+                  Width = 67
                   Caption = 'Razão Social'
                   ParentColor = False
                 end
@@ -3131,7 +3166,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Left = 8
                   Height = 13
                   Top = 84
-                  Width = 41
+                  Width = 46
                   Caption = 'Fantasia'
                   ParentColor = False
                 end
@@ -3139,7 +3174,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Left = 8
                   Height = 13
                   Top = 164
-                  Width = 55
+                  Width = 60
                   Caption = 'Logradouro'
                   ParentColor = False
                 end
@@ -3147,7 +3182,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Left = 208
                   Height = 13
                   Top = 164
-                  Width = 37
+                  Width = 41
                   Caption = 'Número'
                   ParentColor = False
                 end
@@ -3155,7 +3190,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Left = 8
                   Height = 13
                   Top = 204
-                  Width = 65
+                  Width = 71
                   Caption = 'Complemento'
                   ParentColor = False
                 end
@@ -3163,7 +3198,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Left = 136
                   Height = 13
                   Top = 204
-                  Width = 28
+                  Width = 31
                   Caption = 'Bairro'
                   ParentColor = False
                 end
@@ -3171,7 +3206,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Left = 8
                   Height = 13
                   Top = 244
-                  Width = 62
+                  Width = 67
                   Caption = 'Cód. Cidade '
                   ParentColor = False
                 end
@@ -3179,7 +3214,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Left = 76
                   Height = 13
                   Top = 244
-                  Width = 33
+                  Width = 38
                   Caption = 'Cidade'
                   ParentColor = False
                 end
@@ -3203,7 +3238,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Left = 8
                   Height = 13
                   Top = 124
-                  Width = 24
+                  Width = 26
                   Caption = 'Fone'
                   ParentColor = False
                 end
@@ -3360,7 +3395,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Left = 6
                   Height = 13
                   Top = 116
-                  Width = 94
+                  Width = 100
                   Caption = 'Pasta Arquivos NFe'
                   ParentColor = False
                 end
@@ -3368,7 +3403,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Left = 6
                   Height = 13
                   Top = 154
-                  Width = 143
+                  Width = 156
                   Caption = 'Pasta Arquivos Cancelamento'
                   ParentColor = False
                 end
@@ -3398,7 +3433,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Left = 6
                   Height = 13
                   Top = 192
-                  Width = 198
+                  Width = 210
                   Caption = 'Pasta Arquivos CC-e - Carta de Correção'
                   ParentColor = False
                 end
@@ -3428,7 +3463,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Left = 6
                   Height = 13
                   Top = 230
-                  Width = 129
+                  Width = 142
                   Caption = 'Pasta Arquivos Inutilização'
                   ParentColor = False
                 end
@@ -3458,7 +3493,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Left = 6
                   Height = 13
                   Top = 268
-                  Width = 101
+                  Width = 105
                   Caption = 'Pasta Arquivos DPEC'
                   ParentColor = False
                 end
@@ -3488,7 +3523,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Left = 6
                   Height = 13
                   Top = 306
-                  Width = 109
+                  Width = 114
                   Caption = 'Pasta Arquivos Evento'
                   ParentColor = False
                 end
@@ -3516,49 +3551,49 @@ object frmACBrNFe: TfrmACBrNFe
                 end
                 object cbxSalvarArqs: TCheckBox
                   Left = 6
-                  Height = 19
+                  Height = 17
                   Top = 0
-                  Width = 201
+                  Width = 214
                   Caption = 'Salvar Arquivos em Pastas Separadas'
                   TabOrder = 0
                 end
                 object cbxPastaMensal: TCheckBox
                   Left = 6
-                  Height = 19
+                  Height = 17
                   Top = 16
-                  Width = 144
+                  Width = 157
                   Caption = 'Criar Pastas Mensalmente'
                   TabOrder = 1
                 end
                 object cbxAdicionaLiteral: TCheckBox
                   Left = 6
-                  Height = 19
+                  Height = 17
                   Top = 32
-                  Width = 195
+                  Width = 214
                   Caption = 'Adicionar Literal no nome das pastas'
                   TabOrder = 2
                 end
                 object cbxEmissaoPathNFe: TCheckBox
                   Left = 6
-                  Height = 19
+                  Height = 17
                   Top = 48
-                  Width = 246
+                  Width = 265
                   Caption = 'Salvar Documento pelo campo Data de Emissão'
                   TabOrder = 3
                 end
                 object cbxSalvaPathEvento: TCheckBox
                   Left = 6
-                  Height = 19
+                  Height = 17
                   Top = 64
-                  Width = 152
+                  Width = 159
                   Caption = 'Salvar Arquivos de Eventos'
                   TabOrder = 4
                 end
                 object cbxSepararPorCNPJ: TCheckBox
                   Left = 6
-                  Height = 19
+                  Height = 17
                   Top = 80
-                  Width = 204
+                  Width = 218
                   Caption = 'Separar Arqs pelo CNPJ do Certificado'
                   TabOrder = 5
                 end
@@ -3606,9 +3641,9 @@ object frmACBrNFe: TfrmACBrNFe
                 end
                 object cbxSepararPorModelo: TCheckBox
                   Left = 6
-                  Height = 19
+                  Height = 17
                   Top = 96
-                  Width = 215
+                  Width = 231
                   Caption = 'Separar Arqs pelo Modelo do Documento'
                   TabOrder = 12
                 end
@@ -3624,7 +3659,7 @@ object frmACBrNFe: TfrmACBrNFe
               Left = 8
               Height = 13
               Top = 8
-              Width = 55
+              Width = 61
               Caption = 'Logo Marca'
               ParentColor = False
             end
@@ -3694,7 +3729,7 @@ object frmACBrNFe: TfrmACBrNFe
                 Left = 6
                 Height = 13
                 Top = 10
-                Width = 34
+                Width = 38
                 Caption = 'Modelo'
                 Color = clBtnFace
                 ParentColor = False
@@ -3704,7 +3739,7 @@ object frmACBrNFe: TfrmACBrNFe
                 Left = 6
                 Height = 13
                 Top = 58
-                Width = 26
+                Width = 27
                 Caption = 'Porta'
                 Color = clBtnFace
                 ParentColor = False
@@ -3714,7 +3749,7 @@ object frmACBrNFe: TfrmACBrNFe
                 Left = 6
                 Height = 13
                 Top = 170
-                Width = 55
+                Width = 59
                 Caption = 'Pag.Codigo'
                 Color = clBtnFace
                 ParentColor = False
@@ -3724,7 +3759,7 @@ object frmACBrNFe: TfrmACBrNFe
                 Left = 6
                 Height = 13
                 Top = 122
-                Width = 38
+                Width = 42
                 Caption = 'Colunas'
                 Color = clBtnFace
                 ParentColor = False
@@ -3734,7 +3769,7 @@ object frmACBrNFe: TfrmACBrNFe
                 Left = 78
                 Height = 26
                 Top = 106
-                Width = 39
+                Width = 41
                 Caption = 'Espaços'#13#10'Linhas'
                 Color = clBtnFace
                 ParentColor = False
@@ -3744,7 +3779,7 @@ object frmACBrNFe: TfrmACBrNFe
                 Left = 142
                 Height = 26
                 Top = 106
-                Width = 30
+                Width = 35
                 Caption = 'Linhas'#13#10'Pular'
                 Color = clBtnFace
                 ParentColor = False
@@ -3840,10 +3875,10 @@ object frmACBrNFe: TfrmACBrNFe
               end
               object cbCortarPapel: TCheckBox
                 Left = 141
-                Height = 19
+                Height = 17
                 Hint = 'Conecta a Porta Serial a cada comando enviado'#13#10'Desconecta da Porta Serial após o envio'
                 Top = 182
-                Width = 80
+                Width = 84
                 Caption = 'Cortar Papel'
                 Checked = True
                 State = cbChecked
@@ -3885,7 +3920,7 @@ object frmACBrNFe: TfrmACBrNFe
               Left = 8
               Height = 13
               Top = 8
-              Width = 69
+              Width = 73
               Caption = 'Servidor SMTP'
               ParentColor = False
             end
@@ -3893,7 +3928,7 @@ object frmACBrNFe: TfrmACBrNFe
               Left = 206
               Height = 13
               Top = 8
-              Width = 26
+              Width = 27
               Caption = 'Porta'
               ParentColor = False
             end
@@ -3901,7 +3936,7 @@ object frmACBrNFe: TfrmACBrNFe
               Left = 8
               Height = 13
               Top = 48
-              Width = 36
+              Width = 39
               Caption = 'Usuário'
               ParentColor = False
             end
@@ -3909,7 +3944,7 @@ object frmACBrNFe: TfrmACBrNFe
               Left = 137
               Height = 13
               Top = 48
-              Width = 30
+              Width = 34
               Caption = 'Senha'
               ParentColor = False
             end
@@ -3917,7 +3952,7 @@ object frmACBrNFe: TfrmACBrNFe
               Left = 8
               Height = 13
               Top = 88
-              Width = 122
+              Width = 134
               Caption = 'Assunto do email enviado'
               ParentColor = False
             end
@@ -3925,7 +3960,7 @@ object frmACBrNFe: TfrmACBrNFe
               Left = 8
               Height = 13
               Top = 160
-              Width = 93
+              Width = 105
               Caption = 'Mensagem do Email'
               ParentColor = False
             end
@@ -3966,9 +4001,9 @@ object frmACBrNFe: TfrmACBrNFe
             end
             object cbEmailSSL: TCheckBox
               Left = 10
-              Height = 19
+              Height = 17
               Top = 136
-              Width = 155
+              Width = 167
               Caption = 'SMTP exige conexão segura'
               TabOrder = 5
             end
@@ -4188,6 +4223,7 @@ object frmACBrNFe: TfrmACBrNFe
       'AutoEncodeStrings=True'
       'controls_cp=CP_UTF8'
     )
+    TransactIsolationLevel = tiReadCommitted
     HostName = 'localhost'
     Port = 3050
     Database = 'C:\home\bd\LANCAMENTO.FDB'
@@ -4262,22 +4298,12 @@ object frmACBrNFe: TfrmACBrNFe
   object ZQnotas: TZQuery
     Connection = ZConn
     SQL.Strings = (
-      'select *  from nfe where empresa_id = :p order by  move_id desc'
+      'select *  from nfe '
     )
-    Params = <    
-      item
-        DataType = ftInteger
-        Name = 'p'
-        ParamType = ptResult
-      end>
+    ParamCheck = False
+    Params = <>
     Left = 32
     Top = 432
-    ParamData = <    
-      item
-        DataType = ftInteger
-        Name = 'p'
-        ParamType = ptResult
-      end>
   end
   object DsNotas: TDataSource
     DataSet = ZQnotas
@@ -4313,7 +4339,7 @@ object frmACBrNFe: TfrmACBrNFe
   end
   object dsProtocolo: TDataSource
     DataSet = ZQprotocolo
-    Left = 695
-    Top = 545
+    Left = 640
+    Top = 520
   end
 end
