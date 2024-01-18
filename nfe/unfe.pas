@@ -4137,7 +4137,7 @@ begin
           if (dmPdv.qsCFOPREDUCAO.IsNull) then
             pRedBC := 0
           else
-            pRedBC :=  dmPdv.qsCFOPREDUCAO.AsVariant;                          //ALIQUOTA DA REDUÇÃO DA BASE DE CALCULO
+            pRedBC := 100 - dmPdv.qsCFOPREDUCAO.AsVariant;                          //ALIQUOTA DA REDUÇÃO DA BASE DE CALCULO
           if (dmPdv.cdsItensNFICMS_SUBST.isnull) then
             vICMSST := 0
           else
