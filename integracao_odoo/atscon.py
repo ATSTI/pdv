@@ -15,7 +15,7 @@ class Conexao:
         host = cfg.get('DATABASE', 'Hostname')
         user = cfg.get('DATABASE', 'User')
         self.connection = fdb.connect(dsn=host, \
-            user=user, password= psw)
+            user=user, password= psw, charset='win1252')
             # user='sysdba', password= psw.decode())
         self.cursor = self.connection.cursor()
 

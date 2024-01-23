@@ -76,7 +76,7 @@ class IntegracaoOdoo:
         msg_erro = ''
         msg_sis = 'Integrando Caixa com o PDV '
         hj = datetime.now()
-        hj = hj - timedelta(days=3)
+        hj = hj - timedelta(days=2)
         hj = datetime.strftime(hj,'%Y-%m-%d')
 
         # sessao_ids = self.env['pos.session'].search([
@@ -94,7 +94,7 @@ class IntegracaoOdoo:
         sqlp = "SELECT IDCAIXACONTROLE \
                 ,CODCAIXA, CODUSUARIO, SITUACAO, DATAFECHAMENTO \
                 ,NOMECAIXA, DATAABERTURA FROM CAIXA_CONTROLE \
-                WHERE SITUACAO = 'o' AND DATAABERTURA = '%s'" %(hj)
+                WHERE SITUACAO = 'o' AND DATAABERTURA > '%s'" %(hj)
         sess = db.query(sqlp)
         for ses in sess:
             nomecli = ses[5]
@@ -833,7 +833,7 @@ class IntegracaoOdoo:
         sqlc = "SELECT FIRST 1 r.IDCAIXACONTROLE, r.CODCAIXA,  \
                r.VALORABRE, r.VALORFECHA  \
                FROM CAIXA_CONTROLE r WHERE r.SITUACAO = '%s' \
-               AND DATAABERTURA = '%s' \
+               AND DATAABERTURA > '%s' \
                ORDER BY r.CODCAIXA " %('o', hj)
         caixa_aberto = db.query(sqlc)
         sqld = False
