@@ -10,19 +10,35 @@ import time
 import os
 import json
 import configparser
+import threading
 from main import Main as verifica_versao
 from atscon import Conexao as con
 from conecta_server import EnviaServer as envia
 from sqlite_bd import Database as local_db
+from pathlib import Path
+from logging.handlers import RotatingFileHandler
 
 
 _logger = logging.getLogger(__name__)
+Path('logs').mkdir(parents=True, exist_ok=True) # Create folder if not exists
+handlers = [ RotatingFileHandler(filename='logs/log.txt',
+            mode='w', 
+            maxBytes=512000, 
+            backupCount=4)
+           ]
+logging.basicConfig(handlers=handlers, 
+                    level=logging.INFO, 
+                    format='%(levelname)s %(asctime)s %(message)s', 
+                    datefmt='%d/%m/%Y %I:%M:%S %p',force=True)
+_logger.setLevel(logging.INFO)
+
+
 
 class IntegracaoOdoo:
     _name = 'integracao.odoo'
     
     def __init__(self):
-        print ("verificando versao")
+        _logger.info("verificando versao")
         verifica_versao()
         cfg = configparser.ConfigParser()
         cfg.read('conf.ini')
@@ -31,24 +47,29 @@ class IntegracaoOdoo:
         # self.host = cfg.get('DATABASE', 'hostname')
         # self.db = cfg.get('DATABASE', 'path')
         self.caixa_user = cfg.get('INTEGRA', 'caixa_user')
+        executa = threading.Thread(target=self._executando_scrpts)
+        executa.start()
+        _logger.info ('Cursor liberado')
+
+    def _executando_scrpts(self):    
         rodou = 1
         while(True):
             # Cria o ARQUIVO JSON dos Pedidos para ser enviado
             self.action_atualiza_vendas()
             # Cria o ARQUIVO JSON dos Caixas para ser enviado
             if rodou == 1 or rodou % 10 == 0:
-                print ('CAIXA ATUALZADP')
+                _logger.info ('CAIXA ATUALZA')
                 self.action_atualiza_caixas(None)
             envia("pedido")
             # Busca alterações dos produtos e grava no database local para ser comparado com o BD do PDV
             if rodou == 1 or rodou % 5 == 0:
-                print ('PRODUTO ATUALZADO')
+                _logger.info ('PRODUTO ATUALIZADO')
                 envia("produto")
                 # Compara as ataulizacoes do produto com o BD do PDV e atualiza ou insere se necessario
                 self.action_atualiza_produtos(None)
-            print(f"Rodou : {rodou} vezes")
+            _logger.info(f"Rodou : {rodou} vezes")
             if rodou == 1 or rodou % 4 == 0:
-                print ('CLIENTE ATUALIZADO')
+                _logger.info ('CLIENTE ATUALIZADO')
                 envia("cliente")
                 self.action_atualiza_clientes()
             rodou += 1
@@ -76,7 +97,7 @@ class IntegracaoOdoo:
         msg_erro = ''
         msg_sis = 'Integrando Caixa com o PDV '
         hj = datetime.now()
-        hj = hj - timedelta(days=2)
+        hj = hj - timedelta(days=3)
         hj = datetime.strftime(hj,'%Y-%m-%d')
 
         # sessao_ids = self.env['pos.session'].search([
@@ -94,7 +115,8 @@ class IntegracaoOdoo:
         sqlp = "SELECT IDCAIXACONTROLE \
                 ,CODCAIXA, CODUSUARIO, SITUACAO, DATAFECHAMENTO \
                 ,NOMECAIXA, DATAABERTURA FROM CAIXA_CONTROLE \
-                WHERE SITUACAO = 'o' AND DATAABERTURA > '%s'" %(hj)
+                WHERE DATAABERTURA > '%s' \
+                AND CODUSUARIO = %s" %(hj, self.caixa_user)
         sess = db.query(sqlp)
         for ses in sess:
             nomecli = ses[5]
@@ -106,8 +128,12 @@ class IntegracaoOdoo:
             # vals['config_id'] = ses.config_id.id
             data_abertura = f"{ses[6]} 20:00:00"
             vals['start_at'] = data_abertura
-            vals['state'] = 'draft'
-            arquivo_nome = self.path_envio + '/caixa_%s.json' %(ses[1])
+            if ses[3] == 'o':
+                vals['state'] = 'draft'
+                arquivo_nome = self.path_envio + '/caixa_%s.json' %(ses[1])
+            elif ses[3] == 'F':
+                vals['state'] = 'closed'
+                arquivo_nome = self.path_envio + '/caixaf_%s.json' %(ses[1])
             if os.path.exists(arquivo_nome):
                 continue
             arquivo_json = open(arquivo_nome, 'w+')
@@ -643,7 +669,7 @@ class IntegracaoOdoo:
                                 dt_vc, codcaixa, ftr.user_id.id, 
                                 ftr.user_id.id, ftr.residual, 
                                 ftr.residual, ftr.residual)
-                    print(ins_rec)
+                    # print(ins_rec)
                     retorno = db.insert(ins_rec)
                     if retorno:
                         msg_erro += 'ERRO : %s ' %(retorno)
@@ -833,12 +859,12 @@ class IntegracaoOdoo:
         sqlc = "SELECT FIRST 1 r.IDCAIXACONTROLE, r.CODCAIXA,  \
                r.VALORABRE, r.VALORFECHA  \
                FROM CAIXA_CONTROLE r WHERE r.SITUACAO = '%s' \
-               AND DATAABERTURA > '%s' \
-               ORDER BY r.CODCAIXA " %('o', hj)
+               AND DATAABERTURA > '%s' AND r.CODUSUARIO = %s \
+               ORDER BY r.CODCAIXA " %('o', hj, self.caixa_user)
         caixa_aberto = db.query(sqlc)
         sqld = False
         for cx in caixa_aberto:
-            print(cx[1])
+            # print(cx[1])
             sqld = 'SELECT m.CODMOVIMENTO, m.DATAMOVIMENTO, ' \
                'm.CODCLIENTE, m.STATUS, m.CODUSUARIO, m.CODVENDEDOR, ' \
                'm.CODALMOXARIFADO, DATEADD(3 hour to m.DATA_SISTEMA) ' \
