@@ -785,7 +785,7 @@ class IntegracaoOdoo:
         movs = db.query(sqld)
 
         if not len(movs):
-            msg_sis = 'Sem Devolução para importar. '
+            msg_sis = 'Sem Devolucao para importar. '
         for mvs in movs:
             nome_busca = 'DEV-' + str(mvs[1])
             dev = self.env['stock.picking'].sudo().search([
