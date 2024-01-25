@@ -76,7 +76,7 @@ class IntegracaoOdoo:
             time.sleep(600)
 
     """
-    A remoção de acentos foi baseada em uma resposta no Stack Overflow.
+    A remoco de acentos foi baseada em uma resposta no Stack Overflow.
     http://stackoverflow.com/a/517974/3464573
     """
     def removerAcentosECaracteresEspeciais(self, palavra):
@@ -758,7 +758,7 @@ class IntegracaoOdoo:
         #db = con.Conexao (host='192.168.0.137', database='C:\\home\\bd\\ats_pdv_cx1.fdb', user='sysdba', password='masterkey')
         #db = con.Conexao(session.config_id.ip_terminal, session.config_id.database)
         msg_erro = ''
-        msg_sis = 'Integrando Devolução PDV para Odoo  '
+        msg_sis = 'Integrando Devolucao PDV para Odoo  '
         hj = datetime.now()
         # session.periodo_integracao
         hj = hj - timedelta(days=10)
@@ -849,14 +849,14 @@ class IntegracaoOdoo:
         msg_sis = 'Integrando Vendas para o PDV '
         hj = datetime.now()
         # hj = hj - timedelta(days=session.periodo_integracao)
-        hj = hj - timedelta(days=4)
+        hj = hj - timedelta(days=3)
         hj = datetime.strftime(hj,'%m-%d-%Y')
         caixa_usado = 'None'
         # TODO le o ultimo arquivo de retorno com as ultimas atualizacos
         # retorno = open(self.path_retorno, '+r')
         str_ord = '0'
         # TODO buscar caixa aberto
-        sqlc = "SELECT FIRST 1 r.IDCAIXACONTROLE, r.CODCAIXA,  \
+        sqlc = "SELECT r.IDCAIXACONTROLE, r.CODCAIXA,  \
                r.VALORABRE, r.VALORFECHA  \
                FROM CAIXA_CONTROLE r \
                WHERE DATAABERTURA > '%s' AND r.CODUSUARIO = %s \
@@ -875,199 +875,197 @@ class IntegracaoOdoo:
                '   AND m.STATUS = 1 ' \
                '   AND m.CODNATUREZA = 3 ' \
                '   AND m.CODMOVIMENTO NOT IN (%s)' %(str(cx[1]),str_ord)
-        if not sqld:
-            msg_sis = 'Sem Pedidos para importar. '
-            return msg_sis
-        movs = db.query(sqld)
-        if not len(movs):
-            msg_sis = 'Sem Pedidos para importar. '
-        # for mvs in movs:
-        #    print ('cod mov: %s' %(str(mvs[0]))) 
-        for mvs in movs:
-            msg_sis = 'Pedidos novos : %s ' %(str(mvs[0]))
-            ord_p = False
-            ord_name = '%s-%s' %(str(cx[1]),str(mvs[0]))
-            arquivo_nome = self.path_envio + '/pedido_%s.json' %(ord_name)
-            if os.path.exists(arquivo_nome):
-                continue
-            teve_desconto = 'n'
-            dt_ord = '2018.01.01'
-            
-            # coloquei so pra manter o if
-            if ord_name:
-                msg_sis = 'Importando : %s ' %(str(mvs[0]))
-                # cortesia = tipo_venda n
-                vals = {}               
-                cli = mvs[2]
-                dt_ord = str(mvs[7])
-                vals['name'] = ord_name
-                vals['nb_print'] = 0
-                vals['pos_reference'] = ord_name
-                vals['session_id'] = cx[1]
-                vals['pos_session_id'] = cx[1]
-                # vals['pricelist_id'] = cx[2].config_id.pricelist_id.id
-                vals['create_date'] = dt_ord #datetime.strftime(datetime.now(),'%Y-%m-%d %H:%M:%S')
-                vals['date_order'] = dt_ord
-                vals['sequence_number'] = mvs[0]
-                #print('XXXXXX' + str(cli))
-                vals['partner_id'] = cli
-                userid = mvs[5]
-                #if userid == 17:
-                vals['user_id'] = userid
-                vals['user_id'] = 1
-                
-                sqld = 'SELECT f.CODFORMA, f.FORMA_PGTO, f.VALOR_PAGO, ' \
-                    'f.STATE, f.TROCO, f.DESCONTO from FORMA_ENTRADA f' \
-                    ' WHERE ID_ENTRADA = %s AND f.STATE = 1' %(str(mvs[0]))
-                pag_ids = db.query(sqld)
-
-                pag_line = []
-                desconto_t = 0.0
-                total_g = 0.0
-                troca = 0.0
-                for pg in pag_ids:
-                    pag = {}
-                    controle_troca = 0
-                    if pg[5]:
-                        desconto_t += pg[5]
-                        teve_desconto = 's'
-                    total_g += pg[2]
-                    jrn = '%s-' %(pg[1])
-                    if jrn == '5-':
-                        jrn = '1-'
-                    if jrn == '9-':
-                        troca = pg[2]
-                        controle_troca = 1
-                        
-                    #pag['account_id'] = self.env['res.partner'].browse(cli).property_account_receivable_id.id
-                    pag['date'] = dt_ord
-                    pag['amount'] = pg[2]
-                    # pag['journal_id'] = jrn_id.id
-                    pag['journal'] = jrn
-                    pag['partner_id'] = cli
-                    pag['name'] = ord_name
-                    if controle_troca == 0:
-                        pag_line.append((0, 0,pag))
-
-                #ord_id = pos_ord.create(vals)
-                order_line = []
-                sqld = 'SELECT md.CODDETALHE, md.CODPRODUTO, ' \
-                    ' md.QUANTIDADE, md.PRECO, COALESCE(md.VALOR_DESCONTO,0),' \
-                    ' md.BAIXA, md.DESCPRODUTO, md.CORTESIA, p.CODPRO ' \
-                    ' FROM MOVIMENTODETALHE md, PRODUTOS p ' \
-                    ' WHERE p.CODPRODUTO = md.CODPRODUTO ' \
-                    ' AND   md.STATUS = 0 AND md.CodMovimento = %s' %(str(mvs[0]))
-                md_ids = db.query(sqld)
-                if not len(md_ids):
+            if not sqld:
+                msg_sis = 'Sem Pedidos para importar. '
+                return msg_sis
+            movs = db.query(sqld)
+            if not len(movs):
+                msg_sis = 'Sem Pedidos para importar. '
+            # for mvs in movs:
+            #    print ('cod mov: %s' %(str(mvs[0]))) 
+            for mvs in movs:
+                msg_sis = 'Pedidos novos : %s ' %(str(mvs[0]))
+                ord_p = False
+                ord_name = '%s-%s' %(str(cx[1]),str(mvs[0]))
+                arquivo_nome = self.path_envio + '/pedido_%s.json' %(ord_name)
+                if os.path.exists(arquivo_nome):
                     continue
-                #order = pos_ord.browse(ord_id)
-                #order.write({'fiscal_position_id' : })
-                vlr_total = 0.0
-                vlr_totprod = 0.0
-                if desconto_t > 0:
-                    desconto_t = desconto_t / (total_g+desconto_t)
-
-                num_linha = len(md_ids)
-                # se so 1 linha ignora
-                linhas = 's'
+                teve_desconto = 'n'
+                dt_ord = '2018.01.01'
                 
-                if num_linha == 1:
-                    linhas = 'n'
-
-                soma_t = 0.0
-                #total_gx = total_g
-                #if str(mvs[0]) == '10416':
-                for md in md_ids:
-                    if linhas == 's': 
-                        num_linha -= 1
-                    try:
-                        prdname = self.removerAcentosECaracteresEspeciais(md[6])
-                    except:
-                        if md[6]:
-                            prdname = md[6]
-                        else:
-                            prdname = "Sem descricao"
-                    vlr_total += (md[2]*md[3])-md[4]
-                    vlr_totprod = (md[2]*md[3])-md[4]
-                    desconto = 0.0
-                    if (md[4] > 0):
-                        teve_desconto = 's'
-                        # comentei aqui pq nao testei
-                        #if num_linha > 0:
-                        desconto = md[4] / (vlr_totprod+md[4])
-                        #else:
-                        #    desconto = md[4] / (vlr_totprod+total_g)
+                # coloquei so pra manter o if
+                if ord_name:
+                    msg_sis = 'Importando : %s ' %(str(mvs[0]))
+                    # cortesia = tipo_venda n
+                    vals = {}               
+                    cli = mvs[2]
+                    dt_ord = str(mvs[7])
+                    vals['name'] = ord_name
+                    vals['nb_print'] = 0
+                    vals['pos_reference'] = ord_name
+                    vals['session_id'] = cx[1]
+                    vals['pos_session_id'] = cx[1]
+                    # vals['pricelist_id'] = cx[2].config_id.pricelist_id.id
+                    vals['create_date'] = dt_ord #datetime.strftime(datetime.now(),'%Y-%m-%d %H:%M:%S')
+                    vals['date_order'] = dt_ord
+                    vals['sequence_number'] = mvs[0]
+                    #print('XXXXXX' + str(cli))
+                    vals['partner_id'] = cli
+                    userid = mvs[5]
+                    #if userid == 17:
+                    vals['user_id'] = userid
+                    vals['user_id'] = 1
                     
-                    if num_linha > 0:
-                        desconto = (desconto + desconto_t) * 100
-                    else:
-                        #desconto Zero, vou editar depois de gravado
-                        # pra calcular o desconto correto
+                    sqld = 'SELECT f.CODFORMA, f.FORMA_PGTO, f.VALOR_PAGO, ' \
+                        'f.STATE, f.TROCO, f.DESCONTO from FORMA_ENTRADA f' \
+                        ' WHERE ID_ENTRADA = %s AND f.STATE = 1' %(str(mvs[0]))
+                    pag_ids = db.query(sqld)
+
+                    pag_line = []
+                    desconto_t = 0.0
+                    total_g = 0.0
+                    troca = 0.0
+                    for pg in pag_ids:
+                        pag = {}
+                        controle_troca = 0
+                        if pg[5]:
+                            desconto_t += pg[5]
+                            teve_desconto = 's'
+                        total_g += pg[2]
+                        jrn = '%s-' %(pg[1])
+                        if jrn == '5-':
+                            jrn = '1-'
+                        if jrn == '9-':
+                            troca = pg[2]
+                            controle_troca = 1
+                            
+                        #pag['account_id'] = self.env['res.partner'].browse(cli).property_account_receivable_id.id
+                        pag['date'] = dt_ord
+                        pag['amount'] = pg[2]
+                        # pag['journal_id'] = jrn_id.id
+                        pag['journal'] = jrn
+                        pag['partner_id'] = cli
+                        pag['name'] = ord_name
+                        if controle_troca == 0:
+                            pag_line.append((0, 0,pag))
+
+                    #ord_id = pos_ord.create(vals)
+                    order_line = []
+                    sqld = 'SELECT md.CODDETALHE, md.CODPRODUTO, ' \
+                        ' md.QUANTIDADE, md.PRECO, COALESCE(md.VALOR_DESCONTO,0),' \
+                        ' md.BAIXA, md.DESCPRODUTO, md.CORTESIA, p.CODPRO ' \
+                        ' FROM MOVIMENTODETALHE md, PRODUTOS p ' \
+                        ' WHERE p.CODPRODUTO = md.CODPRODUTO ' \
+                        ' AND   md.STATUS = 0 AND md.CodMovimento = %s' %(str(mvs[0]))
+                    md_ids = db.query(sqld)
+                    if not len(md_ids):
+                        continue
+                    #order = pos_ord.browse(ord_id)
+                    #order.write({'fiscal_position_id' : })
+                    vlr_total = 0.0
+                    vlr_totprod = 0.0
+                    if desconto_t > 0:
+                        desconto_t = desconto_t / (total_g+desconto_t)
+
+                    num_linha = len(md_ids)
+                    # se so 1 linha ignora
+                    linhas = 's'
+                    
+                    if num_linha == 1:
+                        linhas = 'n'
+
+                    soma_t = 0.0
+                    #total_gx = total_g
+                    #if str(mvs[0]) == '10416':
+                    for md in md_ids:
+                        if linhas == 's': 
+                            num_linha -= 1
+                        try:
+                            prdname = self.removerAcentosECaracteresEspeciais(md[6])
+                        except:
+                            if md[6]:
+                                prdname = md[6]
+                            else:
+                                prdname = "Sem descricao"
+                        vlr_total += (md[2]*md[3])-md[4]
+                        vlr_totprod = (md[2]*md[3])-md[4]
                         desconto = 0.0
-                    prd = {}
-                    tipo = '1'
-                    if md[7].strip():
-                        tipo = md[7].strip()
-
-                    prd['product_id'] = md[8]
-                    prd['discount'] = desconto
-                    prd['qty'] = md[2]
-                    prd['price_unit'] = md[3]
-                    prd['tipo_venda'] = tipo
-                    prd['name'] = prdname
-
-                    order_line.append((0, 0,prd))
-                if troca:
-                    prd = {}
-                    prd['product_id'] = 2
-                    prd['qty'] = 1
-                    prd['price_unit'] = troca * (-1)
-                    prd['tipo_venda'] = tipo
-                    prd['name'] = 'Troca/Devolucao'
-                    order_line.append((0, 0,prd))
-
-                vals['amount_return'] = vlr_total
-                vals['lines'] = order_line
-                
-                vals['statement_ids'] = pag_line
-                
-                if teve_desconto == 's':
-                    # uso nb_print pra saber q veio do pdv lazarus
-                    vals['nb_print'] = 9
-
-                # try:
-                vals_ped = vals 
-                nomecliente = self.removerAcentosECaracteresEspeciais(mvs[8])
-                nomecliente = (nomecliente)
-                #nomecliente = normalize('NFKD', nomecliente).encode('ASCII','ignore').decode('ASCII')
-                #nomecliente = re.sub(u'[^a-zA-Z0-9áéíóúÁÉÍÓÚâêîôÂÊÎÔãõÃÕçÇ: ]', '', nomecliente.decode('utf-8'))
-                vals_ped['nomecliente'] = nomecliente
-                dados_vals = json.dumps(vals_ped)
-                if not os.path.exists(arquivo_nome):
-                    arquivo_json = open(arquivo_nome, 'w')
-                    arquivo_json.write(dados_vals)
-                    arquivo_json.close()
-
-                # except:
-                msg_erro += 'ERRO, não integrado pedido : %s ' %(prdname)
-
-                if teve_desconto == 's' and linhas == 's' and ord_p:
-                    #ord_p = pos_ord.browse(ords)
-                    if (total_g != ord_p.amount_total):
-                        tam = len(ord_p.lines)
-                        for line in ord_p.lines[tam-1]:
-                            x = line.price_unit * line.qty
-                            desconto = (ord_p.amount_total-round(total_g,2))/x*100
+                        if (md[4] > 0):
+                            teve_desconto = 's'
+                            # comentei aqui pq nao testei
+                            #if num_linha > 0:
+                            desconto = md[4] / (vlr_totprod+md[4])
+                            #else:
+                            #    desconto = md[4] / (vlr_totprod+total_g)
                         
-                if teve_desconto == 's' and ord_p:
-                    # coloquei isto aqui pq qdo tem desconto
-                    # e era a prazo o desconto do ultimo item nao ia pra
-                    # fatura estas duas linhas abaixo eram feitas no create
-                    arquivo_nome = self.path_envio + '/pagline_%s.json' %(ord_name)
-                    arquivo_json = open(arquivo_nome, 'w')
-                    dados_vals = json.dumps(vals)
-                    arquivo_json.write(dados_vals)
-                    arquivo_json.close()                    
+                        if num_linha > 0:
+                            desconto = (desconto + desconto_t) * 100
+                        else:
+                            #desconto Zero, vou editar depois de gravado
+                            # pra calcular o desconto correto
+                            desconto = 0.0
+                        prd = {}
+                        tipo = '1'
+                        if md[7].strip():
+                            tipo = md[7].strip()
+
+                        prd['product_id'] = md[8]
+                        prd['discount'] = desconto
+                        prd['qty'] = md[2]
+                        prd['price_unit'] = md[3]
+                        prd['tipo_venda'] = tipo
+                        prd['name'] = prdname
+
+                        order_line.append((0, 0,prd))
+                    if troca:
+                        prd = {}
+                        prd['product_id'] = 2
+                        prd['qty'] = 1
+                        prd['price_unit'] = troca * (-1)
+                        prd['tipo_venda'] = tipo
+                        prd['name'] = 'Troca/Devolucao'
+                        order_line.append((0, 0,prd))
+
+                    vals['amount_return'] = vlr_total
+                    vals['lines'] = order_line
+                    
+                    vals['statement_ids'] = pag_line
+                    
+                    if teve_desconto == 's':
+                        # uso nb_print pra saber q veio do pdv lazarus
+                        vals['nb_print'] = 9
+
+                    # try:
+                    vals_ped = vals 
+                    nomecliente = self.removerAcentosECaracteresEspeciais(mvs[8])
+                    nomecliente = (nomecliente)
+                    vals_ped['nomecliente'] = nomecliente
+                    dados_vals = json.dumps(vals_ped)
+                    if not os.path.exists(arquivo_nome):
+                        arquivo_json = open(arquivo_nome, 'w')
+                        arquivo_json.write(dados_vals)
+                        arquivo_json.close()
+
+                    # except:
+                    msg_erro += 'ERRO, nao integrado pedido : %s ' %(prdname)
+
+                    if teve_desconto == 's' and linhas == 's' and ord_p:
+                        #ord_p = pos_ord.browse(ords)
+                        if (total_g != ord_p.amount_total):
+                            tam = len(ord_p.lines)
+                            for line in ord_p.lines[tam-1]:
+                                x = line.price_unit * line.qty
+                                desconto = (ord_p.amount_total-round(total_g,2))/x*100
+                            
+                    if teve_desconto == 's' and ord_p:
+                        # coloquei isto aqui pq qdo tem desconto
+                        # e era a prazo o desconto do ultimo item nao ia pra
+                        # fatura estas duas linhas abaixo eram feitas no create
+                        arquivo_nome = self.path_envio + '/pagline_%s.json' %(ord_name)
+                        arquivo_json = open(arquivo_nome, 'w')
+                        dados_vals = json.dumps(vals)
+                        arquivo_json.write(dados_vals)
+                        arquivo_json.close()                    
                 #if ord_p and jrn == '4-':
                 #    pedido_venda = self.env['sale.order']
                 #    pv = {}
