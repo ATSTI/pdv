@@ -47,8 +47,9 @@ class IntegracaoOdoo:
         # self.host = cfg.get('DATABASE', 'hostname')
         # self.db = cfg.get('DATABASE', 'path')
         self.caixa_user = cfg.get('INTEGRA', 'caixa_user')
-        executa = threading.Thread(target=self._executando_scrpts)
-        executa.start()
+        # executa = threading.Thread(target=self._executando_scrpts)
+        # executa.start()
+        self._executando_scrpts
         _logger.info ('Cursor liberado')
 
     def _executando_scrpts(self):    
