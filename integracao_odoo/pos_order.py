@@ -849,7 +849,7 @@ class IntegracaoOdoo:
         msg_sis = 'Integrando Vendas para o PDV '
         hj = datetime.now()
         # hj = hj - timedelta(days=session.periodo_integracao)
-        hj = hj - timedelta(days=3)
+        hj = hj - timedelta(days=4)
         hj = datetime.strftime(hj,'%m-%d-%Y')
         caixa_usado = 'None'
         # TODO le o ultimo arquivo de retorno com as ultimas atualizacos
@@ -858,9 +858,9 @@ class IntegracaoOdoo:
         # TODO buscar caixa aberto
         sqlc = "SELECT FIRST 1 r.IDCAIXACONTROLE, r.CODCAIXA,  \
                r.VALORABRE, r.VALORFECHA  \
-               FROM CAIXA_CONTROLE r WHERE r.SITUACAO = '%s' \
-               AND DATAABERTURA > '%s' AND r.CODUSUARIO = %s \
-               ORDER BY r.CODCAIXA " %('o', hj, self.caixa_user)
+               FROM CAIXA_CONTROLE r \
+               WHERE DATAABERTURA > '%s' AND r.CODUSUARIO = %s \
+               ORDER BY r.CODCAIXA " %(hj, self.caixa_user)
         caixa_aberto = db.query(sqlc)
         sqld = False
         for cx in caixa_aberto:
