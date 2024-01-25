@@ -41,7 +41,7 @@ uses
   ZDataset, SynEdit, SynHighlighterXML, ACBrPosPrinter, ACBrNFeDANFeESCPOS,
   ACBrNFeDANFEClass, ACBrDANFCeFortesFr, ACBrDFeReport, ACBrDFeDANFeReport,
   ACBrNFeDANFeRLClass, ACBrBase, ACBrDFe, ACBrNFe, ACBrUtil, ACBrMail,
-  ACBrIntegrador, DB, ACBrDANFCeFortesFrA4, Types;
+  ACBrIntegrador, DB, ACBrDANFCeFortesFrA4, Types,strUtils;
 
 type
 
@@ -143,6 +143,7 @@ type
     cbxVisualizar: TCheckBox;
     ckSalvar: TCheckBox;
     Dados: TTabSheet;
+    DBEdit8: TDBEdit;
     dsProtocolo: TDataSource;
     DBEdit1: TDBEdit;
     DBEdit2: TDBEdit;
@@ -486,12 +487,12 @@ var
 implementation
 
 uses
-  strutils, math, TypInfo, DateUtils, synacode, blcksock, FileCtrl, Grids,
+   math, TypInfo, DateUtils, synacode, blcksock, FileCtrl, Grids,
   IniFiles, Printers,
   pcnAuxiliar, pcnNFe, pcnConversao, pcnConversaoNFe, pcnNFeRTXT, pcnRetConsReciDFe,
   ACBrDFeConfiguracoes, ACBrDFeSSL, ACBrDFeOpenSSL, ACBrDFeUtil,
   ACBrNFeNotasFiscais, ACBrNFeConfiguracoes,
-  Frm_Status, Frm_SelecionarCertificado, Frm_ConfiguraSerial;
+  Frm_Status, Frm_SelecionarCertificado, Frm_ConfiguraSerial,uinutilizar;
 
 const
   SELDIRHELP = 1000;
@@ -1966,28 +1967,30 @@ end;
 
 procedure TfrmACBrNFe.btnCancelarChaveClick(Sender: TObject);
 var
-  Chave, Status ,idLote, CNPJ, Protocolo, Justificativa: string;
+  Chave, Status ,idLote, CNPJ, Protocolo, Justificativa,sSQL: string;
 begin
+
   Status := dbEdit6.Text;
   if(Status = 'A_enviar')then
   begin
     ShowMessage('Somente Notas Autorizadas');
     exit;
   end;
+
   Chave := dbEdit4.Text;
-  if not(InputQuery('WebServices Eventos: Cancelamento', 'Chave da NF-e', Chave)) then
-     exit;
+  //if not(InputQuery('WebServices Eventos: Cancelamento', 'Chave da NF-e', Chave)) then
+  //   exit;
   Chave := Trim(OnlyNumber(Chave));
   idLote := '1';
-  if not(InputQuery('WebServices Eventos: Cancelamento', 'Identificador de controle do Lote de envio do Evento', idLote)) then
-     exit;
+  //if not(InputQuery('WebServices Eventos: Cancelamento', 'Identificador de controle do Lote de envio do Evento', idLote)) then
+  //   exit;
   CNPJ := copy(Chave,7,14);
-  if not(InputQuery('WebServices Eventos: Cancelamento', 'CNPJ ou o CPF do autor do Evento', CNPJ)) then
-     exit;
-  Protocolo:='';
-  if not(InputQuery('WebServices Eventos: Cancelamento', 'Protocolo de Autorização', Protocolo)) then
-     exit;
-  Justificativa := 'Justificativa do Cancelamento';
+  //if not(InputQuery('WebServices Eventos: Cancelamento', 'CNPJ ou o CPF do autor do Evento', CNPJ)) then
+  //   exit;
+  Protocolo:= DBEdit8.Text;
+  //if not(InputQuery('WebServices Eventos: Cancelamento', 'Protocolo de Autorização', Protocolo)) then
+  //   exit;
+  Justificativa := '';
   if not(InputQuery('WebServices Eventos: Cancelamento', 'Justificativa do Cancelamento', Justificativa)) then
      exit;
 
@@ -2010,6 +2013,24 @@ begin
   LoadXML(MemoResp, WBResposta);
   ShowMessage(IntToStr(ACBrNFe1.WebServices.EnvEvento.cStat));
   ShowMessage(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.nProt);
+
+  ZQprotocolo.Active := True;
+  sSQL := ' UPDATE nfe' +
+        ' SET' +
+        ' protocolocanc = ' + QuotedStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.nProt) +
+        ' , situacao = ' + QuotedStr('Cancelada') +
+        ' WHERE chave = ' + QuotedStr(dbEdit4.Text);
+
+  ZQprotocolo.SQL.Clear;
+  ZQprotocolo.SQL.Add(sSQL);
+  ZQprotocolo.ExecSQL;
+
+  ZQprotocolo.Close;
+  ZQprotocolo.SQL.Text := 'SELECT * FROM nfe';
+  ZQprotocolo.ExecSQL;
+  ZQprotocolo.Open;
+
+
 end;
 
 procedure TfrmACBrNFe.btnCancelarXMLClick(Sender: TObject);
@@ -2142,8 +2163,9 @@ end;
 
 procedure TfrmACBrNFe.btnCartadeCorrecaoClick(Sender: TObject);
 var
-  Chave, Status, idLote, CNPJ, nSeqEvento, Correcao: string;
+  Chave, Status, idLote, CNPJ, nSeqEvento, Correcao ,sSQL : string;
 begin
+
   Status := dbEdit6.Text;
   if(Status = 'A_enviar')then
   begin
@@ -2152,19 +2174,20 @@ begin
   end;
 
   Chave := dbEdit4.Text;
-  if not(InputQuery('WebServices Eventos: Carta de Correção', 'Chave da NF-e', Chave)) then
-     exit;
+
+  //if not(InputQuery('WebServices Eventos: Carta de Correção', 'Chave da NF-e', Chave)) then
+  //   exit;
   Chave := Trim(OnlyNumber(Chave));
   idLote := '1';
-  if not(InputQuery('WebServices Eventos: Carta de Correção', 'Identificador de controle do Lote de envio do Evento', idLote)) then
-     exit;
+  //if not(InputQuery('WebServices Eventos: Carta de Correção', 'Identificador de controle do Lote de envio do Evento', idLote)) then
+  //   exit;
   CNPJ := copy(Chave,7,14);
-  if not(InputQuery('WebServices Eventos: Carta de Correção', 'CNPJ ou o CPF do autor do Evento', CNPJ)) then
-     exit;
+  //if not(InputQuery('WebServices Eventos: Carta de Correção', 'CNPJ ou o CPF do autor do Evento', CNPJ)) then
+  //   exit;
   nSeqEvento := '1';
-  if not(InputQuery('WebServices Eventos: Carta de Correção', 'Sequencial do evento para o mesmo tipo de evento', nSeqEvento)) then
-     exit;
-  Correcao := 'Correção a ser considerada, texto livre. A correção mais recente substitui as anteriores.';
+  //if not(InputQuery('WebServices Eventos: Carta de Correção', 'Sequencial do evento para o mesmo tipo de evento', nSeqEvento)) then
+  //   exit;
+  Correcao := '';
   if not(InputQuery('WebServices Eventos: Carta de Correção', 'Correção a ser considerada', Correcao)) then
      exit;
 
@@ -2184,6 +2207,22 @@ begin
 
   MemoResp.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetWS;
   LoadXML(MemoResp, WBResposta);
+
+  ZQprotocolo.Active := True;
+  sSQL := ' UPDATE nfe' +
+          ' SET' +
+          ' protocolocc = ' + QuotedStr(ACBrNFe1.WebServices.Retorno.Protocolo) +
+          ' WHERE chave = ' + QuotedStr(dbEdit4.Text);
+
+  ZQprotocolo.SQL.Clear;
+  ZQprotocolo.SQL.Add(sSQL);
+  ZQprotocolo.ExecSQL;
+
+  ZQprotocolo.Close;
+  ZQprotocolo.SQL.Text := 'SELECT * FROM nfe';
+  ZQprotocolo.ExecSQL;
+  ZQprotocolo.Open;
+
 end;
 
 procedure TfrmACBrNFe.btnCNPJClick(Sender: TObject);
@@ -3553,26 +3592,27 @@ procedure TfrmACBrNFe.btnInutilizarClick(Sender: TObject);
 var
   Modelo, Serie, Ano, NumeroInicial, NumeroFinal, Justificativa: String;
 begin
+ fInutlizar.ShowModal;
 
- Ano := '';
- if not(InputQuery('WebServices Inutilização ', 'Ano',    Ano)) then
-    exit;
- Modelo := '';
- if not(InputQuery('WebServices Inutilização ', 'Modelo', Modelo)) then
-    exit;
- Serie := '';
- if not(InputQuery('WebServices Inutilização ', 'Serie',  Serie)) then
-    exit;
+ Ano := fInutlizar.inu_ano;
 
- NumeroInicial := '';
- if not(InputQuery('WebServices Inutilização ', 'Número Inicial', NumeroInicial)) then
-    exit;
- NumeroFinal := '';
- if not(InputQuery('WebServices Inutilização ', 'Número Final', NumeroFinal)) then
-    exit;
- Justificativa := '';
- if not(InputQuery('WebServices Inutilização ', 'Justificativa', Justificativa)) then
-    exit;
+ // if not(InputQuery('WebServices Inutilização ', 'Ano',    Ano)) then
+ //   exit;
+ Modelo := fInutlizar.inu_modelo;
+ //if not(InputQuery('WebServices Inutilização ', 'Modelo', Modelo)) then
+ //   exit;
+ Serie := fInutlizar.inu_serie;
+ //if not(InputQuery('WebServices Inutilização ', 'Serie',  Serie)) then
+ //   exit;
+ NumeroInicial := fInutlizar.inu_ini;
+ //if not(InputQuery('WebServices Inutilização ', 'Número Inicial', NumeroInicial)) then
+ //   exit;
+ NumeroFinal := fInutlizar.inu_fim;
+ //if not(InputQuery('WebServices Inutilização ', 'Número Final', NumeroFinal)) then
+ //   exit;
+ Justificativa := fInutlizar.inu_justificativa;
+ //if not(InputQuery('WebServices Inutilização ', 'Justificativa', Justificativa)) then
+  //  exit;
 
   ACBrNFe1.WebServices.Inutiliza(edtEmitCNPJ.Text, Justificativa, StrToInt(Ano), StrToInt(Modelo), StrToInt(Serie), StrToInt(NumeroInicial), StrToInt(NumeroFinal));
 
