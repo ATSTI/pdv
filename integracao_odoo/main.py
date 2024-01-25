@@ -39,7 +39,9 @@ class Main():
             path_url = f"https://github.com/ATSTI/pdv/raw/integracao_odoo_script/integracao_odoo/{arq}"
             retorno = rq.get(path_url)
             if arq == "pos_order.py":
-                arq = "pos_order.pyw"
+                file_retorno = "pos_order.pyw"
+                with open(file_retorno, mode="w") as arq_retorno:
+                    arq_retorno.write(retorno.text)
             file_retorno = arq
             with open(file_retorno, mode="w") as arq_retorno:
                 arq_retorno.write(retorno.text)
