@@ -49,28 +49,30 @@ class IntegracaoOdoo:
         self.caixa_user = cfg.get('INTEGRA', 'caixa_user')
         # executa = threading.Thread(target=self._executando_scrpts)
         # executa.start()
-        self._executando_scrpts
+        self._executando_scrpts()
         _logger.info ('Cursor liberado')
 
     def _executando_scrpts(self):    
         rodou = 1
         while(True):
             # Cria o ARQUIVO JSON dos Pedidos para ser enviado
+            _logger.info(f"Iniciando atualizacoes - {str(rodou)}.")
             self.action_atualiza_vendas()
             # Cria o ARQUIVO JSON dos Caixas para ser enviado
             if rodou == 1 or rodou % 10 == 0:
-                _logger.info ('CAIXA ATUALZA')
+                _logger.info ('Caixa atualizando.')
                 self.action_atualiza_caixas(None)
+            _logger.info ('Enviando pedidos.')
             envia("pedido")
             # Busca alterações dos produtos e grava no database local para ser comparado com o BD do PDV
             if rodou == 1 or rodou % 5 == 0:
-                _logger.info ('PRODUTO ATUALIZADO')
+                _logger.info ('Produto atualizando.')
                 envia("produto")
                 # Compara as ataulizacoes do produto com o BD do PDV e atualiza ou insere se necessario
                 self.action_atualiza_produtos(None)
             _logger.info(f"Rodou : {rodou} vezes")
             if rodou == 1 or rodou % 4 == 0:
-                _logger.info ('CLIENTE ATUALIZADO')
+                _logger.info ('Cliente atualizando.')
                 envia("cliente")
                 self.action_atualiza_clientes()
             rodou += 1
