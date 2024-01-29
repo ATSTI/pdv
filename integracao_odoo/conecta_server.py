@@ -252,6 +252,9 @@ class EnviaServer:
                     if nome_arq[:6] == 'caixa_' and 'caixa' in arq and nome_arq[6:] == arq['caixa']:
                         enviado = True
 
+                    if nome_arq[:10] == 'devolucao_' and 'devolucao' in arq and nome_arq[10:] == arq['devolucao']:
+                        enviado = True
+
                     # arquivo_retorno = pd.read_csv(path_retorno, delimiter=" ", header = None).to_dict()[0]
                     # dados_json = arquivo_retorno.read()
                     # TODO precisa ver se o arquivo nao esta no arquivo retorno
@@ -259,10 +262,10 @@ class EnviaServer:
 
                     # if nome_arq[7:] in arquivo_retorno:
                     # arq['codmovimento']:
-                if not enviado and ((nome_arq[:6] == 'caixa_') or (nome_arq[:7] == 'pedido_')):
+                if not enviado and ((nome_arq[:6] == 'caixa_') or (nome_arq[:7] == 'pedido_') or (nome_arq[:10] == 'devolucao_')):
                     get_return = self.enviando_arquivo(get_return, nome_arq[:3], i)
                     # get_return = True
-                if enviado and ((nome_arq[:6] == 'caixa_') or (nome_arq[:7] == 'pedido_')):
+                if enviado and ((nome_arq[:6] == 'caixa_') or (nome_arq[:7] == 'pedido_') or (nome_arq[:10] == 'devolucao_')):
                     # sql_t = 'UPDATE movimento SET codmovrateio = %s WHERE codmovimento = %s' %()
                     os.remove(self.path_envio + '/' + i)
             else:
