@@ -50,7 +50,6 @@ class IntegracaoOdoo:
         # executa = threading.Thread(target=self._executando_scrpts)
         # executa.start()
         # self._executando_scrpts()
-        self.action_devolucao()
         _logger.info ('Cursor liberado')
 
     def _executando_scrpts(self):    
@@ -63,6 +62,8 @@ class IntegracaoOdoo:
             if rodou == 1 or rodou % 10 == 0:
                 _logger.info ('Caixa atualizando.')
                 self.action_atualiza_caixas(None)
+                _logger.info ('Atualiza devolucoes.')
+                self.action_devolucao()
             _logger.info ('Enviando pedidos.')
             envia("pedido")
             # Busca alterações dos produtos e grava no database local para ser comparado com o BD do PDV
@@ -749,15 +750,10 @@ class IntegracaoOdoo:
 
     def action_devolucao(self):       
         db = con()
-        msg_erro = ''
-        msg_sis = 'Integrando Devolução PDV para Odoo  '
+        _logger.info("Integrando Devolução PDV para Odoo")
         hj = datetime.now()
-        # session.periodo_integracao
         hj = hj - timedelta(days=16)
         hj = datetime.strftime(hj, '%m-%d-%Y')
-        caixa_usado = 'None'
-        # ord_ids = self.env['pos.order'].search([(
-        #    'session_id','=',session.id)])        
         sqlc = "SELECT r.IDCAIXACONTROLE, r.CODCAIXA,  \
                r.VALORABRE, r.VALORFECHA  \
                FROM CAIXA_CONTROLE r \
@@ -767,7 +763,7 @@ class IntegracaoOdoo:
         sqld = False
         for cx in caixa_aberto:
             sqld = ' Select c.caixa, c.codmovimento, movd.quantidade, movd.codproduto,'\
-                ' mov.hist_mov, p.produto, mov.controle '\
+                ' mov.hist_mov, p.produto, mov.controle, mov.codusuario, p.codpro '\
                 ' from compra c '\
                 ' inner join movimentodetalhe movd on (c.codmovimento = movd.codmovimento) '\
                 ' inner join produtos p on (movd.codproduto = p.codproduto) '\
@@ -775,66 +771,45 @@ class IntegracaoOdoo:
                 ' where c.caixa = %s ' %(str(cx[1]))
             movs = db.query(sqld)
             if not len(movs):
-                msg_sis = 'Sem Devolução para importar. '
+                _logger.info("Sem Devolução para importar.")
             for mvs in movs:
                 ord_name = '%s-%s' %(str(cx[1]),str(mvs[1]))
                 arquivo_nome = self.path_envio + '/devolucao_%s.json' %(ord_name)
                 if os.path.exists(arquivo_nome):
                     continue
-                nome_busca = 'DEV-' + str(mvs[1])
+                nome_busca = 'DEV-' + ord_name
+                _logger.info(f"Devolucao {ord_name}.")
                 item = []
-                item_x = []
                 vals = {}
-                #if 'origin' in movs:
+                vals['tipo'] = 'devolucao'
+                vals['name'] = nome_busca
                 vals['origin'] = nome_busca
-                # operacao = self.env['stock.picking.type'].sudo().search([
-                #     ('name', 'ilike', 'devolucao')
-                # ])
+                vals['user_id'] = mvs[7]
+                vals['motivo'] = mvs[4]
+                vals['caixa'] = mvs[0]
                 prd = {}
-                prd_x = {}
-                # if operacao:
-                #     for tipo in operacao:
-                #         # user_id.company_id.id
-                #         #if tipo.warehouse_id.company_id.id == 3:
-                #         # tipo_operacao = tipo
-                #         vals['picking_type_id'] = tipo.id
-                #         vals['location_id'] = tipo.default_location_src_id.id
-                #         vals['location_dest_id'] = tipo.default_location_dest_id.id
-                #         vals['note']= str(mvs[4])
-                #         prd['location_id'] = tipo.default_location_src_id.id
-                #         prd['location_dest_id'] = tipo.default_location_dest_id.id
 
-                    # 0 c.caixa , 1 c.codmovimento , 2 movd.quantidade  , 3 movd.codproduto  , 4 mov.hist_mov, 5 p.produto,  6 mov.controle
-
-                prd['product_id']= mvs[3]
+                prd['product_code']= mvs[8]
                 prd['product_uom_qty'] = mvs[2]
                 prd['product_uom_id'] = 1
                 prd['product_uom'] = 1
                 prd['qty_done'] = mvs[2]
                 prd['name']= str(mvs[5])
                 item.append((0, 0, prd))
-                vals['pack_operation_product_ids'] = item
                 
-                prd_x['product_uom_qty'] = mvs[2]
-                prd_x['product_id']= mvs[3]
-                prd_x['name']= str(mvs[5])
-                item_x.append((0, 0, prd))
-                
-                vals['move_lines'] = item_x
+                vals['move_lines'] = item
 
                 dados_vals = json.dumps(vals)
                 if not os.path.exists(arquivo_nome):
                     arquivo_json = open(arquivo_nome, 'w')
                     arquivo_json.write(dados_vals)
-                    arquivo_json.close()
-        return 'Sucesso'    
+                    arquivo_json.close()    
 
     def action_atualiza_vendas(self):
         # Fazer um loop pela pasta de arquivos pegando o codigo dos pedidos
         # Para remover do select da movimento
         db = con()
-        msg_erro = ''
-        msg_sis = 'Integrando Vendas para o PDV '
+        _logger.info("Integrando Vendas para o PDV")
         hj = datetime.now()
         # hj = hj - timedelta(days=session.periodo_integracao)
         hj = hj - timedelta(days=3)
@@ -864,17 +839,17 @@ class IntegracaoOdoo:
                '   AND m.CODNATUREZA = 3 ' \
                '   AND m.CODMOVIMENTO NOT IN (%s)' %(str(cx[1]),str_ord)
             if not sqld:
-                msg_sis = 'Sem Pedidos para importar. '
+                _logger.info("Sem Pedidos para importar.")
                 return msg_sis
             movs = db.query(sqld)
             if not len(movs):
-                msg_sis = 'Sem Pedidos para importar. '
+                _logger.info("Sem Pedidos para importar.")
             # for mvs in movs:
             #    print ('cod mov: %s' %(str(mvs[0]))) 
             for mvs in movs:
-                msg_sis = 'Pedidos novos : %s ' %(str(mvs[0]))
                 ord_p = False
                 ord_name = '%s-%s' %(str(cx[1]),str(mvs[0]))
+                _logger.info(f"Pedidos novos : {ord_name}")
                 arquivo_nome = self.path_envio + '/pedido_%s.json' %(ord_name)
                 if os.path.exists(arquivo_nome):
                     continue

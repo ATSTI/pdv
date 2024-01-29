@@ -34,6 +34,8 @@ class EnviaServer:
             self.buscando_clientes()
         if tipo == "pedido":
             self.lendo_arquivos()
+        if tipo == "devolucao":
+            self.lendo_arquivos()
 
     def enviando_arquivo(self, retorno, arq, file_name):
         headers = {'Content-type': 'application/json'}
@@ -220,9 +222,8 @@ class EnviaServer:
             #     # le json 
             #     retorno_ids = json.loads(json.dumps(eval(json.loads(x.read()))))
 
-            print('Arquivo: %s' %(nome_arq))
-            
-            if ((nome_arq[:3] != 'cai') and (nome_arq[:3] != 'ped')):
+            print('Arquivo: %s' %(nome_arq)) 
+            if nome_arq[:3] not in ('cai', 'ped', 'dev'):
                 continue
 
             tipo = ''
@@ -235,6 +236,9 @@ class EnviaServer:
             if nome_arq[:6] == 'caixa_' and 'caixa':
                 tipo = 'sessao'
                 caixa = nome_arq[6:]
+            if nome_arq[:10] == 'devolucao_':
+                tipo = 'devolucao'
+                caixa = nome_arq[10:nome_arq.find('-')]
             ja_enviado = dblocal.consulta(
                 tipo, caixa, codigo)
             
