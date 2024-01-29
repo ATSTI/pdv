@@ -747,18 +747,13 @@ class IntegracaoOdoo:
             for ftr in faturas_ids:
                 ftr.pay_and_reconcile(jrn_id.id, rcs[4])
 
-    def action_devolucao(self):
-        import pudb;pu.db
+    def action_devolucao(self):       
         db = con()
-        #db = con.Conexao('192.168.0.137:3050','C:\home\bd\ats_pdv_cx1.fdb')
-        #db = con.Conexao (host='192.168.0.137', database='C:\\home\\bd\\sge_vitton_artur.fdb')
-        #db = con.Conexao (host='192.168.0.137', database='C:\\home\\bd\\ats_pdv_cx1.fdb', user='sysdba', password='masterkey')
-        #db = con.Conexao(session.config_id.ip_terminal, session.config_id.database)
         msg_erro = ''
         msg_sis = 'Integrando Devolução PDV para Odoo  '
         hj = datetime.now()
         # session.periodo_integracao
-        hj = hj - timedelta(days=6)
+        hj = hj - timedelta(days=16)
         hj = datetime.strftime(hj, '%m-%d-%Y')
         caixa_usado = 'None'
         # ord_ids = self.env['pos.order'].search([(
@@ -782,7 +777,7 @@ class IntegracaoOdoo:
             if not len(movs):
                 msg_sis = 'Sem Devolução para importar. '
             for mvs in movs:
-                ord_name = '%s-%s' %(str(cx[1]),str(mvs[0]))
+                ord_name = '%s-%s' %(str(cx[1]),str(mvs[1]))
                 arquivo_nome = self.path_envio + '/devolucao_%s.json' %(ord_name)
                 if os.path.exists(arquivo_nome):
                     continue
