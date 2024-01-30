@@ -752,7 +752,7 @@ class IntegracaoOdoo:
 
     def action_devolucao(self):       
         db = con()
-        _logger.info("Integrando Devolução PDV para Odoo")
+        _logger.info("Integrando Devolucao PDV para Odoo")
         hj = datetime.now()
         hj = hj - timedelta(days=2)
         hj = datetime.strftime(hj, '%m-%d-%Y')
@@ -773,7 +773,7 @@ class IntegracaoOdoo:
                 ' where c.caixa = %s ' %(str(cx[1]))
             movs = db.query(sqld)
             if not len(movs):
-                _logger.info("Sem Devolução para importar.")
+                _logger.info("Sem Devolucao para importar.")
             for mvs in movs:
                 ord_name = '%s-%s' %(str(cx[1]),str(mvs[1]))
                 arquivo_nome = self.path_envio + '/devolucao_%s.json' %(ord_name)
