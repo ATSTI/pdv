@@ -49,7 +49,7 @@ class IntegracaoOdoo:
         self.caixa_user = cfg.get('INTEGRA', 'caixa_user')
         # executa = threading.Thread(target=self._executando_scrpts)
         # executa.start()
-        # self._executando_scrpts()
+        self._executando_scrpts()
         _logger.info ('Cursor liberado')
 
     def _executando_scrpts(self):    
@@ -858,7 +858,6 @@ class IntegracaoOdoo:
                 
                 # coloquei so pra manter o if
                 if ord_name:
-                    msg_sis = 'Importando : %s ' %(str(mvs[0]))
                     # cortesia = tipo_venda n
                     vals = {}               
                     cli = mvs[2]
@@ -1010,7 +1009,7 @@ class IntegracaoOdoo:
                         arquivo_json.close()
 
                     # except:
-                    msg_erro += 'ERRO, nao integrado pedido : %s ' %(prdname)
+                    # msg_erro += 'ERRO, nao integrado pedido : %s ' %(prdname)
 
                     if teve_desconto == 's' and linhas == 's' and ord_p:
                         #ord_p = pos_ord.browse(ords)
@@ -1107,7 +1106,7 @@ class IntegracaoOdoo:
         #    if pos_ses:
         #        pos_ses.write({'venda_finalizada': True})
         #        msg_sis = 'CAIXA FECHADO , COM SUCESSO. '
-        return msg_sis + ' ' + msg_erro
+        # return msg_sis + ' ' + msg_erro
 
 # class PosConfig(models.Model):
     # _inherit = 'pos.config'

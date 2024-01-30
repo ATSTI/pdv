@@ -126,13 +126,10 @@ class EnviaServer:
         retorno = rq.post("http://{}".format(base_url), data=json_data, headers=json_headers, cookies=cookies)
         # hj = datetime.now()       
         # hj = datetime.strftime(hj,'%m-%d-%Y')
-        # import pudb;pu.db
         if retorno:
             file_json = retorno.json()
 
             for item in file_json.values():
-                # print (item)
-                # import pudb;pu.db
                 if item != None and len(item)>5:
                     item_json = eval(item)
                     # for dado in item_json:
@@ -154,9 +151,6 @@ class EnviaServer:
             #                 data_lancamento = hj
             #             ))
             #             # Atualizar no banco de DADOS (firebird) ou fazer insert
-
-            #             # {'codproduto': 7505, 'unidademedida': 'UN', 'produto': 'MELHORADOR DE FARINHA GRANEL KG', 'valor_prazo': 12.72, 'datacadastro': '11/10/2023        executar_faturamento.py:5
-            #             # 00:20:14', 'codpro': '004900', 'origem': '0', 'ncm': '39249000', 'usa': 'S', 'cod_barra': '2004900000007'}
 
     def buscando_clientes(self):
         conn = db.connect('lancamento.db')
@@ -243,7 +237,6 @@ class EnviaServer:
                 tipo, caixa, codigo)
             
             if ja_enviado:
-                #import pudb;pu.db
                 os.remove(self.path_envio + '/' + i)
                 continue
 
