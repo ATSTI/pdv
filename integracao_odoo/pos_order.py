@@ -50,6 +50,7 @@ class IntegracaoOdoo:
         # executa = threading.Thread(target=self._executando_scrpts)
         # executa.start()
         self._executando_scrpts()
+        # self.action_devolucao()
         _logger.info ('Cursor liberado')
 
     def _executando_scrpts(self):    
@@ -752,7 +753,7 @@ class IntegracaoOdoo:
         db = con()
         _logger.info("Integrando Devolução PDV para Odoo")
         hj = datetime.now()
-        hj = hj - timedelta(days=16)
+        hj = hj - timedelta(days=2)
         hj = datetime.strftime(hj, '%m-%d-%Y')
         sqlc = "SELECT r.IDCAIXACONTROLE, r.CODCAIXA,  \
                r.VALORABRE, r.VALORFECHA  \
