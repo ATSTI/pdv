@@ -63,8 +63,9 @@ class IntegracaoOdoo:
             if rodou == 1 or rodou % 10 == 0:
                 _logger.info ('Caixa atualizando.')
                 self.action_atualiza_caixas(None)
-                _logger.info ('Atualiza devolucoes.')
-                self.action_devolucao()
+                # ESTA SENDO FEITO DIRETO NO PDV usando o main
+                # _logger.info ('Atualiza devolucoes.')
+                # self.action_devolucao()
             _logger.info ('Enviando pedidos.')
             envia("pedido")
             # Busca alterações dos produtos e grava no database local para ser comparado com o BD do PDV
