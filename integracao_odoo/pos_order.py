@@ -877,8 +877,10 @@ class IntegracaoOdoo:
                     vals['partner_id'] = cli
                     userid = mvs[5]
                     #if userid == 17:
-                    vals['user_id'] = userid
-                    vals['user_id'] = 1
+                    if userid > 1:
+                        vals['user_id'] = userid
+                    else:
+                        vals['user_id'] = mvs[4]
                     
                     sqld = 'SELECT f.CODFORMA, f.FORMA_PGTO, f.VALOR_PAGO, ' \
                         'f.STATE, f.TROCO, f.DESCONTO from FORMA_ENTRADA f' \
