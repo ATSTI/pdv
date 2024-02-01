@@ -691,9 +691,9 @@ object fCTePrincipal: TfCTePrincipal
     Height = 583
     Top = 0
     Width = 1305
-    ActivePage = TabCte
+    ActivePage = TabCteGeradas
     Align = alClient
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 0
     OnChange = pcPrincipalChange
     object TabCteGeradas: TTabSheet
@@ -14634,6 +14634,7 @@ object fCTePrincipal: TfCTePrincipal
     Configuracoes.Geral.SSLHttpLib = httpWinHttp
     Configuracoes.Geral.SSLXmlSignLib = xsLibXml2
     Configuracoes.Geral.FormatoAlerta = 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.'
+    Configuracoes.Geral.VersaoDF = ve400
     Configuracoes.Arquivos.OrdenacaoPath = <>
     Configuracoes.Arquivos.SepararPorMes = True
     Configuracoes.WebServices.Visualizar = True
@@ -14646,8 +14647,8 @@ object fCTePrincipal: TfCTePrincipal
     Configuracoes.WebServices.TimeZoneConf.TimeZoneStr = '-03:00'
     Configuracoes.RespTec.IdCSRT = 0
     DACTE = ACBrCTeDACTeRL1
-    Left = 304
-    Top = 208
+    Left = 144
+    Top = 256
   end
   object ACBrCTeDACTeRL1: TACBrCTeDACTeRL
     UsaSeparadorPathPDF = True
@@ -14667,6 +14668,8 @@ object fCTePrincipal: TfCTePrincipal
     CasasDecimais.vUnCom = 2
     CasasDecimais.MaskqCom = ',0.00'
     CasasDecimais.MaskvUnCom = ',0.00'
+    CasasDecimais.Aliquota = 2
+    CasasDecimais.MaskAliquota = ',0.00'
     ACBrCTE = ACBrCTe1
     ImprimirHoraSaida = False
     TipoDACTE = tiSemGeracao
