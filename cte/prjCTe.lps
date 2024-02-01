@@ -22,8 +22,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCtePrincipal"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="3392"/>
-        <CursorPos Y="3403"/>
+        <TopLine Value="7067"/>
+        <CursorPos X="14" Y="7083"/>
         <UsageCount Value="200"/>
         <Bookmarks Count="8">
           <Item0 X="33" Y="1124" ID="4"/>
@@ -340,7 +340,7 @@
         <Loaded Value="True"/>
       </Unit33>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="..\geral\udmpdv.pas"/>
         <Caret Line="1723" TopLine="1706"/>
@@ -457,6 +457,10 @@
         <Filename Value="ucteprincipal.pas"/>
         <Caret Line="7088" TopLine="7078"/>
       </Position29>
+      <Position30>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="3396" Column="68" TopLine="3390"/>
+      </Position30>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
