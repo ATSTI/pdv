@@ -177,7 +177,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="C:\home\jaba\ats_CTe"/>
+      <Filename Value="C:\home\CTE\ats_CTe"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
