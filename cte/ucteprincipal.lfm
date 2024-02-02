@@ -13696,6 +13696,22 @@ object fCTePrincipal: TfCTePrincipal
           TabOrder = 0
         end
       end
+      object Label180: TLabel
+        Left = 512
+        Height = 15
+        Top = 352
+        Width = 132
+        Caption = 'Versão Documento Fiscal'
+        ParentColor = False
+      end
+      object cbVersaoDF: TComboBox
+        Left = 512
+        Height = 23
+        Top = 368
+        Width = 248
+        ItemHeight = 15
+        TabOrder = 14
+      end
     end
     object TabSheet2: TTabSheet
       Caption = 'CTe -OS'

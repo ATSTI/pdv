@@ -116,6 +116,7 @@ type
     cbSSLLib: TComboBox;
     cbSSLType: TComboBox;
     cbUF: TComboBox;
+    cbVersaoDF: TComboBox;
     cbXmlSignLib: TComboBox;
     CheckBox1: TCheckBox;
     ckSalvar: TCheckBox;
@@ -454,6 +455,7 @@ type
     Label177: TLabel;
     Label178: TLabel;
     Label179: TLabel;
+    Label180: TLabel;
     lblCteAtual: TLabel;
     Label17: TLabel;
     Label19: TLabel;
@@ -1406,6 +1408,15 @@ begin
     ShowMessage('Informe a Chave da Cte Anterior');
     edtAntCHCTE.SetFocus;
     Exit;
+  end;
+
+  with ACBrCTe1.Conhecimentos.Add.CTe do
+  begin
+    case cbVersaoDF.ItemIndex of
+      0: infCTe.versao := 2.0;
+      1: infCTe.versao := 3.0;
+      2: infCTe.versao := 4.0;
+    end;
   end;
 
   if ((rgTiposCte.ItemIndex = 2) and
@@ -6690,6 +6701,7 @@ var
  V: TSSLHttpLib;
  X: TSSLXmlSignLib;
  Y: TSSLType;
+ K: TVersaoCTe;
  vlr_dpi: Integer;
  conf: TIniFile;
  Ini: TIniFile;
@@ -6730,6 +6742,11 @@ begin
  For Y := Low(TSSLType) to High(TSSLType) do
    cbSSLType.Items.Add( GetEnumName(TypeInfo(TSSLType), integer(Y) ) ) ;
  cbSSLType.ItemIndex := 0 ;
+
+  cbVersaoDF.Items.Clear;
+  for K := Low(TVersaoCTe) to High(TVersaoCTe) do
+     cbVersaoDF.Items.Add( GetEnumName(TypeInfo(TVersaoCTe), integer(K) ) );
+  cbVersaoDF.ItemIndex := 2;
 
   ZConn.Connected := False;
   Ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'conf.ini');
