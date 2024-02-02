@@ -1669,6 +1669,13 @@ begin
        Emit.IE := 'ISENTO';
      end;
 
+   if dmPdv.sqEmpresaCRT.AsInteger = 0 then
+     Emit.CRT := crtSimplesNacional;
+   if dmPdv.sqEmpresaCRT.AsInteger = 1 then
+     Emit.CRT := crtSimplesExcessoReceita;
+   if dmPdv.sqEmpresaCRT.AsInteger = 2 then
+     Emit.CRT := crtRegimeNormal;
+
     Emit.xNome := dmPdv.sqEmpresaRAZAO.AsString;
     Emit.xFant := dmPdv.sqEmpresaEMPRESA.AsString;
     Emit.EnderEmit.xLgr := dmPdv.sqEmpresaENDERECO.AsString;
