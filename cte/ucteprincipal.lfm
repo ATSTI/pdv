@@ -1649,7 +1649,7 @@ object fCTePrincipal: TfCTePrincipal
                   Top = 68
                   Width = 48
                   TabOrder = 1
-                  Text = '57'
+                  Text = '67'
                 end
                 object edtSerieCte: TEdit
                   Left = 256

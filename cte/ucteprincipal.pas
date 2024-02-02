@@ -1429,6 +1429,14 @@ begin
         2: infCTe.versao := 4.0;
       end;
 
+    if dmPdv.sqEmpresaCRT.AsInteger = 0 then
+      Emit.CRT := crtSimplesNacional;
+    if dmPdv.sqEmpresaCRT.AsInteger = 1 then
+      Emit.CRT := crtSimplesExcessoReceita;
+    if dmPdv.sqEmpresaCRT.AsInteger = 2 then
+      Emit.CRT := crtRegimeNormal;
+
+
     if (Trim(edtModelo.Text) = '67') then
     begin
     compl.xObs     := memxObs.Text;
@@ -2808,7 +2816,7 @@ procedure TfCTePrincipal.CarregarAcbr;
 var Ok         : Boolean;
 begin
  try
-   ACBrCTe1.Configuracoes.Geral.VersaoDF := TVersaoCTe(ve300);
+   ACBrCTe1.Configuracoes.Geral.VersaoDF := TVersaoCTe(ve400);  // 02/02/24 as 17:15
    ACBrCTe1.Configuracoes.Certificados.NumeroSerie := edtNumSerie.Text;
    ACBrCTe1.DACTE.UsaSeparadorPathPDF := True;
    //ShowMessage('Carregou certificado');
