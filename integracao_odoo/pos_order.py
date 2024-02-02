@@ -53,7 +53,7 @@ class IntegracaoOdoo:
         # self.action_devolucao()
         _logger.info ('Cursor liberado')
 
-    def _executando_scrpts(self):    
+    def _executando_scrpts(self):
         rodou = 1
         while(True):
             # Cria o ARQUIVO JSON dos Pedidos para ser enviado
@@ -141,6 +141,45 @@ class IntegracaoOdoo:
             elif ses[3] == 'F':
                 vals['state'] = 'closed'
                 arquivo_nome = self.path_envio + '/caixaf_%s.json' %(ses[1])
+            if os.path.exists(arquivo_nome):
+                continue
+            arquivo_json = open(arquivo_nome, 'w+')
+            dados_vals = json.dumps(vals)
+            arquivo_json.write(dados_vals)
+        sqlp = "SELECT f.CAIXA, f.CODFORMA, f.COD_VENDA, \
+            f.VALOR_PAGO, f.N_DOC FROM FORMA_ENTRADA f, CAIXA_CONTROLE c \
+            WHERE c.CODCAIXA = f. CAIXA and DATAABERTURA > '%s' \
+            and f.COD_VENDA = 1 AND CODUSUARIO = %s" %(hj, self.caixa_user)
+        sess_ids = db.query(sqlp)
+        amount = 0.0
+        for sess in sess_ids:
+            cod_caixa = sess[0]
+            cod_forma = sess[1]
+            cod_venda = sess[2]
+            valor = sess[3] or 0.0
+            if not valor:
+                continue
+            motivo = sess[4]
+            motivo = self.removerAcentosECaracteresEspeciais(motivo)
+            if int(cod_caixa) != sess[0]:
+                continue
+            if int(cod_venda) == 1:
+                amount = -valor
+            else:
+                amount = valor
+
+            lancamento = 'Caixa-%s-%s' %(cod_caixa, cod_forma)
+            vals = {
+                        'date': hj,
+                        'amount': amount,
+                        'ref': lancamento,
+                        'motivo': motivo,
+                        'tipo': 'san',
+                        'name': str(cod_forma),
+                        'caixa': cod_caixa,
+                        'cod_venda': cod_venda,
+            }
+            arquivo_nome = self.path_envio + '/sangria_%s.json' %(cod_forma)
             if os.path.exists(arquivo_nome):
                 continue
             arquivo_json = open(arquivo_nome, 'w+')

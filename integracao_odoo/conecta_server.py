@@ -36,6 +36,8 @@ class EnviaServer:
             self.lendo_arquivos()
         if tipo == "devolucao":
             self.lendo_arquivos()
+        if tipo == "sangria":
+            self.lendo_arquivos()
 
     def enviando_arquivo(self, retorno, arq, file_name):
         headers = {'Content-type': 'application/json'}
@@ -217,7 +219,7 @@ class EnviaServer:
             #     retorno_ids = json.loads(json.dumps(eval(json.loads(x.read()))))
 
             print('Arquivo: %s' %(nome_arq)) 
-            if nome_arq[:3] not in ('cai', 'ped', 'dev'):
+            if nome_arq[:3] not in ('cai', 'ped', 'dev', 'san'):
                 continue
 
             tipo = ''
@@ -233,6 +235,9 @@ class EnviaServer:
             if nome_arq[:10] == 'devolucao_':
                 tipo = 'devolucao'
                 caixa = nome_arq[10:nome_arq.find('-')]
+            if nome_arq[:8] == 'sangria_':
+                tipo = 'sangria'
+                caixa = nome_arq[8:nome_arq.find('-')]
             ja_enviado = dblocal.consulta(
                 tipo, caixa, codigo)
             
@@ -252,6 +257,9 @@ class EnviaServer:
                     if nome_arq[:10] == 'devolucao_' and 'devolucao' in arq and nome_arq[10:] == arq['devolucao']:
                         enviado = True
 
+                    if nome_arq[:8] == 'sangria_' and 'sangria' in arq and nome_arq[8:] == arq['sangria']:
+                        enviado = True
+
                     # arquivo_retorno = pd.read_csv(path_retorno, delimiter=" ", header = None).to_dict()[0]
                     # dados_json = arquivo_retorno.read()
                     # TODO precisa ver se o arquivo nao esta no arquivo retorno
@@ -259,10 +267,10 @@ class EnviaServer:
 
                     # if nome_arq[7:] in arquivo_retorno:
                     # arq['codmovimento']:
-                if not enviado and ((nome_arq[:6] == 'caixa_') or (nome_arq[:7] == 'pedido_') or (nome_arq[:10] == 'devolucao_')):
+                if not enviado and ((nome_arq[:6] == 'caixa_') or (nome_arq[:7] == 'pedido_') or (nome_arq[:10] == 'devolucao_') or (nome_arq[:8] == 'sangria_')):
                     get_return = self.enviando_arquivo(get_return, nome_arq[:3], i)
                     # get_return = True
-                if enviado and ((nome_arq[:6] == 'caixa_') or (nome_arq[:7] == 'pedido_') or (nome_arq[:10] == 'devolucao_')):
+                if enviado and ((nome_arq[:6] == 'caixa_') or (nome_arq[:7] == 'pedido_') or (nome_arq[:10] == 'devolucao_') or (nome_arq[:8] == 'sangria_')):
                     # sql_t = 'UPDATE movimento SET codmovrateio = %s WHERE codmovimento = %s' %()
                     os.remove(self.path_envio + '/' + i)
             else:
