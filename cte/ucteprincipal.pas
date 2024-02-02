@@ -1429,6 +1429,7 @@ begin
         2: infCTe.versao := 4.0;
       end;
 
+    //manoel teste CTES Os
     //
     // Dados de Identificação do CT-e
     //
