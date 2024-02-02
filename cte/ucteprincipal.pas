@@ -2777,7 +2777,7 @@ procedure TfCTePrincipal.CarregarAcbr;
 var Ok         : Boolean;
 begin
  try
-   ACBrCTe1.Configuracoes.Geral.VersaoDF := TVersaoCTe(ve300);
+   ACBrCTe1.Configuracoes.Geral.VersaoDF := TVersaoCTe(ve400);
    ACBrCTe1.Configuracoes.Certificados.NumeroSerie := edtNumSerie.Text;
    ACBrCTe1.DACTE.UsaSeparadorPathPDF := True;
    //ShowMessage('Carregou certificado');
