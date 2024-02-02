@@ -1429,6 +1429,13 @@ begin
         2: infCTe.versao := 4.0;
       end;
 
+    if (Trim(edtModelo.Text) = '67') then
+    begin
+    compl.xObs     := memxObs.Text;
+    infCTeNorm.rodoOS.NroRegEstadual := '0000000000000000000017472';
+    infCTeNorm.infServico.xDescServ := 'TRANSPORTE DE COLABORADORES';
+    end;
+
     //manoel teste CTES Os
     //
     // Dados de Identificação do CT-e
@@ -1639,6 +1646,36 @@ begin
      Ide.Toma4.EnderToma.xPais:= 'BRASIL';                  ///manoel
     end;
    // Aba Tomador  fim
+
+   //novo inicio CTEOS 4.0
+   if (Trim(edtModelo.Text) = '67') then
+   begin
+    CodigoMunicipio:= StrToInt(LimparString(edtTomadorCodCidade.Text,'-'));
+    //Adiciona dados do tomador do serviço
+    toma.CNPJCPF           := edtCNPJTomador.Text;
+    toma.IE                := '0010834420031';
+    toma.xNome             := edtNomeTomador.Text;
+    toma.xFant             := edtRazaoTomador.Text;
+    toma.fone              := edtFoneTomador.Text;
+    toma.enderToma.xLgr    := edtEndTomador.Text;
+    toma.enderToma.nro     := Trim(edtNumTomador.Text);
+    toma.enderToma.xCpl    := edtCompTomador.Text;
+    toma.enderToma.xBairro := edtBairroTomador.Text;
+    toma.enderToma.cMun    := CodigoMunicipio;
+    toma.enderToma.xMun    := edtTomadorCidade.Text;
+    toma.enderToma.CEP     := StrToInt(LimparString(edtCepTomador.TExt,'-'));
+    toma.enderToma.UF      := Trim(edtTomadorUF.Text);
+    toma.enderToma.cPais   := 1058;
+    toma.enderToma.xPais   := 'BRASIL';
+
+    with compl.ObsCont.New do
+    begin
+      xCampo := 'obs:';
+      xTexto := 'Isento do ICMS, conforme Inciso II, Artigo 78, Anexo I, do RICMS/SP e artigo 8 do RICMS/SP.';
+    end;
+
+   end;
+   //fim inicio CTEOS 4.0
 
    //
    //  Informações Complementares do CTe     Aba Dados Complementares inicio
