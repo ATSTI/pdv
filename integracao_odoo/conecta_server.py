@@ -210,18 +210,9 @@ class EnviaServer:
         for i in arquivos:
             nome_arq = i[:i.index('.')]
             retorno_ids = []
-            # file_retorno = f"{self.path_retorno}/retorno.json"
-            # if os.path.exists(file_retorno) and os.stat(file_retorno).st_size > 0:
-            #     x = open(file_retorno,'r')
-            #     # data = [json.loads(line) for line in open(path_retorno,'r')]
-            #     # arquivo_retorno = x.read()
-            #     # le json 
-            #     retorno_ids = json.loads(json.dumps(eval(json.loads(x.read()))))
-
-            print('Arquivo: %s' %(nome_arq)) 
+            # print('Arquivo: %s' %(nome_arq)) 
             if nome_arq[:3] not in ('cai', 'ped', 'dev', 'san'):
                 continue
-
             tipo = ''
             caixa = 0
             codigo = 0
@@ -260,18 +251,10 @@ class EnviaServer:
                     if nome_arq[:8] == 'sangria_' and 'sangria' in arq and nome_arq[8:] == arq['sangria']:
                         enviado = True
 
-                    # arquivo_retorno = pd.read_csv(path_retorno, delimiter=" ", header = None).to_dict()[0]
-                    # dados_json = arquivo_retorno.read()
-                    # TODO precisa ver se o arquivo nao esta no arquivo retorno
-                    # se estiver nao precisa mandar
-
-                    # if nome_arq[7:] in arquivo_retorno:
-                    # arq['codmovimento']:
                 if not enviado and ((nome_arq[:6] == 'caixa_') or (nome_arq[:7] == 'pedido_') or (nome_arq[:10] == 'devolucao_') or (nome_arq[:8] == 'sangria_')):
                     get_return = self.enviando_arquivo(get_return, nome_arq[:3], i)
-                    # get_return = True
+
                 if enviado and ((nome_arq[:6] == 'caixa_') or (nome_arq[:7] == 'pedido_') or (nome_arq[:10] == 'devolucao_') or (nome_arq[:8] == 'sangria_')):
-                    # sql_t = 'UPDATE movimento SET codmovrateio = %s WHERE codmovimento = %s' %()
                     os.remove(self.path_envio + '/' + i)
             else:
                 get_return = self.enviando_arquivo(get_return, nome_arq[:3], i)
@@ -291,7 +274,6 @@ class EnviaServer:
                 # print('item %s:' %(item))
                 if item != None and len(item)>5:
                     item_json = json.loads(json.dumps(eval(eval(item))))
-                    # x = eval(item)
                     for z in item_json:
                         codigo = 0
                         if 'name' in z:
@@ -313,17 +295,3 @@ class EnviaServer:
                             codigo = codigo,
                             data_lancamento = hj
                         ))
-
-                # if item.keys() == 'result':
-                #     print('valor %s:' %(item.values()))
-            # file_retorno = f"{self.path_retorno}/retorno.json"
-            # with open(file_retorno, mode="a") as arq_retorno:
-            #     dados = json.loads(get_return.content)
-            #     print("imprimindo dados")
-            #     print(dados)
-            #     json.dump(file_json, arq_retorno)
-            #     # if len(dados['result']) > 2:
-            #         # arq_retorno.write(dados["result"])
-            #     # dados = req.json()
-
-            #     print(get_return.content)
