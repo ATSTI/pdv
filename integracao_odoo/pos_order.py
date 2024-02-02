@@ -185,83 +185,6 @@ class IntegracaoOdoo:
             arquivo_json = open(arquivo_nome, 'w+')
             dados_vals = json.dumps(vals)
             arquivo_json.write(dados_vals)
-            # if not len(sess):
-            #     #state = 'c' # close
-            #     #if ses.state == 'opened':
-            #     #dta_abre = '%s.%s.%s' %(str(ses.start_at.month).zfill(2), str(ses.start_at.day).zfill(2), str(ses.start_at.year))
-            #     hj = datetime.now()
-            #     dta_abre = datetime.strftime(hj,'%m-%d-%Y')
-            #     if ses.start_at:
-            #         dta_abre = '%s/%s/%s' %(str(ses.start_at[5:7]), str(ses.start_at[8:10]), str(ses.start_at[:4]))
-            #     state = 'o'
-            #     insere = 'INSERT INTO CAIXA_CONTROLE (IDCAIXACONTROLE, '
-            #     insere += 'CODCAIXA, CODUSUARIO, SITUACAO, DATAFECHAMENTO'
-            #     insere += ',NOMECAIXA, DATAABERTURA) VALUES ('
-            #     insere += '%s'
-            #     insere += ',%s'
-            #     insere += ',%s'
-            #     insere += ',\'%s\''
-            #     insere += ',\'%s\''
-            #     insere += ',\'%s\''
-            #     insere += ',\'%s\');'
-                
-            #     insere = insere %(str(ses.id), str(ses.id), str(ses.user_id.id), str(state) \
-            #     ,str('01.01.2018'), str(ses.name), str(dta_abre))
-            #     db.insert(insere)
-            # else:
-            # if not len(sess):
-            #     #if ses.state != 'opened':
-            #     #    altera = 'UPDATE CAIXA_CONTROLE SET SITUACAO = \'F\''
-            #     #    altera += ' WHERE IDCAIXACONTROLE = %s' %(str(ses.id))
-            #     #    db.insert(altera)
-
-            #     if sess[0][1] == 'F':
-            #         ses.venda_finalizada = True
-        # INSERINDO sangria
-        # for ses in sessao_ids: 
-        #     hj = datetime.now()
-        #     #num_sessao = session.name[len(ses.name)-4:]
-        #     # num_sessao = ses.id
-        #     sqlp = 'SELECT f.CAIXA, f.CODFORMA, f.COD_VENDA, \
-        #         f.VALOR_PAGO, f.N_DOC FROM FORMA_ENTRADA f \
-        #         where f.CAIXA = %s and f.COD_VENDA = 1' %(str(num_sessao))
-        #     sess_ids = db.query(sqlp)
-        #     amount = 0.0
-        #     for sess in sess_ids:
-        #         cod_caixa = sess[0]
-        #         cod_forma = sess[1]
-        #         cod_venda = sess[2]
-        #         valor = sess[3] or 0.0
-        #         if not valor:
-        #             continue
-        #         motivo = sess[4]
-        #         if int(cod_caixa) != ses.id:
-        #             continue
-        #         if int(cod_venda) == 1:
-        #             amount = -valor
-        #         else:
-        #             amount = valor
-                
-        #         lancamento = 'Caixa-%s-%s' %(cod_caixa, cod_forma)
-        #         vals = {
-        #                     'date': hj,
-        #                     'amount': amount,
-        #                     'ref': lancamento,
-        #                     'name': motivo,
-        #         }
-        #         ja_importou = self.env['account.bank.statement.line'].search([
-        #               ('name', '=', motivo),
-        #               ('ref', '=', lancamento)])
-        #         if ja_importou:
-        #             continue
-        #         for cx in ses.statement_ids:
-        #             if cx.journal_id.name[:2] == '1-':
-        #                  stt = cx
-        #                  jrn = cx.journal_id
-        #                  vals['statement_id'] = cx.id
-        #                  vals['journal_id'] = jrn.id
-        #                  vals['account_id'] = jrn.company_id.transfer_account_id.id,
-        #                  cx.write({'line_ids': [(0, False, vals)]})
 
     def cron_integra_produtos(self):
         session_ids = self.env['pos.session'].search([
@@ -881,7 +804,8 @@ class IntegracaoOdoo:
                '   AND m.CODMOVIMENTO NOT IN (%s)' %(str(cx[1]),str_ord)
             if not sqld:
                 _logger.info("Sem Pedidos para importar.")
-                return msg_sis
+                return
+                # return msg_sis
             movs = db.query(sqld)
             if not len(movs):
                 _logger.info("Sem Pedidos para importar.")
