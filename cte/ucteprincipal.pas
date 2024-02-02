@@ -1410,15 +1410,6 @@ begin
     Exit;
   end;
 
-  with ACBrCTe1.Conhecimentos.Add.CTe do
-  begin
-    case cbVersaoDF.ItemIndex of
-      0: infCTe.versao := 2.0;
-      1: infCTe.versao := 3.0;
-      2: infCTe.versao := 4.0;
-    end;
-  end;
-
   if ((rgTiposCte.ItemIndex = 2) and
       (edtAntCHCTE.Text = '')) then
   begin
@@ -1431,6 +1422,13 @@ begin
   // necessárias para ser utilizado na sua.
   with ACBrCTe1.Conhecimentos.Add.CTe do
   begin
+
+      case cbVersaoDF.ItemIndex of
+        0: infCTe.versao := 2.0;
+        1: infCTe.versao := 3.0;
+        2: infCTe.versao := 4.0;
+      end;
+
     //
     // Dados de Identificação do CT-e
     //
@@ -1458,7 +1456,7 @@ begin
       end;
     end;
 
-    Ide.cUF:= 35; // Criar campo Tabela Empresa
+   Ide.cUF:= 35; // Criar campo Tabela Empresa
    Ide.cCT:= StrToInt(edtNumCte.Text); //   Código Aleatório   Estou usando o mesmo do numero da CTE
    Ide.CFOP:= StrToInt(edtCFOP.Text);
    Ide.natOp:= edtNatOpe.Text;
@@ -1549,6 +1547,8 @@ begin
         2: Ide.tpServ:=tsExcessoBagagem;
       end;
     end;
+
+
 
     // incluir na aba Dados
 

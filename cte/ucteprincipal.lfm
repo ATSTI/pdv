@@ -4,8 +4,8 @@ object fCTePrincipal: TfCTePrincipal
   Top = 18
   Width = 1305
   Caption = 'CTe - Conhecimento de Transporte Eletrônico'
-  ClientHeight = 649
-  ClientWidth = 1305
+  ClientHeight = 0
+  ClientWidth = 0
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnShow = FormShow
