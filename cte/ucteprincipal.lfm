@@ -691,9 +691,9 @@ object fCTePrincipal: TfCTePrincipal
     Height = 583
     Top = 0
     Width = 1305
-    ActivePage = TabCteGeradas
+    ActivePage = TabSheet20
     Align = alClient
-    TabIndex = 0
+    TabIndex = 5
     TabOrder = 0
     OnChange = pcPrincipalChange
     object TabCteGeradas: TTabSheet
@@ -13711,6 +13711,22 @@ object fCTePrincipal: TfCTePrincipal
         Width = 248
         ItemHeight = 15
         TabOrder = 14
+      end
+      object cbModeloDF: TComboBox
+        Left = 800
+        Height = 23
+        Top = 368
+        Width = 248
+        ItemHeight = 15
+        TabOrder = 15
+      end
+      object Label181: TLabel
+        Left = 800
+        Height = 15
+        Top = 352
+        Width = 139
+        Caption = 'Modelo Documento Fiscal'
+        ParentColor = False
       end
     end
     object TabSheet2: TTabSheet

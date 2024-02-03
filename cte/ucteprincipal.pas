@@ -113,6 +113,7 @@ type
     cbCryptLib: TComboBox;
     cbEmailSSL: TCheckBox;
     cbHttpLib: TComboBox;
+    cbModeloDF: TComboBox;
     cbSSLLib: TComboBox;
     cbSSLType: TComboBox;
     cbUF: TComboBox;
@@ -456,6 +457,7 @@ type
     Label178: TLabel;
     Label179: TLabel;
     Label180: TLabel;
+    Label181: TLabel;
     lblCteAtual: TLabel;
     Label17: TLabel;
     Label19: TLabel;
@@ -6747,6 +6749,7 @@ var
  V: TSSLHttpLib;
  X: TSSLXmlSignLib;
  Y: TSSLType;
+ J: TModeloCTe;
  K: TVersaoCTe;
  vlr_dpi: Integer;
  conf: TIniFile;
@@ -6793,6 +6796,11 @@ begin
   for K := Low(TVersaoCTe) to High(TVersaoCTe) do
      cbVersaoDF.Items.Add( GetEnumName(TypeInfo(TVersaoCTe), integer(K) ) );
   cbVersaoDF.ItemIndex := 2;
+
+  cbModeloDF.Items.Clear;
+  for J := Low(TModeloCTe) to High(TModeloCTe) do
+     cbModeloDF.Items.Add( GetEnumName(TypeInfo(TModeloCTe), integer(J) ) );
+  cbModeloDF.ItemIndex := 1;
 
   ZConn.Connected := False;
   Ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'conf.ini');
