@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
   StdCtrls, Menus, Buttons, DBGrids, EditBtn, Spin, DBCtrls, ZConnection,
   ZDataset, DateTimePicker, Types, IniFiles, ACBrCTe, ACBrCTeDACTEClass,
-  ACBrCTeDACTeRLClass, ACBrMail, ACBrBase, ACBrDFe, ACBrNFe, pcnConversao,
+  ACBrCTeDACTeRLClass, ACBrMail, ACBrBase, ACBrDFe,  pcnConversao,
   pcteConversaoCTe, DateUtils, ACBrUtil, db, ACBrDFeSSL;
 
 type
@@ -19,7 +19,6 @@ type
     ACBrCTe1: TACBrCTe;
     ACBrCTe2: TACBrCTe;
     ACBrCTeDACTeRL1: TACBrCTeDACTeRL;
-    ACBrNFe1: TACBrNFe;
     BitBtn1: TBitBtn;
     BitBtn10: TBitBtn;
     BitBtn11: TBitBtn;
@@ -777,7 +776,7 @@ type
     procedure btnVeicIncluirClick(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure btnInsertCompClick(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+
     procedure Button30Click(Sender: TObject);
     procedure cbCryptLibChange(Sender: TObject);
     procedure cbHttpLibChange(Sender: TObject);
@@ -1112,6 +1111,8 @@ begin
     Ini.WriteInteger('Geral','TipoRemetente', rgRem.ItemIndex);
     Ini.WriteInteger('Geral','TipoRecebedor', rgRec.ItemIndex);
     Ini.WriteInteger('Geral','TipoExpedidor', rgExp.ItemIndex);
+    Ini.WriteInteger('Geral', 'ModeloDF',         cbModeloDF.ItemIndex);
+    Ini.WriteInteger('Geral', 'VersaoDF',         cbVersaoDF.ItemIndex);
 
     Ini.WriteInteger('Geral','CodSitTributario',combCodSitTrib.ItemIndex);
 
@@ -1295,6 +1296,8 @@ begin
   rgTiposCte.ItemIndex    := Ini.ReadInteger('Geral','TipoCTe'     ,0);
   rgTipoServico.ItemIndex := Ini.ReadInteger('Geral','TipoServico' ,0);
   edtLogoMarca.Text       := Ini.ReadString ('Geral','LogoMarca'   ,'');
+  cbModeloDF.ItemIndex    := Ini.ReadInteger('Geral', 'ModeloDF',    0);
+  cbVersaoDF.ItemIndex    := Ini.ReadInteger('Geral', 'VersaoDF',    0);
 
   //edtEmitCNPJ.Text       := Ini.ReadString( 'Emitente','CNPJ'       ,'');
   //edtEmitIE.Text         := Ini.ReadString( 'Emitente','IE'         ,'');
@@ -1445,6 +1448,7 @@ begin
     infCTeNorm.rodoOS.NroRegEstadual := '0000000000000000000017472';
     infCTeNorm.infServico.xDescServ := 'TRANSPORTE DE COLABORADORES';
     end;
+    infCTeNorm.rodoOS.infFretamento.tpFretamento:= tpContinuo;
 
     //manoel teste CTES Os
     //
@@ -1663,7 +1667,7 @@ begin
     CodigoMunicipio:= StrToInt(LimparString(edtTomadorCodCidade.Text,'-'));
     //Adiciona dados do tomador do serviço
     toma.CNPJCPF           := edtCNPJTomador.Text;
-    toma.IE                := '0010834420031';
+    toma.IE                := edtIETomador.Text;
     toma.xNome             := edtNomeTomador.Text;
     toma.xFant             := edtRazaoTomador.Text;
     toma.fone              := edtFoneTomador.Text;
@@ -2819,6 +2823,7 @@ var Ok         : Boolean;
 begin
  try
    ACBrCTe1.Configuracoes.Geral.VersaoDF := TVersaoCTe(ve400);  // 02/02/24 as 17:15
+   ACBrCTe1.Configuracoes.Geral.ModeloDF := moCTeOS;
    ACBrCTe1.Configuracoes.Certificados.NumeroSerie := edtNumSerie.Text;
    ACBrCTe1.DACTE.UsaSeparadorPathPDF := True;
    //ShowMessage('Carregou certificado');
@@ -2828,6 +2833,7 @@ begin
      ACBrCTe1.Configuracoes.Certificados.Senha := edtSenha.Text;
    end;
    //ShowMessage('Carregando SSLLib');
+   {sabado
    with ACBrNFe1.Configuracoes.Geral do
    begin
      SSLLib                := TSSLLib(cbSSLLib.ItemIndex);
@@ -2836,6 +2842,7 @@ begin
      SSLXmlSignLib         := TSSLXmlSignLib(cbXmlSignLib.ItemIndex);
    end;
    ACBrNFe1.SSL.SSLType := TSSLType( cbSSLType.ItemIndex );
+   }
    //ShowMessage('Tipo Emissao');
    case rgFormaEmissao.ItemIndex of
     0: ACBrCTe1.Configuracoes.Geral.FormaEmissao := teNormal;
@@ -3870,12 +3877,12 @@ end;
 
 procedure TfCTePrincipal.AtualizaSSLLibsCombo;
 begin
- cbSSLLib.ItemIndex := Integer( ACBrNFe1.Configuracoes.Geral.SSLLib );
- cbCryptLib.ItemIndex := Integer( ACBrNFe1.Configuracoes.Geral.SSLCryptLib );
- cbHttpLib.ItemIndex := Integer( ACBrNFe1.Configuracoes.Geral.SSLHttpLib );
- cbXmlSignLib.ItemIndex := Integer( ACBrNFe1.Configuracoes.Geral.SSLXmlSignLib );
+ cbSSLLib.ItemIndex     := Integer(ACBrCTe1.Configuracoes.Geral.SSLLib);
+ cbCryptLib.ItemIndex   := Integer(ACBrCTe1.Configuracoes.Geral.SSLCryptLib);
+ cbHttpLib.ItemIndex    := Integer(ACBrCTe1.Configuracoes.Geral.SSLHttpLib);
+ cbXmlSignLib.ItemIndex := Integer(ACBrCTe1.Configuracoes.Geral.SSLXmlSignLib);
 
- cbSSLType.Enabled := (ACBrNFe1.Configuracoes.Geral.SSLHttpLib in [httpWinHttp, httpOpenSSL]) ;
+ cbSSLType.Enabled := (ACBrCTe1.Configuracoes.Geral.SSLHttpLib in [httpWinHttp, httpOpenSSL]);
 end;
 
 procedure TfCTePrincipal.dbValTotPrestExit(Sender: TObject);
@@ -4729,7 +4736,7 @@ procedure TfCTePrincipal.btnGerarClick(Sender: TObject);
 var   vAux : String;
  strEdita :string;
 begin
-  btnGerarCte.Click;
+ // btnGerarCte.Click;
   {
   if (dmCte.cdsCTENPROT.AsString <> '') then
   begin
@@ -4821,6 +4828,7 @@ begin
   try
     GerarCTe(vAux);
     //ShowMessage('Gravando');
+   // ACBrCTe1.Configuracoes.Geral.ModeloDF = moCTeOS;
     ACBrCTe1.Conhecimentos.Items[0].GravarXML('','');
     vChave_cte := ACBrCTe1.Conhecimentos.Items[0].NomeArq;
     StatusBar1.SimpleText := 'Gerando CTe, Arquivo gerado em: ' + vChave_cte;
@@ -6074,7 +6082,8 @@ var
 begin
   //dm.cdsCli.Open;
   //dm.cdsCli.Close;
-  edtXMLCod.Text  := '';
+ {
+ edtXMLCod.Text  := '';
   edtXMLNome.Text  := '';
   edtXMLRazao.Text  := '';
   edtXMLCnpj.Text  := '';
@@ -6093,7 +6102,7 @@ begin
   OpenDialog1.Title := 'Selecione a NFE';
   OpenDialog1.DefaultExt := '*-nfe.XML';
   OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Arquivos TXT (*.TXT)|*.TXT|Todos os Arquivos (*.*)|*.*';
-  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
+  // sabado OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
   if OpenDialog1.Execute then
   begin
     //tenta TXT
@@ -6106,9 +6115,9 @@ begin
     //begin
     //   NFeRTXT.Free;
     //tenta XML
-    ACBrNFe1.NotasFiscais.Clear;
+    //sabado ACBrNFe1.NotasFiscais.Clear;
     try
-      ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+      // sabado ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
     except
       ShowMessage('Arquivo NFe Inválido');
       exit;
@@ -6163,7 +6172,7 @@ begin
       cadastraClientes(nome, strEndereco);
     end;
   end;
-
+   }
 end;
 
 procedure TfCTePrincipal.btnImprimirClick(Sender: TObject);
@@ -6620,10 +6629,6 @@ begin
 
 end;
 
-procedure TfCTePrincipal.Button1Click(Sender: TObject);
-begin
-
-end;
 
 
 
@@ -6636,7 +6641,7 @@ procedure TfCTePrincipal.cbCryptLibChange(Sender: TObject);
 begin
   try
     if cbCryptLib.ItemIndex <> -1 then
-      ACBrNFe1.Configuracoes.Geral.SSLCryptLib := TSSLCryptLib(cbCryptLib.ItemIndex);
+      ACBrCTe1.Configuracoes.Geral.SSLCryptLib := TSSLCryptLib(cbCryptLib.ItemIndex);
   finally
     AtualizaSSLLibsCombo;
   end;
@@ -6646,7 +6651,7 @@ procedure TfCTePrincipal.cbHttpLibChange(Sender: TObject);
 begin
   try
     if cbHttpLib.ItemIndex <> -1 then
-      ACBrNFe1.Configuracoes.Geral.SSLHttpLib := TSSLHttpLib(cbHttpLib.ItemIndex);
+      ACBrCTe1.Configuracoes.Geral.SSLHttpLib := TSSLHttpLib(cbHttpLib.ItemIndex);
   finally
     AtualizaSSLLibsCombo;
   end;
@@ -6656,7 +6661,7 @@ procedure TfCTePrincipal.cbSSLLibChange(Sender: TObject);
 begin
  try
    if cbSSLLib.ItemIndex <> -1 then
-     ACBrNFe1.Configuracoes.Geral.SSLLib := TSSLLib(cbSSLLib.ItemIndex);
+     ACBrCTe1.Configuracoes.Geral.SSLLib := TSSLLib(cbSSLLib.ItemIndex);
  finally
    AtualizaSSLLibsCombo;
  end;
@@ -6666,14 +6671,14 @@ end;
 procedure TfCTePrincipal.cbSSLTypeChange(Sender: TObject);
 begin
     if cbSSLType.ItemIndex <> -1 then
-     ACBrNFe1.SSL.SSLType := TSSLType(cbSSLType.ItemIndex);
+     ACBrCTe1.SSL.SSLType := TSSLType(cbSSLType.ItemIndex);
 end;
 
 procedure TfCTePrincipal.cbXmlSignLibChange(Sender: TObject);
 begin
   try
     if cbXmlSignLib.ItemIndex <> -1 then
-      ACBrNFe1.Configuracoes.Geral.SSLXmlSignLib := TSSLXmlSignLib(cbXmlSignLib.ItemIndex);
+      ACBrCTe1.Configuracoes.Geral.SSLXmlSignLib := TSSLXmlSignLib(cbXmlSignLib.ItemIndex);
   finally
     AtualizaSSLLibsCombo;
   end;
@@ -7059,7 +7064,7 @@ end;
 
 procedure TfCTePrincipal.rgTomadorClick(Sender: TObject);
 begin
-  if rgTomador.ItemIndex = 4 then
+ { if rgTomador.ItemIndex = 4 then
   begin
     GroupBoxTomador.Visible := False;
   end;
@@ -7068,6 +7073,7 @@ begin
   begin
     GroupBoxTomador.Visible := True;
   end;
+  }
 end;
 
 procedure TfCTePrincipal.sbtnCaminhoCertClick(Sender: TObject);
@@ -7093,11 +7099,11 @@ var
 begin
   frSelecionarCertificado := TfrSelecionarCertificado.Create(Self);
   try
-    ACBrNFe1.SSL.LerCertificadosStore;
+    ACBrCTe1.SSL.LerCertificadosStore;
 
-    For I := 0 to ACBrNFe1.SSL.ListaCertificados.Count-1 do
+    For I := 0 to ACBrCTe1.SSL.ListaCertificados.Count-1 do
     begin
-      with ACBrNFe1.SSL.ListaCertificados[I] do
+      with ACBrCTe1.SSL.ListaCertificados[I] do
       begin
         if (CNPJ <> '') then
         begin
@@ -7124,7 +7130,7 @@ begin
      frSelecionarCertificado.Free;
   end;
 
-  //edtNumSerie.Text := ACBrCTe1.SSL.SelecionarCertificado;
+ // edtNumSerie.Text := ACBrCTe1.SSL.SelecionarCertificado;
 end;
 
 procedure TfCTePrincipal.sbtnLerXmlCteClick(Sender: TObject);

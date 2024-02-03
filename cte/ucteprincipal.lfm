@@ -691,9 +691,9 @@ object fCTePrincipal: TfCTePrincipal
     Height = 583
     Top = 0
     Width = 1305
-    ActivePage = TabSheet20
+    ActivePage = TabCteGeradas
     Align = alClient
-    TabIndex = 5
+    TabIndex = 0
     TabOrder = 0
     OnChange = pcPrincipalChange
     object TabCteGeradas: TTabSheet
@@ -14645,21 +14645,6 @@ object fCTePrincipal: TfCTePrincipal
     Left = 664
     Top = 184
   end
-  object ACBrNFe1: TACBrNFe
-    Configuracoes.Geral.SSLLib = libNone
-    Configuracoes.Geral.SSLCryptLib = cryNone
-    Configuracoes.Geral.SSLHttpLib = httpNone
-    Configuracoes.Geral.SSLXmlSignLib = xsNone
-    Configuracoes.Geral.FormatoAlerta = 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.'
-    Configuracoes.Geral.VersaoQRCode = veqr000
-    Configuracoes.Arquivos.OrdenacaoPath = <>
-    Configuracoes.WebServices.UF = 'SP'
-    Configuracoes.WebServices.AguardarConsultaRet = 0
-    Configuracoes.WebServices.QuebradeLinha = '|'
-    Configuracoes.RespTec.IdCSRT = 0
-    Left = 768
-    Top = 192
-  end
   object ACBrCTe1: TACBrCTe
     Configuracoes.Geral.SSLLib = libWinCrypt
     Configuracoes.Geral.SSLCryptLib = cryWinCrypt
@@ -14679,8 +14664,8 @@ object fCTePrincipal: TfCTePrincipal
     Configuracoes.WebServices.TimeZoneConf.TimeZoneStr = '-03:00'
     Configuracoes.RespTec.IdCSRT = 0
     DACTE = ACBrCTeDACTeRL1
-    Left = 144
-    Top = 256
+    Left = 880
+    Top = 464
   end
   object ACBrCTeDACTeRL1: TACBrCTeDACTeRL
     UsaSeparadorPathPDF = True
@@ -14709,10 +14694,11 @@ object fCTePrincipal: TfCTePrincipal
     Cancelada = False
     ExibeResumoCanhoto = False
     EPECEnviado = False
+    PosCanhoto = prRodape
     ImprimeDescPorc = False
     PrintDialog = True
-    Left = 552
-    Top = 192
+    Left = 968
+    Top = 464
   end
   object ACBrCTe2: TACBrCTe
     Configuracoes.Geral.SSLLib = libNone
@@ -14726,8 +14712,8 @@ object fCTePrincipal: TfCTePrincipal
     Configuracoes.WebServices.AguardarConsultaRet = 0
     Configuracoes.WebServices.QuebradeLinha = '|'
     Configuracoes.RespTec.IdCSRT = 0
-    Left = 848
-    Top = 184
+    Left = 1072
+    Top = 464
   end
   object ZConn: TZConnection
     ControlsCodePage = cCP_UTF8
