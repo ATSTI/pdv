@@ -5,6 +5,7 @@ object dmCte: TdmCte
   VerticalOffset = 36
   Width = 808
   object cdsCte: TSQLQuery
+    MaxIndexesCount = 4
     FieldDefs = <    
       item
         Name = 'COD_CTE'
@@ -35,7 +36,7 @@ object dmCte: TdmCte
         Name = 'CTE_NATOP'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'IFORPAG'
@@ -46,13 +47,13 @@ object dmCte: TdmCte
         Name = 'MODELO'
         DataType = ftFixedChar
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'CTE_SERIE'
         DataType = ftString
         Precision = -1
-        Size = 24
+        Size = 6
       end    
       item
         Name = 'CTE_NUMERO'
@@ -93,37 +94,37 @@ object dmCte: TdmCte
         Name = 'VERPROC'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'REFCTE'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'CODIGOMUNICIPIO'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'EMPRESACIDADE'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'EMPRESAESTADO'
         DataType = ftFixedChar
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'MODAL'
         DataType = ftFixedChar
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'TIPOSERVICO'
@@ -134,55 +135,55 @@ object dmCte: TdmCte
         Name = 'ENV_CODCIDADE'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'ENV_CIDADE'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'ENV_ESTADO'
         DataType = ftFixedChar
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'INI_CODCIDADE'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'INI_CIDADE'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'INI_ESTADO'
         DataType = ftFixedChar
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'FIM_CODCIDADE'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'FIM_CIDADE'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'FIM_ESTADO'
         DataType = ftFixedChar
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'RETIRA'
@@ -193,7 +194,7 @@ object dmCte: TdmCte
         Name = 'DETRETIRA'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'EMITENTE'
@@ -204,85 +205,85 @@ object dmCte: TdmCte
         Name = 'E_RG'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'E_CNPJCPF'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'E_IESTADUAL'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'E_RSOCIAL'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'E_FANTASIA'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'E_TELEFONE'
         DataType = ftString
         Precision = -1
-        Size = 60
+        Size = 15
       end    
       item
         Name = 'E_ENDERECO'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'E_NUMERO'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'E_COMPLEMENTO'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'E_BAIRRO'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'E_CODIGOMUNICIPI'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'E_CIDADE'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'E_CEP'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'E_ESTADO'
         DataType = ftFixedChar
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'E_CODIGOPAIS'
@@ -293,7 +294,7 @@ object dmCte: TdmCte
         Name = 'E_PAIS'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'TOMADORSERVICO'
@@ -304,85 +305,85 @@ object dmCte: TdmCte
         Name = 'T_RG'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'T_CNPJCPF'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'T_IESTADUAL'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'T_RSOCIAL'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'T_FANTASIA'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'T_TELEFONE'
         DataType = ftString
         Precision = -1
-        Size = 60
+        Size = 15
       end    
       item
         Name = 'T_ENDERECO'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'T_NUMERO'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'T_COMPLEMENTO'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'T_BAIRRO'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'T_CODIGOMUNICIPI'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'T_CIDADE'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'T_CEP'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'T_ESTADO'
         DataType = ftFixedChar
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'T_CODIGOPAIS'
@@ -393,7 +394,7 @@ object dmCte: TdmCte
         Name = 'T_PAIS'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'REMETENTE'
@@ -404,85 +405,85 @@ object dmCte: TdmCte
         Name = 'R_RG'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'R_CNPJCPF'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'R_IESTADUAL'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'R_RSOCIAL'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'R_FANTASIA'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'R_TELEFONE'
         DataType = ftString
         Precision = -1
-        Size = 60
+        Size = 15
       end    
       item
         Name = 'R_ENDERECO'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'R_NUMERO'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'R_COMPLEMENTO'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'R_BAIRRO'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'R_CODIGOMUNICIPI'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'R_CIDADE'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'R_CEP'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'R_ESTADO'
         DataType = ftFixedChar
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'R_CODIGOPAIS'
@@ -493,7 +494,7 @@ object dmCte: TdmCte
         Name = 'R_PAIS'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'DESTINATARIO'
@@ -504,85 +505,85 @@ object dmCte: TdmCte
         Name = 'D_RG'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'D_CNPJCPF'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'D_IESTADUAL'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'D_RSOCIAL'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'D_FANTASIA'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'D_TELEFONE'
         DataType = ftString
         Precision = -1
-        Size = 60
+        Size = 15
       end    
       item
         Name = 'D_ENDERECO'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'D_NUMERO'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'D_COMPLEMENTO'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'D_BAIRRO'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'D_CODIGOMUNICIPI'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'D_CIDADE'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'D_CEP'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'D_ESTADO'
         DataType = ftFixedChar
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'D_CODIGOPAIS'
@@ -593,7 +594,7 @@ object dmCte: TdmCte
         Name = 'D_PAIS'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'EXPEDITOR'
@@ -604,85 +605,85 @@ object dmCte: TdmCte
         Name = 'EX_RG'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'EX_CNPJCPF'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'EX_IESTADUAL'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'EX_RSOCIAL'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'EX_FANTASIA'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'EX_TELEFONE'
         DataType = ftString
         Precision = -1
-        Size = 60
+        Size = 15
       end    
       item
         Name = 'EX_ENDERECO'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'EX_NUMERO'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'EX_COMPLEMENTO'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'EX_BAIRRO'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'EX_CODIGOMUNICIPI'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'EX_CIDADE'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'EX_CEP'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'EX_ESTADO'
         DataType = ftFixedChar
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'EX_CODIGOPAIS'
@@ -693,31 +694,31 @@ object dmCte: TdmCte
         Name = 'EX_PAIS'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'CARAC_TRANSP'
         DataType = ftString
         Precision = -1
-        Size = 60
+        Size = 15
       end    
       item
         Name = 'CARAC_SERV'
         DataType = ftString
         Precision = -1
-        Size = 120
+        Size = 30
       end    
       item
         Name = 'FUNC_EMI'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'DET_RETIRA'
         DataType = ftString
         Precision = -1
-        Size = 640
+        Size = 160
       end    
       item
         Name = 'VPREST'
@@ -733,7 +734,7 @@ object dmCte: TdmCte
         Name = 'COMPONENTE'
         DataType = ftString
         Precision = -1
-        Size = 60
+        Size = 15
       end    
       item
         Name = 'VCOMPONENTE'
@@ -754,7 +755,7 @@ object dmCte: TdmCte
         Name = 'STATUS'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'VALINFCARGA'
@@ -765,19 +766,19 @@ object dmCte: TdmCte
         Name = 'PROPRED'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'OUTCAT'
         DataType = ftString
         Precision = -1
-        Size = 120
+        Size = 30
       end    
       item
         Name = 'RNTRC'
         DataType = ftString
         Precision = -1
-        Size = 32
+        Size = 8
       end    
       item
         Name = 'DATARODPREV'
@@ -793,19 +794,19 @@ object dmCte: TdmCte
         Name = 'OBS_GERAL'
         DataType = ftString
         Precision = -1
-        Size = 1200
+        Size = 300
       end    
       item
         Name = 'NPROT'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'CHCTE'
         DataType = ftString
         Precision = -1
-        Size = 200
+        Size = 50
       end    
       item
         Name = 'RECEBEDOR'
@@ -816,85 +817,85 @@ object dmCte: TdmCte
         Name = 'RE_RG'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'RE_CNPJCPF'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'RE_IESTADUAL'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'RE_RSOCIAL'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'RE_FANTASIA'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'RE_TELEFONE'
         DataType = ftString
         Precision = -1
-        Size = 60
+        Size = 15
       end    
       item
         Name = 'RE_ENDERECO'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'RE_NUMERO'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'RE_COMPLEMENTO'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'RE_BAIRRO'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'RE_CODIGOMUNICIPI'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'RE_CIDADE'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'RE_CEP'
         DataType = ftString
         Precision = -1
-        Size = 40
+        Size = 10
       end    
       item
         Name = 'RE_ESTADO'
         DataType = ftFixedChar
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'RE_CODIGOPAIS'
@@ -905,25 +906,25 @@ object dmCte: TdmCte
         Name = 'RE_PAIS'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'OUTPDOC'
         DataType = ftString
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'OUDESCOUTRO'
         DataType = ftString
         Precision = -1
-        Size = 400
+        Size = 100
       end    
       item
         Name = 'OUNDOC'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
       end    
       item
         Name = 'OUDEMI'
@@ -939,13 +940,13 @@ object dmCte: TdmCte
         Name = 'UFPER'
         DataType = ftString
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'INFADFISCO'
         DataType = ftString
         Precision = -1
-        Size = 2000
+        Size = 500
       end    
       item
         Name = 'VPIS'
@@ -976,7 +977,7 @@ object dmCte: TdmCte
         Name = 'XDESCSERV'
         DataType = ftString
         Precision = -1
-        Size = 120
+        Size = 30
       end    
       item
         Name = 'QCARGA'
@@ -992,97 +993,184 @@ object dmCte: TdmCte
         Name = 'TAF'
         DataType = ftString
         Precision = -1
-        Size = 48
+        Size = 12
       end    
       item
         Name = 'NROREGESTADUAL'
         DataType = ftString
         Precision = -1
-        Size = 100
+        Size = 25
       end    
       item
         Name = 'VEICRENAVAM'
         DataType = ftString
         Precision = -1
-        Size = 44
+        Size = 11
       end    
       item
         Name = 'VEICPLACA'
         DataType = ftString
         Precision = -1
-        Size = 28
+        Size = 7
       end    
       item
         Name = 'VEIUF'
         DataType = ftString
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'OBSCONT'
         DataType = ftString
         Precision = -1
-        Size = 1600
+        Size = 400
       end    
       item
         Name = 'TCPF'
         DataType = ftString
         Precision = -1
-        Size = 44
+        Size = 11
       end    
       item
         Name = 'TCNPJ'
         DataType = ftString
         Precision = -1
-        Size = 56
+        Size = 14
       end    
       item
         Name = 'TTAF'
         DataType = ftString
         Precision = -1
-        Size = 48
+        Size = 12
       end    
       item
         Name = 'TNROREGESTADUAL'
         DataType = ftString
         Precision = -1
-        Size = 100
+        Size = 25
       end    
       item
         Name = 'TXNOME'
         DataType = ftString
         Precision = -1
-        Size = 240
+        Size = 60
       end    
       item
         Name = 'TIE'
         DataType = ftString
         Precision = -1
-        Size = 56
+        Size = 14
       end    
       item
         Name = 'TUF'
         DataType = ftString
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'TTPPROP'
         DataType = ftString
         Precision = -1
-        Size = 56
+        Size = 14
       end    
       item
         Name = 'TUFT'
         DataType = ftString
         Precision = -1
-        Size = 8
+        Size = 2
       end    
       item
         Name = 'OBSFISCO'
         DataType = ftString
         Precision = -1
-        Size = 1200
+        Size = 300
+      end    
+      item
+        Name = 'INDIETOMA'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'TPFRETAMENTO'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'DHVIAGEM'
+        DataType = ftDate
+        Precision = -1
+      end    
+      item
+        Name = 'ANT_CNPJ'
+        DataType = ftString
+        Precision = -1
+        Size = 20
+      end    
+      item
+        Name = 'ANT_IE'
+        DataType = ftString
+        Precision = -1
+        Size = 20
+      end    
+      item
+        Name = 'ANT_UF'
+        DataType = ftString
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'ANT_NOME'
+        DataType = ftString
+        Precision = -1
+        Size = 60
+      end    
+      item
+        Name = 'ANT_CHCTE'
+        DataType = ftString
+        Precision = -1
+        Size = 60
+      end    
+      item
+        Name = 'IN_IMPOSTOS'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'NPROTCANCEL'
+        DataType = ftString
+        Precision = -1
+        Size = 30
+      end    
+      item
+        Name = 'VALPREDBC'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALVBC'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALPICMS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALVICMS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'VALVCRED'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'STATUS_CTE'
+        DataType = ftString
+        Precision = -1
+        Size = 30
       end>
     Database = dmPdv.IbCon
     Transaction = dmPdv.sTrans
@@ -1171,7 +1259,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteIFORPAG: TLongintField
       FieldKind = fkData
@@ -1190,7 +1278,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 8
+      Size = 2
     end
     object cdsCteCTE_SERIE: TStringField
       FieldKind = fkData
@@ -1200,7 +1288,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 24
+      Size = 6
     end
     object cdsCteCTE_NUMERO: TLongintField
       FieldKind = fkData
@@ -1273,7 +1361,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
     end
     object cdsCteREFCTE: TStringField
       FieldKind = fkData
@@ -1283,7 +1370,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteCODIGOMUNICIPIO: TStringField
       FieldKind = fkData
@@ -1293,7 +1380,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 10
     end
     object cdsCteEMPRESACIDADE: TStringField
       FieldKind = fkData
@@ -1303,7 +1390,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteEMPRESAESTADO: TStringField
       FieldKind = fkData
@@ -1313,7 +1400,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 8
+      Size = 2
     end
     object cdsCteMODAL: TStringField
       FieldKind = fkData
@@ -1323,7 +1410,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 8
+      Size = 2
     end
     object cdsCteTIPOSERVICO: TLongintField
       FieldKind = fkData
@@ -1342,7 +1429,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 10
     end
     object cdsCteENV_CIDADE: TStringField
       FieldKind = fkData
@@ -1352,7 +1439,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteENV_ESTADO: TStringField
       FieldKind = fkData
@@ -1362,7 +1449,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 8
+      Size = 2
     end
     object cdsCteINI_CODCIDADE: TStringField
       FieldKind = fkData
@@ -1372,7 +1459,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 10
     end
     object cdsCteINI_CIDADE: TStringField
       FieldKind = fkData
@@ -1382,7 +1469,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteINI_ESTADO: TStringField
       FieldKind = fkData
@@ -1392,7 +1479,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 8
+      Size = 2
     end
     object cdsCteFIM_CODCIDADE: TStringField
       FieldKind = fkData
@@ -1402,7 +1489,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 10
     end
     object cdsCteFIM_CIDADE: TStringField
       FieldKind = fkData
@@ -1412,7 +1499,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteFIM_ESTADO: TStringField
       FieldKind = fkData
@@ -1422,7 +1509,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 8
+      Size = 2
     end
     object cdsCteRETIRA: TLongintField
       FieldKind = fkData
@@ -1441,7 +1528,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteEMITENTE: TLongintField
       FieldKind = fkData
@@ -1460,7 +1547,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
     end
     object cdsCteE_CNPJCPF: TStringField
       FieldKind = fkData
@@ -1470,7 +1556,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
     end
     object cdsCteE_IESTADUAL: TStringField
       FieldKind = fkData
@@ -1480,7 +1565,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
     end
     object cdsCteE_RSOCIAL: TStringField
       FieldKind = fkData
@@ -1490,7 +1574,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteE_FANTASIA: TStringField
       FieldKind = fkData
@@ -1500,7 +1584,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteE_TELEFONE: TStringField
       FieldKind = fkData
@@ -1510,7 +1594,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 60
+      Size = 15
     end
     object cdsCteE_ENDERECO: TStringField
       FieldKind = fkData
@@ -1520,7 +1604,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteE_NUMERO: TStringField
       FieldKind = fkData
@@ -1530,7 +1614,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 10
     end
     object cdsCteE_COMPLEMENTO: TStringField
       FieldKind = fkData
@@ -1540,7 +1624,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteE_BAIRRO: TStringField
       FieldKind = fkData
@@ -1550,7 +1634,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteE_CODIGOMUNICIPI: TStringField
       FieldKind = fkData
@@ -1560,7 +1644,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 10
     end
     object cdsCteE_CIDADE: TStringField
       FieldKind = fkData
@@ -1570,7 +1654,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteE_CEP: TStringField
       FieldKind = fkData
@@ -1580,7 +1664,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 10
     end
     object cdsCteE_ESTADO: TStringField
       FieldKind = fkData
@@ -1590,7 +1674,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 8
+      Size = 2
     end
     object cdsCteE_CODIGOPAIS: TLongintField
       FieldKind = fkData
@@ -1609,7 +1693,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteTOMADORSERVICO: TLongintField
       FieldKind = fkData
@@ -1628,7 +1712,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
     end
     object cdsCteT_CNPJCPF: TStringField
       FieldKind = fkData
@@ -1638,7 +1721,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
     end
     object cdsCteT_IESTADUAL: TStringField
       FieldKind = fkData
@@ -1648,7 +1730,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
     end
     object cdsCteT_RSOCIAL: TStringField
       FieldKind = fkData
@@ -1658,7 +1739,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteT_FANTASIA: TStringField
       FieldKind = fkData
@@ -1668,7 +1749,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteT_TELEFONE: TStringField
       FieldKind = fkData
@@ -1678,7 +1759,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 60
+      Size = 15
     end
     object cdsCteT_ENDERECO: TStringField
       FieldKind = fkData
@@ -1688,7 +1769,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteT_NUMERO: TStringField
       FieldKind = fkData
@@ -1698,7 +1779,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 10
     end
     object cdsCteT_COMPLEMENTO: TStringField
       FieldKind = fkData
@@ -1708,7 +1789,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteT_BAIRRO: TStringField
       FieldKind = fkData
@@ -1718,7 +1799,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteT_CODIGOMUNICIPI: TStringField
       FieldKind = fkData
@@ -1728,7 +1809,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 10
     end
     object cdsCteT_CIDADE: TStringField
       FieldKind = fkData
@@ -1738,7 +1819,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteT_CEP: TStringField
       FieldKind = fkData
@@ -1748,7 +1829,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 10
     end
     object cdsCteT_ESTADO: TStringField
       FieldKind = fkData
@@ -1758,7 +1839,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 8
+      Size = 2
     end
     object cdsCteT_CODIGOPAIS: TLongintField
       FieldKind = fkData
@@ -1777,7 +1858,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteREMETENTE: TLongintField
       FieldKind = fkData
@@ -1796,7 +1877,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
     end
     object cdsCteR_CNPJCPF: TStringField
       FieldKind = fkData
@@ -1806,7 +1886,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
     end
     object cdsCteR_IESTADUAL: TStringField
       FieldKind = fkData
@@ -1816,7 +1895,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
     end
     object cdsCteR_RSOCIAL: TStringField
       FieldKind = fkData
@@ -1826,7 +1904,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteR_FANTASIA: TStringField
       FieldKind = fkData
@@ -1836,7 +1914,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteR_TELEFONE: TStringField
       FieldKind = fkData
@@ -1846,7 +1924,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 60
+      Size = 15
     end
     object cdsCteR_ENDERECO: TStringField
       FieldKind = fkData
@@ -1856,7 +1934,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteR_NUMERO: TStringField
       FieldKind = fkData
@@ -1866,7 +1944,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 10
     end
     object cdsCteR_COMPLEMENTO: TStringField
       FieldKind = fkData
@@ -1876,7 +1954,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteR_BAIRRO: TStringField
       FieldKind = fkData
@@ -1886,7 +1964,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteR_CODIGOMUNICIPI: TStringField
       FieldKind = fkData
@@ -1896,7 +1974,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 10
     end
     object cdsCteR_CIDADE: TStringField
       FieldKind = fkData
@@ -1906,7 +1984,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteR_CEP: TStringField
       FieldKind = fkData
@@ -1916,7 +1994,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 10
     end
     object cdsCteR_ESTADO: TStringField
       FieldKind = fkData
@@ -1926,7 +2004,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 8
+      Size = 2
     end
     object cdsCteR_CODIGOPAIS: TLongintField
       FieldKind = fkData
@@ -1945,7 +2023,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteDESTINATARIO: TLongintField
       FieldKind = fkData
@@ -1964,7 +2042,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
     end
     object cdsCteD_CNPJCPF: TStringField
       FieldKind = fkData
@@ -1974,7 +2051,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
     end
     object cdsCteD_IESTADUAL: TStringField
       FieldKind = fkData
@@ -1984,7 +2060,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
     end
     object cdsCteD_RSOCIAL: TStringField
       FieldKind = fkData
@@ -1994,7 +2069,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteD_FANTASIA: TStringField
       FieldKind = fkData
@@ -2004,7 +2079,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteD_TELEFONE: TStringField
       FieldKind = fkData
@@ -2014,7 +2089,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 60
+      Size = 15
     end
     object cdsCteD_ENDERECO: TStringField
       FieldKind = fkData
@@ -2024,7 +2099,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteD_NUMERO: TStringField
       FieldKind = fkData
@@ -2034,7 +2109,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 10
     end
     object cdsCteD_COMPLEMENTO: TStringField
       FieldKind = fkData
@@ -2044,7 +2119,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteD_BAIRRO: TStringField
       FieldKind = fkData
@@ -2054,7 +2129,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteD_CODIGOMUNICIPI: TStringField
       FieldKind = fkData
@@ -2064,7 +2139,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 10
     end
     object cdsCteD_CIDADE: TStringField
       FieldKind = fkData
@@ -2074,7 +2149,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteD_CEP: TStringField
       FieldKind = fkData
@@ -2084,7 +2159,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 10
     end
     object cdsCteD_ESTADO: TStringField
       FieldKind = fkData
@@ -2094,7 +2169,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 8
+      Size = 2
     end
     object cdsCteD_CODIGOPAIS: TLongintField
       FieldKind = fkData
@@ -2113,7 +2188,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteEXPEDITOR: TLongintField
       FieldKind = fkData
@@ -2132,7 +2207,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
     end
     object cdsCteEX_CNPJCPF: TStringField
       FieldKind = fkData
@@ -2142,7 +2216,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
     end
     object cdsCteEX_IESTADUAL: TStringField
       FieldKind = fkData
@@ -2152,7 +2225,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
     end
     object cdsCteEX_RSOCIAL: TStringField
       FieldKind = fkData
@@ -2162,7 +2234,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteEX_FANTASIA: TStringField
       FieldKind = fkData
@@ -2172,7 +2244,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteEX_TELEFONE: TStringField
       FieldKind = fkData
@@ -2182,7 +2254,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 60
+      Size = 15
     end
     object cdsCteEX_ENDERECO: TStringField
       FieldKind = fkData
@@ -2192,7 +2264,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteEX_NUMERO: TStringField
       FieldKind = fkData
@@ -2202,7 +2274,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 10
     end
     object cdsCteEX_COMPLEMENTO: TStringField
       FieldKind = fkData
@@ -2212,7 +2284,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteEX_BAIRRO: TStringField
       FieldKind = fkData
@@ -2222,7 +2294,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteEX_CODIGOMUNICIPI: TStringField
       FieldKind = fkData
@@ -2232,7 +2304,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 10
     end
     object cdsCteEX_CIDADE: TStringField
       FieldKind = fkData
@@ -2242,7 +2314,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteEX_CEP: TStringField
       FieldKind = fkData
@@ -2252,7 +2324,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 10
     end
     object cdsCteEX_ESTADO: TStringField
       FieldKind = fkData
@@ -2262,7 +2334,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 8
+      Size = 2
     end
     object cdsCteEX_CODIGOPAIS: TLongintField
       FieldKind = fkData
@@ -2281,7 +2353,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteCARAC_TRANSP: TStringField
       FieldKind = fkData
@@ -2291,7 +2363,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 60
+      Size = 15
     end
     object cdsCteCARAC_SERV: TStringField
       FieldKind = fkData
@@ -2301,7 +2373,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 120
+      Size = 30
     end
     object cdsCteFUNC_EMI: TStringField
       FieldKind = fkData
@@ -2311,7 +2383,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
     end
     object cdsCteDET_RETIRA: TStringField
       FieldKind = fkData
@@ -2321,7 +2392,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 640
+      Size = 160
     end
     object cdsCteVPREST: TFloatField
       FieldKind = fkData
@@ -2331,7 +2402,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      DisplayFormat = ',##0.00'
       Precision = -1
     end
     object cdsCteVREC: TFloatField
@@ -2342,7 +2412,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      DisplayFormat = ',##0.00'
       Precision = -1
     end
     object cdsCteCOMPONENTE: TStringField
@@ -2353,7 +2422,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 60
+      Size = 15
     end
     object cdsCteVCOMPONENTE: TFloatField
       FieldKind = fkData
@@ -2373,7 +2442,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      DisplayFormat = ',##0.00'
       Precision = -1
     end
     object cdsCteCOMBCODSITTRIB: TLongintField
@@ -2393,7 +2461,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteVALINFCARGA: TFloatField
       FieldKind = fkData
@@ -2403,7 +2471,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      DisplayFormat = ',##0.00'
       Precision = -1
     end
     object cdsCtePROPRED: TStringField
@@ -2414,7 +2481,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteOUTCAT: TStringField
       FieldKind = fkData
@@ -2424,7 +2491,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 120
+      Size = 30
     end
     object cdsCteRNTRC: TStringField
       FieldKind = fkData
@@ -2434,7 +2501,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 32
+      Size = 8
     end
     object cdsCteDATARODPREV: TDateField
       FieldKind = fkData
@@ -2462,7 +2529,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 1200
+      Size = 300
     end
     object cdsCteNPROT: TStringField
       FieldKind = fkData
@@ -2472,7 +2539,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
     end
     object cdsCteCHCTE: TStringField
       FieldKind = fkData
@@ -2482,7 +2548,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 200
+      Size = 50
     end
     object cdsCteRECEBEDOR: TLongintField
       FieldKind = fkData
@@ -2501,7 +2567,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
     end
     object cdsCteRE_CNPJCPF: TStringField
       FieldKind = fkData
@@ -2511,7 +2576,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
     end
     object cdsCteRE_IESTADUAL: TStringField
       FieldKind = fkData
@@ -2521,7 +2585,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
     end
     object cdsCteRE_RSOCIAL: TStringField
       FieldKind = fkData
@@ -2531,7 +2594,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteRE_FANTASIA: TStringField
       FieldKind = fkData
@@ -2541,7 +2604,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteRE_TELEFONE: TStringField
       FieldKind = fkData
@@ -2551,7 +2614,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 60
+      Size = 15
     end
     object cdsCteRE_ENDERECO: TStringField
       FieldKind = fkData
@@ -2561,7 +2624,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteRE_NUMERO: TStringField
       FieldKind = fkData
@@ -2571,7 +2634,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 10
     end
     object cdsCteRE_COMPLEMENTO: TStringField
       FieldKind = fkData
@@ -2581,7 +2644,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteRE_BAIRRO: TStringField
       FieldKind = fkData
@@ -2591,7 +2654,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteRE_CODIGOMUNICIPI: TStringField
       FieldKind = fkData
@@ -2601,7 +2664,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 10
     end
     object cdsCteRE_CIDADE: TStringField
       FieldKind = fkData
@@ -2611,7 +2674,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteRE_CEP: TStringField
       FieldKind = fkData
@@ -2621,7 +2684,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 10
     end
     object cdsCteRE_ESTADO: TStringField
       FieldKind = fkData
@@ -2631,7 +2694,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 8
+      Size = 2
     end
     object cdsCteRE_CODIGOPAIS: TLongintField
       FieldKind = fkData
@@ -2650,7 +2713,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
     object cdsCteOUTPDOC: TStringField
       FieldKind = fkData
@@ -2660,7 +2723,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 8
+      Size = 2
     end
     object cdsCteOUDESCOUTRO: TStringField
       FieldKind = fkData
@@ -2670,7 +2733,7 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 400
+      Size = 100
     end
     object cdsCteOUNDOC: TStringField
       FieldKind = fkData
@@ -2680,7 +2743,6 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
     end
     object cdsCteOUDEMI: TDateTimeField
       FieldKind = fkData
@@ -2699,167 +2761,32 @@ object dmCte: TdmCte
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      DisplayFormat = ',##0.00'
       Precision = -1
     end
-    object cdsCteANT_CNPJ: TStringField
+    object cdsCteUFPER: TStringField
       FieldKind = fkData
-      FieldName = 'ANT_CNPJ'
+      FieldName = 'UFPER'
       Index = 161
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
+      Size = 2
     end
-    object cdsCteANT_IE: TStringField
+    object cdsCteINFADFISCO: TStringField
       FieldKind = fkData
-      FieldName = 'ANT_IE'
+      FieldName = 'INFADFISCO'
       Index = 162
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 80
-    end
-    object cdsCteANT_UF: TStringField
-      FieldKind = fkData
-      FieldName = 'ANT_UF'
-      Index = 163
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 8
-    end
-    object cdsCteANT_NOME: TStringField
-      FieldKind = fkData
-      FieldName = 'ANT_NOME'
-      Index = 164
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 240
-    end
-    object cdsCteANT_CHCTE: TStringField
-      FieldKind = fkData
-      FieldName = 'ANT_CHCTE'
-      Index = 165
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 240
-    end
-    object cdsCteIN_IMPOSTOS: TLongintField
-      FieldKind = fkData
-      FieldName = 'IN_IMPOSTOS'
-      Index = 166
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-    end
-    object cdsCteVALPREDBC: TFloatField
-      FieldKind = fkData
-      FieldName = 'VALPREDBC'
-      Index = 167
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      DisplayFormat = ',##0.00'
-      Precision = -1
-    end
-    object cdsCteVALVBC: TFloatField
-      FieldKind = fkData
-      FieldName = 'VALVBC'
-      Index = 168
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      DisplayFormat = ',##0.00'
-      Precision = -1
-    end
-    object cdsCteVALPICMS: TFloatField
-      FieldKind = fkData
-      FieldName = 'VALPICMS'
-      Index = 169
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      DisplayFormat = ',##0.00'
-      Precision = -1
-    end
-    object cdsCteVALVICMS: TFloatField
-      FieldKind = fkData
-      FieldName = 'VALVICMS'
-      Index = 170
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      DisplayFormat = ',##0.00'
-      Precision = -1
-    end
-    object cdsCteVALVCRED: TFloatField
-      FieldKind = fkData
-      FieldName = 'VALVCRED'
-      Index = 171
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      DisplayFormat = ',##0.00'
-      Precision = -1
-    end
-    object cdsCteNPROTCANCEL: TStringField
-      FieldKind = fkData
-      FieldName = 'NPROTCANCEL'
-      Index = 172
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 120
-    end
-    object cdsCteSTATUS_CTE: TStringField
-      FieldKind = fkData
-      FieldName = 'STATUS_CTE'
-      Index = 173
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 120
-    end
-    object cdsCteUFPER: TStringField
-      FieldKind = fkData
-      FieldName = 'UFPER'
-      Index = 174
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 8
-    end
-    object cdsCteINFADFISCO: TStringField
-      FieldKind = fkData
-      FieldName = 'INFADFISCO'
-      Index = 175
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 2000
+      Size = 500
     end
     object cdsCteVPIS: TFloatField
       FieldKind = fkData
       FieldName = 'VPIS'
-      Index = 176
+      Index = 163
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -2869,7 +2796,7 @@ object dmCte: TdmCte
     object cdsCteVCOFINS: TFloatField
       FieldKind = fkData
       FieldName = 'VCOFINS'
-      Index = 177
+      Index = 164
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -2879,7 +2806,7 @@ object dmCte: TdmCte
     object cdsCteVIR: TFloatField
       FieldKind = fkData
       FieldName = 'VIR'
-      Index = 178
+      Index = 165
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -2889,7 +2816,7 @@ object dmCte: TdmCte
     object cdsCteVINSS: TFloatField
       FieldKind = fkData
       FieldName = 'VINSS'
-      Index = 179
+      Index = 166
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -2899,7 +2826,7 @@ object dmCte: TdmCte
     object cdsCteVCSLL: TFloatField
       FieldKind = fkData
       FieldName = 'VCSLL'
-      Index = 180
+      Index = 167
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -2909,17 +2836,17 @@ object dmCte: TdmCte
     object cdsCteXDESCSERV: TStringField
       FieldKind = fkData
       FieldName = 'XDESCSERV'
-      Index = 181
+      Index = 168
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 120
+      Size = 30
     end
     object cdsCteQCARGA: TFloatField
       FieldKind = fkData
       FieldName = 'QCARGA'
-      Index = 182
+      Index = 169
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -2929,7 +2856,7 @@ object dmCte: TdmCte
     object cdsCteTPSERV: TLongintField
       FieldKind = fkData
       FieldName = 'TPSERV'
-      Index = 183
+      Index = 170
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -2938,162 +2865,316 @@ object dmCte: TdmCte
     object cdsCteTAF: TStringField
       FieldKind = fkData
       FieldName = 'TAF'
+      Index = 171
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 12
+    end
+    object cdsCteNROREGESTADUAL: TStringField
+      FieldKind = fkData
+      FieldName = 'NROREGESTADUAL'
+      Index = 172
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 25
+    end
+    object cdsCteVEICRENAVAM: TStringField
+      FieldKind = fkData
+      FieldName = 'VEICRENAVAM'
+      Index = 173
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 11
+    end
+    object cdsCteVEICPLACA: TStringField
+      FieldKind = fkData
+      FieldName = 'VEICPLACA'
+      Index = 174
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 7
+    end
+    object cdsCteVEIUF: TStringField
+      FieldKind = fkData
+      FieldName = 'VEIUF'
+      Index = 175
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 2
+    end
+    object cdsCteOBSCONT: TStringField
+      FieldKind = fkData
+      FieldName = 'OBSCONT'
+      Index = 176
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 400
+    end
+    object cdsCteTCPF: TStringField
+      FieldKind = fkData
+      FieldName = 'TCPF'
+      Index = 177
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 11
+    end
+    object cdsCteTCNPJ: TStringField
+      FieldKind = fkData
+      FieldName = 'TCNPJ'
+      Index = 178
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 14
+    end
+    object cdsCteTTAF: TStringField
+      FieldKind = fkData
+      FieldName = 'TTAF'
+      Index = 179
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 12
+    end
+    object cdsCteTNROREGESTADUAL: TStringField
+      FieldKind = fkData
+      FieldName = 'TNROREGESTADUAL'
+      Index = 180
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 25
+    end
+    object cdsCteTXNOME: TStringField
+      FieldKind = fkData
+      FieldName = 'TXNOME'
+      Index = 181
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 60
+    end
+    object cdsCteTIE: TStringField
+      FieldKind = fkData
+      FieldName = 'TIE'
+      Index = 182
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 14
+    end
+    object cdsCteTUF: TStringField
+      FieldKind = fkData
+      FieldName = 'TUF'
+      Index = 183
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 2
+    end
+    object cdsCteTTPPROP: TStringField
+      FieldKind = fkData
+      FieldName = 'TTPPROP'
       Index = 184
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 48
+      Size = 14
     end
-    object cdsCteNROREGESTADUAL: TStringField
+    object cdsCteTUFT: TStringField
       FieldKind = fkData
-      FieldName = 'NROREGESTADUAL'
+      FieldName = 'TUFT'
       Index = 185
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 100
+      Size = 2
     end
-    object cdsCteVEICRENAVAM: TStringField
+    object cdsCteOBSFISCO: TStringField
       FieldKind = fkData
-      FieldName = 'VEICRENAVAM'
+      FieldName = 'OBSFISCO'
       Index = 186
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 44
+      Size = 300
     end
-    object cdsCteVEICPLACA: TStringField
+    object cdsCteINDIETOMA: TLongintField
       FieldKind = fkData
-      FieldName = 'VEICPLACA'
+      FieldName = 'INDIETOMA'
       Index = 187
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 28
     end
-    object cdsCteVEIUF: TStringField
+    object cdsCteTPFRETAMENTO: TLongintField
       FieldKind = fkData
-      FieldName = 'VEIUF'
+      FieldName = 'TPFRETAMENTO'
       Index = 188
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 8
     end
-    object cdsCteOBSCONT: TStringField
+    object cdsCteDHVIAGEM: TDateField
       FieldKind = fkData
-      FieldName = 'OBSCONT'
+      FieldName = 'DHVIAGEM'
       Index = 189
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 1600
     end
-    object cdsCteTCPF: TStringField
+    object cdsCteANT_CNPJ: TStringField
       FieldKind = fkData
-      FieldName = 'TCPF'
+      FieldName = 'ANT_CNPJ'
       Index = 190
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 44
     end
-    object cdsCteTCNPJ: TStringField
+    object cdsCteANT_IE: TStringField
       FieldKind = fkData
-      FieldName = 'TCNPJ'
+      FieldName = 'ANT_IE'
       Index = 191
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 56
     end
-    object cdsCteTTAF: TStringField
+    object cdsCteANT_UF: TStringField
       FieldKind = fkData
-      FieldName = 'TTAF'
+      FieldName = 'ANT_UF'
       Index = 192
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 48
+      Size = 2
     end
-    object cdsCteTNROREGESTADUAL: TStringField
+    object cdsCteANT_NOME: TStringField
       FieldKind = fkData
-      FieldName = 'TNROREGESTADUAL'
+      FieldName = 'ANT_NOME'
       Index = 193
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 100
+      Size = 60
     end
-    object cdsCteTXNOME: TStringField
+    object cdsCteANT_CHCTE: TStringField
       FieldKind = fkData
-      FieldName = 'TXNOME'
+      FieldName = 'ANT_CHCTE'
       Index = 194
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 240
+      Size = 60
     end
-    object cdsCteTIE: TStringField
+    object cdsCteIN_IMPOSTOS: TLongintField
       FieldKind = fkData
-      FieldName = 'TIE'
+      FieldName = 'IN_IMPOSTOS'
       Index = 195
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 56
     end
-    object cdsCteTUF: TStringField
+    object cdsCteNPROTCANCEL: TStringField
       FieldKind = fkData
-      FieldName = 'TUF'
+      FieldName = 'NPROTCANCEL'
       Index = 196
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 8
+      Size = 30
     end
-    object cdsCteTTPPROP: TStringField
+    object cdsCteVALPREDBC: TFloatField
       FieldKind = fkData
-      FieldName = 'TTPPROP'
+      FieldName = 'VALPREDBC'
       Index = 197
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 56
+      Precision = -1
     end
-    object cdsCteTUFT: TStringField
+    object cdsCteVALVBC: TFloatField
       FieldKind = fkData
-      FieldName = 'TUFT'
+      FieldName = 'VALVBC'
       Index = 198
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 8
+      Precision = -1
     end
-    object cdsCteOBSFISCO: TStringField
+    object cdsCteVALPICMS: TFloatField
       FieldKind = fkData
-      FieldName = 'OBSFISCO'
+      FieldName = 'VALPICMS'
       Index = 199
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 1200
+      Precision = -1
+    end
+    object cdsCteVALVICMS: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALVICMS'
+      Index = 200
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object cdsCteVALVCRED: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALVCRED'
+      Index = 201
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object cdsCteSTATUS_CTE: TStringField
+      FieldKind = fkData
+      FieldName = 'STATUS_CTE'
+      Index = 202
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 30
     end
   end
   object sqQC: TSQLQuery

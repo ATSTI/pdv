@@ -691,9 +691,9 @@ object fCTePrincipal: TfCTePrincipal
     Height = 583
     Top = 0
     Width = 1305
-    ActivePage = TabCteGeradas
+    ActivePage = TabCte
     Align = alClient
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     OnChange = pcPrincipalChange
     object TabCteGeradas: TTabSheet
@@ -733,7 +733,7 @@ object fCTePrincipal: TfCTePrincipal
             item
               Title.Caption = 'Cliente'
               Width = 400
-              FieldName = 'D_FANTASIA'
+              FieldName = 'T_FANTASIA'
             end          
             item
               Title.Caption = 'Núm. Protocolo'
@@ -4897,8 +4897,8 @@ object fCTePrincipal: TfCTePrincipal
               object memxObs: TMemo
                 Left = 8
                 Height = 112
-                Top = 360
-                Width = 1216
+                Top = 363
+                Width = 496
                 TabOrder = 9
               end
               object lblDetRetira1: TStaticText
@@ -4908,6 +4908,21 @@ object fCTePrincipal: TfCTePrincipal
                 Width = 248
                 Caption = 'Informações Gerais'
                 TabOrder = 10
+              end
+              object memComplemento: TMemo
+                Left = 544
+                Height = 112
+                Top = 363
+                Width = 496
+                TabOrder = 11
+              end
+              object lblDetRetira2: TStaticText
+                Left = 544
+                Height = 19
+                Top = 341
+                Width = 248
+                Caption = 'Uso Exclusivo  do Emisso CTeOS'
+                TabOrder = 12
               end
             end
           end
@@ -5934,7 +5949,7 @@ object fCTePrincipal: TfCTePrincipal
               Caption = 'Complemento'
               ParentColor = False
             end
-            object RadioGroup3: TRadioGroup
+            object rgTipoContribuinte: TRadioGroup
               Left = 24
               Height = 57
               Top = 309
@@ -8857,6 +8872,7 @@ object fCTePrincipal: TfCTePrincipal
             Width = 196
             DataField = 'VPREST'
             DataSource = dmCte.dsCte
+            Alignment = taRightJustify
             MaxLength = 0
             TabOrder = 0
             OnChange = dbValTotPrestChange
@@ -8870,6 +8886,7 @@ object fCTePrincipal: TfCTePrincipal
             Width = 196
             DataField = 'VREC'
             DataSource = dmCte.dsCte
+            Alignment = taRightJustify
             MaxLength = 0
             TabOrder = 1
           end
@@ -8880,6 +8897,7 @@ object fCTePrincipal: TfCTePrincipal
             Width = 196
             DataField = 'VALTOTTRI'
             DataSource = dmCte.dsCte
+            Alignment = taRightJustify
             MaxLength = 0
             TabOrder = 2
             OnChange = dbValTotTriChange
@@ -8891,6 +8909,7 @@ object fCTePrincipal: TfCTePrincipal
             Width = 196
             DataField = 'VALPREDBC'
             DataSource = dmCte.dsCte
+            Alignment = taRightJustify
             MaxLength = 0
             TabOrder = 36
           end
@@ -8901,6 +8920,7 @@ object fCTePrincipal: TfCTePrincipal
             Width = 196
             DataField = 'VALVBC'
             DataSource = dmCte.dsCte
+            Alignment = taRightJustify
             MaxLength = 0
             TabOrder = 37
           end
@@ -8911,6 +8931,7 @@ object fCTePrincipal: TfCTePrincipal
             Width = 196
             DataField = 'VALPICMS'
             DataSource = dmCte.dsCte
+            Alignment = taRightJustify
             MaxLength = 0
             TabOrder = 38
           end
@@ -8921,6 +8942,7 @@ object fCTePrincipal: TfCTePrincipal
             Width = 196
             DataField = 'VALVICMS'
             DataSource = dmCte.dsCte
+            Alignment = taRightJustify
             MaxLength = 0
             TabOrder = 39
           end
@@ -8931,6 +8953,7 @@ object fCTePrincipal: TfCTePrincipal
             Width = 196
             DataField = 'VALVCRED'
             DataSource = dmCte.dsCte
+            Alignment = taRightJustify
             MaxLength = 0
             TabOrder = 40
           end
@@ -9060,6 +9083,7 @@ object fCTePrincipal: TfCTePrincipal
               Width = 80
               DataField = 'VPIS'
               DataSource = dmCte.dsCte
+              Alignment = taRightJustify
               MaxLength = 0
               TabOrder = 0
             end
@@ -9070,6 +9094,7 @@ object fCTePrincipal: TfCTePrincipal
               Width = 80
               DataField = 'VCOFINS'
               DataSource = dmCte.dsCte
+              Alignment = taRightJustify
               MaxLength = 0
               TabOrder = 1
             end
@@ -9080,6 +9105,7 @@ object fCTePrincipal: TfCTePrincipal
               Width = 80
               DataField = 'VIR'
               DataSource = dmCte.dsCte
+              Alignment = taRightJustify
               MaxLength = 0
               TabOrder = 2
             end
@@ -9090,6 +9116,7 @@ object fCTePrincipal: TfCTePrincipal
               Width = 80
               DataField = 'VINSS'
               DataSource = dmCte.dsCte
+              Alignment = taRightJustify
               MaxLength = 0
               TabOrder = 3
             end
@@ -9100,6 +9127,7 @@ object fCTePrincipal: TfCTePrincipal
               Width = 80
               DataField = 'VCSLL'
               DataSource = dmCte.dsCte
+              Alignment = taRightJustify
               MaxLength = 0
               TabOrder = 4
             end
@@ -9522,6 +9550,7 @@ object fCTePrincipal: TfCTePrincipal
                     Width = 192
                     DataField = 'VALINFCARGA'
                     DataSource = dmCte.dsCte
+                    Alignment = taRightJustify
                     MaxLength = 0
                     TabOrder = 1
                     OnChange = dbValInfCargaChange
@@ -10623,6 +10652,7 @@ object fCTePrincipal: TfCTePrincipal
                 Width = 144
                 DataField = 'OUVDOCFISC'
                 DataSource = dmCte.dsCte
+                Alignment = taRightJustify
                 MaxLength = 0
                 TabOrder = 8
               end
@@ -11788,7 +11818,7 @@ object fCTePrincipal: TfCTePrincipal
           Caption = 'OS Serviço'
           ClientHeight = 527
           ClientWidth = 1289
-          object RadioGroup1: TRadioGroup
+          object rgTipoFretamento: TRadioGroup
             Left = 65
             Height = 50
             Top = 64
@@ -11812,29 +11842,45 @@ object fCTePrincipal: TfCTePrincipal
             )
             TabOrder = 0
           end
-          object RadioGroup2: TRadioGroup
-            Left = 64
-            Height = 70
-            Top = 120
-            Width = 517
-            AutoFill = True
-            Caption = 'Tipo de Serviço'
-            ChildSizing.LeftRightSpacing = 6
-            ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
-            ChildSizing.EnlargeVertical = crsHomogenousChildResize
-            ChildSizing.ShrinkHorizontal = crsScaleChilds
-            ChildSizing.ShrinkVertical = crsScaleChilds
-            ChildSizing.Layout = cclLeftToRightThenTopToBottom
-            ChildSizing.ControlsPerLine = 3
-            ClientHeight = 50
-            ClientWidth = 513
-            Columns = 3
-            Items.Strings = (
-              'Transporte Pessoas'
-              'Transporte Valores'
-              'Excesso de Bagagem'
-            )
+          object edtDescricaoServico: TEdit
+            Left = 72
+            Height = 23
+            Top = 169
+            Width = 320
+            MaxLength = 30
             TabOrder = 1
+          end
+          object Label182: TLabel
+            Left = 72
+            Height = 15
+            Top = 147
+            Width = 193
+            Caption = 'Descrição do Serviço (30  Caracteres)'
+            ParentColor = False
+          end
+          object edtNumRegEst: TEdit
+            Left = 72
+            Height = 23
+            Top = 232
+            Width = 320
+            MaxLength = 25
+            TabOrder = 2
+          end
+          object Label183: TLabel
+            Left = 72
+            Height = 15
+            Top = 211
+            Width = 110
+            Caption = 'Nº Registro Estadual '
+            ParentColor = False
+          end
+          object Label184: TLabel
+            Left = 72
+            Height = 15
+            Top = 264
+            Width = 259
+            Caption = 'Obs: 25 Caracteres  Preencher com zeros a Direita'
+            ParentColor = False
           end
         end
       end
@@ -14597,6 +14643,7 @@ object fCTePrincipal: TfCTePrincipal
         Top = 128
         Width = 168
         Caption = 'Tomador'
+        OnClick = BitBtn18Click
         TabOrder = 17
       end
       object BitBtn19: TBitBtn

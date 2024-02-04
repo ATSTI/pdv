@@ -153,6 +153,8 @@ type
     edInutSerie: TEdit;
     edInutJustificativa: TEdit;
     Edit1: TEdit;
+    edtNumRegEst: TEdit;
+    edtDescricaoServico: TEdit;
     edtComp: TEdit;
     edtQC: TEdit;
     edModeloAtualiza: TEdit;
@@ -457,6 +459,9 @@ type
     Label179: TLabel;
     Label180: TLabel;
     Label181: TLabel;
+    Label182: TLabel;
+    Label183: TLabel;
+    Label184: TLabel;
     lblCteAtual: TLabel;
     Label17: TLabel;
     Label19: TLabel;
@@ -551,6 +556,7 @@ type
     lblCteAtual1: TLabel;
     lblDetRetira: TStaticText;
     lblDetRetira1: TStaticText;
+    lblDetRetira2: TStaticText;
     lblEmailAssunto: TLabel;
     lCryptLib: TLabel;
     lHttpLib: TLabel;
@@ -564,6 +570,7 @@ type
     memoResp: TMemo;
     memoRespWS: TMemo;
     memxObs: TMemo;
+    memComplemento: TMemo;
     mmEmailMsg: TMemo;
     OpenDialog1: TOpenDialog;
     btnPreVisu: TBitBtn;
@@ -586,9 +593,8 @@ type
     pcCte: TPageControl;
     pcPrincipal: TPageControl;
     rbAlteradoTomador: TRadioButton;
-    RadioGroup1: TRadioGroup;
-    RadioGroup2: TRadioGroup;
-    RadioGroup3: TRadioGroup;
+    rgTipoFretamento: TRadioGroup;
+    rgTipoContribuinte: TRadioGroup;
     rgForPag1: TRadioGroup;
     rgSeguroResp: TRadioGroup;
     rgDest: TRadioGroup;
@@ -695,6 +701,7 @@ type
     ZsqNFeCTE_NFE: TLongintField;
     ZsqNFeDPREV: TDateField;
     ZsqNFePIN: TLongintField;
+    procedure BitBtn18Click(Sender: TObject);
     function busca_generator(generator: String): integer;
     procedure ACBrCTe1StatusChange(Sender: TObject);
     procedure BitBtn10Click(Sender: TObject);
@@ -1445,10 +1452,18 @@ begin
     if (Trim(edtModelo.Text) = '67') then
     begin
     compl.xObs     := memxObs.Text;
-    infCTeNorm.rodoOS.NroRegEstadual := '0000000000000000000017472';
-    infCTeNorm.infServico.xDescServ := 'TRANSPORTE DE COLABORADORES';
+    infCTeNorm.rodoOS.NroRegEstadual := edtNumRegEst.Text; // '0000000000000000000017472';
+    infCTeNorm.infServico.xDescServ  := edtDescricaoServico.Text ; // 'TRANSPORTE DE COLABORADORES';
     end;
-    infCTeNorm.rodoOS.infFretamento.tpFretamento:= tpContinuo;
+
+    case  rgTipoFretamento.ItemIndex of
+      0: infCTeNorm.rodoOS.infFretamento.tpFretamento:= tfEventual;
+      1: infCTeNorm.rodoOS.infFretamento.tpFretamento:= tfNenhum;
+      2: infCTeNorm.rodoOS.infFretamento.tpFretamento:= tpContinuo;
+    end;
+
+   // infCTeNorm.rodoOS.infFretamento.tpFretamento:= tpContinuo;
+    // TPFRETAMENTO
 
     //manoel teste CTES Os
     //
@@ -1564,9 +1579,9 @@ begin
     if (Trim(edtModelo.Text) = '67') then
     begin
       case rgTipoServico.ItemIndex of
-        0: Ide.tpServ:=tsTranspPessoas;
-        1: Ide.tpServ:=tsTranspValores;
-        2: Ide.tpServ:=tsExcessoBagagem;
+        0: Ide.tpServ:=tsTranspPessoas;  // 6 - Transporte de pessoas;
+        1: Ide.tpServ:=tsTranspValores;  // 7 - Transporte de Valores;
+        2: Ide.tpServ:=tsExcessoBagagem; // 8 - Excesso de Bagagem.
       end;
     end;
 
@@ -1613,10 +1628,10 @@ begin
       4: rgTomador.ItemIndex := 4;
     end;
 
-    Case  RadioGroup3.ItemIndex of
-      0:  Ide.indIEToma := inContribuinte;
-      1:  Ide.indIEToma := inIsento;
-      2:  Ide.indIEToma := inNaoContribuinte;
+    Case  rgTipoContribuinte.ItemIndex of
+      0:  Ide.indIEToma := inContribuinte;    // 1
+      1:  Ide.indIEToma := inIsento;          // 2
+      2:  Ide.indIEToma := inNaoContribuinte; // 9
     end;
 
     case rgTomador.ItemIndex of
@@ -1643,6 +1658,7 @@ begin
 
      Ide.toma4.IE:= IE;
 
+
      Ide.Toma4.xNome:= edtNomeTomador.Text;
      Ide.Toma4.xFant:= edtRazaoTomador.Text;
      Ide.Toma4.fone:= edtFoneTomador.Text;
@@ -1666,8 +1682,16 @@ begin
    begin
     CodigoMunicipio:= StrToInt(LimparString(edtTomadorCodCidade.Text,'-'));
     //Adiciona dados do tomador do serviço
-    toma.CNPJCPF           := edtCNPJTomador.Text;
-    toma.IE                := edtIETomador.Text;
+      if(rgTipoContribuinte.ItemIndex = 1) then
+      begin
+          Toma.CNPJCPF := edtCNPJTomador.Text ;
+          Toma.IE := 'ISENTO';
+      end
+        else begin
+         Toma.CNPJCPF := edtCNPJTomador.Text ;
+         Toma.IE := edtIETomador.Text;
+        end;
+
     toma.xNome             := edtNomeTomador.Text;
     toma.xFant             := edtRazaoTomador.Text;
     toma.fone              := edtFoneTomador.Text;
@@ -1685,7 +1709,7 @@ begin
     with compl.ObsCont.New do
     begin
       xCampo := 'obs:';
-      xTexto := 'Isento do ICMS, conforme Inciso II, Artigo 78, Anexo I, do RICMS/SP e artigo 8 do RICMS/SP.';
+      xTexto :=  memComplemento.Text; //'Isento do ICMS, conforme Inciso II, Artigo 78, Anexo I, do RICMS/SP e artigo 8 do RICMS/SP.';
     end;
 
    end;
@@ -2549,6 +2573,11 @@ begin
   rgTipoServico.ItemIndex := dmCte.cdsCTETIPOSERVICO.AsInteger;
   rgTiposCte.ItemIndex    := dmCte.cdsCTETIPOCTE.AsInteger;
   rgFormaEmissao.ItemIndex := dmCte.cdsCTETPOEMISSAO.AsInteger;
+  rgTipoContribuinte.ItemIndex:= dmCte.cdsCteINDIETOMA.AsInteger;
+  rgTipoFretamento.ItemIndex := dmcte.cdsCteTPFRETAMENTO.AsInteger;
+  edtDescricaoServico.Text:= dmcte.cdsCteXDESCSERV.AsString ;
+  edtNumRegEst.Text:= dmcte.cdsCteTNROREGESTADUAL.AsString;
+
   rgForPag.ItemIndex      := dmCte.cdsCTEIFORPAG.AsInteger;
   rgTipoDACTe.ItemIndex   := dmCte.cdsCTETPIMP.AsInteger;
   edtEnvCodCidade.Text    := dmCte.cdsCTEENV_CODCIDADE.AsString;
@@ -2693,6 +2722,8 @@ begin
   rgRodLotacao.ItemIndex := dmCte.cdsCTERGRODLOTACAO.Value;
 
   memxObs.Text         := dmCte.cdsCTEOBS_GERAL.Value;
+  memComplemento.Text  := dmCte.cdsCteOBSCONT.Value ;
+
 
   // para Clonar  colocar cds da tabela
   if (dmCte.sqComp.Active)then
@@ -2935,6 +2966,19 @@ begin
     vCteStr := vCteStr +  IntToStr(rgForPag.ItemIndex);       // IFORPAG
     vCteStr := vCteStr +  ',TPIMP = ';
     vCteStr := vCteStr +  IntToStr(rgTipoDACTe.ItemIndex);    // TPIMP
+
+    vCteStr := vCteStr +  ',INDIETOMA = ';
+    vCteStr := vCteStr +  IntToStr(rgTipoContribuinte.ItemIndex);    //INDIETOMA
+
+    vCteStr := vCteStr +  ',TPFRETAMENTO = ';
+    vCteStr := vCteStr +  IntToStr(rgTipoFretamento.ItemIndex);
+
+    vCteStr := vCteStr +  ',XDESCSERV = ';
+    vCteStr := vCteStr +  QuotedStr(edtDescricaoServico.Text);
+
+    vCteStr := vCteStr +  ',TNROREGESTADUAL = ';
+    vCteStr := vCteStr +  QuotedStr(edtNumRegEst.Text);
+
     vCteStr := vCteStr +' where COD_CTE = ' ;
     vCteStr := vCteStr +  IntToStr(val_genCte);
     MemoDados.Text := vCteStr;
@@ -3060,14 +3104,16 @@ begin
   if (edtNumCte.Text <> '') then
   begin
     vCteStr := 'UPDATE CTE SET OBS_GERAL = ';
-    vCteStr:= vCteStr + QuotedStr(memxObs.Text);
-    vCteStr := vCteStr +  ',OUTPDOC = ';
-    vCteStr := vCteStr +  QuotedStr(Copy(combOutrosDocs.Text,1,2));
-    vCteStr := vCteStr +  ',OUDESCOUTRO = ';
-    vCteStr := vCteStr +  QuotedStr(edtOutrosDesc.Text);
-    vCteStr := vCteStr +  ',OUNDOC = ';
-    vCteStr := vCteStr +  QuotedStr(edtOutrosNum.Text);
-    vCteStr := vCteStr +  ',OUDEMI = ';
+    vCteStr := vCteStr + QuotedStr(memxObs.Text);
+    vCteStr := vCteStr + ',OBSCONT  = ';
+    vCteStr := vCteStr + QuotedStr(memComplemento.Text);
+    vCteStr := vCteStr + ',OUTPDOC = ';
+    vCteStr := vCteStr + QuotedStr(Copy(combOutrosDocs.Text,1,2));
+    vCteStr := vCteStr + ',OUDESCOUTRO = ';
+    vCteStr := vCteStr + QuotedStr(edtOutrosDesc.Text);
+    vCteStr := vCteStr + ',OUNDOC = ';
+    vCteStr := vCteStr + QuotedStr(edtOutrosNum.Text);
+    vCteStr := vCteStr + ',OUDEMI = ';
     if (dataOutrosEmi.Checked) then
       vCteStr := vCteStr +  QuotedStr(FormatDateTime('mm/dd/yyyy',dataOutrosEmi.date))
     else
@@ -3157,7 +3203,7 @@ end;
 
 procedure TfCTePrincipal.EditarT;
 begin
-  if(rgTomador.ItemIndex <> 4) then
+ { if(rgTomador.ItemIndex <> 4) then
   begin
     vCteStr := 'UPDATE CTE SET  TOMADORSERVICO = ';
     vCteStr := vCteStr + IntToStr(rgTomador.ItemIndex);
@@ -3192,6 +3238,7 @@ begin
     vCteStr := vCteStr +  IntToStr(val_genCte);
     MemoDados.Text := vCteStr;
   end;
+  }
   if(rgTomador.ItemIndex = 4) then
   begin
     vCteStr := 'UPDATE CTE SET  TOMADORSERVICO = ';
@@ -3673,7 +3720,7 @@ begin
       ',ANT_CNPJ,ANT_IE,ANT_UF,ANT_NOME,ANT_CHCTE,VALPREDBC,VALVBC,VALPICMS,VALVICMS,VALVCRED';
     if (Trim(edtModelo.Text) = '67') then
     begin
-      strInsere += ', UFPER , INFADFISCO, VPIS, VCOFINS, VIR, VINSS, VCSLL';
+      strInsere += ', UFPER , INFADFISCO, VPIS, VCOFINS, VIR, VINSS, VCSLL,INDIETOMA';
       strInsere += ', XDESCSERV, QCARGA, TPSERV, TAF, NROREGESTADUAL, VEICRENAVAM';
       strInsere += ', VEICPLACA, VEIUF, OBSCONT, TCPF, TCNPJ, TTAF, TNROREGESTADUAL';
       strInsere += ', TXNOME, TIE, TUF, TTPPROP, TUFT, OBSFISCO';
@@ -3861,8 +3908,8 @@ begin
       strInsere += ', ' + FloatToStr(dmCte.cdsCteVCOFINS.AsFloat);
       strInsere += ', ' + FloatToStr(dmCte.cdsCteVIR.AsFloat);
       strInsere += ', ' + FloatToStr(dmCte.cdsCteVINSS.AsFloat);
-      strInsere += ', ' + FloatToStr(dmCte.cdsCteVCSLL.AsFloat);
-
+      strInsere += ', ' + IntToStr(rgTipoContribuinte.ItemIndex);
+      strInsere += ', ' + QuotedStr(dmCte.cdsCteXDESCSERV.AsString);
       DecimalSeparator := ',';
     end;
 
@@ -4939,6 +4986,11 @@ begin
   Result := ZsqGenerator.Fields[0].AsInteger;
   ZsqGenerator.Close
 
+
+end;
+
+procedure TfCTePrincipal.BitBtn18Click(Sender: TObject);
+begin
 
 end;
 

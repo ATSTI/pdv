@@ -37,6 +37,7 @@ type
     cdsCteDETRETIRA: TStringField;
     cdsCteDET_RETIRA: TStringField;
     cdsCteDHEMI: TDateTimeField;
+    cdsCteDHVIAGEM: TDateField;
     cdsCteD_BAIRRO: TStringField;
     cdsCteD_CEP: TStringField;
     cdsCteD_CIDADE: TStringField;
@@ -97,6 +98,7 @@ type
     cdsCteFIM_ESTADO: TStringField;
     cdsCteFUNC_EMI: TStringField;
     cdsCteIFORPAG: TLongintField;
+    cdsCteINDIETOMA: TLongintField;
     cdsCteINFADFISCO: TStringField;
     cdsCteINI_CIDADE: TStringField;
     cdsCteINI_CODCIDADE: TStringField;
@@ -168,6 +170,7 @@ type
     cdsCteTIPOSERVICO: TLongintField;
     cdsCteTNROREGESTADUAL: TStringField;
     cdsCteTOMADORSERVICO: TLongintField;
+    cdsCteTPFRETAMENTO: TLongintField;
     cdsCteTPIMP: TLongintField;
     cdsCteTPOEMISSAO: TLongintField;
     cdsCteTPSERV: TLongintField;
