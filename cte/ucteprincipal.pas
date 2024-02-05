@@ -153,6 +153,10 @@ type
     edInutSerie: TEdit;
     edInutJustificativa: TEdit;
     Edit1: TEdit;
+    edtRenavam: TEdit;
+    edtPlaca: TEdit;
+    edtUF: TEdit;
+    edtQuantidade: TEdit;
     edtNumRegEst: TEdit;
     edtDescricaoServico: TEdit;
     edtComp: TEdit;
@@ -462,6 +466,10 @@ type
     Label182: TLabel;
     Label183: TLabel;
     Label184: TLabel;
+    Label185: TLabel;
+    Label186: TLabel;
+    Label187: TLabel;
+    Label188: TLabel;
     lblCteAtual: TLabel;
     Label17: TLabel;
     Label19: TLabel;
@@ -1454,6 +1462,20 @@ begin
     compl.xObs     := memxObs.Text;
     infCTeNorm.rodoOS.NroRegEstadual := edtNumRegEst.Text; // '0000000000000000000017472';
     infCTeNorm.infServico.xDescServ  := edtDescricaoServico.Text ; // 'TRANSPORTE DE COLABORADORES';
+
+    if(edtQuantidade.Text <> '')then
+    begin
+      infCTeNorm.infServico.qCarga := StrToInt(edtQuantidade.Text);
+    end;
+
+
+    if(edtRenavam.Text <> '')then
+    begin
+      infCTeNorm.rodoOS.veic.RENAVAM := edtRenavam.Text; //  dmCte.cdsCteVEICRENAVAM.AsString ; //'151515151515';
+      infCTeNorm.rodoOS.veic.placa := edtPlaca.Text; // dmCte.cdsCteVEICPLACA.AsString ; //'TGU2525';
+      infCTeNorm.rodoOS.veic.UF := edtUF.Text ; // dmCte.cdsCteVEIUF.AsString ; //'SP';
+    end;
+
     end;
 
     case  rgTipoFretamento.ItemIndex of
@@ -2578,6 +2600,12 @@ begin
   edtDescricaoServico.Text:= dmcte.cdsCteXDESCSERV.AsString ;
   edtNumRegEst.Text:= dmcte.cdsCteTNROREGESTADUAL.AsString;
 
+  edtRenavam.Text :=  dmCte.cdsCteVEICRENAVAM.AsString ;
+  edtPlaca.Text :=  dmCte.cdsCteVEICPLACA.AsString ;
+  edtUF.Text := dmCte.cdsCteVEIUF.AsString ;
+  edtQuantidade.Text:= dmCte.cdsCteQCARGA.AsString;;
+
+
   rgForPag.ItemIndex      := dmCte.cdsCTEIFORPAG.AsInteger;
   rgTipoDACTe.ItemIndex   := dmCte.cdsCTETPIMP.AsInteger;
   edtEnvCodCidade.Text    := dmCte.cdsCTEENV_CODCIDADE.AsString;
@@ -2979,6 +3007,23 @@ begin
     vCteStr := vCteStr +  ',TNROREGESTADUAL = ';
     vCteStr := vCteStr +  QuotedStr(edtNumRegEst.Text);
 
+    vCteStr := vCteStr +  ',VEICRENAVAM = ';
+    vCteStr := vCteStr +  QuotedStr(edtRenavam.Text);
+    vCteStr := vCteStr +  ',VEICPLACA = ';
+    vCteStr := vCteStr +  QuotedStr(edtPlaca.Text);
+    vCteStr := vCteStr +  ',VEIUF = ';
+    vCteStr := vCteStr +  QuotedStr(edtUF.Text);
+
+    if(edtQuantidade.Text = '')then
+    begin
+      vCteStr := vCteStr +  ',QCARGA = ';
+      vCteStr := vCteStr +  ' null' ;
+    end;
+    if(edtQuantidade.Text <> '')then
+    begin
+      vCteStr := vCteStr +  ',QCARGA = ';
+      vCteStr := vCteStr +  QuotedStr(edtQuantidade.Text);
+    end;
     vCteStr := vCteStr +' where COD_CTE = ' ;
     vCteStr := vCteStr +  IntToStr(val_genCte);
     MemoDados.Text := vCteStr;
@@ -3754,8 +3799,8 @@ begin
     strInsere := strInsere + ', ' + QuotedStr(Trim(edtIniUF.Text));    // INI_ESTADO
     strInsere := strInsere + ', ' + QuotedStr(Trim(edtFimCodCidade.Text));  // FIM_CODCIDADE
     strInsere := strInsere + ', ' + QuotedStr(Trim(edtFimCidade.Text)); // FIM_CIDADE
-    strInsere := strInsere + ', ' + QuotedStr(Trim(edtFimUF.Text));  // FIM_ESTADO
-
+    strInsere := strInsere + ', ' + QuotedStr(Trim(edtFimUF.Text));
+    strInsere := strInsere + ', ' + QuotedStr(Trim(edtQuantidade.Text));
     // EMITENTE
     // E_RG
     // E_CODIGOPAIS
@@ -3910,6 +3955,9 @@ begin
       strInsere += ', ' + FloatToStr(dmCte.cdsCteVINSS.AsFloat);
       strInsere += ', ' + IntToStr(rgTipoContribuinte.ItemIndex);
       strInsere += ', ' + QuotedStr(dmCte.cdsCteXDESCSERV.AsString);
+      strInsere += ', ' + QuotedStr(dmCte.cdsCteVEICRENAVAM.AsString);
+      strInsere += ', ' + QuotedStr(dmCte.cdsCteVEICPLACA.AsString);
+      strInsere += ', ' + QuotedStr(dmCte.cdsCteVEIUF.AsString);
       DecimalSeparator := ',';
     end;
 
