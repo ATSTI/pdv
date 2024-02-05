@@ -4775,6 +4775,7 @@ begin
   vAux := edtNumCte.Text;
   ACBrCTe1.Conhecimentos.Clear;
   //ShowMessage('Vai carregar acbr');
+  ACBrCTe1.Configuracoes.Geral.VersaoDF := ve400;
   CarregarAcbr;
   //ShowMessage('Vai Gerar o xml');
   try
