@@ -24,11 +24,8 @@ type
     BitBtn11: TBitBtn;
     BitBtn12: TBitBtn;
     BitBtn13: TBitBtn;
-    btnEditarNFe1: TBitBtn;
-    btnExcluirNFe1: TBitBtn;
     btnGerarCte1: TBitBtn;
     btnGravarCTe1: TBitBtn;
-    btnIncluirNFe1: TBitBtn;
     btnInsereProtocolo: TButton;
     btnInserirvNfe: TButton;
     btnLimpaBusca: TBitBtn;
@@ -132,10 +129,6 @@ type
     DBEdit4: TDBEdit;
     DBEdit5: TDBEdit;
     DBEdit6: TDBEdit;
-    dbSeguroNome: TDBEdit;
-    dbSeguroApolice: TDBEdit;
-    dbSeguroAverbacao: TDBEdit;
-    dbSeguroValor: TDBEdit;
     DSZsqNFe: TDataSource;
     edCteCancelar: TLabeledEdit;
     edInutNumeroIni: TEdit;
@@ -381,11 +374,7 @@ type
     Label152: TLabel;
     Label153: TLabel;
     Label154: TLabel;
-    Label155: TLabel;
     Label156: TLabel;
-    Label157: TLabel;
-    Label158: TLabel;
-    Label159: TLabel;
     Label16: TLabel;
     Label160: TLabel;
     Label161: TLabel;
@@ -542,7 +531,6 @@ type
     rbAlteradoTomador: TRadioButton;
     rgTipoFretamento: TRadioGroup;
     rgTipoContribuinte: TRadioGroup;
-    rgSeguroResp: TRadioGroup;
     rgDest: TRadioGroup;
     rgExp: TRadioGroup;
     rgFormaEmissao: TRadioGroup;
@@ -602,7 +590,6 @@ type
     TabRecebedor: TTabSheet;
     TabRodoviario: TTabSheet;
     TabServicosImpostos: TTabSheet;
-    tabSeguro: TTabSheet;
     TabSheet1: TTabSheet;
     TabSheet11: TTabSheet;
     TabSheet17: TTabSheet;
@@ -5324,10 +5311,11 @@ end;
 
 procedure TfCTePrincipal.btnEditarNFe1Click(Sender: TObject);
 begin
-  if (not dmCte.sqSeg.Active) then
+ { if (not dmCte.sqSeg.Active) then
     dmCte.sqSeg.Open;
   dmCte.sqSeg.Edit;
   dbSeguroNome.SetFocus;
+  }
 end;
 
 procedure TfCTePrincipal.btnExcluirNFe1Click(Sender: TObject);
@@ -5383,6 +5371,7 @@ end;
 procedure TfCTePrincipal.btnIncluirNFe1Click(Sender: TObject);
 var vNum_seg: Integer;
 begin
+ {
   if (not dmCte.sqSeg.Active) then
     dmCte.sqSeg.Open;
   dmCte.sqSeg.Append;
@@ -5390,6 +5379,7 @@ begin
   vNum_seg := dmPdv.busca_generator('GEN_CTE_SEGURO_ID');
   dmCte.sqSegCOD_CTE_SEGURO.AsInteger := vNum_seg;
   dbSeguroNome.SetFocus;
+  }
 end;
 
 procedure TfCTePrincipal.btnInserirQCClick(Sender: TObject);
@@ -6050,7 +6040,7 @@ begin
           ', NOME_SEGURADORA, NUMERO_APOLICE, VALOR, NUMERO_AVERBACAO) VALUES (';
         vCteStr += IntToStr(dmCte.sqSegCOD_CTE_SEGURO.AsInteger);
         vCteStr += ', ' +  IntToStr(dmCte.sqSegCOD_CTE.AsInteger);
-        vCteStr += ', ' + IntToStr(rgSeguroResp.ItemIndex);
+        //vCteStr += ', ' + IntToStr(rgSeguroResp.ItemIndex);
         vCteStr += ', ' +  QuotedStr(dmCte.sqSegNOME_SEGURADORA.AsString);
         if (dmCte.sqSegNUMERO_APOLICE.AsString <> '') then
           vCteStr += ', ' +  QuotedStr(dmCte.sqSegNUMERO_APOLICE.AsString)
@@ -6096,7 +6086,7 @@ begin
           ', NOME_SEGURADORA, NUMERO_APOLICE, VALOR, NUMERO_AVERBACAO) VALUES (';
         vCteStr += IntToStr(dmCte.sqSegCOD_CTE_SEGURO.AsInteger);
         vCteStr += ', ' +  IntToStr(dmCte.sqSegCOD_CTE.AsInteger);
-        vCteStr += ', ' + IntToStr(rgSeguroResp.ItemIndex);
+        //vCteStr += ', ' + IntToStr(rgSeguroResp.ItemIndex);
         vCteStr += ', ' +  QuotedStr(dmCte.sqSegNOME_SEGURADORA.AsString);
         if (dmCte.sqSegNUMERO_APOLICE.AsString <> '') then
           vCteStr += ', ' +  QuotedStr(dmCte.sqSegNUMERO_APOLICE.AsString)
@@ -6112,7 +6102,7 @@ begin
         dmPdv.IbCon.ExecuteDirect(vCteStr);
         dmCte.sqSeg.post;
       end;
-
+      {
       if (dmCte.dsSeguro.State in [dsEdit]) then
       begin
         dmCte.sqSegRESP.AsInteger := rgSeguroResp.ItemIndex;
@@ -6131,7 +6121,7 @@ begin
         dmPdv.IbCon.ExecuteDirect(vCteStr);
         dmCte.sqSeg.post;
       end;
-
+         }
       FormatSettings.DecimalSeparator := '.';
 
       EditarA; //
