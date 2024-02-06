@@ -7,9 +7,9 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
   StdCtrls, Menus, Buttons, DBGrids, EditBtn, Spin, DBCtrls, ZConnection,
-  ZDataset, DateTimePicker, Types, IniFiles, ACBrCTe, ACBrCTeDACTEClass,
-  ACBrCTeDACTeRLClass, ACBrMail, ACBrBase, ACBrDFe,  pcnConversao,
-  pcteConversaoCTe, DateUtils, ACBrUtil, db, ACBrDFeSSL;
+  ZDataset, DateTimePicker, SynEdit, Types, IniFiles, ACBrCTe,
+  ACBrCTeDACTEClass, ACBrCTeDACTeRLClass, ACBrMail, ACBrBase, ACBrDFe,
+  pcnConversao, pcteConversaoCTe, DateUtils, ACBrUtil, db, ACBrDFeSSL;
 
 type
 
@@ -37,6 +37,7 @@ type
     btnGerarCte1: TBitBtn;
     btnGravarCTe1: TBitBtn;
     btnIncluirNFe1: TBitBtn;
+    btnInsereProtocolo: TButton;
     btnInserirvNfe: TButton;
     btnLimpaBusca: TBitBtn;
     btnConsCad: TButton;
@@ -574,6 +575,7 @@ type
     memDetRetira: TMemo;
     memInfAdFisco: TMemo;
     edtnfe: TMemo;
+    memRespostas: TMemo;
     MemoDados: TMemo;
     memoResp: TMemo;
     memoRespWS: TMemo;
@@ -687,6 +689,7 @@ type
     valICMSPartI: TEdit;
     valIMCSPartF: TEdit;
     valOutrosVal: TDBEdit;
+    WBResposta: TSynEdit;
     ZConn: TZConnection;
     ZQuery1: TZQuery;
     ZQuery1RAZAO: TStringField;
@@ -710,6 +713,7 @@ type
     ZsqNFeDPREV: TDateField;
     ZsqNFePIN: TLongintField;
     procedure BitBtn18Click(Sender: TObject);
+    procedure btnInsereProtocoloClick(Sender: TObject);
     function busca_generator(generator: String): integer;
     procedure ACBrCTe1StatusChange(Sender: TObject);
     procedure BitBtn10Click(Sender: TObject);
@@ -871,6 +875,8 @@ type
       var Handled: Boolean);
     procedure TabTomadorShow(Sender: TObject);
   private
+    nProtocolo : string;
+    nRecibo    : string;
     vModeloCTe : integer;
     ver_cod_cte: Integer;
     vCteStr: String;
@@ -918,6 +924,7 @@ type
     procedure EditarR;
     procedure EditarDE;
     procedure EditarREC;
+    procedure EditarPROTOCOLO;
     procedure cadastraClientes(camposCliente, camposEnd: String);
     procedure buscaDestinatario;
     procedure buscaTomador;
@@ -927,6 +934,7 @@ type
     function LimparString(ATExto, ACaracteres: string): string;
     function GravarCTe: String;
     procedure AtualizaSSLLibsCombo;
+    procedure LoadXML(MyMemo: TMemo; SynEdit: TSynEdit);
   public
 
   end;
@@ -3492,6 +3500,41 @@ begin
 
 end;
 
+procedure TfCTePrincipal.EditarPROTOCOLO;
+begin
+
+   if (nProtocolo <> '') then
+  begin
+    vCteStr := 'UPDATE CTE SET NPROT = ' ;
+    vCteStr := vCteStr +  QuotedStr(nProtocolo);
+    vCteStr := vCteStr +  ', STATUS_CTE = ';
+    vCteStr := vCteStr +  QuotedStr('AUTORIZADA.');
+
+    vCteStr := vCteStr +' where COD_CTE = ' ;
+    vCteStr := vCteStr + QuotedStr(dmCte.cdsCteCOD_CTE.AsString) ;// IntToStr(val_genCte);
+    MemoDados.Text := vCteStr;
+   // dmPdv.IbCon.ExecuteDirect(vCteStr);
+
+
+    try
+     dmPdv.IbCon.ExecuteDirect(vCteStr);
+     dmPdv.sTrans.Commit;
+    except
+     on E : Exception do
+     begin
+       ShowMessage('Cadastro do Cliente, não pode ser criado, Classe: ' +
+         e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
+       dmPdv.sTrans.Rollback;
+       exit;
+     end;
+    end;
+
+  end;
+
+
+
+end;
+
 procedure TfCTePrincipal.cadastraClientes(camposCliente, camposEnd: String);
 var strEndereco: String;
 begin
@@ -3978,6 +4021,24 @@ begin
  cbXmlSignLib.ItemIndex := Integer(ACBrCTe1.Configuracoes.Geral.SSLXmlSignLib);
 
  cbSSLType.Enabled := (ACBrCTe1.Configuracoes.Geral.SSLHttpLib in [httpWinHttp, httpOpenSSL]);
+end;
+
+procedure TfCTePrincipal.LoadXML(MyMemo: TMemo; SynEdit: TSynEdit);
+var
+  vText: String;
+begin
+  vText := MyMemo.Text;
+
+  // formata resposta
+  vText := StringReplace(vText, '>', '>' + LineEnding + '    ', [rfReplaceAll]);
+  vText := StringReplace(vText, '<', LineEnding + '  <', [rfReplaceAll]);
+  vText := StringReplace(vText, '>' + LineEnding + '    ' + LineEnding +
+           '  <', '>' + LineEnding + '  <', [rfReplaceAll]);
+  vText := StringReplace(vText, '  </ret', '</ret', []);
+
+  // exibe resposta
+  SynEdit.Text := Trim(vText);
+
 end;
 
 procedure TfCTePrincipal.dbValTotPrestExit(Sender: TObject);
@@ -4940,9 +5001,28 @@ begin
       //ShowMessage('Enviando');
       ACBrCTe1.Enviar(1); //(StrToInt(vNumLote));
 
-      MemoResp.Lines.Text   := UTF8Encode(ACBrCTe1.WebServices.Retorno.RetWS);
-      memoRespWS.Lines.Text := UTF8Encode(ACBrCTe1.WebServices.Retorno.RetWS);
+     //MemoResp.Lines.Text   := UTF8Encode(ACBrCTe1.WebServices.Retorno.RetWS);
+     //memoRespWS.Lines.Text := UTF8Encode(ACBrCTe1.WebServices.Retorno.RetWS);
+     MemoResp.Lines.Text   := ACBrCTe1.WebServices.Enviar.RetWS;
+     memoRespWS.Lines.Text := ACBrCTe1.WebServices.Enviar.RetornoWS;
 
+     LoadXML(MemoResp, WBResposta);
+
+    with MemoDados do
+    begin
+      Lines.Add('');
+      Lines.Add('Envio CTe');
+      Lines.Add('tpAmb: '     + TpAmbToStr(ACBrCTe1.WebServices.Enviar.tpAmb));
+      Lines.Add('verAplic: '  + ACBrCTe1.WebServices.Enviar.verAplic);
+      Lines.Add('cStat: '     + IntToStr(ACBrCTe1.WebServices.Enviar.cStat));
+      Lines.Add('xMotivo: '   + ACBrCTe1.WebServices.Enviar.xMotivo);
+      Lines.Add('cUF: '       + IntToStr(ACBrCTe1.WebServices.Enviar.cUF));
+      Lines.Add('xMsg: '      + ACBrCTe1.WebServices.Enviar.Msg);
+      Lines.Add('Recibo: '    + ACBrCTe1.WebServices.Enviar.Recibo);
+      Lines.Add('Protocolo: ' + ACBrCTe1.WebServices.Enviar.Protocolo);
+    end;
+
+     {
      //pcCte.ActivePageIndex := 5;
      MemoDados.Lines.Add('');
      MemoDados.Lines.Add('Envio CTe');
@@ -4955,35 +5035,41 @@ begin
      MemoDados.Lines.Add('Recibo: '+ ACBrCTe1.WebServices.Retorno.Recibo);
      MemoDados.Lines.Add('Protocolo: '+ ACBrCTe1.WebServices.Retorno.Protocolo);
 
-     if (ACBrCTe1.WebServices.Retorno.Recibo <> '') then
+      }
+
+     //if (ACBrCTe1.WebServices.Retorno.Recibo <> '') then
+     if ( edtNumCte.Text <> '')then
      begin
       strEdita := 'UPDATE CTE SET NPROT = ';
-      strEdita := strEdita + QuotedStr(ACBrCTe1.WebServices.Retorno.Protocolo);
-      strEdita := strEdita + ', CHCTE = ';
-      strEdita := strEdita + QuotedStr(ACBrCTe1.WebServices.Retorno.ChaveCTe);
+      strEdita := strEdita + QuotedStr(ACBrCTe1.WebServices.Enviar.Protocolo);
+      //strEdita := strEdita + ', CHCTE = ';
+      //strEdita := strEdita + QuotedStr(ACBrCTe1.WebServices.Retorno.ChaveCTe);
       strEdita := strEdita + ', STATUS_CTE = ';
-      strEdita := strEdita + QuotedStr('Autoriz.,R:' +
-        ACBrCTe1.WebServices.Retorno.Recibo);
+      //strEdita := strEdita + QuotedStr('Autoriz.,R:'+ ACBrCTe1.WebServices.Enviar.Recibo);
+      strEdita := strEdita + QuotedStr('AUTORIZADA');
       strEdita := strEdita + ' WHERE COD_CTE = ';
       strEdita := strEdita + IntToStr(val_genCte);
-      //try
+
+      memRespostas.Text:= strEdita;
+
+      try
       dmPdv.IbCon.ExecuteDirect(strEdita);
       dmPdv.sTrans.Commit;
       MessageDlg('CTe enviada com Sucesso.', mtInformation, [mbOK], 0);
       FormatSettings.DecimalSeparator := ',';
       ACBrCTe1.Conhecimentos.ImprimirPDF;
-      //except
-      //  on E : Exception do
-      //  begin
-      //    ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-      //    dmPdv.sTrans.Rollback;
-      //    exit;
-      //  end;
-      //end;
+      except
+        on E : Exception do
+        begin
+          ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
+          dmPdv.sTrans.Rollback;
+          exit;
+        end;
+      end;
     end;
   end
   else begin
-    ShowMessage('XML gerado, mas sistema no modoDesenvolvedor (Outros)');
+    ShowMessage('XML gerado');
   end;
   except
     on E:Exception do
@@ -5040,6 +5126,16 @@ end;
 procedure TfCTePrincipal.BitBtn18Click(Sender: TObject);
 begin
 
+end;
+
+procedure TfCTePrincipal.btnInsereProtocoloClick(Sender: TObject);
+begin
+  nProtocolo := '';
+  CarregarXML(dmCte.cdsCteCHCTE.AsString);
+  ACBrCTe1.Consultar;
+  nProtocolo := ACBrCTe1.WebServices.Consulta.protCTe.nProt;
+  EditarPROTOCOLO;
+  ACBrCTe1.Conhecimentos.Imprimir;
 end;
 
 
@@ -6118,6 +6214,7 @@ begin
       EditarREC;
       EditarRE;
       EditarDE;
+
 
       FormatSettings.DecimalSeparator := ',';
 
