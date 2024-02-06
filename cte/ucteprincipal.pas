@@ -4797,46 +4797,49 @@ begin
       //ShowMessage('Enviando');
       ACBrCTe1.Enviar(1); //(StrToInt(vNumLote));
 
-      MemoResp.Lines.Text   := UTF8Encode(ACBrCTe1.WebServices.Retorno.RetWS);
-      memoRespWS.Lines.Text := UTF8Encode(ACBrCTe1.WebServices.Retorno.RetWS);
+      MemoResp.Lines.Text   := ACBrCTe1.WebServices.Enviar.RetWS;
+      memoRespWS.Lines.Text := ACBrCTe1.WebServices.Enviar.RetornoWS;
 
-     //pcCte.ActivePageIndex := 5;
-     MemoDados.Lines.Add('');
-     MemoDados.Lines.Add('Envio CTe');
-     MemoDados.Lines.Add('tpAmb: '+ TpAmbToStr(ACBrCTe1.WebServices.Retorno.TpAmb));
-     MemoDados.Lines.Add('verAplic: '+ ACBrCTe1.WebServices.Retorno.verAplic);
-     MemoDados.Lines.Add('cStat: '+ IntToStr(ACBrCTe1.WebServices.Retorno.cStat));
-     MemoDados.Lines.Add('cUF: '+ IntToStr(ACBrCTe1.WebServices.Retorno.cUF));
-     MemoDados.Lines.Add('xMotivo: '+ ACBrCTe1.WebServices.Retorno.xMotivo);
-     MemoDados.Lines.Add('xMsg: '+ ACBrCTe1.WebServices.Retorno.Msg);
-     MemoDados.Lines.Add('Recibo: '+ ACBrCTe1.WebServices.Retorno.Recibo);
-     MemoDados.Lines.Add('Protocolo: '+ ACBrCTe1.WebServices.Retorno.Protocolo);
 
-     if (ACBrCTe1.WebServices.Retorno.Recibo <> '') then
+      with MemoDados do
+      begin
+        Lines.Add('');
+        Lines.Add('Envio CTe');
+        Lines.Add('tpAmb: '     + TpAmbToStr(ACBrCTe1.WebServices.Enviar.tpAmb));
+        Lines.Add('verAplic: '  + ACBrCTe1.WebServices.Enviar.verAplic);
+        Lines.Add('cStat: '     + IntToStr(ACBrCTe1.WebServices.Enviar.cStat));
+        Lines.Add('xMotivo: '   + ACBrCTe1.WebServices.Enviar.xMotivo);
+        Lines.Add('cUF: '       + IntToStr(ACBrCTe1.WebServices.Enviar.cUF));
+        Lines.Add('xMsg: '      + ACBrCTe1.WebServices.Enviar.Msg);
+        Lines.Add('Recibo: '    + ACBrCTe1.WebServices.Enviar.Recibo);
+        Lines.Add('Protocolo: ' + ACBrCTe1.WebServices.Enviar.Protocolo);
+      end;
+
+
+     if (edtNumCte.Text <> '') then
      begin
       strEdita := 'UPDATE CTE SET NPROT = ';
       strEdita := strEdita + QuotedStr(ACBrCTe1.WebServices.Retorno.Protocolo);
-      strEdita := strEdita + ', CHCTE = ';
-      strEdita := strEdita + QuotedStr(ACBrCTe1.WebServices.Retorno.ChaveCTe);
+      //strEdita := strEdita + ', CHCTE = ';
+      //strEdita := strEdita + QuotedStr(ACBrCTe1.WebServices.Retorno.ChaveCTe);
       strEdita := strEdita + ', STATUS_CTE = ';
-      strEdita := strEdita + QuotedStr('Autoriz.,R:' +
-        ACBrCTe1.WebServices.Retorno.Recibo);
+      strEdita := strEdita + QuotedStr('AUTORIZADA');
       strEdita := strEdita + ' WHERE COD_CTE = ';
       strEdita := strEdita + IntToStr(val_genCte);
-      //try
+      try
       dmPdv.IbCon.ExecuteDirect(strEdita);
       dmPdv.sTrans.Commit;
       MessageDlg('CTe enviada com Sucesso.', mtInformation, [mbOK], 0);
       FormatSettings.DecimalSeparator := ',';
       ACBrCTe1.Conhecimentos.ImprimirPDF;
-      //except
-      //  on E : Exception do
-      //  begin
-      //    ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-      //    dmPdv.sTrans.Rollback;
-      //    exit;
-      //  end;
-      //end;
+      except
+        on E : Exception do
+        begin
+          ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
+          dmPdv.sTrans.Rollback;
+          exit;
+        end;
+      end;
     end;
   end
   else begin
