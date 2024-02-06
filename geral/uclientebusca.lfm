@@ -61,6 +61,7 @@ inherited fClienteBusca: TfClienteBusca
       ParentFont = False
       State = cbChecked
       TabOrder = 3
+      Visible = False
     end
     object chDesc: TCheckBox[6]
       Left = 272

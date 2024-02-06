@@ -155,15 +155,15 @@ begin
 
   if chCurso.Checked then
   begin
-    sql := ' WHERE STATUS = 1 AND REGIAO = 1';
+    sql := ' WHERE STATUS = 1 ';
   end
   else begin
-    sql := ' WHERE STATUS = 1 AND REGIAO = 0';
+    sql := ' WHERE STATUS = 1 ';
   end;
 
   if ((chCurso.Checked) and (chInativo.Checked)) then
   begin
-    sql := ' WHERE STATUS = 0 AND REGIAO = 1';
+    sql := ' WHERE STATUS = 0 ';
   end;
 
   if edit1.Text <> '' then
