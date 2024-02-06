@@ -24,14 +24,6 @@ type
     BitBtn11: TBitBtn;
     BitBtn12: TBitBtn;
     BitBtn13: TBitBtn;
-    BitBtn14: TBitBtn;
-    BitBtn16: TBitBtn;
-    BitBtn17: TBitBtn;
-    BitBtn18: TBitBtn;
-    BitBtn19: TBitBtn;
-    BitBtn20: TBitBtn;
-    BitBtn21: TBitBtn;
-    BitBtn22: TBitBtn;
     btnEditarNFe1: TBitBtn;
     btnExcluirNFe1: TBitBtn;
     btnGerarCte1: TBitBtn;
@@ -76,7 +68,6 @@ type
     BitBtn2: TBitBtn;
     btnGravarCTe: TBitBtn;
     btnCancelarEdicaoCTe: TBitBtn;
-    btnImportarXML: TBitBtn;
     btnImportarXML1: TButton;
     btnIncCte: TBitBtn;
     btnIncluirNFe: TBitBtn;
@@ -167,22 +158,10 @@ type
     edtAntCHNFE: TEdit;
     edtAntCHCTEAnula: TEdit;
     edtCaminho: TEdit;
-    edtCfop1: TEdit;
     edtDestNome1: TEdit;
     edtEmailAssunto: TEdit;
-    edtEnvCidade1: TEdit;
-    edtEnvCodCidade1: TEdit;
-    edtEnvUF1: TEdit;
-    edtFimCidade1: TEdit;
-    edtFimCodCidade1: TEdit;
-    edtFimUF1: TEdit;
-    edtIniCidade1: TEdit;
-    edtIniCodCidade1: TEdit;
-    edtIniUF1: TEdit;
     edtLogoMarca: TEdit;
     edtCteImportar: TEdit;
-    edtNatOpe1: TEdit;
-    edtNumCte1: TEdit;
     edtPathLogs: TEdit;
     edtSenha: TEdit;
     edtSmtpHost: TEdit;
@@ -215,8 +194,6 @@ type
     edtAntUF: TEdit;
     edtBairroTomador: TEdit;
     edtBuscaTomador: TEdit;
-    edtCaracAdServ: TEdit;
-    edtCaracAdTrans: TEdit;
     edtCepTomador: TEdit;
     edtCfop: TEdit;
     edtCNPJTomador: TEdit;
@@ -273,7 +250,6 @@ type
     edtFimCodCidade: TEdit;
     edtFimUF: TEdit;
     edtFoneTomador: TEdit;
-    edtFuncEmi: TEdit;
     edtIETomador: TEdit;
     edtIniCidade: TEdit;
     edtIniCodCidade: TEdit;
@@ -329,20 +305,6 @@ type
     edtTomadorCidade: TEdit;
     edtTomadorCodCidade: TEdit;
     edtTomadorUF: TEdit;
-    edtXMLBairro: TEdit;
-    edtXMLCEP: TEdit;
-    edtXMLCidade: TEdit;
-    edtXMLCnpj: TEdit;
-    edtXMLCod: TEdit;
-    edtXMLCodCidade: TEdit;
-    edtXMLComp: TEdit;
-    edtXMLFone: TEdit;
-    edtXMLIE: TEdit;
-    edtXMLLogradouro: TEdit;
-    edtXMLNome: TEdit;
-    edtXMLNumero: TEdit;
-    edtXMLRazao: TEdit;
-    edtXMLUF: TEdit;
     edUltimoAtualiza: TEdit;
     GroupBox1: TGroupBox;
     GroupBox10: TGroupBox;
@@ -357,7 +319,6 @@ type
     GroupBox19: TGroupBox;
     GroupBox2: TGroupBox;
     GroupBox20: TGroupBox;
-    GroupBox21: TGroupBox;
     GroupBox22: TGroupBox;
     GroupBox3: TGroupBox;
     GroupBox4: TGroupBox;
@@ -381,26 +342,10 @@ type
     Label102: TLabel;
     Label103: TLabel;
     Label104: TLabel;
-    Label105: TLabel;
-    Label106: TLabel;
-    Label107: TLabel;
-    Label108: TLabel;
-    Label109: TLabel;
     Label11: TLabel;
-    Label110: TLabel;
-    Label111: TLabel;
-    Label112: TLabel;
-    Label113: TLabel;
-    Label114: TLabel;
-    Label115: TLabel;
-    Label116: TLabel;
-    Label117: TLabel;
-    Label118: TLabel;
-    Label119: TLabel;
     Label12: TLabel;
     Label120: TLabel;
     Label121: TLabel;
-    Label122: TLabel;
     Label123: TLabel;
     Label124: TLabel;
     Label125: TLabel;
@@ -449,12 +394,6 @@ type
     Label164: TLabel;
     Label165: TLabel;
     Label166: TLabel;
-    Label167: TLabel;
-    Label168: TLabel;
-    Label169: TLabel;
-    Label170: TLabel;
-    Label171: TLabel;
-    Label172: TLabel;
     Label173: TLabel;
     Label174: TLabel;
     Label175: TLabel;
@@ -563,7 +502,6 @@ type
     Label98: TLabel;
     Label99: TLabel;
     lblCteAtual1: TLabel;
-    lblDetRetira: TStaticText;
     lblDetRetira1: TStaticText;
     lblDetRetira2: TStaticText;
     lblEmailAssunto: TLabel;
@@ -572,7 +510,7 @@ type
     lSSLLib: TLabel;
     lSSLLib1: TLabel;
     lXmlSign: TLabel;
-    memDetRetira: TMemo;
+    memComplemento: TMemo;
     memInfAdFisco: TMemo;
     edtnfe: TMemo;
     memRespostas: TMemo;
@@ -580,7 +518,6 @@ type
     memoResp: TMemo;
     memoRespWS: TMemo;
     memxObs: TMemo;
-    memComplemento: TMemo;
     mmEmailMsg: TMemo;
     OpenDialog1: TOpenDialog;
     btnPreVisu: TBitBtn;
@@ -605,7 +542,6 @@ type
     rbAlteradoTomador: TRadioButton;
     rgTipoFretamento: TRadioGroup;
     rgTipoContribuinte: TRadioGroup;
-    rgForPag1: TRadioGroup;
     rgSeguroResp: TRadioGroup;
     rgDest: TRadioGroup;
     rgExp: TRadioGroup;
@@ -615,13 +551,11 @@ type
     rgModal: TRadioGroup;
     rgRec: TRadioGroup;
     rgRem: TRadioGroup;
-    rgRetira: TRadioGroup;
     rgRodLotacao: TRadioGroup;
     rgTipoAmb: TRadioGroup;
     rgTipoDACTe: TRadioGroup;
     rgTiposCte: TRadioGroup;
     rgTipoServico: TRadioGroup;
-    rgTipoServico1: TRadioGroup;
     rgTomador: TRadioGroup;
     sbtnCaminhoCert: TSpeedButton;
     sbtnLerXmlCte: TSpeedButton;
@@ -640,7 +574,6 @@ type
     StaticText16: TStaticText;
     StaticText18: TStaticText;
     StaticText19: TStaticText;
-    StaticText2: TStaticText;
     StaticText20: TStaticText;
     StaticText21: TStaticText;
     StaticText22: TStaticText;
@@ -651,9 +584,7 @@ type
     StaticText27: TStaticText;
     StaticText28: TStaticText;
     StaticText29: TStaticText;
-    StaticText3: TStaticText;
     StaticText30: TStaticText;
-    StaticText4: TStaticText;
     StaticText7: TStaticText;
     StaticText8: TStaticText;
     StaticText9: TStaticText;
@@ -663,7 +594,6 @@ type
     TabCte: TTabSheet;
     TabCteGeradas: TTabSheet;
     TabDados: TTabSheet;
-    TabDadosComplementares: TTabSheet;
     TabDadosCte: TTabSheet;
     TabDestinatario: TTabSheet;
     TabExpedidor: TTabSheet;
@@ -675,11 +605,9 @@ type
     tabSeguro: TTabSheet;
     TabSheet1: TTabSheet;
     TabSheet11: TTabSheet;
-    TabSheet12: TTabSheet;
     TabSheet17: TTabSheet;
     TabSheet18: TTabSheet;
     TabSheet19: TTabSheet;
-    TabSheet2: TTabSheet;
     TabSheet20: TTabSheet;
     TabSheet3: TTabSheet;
     TabSheet6: TTabSheet;
@@ -1637,13 +1565,13 @@ begin
     /////////// aba dados fim
 
     // TpcteRetira
-
+    {
     case rgRetira.ItemIndex of
       0: Ide.retira := rtSim;
       1: Ide.retira := rtNao;
     end;
     Ide.xdetretira := memDetRetira.Text;
-
+   }
    // Aba Tomador  inicio
    //0-Remetente; 1-Expedidor; 2-Recebedor; 3-Destinatário Serão utilizadas as informações contidas no respectivo grupo,
 
@@ -1748,10 +1676,11 @@ begin
    //
    //  Informações Complementares do CTe     Aba Dados Complementares inicio
    //
+   {
    compl.xCaracAd := Trim(edtCaracAdTrans.Text);
    compl.xCaracSer := Trim(edtCaracAdServ.Text);
    compl.xEmi := Trim(edtFuncEmi.Text);
-
+   }
    compl.xObs     := memxObs.Text;
 
    //                          Aba Emitente caregando dados da Empresa  Inicio
@@ -2731,12 +2660,12 @@ begin
     GroupBoxExpeditor.Visible := False;
     rgExp.ItemIndex := 1;
   end;
-  edtCaracAdTrans.Text := dmCte.cdsCTECARAC_TRANSP.AsString;
-  edtCaracAdServ.Text  := dmCte.cdsCTECARAC_SERV.AsString;
-  edtFuncEmi.Text      := dmCte.cdsCTEFUNC_EMI.AsString;
+  //edtCaracAdTrans.Text := dmCte.cdsCTECARAC_TRANSP.AsString;
+  //edtCaracAdServ.Text  := dmCte.cdsCTECARAC_SERV.AsString;
+  //edtFuncEmi.Text      := dmCte.cdsCTEFUNC_EMI.AsString;
 
-  rgRetira.ItemIndex   := dmCte.cdsCTERETIRA.AsInteger;
-  memDetRetira.Text    := dmCte.cdsCTEDET_RETIRA.AsString;
+  //rgRetira.ItemIndex   := dmCte.cdsCTERETIRA.AsInteger;
+  //memDetRetira.Text    := dmCte.cdsCTEDET_RETIRA.AsString;
 
   //if(dmCte.cdsCTENPROT.AsString = '')then
   //begin
@@ -3041,7 +2970,8 @@ end;
 
 procedure TfCTePrincipal.EditarB;
 begin
-  if (edtNumCte.Text <> '') then
+
+  {if (edtNumCte.Text <> '') then
   begin
     vCteStr := 'UPDATE CTE SET CARAC_TRANSP = ';
     vCteStr := vCteStr + QuotedStr(edtCaracAdTrans.Text); // CARAC_TRANSP
@@ -3056,10 +2986,12 @@ begin
     MemoDados.Text := vCteStr;
     dmPdv.IbCon.ExecuteDirect(vCteStr);
   end;
+  }
 end;
 
 procedure TfCTePrincipal.EditarC;
 begin
+ {
   if (edtNumCte.Text <> '') then
   begin
     vCteStr := 'UPDATE CTE SET RETIRA = ';
@@ -3072,6 +3004,7 @@ begin
     MemoDados.Text := vCteStr;
     dmPdv.IbCon.ExecuteDirect(vCteStr);
   end;
+  }
 end;
 
 procedure TfCTePrincipal.EditarD;
@@ -3935,12 +3868,12 @@ begin
     strInsere := strInsere + ', ' + QuotedStr(edtRecCep.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtRecUF.Text);
 
-    strInsere := strInsere + ', ' + QuotedStr(edtCaracAdTrans.Text); // CARAC_TRANSP
-    strInsere := strInsere + ', ' + QuotedStr(edtCaracAdServ.Text); // CARAC_SERV
-    strInsere := strInsere + ', ' + QuotedStr(edtFuncEmi.Text); // FUNC_EMI
+   // strInsere := strInsere + ', ' + QuotedStr(edtCaracAdTrans.Text); // CARAC_TRANSP
+   // strInsere := strInsere + ', ' + QuotedStr(edtCaracAdServ.Text); // CARAC_SERV
+   // strInsere := strInsere + ', ' + QuotedStr(edtFuncEmi.Text); // FUNC_EMI
 
-    strInsere := strInsere + ', ' + IntToStr(rgRetira.ItemIndex);  //
-    strInsere := strInsere + ', ' + QuotedStr(memDetRetira.Text);
+   // strInsere := strInsere + ', ' + IntToStr(rgRetira.ItemIndex);  //
+   // strInsere := strInsere + ', ' + QuotedStr(memDetRetira.Text);
     verVlr := FloatToStr(dmCte.cdsCteVPREST.AsFloat);
     strInsere := strInsere + ', ' + FloatToStr(dmCte.cdsCteVPREST.AsFloat);
     strInsere := strInsere + ', ' + FloatToStr(dmCte.cdsCteVREC.AsFloat);
