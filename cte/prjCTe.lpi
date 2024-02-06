@@ -124,55 +124,55 @@
         <UnitName Value="uQuantCarga"/>
       </Unit7>
       <Unit8>
-        <Filename Value="..\geral\uclientebusca.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="fClienteBusca"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="uClienteBusca"/>
-      </Unit8>
-      <Unit9>
         <Filename Value="..\geral\upadraobusca.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fPadraoBusca"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uPadraoBusca"/>
-      </Unit9>
-      <Unit10>
+      </Unit8>
+      <Unit9>
         <Filename Value="..\geral\umunicipiobusca.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fMunicipioBusca"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit10>
-      <Unit11>
+      </Unit9>
+      <Unit10>
         <Filename Value="..\geral\upadrao.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fPadrao"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uPadrao"/>
-      </Unit11>
-      <Unit12>
+      </Unit10>
+      <Unit11>
         <Filename Value="uveiculocte.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fVeiculoCte"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uVeiculoCte"/>
-      </Unit12>
-      <Unit13>
+      </Unit11>
+      <Unit12>
         <Filename Value="..\geral\ucertificadoler.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frSelecionarCertificado"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCertificadoLer"/>
-      </Unit13>
-      <Unit14>
+      </Unit12>
+      <Unit13>
         <Filename Value="..\pdv\uintegracaoodoo.pas"/>
         <IsPartOfProject Value="True"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="uclientebusca.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fClienteBusca"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uClienteBusca"/>
       </Unit14>
     </Units>
   </ProjectOptions>
@@ -180,7 +180,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="C:\home\CTE\ats_CTe"/>
+      <Filename Value="C:\home\CTE_OS\ats_CTe"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>

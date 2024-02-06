@@ -1,0 +1,137 @@
+inherited fClienteBusca: TfClienteBusca
+  Left = 410
+  Top = 117
+  Width = 696
+  Caption = 'Busca Clientes'
+  ClientWidth = 696
+  OnClose = FormClose
+  OnShow = FormShow
+  inherited Panel1: TPanel
+    Width = 696
+    ClientWidth = 696
+    inherited Edit1: TEdit
+      Width = 112
+      OnKeyPress = Edit1KeyPress
+      TabOrder = 1
+    end
+    inherited Label1: TLabel
+      Left = 24
+      Height = 21
+      Top = 8
+      Width = 54
+      Caption = 'Código'
+    end
+    inherited Edit2: TEdit
+      Left = 264
+      Width = 416
+      CharCase = ecUppercase
+      OnKeyPress = Edit2KeyPress
+      TabOrder = 0
+    end
+    inherited chInativo: TCheckBox
+      Width = 60
+      OnChange = chInativoChange
+    end
+    object Label2: TLabel[4]
+      Left = 208
+      Height = 21
+      Top = 8
+      Width = 45
+      Caption = 'Nome'
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -16
+      Font.Name = '@Malgun Gothic'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      ParentColor = False
+      ParentFont = False
+    end
+    object chCurso: TCheckBox[5]
+      Left = 88
+      Height = 21
+      Top = 40
+      Width = 100
+      Caption = 'Cliente Curso'
+      Checked = True
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -13
+      Font.Name = '@Malgun Gothic'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      ParentFont = False
+      State = cbChecked
+      TabOrder = 3
+    end
+    object chDesc: TCheckBox[6]
+      Left = 272
+      Height = 21
+      Top = 40
+      Width = 138
+      Caption = 'Ordem Decrescente'
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -13
+      Font.Name = '@Malgun Gothic'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      ParentFont = False
+      TabOrder = 4
+    end
+  end
+  inherited Panel2: TPanel
+    Left = 637
+    Width = 59
+    ClientWidth = 59
+    inherited btnProcurar: TBitBtn
+      Left = 4
+      OnClick = btnProcurarClick
+      TabOrder = 1
+    end
+    inherited btnGravar: TBitBtn
+      Left = 4
+      OnClick = btnGravarClick
+      TabOrder = 0
+    end
+    inherited btnExcluir: TBitBtn
+      Left = 4
+      OnClick = btnExcluirClick
+    end
+    inherited btnSair1: TBitBtn
+      Left = 4
+    end
+  end
+  inherited DBGrid1: TDBGrid
+    Width = 637
+    Columns = <    
+      item
+        PickList.Strings = (        )
+        Title.Caption = 'Title'
+        Width = 100
+        FieldName = 'Código'
+      end    
+      item
+        MaxSize = 500
+        PickList.Strings = (        )
+        Title.Caption = 'Title'
+        Width = 500
+        FieldName = 'Cliente'
+      end    
+      item
+        PickList.Strings = (        )
+        Title.Caption = 'Title'
+        Visible = False
+      end    
+      item
+        PickList.Strings = (        )
+        Title.Caption = 'Title'
+        Visible = False
+      end>
+    DataSource = dsCliente
+    Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+    OnCellClick = DBGrid1CellClick
+  end
+  object dsCliente: TDataSource[3]
+    DataSet = dmPdv.sqBusca
+    Left = 760
+    Top = 352
+  end
+end
