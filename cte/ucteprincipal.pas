@@ -7048,7 +7048,7 @@ procedure TfCTePrincipal.sbtnGetCertClick(Sender: TObject);
 var
   I: Integer;
 begin
-  frSelecionarCertificado := TfrSelecionarCertificado.Create(Self);
+  {frSelecionarCertificado := TfrSelecionarCertificado.Create(Self);
   try
     ACBrNFe1.SSL.LerCertificadosStore;
 
@@ -7080,8 +7080,8 @@ begin
   finally
      frSelecionarCertificado.Free;
   end;
-
-  //edtNumSerie.Text := ACBrCTe1.SSL.SelecionarCertificado;
+   }
+  edtNumSerie.Text := ACBrCTe1.SSL.SelecionarCertificado;
 end;
 
 procedure TfCTePrincipal.sbtnLerXmlCteClick(Sender: TObject);

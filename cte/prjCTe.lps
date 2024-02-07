@@ -4,11 +4,11 @@
     <PathDelim Value="\"/>
     <Version Value="12"/>
     <BuildModes Active="Default"/>
-    <Units Count="36">
+    <Units Count="37">
       <Unit0>
         <Filename Value="prjCTe.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="10"/>
+        <EditorIndex Value="12"/>
         <TopLine Value="10"/>
         <CursorPos X="24" Y="30"/>
         <UsageCount Value="200"/>
@@ -21,8 +21,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCtePrincipal"/>
-        <TopLine Value="4819"/>
-        <CursorPos X="7" Y="4829"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="4781"/>
+        <CursorPos Y="4819"/>
         <UsageCount Value="200"/>
         <Bookmarks Count="8">
           <Item0 X="33" Y="1126" ID="4"/>
@@ -43,7 +44,7 @@
         <ComponentName Value="dmPdv"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <EditorIndex Value="12"/>
+        <EditorIndex Value="14"/>
         <TopLine Value="1706"/>
         <CursorPos Y="1716"/>
         <UsageCount Value="200"/>
@@ -60,7 +61,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="uDmCte"/>
-        <EditorIndex Value="11"/>
+        <EditorIndex Value="13"/>
         <CursorPos X="21" Y="8"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
@@ -73,7 +74,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uNFe"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="10"/>
         <TopLine Value="45"/>
         <CursorPos Y="55"/>
         <UsageCount Value="203"/>
@@ -96,7 +97,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCompValor"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="9"/>
         <TopLine Value="75"/>
         <CursorPos X="3" Y="82"/>
         <UsageCount Value="201"/>
@@ -110,7 +111,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uQuantCarga"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="11"/>
         <TopLine Value="77"/>
         <CursorPos X="70" Y="80"/>
         <UsageCount Value="200"/>
@@ -124,8 +125,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uClienteBusca"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="3"/>
         <TopLine Value="154"/>
         <CursorPos X="31" Y="166"/>
         <UsageCount Value="201"/>
@@ -287,10 +287,10 @@
       </Unit26>
       <Unit27>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\sysutils\datih.inc"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="8"/>
         <TopLine Value="121"/>
         <CursorPos X="10" Y="130"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="25"/>
         <Loaded Value="True"/>
       </Unit27>
       <Unit28>
@@ -303,10 +303,11 @@
       </Unit28>
       <Unit29>
         <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\PCNCTe\pcteCTe.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="1264"/>
-        <CursorPos X="20" Y="1268"/>
-        <UsageCount Value="5"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="584"/>
+        <CursorPos X="59" Y="600"/>
+        <UsageCount Value="13"/>
+        <Loaded Value="True"/>
       </Unit29>
       <Unit30>
         <Filename Value="C:\lazarus\components\acbr\Fontes\PCNComum\pcnConversao.pas"/>
@@ -325,157 +326,165 @@
       <Unit32>
         <Filename Value="C:\lazarus\lcl\dialogs.pp"/>
         <UnitName Value="Dialogs"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="7"/>
         <TopLine Value="755"/>
         <CursorPos X="10" Y="763"/>
-        <UsageCount Value="17"/>
+        <UsageCount Value="21"/>
         <Loaded Value="True"/>
       </Unit32>
       <Unit33>
         <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTe.pas"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="4"/>
         <TopLine Value="401"/>
         <CursorPos X="56" Y="408"/>
-        <UsageCount Value="16"/>
+        <UsageCount Value="20"/>
         <Loaded Value="True"/>
       </Unit33>
       <Unit34>
         <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="5"/>
         <TopLine Value="164"/>
         <CursorPos X="12" Y="181"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="14"/>
         <Loaded Value="True"/>
       </Unit34>
       <Unit35>
         <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\PCNCTe\pcteConversaoCTe.pas"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="6"/>
         <TopLine Value="58"/>
         <CursorPos X="10" Y="68"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="14"/>
         <Loaded Value="True"/>
       </Unit35>
+      <Unit36>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConhecimentos.pas"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="301"/>
+        <CursorPos Y="320"/>
+        <UsageCount Value="13"/>
+        <Loaded Value="True"/>
+      </Unit36>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <Caret Line="172" Column="39" TopLine="155"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="7232" Column="37" TopLine="7225"/>
       </Position1>
       <Position2>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <Caret Line="189" Column="76" TopLine="172"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="2" Column="110"/>
       </Position2>
       <Position3>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <Caret Line="197" Column="98" TopLine="171"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="2420" Column="38" TopLine="2411"/>
       </Position3>
       <Position4>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <Caret Line="52" Column="14" TopLine="42"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="2440" Column="40" TopLine="2424"/>
       </Position4>
       <Position5>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <Caret Line="65" Column="49" TopLine="48"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="2496" Column="56" TopLine="2481"/>
       </Position5>
       <Position6>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <Caret Line="172" Column="12" TopLine="155"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="2574" Column="13" TopLine="2563"/>
       </Position6>
       <Position7>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <Caret Line="181" Column="12" TopLine="164"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="4449" Column="18" TopLine="4433"/>
       </Position7>
       <Position8>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <Caret Line="208" Column="12" TopLine="191"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="5062" Column="24" TopLine="5048"/>
       </Position8>
       <Position9>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <Caret Line="52" Column="14" TopLine="42"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="7141" Column="60" TopLine="7126"/>
       </Position9>
       <Position10>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <Caret Line="65" Column="49" TopLine="48"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="1818" Column="57" TopLine="1813"/>
       </Position10>
       <Position11>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <Caret Line="172" Column="12" TopLine="155"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="1822" Column="25" TopLine="1813"/>
       </Position11>
       <Position12>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <Caret Line="181" Column="12" TopLine="164"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="6096" Column="46" TopLine="6083"/>
       </Position12>
       <Position13>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <Caret Line="208" Column="12" TopLine="191"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="7141" Column="60" TopLine="7125"/>
       </Position13>
       <Position14>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <Caret Line="52" Column="14" TopLine="42"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="6436" TopLine="6426"/>
       </Position14>
       <Position15>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <Caret Line="65" Column="49" TopLine="48"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="6440" TopLine="6426"/>
       </Position15>
       <Position16>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <Caret Line="172" Column="12" TopLine="155"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="4768" TopLine="4758"/>
       </Position16>
       <Position17>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <Caret Line="181" Column="12" TopLine="164"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="6096" Column="46" TopLine="6080"/>
       </Position17>
       <Position18>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <Caret Line="208" Column="12" TopLine="191"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="7141" Column="60" TopLine="7125"/>
       </Position18>
       <Position19>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <Caret Line="52" Column="14" TopLine="42"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="1822" Column="25" TopLine="1813"/>
       </Position19>
       <Position20>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <Caret Line="65" Column="49" TopLine="48"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="6096" Column="46" TopLine="6080"/>
       </Position20>
       <Position21>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <Caret Line="172" Column="12" TopLine="155"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="7141" Column="60" TopLine="7082"/>
       </Position21>
       <Position22>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTeConfiguracoes.pas"/>
-        <Caret Line="181" Column="12" TopLine="164"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="5763" Column="94" TopLine="5751"/>
       </Position22>
       <Position23>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\PCNCTe\pcteConversaoCTe.pas"/>
-        <Caret Line="68" Column="24" TopLine="58"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="6096" Column="46" TopLine="6080"/>
       </Position23>
       <Position24>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTe.pas"/>
-        <Caret Line="406" Column="13" TopLine="401"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="7141" Column="61" TopLine="7125"/>
       </Position24>
       <Position25>
-        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrCTe\ACBrCTe.pas"/>
-        <Caret Line="408" Column="9" TopLine="401"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="7087" Column="36" TopLine="7121"/>
       </Position25>
       <Position26>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="4778" Column="46" TopLine="4771"/>
+        <Caret Line="7125" TopLine="7145"/>
       </Position26>
       <Position27>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="4821" Column="7" TopLine="4806"/>
+        <Caret Line="7141" Column="60" TopLine="7086"/>
       </Position27>
       <Position28>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="564" Column="5" TopLine="554"/>
+        <Caret Line="1424" Column="55" TopLine="1420"/>
       </Position28>
       <Position29>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="4824" Column="9" TopLine="4778"/>
+        <Caret Line="1407" Column="49" TopLine="1391"/>
       </Position29>
       <Position30>
-        <Filename Value="..\geral\uclientebusca.pas"/>
-        <Caret Line="140" Column="34" TopLine="138"/>
+        <Filename Value="ucteprincipal.pas"/>
+        <Caret Line="1822" Column="28" TopLine="1898"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -546,14 +555,14 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="ucteprincipal.pas"/>
-        <Line Value="7125"/>
+        <Line Value="1412"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="ucteprincipal.pas"/>
-        <Line Value="1412"/>
+        <Line Value="4819"/>
       </Item>
     </BreakPoints>
   </Debugging>
