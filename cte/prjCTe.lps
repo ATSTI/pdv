@@ -22,8 +22,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCtePrincipal"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="4769"/>
-        <CursorPos X="3" Y="4769"/>
+        <TopLine Value="4816"/>
+        <CursorPos Y="4820"/>
         <UsageCount Value="200"/>
         <Bookmarks Count="8">
           <Item0 X="33" Y="1126" ID="4"/>
@@ -537,13 +537,6 @@
         <WatchKind Value="wpkWrite"/>
         <Source Value="ucteprincipal.pas"/>
         <Line Value="3359"/>
-      </Item>
-      <Item>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="ucteprincipal.pas"/>
-        <Line Value="4820"/>
       </Item>
     </BreakPoints>
   </Debugging>

@@ -4820,7 +4820,7 @@ begin
      if (edtNumCte.Text <> '') then
      begin
       strEdita := 'UPDATE CTE SET NPROT = ';
-      strEdita := strEdita + QuotedStr(ACBrCTe1.WebServices.Retorno.Protocolo);
+      strEdita := strEdita + QuotedStr(ACBrCTe1.WebServices.Enviar.Protocolo);
       //strEdita := strEdita + ', CHCTE = ';
       //strEdita := strEdita + QuotedStr(ACBrCTe1.WebServices.Retorno.ChaveCTe);
       strEdita := strEdita + ', STATUS_CTE = ';
