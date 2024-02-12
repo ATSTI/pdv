@@ -691,9 +691,9 @@ object fCTePrincipal: TfCTePrincipal
     Height = 583
     Top = 0
     Width = 1305
-    ActivePage = TabCte
+    ActivePage = TabCteGeradas
     Align = alClient
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 0
     OnChange = pcPrincipalChange
     object TabCteGeradas: TTabSheet
@@ -9174,9 +9174,9 @@ object fCTePrincipal: TfCTePrincipal
             Height = 527
             Top = 0
             Width = 1289
-            ActivePage = TabInfoCarga
+            ActivePage = TabNfe
             Align = alClient
-            TabIndex = 0
+            TabIndex = 2
             TabOrder = 0
             object TabInfoCarga: TTabSheet
               Caption = 'Inf. da Carga'

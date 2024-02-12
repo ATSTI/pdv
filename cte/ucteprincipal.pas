@@ -2515,6 +2515,7 @@ begin
   edtFimCodCidade.Text    := dmCte.cdsCTEFIM_CODCIDADE.AsString;
   edtFimCidade.Text       := dmCte.cdsCTEFIM_CIDADE.AsString;
   edtFimUF.Text           := dmCte.cdsCTEFIM_ESTADO.AsString;
+  rgTomador.ItemIndex     := dmCte.cdsCteTOMADORSERVICO.AsInteger;
 
   // emitente
   comboEmpresa.Text       := dmCte.cdsCTEE_RSOCIAL.AsString;
