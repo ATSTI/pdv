@@ -3212,36 +3212,37 @@ begin
     MemoDados.Text := vCteStr;
   end;
   }
+
   if(rgTomador.ItemIndex = 4) then
   begin
     vCteStr := 'UPDATE CTE SET  TOMADORSERVICO = ';
     vCteStr := vCteStr + IntToStr(rgTomador.ItemIndex);
     vCteStr := vCteStr + ', T_CNPJCPF = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtCNPJTomador.text);
     vCteStr := vCteStr +  ',T_IESTADUAL = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtIETomador.text);
     vCteStr := vCteStr +  ',T_RSOCIAL = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtRazaoTomador.text);
     vCteStr := vCteStr +  ',T_FANTASIA = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtNomeTomador.text);
     vCteStr := vCteStr +  ',T_TELEFONE = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtFoneTomador.text);
     vCteStr := vCteStr +  ',T_ENDERECO = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtEndTomador.text);
     vCteStr := vCteStr +  ',T_NUMERO = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtNumTomador.text);
     vCteStr := vCteStr +  ',T_COMPLEMENTO = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtCompTomador.text);
     vCteStr := vCteStr +  ',T_BAIRRO = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtBairroTomador.text);
     vCteStr := vCteStr +  ',T_CODIGOMUNICIPI = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtTomadorCodCidade.text);
     vCteStr := vCteStr +  ',T_CIDADE = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtTomadorCidade.text);
     vCteStr := vCteStr +  ',T_CEP = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtCepTomador.text);
     vCteStr := vCteStr +  ',T_ESTADO = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtTomadorUF.text);
 
     vCteStr := vCteStr +' where COD_CTE = ' ;
     vCteStr := vCteStr +  IntToStr(val_genCte);
@@ -3252,6 +3253,7 @@ end;
 
 procedure TfCTePrincipal.EditarR;
 begin
+
   if (edtRemCNPJ.Text <> '') then
   begin
     vCteStr := 'UPDATE CTE SET ';

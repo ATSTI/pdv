@@ -4,8 +4,8 @@ object fCTePrincipal: TfCTePrincipal
   Top = 18
   Width = 1305
   Caption = 'CTe - Conhecimento de Transporte Eletrônico'
-  ClientHeight = 649
-  ClientWidth = 1305
+  ClientHeight = 0
+  ClientWidth = 0
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnShow = FormShow
@@ -691,9 +691,9 @@ object fCTePrincipal: TfCTePrincipal
     Height = 583
     Top = 0
     Width = 1305
-    ActivePage = TabCteGeradas
+    ActivePage = TabCte
     Align = alClient
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     OnChange = pcPrincipalChange
     object TabCteGeradas: TTabSheet
@@ -1580,9 +1580,9 @@ object fCTePrincipal: TfCTePrincipal
         Height = 555
         Top = 0
         Width = 1297
-        ActivePage = TabSheet3
+        ActivePage = TabTomador
         Align = alClient
-        TabIndex = 1
+        TabIndex = 2
         TabOrder = 0
         OnChange = pcCteChange
         OnChanging = pcCteChanging
@@ -5944,7 +5944,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 8
             Width = 712
             AutoFill = True
-            Caption = 'Tomador do Serviço'
+            Caption = 'Remetente'
             ChildSizing.LeftRightSpacing = 6
             ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
             ChildSizing.EnlargeVertical = crsHomogenousChildResize
