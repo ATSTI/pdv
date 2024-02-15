@@ -23,8 +23,9 @@ class Conexao:
         try:
             self.cursor.execute(query)
             self.connection.commit()
-        except:
-            self.connection.rollback()
+            return ""
+        except Exception as general_error:
+            return f"Erro : {general_error}"
 
     def query(self, query):
         cur = self.cursor.execute(query)

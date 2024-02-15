@@ -47,9 +47,9 @@ class IntegracaoOdoo:
         # self.host = cfg.get('DATABASE', 'hostname')
         # self.db = cfg.get('DATABASE', 'path')
         self.caixa_user = cfg.get('INTEGRA', 'caixa_user')
-        # executa = threading.Thread(target=self._executando_scrpts)
-        # executa.start()
         self._executando_scrpts()
+        # envia('produto')
+        # self.action_atualiza_produtos()
         # self.action_devolucao()
         _logger.info ('Cursor liberado')
 
@@ -73,7 +73,7 @@ class IntegracaoOdoo:
                 _logger.info ('Produto atualizando.')
                 envia("produto")
                 # Compara as ataulizacoes do produto com o BD do PDV e atualiza ou insere se necessario
-                self.action_atualiza_produtos(None)
+                self.action_atualiza_produtos()
             _logger.info(f"Rodou : {rodou} vezes")
             if rodou == 1 or rodou % 4 == 0:
                 _logger.info ('Cliente atualizando.')
@@ -187,29 +187,20 @@ class IntegracaoOdoo:
             arquivo_json.write(dados_vals)
 
     def cron_integra_produtos(self):
-        session_ids = self.env['pos.session'].search([
-                ('state', '=', 'opened')])
-        for ses in session_ids:
-             self.action_atualiza_produtos(ses)
+        self.action_atualiza_produtos()
 
     def action_integra_produtos(self):
         # se nao for no pos enviar email com as msg_erro
         self.msg_integracao = self.action_atualiza_produtos(self)
 
-    def action_atualiza_produtos(self, session):
-        try:
-            # db = con.Conexao(self.host, self.database)
-            db = con()
-            dblocal = local_db(filename = 'lancamento.db', table = 'produto')
-        except:
-            msg_sis = u'Caminho ou nome do banco invalido. '
-        msg_erro = ''
+    def action_atualiza_produtos(self):
+        db = con()
+        _logger.info("Integrando PRODUTOS para o PDV")
         hj = datetime.now()
-        hj = hj - timedelta(days=1)
-        hj = datetime.strftime(hj,'%Y-%m-%d')
-        msg_erro = ''
-        msg_sis = 'Integrando Produtos para o PDV '
+        hj = hj - timedelta(days=20)
+        # hj = datetime.strftime(hj,'%Y-%m-%d')
 
+        data_limpa = hj
         # troquei esta rotina pq agora os dados estao no sqlite3 ja vindos do odoo
 
         # # pegando alteracoes pelo log
@@ -239,9 +230,11 @@ class IntegracaoOdoo:
         #     if not product_id.origin:
         #         continue
             #print ('Produto %s\n' %(str(product_id.product_tmpl_id.id)))
+        dblocal = local_db(filename = 'lancamento.db', table = 'lancamento')
         prod_novo = dblocal.consulta_produto()
         if not prod_novo:
-            return 'Sem produtos pra atualizar'
+            _logger.info("Sem produtos pra atualizar")
+            return False
         for pr in prod_novo:
             ncm = ''
             if pr['ncm']:
@@ -267,6 +260,7 @@ class IntegracaoOdoo:
                 produto = produto
             produto = produto.replace("'","")
             codp = str(pr['codproduto'])
+
             sqlp = "select FIRST 1 CODPRODUTO,\
                     DATACADASTRO from produtos where codpro = '%s'" %(pr["codpro"])
             prods = db.query(sqlp)
@@ -275,15 +269,17 @@ class IntegracaoOdoo:
             #sqlp = 'select codproduto from produtos where codpro like \'%s\'' %(codp+'%')
             if codbarra:
                 # 03/10/2022 limpando o codigo de barra qdo ja existe  
-                sql_bar = 'select codpro from produtos where cod_barra = \'%s\'' %(codbarra)
+                sql_bar = 'select codpro from produtos where cod_barra = \'%s\' AND CODPRO <> \'%s\'' %(codbarra, codpro)
                 barra = db.query(sql_bar)
-                up_bar = 'UPDATE PRODUTOS SET COD_BARRA = NULL WHERE COD_BARRA = \'%s\'' %(codbarra)
-                for sess_bar in barra:
-                    cod_p_barra = str(sess_bar[0])
-                    if str(codpro) == cod_p_barra:
-                        up_bar = ''
-                if len(barra) and up_bar:
-                    db.insert(up_bar)
+                if len(barra):
+                    _logger.info(f"Limpando codigo de barras, se existir outro item {codbarra} : {codpro}-{produto}")
+                    up_bar = 'UPDATE PRODUTOS SET COD_BARRA = NULL WHERE COD_BARRA = \'%s\' AND CODPRO <> \'%s\'' %(codbarra, codpro)
+                    for sess_bar in barra:
+                        cod_p_barra = str(sess_bar[0])
+                        if str(codpro) == cod_p_barra:
+                            up_bar = ''
+                    if len(barra) and up_bar:
+                        db.insert(up_bar)
             #prods = db.query(sqlp)
             #print ('TESTE - %s' %(product_id.name))
             data_cad = '2023/01/01 01:00:00'
@@ -294,6 +290,7 @@ class IntegracaoOdoo:
             data_fb = datetime.strftime(data_nova,'%Y.%m.%d, %H:%M:%S.0000')
             data_nova = datetime.strftime(data_nova,'%Y/%m/%d %H:%M:%S')
             if not len(prods) and pr['usa'] == 'S':
+                _logger.info(f"Inserindo item : {codpro}-{produto}")
                 #print ('Incluindo - %s' %(product_id.name))
                 #sqlp = 'select codproduto from produtos where codpro like \'%s\'' %(codp+'%')
 
@@ -305,9 +302,10 @@ class IntegracaoOdoo:
                 #    codp = str(product_id.id) 
                 #print ('Incluindo - %s-%s' %(str(product_id.id),product_id.name))
                 un = pr['unidademedida'][:2]
+                codproduto = pr['codproduto'] * 10
                 insere = 'INSERT INTO PRODUTOS (UNIDADEMEDIDA, PRODUTO, PRECOMEDIO, CODPRO,\
                           TIPOPRECOVENDA, ORIGEM, NCM, VALORUNITARIOATUAL, VALOR_PRAZO, TIPO, RATEIO, \
-                          QTDEATACADO, PRECOATACADO, DATACADASTRO'
+                          QTDEATACADO, PRECOATACADO, DATACADASTRO, CODPRODUTO'
                 if codbarra:
                     insere += ', COD_BARRA'
                 insere += ') VALUES ('
@@ -325,23 +323,26 @@ class IntegracaoOdoo:
                 insere += ',' + str(pr['qtdeatacado'])
                 insere += ',' + str(pr['precoatacado'])
                 insere += ', \'' + data_fb + '\''
+                insere += ',' + str(codproduto)
                 if codbarra:
                     insere += ', \'' + str(codbarra) + '\''
                 insere += ')'
                 #print (codp+'-'+produto)
-                try:
-                    retorno = db.insert(insere)
-                except:
-                    x = 0
-                # TODO tratar isso e enviar email
+                # try:
+                retorno = db.insert(insere)
                 if retorno:
-                    msg_erro += 'ERRO : %s ' %(retorno)
-                    if 'ERRO' in msg_erro:
-                        x = 1
-                    #print ('SQL %s' %str(insere))
+                    _logger.info(f"SQL erro : {retorno}")
+                # TODO tratar isso e enviar email
             elif len(prods):
                 if data_cad == data_nova:
+                    _logger.info(f"Item ja atualizado : {codpro}-{produto}")
+                    # limpa produtos antigos atualizados
+                    # data_limpa = datetime.strftime(hj,'%Y-%m-%d %H:%M:%S')
+                    # sql_delete = f"delete from produto where (codproduto = {pr['codproduto']}) and (datacadastro <= '{data_limpa}')"
+                    # print (sql_delete)
+                    # dblocal.delete_produto(sql_delete)
                     continue
+                _logger.info(f"Atualizando item : {codpro}-{produto}")
                 ativo = 'S'
                 if pr['usa'] != 'S':
                    ativo = 'N'
@@ -366,12 +367,9 @@ class IntegracaoOdoo:
                 #print ('SQL : %s' %(altera))
                 if retorno:
                     #print ('SQL erro : %s' %(altera))
-                    msg_erro += 'ERRO : %s ' %(retorno)
-                    if 'ERRO' in msg_erro:
-                        x = 1
+                    _logger.info(f"SQL erro : {retorno}")
         #print ('Integracao realizada com sucesso.')
-        msg_sis += 'Integracao Finalizada. '
-        return msg_sis + ' ' + msg_erro
+        _logger.info("Atualizacao do produto executada com sucesso.")
 
     def cron_integra_clientes(self):
         session_ids = self.env['pos.session'].search([
@@ -770,7 +768,7 @@ class IntegracaoOdoo:
                     arquivo_json.close()    
 
     def action_atualiza_vendas(self):
-        caixa_falta = False
+        caixa_falta = 0
         # Fazer um loop pela pasta de arquivos pegando o codigo dos pedidos
         # Para remover do select da movimento
         db = con()
@@ -787,7 +785,7 @@ class IntegracaoOdoo:
         sqlc = "SELECT r.IDCAIXACONTROLE, r.CODCAIXA,  \
                r.VALORABRE, r.VALORFECHA  \
                FROM CAIXA_CONTROLE r"
-        if len(caixa_falta):
+        if caixa_falta:
             sqlc += "WHERE r.CODCAIXA = %s AND r.CODUSUARIO = %s \
                ORDER BY r.CODCAIXA " %(caixa_falta, self.caixa_user)
         else:       

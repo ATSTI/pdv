@@ -32,8 +32,7 @@ class Database:
         self._db.commit()
 
     def consulta_produto(self):
-        cursor = self._db.execute('select * from {}'.format(
-            self._table))
+        cursor = self._db.execute('select * from produto')
         dados = cursor.fetchall()
         if not dados:
             return False
@@ -76,6 +75,10 @@ class Database:
         self._db.execute(row)
             # 'update {} set i1 = ? where t1 = ?'.format(self._table),
             # (row['i1'], row['t1']))
+        self._db.commit()
+
+    def delete_produto(self, sql_delete):
+        self._db.execute(sql_delete)
         self._db.commit()
 
     def delete(self, key):
