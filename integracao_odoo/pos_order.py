@@ -768,7 +768,7 @@ class IntegracaoOdoo:
                     arquivo_json.close()    
 
     def action_atualiza_vendas(self):
-        caixa_falta = 0
+        caixa_falta = False
         # Fazer um loop pela pasta de arquivos pegando o codigo dos pedidos
         # Para remover do select da movimento
         db = con()
@@ -786,10 +786,10 @@ class IntegracaoOdoo:
                r.VALORABRE, r.VALORFECHA  \
                FROM CAIXA_CONTROLE r"
         if caixa_falta:
-            sqlc += "WHERE r.CODCAIXA = %s AND r.CODUSUARIO = %s \
+            sqlc += " WHERE r.CODCAIXA = %s AND r.CODUSUARIO = %s \
                ORDER BY r.CODCAIXA " %(caixa_falta, self.caixa_user)
         else:       
-            sqlc += "WHERE DATAABERTURA > '%s' AND r.CODUSUARIO = %s \
+            sqlc += " WHERE DATAABERTURA > '%s' AND r.CODUSUARIO = %s \
                ORDER BY r.CODCAIXA " %(hj, self.caixa_user)
         caixa_aberto = db.query(sqlc)
         sqld = False
