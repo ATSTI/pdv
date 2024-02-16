@@ -344,21 +344,25 @@ class IntegracaoOdoo:
                     continue
                 _logger.info(f"Atualizando item : {codpro}-{produto}")
                 ativo = 'S'
+                codprox = pr['codpro']
                 if pr['usa'] != 'S':
                    ativo = 'N'
                    codbarra = ''
-                   codp = codp + 'x'
+                   codprox = codprox + 'x'
                 #print ('Alterando - %s' %(product_id.name))
                 altera = 'UPDATE PRODUTOS SET PRODUTO = '
                 altera += '\'' + produto + '\''
                 altera += ', VALOR_PRAZO = ' + str(p_venda)
                 altera += ', NCM = ' +  '\'' + str(ncm) + '\''
-                altera += ', CODPRO = ' +  '\'' + str(codp) + '\''
-                altera += ', ORIGEM = ' + str(pr['origem']) 
+                altera += ', CODPRO = ' +  '\'' + str(codprox) + '\''
+                if pr['origem']:
+                    altera += ', ORIGEM = ' + str(pr['origem']) 
                 altera += ', USA = \'' + ativo + '\''  
-                altera += ', RATEIO = \'' + str(pr['tipo_venda']) + '\''
-                altera += ', QTDEATACADO = ' + str(pr['qtdeatacado']) 
-                altera += ', PRECOATACADO = ' + str(pr['precoatacado'])
+                if pr['tipo_venda']:
+                    altera += ', RATEIO = \'' + str(pr['tipo_venda']) + '\''
+                if pr['qtdeatacado']:
+                    altera += ', QTDEATACADO = ' + str(pr['qtdeatacado']) 
+                    altera += ', PRECOATACADO = ' + str(pr['precoatacado'])
                 altera += ', DATACADASTRO = \'' + data_fb + '\''
                 if codbarra:
                     altera += ', COD_BARRA = \'' + str(codbarra) + '\''
