@@ -9174,9 +9174,9 @@ object fCTePrincipal: TfCTePrincipal
             Height = 527
             Top = 0
             Width = 1289
-            ActivePage = TabNfe
+            ActivePage = TabInfoCarga
             Align = alClient
-            TabIndex = 2
+            TabIndex = 0
             TabOrder = 0
             object TabInfoCarga: TTabSheet
               Caption = 'Inf. da Carga'
@@ -10525,7 +10525,7 @@ object fCTePrincipal: TfCTePrincipal
                 TabOrder = 3
               end
               object Label100: TLabel
-                Left = 296
+                Left = 496
                 Height = 15
                 Top = 376
                 Width = 51
@@ -10543,17 +10543,17 @@ object fCTePrincipal: TfCTePrincipal
                 ParentColor = False
               end
               object edtOutrosDesc: TEdit
-                Left = 296
+                Left = 496
                 Height = 23
                 Top = 392
-                Width = 904
+                Width = 704
                 TabOrder = 4
               end
               object edtOutrosNum: TEdit
-                Left = 40
+                Left = 76
                 Height = 23
                 Top = 440
-                Width = 464
+                Width = 189
                 TabOrder = 5
               end
               object Label102: TLabel
@@ -10575,9 +10575,9 @@ object fCTePrincipal: TfCTePrincipal
                 ParentColor = False
               end
               object Label104: TLabel
-                Left = 784
+                Left = 283
                 Height = 15
-                Top = 424
+                Top = 376
                 Width = 107
                 Align = alCustom
                 Caption = 'Data do Documento'
@@ -10589,12 +10589,16 @@ object fCTePrincipal: TfCTePrincipal
                 Top = 392
                 Width = 225
                 ItemHeight = 15
+                Items.Strings = (
+                  '00'
+                  '99'
+                )
                 TabOrder = 6
               end
               object dataOutrosEmi: TDateTimePicker
-                Left = 784
+                Left = 283
                 Height = 23
-                Top = 440
+                Top = 392
                 Width = 143
                 ShowCheckBox = True
                 Checked = False
@@ -10723,6 +10727,14 @@ object fCTePrincipal: TfCTePrincipal
                 )
                 TabOrder = 11
                 Visible = False
+              end
+              object Label181: TLabel
+                Left = 40
+                Height = 15
+                Top = 444
+                Width = 27
+                Caption = 'Doc :'
+                ParentColor = False
               end
             end
             object tabSeguro: TTabSheet
@@ -14581,6 +14593,7 @@ object fCTePrincipal: TfCTePrincipal
         Top = 128
         Width = 168
         Caption = 'Tomador'
+        OnClick = BitBtn18Click
         TabOrder = 17
       end
       object BitBtn19: TBitBtn

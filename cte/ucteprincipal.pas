@@ -456,6 +456,7 @@ type
     Label178: TLabel;
     Label179: TLabel;
     Label180: TLabel;
+    Label181: TLabel;
     lblCteAtual: TLabel;
     Label17: TLabel;
     Label19: TLabel;
@@ -694,6 +695,7 @@ type
     ZsqNFeCTE_NFE: TLongintField;
     ZsqNFeDPREV: TDateField;
     ZsqNFePIN: TLongintField;
+    procedure BitBtn18Click(Sender: TObject);
     function busca_generator(generator: String): integer;
     procedure ACBrCTe1StatusChange(Sender: TObject);
     procedure BitBtn10Click(Sender: TObject);
@@ -4895,6 +4897,11 @@ begin
   Result := ZsqGenerator.Fields[0].AsInteger;
   ZsqGenerator.Close
 
+
+end;
+
+procedure TfCTePrincipal.BitBtn18Click(Sender: TObject);
+begin
 
 end;
 
