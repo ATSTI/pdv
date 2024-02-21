@@ -197,10 +197,9 @@ class IntegracaoOdoo:
         db = con()
         _logger.info("Integrando PRODUTOS para o PDV")
         hj = datetime.now()
-        # data_limpa = hj - timedelta(days=1)
+        data_limpa = hj - timedelta(days=5)
         # hj = datetime.strftime(hj,'%Y-%m-%d')
-
-        data_limpa = hj.day
+        data_limpa = data_limpa.day
         # limpa produtos antigos atualizados
         sql_delete = f"delete from produto where CAST(substr(DataCadastro, 4, 2) AS INTEGER) < {str(data_limpa)}"
         # print (sql_delete)
@@ -268,7 +267,7 @@ class IntegracaoOdoo:
             codp = str(pr['codproduto'])
 
             sqlp = "select FIRST 1 CODPRODUTO,\
-                    DATACADASTRO from produtos where codpro = '%s'" %(pr["codpro"])
+                    DATACADASTRO, VALOR_PRAZO from produtos where codpro = '%s'" %(pr["codpro"])
             prods = db.query(sqlp)
             if pr['codpro']:
                 codpro = pr['codpro'].strip()
@@ -340,7 +339,7 @@ class IntegracaoOdoo:
                     _logger.info(f"SQL erro : {retorno}")
                 # TODO tratar isso e enviar email
             elif len(prods):
-                if data_cad == data_nova:
+                if data_cad == data_nova and prods[0][2] == p_venda:
                     _logger.info(f"Item ja atualizado : {codpro}-{produto}")
                     continue
                 _logger.info(f"Atualizando item : {codpro}-{produto}")
