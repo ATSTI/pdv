@@ -197,10 +197,15 @@ class IntegracaoOdoo:
         db = con()
         _logger.info("Integrando PRODUTOS para o PDV")
         hj = datetime.now()
-        hj = hj - timedelta(days=20)
+        # data_limpa = hj - timedelta(days=1)
         # hj = datetime.strftime(hj,'%Y-%m-%d')
 
-        data_limpa = hj
+        data_limpa = hj.day
+        # limpa produtos antigos atualizados
+        sql_delete = f"delete from produto where CAST(substr(DataCadastro, 4, 2) AS INTEGER) < {str(data_limpa)}"
+        # print (sql_delete)
+        dblocal.delete_produto(sql_delete)
+
         # troquei esta rotina pq agora os dados estao no sqlite3 ja vindos do odoo
 
         # # pegando alteracoes pelo log
@@ -336,11 +341,6 @@ class IntegracaoOdoo:
             elif len(prods):
                 if data_cad == data_nova:
                     _logger.info(f"Item ja atualizado : {codpro}-{produto}")
-                    # limpa produtos antigos atualizados
-                    # data_limpa = datetime.strftime(hj,'%Y-%m-%d %H:%M:%S')
-                    # sql_delete = f"delete from produto where (codproduto = {pr['codproduto']}) and (datacadastro <= '{data_limpa}')"
-                    # print (sql_delete)
-                    # dblocal.delete_produto(sql_delete)
                     continue
                 _logger.info(f"Atualizando item : {codpro}-{produto}")
                 ativo = 'S'
