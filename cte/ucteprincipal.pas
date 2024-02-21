@@ -2558,9 +2558,8 @@ begin
   edtEmitCidade.Text      := dmCte.cdsCTEE_CIDADE.AsString;
   edtEmitCep.Text         := dmCte.cdsCTEE_CEP.AsString;
   edtEmitUF.Text          := dmCte.cdsCTEE_ESTADO.AsString;
+
   // tomador
-  if(dmCte.cdsCTET_CNPJCPF.AsString <> '') then
-  begin
     rgTomador.ItemIndex      := dmCte.cdsCTETOMADORSERVICO.AsInteger;
     edtCNPJTomador.Text      := dmCte.cdsCTET_CNPJCPF.AsString;
     edtIETomador.Text        := dmCte.cdsCTET_IESTADUAL.AsString;
@@ -2575,8 +2574,9 @@ begin
     edtTomadorCidade.Text    := dmCte.cdsCTET_CIDADE.AsString;
     edtCepTomador.Text       := dmCte.cdsCTET_CEP.AsString;
     edtTomadorUF.Text        := dmCte.cdsCTET_ESTADO.AsString;
-  end;
+
   // rememtente
+  rgRem.ItemIndex          := dmCte.cdsCteREMETENTE.AsInteger;
   edtRemCNPJ.Text          := dmCte.cdsCTER_CNPJCPF.AsString;
   edtRemIE.Text            := dmCte.cdsCTER_IESTADUAL.AsString;
   edtRemRazao.Text         := dmCte.cdsCTER_RSOCIAL.AsString;
@@ -2590,7 +2590,9 @@ begin
   edtRemCidade.Text        := dmCte.cdsCTER_CIDADE.AsString;
   edtRemCep.Text           := dmCte.cdsCTER_CEP.AsString;
   edtRemUF.Text            := dmCte.cdsCTER_ESTADO.AsString;
+
   // destinatario
+  rgDest.ItemIndex         := dmCte.cdsCteDESTINATARIO.AsInteger;
   edtDestCNPJ.Text         := dmCte.cdsCTED_CNPJCPF.AsString;
   edtDestIE.Text           := dmCte.cdsCTED_IESTADUAL.AsString;
   edtDestRazao.Text        := dmCte.cdsCTED_RSOCIAL.AsString;
@@ -2604,10 +2606,9 @@ begin
   edtDestCidade.Text       := dmCte.cdsCTED_CIDADE.AsString;
   edtDestCep.Text          := dmCte.cdsCTED_CEP.AsString;
   edtDestUF.Text           := dmCte.cdsCTED_ESTADO.AsString;
-  // receedor
-  if(dmCte.cdsCTERE_CNPJCPF.AsString <> '') then
-  begin
-    rgRec.ItemIndex := 0 ;
+  // recebedor
+
+    rgRec.ItemIndex          := dmCte.cdsCteRECEBEDOR.AsInteger;
     edtRecCNPJ.Text          := dmCte.cdsCTERE_CNPJCPF.AsString;
     edtRecIE.Text            := dmCte.cdsCTERE_IESTADUAL.AsString;
     edtRecNome.Text          := dmCte.cdsCTERE_ENDERECO.AsString;
@@ -2621,12 +2622,9 @@ begin
     edtRecCidade.Text        := dmCte.cdsCTERE_CIDADE.AsString;
     edtRecCep.TExt           := dmCte.cdsCTERE_CEP.AsString;
     edtRecUF.Text            := dmCte.cdsCTERE_ESTADO.AsString;
-  end;
 
-  if(dmCte.cdsCTEEX_CNPJCPF.AsString <> '') then
-  begin
-    GroupBoxExpeditor.Visible := True;
-    rgExp.ItemIndex := 0;
+
+    rgExp.ItemIndex          := dmCte.cdsCteEXPEDITOR.AsInteger;
     edtExpCNPJ.Text          := dmCte.cdsCTEEX_CNPJCPF.AsString;
     edtExpIE.Text            := dmCte.cdsCTEEX_IESTADUAL.AsString;
     edtExpRazao.Text         := dmCte.cdsCTEEX_RSOCIAL.AsString;
@@ -2640,13 +2638,13 @@ begin
     edtExpCidade.Text        := dmCte.cdsCTEEX_CIDADE.AsString;
     edtExpCep.Text           := dmCte.cdsCTEEX_CEP.AsString;
     edtExpUF.Text            := dmCte.cdsCTEEX_ESTADO.AsString;
-  end;
 
-  if(dmCte.cdsCTEEX_CNPJCPF.AsString = '') then
-  begin
-    GroupBoxExpeditor.Visible := False;
-    rgExp.ItemIndex := 1;
-  end;
+
+  //if(dmCte.cdsCTEEX_CNPJCPF.AsString = '') then
+  //begin
+  //  GroupBoxExpeditor.Visible := False;
+  //  rgExp.ItemIndex := 1;
+  //end;
   //edtCaracAdTrans.Text := dmCte.cdsCTECARAC_TRANSP.AsString;
   //edtCaracAdServ.Text  := dmCte.cdsCTECARAC_SERV.AsString;
   //edtFuncEmi.Text      := dmCte.cdsCTEFUNC_EMI.AsString;
@@ -3708,26 +3706,30 @@ begin
   begin
     val_genCte := dmPdv.busca_generator('GEN_CTE');
     strInsere := 'INSERT INTO CTE ( COD_CTE, CODEMITENTE, CTE_ESTADO , CTE_CHAVE, CTE_CFOP , CTE_NATOP, MODELO '+
-      ', CTE_SERIE, CTE_NUMERO, DHEMI, MODAL, TIPOSERVICO, TIPOCTE, TPOEMISSAO,IFORPAG,  TPIMP , '+
-      '  ENV_CODCIDADE '+
-      ', ENV_CIDADE, ENV_ESTADO, INI_CODCIDADE, INI_CIDADE, INI_ESTADO, FIM_CODCIDADE, FIM_CIDADE '+
-      ', FIM_ESTADO,E_CNPJCPF, E_IESTADUAL, E_RSOCIAL, E_FANTASIA '+
+      ', CTE_SERIE, CTE_NUMERO, DHEMI, MODAL, TIPOSERVICO, TIPOCTE, TPOEMISSAO,IFORPAG,  TPIMP  '+
+      ', ENV_CODCIDADE '+
+      ', ENV_CIDADE, ENV_ESTADO, INI_CODCIDADE, INI_CIDADE, INI_ESTADO, FIM_CODCIDADE, FIM_CIDADE , FIM_ESTADO '+
+      ', E_CNPJCPF, E_IESTADUAL, E_RSOCIAL, E_FANTASIA '+
       ', E_TELEFONE , E_ENDERECO, E_NUMERO, E_COMPLEMENTO, E_BAIRRO, E_CODIGOMUNICIPI, E_CIDADE, E_CEP '+
       ', E_ESTADO,TOMADORSERVICO, T_CNPJCPF, T_IESTADUAL, T_RSOCIAL '+
       ', T_FANTASIA, T_TELEFONE, T_ENDERECO, T_NUMERO, T_COMPLEMENTO, T_BAIRRO, T_CODIGOMUNICIPI '+
-      ', T_CIDADE, T_CEP, T_ESTADO, R_CNPJCPF, R_IESTADUAL '+
+      ', T_CIDADE, T_CEP, T_ESTADO, REMETENTE, R_CNPJCPF, R_IESTADUAL '+
       ', R_RSOCIAL, R_FANTASIA, R_TELEFONE, R_ENDERECO, R_NUMERO, R_COMPLEMENTO,R_BAIRRO, R_CODIGOMUNICIPI '+
-      ', R_CIDADE, R_CEP, R_ESTADO, D_CNPJCPF, D_IESTADUAL '+
+      ', R_CIDADE, R_CEP, R_ESTADO, DESTINATARIO, D_CNPJCPF, D_IESTADUAL '+
       ', D_RSOCIAL,D_FANTASIA, D_TELEFONE, D_ENDERECO, D_NUMERO, D_COMPLEMENTO, D_BAIRRO, D_CODIGOMUNICIPI '+
-      ', D_CIDADE, D_CEP, D_ESTADO, EX_CNPJCPF, EX_IESTADUAL '+
+      ', D_CIDADE, D_CEP, D_ESTADO, EXPEDITOR, EX_CNPJCPF, EX_IESTADUAL '+
       ', EX_RSOCIAL , EX_FANTASIA, EX_TELEFONE, EX_ENDERECO, EX_NUMERO, EX_COMPLEMENTO, EX_BAIRRO '+
       ', EX_CODIGOMUNICIPI, EX_CIDADE, EX_CEP, EX_ESTADO ' +
-      ', RE_CNPJCPF, RE_IESTADUAL, RE_RSOCIAL, RE_FANTASIA, RE_TELEFONE , RE_ENDERECO, RE_NUMERO ' +
+      ', RECEBEDOR , RE_CNPJCPF, RE_IESTADUAL, RE_RSOCIAL, RE_FANTASIA, RE_TELEFONE , RE_ENDERECO, RE_NUMERO ' +
       ', RE_COMPLEMENTO, RE_BAIRRO, RE_CODIGOMUNICIPI, RE_CIDADE, RE_CEP, RE_ESTADO ' +
-      ', CARAC_TRANSP,CARAC_SERV , FUNC_EMI , RETIRA '+
-      ', DET_RETIRA ,VPREST,VREC,VALTOTTRI ,COMBCODSITTRIB , VALINFCARGA ,PROPRED, OUTCAT,RNTRC,DATARODPREV,RGRODLOTACAO'+
+      ' ,VPREST,VREC,VALTOTTRI ,COMBCODSITTRIB , VALINFCARGA ,PROPRED, OUTCAT,RNTRC,DATARODPREV,RGRODLOTACAO'+
       ', OBS_GERAL ,OUTPDOC ,OUDESCOUTRO ,OUNDOC ,OUDEMI,OUVDOCFISC ,EMITENTE '+
-      ',ANT_CNPJ,ANT_IE,ANT_UF,ANT_NOME,ANT_CHCTE,VALPREDBC,VALVBC,VALPICMS,VALVICMS,VALVCRED';
+      ',ANT_CNPJ,ANT_IE,ANT_UF,ANT_NOME,ANT_CHCTE,VALPREDBC,VALVBC,VALPICMS,VALVICMS,VALVCRED'+
+      ', UFPER , INFADFISCO, VPIS, VCOFINS, VIR, VINSS, VCSLL,INDIETOMA'+
+      ', XDESCSERV, VEICRENAVAM'+
+      ', VEICPLACA, VEIUF ';
+
+    {
     if (Trim(edtModelo.Text) = '67') then
     begin
       strInsere += ', UFPER , INFADFISCO, VPIS, VCOFINS, VIR, VINSS, VCSLL,INDIETOMA';
@@ -3735,6 +3737,8 @@ begin
       strInsere += ', VEICPLACA, VEIUF, OBSCONT, TCPF, TCNPJ, TTAF, TNROREGESTADUAL';
       strInsere += ', TXNOME, TIE, TUF, TTPPROP, TUFT, OBSFISCO';
     end;
+     }
+
     strInsere += ') VALUES ( ';
     FormatSettings.DecimalSeparator := '.';
 
@@ -3747,15 +3751,13 @@ begin
     strInsere := strInsere + ', ' + QuotedStr(edtModelo.Text); // MODELO
     strInsere := strInsere + ', ' + QuotedStr(edtSerieCte.Text); //CTE_SERIE
     strInsere := strInsere + ', ' + QuotedStr(edtNumCte.Text);  //CTE_NUMERO
-    strInsere := strInsere + ', ' + QuotedStr(FormatDateTime(
-      'mm/dd/yyyy hh:nn:ss',dataGerarCte.DateTime));  ///DHEMI
+    strInsere := strInsere + ', ' + QuotedStr(FormatDateTime('mm/dd/yyyy hh:nn:ss',dataGerarCte.DateTime));  ///DHEMI
     strInsere := strInsere + ', ' + IntToStr(rgModal.ItemIndex);  //MODAL
     strInsere := strInsere + ', ' + IntToStr(rgTipoServico.ItemIndex);  // TIPOSERVICO
     strInsere := strInsere + ', ' + IntToStr(rgTiposCte.ItemIndex);     // TIPOCTE
     strInsere := strInsere + ', ' + IntToStr(rgFormaEmissao.ItemIndex); // TPOEMISSAO
     strInsere := strInsere + ', ' + IntToStr(rgForPag.ItemIndex);       // IFORPAG
     strInsere := strInsere + ', ' + IntToStr(rgTipoDACTe.ItemIndex);    // TPIMP
-
     strInsere := strInsere + ', ' + QuotedStr(Trim(edtEnvCodCidade.Text));  // ENV_CODCIDADE
     strInsere := strInsere + ', ' + QuotedStr(Trim(edtEnvCidade.Text));   // ENV_CIDADE
     strInsere := strInsere + ', ' + QuotedStr(Trim(edtEnvUF.Text));     // ENV_ESTADO
@@ -3765,11 +3767,6 @@ begin
     strInsere := strInsere + ', ' + QuotedStr(Trim(edtFimCodCidade.Text));  // FIM_CODCIDADE
     strInsere := strInsere + ', ' + QuotedStr(Trim(edtFimCidade.Text)); // FIM_CIDADE
     strInsere := strInsere + ', ' + QuotedStr(Trim(edtFimUF.Text));
-    strInsere := strInsere + ', ' + QuotedStr(Trim(edtQuantidade.Text));
-    // EMITENTE
-    // E_RG
-    // E_CODIGOPAIS
-    // E_PAIS
 
     strInsere := strInsere + ', ' + QuotedStr(edtEmitCNPJ.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtEmitIE.Text);
@@ -3785,8 +3782,7 @@ begin
     strInsere := strInsere + ', ' + QuotedStr(edtEmitCep.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtEmitUF.Text);
 
-    strInsere := strInsere + ', ' +  IntToStr(rgTomador.ItemIndex);
-
+    strInsere := strInsere + ', ' + IntToStr(rgTomador.ItemIndex);
     strInsere := strInsere + ', ' + QuotedStr(edtCNPJTomador.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtIETomador.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtRazaoTomador.Text);
@@ -3801,6 +3797,7 @@ begin
     strInsere := strInsere + ', ' + QuotedStr(edtCepTomador.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtTomadorUF.Text);
 
+    strInsere := strInsere + ', ' + IntToStr(rgRem.ItemIndex);
     strInsere := strInsere + ', ' + QuotedStr(edtRemCNPJ.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtRemIE.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtRemRazao.Text);
@@ -3815,6 +3812,7 @@ begin
     strInsere := strInsere + ', ' + QuotedStr(edtRemCep.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtRemUF.Text);
 
+    strInsere := strInsere + ', ' + IntToStr(rgDest.ItemIndex);
     strInsere := strInsere + ', ' + QuotedStr(edtDestCNPJ.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtDestIE.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtDestRazao.Text);
@@ -3829,6 +3827,7 @@ begin
     strInsere := strInsere + ', ' + QuotedStr(edtDestCep.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtDestUF.Text);
 
+    strInsere := strInsere + ', ' + IntToStr(rgExp.ItemIndex);
     strInsere := strInsere + ', ' + QuotedStr(edtExpCNPJ.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtExpIE.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtExpRazao.Text);
@@ -3843,6 +3842,7 @@ begin
     strInsere := strInsere + ', ' + QuotedStr(edtExpCep.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtExpUF.Text);
 
+    strInsere := strInsere + ', ' + IntToStr(rgRec.ItemIndex);
     strInsere := strInsere + ', ' + QuotedStr(edtRecCNPJ.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtRecIE.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtRecRazao.Text);
@@ -3857,13 +3857,6 @@ begin
     strInsere := strInsere + ', ' + QuotedStr(edtRecCep.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtRecUF.Text);
 
-   // strInsere := strInsere + ', ' + QuotedStr(edtCaracAdTrans.Text); // CARAC_TRANSP
-   // strInsere := strInsere + ', ' + QuotedStr(edtCaracAdServ.Text); // CARAC_SERV
-   // strInsere := strInsere + ', ' + QuotedStr(edtFuncEmi.Text); // FUNC_EMI
-
-   // strInsere := strInsere + ', ' + IntToStr(rgRetira.ItemIndex);  //
-   // strInsere := strInsere + ', ' + QuotedStr(memDetRetira.Text);
-    verVlr := FloatToStr(dmCte.cdsCteVPREST.AsFloat);
     strInsere := strInsere + ', ' + FloatToStr(dmCte.cdsCteVPREST.AsFloat);
     strInsere := strInsere + ', ' + FloatToStr(dmCte.cdsCteVREC.AsFloat);
     strInsere := strInsere + ', ' + FloatToStr(dmCte.cdsCteVALTOTTRI.AsFloat);
@@ -3882,6 +3875,7 @@ begin
     strInsere := strInsere + ', ' + QuotedStr(combOutrosDocs.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtOutrosDesc.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtOutrosNum.Text);
+
     if (dataRodPrev.Checked) then
       strInsere := strInsere + ', ' + QuotedStr(FormatDateTime('mm/dd/yyyy',dataRodPrev.date))
     else
@@ -3890,6 +3884,7 @@ begin
     // Esse é o ultimo Campo do Insert ' EMITENTE'
     strInsere := strInsere + ', ' + QuotedStr(edtCodEmitente.Text);
    // docs anterior 15/08/19
+
     strInsere := strInsere + ', ' + QuotedStr(edtAntCNPJ.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtAntIE.Text);
     strInsere := strInsere + ', ' + QuotedStr(edtAntUF.Text );
@@ -3901,10 +3896,7 @@ begin
     strInsere := strInsere + ', ' + FloatToStr(dmCte.cdsCteVALVICMS.AsFloat);
     strInsere := strInsere + ', ' + FloatToStr(dmCte.cdsCteVALVCRED.AsFloat);
 
-    {strInsere += ', UFPER , INFADFISCO, VPIS, VCOFINS, VIR, VINSS, VCSLL';
-    strInsere += ', XDESCSERV, QCARGA, TPSERV, TAF, NROREGESTADUAL, VEICRENAVAM';
-    strInsere += ', VEICPLACA, VEIUF, OBSCONT, TCPF, TCNPJ, TTAF, TNROREGESTADUAL';
-    strInsere += ', TXNOME, TIE, TUF, TTPPROP, TUFT, OBSFISCO}
+   {
 
     if (Trim(edtModelo.Text) = '67') then
     begin
@@ -3914,10 +3906,15 @@ begin
         strInsere += ', ' + QuotedStr(Trim(memInfAdFisco.Text))
       else
         strInsere += ', NULL';
+   }
+      DecimalSeparator := '.';
+      strInsere += ', ' + QuotedStr(Trim(edtFimUF.Text));
+      strInsere += ', ' + QuotedStr(Trim(memInfAdFisco.Text));
       strInsere += ', ' + FloatToStr(dmCte.cdsCteVPIS.AsFloat);
       strInsere += ', ' + FloatToStr(dmCte.cdsCteVCOFINS.AsFloat);
       strInsere += ', ' + FloatToStr(dmCte.cdsCteVIR.AsFloat);
       strInsere += ', ' + FloatToStr(dmCte.cdsCteVINSS.AsFloat);
+      strInsere += ', ' + FloatToStr(dmCte.cdsCteVCSLL.AsFloat);
       strInsere += ', ' + IntToStr(rgTipoContribuinte.ItemIndex);
       strInsere += ', ' + QuotedStr(dmCte.cdsCteXDESCSERV.AsString);
       strInsere += ', ' + QuotedStr(dmCte.cdsCteVEICRENAVAM.AsString);
@@ -3926,12 +3923,14 @@ begin
       DecimalSeparator := ',';
     end;
 
+
+
     strInsere := strInsere + ')';
     MemoDados.Text := strInsere;
     result := strInsere;
-  end
-  else
-    result := '1';
+  //end
+  //else
+  //  result := '1';
   FormatSettings.DecimalSeparator := ',';
 end;
 
