@@ -204,6 +204,7 @@ class IntegracaoOdoo:
         # limpa produtos antigos atualizados
         sql_delete = f"delete from produto where CAST(substr(DataCadastro, 4, 2) AS INTEGER) < {str(data_limpa)}"
         # print (sql_delete)
+        dblocal = local_db(filename = 'lancamento.db', table = 'lancamento')
         dblocal.delete_produto(sql_delete)
 
         # troquei esta rotina pq agora os dados estao no sqlite3 ja vindos do odoo
@@ -235,7 +236,7 @@ class IntegracaoOdoo:
         #     if not product_id.origin:
         #         continue
             #print ('Produto %s\n' %(str(product_id.product_tmpl_id.id)))
-        dblocal = local_db(filename = 'lancamento.db', table = 'lancamento')
+        
         prod_novo = dblocal.consulta_produto()
         if not prod_novo:
             _logger.info("Sem produtos pra atualizar")
