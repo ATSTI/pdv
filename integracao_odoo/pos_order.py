@@ -35,8 +35,10 @@ _logger.setLevel(logging.INFO)
 class IntegracaoOdoo:
     _name = 'integracao.odoo'
     
-    def __init__(self, tipo='executa_tudo'):
-        _logger.info("verificando versao")
+    def __init__(self):
+        # import pdb
+        # pdb.set_trace()
+        # _logger.info("verificando versao")
         verifica_versao()
         cfg = configparser.ConfigParser()
         cfg.read('conf.ini')
@@ -45,20 +47,20 @@ class IntegracaoOdoo:
         # self.host = cfg.get('DATABASE', 'hostname')
         # self.db = cfg.get('DATABASE', 'path')
         # tipo = '1-executa_tudo'
-        tipo = 'executa_produto'
-        print("Tipo : %s" %(tipo))
+        #tipo = 'executa_produto'
+        #print("Tipo : %s" %('teste tetetstet'))
         # import pudb;pu.db
         # _logger.info (f'Tipo - {tipo}')
         self.caixa_user = cfg.get('INTEGRA', 'caixa_user')
-        if tipo == 'executa_tudo':
-            self._executando_scrpts()
-        if tipo == 'executa_produto':
-            print ("Atualizando produtos.")
-            _logger.info('Atualizando produtos')
-            envia('produto')
-            self.action_atualiza_produtos()
+        # if tipo == 'executa_tudo':
+        self._executando_scrpts()
+        # if tipo == 'executa_produto':
+        #     print ("Atualizando produtos.")
+        #     _logger.info('Atualizando produtos')
+        #     envia('produto')
+        #     self.action_atualiza_produtos()
         # # self.action_devolucao()
-        # _logger.info ('Cursor liberado')
+        _logger.info ('Cursor liberado')
 
     def _executando_scrpts(self):
         rodou = 1
