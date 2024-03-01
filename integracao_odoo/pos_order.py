@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 
 from datetime import datetime
-from datetime import date
 from datetime import timedelta
 import logging
 import unicodedata
@@ -10,7 +9,6 @@ import time
 import os
 import json
 import configparser
-import threading
 from main import Main as verifica_versao
 from atscon import Conexao as con
 from conecta_server import EnviaServer as envia
@@ -37,7 +35,7 @@ _logger.setLevel(logging.INFO)
 class IntegracaoOdoo:
     _name = 'integracao.odoo'
     
-    def __init__(self):
+    def __init__(self, tipo='executa_tudo'):
         _logger.info("verificando versao")
         verifica_versao()
         cfg = configparser.ConfigParser()
@@ -46,18 +44,28 @@ class IntegracaoOdoo:
         self.path_retorno = cfg.get('INTEGRA', 'path_retorno' )
         # self.host = cfg.get('DATABASE', 'hostname')
         # self.db = cfg.get('DATABASE', 'path')
+        # tipo = '1-executa_tudo'
+        tipo = 'executa_produto'
+        print("Tipo : %s" %(tipo))
+        # import pudb;pu.db
+        # _logger.info (f'Tipo - {tipo}')
         self.caixa_user = cfg.get('INTEGRA', 'caixa_user')
-        self._executando_scrpts()
-        # envia('produto')
-        # self.action_atualiza_produtos()
-        # self.action_devolucao()
-        _logger.info ('Cursor liberado')
+        if tipo == 'executa_tudo':
+            self._executando_scrpts()
+        if tipo == 'executa_produto':
+            print ("Atualizando produtos.")
+            _logger.info('Atualizando produtos')
+            envia('produto')
+            self.action_atualiza_produtos()
+        # # self.action_devolucao()
+        # _logger.info ('Cursor liberado')
 
     def _executando_scrpts(self):
         rodou = 1
         while(True):
             # Cria o ARQUIVO JSON dos Pedidos para ser enviado
-            _logger.info(f"Iniciando atualizacoes - {str(rodou)}.")
+            msg = "Iniciando atualizacoes - %s" %(str(rodou))
+            _logger.info(msg)
             self.action_atualiza_vendas()
             # Cria o ARQUIVO JSON dos Caixas para ser enviado
             if rodou == 1 or rodou % 10 == 0:
@@ -74,7 +82,7 @@ class IntegracaoOdoo:
                 envia("produto")
                 # Compara as ataulizacoes do produto com o BD do PDV e atualiza ou insere se necessario
                 self.action_atualiza_produtos()
-            _logger.info(f"Rodou : {rodou} vezes")
+            _logger.info("Rodou : %s vezes" %(rodou))
             if rodou == 1 or rodou % 4 == 0:
                 _logger.info ('Cliente atualizando.')
                 envia("cliente")
@@ -133,7 +141,7 @@ class IntegracaoOdoo:
             vals['name'] = ses[5]
             vals['caixa'] = ses[1]
             # vals['config_id'] = ses.config_id.id
-            data_abertura = f"{ses[6]} 20:00:00"
+            data_abertura = "%s 20:00:00" %(ses[6])
             vals['start_at'] = data_abertura
             if ses[3] == 'o':
                 vals['state'] = 'draft'
@@ -194,6 +202,7 @@ class IntegracaoOdoo:
         self.msg_integracao = self.action_atualiza_produtos(self)
 
     def action_atualiza_produtos(self):
+        # import pudb;pu.db
         db = con()
         _logger.info("Integrando PRODUTOS para o PDV")
         hj = datetime.now()
@@ -201,7 +210,7 @@ class IntegracaoOdoo:
         # hj = datetime.strftime(hj,'%Y-%m-%d')
         data_limpa = data_limpa.day
         # limpa produtos antigos atualizados
-        sql_delete = f"delete from produto where CAST(substr(DataCadastro, 4, 2) AS INTEGER) < {str(data_limpa)}"
+        sql_delete = "delete from produto where CAST(substr(DataCadastro, 4, 2) AS INTEGER) < %s" %(str(data_limpa))
         # print (sql_delete)
         dblocal = local_db(filename = 'lancamento.db', table = 'lancamento')
         dblocal.delete_produto(sql_delete)
@@ -277,7 +286,7 @@ class IntegracaoOdoo:
                 sql_bar = 'select codpro from produtos where cod_barra = \'%s\' AND CODPRO <> \'%s\'' %(codbarra, codpro)
                 barra = db.query(sql_bar)
                 if len(barra):
-                    _logger.info(f"Limpando codigo de barras, se existir outro item {codbarra} : {codpro}-{produto}")
+                    _logger.info("Limpando codigo de barras, se existir outro item %s - %s-%s" %(codbarra,codpro,produto)) 
                     up_bar = 'UPDATE PRODUTOS SET COD_BARRA = NULL WHERE COD_BARRA = \'%s\' AND CODPRO <> \'%s\'' %(codbarra, codpro)
                     for sess_bar in barra:
                         cod_p_barra = str(sess_bar[0])
@@ -295,7 +304,7 @@ class IntegracaoOdoo:
             data_fb = datetime.strftime(data_nova,'%Y.%m.%d, %H:%M:%S.0000')
             data_nova = datetime.strftime(data_nova,'%Y/%m/%d %H:%M:%S')
             if not len(prods) and pr['usa'] == 'S':
-                _logger.info(f"Inserindo item : {codpro}-{produto}")
+                _logger.info("Inserindo item : %s-%s" %(codpro,produto))
                 #print ('Incluindo - %s' %(product_id.name))
                 #sqlp = 'select codproduto from produtos where codpro like \'%s\'' %(codp+'%')
 
@@ -336,13 +345,13 @@ class IntegracaoOdoo:
                 # try:
                 retorno = db.insert(insere)
                 if retorno:
-                    _logger.info(f"SQL erro : {retorno}")
+                    _logger.info("SQL erro: %s" %(retorno))
                 # TODO tratar isso e enviar email
             elif len(prods):
                 if data_cad == data_nova and prods[0][2] == p_venda:
-                    _logger.info(f"Item ja atualizado : {codpro}-{produto}")
+                    _logger.info("Item ja atualizado: %s-%s" %(codpro, produto))
                     continue
-                _logger.info(f"Atualizando item : {codpro}-{produto}")
+                _logger.info("Atualizando item: %s-%s" %(codpro, produto))
                 ativo = 'S'
                 codprox = pr['codpro']
                 if pr['usa'] != 'S':
@@ -371,7 +380,7 @@ class IntegracaoOdoo:
                 #print ('SQL : %s' %(altera))
                 if retorno:
                     #print ('SQL erro : %s' %(altera))
-                    _logger.info(f"SQL erro : {retorno}")
+                    _logger.info("SQL erro : %s" %s(retorno))
         #print ('Integracao realizada com sucesso.')
         _logger.info("Atualizacao do produto executada com sucesso.")
 
@@ -744,7 +753,7 @@ class IntegracaoOdoo:
                 if os.path.exists(arquivo_nome):
                     continue
                 nome_busca = 'DEV-' + ord_name
-                _logger.info(f"Devolucao {ord_name}.")
+                _logger.info("Devolucao %s" %(ord_name))
                 item = []
                 vals = {}
                 vals['tipo'] = 'devolucao'
@@ -821,7 +830,7 @@ class IntegracaoOdoo:
             for mvs in movs:
                 ord_p = False
                 ord_name = '%s-%s' %(str(cx[1]),str(mvs[0]))
-                _logger.info(f"Pedidos novos : {ord_name}")
+                _logger.info("Pedidos novos: %s" %(ord_name))
                 arquivo_nome = self.path_envio + '/pedido_%s.json' %(ord_name)
                 if os.path.exists(arquivo_nome):
                     continue

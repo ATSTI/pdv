@@ -2,3 +2,4 @@ requests
 fdb
 configparser
 unidecode
+pandas

@@ -202,7 +202,7 @@ class EnviaServer:
         hj = datetime.now()       
         hj = datetime.strftime(hj,'%m-%d-%Y')
         dblocal = local_db(filename = 'lancamento.db', table = 'lancamento')
-        # lê arquivos na pasta
+        # le arquivos na pasta
         arquivos = os.listdir(self.path_envio)
         # para cada arquivo na pasta
         # db = con.Conexao(host, db)
