@@ -35,7 +35,7 @@ _logger.setLevel(logging.INFO)
 class IntegracaoOdoo:
     _name = 'integracao.odoo'
     
-    def __init__(self):
+    def __init__(self, tipo='geral'):
         # import pdb
         # pdb.set_trace()
         # _logger.info("verificando versao")
@@ -53,7 +53,7 @@ class IntegracaoOdoo:
         # _logger.info (f'Tipo - {tipo}')
         self.caixa_user = cfg.get('INTEGRA', 'caixa_user')
         # if tipo == 'executa_tudo':
-        self._executando_scrpts()
+        self._executando(tipo)
         # if tipo == 'executa_produto':
         #     print ("Atualizando produtos.")
         #     _logger.info('Atualizando produtos')
@@ -62,35 +62,45 @@ class IntegracaoOdoo:
         # # self.action_devolucao()
         _logger.info ('Cursor liberado')
 
-    def _executando_scrpts(self):
+    def _executando(self, tipo='geral'):
         rodou = 1
-        while(True):
-            # Cria o ARQUIVO JSON dos Pedidos para ser enviado
-            msg = "Iniciando atualizacoes - %s" %(str(rodou))
-            _logger.info(msg)
-            self.action_atualiza_vendas()
-            # Cria o ARQUIVO JSON dos Caixas para ser enviado
-            if rodou == 1 or rodou % 10 == 0:
-                _logger.info ('Caixa atualizando.')
-                self.action_atualiza_caixas(None)
-                # ESTA SENDO FEITO DIRETO NO PDV usando o main
-                # _logger.info ('Atualiza devolucoes.')
-                # self.action_devolucao()
-            _logger.info ('Enviando pedidos.')
-            envia("pedido")
-            # Busca alterações dos produtos e grava no database local para ser comparado com o BD do PDV
-            if rodou == 1 or rodou % 5 == 0:
-                _logger.info ('Produto atualizando.')
-                envia("produto")
-                # Compara as ataulizacoes do produto com o BD do PDV e atualiza ou insere se necessario
-                self.action_atualiza_produtos()
-            _logger.info("Rodou : %s vezes" %(rodou))
-            if rodou == 1 or rodou % 4 == 0:
-                _logger.info ('Cliente atualizando.')
-                envia("cliente")
-                self.action_atualiza_clientes()
-            rodou += 1
-            time.sleep(600)
+        if tipo == 'geral':
+            while(True):
+                # Cria o ARQUIVO JSON dos Pedidos para ser enviado
+                msg = "Iniciando atualizacoes - %s" %(str(rodou))
+                _logger.info(msg)
+                self.action_atualiza_vendas()
+                # Cria o ARQUIVO JSON dos Caixas para ser enviado
+                if rodou == 1 or rodou % 10 == 0:
+                    _logger.info ('Caixa atualizando.')
+                    self.action_atualiza_caixas(None)
+                    # ESTA SENDO FEITO DIRETO NO PDV usando o main
+                    # _logger.info ('Atualiza devolucoes.')
+                    # self.action_devolucao()
+                _logger.info ('Enviando pedidos.')
+                envia("pedido")
+                # Busca alterações dos produtos e grava no database local para ser comparado com o BD do PDV
+                if rodou == 1 or rodou % 5 == 0:
+                    _logger.info ('Produto atualizando.')
+                    envia("produto")
+                    # Compara as ataulizacoes do produto com o BD do PDV e atualiza ou insere se necessario
+                    self.action_atualiza_produtos()
+                _logger.info("Rodou : %s vezes" %(rodou))
+                if rodou == 1 or rodou % 4 == 0:
+                    _logger.info ('Cliente atualizando.')
+                    envia("cliente")
+                    self.action_atualiza_clientes()
+                rodou += 1
+                time.sleep(600)
+        elif tipo == 'produto':
+            print ("Atualizando produtos.")
+            envia("produto")
+            # Compara as ataulizacoes do produto com o BD do PDV e atualiza ou insere se necessario
+            self.action_atualiza_produtos()
+        elif tipo == 'cliente':
+            print ("Atualizando Clientes.")
+            envia("cliente")
+            self.action_atualiza_clientes()
 
     """
     A remoco de acentos foi baseada em uma resposta no Stack Overflow.

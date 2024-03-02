@@ -32,7 +32,10 @@ class Main():
             'atscon.py',
             'conecta_server.py',
             'pos_order.py',
-            'sqlite_bd.py'
+            'sqlite_bd.py',
+            'atualiza_clientes.py',
+            'atualiza_produtos.py',
+            'app_executa.py'
         ]
         for arq in arquivos:
             print ("Atualizando arquivos - " + arq) 

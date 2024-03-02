@@ -7,5 +7,5 @@ class AtualizaProdutos:
     
     def __init__(self):
         print("Atualizando produtos")
-        integra('executa_produto')
+        integra('produto')
         print("Atualizadossssssssssss")
