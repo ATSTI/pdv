@@ -101,6 +101,9 @@ class IntegracaoOdoo:
             print ("Atualizando Clientes.")
             envia("cliente")
             self.action_atualiza_clientes()
+        elif tipo == 'caixa':
+            print ("Atualizando Caixa.")
+            self.action_atualiza_caixas(None)
 
     """
     A remoco de acentos foi baseada em uma resposta no Stack Overflow.
