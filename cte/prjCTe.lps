@@ -22,8 +22,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCtePrincipal"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="2593"/>
-        <CursorPos X="63" Y="2601"/>
+        <TopLine Value="3180"/>
+        <CursorPos Y="3190"/>
         <UsageCount Value="200"/>
         <Bookmarks Count="8">
           <Item0 X="33" Y="1126" ID="4"/>
@@ -33,7 +33,7 @@
           <Item4 X="16" Y="2897" ID="8"/>
           <Item5 Y="1046" ID="3"/>
           <Item6 X="110" Y="3694" ID="2"/>
-          <Item7 X="24" Y="6010" ID="1"/>
+          <Item7 X="31" Y="3074" ID="1"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -112,8 +112,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uQuantCarga"/>
         <EditorIndex Value="11"/>
-        <TopLine Value="77"/>
-        <CursorPos X="70" Y="80"/>
+        <TopLine Value="48"/>
+        <CursorPos X="30" Y="66"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -204,7 +204,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1422"/>
         <CursorPos X="40" Y="1445"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit15>
       <Unit16>
         <Filename Value="C:\lazarus20\lcl\include\customform.inc"/>
@@ -290,7 +290,7 @@
         <EditorIndex Value="8"/>
         <TopLine Value="121"/>
         <CursorPos X="10" Y="130"/>
-        <UsageCount Value="34"/>
+        <UsageCount Value="35"/>
         <Loaded Value="True"/>
       </Unit27>
       <Unit28>
@@ -306,7 +306,7 @@
         <EditorIndex Value="1"/>
         <TopLine Value="584"/>
         <CursorPos X="59" Y="600"/>
-        <UsageCount Value="22"/>
+        <UsageCount Value="23"/>
         <Loaded Value="True"/>
       </Unit29>
       <Unit30>
@@ -329,7 +329,7 @@
         <EditorIndex Value="7"/>
         <TopLine Value="755"/>
         <CursorPos X="10" Y="763"/>
-        <UsageCount Value="30"/>
+        <UsageCount Value="31"/>
         <Loaded Value="True"/>
       </Unit32>
       <Unit33>
@@ -337,7 +337,7 @@
         <EditorIndex Value="4"/>
         <TopLine Value="401"/>
         <CursorPos X="56" Y="408"/>
-        <UsageCount Value="29"/>
+        <UsageCount Value="30"/>
         <Loaded Value="True"/>
       </Unit33>
       <Unit34>
@@ -345,7 +345,7 @@
         <EditorIndex Value="5"/>
         <TopLine Value="164"/>
         <CursorPos X="12" Y="181"/>
-        <UsageCount Value="23"/>
+        <UsageCount Value="24"/>
         <Loaded Value="True"/>
       </Unit34>
       <Unit35>
@@ -353,7 +353,7 @@
         <EditorIndex Value="6"/>
         <TopLine Value="504"/>
         <CursorPos X="90" Y="521"/>
-        <UsageCount Value="23"/>
+        <UsageCount Value="24"/>
         <Loaded Value="True"/>
       </Unit35>
       <Unit36>
@@ -361,130 +361,130 @@
         <EditorIndex Value="2"/>
         <TopLine Value="301"/>
         <CursorPos Y="320"/>
-        <UsageCount Value="22"/>
+        <UsageCount Value="23"/>
         <Loaded Value="True"/>
       </Unit36>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="4513" Column="15" TopLine="4497"/>
+        <Caret Line="3426" TopLine="3387"/>
       </Position1>
       <Position2>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="1581" Column="43" TopLine="1572"/>
+        <Caret Line="4686" Column="14" TopLine="4670"/>
       </Position2>
       <Position3>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="1888" Column="21" TopLine="1872"/>
+        <Caret Line="6060" Column="16" TopLine="6053"/>
       </Position3>
       <Position4>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="1889" Column="27" TopLine="1873"/>
+        <Caret Line="890" Column="26" TopLine="882"/>
       </Position4>
       <Position5>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3356" Column="40" TopLine="3345"/>
+        <Caret Line="3190" TopLine="3183"/>
       </Position5>
       <Position6>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3699" Column="19" TopLine="3683"/>
+        <Caret Line="6727" TopLine="6725"/>
       </Position6>
       <Position7>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="4036" Column="51" TopLine="4020"/>
+        <Caret Line="3884" TopLine="3882"/>
       </Position7>
       <Position8>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="4513" Column="15" TopLine="4497"/>
+        <Caret Line="6727" TopLine="6717"/>
       </Position8>
       <Position9>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="1581" Column="43" TopLine="1572"/>
+        <Caret Line="3884" TopLine="3874"/>
       </Position9>
       <Position10>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="1888" Column="21" TopLine="1872"/>
+        <Caret Line="5797" Column="3" TopLine="5795"/>
       </Position10>
       <Position11>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="1889" Column="27" TopLine="1873"/>
+        <Filename Value="uquantcarga.pas"/>
+        <Caret Line="36" Column="3" TopLine="25"/>
       </Position11>
       <Position12>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3356" Column="40" TopLine="3339"/>
+        <Caret Line="5797" Column="3" TopLine="5795"/>
       </Position12>
       <Position13>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3699" Column="19" TopLine="3683"/>
+        <Filename Value="uquantcarga.pas"/>
+        <Caret Line="76" Column="84" TopLine="74"/>
       </Position13>
       <Position14>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="4036" Column="51" TopLine="4020"/>
+        <Filename Value="uquantcarga.pas"/>
+        <Caret Line="19" Column="14" TopLine="78"/>
       </Position14>
       <Position15>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="4513" Column="15" TopLine="4497"/>
+        <Filename Value="uquantcarga.pas"/>
+        <Caret Line="87" TopLine="74"/>
       </Position15>
       <Position16>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="1581" Column="43" TopLine="1572"/>
+        <Filename Value="uquantcarga.pas"/>
+        <Caret Line="98" Column="3" TopLine="103"/>
       </Position16>
       <Position17>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="1888" Column="21" TopLine="1872"/>
+        <Filename Value="uquantcarga.pas"/>
+        <Caret Line="59" TopLine="49"/>
       </Position17>
       <Position18>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="1889" Column="27" TopLine="1873"/>
+        <Filename Value="uquantcarga.pas"/>
+        <Caret Line="60" TopLine="49"/>
       </Position18>
       <Position19>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3431" Column="42" TopLine="3419"/>
+        <Filename Value="uquantcarga.pas"/>
+        <Caret Line="61" TopLine="49"/>
       </Position19>
       <Position20>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="6178" Column="23" TopLine="6144"/>
+        <Filename Value="uquantcarga.pas"/>
+        <Caret Line="77" TopLine="68"/>
       </Position20>
       <Position21>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="7196" Column="26" TopLine="7180"/>
+        <Filename Value="uquantcarga.pas"/>
+        <Caret Line="79" TopLine="68"/>
       </Position21>
       <Position22>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="7240" Column="28" TopLine="7224"/>
+        <Filename Value="uquantcarga.pas"/>
+        <Caret Line="80" TopLine="68"/>
       </Position22>
       <Position23>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="7289" Column="26" TopLine="7273"/>
+        <Filename Value="uquantcarga.pas"/>
+        <Caret Line="81" TopLine="68"/>
       </Position23>
       <Position24>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="905" Column="31" TopLine="897"/>
+        <Filename Value="uquantcarga.pas"/>
+        <Caret Line="82" TopLine="68"/>
       </Position24>
       <Position25>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3431" Column="42" TopLine="3360"/>
+        <Filename Value="uquantcarga.pas"/>
+        <Caret Line="83" TopLine="68"/>
       </Position25>
       <Position26>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3426" TopLine="3387"/>
+        <Filename Value="uquantcarga.pas"/>
+        <Caret Line="84" TopLine="68"/>
       </Position26>
       <Position27>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="4686" Column="14" TopLine="4670"/>
+        <Filename Value="uquantcarga.pas"/>
+        <Caret Line="85" TopLine="69"/>
       </Position27>
       <Position28>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="6060" Column="16" TopLine="6053"/>
+        <Filename Value="uquantcarga.pas"/>
+        <Caret Line="86" TopLine="70"/>
       </Position28>
       <Position29>
-        <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="890" Column="26" TopLine="882"/>
+        <Filename Value="uquantcarga.pas"/>
+        <Caret Line="87" TopLine="71"/>
       </Position29>
       <Position30>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="2601" Column="53" TopLine="2632"/>
+        <Caret Line="3190" TopLine="3180"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -563,6 +563,20 @@
         <WatchKind Value="wpkWrite"/>
         <Source Value="ucteprincipal.pas"/>
         <Line Value="3865"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="ucteprincipal.pas"/>
+        <Line Value="3190"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="uquantcarga.pas"/>
+        <Line Value="59"/>
       </Item>
     </BreakPoints>
   </Debugging>

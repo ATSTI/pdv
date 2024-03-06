@@ -691,9 +691,9 @@ object fCTePrincipal: TfCTePrincipal
     Height = 583
     Top = 0
     Width = 1305
-    ActivePage = TabCteGeradas
+    ActivePage = TabCte
     Align = alClient
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     OnChange = pcPrincipalChange
     object TabCteGeradas: TTabSheet
@@ -14931,8 +14931,8 @@ object fCTePrincipal: TfCTePrincipal
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      DisplayFormat = ',##0.0'
-      EditFormat = ',##0.0'
+      DisplayFormat = ',##0.00'
+      EditFormat = ',##0.00'
       Precision = 2
     end
     object ZsqQCUNIDADE: TStringField
