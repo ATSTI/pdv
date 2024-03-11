@@ -35,6 +35,7 @@ class Main():
             'sqlite_bd.py',
             'atualiza_clientes.py',
             'atualiza_produtos.py',
+            'atualiza_caixas.py',
             'app_executa.py'
         ]
         for arq in arquivos:

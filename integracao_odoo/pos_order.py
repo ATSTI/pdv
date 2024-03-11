@@ -127,7 +127,7 @@ class IntegracaoOdoo:
         msg_erro = ''
         msg_sis = 'Integrando Caixa com o PDV '
         hj = datetime.now()
-        hj = hj - timedelta(days=3)
+        hj = hj - timedelta(days=5)
         hj = datetime.strftime(hj,'%Y-%m-%d')
 
         # sessao_ids = self.env['pos.session'].search([
@@ -803,7 +803,7 @@ class IntegracaoOdoo:
         _logger.info("Integrando Vendas para o PDV")
         hj = datetime.now()
         # hj = hj - timedelta(days=session.periodo_integracao)
-        hj = hj - timedelta(days=3)
+        hj = hj - timedelta(days=5)
         hj = datetime.strftime(hj,'%m-%d-%Y')
         caixa_usado = 'None'
         # TODO le o ultimo arquivo de retorno com as ultimas atualizacos

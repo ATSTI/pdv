@@ -20,7 +20,7 @@ class MinhaGUI():
         self.logbox = tk.Text(self.janela_principal, width=60, height=30)
         self.logbox.pack()
 
-        # Criando os botões
+        # Criando os botoes
         self.botaoProduto = Button(
             fm,
             text='Atualiza Produtos',
@@ -44,7 +44,7 @@ class MinhaGUI():
         # self.botaoCaixa.place(x=275, y=100)
         self.botao_sair = Button(fm, text='Sair', command=self.janela_principal.quit)
     
-        # Empacotando os botões janela principal
+        # Empacotando os botoes janela principal
         self.botaoProduto.pack(side=LEFT, fill=BOTH, expand=1)
         self.botaoCliente.pack(side=LEFT, fill=BOTH, expand=1)
         self.botaoCaixa.pack(side=LEFT, fill=BOTH, expand=1)
@@ -62,9 +62,6 @@ class MinhaGUI():
             self.logbox.insert("end", p.stdout.readline())
             self.logbox.see("end")
         self.logbox.insert("end", "--- feito. ---\n")
-
-    # def hello_world(self):
-    # messagebox.showinfo('Adoro a Apostila Python Progressivo!')
 
 
 gui = MinhaGUI()
