@@ -36,8 +36,6 @@ class IntegracaoOdoo:
     _name = 'integracao.odoo'
     
     def __init__(self, tipo='geral'):
-        # import pdb
-        # pdb.set_trace()
         # _logger.info("verificando versao")
         verifica_versao()
         cfg = configparser.ConfigParser()
@@ -49,7 +47,6 @@ class IntegracaoOdoo:
         # tipo = '1-executa_tudo'
         #tipo = 'executa_produto'
         #print("Tipo : %s" %('teste tetetstet'))
-        # import pudb;pu.db
         # _logger.info (f'Tipo - {tipo}')
         self.caixa_user = cfg.get('INTEGRA', 'caixa_user')
         # if tipo == 'executa_tudo':
@@ -79,7 +76,7 @@ class IntegracaoOdoo:
                     # self.action_devolucao()
                 _logger.info ('Enviando pedidos.')
                 envia("pedido")
-                # Busca alterações dos produtos e grava no database local para ser comparado com o BD do PDV
+                # Busca alteracoes dos produtos e grava no database local para ser comparado com o BD do PDV
                 if rodou == 1 or rodou % 5 == 0:
                     _logger.info ('Produto atualizando.')
                     envia("produto")
@@ -115,7 +112,7 @@ class IntegracaoOdoo:
         nfkd = unicodedata.normalize('NFKD', palavra)
         palavraSemAcento = u"".join([c for c in nfkd if not unicodedata.combining(c)])
 
-        # Usa expressão regular para retornar a palavra apenas com números, letras e espaço
+        # Usa expressao regular para retornar a palavra apenas com numeros, letras e espaco
         return re.sub('[^a-zA-Z0-9 \\\]', '', palavraSemAcento)    
 
     def action_atualiza_caixas(self, session):
@@ -217,7 +214,6 @@ class IntegracaoOdoo:
         self.msg_integracao = self.action_atualiza_produtos(self)
 
     def action_atualiza_produtos(self):
-        # import pudb;pu.db
         db = con()
         _logger.info("Integrando PRODUTOS para o PDV")
         hj = datetime.now()
@@ -559,7 +555,7 @@ class IntegracaoOdoo:
         self.msg_integracao = self.action_atualiza_recebidos(self)
         #else:
         #    raise UserError(
-        #            u'Já existe Atualização em Andamento, aguarde.')
+        #            u'Ja existe Atualizacao em Andamento, aguarde.')
         
     def action_atualiza_recebidos(self, session):
         try:
