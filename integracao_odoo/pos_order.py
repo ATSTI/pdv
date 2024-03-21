@@ -77,11 +77,11 @@ class IntegracaoOdoo:
                 _logger.info ('Enviando pedidos.')
                 envia("pedido")
                 # Busca alteracoes dos produtos e grava no database local para ser comparado com o BD do PDV
-                if rodou == 1 or rodou % 5 == 0:
-                    _logger.info ('Produto atualizando.')
-                    envia("produto")
-                    # Compara as ataulizacoes do produto com o BD do PDV e atualiza ou insere se necessario
-                    self.action_atualiza_produtos()
+                #if rodou == 1 or rodou % 5 == 0:
+                #    _logger.info ('Produto atualizando.')
+                #    envia("produto")
+                #    # Compara as ataulizacoes do produto com o BD do PDV e atualiza ou insere se necessario
+                #    self.action_atualiza_produtos()
                 _logger.info("Rodou : %s vezes" %(rodou))
                 if rodou == 1 or rodou % 4 == 0:
                     _logger.info ('Cliente atualizando.')
