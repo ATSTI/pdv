@@ -226,7 +226,7 @@ object fCTePrincipal: TfCTePrincipal
       TabOrder = 2
     end
     object btnGravarCTe: TBitBtn
-      Left = 704
+      Left = 712
       Height = 34
       Top = 5
       Width = 130
@@ -672,8 +672,8 @@ object fCTePrincipal: TfCTePrincipal
       Left = 304
       Height = 15
       Top = 28
-      Width = 101
-      Caption = 'Versão : 25/08/2023'
+      Width = 98
+      Caption = 'Versão :05/04/2024'
       ParentColor = False
     end
   end
@@ -6036,6 +6036,17 @@ object fCTePrincipal: TfCTePrincipal
             OnClick = btnProximo2Click
             ParentBidiMode = False
             TabOrder = 2
+          end
+          object Label181: TLabel
+            Left = 544
+            Height = 15
+            Top = 32
+            Width = 607
+            Caption = 'Remetente = <toma>0 . Expeditor <toma>1 . Recebedor <toma>2 . Destinatario <toma>3 . Outros <toma>4'
+            Font.Color = clRed
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
           end
         end
         object TabSheet6: TTabSheet

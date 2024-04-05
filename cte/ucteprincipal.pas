@@ -456,6 +456,7 @@ type
     Label178: TLabel;
     Label179: TLabel;
     Label180: TLabel;
+    Label181: TLabel;
     lblCteAtual: TLabel;
     Label17: TLabel;
     Label19: TLabel;
@@ -2533,8 +2534,9 @@ begin
   edtEmitCep.Text         := dmCte.cdsCTEE_CEP.AsString;
   edtEmitUF.Text          := dmCte.cdsCTEE_ESTADO.AsString;
   // tomador
-  if(dmCte.cdsCTET_CNPJCPF.AsString <> '') then
-  begin
+  //if(dmCte.cdsCTET_CNPJCPF.AsString <> '') then
+  //begin
+
     rgTomador.ItemIndex      := dmCte.cdsCTETOMADORSERVICO.AsInteger;
     edtCNPJTomador.Text      := dmCte.cdsCTET_CNPJCPF.AsString;
     edtIETomador.Text        := dmCte.cdsCTET_IESTADUAL.AsString;
@@ -2549,7 +2551,8 @@ begin
     edtTomadorCidade.Text    := dmCte.cdsCTET_CIDADE.AsString;
     edtCepTomador.Text       := dmCte.cdsCTET_CEP.AsString;
     edtTomadorUF.Text        := dmCte.cdsCTET_ESTADO.AsString;
-  end;
+  //end;
+
   // rememtente
   edtRemCNPJ.Text          := dmCte.cdsCTER_CNPJCPF.AsString;
   edtRemIE.Text            := dmCte.cdsCTER_IESTADUAL.AsString;
@@ -2565,6 +2568,7 @@ begin
   edtRemCep.Text           := dmCte.cdsCTER_CEP.AsString;
   edtRemUF.Text            := dmCte.cdsCTER_ESTADO.AsString;
   // destinatario
+
   edtDestCNPJ.Text         := dmCte.cdsCTED_CNPJCPF.AsString;
   edtDestIE.Text           := dmCte.cdsCTED_IESTADUAL.AsString;
   edtDestRazao.Text        := dmCte.cdsCTED_RSOCIAL.AsString;
@@ -2579,9 +2583,10 @@ begin
   edtDestCep.Text          := dmCte.cdsCTED_CEP.AsString;
   edtDestUF.Text           := dmCte.cdsCTED_ESTADO.AsString;
   // receedor
-  if(dmCte.cdsCTERE_CNPJCPF.AsString <> '') then
-  begin
-    rgRec.ItemIndex := 0 ;
+  //if(dmCte.cdsCTERE_CNPJCPF.AsString <> '') then
+ // begin
+
+    rgRec.ItemIndex          := dmCte.cdsCteRECEBEDOR.AsInteger;
     edtRecCNPJ.Text          := dmCte.cdsCTERE_CNPJCPF.AsString;
     edtRecIE.Text            := dmCte.cdsCTERE_IESTADUAL.AsString;
     edtRecNome.Text          := dmCte.cdsCTERE_ENDERECO.AsString;
@@ -2595,7 +2600,7 @@ begin
     edtRecCidade.Text        := dmCte.cdsCTERE_CIDADE.AsString;
     edtRecCep.TExt           := dmCte.cdsCTERE_CEP.AsString;
     edtRecUF.Text            := dmCte.cdsCTERE_ESTADO.AsString;
-  end;
+ // end;
 
   if(dmCte.cdsCTEEX_CNPJCPF.AsString <> '') then
   begin
@@ -3109,6 +3114,7 @@ end;
 
 procedure TfCTePrincipal.EditarT;
 begin
+  {
   if(rgTomador.ItemIndex <> 4) then
   begin
     vCteStr := 'UPDATE CTE SET  TOMADORSERVICO = ';
@@ -3144,41 +3150,44 @@ begin
     vCteStr := vCteStr +  IntToStr(val_genCte);
     MemoDados.Text := vCteStr;
   end;
-  if(rgTomador.ItemIndex = 4) then
-  begin
+ }
+ // if(rgTomador.ItemIndex = 4) then
+ // begin
+
     vCteStr := 'UPDATE CTE SET  TOMADORSERVICO = ';
     vCteStr := vCteStr + IntToStr(rgTomador.ItemIndex);
     vCteStr := vCteStr + ', T_CNPJCPF = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtCNPJTomador.text);
     vCteStr := vCteStr +  ',T_IESTADUAL = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtIETomador.text);
     vCteStr := vCteStr +  ',T_RSOCIAL = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtRazaoTomador.text);
     vCteStr := vCteStr +  ',T_FANTASIA = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtNomeTomador.text);
     vCteStr := vCteStr +  ',T_TELEFONE = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtFoneTomador.text);
     vCteStr := vCteStr +  ',T_ENDERECO = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtEndTomador.text);
     vCteStr := vCteStr +  ',T_NUMERO = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtNumTomador.text);
     vCteStr := vCteStr +  ',T_COMPLEMENTO = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtCompTomador.text);
     vCteStr := vCteStr +  ',T_BAIRRO = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtBairroTomador.text);
     vCteStr := vCteStr +  ',T_CODIGOMUNICIPI = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtTomadorCodCidade.text);
     vCteStr := vCteStr +  ',T_CIDADE = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtTomadorCidade.text);
     vCteStr := vCteStr +  ',T_CEP = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtCepTomador.text);
     vCteStr := vCteStr +  ',T_ESTADO = ';
-    vCteStr := vCteStr + QuotedStr('');
+    vCteStr := vCteStr + QuotedStr(edtTomadorUF.text);
 
     vCteStr := vCteStr +' where COD_CTE = ' ;
     vCteStr := vCteStr +  IntToStr(val_genCte);
     MemoDados.Text := vCteStr;
-  end;
+
+ // end;
   dmPdv.IbCon.ExecuteDirect(vCteStr);
 end;
 
@@ -3268,20 +3277,24 @@ procedure TfCTePrincipal.EditarREC;
 begin
   if(rgRec.ItemIndex = 0) then        /// Conferir 22/12/2022
   begin
-    if (edtRecCNPJ.Text <> '') then
-    begin
       vCteStr := 'UPDATE CTE SET ';
-      vCteStr := vCteStr + ' RE_CNPJCPF = ' + QuotedStr(edtRecCNPJ.Text);
-      if (edtRecIE.Text <> '') then
-      begin
-        vCteStr := vCteStr + ',RE_IESTADUAL = ' + QuotedStr(edtRecIE.Text);
-      end;
-      if (edtRecRazao.Text <> '') then
-      begin
-        vCteStr := vCteStr + ',RE_RSOCIAL = ' + QuotedStr(edtRecRazao.Text);
-      end;
+      vCteStr := vCteStr + ' RE_CNPJCPF = ' ;
+      vCteStr := vCteStr + QuotedStr(edtRecCNPJ.Text);
+
+      vCteStr := vCteStr + ',RE_IESTADUAL = ' ;
+      vCteStr := vCteStr + QuotedStr(edtRecIE.Text);
+
+
+      vCteStr := vCteStr + ',RE_RSOCIAL = ' ;
+      vCteStr := vCteStr + QuotedStr(edtRecRazao.Text);
+
+
       vCteStr := vCteStr +  ',RE_FANTASIA = ';
       vCteStr := vCteStr + QuotedStr(edtRecNome.Text);
+      vCteStr := vCteStr +  ',RECEBEDOR = ';
+      vCteStr := vCteStr + IntToStr(rgRec.ItemIndex);
+
+
       vCteStr := vCteStr +  ',RE_TELEFONE = ';
       vCteStr := vCteStr + QuotedStr(edtRecFone.Text);
       vCteStr := vCteStr +  ',RE_ENDERECO = ';
@@ -3305,25 +3318,28 @@ begin
       vCteStr := vCteStr +  IntToStr(val_genCte);
       MemoDados.Text := vCteStr;
       dmPdv.IbCon.ExecuteDirect(vCteStr);
-    end;
   end;
+
 
   if(rgRec.ItemIndex = 1) then
   begin
-    if (edtRecCNPJ.Text <> '') then
-    begin
       vCteStr := 'UPDATE CTE SET ';
-      vCteStr := vCteStr + ' RE_CNPJCPF = ' + QuotedStr('');
-      if (edtRecIE.Text <> '') then
-      begin
-        vCteStr := vCteStr + ',RE_IESTADUAL = ' + QuotedStr('');
-      end;
-      if (edtRecRazao.Text <> '') then
-      begin
-        vCteStr := vCteStr + ',RE_RSOCIAL = ' + QuotedStr('');
-      end;
+      vCteStr := vCteStr + ' RE_CNPJCPF = ' ;
+      vCteStr := vCteStr + QuotedStr('');
+
+      vCteStr := vCteStr + ',RE_IESTADUAL = ' ;
+      vCteStr := vCteStr + QuotedStr('');
+
+      vCteStr := vCteStr + ',RE_RSOCIAL = ';
+      vCteStr := vCteStr + QuotedStr('');
+
       vCteStr := vCteStr +  ',RE_FANTASIA = ';
       vCteStr := vCteStr + QuotedStr('');
+
+      vCteStr := vCteStr +  ',RECEBEDOR = ';
+      vCteStr := vCteStr + IntToStr(rgRec.ItemIndex);
+
+
       vCteStr := vCteStr +  ',RE_TELEFONE = ';
       vCteStr := vCteStr + QuotedStr('');
       vCteStr := vCteStr +  ',RE_ENDERECO = ';
@@ -3347,7 +3363,7 @@ begin
       vCteStr := vCteStr +  IntToStr(val_genCte);
       MemoDados.Text := vCteStr;
       dmPdv.IbCon.ExecuteDirect(vCteStr);
-    end;
+
   end;
 
 end;
@@ -4797,9 +4813,10 @@ begin
       //ShowMessage('Enviando');
       ACBrCTe1.Enviar(1); //(StrToInt(vNumLote));
 
+      //MemoResp.Lines.Text   := ACBrCTe1.WebServices.Enviar.RetWS;
+      //memoRespWS.Lines.Text := ACBrCTe1.WebServices.Enviar.RetornoWS;
       MemoResp.Lines.Text   := ACBrCTe1.WebServices.Enviar.RetWS;
       memoRespWS.Lines.Text := ACBrCTe1.WebServices.Enviar.RetornoWS;
-
 
       with MemoDados do
       begin
@@ -4819,7 +4836,8 @@ begin
      if (edtNumCte.Text <> '') then
      begin
       strEdita := 'UPDATE CTE SET NPROT = ';
-      strEdita := strEdita + QuotedStr(ACBrCTe1.WebServices.Retorno.Protocolo);
+      //strEdita := strEdita + QuotedStr(ACBrCTe1.WebServices.Retorno.Protocolo);
+      strEdita := strEdita + QuotedStr(ACBrCTe1.WebServices.Enviar.Protocolo);
       //strEdita := strEdita + ', CHCTE = ';
       //strEdita := strEdita + QuotedStr(ACBrCTe1.WebServices.Retorno.ChaveCTe);
       strEdita := strEdita + ', STATUS_CTE = ';
@@ -7016,6 +7034,7 @@ end;
 
 procedure TfCTePrincipal.rgTomadorClick(Sender: TObject);
 begin
+  {
   if rgTomador.ItemIndex = 4 then
   begin
     GroupBoxTomador.Visible := False;
@@ -7025,6 +7044,7 @@ begin
   begin
     GroupBoxTomador.Visible := True;
   end;
+  }
 end;
 
 procedure TfCTePrincipal.sbtnCaminhoCertClick(Sender: TObject);
