@@ -52,7 +52,7 @@ class ConectaServer():
         con = self._conexao_odoo()
         # db = local_db(filename = 'lancamento.db', table = 'empresa')
         empresa = con.env['res.company']
-        empresas_ids = empresa.search([(1, '=', 1)])
+        empresas_ids = empresa.search([('certificate_ecnpj_id', '=', False), ('certificate_nfe_id', '=', False)])
         
         for emp in empresa.browse(empresas_ids):
             if emp.certificate_nfe_id:
