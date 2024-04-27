@@ -23,8 +23,7 @@ class ConectaServer():
         self.login = cfg.get('INTEGRA', 'login')
         self.passwd = cfg.get('INTEGRA', 'password')
         verifica_versao()
-        #print ("Verificando cadastro de empresas")
-        import pudb;pu.db        
+        #print ("Verificando cadastro de empresas")        
         self.busca_empresa()
 
     def _conexao_odoo(self):
