@@ -84,7 +84,7 @@ class ConectaServer():
                 if cnpj:
                     #print (f"Criando o arquivo INI para a empresa: {emp.name}-{empresa_arquivo}")
                     # arquivo modelo
-                    empresa_modelo = os.path.join(self.path_retorno, 'empresa.ini')
+                    empresa_modelo = "empresa.ini"
                     #print(f"Copiando o empresa.ini para a Empresa nova {empresa_arquivo}")
                     # with open(empresa_modelo, 'r') as src, open('destination.txt', 'w') as dst:
                     shutil.copyfile(empresa_modelo,empresa_arquivo) 
