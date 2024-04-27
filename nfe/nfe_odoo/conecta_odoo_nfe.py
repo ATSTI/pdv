@@ -100,7 +100,7 @@ class ConectaServerNFe():
         ])
         # if not nfe_ids:
         #     _logger.info(f"Sem NFe para a empresa: {str(empresa)}")
-        arquivo = f"{self.path_retorno}/notas"
+        arquivo = os.path.join(self.path_retorno, "notas")
         # Check whether the specified path exists or not
         isExist = os.path.exists(arquivo)
         if not isExist:
@@ -119,7 +119,7 @@ class ConectaServerNFe():
         for prd in p_xml.browse(nfe_ids):
             chave = prd.document_key
             # _logger.info(f"NFe: {str(chave)}")
-            arquivo_name = f"{arquivo}/{prd.send_file_id.name}"
+            arquivo_name = os.path.join(arquivo, prd.send_file_id.name)
             if Path(arquivo_name).is_file():
                 # verificar se xml tem protocolo
                 arquivo_protocol = arquivo_name
@@ -138,7 +138,7 @@ class ConectaServerNFe():
                 _logger.info(f"NFe : {str(chave)} ja existe.")
                 continue
             xml = base64.b64decode(prd.send_file_id.datas).decode('iso-8859-1')
-            arquivo_name = f"{arquivo}/{prd.send_file_id.name}"
+            arquivo_name = os.path.join(arquivo, prd.send_file_id.name)
             save_file = open(arquivo_name, 'w')
             save_file.write(xml)
             _logger.info(f"Arquivo {str(arquivo_name)} criado.")
@@ -206,7 +206,7 @@ class ConectaServerNFe():
                             # continue
                     if not nfe.authorization_file_id:
                         file_name = f"NFe{nota[3]}-env.xml"
-                        arquivo = f"{self.path_retorno}/notas/{file_name}"
+                        arquivo = os.path.join(self.path_retorno, "notas", file_name)
                         xml_file = open(arquivo, 'r')
                         # envia o xml para o Odoo e altera a situacao
                         environment='prod' if nfe.nfe_environment == "1" else 'hml'
@@ -225,7 +225,7 @@ class ConectaServerNFe():
                         if event_id:
                             _logger.info(f"Evento criado com sucesso NFe: {nfe.document_number}")
                         attach = con.env["ir.attachment"]
-                        file_name = f"{nota[3]}-proc-env.xml"
+                        file_name = os.path.join(nota[3], "-proc-env.xml")
                         att_file = attach.create({
                             "name": file_name,
                             "res_model": "l10n_br_fiscal.event",

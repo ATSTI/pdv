@@ -23,7 +23,8 @@ class ConectaServer():
         self.login = cfg.get('INTEGRA', 'login')
         self.passwd = cfg.get('INTEGRA', 'password')
         verifica_versao()
-        #print ("Verificando cadastro de empresas")        
+        #print ("Verificando cadastro de empresas")
+        import pudb;pu.db        
         self.busca_empresa()
 
     def _conexao_odoo(self):
@@ -73,18 +74,18 @@ class ConectaServer():
             replace = ['-', ' ', '(',')', '/', '.', ':','º','+55']
             for i in replace:
                 cnpj = cnpj.replace(i, '')
-            empresa_arquivo = f"{self.path_retorno}/empresas"
+            empresa_arquivo = os.path.join(self.path_retorno, 'empresas')
             # Check whether the specified path exists or not
             isExist = os.path.exists(empresa_arquivo)
             if not isExist:
                 # Create a new directory because it does not exist
                 os.makedirs(empresa_arquivo)
-            empresa_arquivo = f"{empresa_arquivo}/{cnpj}.ini"
+            empresa_arquivo = os.path.join(empresa_arquivo, f"{cnpj}.ini")
             if not os.path.isfile(empresa_arquivo):        
                 if cnpj:
                     #print (f"Criando o arquivo INI para a empresa: {emp.name}-{empresa_arquivo}")
                     # arquivo modelo
-                    empresa_modelo = f"{self.path_retorno}/empresa.ini"
+                    empresa_modelo = os.path.join(self.path_retorno, 'empresa.ini')
                     #print(f"Copiando o empresa.ini para a Empresa nova {empresa_arquivo}")
                     # with open(empresa_modelo, 'r') as src, open('destination.txt', 'w') as dst:
                     shutil.copyfile(empresa_modelo,empresa_arquivo) 
