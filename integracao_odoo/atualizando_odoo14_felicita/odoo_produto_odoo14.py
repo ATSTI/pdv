@@ -41,6 +41,7 @@ hj = datetime.strftime(hj,'%m-%d-%Y')
 x = sys.argv[1]
 y = sys.argv[2]
 print (f"fazendo id : {x} - {y}")
+"""
 p = a_prod.search([('id', '>', x), ('id', '<', y)])
 for pr in a_prod.browse(p):
     pbd = b_prod.search([('default_code', '=', pr.default_code)])
@@ -52,6 +53,16 @@ for pr in a_prod.browse(p):
             continue
         prod_id.write({'list_price': preco_a})
         print (f"produto: {prod_id.product_tmpl_id.id} preco_a {preco_a} preco_b {preco_b}")
+"""
+
+import pudb;pu.db
+p = a_prod.search([('qtde_atacado', '>', 0)])
+for pr in a_prod.browse(p):
+    pbd = b_prod.search([('default_code', '=', pr.default_code)])
+    if pbd:
+        prod_id = b_prod.browse(pbd)
+        prod_id.write({'qtde_atacado': pr.qtde_atacado, 'preco_atacado': pr.preco_atacado})
+        print (f"produto: {prod_id.product_tmpl_id.id}")
     
 # Corringindo user_id do pos order
 """
