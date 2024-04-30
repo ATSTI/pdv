@@ -9,7 +9,7 @@ uses
   StdCtrls, Menus, Buttons, DBGrids, EditBtn, Spin, DBCtrls, ZConnection,
   ZDataset, DateTimePicker, SynEdit, Types, IniFiles, ACBrCTe,
   ACBrCTeDACTEClass, ACBrCTeDACTeRLClass, ACBrMail, ACBrBase, ACBrDFe,
-  pcnConversao, pcteConversaoCTe, DateUtils, ACBrUtil, db, ACBrDFeSSL;
+  pcnConversao, pcteConversaoCTe, DateUtils, ACBrUtil, db, ACBrDFeSSL,IdHTTP, httpsend;
 
 type
 
@@ -325,6 +325,7 @@ type
     GroupBoxRecebedor: TGroupBox;
     GroupBoxRemetente: TGroupBox;
     GroupBoxTomador: TGroupBox;
+    IdHTTP1: TIdHTTP;
     Image1: TImage;
     Image2: TImage;
     Image3: TImage;
@@ -7020,12 +7021,33 @@ begin
   end;
 end;
 
+function MemoryStreamToString(M: TMemoryStream): string;
+begin
+  SetString(Result, PChar(M.Memory), M.Size div SizeOf(Char));
+end;
+
 procedure TfCTePrincipal.FormShow(Sender: TObject);
 var
    emp,nomexeC ,nomexebd : string ;
    vDate1 , vDate2 : TdateTime;
+
+   data, url , empresa , memoLic : String;
+   HTTP: THTTPSend;
+   sucesso: boolean;
+   resposta: TMemoryStream;
+   U:UTF8String;
+   Data_json    : TStringStream;
+   Params : TStringList;
+
+
 begin
   //fCTePrincipal.Caption := 'CTe - Conhecimento de Transporte Eletrônico, versão ' +
+
+  //empresa := '09.535.737/0001-85';
+  //edtEmitCNPJ.Text := dmPdv.sqBusca.FieldByName('CNPJ_CPF').AsString;
+
+
+
 
   dmPdv.sqEmpresa.Open;
   while not dmPdv.sqEmpresa.Eof do
@@ -7038,6 +7060,42 @@ begin
     comboEmpresa.ItemIndex :=0;
     buscaEmpresa(dmPdv.sqEmpresaRAZAO.AsString);
   end;
+
+  empresa := edtEmitCNPJ.Text;
+
+  Params := TStringList.Create;
+  Params.Add('cnpj:' + empresa);
+  sucesso := false;
+  HTTP := THTTPSend.Create;
+  resposta := TMemoryStream.Create;
+  HTTP.Clear;
+  HTTP.Protocol:='1.1';
+  HTTP.MimeType:='Content-Type: application/json';
+  try
+    data:= '[{"cnpj":"' + empresa + '"}]';
+    U := data;
+    url:= 'http://server.atsti.com.br:48069/clientecnpj'; // /?cnpj=' + empresa;
+    http.Document.WriteBuffer(Pointer(U)^,Length(U));
+    http.Headers.Add(Format('Content-Length: %d',[http.Document.Size]));
+    http.Document.Position:=0;
+
+    if (HttpPostURL(url,data,resposta))  then
+    // Abaixo antes para ver o resultado  //
+    resposta.SaveToFile('c:\home\CTE_OS\resp.txt');
+    memoLic :=  MemoryStreamToString(resposta);
+
+  finally
+    HTTP.Free;
+  end;
+
+  if( memoLic = '10')then
+  begin
+    ShowMessage('Entre em Contato com a ATS');
+    BitBtn2.Enabled:= False;
+    exit;
+  end;
+
+
   {
   combCodSitTrib.Items.Add('00 - Trib. Normal do ICMS');
   combCodSitTrib.Items.Add('20 - Trib. Redução BC do ICMS');

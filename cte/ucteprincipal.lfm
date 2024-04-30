@@ -4,8 +4,8 @@ object fCTePrincipal: TfCTePrincipal
   Top = 18
   Width = 1305
   Caption = 'CTe - Conhecimento de Transporte Eletrônico'
-  ClientHeight = 0
-  ClientWidth = 0
+  ClientHeight = 649
+  ClientWidth = 1305
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnShow = FormShow
@@ -13989,5 +13989,22 @@ object fCTePrincipal: TfCTePrincipal
     DataSet = ZsqQC
     Left = 536
     Top = 545
+  end
+  object IdHTTP1: TIdHTTP
+    ProxyParams.BasicAuthentication = False
+    ProxyParams.ProxyPort = 0
+    Request.ContentLength = -1
+    Request.ContentRangeEnd = 0
+    Request.ContentRangeStart = 0
+    Request.ContentRangeInstanceLength = -1
+    Request.ContentType = 'text/html'
+    Request.Accept = 'text/html, */*'
+    Request.BasicAuthentication = False
+    Request.UserAgent = 'Mozilla/3.0 (compatible; Indy Library)'
+    Request.Ranges.Units = 'bytes'
+    Request.Ranges = <>
+    HTTPOptions = [hoForceEncodeParams]
+    Left = 108
+    Top = 84
   end
 end
