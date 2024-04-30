@@ -40,12 +40,13 @@
         <ComponentName Value="fPDV_Rec"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="10"/>
-        <TopLine Value="2060"/>
-        <CursorPos X="7" Y="2074"/>
+        <TopLine Value="311"/>
+        <CursorPos X="69" Y="323"/>
         <UsageCount Value="205"/>
         <Bookmarks Count="1">
-          <Item0 X="11" Y="1989" ID="5"/>
+          <Item0 X="11" Y="1990" ID="5"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -357,7 +358,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uReceber"/>
         <EditorIndex Value="3"/>
-        <CursorPos X="109" Y="9"/>
+        <CursorPos X="28" Y="4"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -430,7 +431,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="30"/>
         <CursorPos X="29" Y="31"/>
-        <UsageCount Value="155"/>
+        <UsageCount Value="157"/>
       </Unit35>
       <Unit36>
         <Filename Value="usaldo.pas"/>
@@ -438,11 +439,10 @@
         <ComponentName Value="fsaldo"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="5"/>
         <TopLine Value="157"/>
         <CursorPos X="82" Y="178"/>
-        <UsageCount Value="28"/>
+        <UsageCount Value="30"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit36>
@@ -665,7 +665,7 @@
         <UsageCount Value="10"/>
       </Unit65>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="uabrircaixa2.pas"/>
         <Caret Line="64" TopLine="56"/>
@@ -782,6 +782,10 @@
         <Filename Value="uabrircaixa2.pas"/>
         <Caret Line="110" TopLine="97"/>
       </Position29>
+      <Position30>
+        <Filename Value="updv_rec.pas"/>
+        <Caret Line="2061" Column="24" TopLine="2054"/>
+      </Position30>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
@@ -802,7 +806,7 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="updv_rec.pas"/>
-        <Line Value="1312"/>
+        <Line Value="1313"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
