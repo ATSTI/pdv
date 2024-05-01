@@ -7081,7 +7081,7 @@ begin
 
     if (HttpPostURL(url,data,resposta))  then
     // Abaixo antes para ver o resultado  //
-    resposta.SaveToFile('c:\home\CTE_OS\resp.txt');
+    //resposta.SaveToFile('c:\home\CTE_OS\resp.txt');
     memoLic :=  MemoryStreamToString(resposta);
 
   finally
