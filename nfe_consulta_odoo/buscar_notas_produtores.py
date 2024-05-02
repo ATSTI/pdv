@@ -50,6 +50,8 @@ def enviando_arquivo(notas):
     }
     vals = {}
     vals['params'] = notas
+    # arquivo = open('/home/publico/tmp/arquivo.txt', 'w+')
+    # arquivo.write(str(notas))
     json_data = json.dumps(vals)
     rq.post("http://{}".format(base_url), data=json_data, headers=json_headers, cookies=cookies)
 
