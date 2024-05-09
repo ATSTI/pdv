@@ -229,8 +229,9 @@ class IntegracaoOdoo:
         # prod_novo = dblocal.consulta_produto()
 
         # 09/05/2024 parei de usar o sqlite usando um arquivo em json
+        arquivo_json = os.path.join(self.path_envio, "produtos.json")
         try:
-            f = open('produtos.json')
+            f = open(arquivo_json)
         except:
             return
         produto_arquivo = json.load(f)
