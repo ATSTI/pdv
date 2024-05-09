@@ -88,7 +88,7 @@ class EnviaServer:
 
     def buscando_produtos(self):
         # dblocal = local_db(filename = 'lancamento.db', table = 'lancamento')
-        conn = db.connect('lancamento.db')
+        # conn = db.connect('lancamento.db')
         # cur_db = conn.cursor()
         headers = {'Content-type': 'application/json'}
         AUTH_URL = "http://%s/web/session/authenticate" %(self.url)
@@ -134,13 +134,13 @@ class EnviaServer:
             with open(arquivo_json, 'w', encoding='utf-8') as f:
                 json.dump(file_json, f, ensure_ascii=False, indent=4)
 
-            for item in file_json.values():
-                if item != None and len(item)>5:
-                    item_json = eval(item)
-                    # for dado in item_json:
-                    m_df = pd.DataFrame(item_json)
-                    # print(m_df)
-                    m_df.to_sql('produto', conn, if_exists='replace', index=False)
+            # for item in file_json.values():
+            #     if item != None and len(item)>5:
+            #         item_json = eval(item)
+            #         # for dado in item_json:
+            #         m_df = pd.DataFrame(item_json)
+            #         # print(m_df)
+            #         m_df.to_sql('produto', conn, if_exists='replace', index=False)
 
             #         
             #             ja_recebido = self.dblocal.consulta_nome(
