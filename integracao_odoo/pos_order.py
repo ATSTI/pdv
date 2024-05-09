@@ -216,47 +216,29 @@ class IntegracaoOdoo:
     def action_atualiza_produtos(self):
         db = con()
         _logger.info("Integrando PRODUTOS para o PDV")
-        hj = datetime.now()
-        data_limpa = hj - timedelta(days=5)
-        # hj = datetime.strftime(hj,'%Y-%m-%d')
-        data_limpa = data_limpa.day
-        # limpa produtos antigos atualizados
-        sql_delete = "delete from produto where CAST(substr(DataCadastro, 4, 2) AS INTEGER) < %s" %(str(data_limpa))
-        # print (sql_delete)
-        dblocal = local_db(filename = 'lancamento.db', table = 'lancamento')
-        dblocal.delete_produto(sql_delete)
+        #import pudb;pu.db
+        # hj = datetime.now()
+        # data_limpa = hj - timedelta(days=5)
+        # # hj = datetime.strftime(hj,'%Y-%m-%d')
+        # data_limpa = data_limpa.day
+        # # limpa produtos antigos atualizados
+        # sql_delete = "delete from produto where CAST(substr(DataCadastro, 4, 2) AS INTEGER) < %s" %(str(data_limpa))
+        # # print (sql_delete)
+        # dblocal = local_db(filename = 'lancamento.db', table = 'lancamento')
+        # dblocal.delete_produto(sql_delete)     
+        # prod_novo = dblocal.consulta_produto()
 
-        # troquei esta rotina pq agora os dados estao no sqlite3 ja vindos do odoo
-
-        # # pegando alteracoes pelo log
-        # audit = self.env['auditlog.log'].sudo().search([
-        #     ('create_date', '>=', hj),
-        #     ('model_id', '=', 'product.template'),
-        # ])
-        # prod_ids = []
-        # prd_ids = set()
-        # for pr in audit:
-        #     if len(pr.line_ids):
-        #         prd_ids.add(pr.res_id)
-    
-        # audit = self.env['auditlog.log'].sudo().search([
-        #     ('create_date', '>=', hj),
-        #     ('model_id', '=', 'product.product'),
-        # ])
-        # for pr in audit:
-        #     if len(pr.line_ids):
-        #         prd_ids.add(pr.res_id)
-
-        # if len(prd_ids):
-        #     prod_ids = self.env['product.product'].sudo().search([
-        #         ('product_tmpl_id','in',list(prd_ids))])
-
-        # for product_id in prod_ids:
-        #     if not product_id.origin:
-        #         continue
-            #print ('Produto %s\n' %(str(product_id.product_tmpl_id.id)))
+        # 09/05/2024 parei de usar o sqlite usando um arquivo em json
+        try:
+            f = open('produtos.json')
+        except:
+            return
+        produto_arquivo = json.load(f)
         
-        prod_novo = dblocal.consulta_produto()
+        prod_novo = json.loads(produto_arquivo['result'])
+        # for t in qa:
+        #     print(str(t['codproduto']) + '-' + t['produto'])
+
         if not prod_novo:
             _logger.info("Sem produtos pra atualizar")
             return False
@@ -316,7 +298,7 @@ class IntegracaoOdoo:
             data_nova = datetime.strftime(data_nova,'%Y/%m/%d %H:%M:%S')
             if not len(prods) and pr['usa'] == 'S':
                 _logger.info("Inserindo item : %s-%s" %(codpro,produto))
-                #print ('Incluindo - %s' %(product_id.name))
+                print ('Incluindo - %s' %(product_id.name))
                 #sqlp = 'select codproduto from produtos where codpro like \'%s\'' %(codp+'%')
 
                 #prodsa = db.query(sqlp)					
@@ -352,11 +334,13 @@ class IntegracaoOdoo:
                 if codbarra:
                     insere += ', \'' + str(codbarra) + '\''
                 insere += ')'
-                #print (codp+'-'+produto)
+                
                 # try:
                 retorno = db.insert(insere)
                 if retorno:
+                    print ('ERRRRRRRRRRRRROOOOOOOOOOOO : ' + codp + '-' + produto)
                     _logger.info("SQL erro: %s" %(retorno))
+                print (codp+'-'+produto)
                 # TODO tratar isso e enviar email
             elif len(prods):
                 if data_cad == data_nova and prods[0][2] == p_venda:
@@ -369,7 +353,7 @@ class IntegracaoOdoo:
                    ativo = 'N'
                    codbarra = ''
                    codprox = codprox + 'x'
-                #print ('Alterando - %s' %(product_id.name))
+                print ('Alterando - %s' %(produto))
                 altera = 'UPDATE PRODUTOS SET PRODUTO = '
                 altera += '\'' + produto + '\''
                 altera += ', VALOR_PRAZO = ' + str(p_venda)
@@ -388,10 +372,10 @@ class IntegracaoOdoo:
                     altera += ', COD_BARRA = \'' + str(codbarra) + '\''
                 altera += ' WHERE CODPRO = \'' + str(pr['codpro']) + '\''
                 retorno = db.insert(altera)
-                #print ('SQL : %s' %(altera))
+                print ('SQL : %s' %(altera))
                 if retorno:
-                    #print ('SQL erro : %s' %(altera))
-                    _logger.info("SQL erro : %s" %s(retorno))
+                    print ('SQL erro : %s' %(altera))
+                    _logger.info("SQL erro : %s" %(retorno))
         #print ('Integracao realizada com sucesso.')
         _logger.info("Atualizacao do produto executada com sucesso.")
 
