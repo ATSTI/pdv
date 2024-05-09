@@ -5,9 +5,9 @@ import configparser
 from datetime import datetime
 # from atscon import Conexao as con
 from sqlite_bd import Database as local_db
-import numpy as np
+# import numpy as np
 import pandas as pd
-from pandas import DataFrame, Series
+# from pandas import DataFrame, Series
 import sqlite3 as db
 
 
@@ -121,6 +121,7 @@ class EnviaServer:
         }
 
         # arquivo = open(self.path_envio + '/' + file_name, mode="r")
+        arquivo_json = os.path.join(self.path_envio, "produtos.json")
         vals = {}
         # vals['params'] = json.load(arquivo)
         # vals['tipo'] = arq
@@ -130,6 +131,8 @@ class EnviaServer:
         # hj = datetime.strftime(hj,'%m-%d-%Y')
         if retorno:
             file_json = retorno.json()
+            with open(arquivo_json, 'w', encoding='utf-8') as f:
+                json.dump(file_json, f, ensure_ascii=False, indent=4)
 
             for item in file_json.values():
                 if item != None and len(item)>5:
