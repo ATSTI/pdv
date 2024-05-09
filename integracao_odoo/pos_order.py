@@ -299,7 +299,7 @@ class IntegracaoOdoo:
             data_nova = datetime.strftime(data_nova,'%Y/%m/%d %H:%M:%S')
             if not len(prods) and pr['usa'] == 'S':
                 _logger.info("Inserindo item : %s-%s" %(codpro,produto))
-                print ('Incluindo - %s' %(product_id.name))
+                print ('Incluindo - %s' %(produto))
                 #sqlp = 'select codproduto from produtos where codpro like \'%s\'' %(codp+'%')
 
                 #prodsa = db.query(sqlp)					
