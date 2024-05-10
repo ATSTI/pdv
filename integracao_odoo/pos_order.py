@@ -325,7 +325,7 @@ class IntegracaoOdoo:
                 insere += ',' + str(pr['origem'])
                 insere += ',\'' + str(ncm) + '\''
                 insere += ', ' + str(p_custo)
-                insere += ',' + str(p_venda)
+                insere += ',' + str(round(p_venda,2))
                 insere += ',\'' + str('PROD') + '\''
                 insere += ', \'' + pr['tipo_venda'] + '\''
                 insere += ',' + str(pr['qtdeatacado'])
@@ -344,20 +344,22 @@ class IntegracaoOdoo:
                 print (codp+'-'+produto)
                 # TODO tratar isso e enviar email
             elif len(prods):
-                if data_cad == data_nova and prods[0][2] == p_venda:
+                # breakpoint()
+                if data_cad == data_nova and round(prods[0][2],2) == round(p_venda,2):
                     _logger.info("Item ja atualizado: %s-%s" %(codpro, produto))
+                    print("Item ja atualizado: %s-%s" %(codpro, produto))
                     continue
                 _logger.info("Atualizando item: %s-%s" %(codpro, produto))
+                print("Atualizando item: %s-%s" %(codpro, produto))
                 ativo = 'S'
                 codprox = pr['codpro']
                 if pr['usa'] != 'S':
                    ativo = 'N'
                    codbarra = ''
                    codprox = codprox + 'x'
-                print ('Alterando - %s' %(produto))
                 altera = 'UPDATE PRODUTOS SET PRODUTO = '
                 altera += '\'' + produto + '\''
-                altera += ', VALOR_PRAZO = ' + str(p_venda)
+                altera += ', VALOR_PRAZO = ' + str(round(p_venda, 2))
                 altera += ', NCM = ' +  '\'' + str(ncm) + '\''
                 altera += ', CODPRO = ' +  '\'' + str(codprox) + '\''
                 if pr['origem']:
@@ -373,11 +375,11 @@ class IntegracaoOdoo:
                     altera += ', COD_BARRA = \'' + str(codbarra) + '\''
                 altera += ' WHERE CODPRO = \'' + str(pr['codpro']) + '\''
                 retorno = db.insert(altera)
-                print ('SQL : %s' %(altera))
                 if retorno:
-                    print ('SQL erro : %s' %(altera))
+                    print ('SQL : %s' %(altera))
+                    print ('**** ERRO **** : %s' %(retorno))
                     _logger.info("SQL erro : %s" %(retorno))
-        #print ('Integracao realizada com sucesso.')
+        print("Atualizacao do produto executada com sucesso.")
         _logger.info("Atualizacao do produto executada com sucesso.")
 
     def cron_integra_clientes(self):
