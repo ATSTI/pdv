@@ -245,7 +245,7 @@ class IntegracaoOdoo:
             return False
         for pr in prod_novo:
             ncm = ''
-            if pr['ncm']:
+            if 'ncm' in pr and pr['ncm']:
                 ncm = pr['ncm']
                 if ncm:
                     ncm = re.sub('[^0-9]', '', ncm)
