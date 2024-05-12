@@ -252,10 +252,10 @@ class IntegracaoOdoo:
             if ncm and len(ncm) > 8:
                 ncm = '00000000'
             p_custo = 0.0
-            if pr['custo']:
+            if 'custo' in pr and pr['custo']:
                 p_custo = pr['custo']
-            p_venda = 0.0
-            if pr['valor_prazo']:
+            p_venda = 0.01
+            if 'valor_prazo' in pr and pr['valor_prazo']:
                 p_venda = pr['valor_prazo']
             codbarra = ''
             if 'cod_barra' in pr and pr['cod_barra'] and len(pr['cod_barra']) < 14:
@@ -297,6 +297,18 @@ class IntegracaoOdoo:
             data_nova = datetime.strptime(data_nova,'%m/%d/%Y %H:%M:%S')
             data_fb = datetime.strftime(data_nova,'%Y.%m.%d, %H:%M:%S.0000')
             data_nova = datetime.strftime(data_nova,'%Y/%m/%d %H:%M:%S')
+            origem = '0'
+            if 'origem' in pr and pr['origem']:
+                    origem = str(pr['origem'])
+            tipo_venda = '1'
+            if 'tipo_venda' in pr and pr['tipo_venda']:
+                    tipo_venda = str(pr['tipo_venda'])
+            qtdeatacado = '0.0'
+            if 'qtdeatacado' in pr and pr['qtdeatacado']:
+                    qtdeatacado = str(pr['qtdeatacado'])
+            precoatacado = '0.0'
+            if 'precoatacado' in pr and pr['precoatacado']:
+                    precoatacado = str(pr['precoatacado'])
             if not len(prods) and pr['usa'] == 'S':
                 _logger.info("Inserindo item : %s-%s" %(codpro,produto))
                 print ('Incluindo - %s' %(produto))
@@ -322,14 +334,14 @@ class IntegracaoOdoo:
                 insere += ', ' + str(p_custo)
                 insere += ', \'' + str(codpro) + '\''
                 insere += ',\'F\''
-                insere += ',' + str(pr['origem'])
+                insere += ',' + origem
                 insere += ',\'' + str(ncm) + '\''
                 insere += ', ' + str(p_custo)
                 insere += ',' + str(round(p_venda,2))
                 insere += ',\'' + str('PROD') + '\''
-                insere += ', \'' + pr['tipo_venda'] + '\''
-                insere += ',' + str(pr['qtdeatacado'])
-                insere += ',' + str(pr['precoatacado'])
+                insere += ', \'' + tipo_venda + '\''
+                insere += ',' + qtdeatacado
+                insere += ',' + precoatacado
                 insere += ', \'' + data_fb + '\''
                 insere += ',' + str(codproduto)
                 if codbarra:
@@ -362,14 +374,11 @@ class IntegracaoOdoo:
                 altera += ', VALOR_PRAZO = ' + str(round(p_venda, 2))
                 altera += ', NCM = ' +  '\'' + str(ncm) + '\''
                 altera += ', CODPRO = ' +  '\'' + str(codprox) + '\''
-                if pr['origem']:
-                    altera += ', ORIGEM = ' + str(pr['origem']) 
+                altera += ', ORIGEM = ' + origem 
                 altera += ', USA = \'' + ativo + '\''  
-                if pr['tipo_venda']:
-                    altera += ', RATEIO = \'' + str(pr['tipo_venda']) + '\''
-                if pr['qtdeatacado']:
-                    altera += ', QTDEATACADO = ' + str(pr['qtdeatacado']) 
-                    altera += ', PRECOATACADO = ' + str(pr['precoatacado'])
+                altera += ', RATEIO = \'' + tipo_venda + '\''
+                altera += ', QTDEATACADO = ' + qtdeatacado 
+                altera += ', PRECOATACADO = ' + precoatacado
                 altera += ', DATACADASTRO = \'' + data_fb + '\''
                 if codbarra:
                     altera += ', COD_BARRA = \'' + str(codbarra) + '\''
