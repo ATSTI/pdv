@@ -254,7 +254,7 @@ class IntegracaoOdoo:
             p_custo = 0.0
             if 'custo' in pr and pr['custo']:
                 p_custo = pr['custo']
-            p_venda = 0.01
+            p_venda = 0.00
             if 'valor_prazo' in pr and pr['valor_prazo']:
                 p_venda = pr['valor_prazo']
             codbarra = ''
