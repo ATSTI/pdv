@@ -1,11 +1,10 @@
 import configparser
 import requests as rq
-# from pos_order import IntegracaoOdoo as integra
+from main_arquivos import MainArquivos
 
 class Main():
 
     def __init__(self):
-        # import pudb;pu.db
         cfg = configparser.ConfigParser()
         self.versao_name = 'versao.cfg'
         cfg.read(self.versao_name)
@@ -27,17 +26,21 @@ class Main():
         # print("versao atual " + versao_atual)
         if versao_atual == self.versao:
             return
-        arquivos = [
-            '__init__.py',
-            'atscon.py',
-            'conecta_server.py',
-            'pos_order.py',
-            'sqlite_bd.py',
-            'atualiza_clientes.py',
-            'atualiza_produtos.py',
-            'atualiza_caixas.py',
-            'app_executa.py'
-        ]
+        arq = MainArquivos()
+        arquivos = arq.lista_arquivos()
+        # arquivos = [
+        #     '__init__.py',
+        #     'atscon.py',
+        #     'conecta_server.py',
+        #     'pos_order.py',
+        #     'pos_order_exec.py',
+        #     'pos_order_script.py',
+        #     'sqlite_bd.py',
+        #     'atualiza_clientes.py',
+        #     'atualiza_produtos.py',
+        #     'atualiza_caixas.py',
+        #     'app_executa.py'
+        # ]
         for arq in arquivos:
             print ("Atualizando arquivos - " + arq) 
             path_url = "https://github.com/ATSTI/pdv/raw/integracao_odoo_script/integracao_odoo/%s" %(arq)
