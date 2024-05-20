@@ -18,13 +18,13 @@ class Main():
     def buscando_script(self):
         path_url = "https://github.com/ATSTI/pdv/raw/integracao_odoo_script/integracao_odoo/%s" %(self.versao_name)
         retorno = rq.get(path_url)
-        print(retorno.text)
+        # print(retorno.text)
         with open(self.versao_name, mode="w") as arq_retorno:
             arq_retorno.write(retorno.text)
         cfg = configparser.ConfigParser()
         cfg.read(self.versao_name)
         versao_atual  = cfg.get('SISTEMA', 'versao')
-        print("versao atual " + versao_atual)
+        # print("versao atual " + versao_atual)
         if versao_atual == self.versao:
             return
         arquivos = [
