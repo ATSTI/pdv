@@ -290,6 +290,7 @@ class ConectaServerNFe():
                         # if nota[2] == 'Autorizada':
                         # situacao = 'autorizada'
                         atualiza['state_edoc'] = 'autorizada'
+                        atualiza['xml_error_message'] = False
                         atualiza['file_report_id'] = False
                         nfe.write(atualiza)
                         # muda situacao_odoo bd local
