@@ -69,8 +69,8 @@ class EnviaServer:
             'password': self.passwd,
             'session_id':session_id
         }
-
-        arquivo = open(self.path_envio + '/' + file_name, mode="r")
+        file_path = os.path.join(self.path_envio, file_name)
+        arquivo = open(file_path, mode="r")
         vals = {}
         vals['params'] = json.load(arquivo)
         vals['tipo'] = arq
@@ -236,7 +236,9 @@ class EnviaServer:
                 tipo, caixa, codigo)
             
             if ja_enviado:
-                os.remove(self.path_envio + '/' + i)
+                # os.remove(self.path_envio + '/' + i)
+                file_remove = os.path.join(self.path_envio, i)
+                os.remove(file_remove)
                 continue
 
             if len(retorno_ids):
@@ -258,7 +260,9 @@ class EnviaServer:
                     get_return = self.enviando_arquivo(get_return, nome_arq[:3], i)
 
                 if enviado and ((nome_arq[:6] == 'caixa_') or (nome_arq[:7] == 'pedido_') or (nome_arq[:10] == 'devolucao_') or (nome_arq[:8] == 'sangria_')):
-                    os.remove(self.path_envio + '/' + i)
+                    # os.remove(self.path_envio + '/' + i)
+                    file_remove = os.path.join(self.path_envio, i)
+                    os.remove(file_remove)
             else:
                 get_return = self.enviando_arquivo(get_return, nome_arq[:3], i)
                 if tipo and caixa:
