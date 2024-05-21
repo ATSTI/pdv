@@ -10,6 +10,7 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 from atscon import Conexao as con_fdb
 import fdb
+import locale
 from glob import iglob
 from os.path import getmtime
 from nfelib.nfe.bindings.v4_0.proc_nfe_v4_00 import NfeProc
@@ -143,7 +144,9 @@ class ConectaServerNFe():
             if chave in notas_sistema:
                 _logger.info(f"NFe : {str(chave)} ja existe.")
                 continue
-            xml = base64.b64decode(prd.send_file_id.datas).decode('iso-8859-1')
+            # xml = base64.b64decode(prd.send_file_id.datas).decode('iso-8859-1')
+            locale.setlocale(locale.LC_ALL, "Portuguese_Brazil.1252")
+            xml = base64.b64decode(prd.send_file_id.datas).decode()
             arquivo_name = os.path.join(arquivo, prd.send_file_id.name)
             save_file = open(arquivo_name, 'w')
             save_file.write(xml)
