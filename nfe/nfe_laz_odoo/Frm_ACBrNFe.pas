@@ -1971,11 +1971,11 @@ var
 begin
 
   Status := dbEdit6.Text;
-  if(Status = 'A_enviar')then
+  {if(Status = 'A_enviar')then
   begin
     ShowMessage('Somente Notas Autorizadas');
     exit;
-  end;
+  end;}
 
   Chave := dbEdit4.Text;
   //if not(InputQuery('WebServices Eventos: Cancelamento', 'Chave da NF-e', Chave)) then
@@ -1990,6 +1990,27 @@ begin
   Protocolo:= DBEdit8.Text;
   //if not(InputQuery('WebServices Eventos: Cancelamento', 'Protocolo de Autorização', Protocolo)) then
   //   exit;
+
+  if ((Chave = '') or (Protocolo = '')) then
+  begin
+    OpenDialog1.Title := 'Selecione a NFe';
+    OpenDialog1.DefaultExt := '*-nfe.XML';
+    OpenDialog1.Filter := 'Arquivos NFe (*-env.XML)|*-env.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+
+    //OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
+
+    if OpenDialog1.Execute then
+    begin
+      //path_nfe := ExtractFilePath(Application.ExeName) + 'notas\' + 'NFe'+ dbEdit4.Text + '-env.xml';
+
+      ACBrNFe1.NotasFiscais.Clear;
+      ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+      //ACBrNFe1.NotasFiscais.LoadFromFile(path_nfe, False);
+      //ACBrNFe1.NotasFiscais.Items[0].NFe.procNFe.chNFe:=;
+      Chave := ACBrNFe1.NotasFiscais.Items[0].NFe.procNFe.chNFe;
+      Protocolo := ACBrNFe1.NotasFiscais.Items[0].NFe.procNFe.nProt;
+    end;
+  end;
   Justificativa := '';
   if not(InputQuery('WebServices Eventos: Cancelamento', 'Justificativa do Cancelamento', Justificativa)) then
      exit;
