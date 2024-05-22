@@ -2014,7 +2014,7 @@ begin
   ShowMessage(IntToStr(ACBrNFe1.WebServices.EnvEvento.cStat));
   ShowMessage(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.nProt);
 
-  ZQprotocolo.Active := True;
+  ZQprotocolo.Active := False;
   sSQL := ' UPDATE nfe' +
         ' SET' +
         ' protocolocanc = ' + QuotedStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.nProt) +
@@ -2141,7 +2141,8 @@ begin
     MemoDados.Lines.Add('xMsg: '+ ACBrNFe1.WebServices.Retorno.xMsg);
     MemoDados.Lines.Add('Recibo: '+ ACBrNFe1.WebServices.Retorno.Recibo);
     MemoDados.Lines.Add('Protocolo: '+ ACBrNFe1.WebServices.Retorno.Protocolo);
-    ZQprotocolo.Active := True;
+
+    ZQprotocolo.Active := False;
     sSQL := ' UPDATE nfe' +
           ' SET' +
           ' protocolo = ' + QuotedStr(ACBrNFe1.WebServices.Retorno.Protocolo) +
