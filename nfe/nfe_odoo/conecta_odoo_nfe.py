@@ -90,7 +90,7 @@ class ConectaServerNFe():
         try:
             db = con_fdb()
         except:
-            msg = u'Caminho ou nome do banco inválido.<br>'
+            msg = u'Caminho ou nome do banco invalido.<br>'
             _logger.info(msg)
         msg = 'Buscando no Odoo NFe para empresa: %s' %(str(empresa))
         # print (msg)
@@ -300,7 +300,7 @@ class ConectaServerNFe():
                         # sql_update = "update nfe set situacao_odoo = 'enviada' where chave = '%s' \
                         # and empresa_id = %s" %(nota[3], nota[4])
                         #db.execute(sql_update)
-                        _logger.info(f"Situação alterada com sucesso, NFe: {str(nfe.document_number)}")
+                        _logger.info(f"Situacao alterada com sucesso, NFe: {str(nfe.document_number)}")
                         # except:
                             # _logger.info(f"ERRO lendo protocolo no XML, NFe: {str(nfe.document_number)}")
 
