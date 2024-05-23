@@ -20,8 +20,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="4775"/>
-        <CursorPos X="60" Y="4779"/>
+        <TopLine Value="4773"/>
+        <CursorPos X="128" Y="4803"/>
         <UsageCount Value="147"/>
         <Bookmarks Count="5">
           <Item0 X="29" Y="4802" ID="4"/>
@@ -773,123 +773,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2898" Column="58" TopLine="2865"/>
+        <Caret Line="2011" Column="18" TopLine="1990"/>
       </Position1>
       <Position2>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2899" Column="72" TopLine="2866"/>
+        <Caret Line="2002" TopLine="1990"/>
       </Position2>
       <Position3>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2900" Column="58" TopLine="2867"/>
+        <Caret Line="2006" TopLine="1990"/>
       </Position3>
       <Position4>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2901" Column="58" TopLine="2868"/>
+        <Caret Line="2007" TopLine="1990"/>
       </Position4>
       <Position5>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2902" Column="67" TopLine="2869"/>
+        <Caret Line="2010" TopLine="1990"/>
       </Position5>
       <Position6>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2890" Column="44" TopLine="2858"/>
+        <Caret Line="2011" TopLine="1990"/>
       </Position6>
       <Position7>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2009" Column="9" TopLine="1989"/>
+        <Caret Line="2013" Column="168" TopLine="1984"/>
       </Position7>
       <Position8>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2011" Column="18" TopLine="1990"/>
+        <Caret Line="2002" TopLine="1984"/>
       </Position8>
       <Position9>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2002" TopLine="1990"/>
+        <Caret Line="2006" TopLine="1984"/>
       </Position9>
       <Position10>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2006" TopLine="1990"/>
+        <Caret Line="2007" TopLine="1984"/>
       </Position10>
       <Position11>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2007" TopLine="1990"/>
+        <Caret Line="2010" TopLine="1984"/>
       </Position11>
       <Position12>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2010" TopLine="1990"/>
+        <Caret Line="2011" TopLine="1984"/>
       </Position12>
       <Position13>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2011" TopLine="1990"/>
+        <Caret Line="2016" Column="97" TopLine="1996"/>
       </Position13>
       <Position14>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2013" Column="168" TopLine="1984"/>
+        <Caret Line="2015" TopLine="1996"/>
       </Position14>
       <Position15>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2002" TopLine="1984"/>
+        <Caret Line="2018" TopLine="1996"/>
       </Position15>
       <Position16>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2006" TopLine="1984"/>
+        <Caret Line="2020" TopLine="1996"/>
       </Position16>
       <Position17>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2007" TopLine="1984"/>
+        <Caret Line="2022" TopLine="1996"/>
       </Position17>
       <Position18>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2010" TopLine="1984"/>
+        <Caret Line="2023" TopLine="1996"/>
       </Position18>
       <Position19>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2011" TopLine="1984"/>
+        <Caret Line="2024" TopLine="1996"/>
       </Position19>
       <Position20>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2016" Column="97" TopLine="1996"/>
+        <Caret Line="2025" TopLine="1996"/>
       </Position20>
       <Position21>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2015" TopLine="1996"/>
+        <Caret Line="2026" TopLine="1996"/>
       </Position21>
       <Position22>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2018" TopLine="1996"/>
+        <Caret Line="2027" TopLine="1996"/>
       </Position22>
       <Position23>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2020" TopLine="1996"/>
+        <Caret Line="2030" TopLine="1997"/>
       </Position23>
       <Position24>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2022" TopLine="1996"/>
+        <Caret Line="4616" Column="74" TopLine="4598"/>
       </Position24>
       <Position25>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2023" TopLine="1996"/>
+        <Caret Line="4299" Column="23" TopLine="4291"/>
       </Position25>
       <Position26>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2024" TopLine="1996"/>
+        <Caret Line="65" Column="25" TopLine="44"/>
       </Position26>
       <Position27>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2025" TopLine="1996"/>
+        <Caret Line="378" Column="35" TopLine="345"/>
       </Position27>
       <Position28>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2026" TopLine="1996"/>
+        <Caret Line="4152" Column="17" TopLine="4119"/>
       </Position28>
       <Position29>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2027" TopLine="1996"/>
+        <Caret Line="4305" Column="17" TopLine="4271"/>
       </Position29>
       <Position30>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2030" TopLine="1997"/>
+        <Caret Line="4781" Column="23" TopLine="4748"/>
       </Position30>
     </JumpHistory>
     <RunParams>

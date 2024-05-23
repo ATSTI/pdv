@@ -4800,7 +4800,7 @@ var sql_notas: string;
 begin
   ZQNotas.Active:=False;
   ZQNotas.SQL.Clear;
-  sql_notas := 'SELECT * FROM nfe WHERE empresa_id = ' + DBEdit3.Text;
+  sql_notas := 'SELECT * FROM nfe WHERE empresa_id = ' + DBEdit3.Text + ' ORDER BY DATA_EMISSAO DESC, CHAVE DESC, NUM_NFE DESC';
   ZQNotas.SQL.Add(sql_notas);
   ZQNotas.ExecSQL;
   ZQNotas.Active:=True;
