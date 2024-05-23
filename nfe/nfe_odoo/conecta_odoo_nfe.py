@@ -78,11 +78,28 @@ class ConectaServerNFe():
             situacao = item[1]
             # coloquei o limit > 5 pq qdo consulta pra enviar para o odoo nao pode exluir
             if situacao == 'A_enviar' and item[2] != ultima_modificacao:
-                excluir = "DELETE FROM nfe WHERE empresa_id = %s and num_nfe = %s" %(
-                    str(empresa_id),
-                    item[0]
-                )
-                db.execute(excluir)
+                arquivo = os.path.join(self.path_retorno, item[0]+"-proc-env.xml")
+                exclui = False
+                if os.path.exists(arquivo):
+                    nfe_proc = NfeProc.from_path(arquivo)
+                    try:
+                        nProt = nfe_proc.protNFe.infProt.nProt
+                        edita = "UPDATE FROM nfe SET situacao = 'Autorizada', protocolo = '%s' WHERE empresa_id = %s and num_nfe = %s" %(
+                            str(nProt),
+                            str(empresa_id),
+                            item[0]
+                        )
+                        db.execute(edita)
+                    except:
+                        exclui = True
+                else:
+                    exclui = True
+                if exclui:
+                    excluir = "DELETE FROM nfe WHERE empresa_id = %s and num_nfe = %s" %(
+                        str(empresa_id),
+                        item[0]
+                    )
+                    db.execute(excluir)
                 continue
         return dados
 
@@ -97,14 +114,13 @@ class ConectaServerNFe():
         _logger.info(msg)
         con = self._conexao_odoo()
         p_xml = con.env['account.move']
-
         # chave = '35xxxxxxxxxxx8550010000093411523728494'
         # nfe_ids = p_xml.search([('document_key', '=', chave)])
+        # ('state_edoc', '=', 'a_enviar'),
         nfe_ids = p_xml.search([
-            ('document_type_id.code', '=', '55'),
-            ('state_edoc', '=', 'a_enviar'),
+            ('document_type_id.code', '=', '55'),            
             ('company_id', '=', int(empresa))
-        ])
+        ], limit=10, order="id desc")
         # if not nfe_ids:
         #     _logger.info(f"Sem NFe para a empresa: {str(empresa)}")
         arquivo = os.path.join(self.path_retorno, "notas")
@@ -117,37 +133,62 @@ class ConectaServerNFe():
         # db = local_db(filename = 'lancamento.db', table = 'nfe')
         # existe_notas = db.consulta_nfe(chave='', empresa_id=empresa, limit=50)
         existe_notas = self.consulta_nfe(db=db, chave='', empresa_id=empresa, limit=50)
-        
+
         notas_sistema = set()
-        if notas_sistema:
+        if existe_notas:
             for nf in existe_notas:
+                # if nf[3] in notas_sistema:
+                #     USADO PRA LIMPAR SUJEIRA
+                #     excluir = "DELETE FROM nfe WHERE empresa_id = %s and chave = '%s'" %(
+                #             int(empresa),
+                #             str(nf[3])
+                #         )
+                #     db.execute(excluir)
                 notas_sistema.add(nf[3])
 
         for prd in p_xml.browse(nfe_ids):
+
             chave = prd.document_key
-            # _logger.info(f"NFe: {str(chave)}")
-            arquivo_name = os.path.join(arquivo, prd.send_file_id.name)
-            if Path(arquivo_name).is_file():
-                # verificar se xml tem protocolo
-                arquivo_protocol = arquivo_name
-                try:
-                    tree = ET.parse(arquivo_protocol)
-                    root = tree.getroot()
-                    protNFe = root.find('{http://www.portalfiscal.inf.br/nfe}protNFe')
-                    if protNFe:
-                        _logger.info(f"NFe com protocolo : {str(chave)}")
-                        continue
-                except:
-                    _logger.info(f"Erro para ler xml")
-                    arquivo_protocol = ''
-            # existe = db.consulta_nfe(chave, empresa)
             if chave in notas_sistema:
                 _logger.info(f"NFe : {str(chave)} ja existe.")
                 continue
+
+            # _logger.info(f"NFe: {str(chave)}")
+            if prd.authorization_file_id:
+                arquivo_name = os.path.join(arquivo, prd.authorization_file_id.name)
+                xml_data = prd.authorization_file_id.datas
+                xml_name = prd.authorization_file_id.name
+                xml_protocolo = prd.authorization_protocol
+                xml_situacao = "Autorizada"
+            else:
+                arquivo_name = os.path.join(arquivo, prd.send_file_id.name)
+                xml_data = prd.send_file_id.datas
+                xml_name = prd.send_file_id.name
+                xml_protocolo = ""
+                xml_situacao = "A_enviar"
+                # if Path(arquivo_name).is_file():
+                #     # verificar se xml tem protocolo
+                #     arquivo_protocol = arquivo_name
+                #     try:
+                #         tree = ET.parse(arquivo_protocol)
+                #         root = tree.getroot()
+                #         protNFe = root.find('{http://www.portalfiscal.inf.br/nfe}protNFe')
+                #         if protNFe:
+                #             _logger.info(f"NFe com protocolo : {str(chave)}")
+                #             continue
+                #     except:
+                #         _logger.info(f"Erro para ler xml")
+                #         arquivo_protocol = ''
+            # existe = db.consulta_nfe(chave, empresa)
+
             # xml = base64.b64decode(prd.send_file_id.datas).decode('iso-8859-1')
-            locale.setlocale(locale.LC_ALL, "Portuguese_Brazil.1252")
-            xml = base64.b64decode(prd.send_file_id.datas).decode()
-            arquivo_name = os.path.join(arquivo, prd.send_file_id.name)
+            try:
+                locale.setlocale(locale.LC_ALL, "Portuguese_Brazil.1252")
+            except:
+                locale.setlocale(locale.LC_ALL, 'pt_BR.utf8')
+
+            xml = base64.b64decode(xml_data).decode()
+            arquivo_name = os.path.join(arquivo, xml_name)
             save_file = open(arquivo_name, 'w')
             save_file.write(xml)
             _logger.info(f"Arquivo {str(arquivo_name)} criado.")
@@ -159,10 +200,10 @@ class ConectaServerNFe():
             # data_tuple = (1, file_binary)
             data_fb = datetime.strftime(prd.write_date,'%Y.%m.%d, %H:%M:%S.0000')
             sql = "insert into nfe (move_id, empresa_id, xml_aenviar, chave, destinatario, \
-                num_nfe, data_emissao, situacao, data_alteracao) values ('%s', %s, \
-                '%s', '%s', '%s', '%s', '%s', '%s', '%s')" %(
+                num_nfe, data_emissao, situacao, data_alteracao, protocolo) values ('%s', %s, \
+                '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" %(
                     str(prd.id), str(prd.company_id.id), xml, prd.document_key, 
-                    prd.partner_id.name, prd.document_number, emissao, 'A_enviar', data_fb)
+                    prd.partner_id.name, prd.document_number, emissao, xml_situacao, data_fb, xml_protocolo)
             db.execute(sql)
 
     def consulta_nfe_autorizada(self, db=None, chave=None, limit=50):
