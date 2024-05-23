@@ -2047,7 +2047,7 @@ begin
   ZQprotocolo.ExecSQL;
 
   ZQprotocolo.Close;
-  ZQprotocolo.SQL.Text := 'SELECT * FROM nfe';
+  ZQprotocolo.SQL.Text := 'SELECT * FROM nfe ORDER BY DATA_EMISSAO DESC, CHAVE DESC, NUM_NFE DESC;';
   ZQprotocolo.ExecSQL;
   ZQprotocolo.Open;
 
