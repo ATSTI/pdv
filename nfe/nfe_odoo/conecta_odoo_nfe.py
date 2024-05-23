@@ -218,29 +218,41 @@ class ConectaServerNFe():
         else:
             return dados
 
+    def retornar_notas_canceladas(self, empresa):
+        try:
+            db = con_fdb()
+        except:
+            msg = u'Caminho ou nome do banco inválido.<br>'
+            _logger.info(msg)        
+        busca = "select first 5 move_id, num_nfe, situacao, chave, empresa_id, data_alteracao from nfe "
+        busca += " WHERE situacao = 'Cancelada' AND empresa_id = %s" %(empresa)
+        busca += " order by move_id desc "
+        dados = db.query(busca)
+        if not dados:
+            return False
+        else:
+            con = self._conexao_odoo()
+            n_xml = con.env['account.move']
+            for nf in dados:
+                nfe_ids = n_xml.search([
+                    ('document_key', '=', nf[3]),
+                    ('state_edoc', '!=', 'cancelada')
+                ])
+                if not nfe_ids:
+                    # _logger.info(f"NFe nao encontrada no odoo {nota[3]}")
+                    _logger.info(f"NFe ja atualizada odoo {nf[3]}")
+                    continue
+                for nfe in n_xml.browse(nfe_ids):
+                    atualiza = {'state_edoc': 'cancelada'}
+                    nfe.write(atualiza)
+                    _logger.info(f"Situacao alterada com sucesso, NFe: {str(nfe.document_number)}")
+            return True
+
     def retorna_xml_validado(self, empresa):
         _logger.info('Iniciando envio para o odoo')
-        # con = self._conexao_odoo()
-        # try:
-        #     db = con_fdb()
-        # except:
-        #     msg = u'Caminho ou nome do banco inválido.<br>'
-        #     _logger.info(msg)
-        # notas_empresa = self.consulta_nfe_autorizada(db=db, limit=50)
-
-        # nao usando a classe sqlite_bd aqui erro database locked
-        # if not notas_empresa:
-        #     _logger.info('Sem notas para enviar')
-        # else:
-        #     # montando lista com o move_id das notas
-        #     lista_id = set()
-        #     for nota in notas_empresa:
-        #         lista_id.add(nota[0])            
-
-        #     for nota in notas_empresa:
-        #         if nota[2] == 'A_enviar':
-        #             continue
-        # import pudb;pu.db
+        # protocolocanc
+        self.retornar_notas_canceladas(empresa)
+    
         arquivo = os.path.join(self.path_retorno, "notas", '*.xml')
         # 07/05/2024 lendo o diretorio e pegando somente os ultimos 5 autorizados
         files = iglob(arquivo)
