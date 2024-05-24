@@ -2047,7 +2047,7 @@ begin
   ZQprotocolo.ExecSQL;
 
   ZQprotocolo.Close;
-  ZQprotocolo.SQL.Text := 'SELECT * FROM nfe ORDER BY DATA_EMISSAO DESC, CHAVE DESC, NUM_NFE DESC;';
+  ZQprotocolo.SQL.Text := 'SELECT * FROM nfe ORDER BY DATA_EMISSAO DESC, CHAVE DESC, NUM_NFE DESC';
   ZQprotocolo.ExecSQL;
   ZQprotocolo.Open;
 
@@ -2175,7 +2175,7 @@ begin
     ZQprotocolo.ExecSQL;
 
     ZQprotocolo.Close;
-    ZQprotocolo.SQL.Text := 'SELECT * FROM nfe';
+    ZQprotocolo.SQL.Text := 'SELECT * FROM nfe ORDER BY DATA_EMISSAO DESC, CHAVE DESC, NUM_NFE DESC';
     ZQprotocolo.ExecSQL;
     ZQprotocolo.Open;
 
@@ -2189,11 +2189,11 @@ var
 begin
 
   Status := dbEdit6.Text;
-  if(Status = 'A_enviar')then
-  begin
-    ShowMessage('Somente Notas Autorizadas');
-    exit;
-  end;
+  //if(Status = 'A_enviar')then
+  //begin
+  //  ShowMessage('Somente Notas Autorizadas');
+  //  exit;
+  //end;
 
   Chave := dbEdit4.Text;
 
@@ -2230,7 +2230,7 @@ begin
   MemoResp.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetWS;
   LoadXML(MemoResp, WBResposta);
 
-  ZQprotocolo.Active := True;
+  ZQprotocolo.Active := False;
   sSQL := ' UPDATE nfe' +
           ' SET' +
           ' protocolocc = ' + QuotedStr(ACBrNFe1.WebServices.Retorno.Protocolo) +
@@ -2241,7 +2241,7 @@ begin
   ZQprotocolo.ExecSQL;
 
   ZQprotocolo.Close;
-  ZQprotocolo.SQL.Text := 'SELECT * FROM nfe';
+  ZQprotocolo.SQL.Text := 'SELECT * FROM nfe ORDER BY DATA_EMISSAO DESC, CHAVE DESC, NUM_NFE DESC';
   ZQprotocolo.ExecSQL;
   ZQprotocolo.Open;
 
