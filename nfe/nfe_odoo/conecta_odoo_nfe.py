@@ -222,7 +222,7 @@ class ConectaServerNFe():
         try:
             db = con_fdb()
         except:
-            msg = u'Caminho ou nome do banco inválido.<br>'
+            msg = u'Caminho ou nome do banco invalido.<br>'
             _logger.info(msg)        
         busca = "select first 5 move_id, num_nfe, situacao, chave, empresa_id, data_alteracao from nfe "
         busca += " WHERE situacao = 'Cancelada' AND empresa_id = %s" %(empresa)
