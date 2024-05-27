@@ -123,7 +123,7 @@ class ConectaServerNFe():
         ], limit=10, order="id desc")
         # if not nfe_ids:
         #     _logger.info(f"Sem NFe para a empresa: {str(empresa)}")
-        arquivo = os.path.join(self.path_retorno, "notas")
+        arquivo = self.path_retorno
         # Check whether the specified path exists or not
         isExist = os.path.exists(arquivo)
         if not isExist:
