@@ -7,9 +7,7 @@ from datetime import datetime
 import base64
 import configparser
 from pathlib import Path
-import xml.etree.ElementTree as ET
 from atscon import Conexao as con_fdb
-import fdb
 import locale
 from glob import iglob
 from os.path import getmtime
@@ -69,7 +67,7 @@ class ConectaServerNFe():
         busca += " where empresa_id = %s " %(str(empresa_id))
         if chave:
             busca += " and chave like '%s'" %(chave)
-        busca += " order by num_nfe desc "
+        busca += " order by chave desc "
         dados = db.query(busca)
         if not dados:
             return False
@@ -92,15 +90,13 @@ class ConectaServerNFe():
                         db.execute(edita)
                     except:
                         exclui = True
-                else:
-                    exclui = True
-                if exclui:
-                    excluir = "DELETE FROM nfe WHERE empresa_id = %s and num_nfe = %s" %(
-                        str(empresa_id),
-                        item[0]
-                    )
-                    db.execute(excluir)
-                continue
+                # if exclui:
+                #     excluir = "DELETE FROM nfe WHERE empresa_id = %s and num_nfe = %s" %(
+                #         str(empresa_id),
+                #         item[0]
+                #     )
+                #     db.execute(excluir)
+                # continue
         return dados
 
     def pega_xml(self, empresa):
@@ -118,7 +114,8 @@ class ConectaServerNFe():
         # nfe_ids = p_xml.search([('document_key', '=', chave)])
         # ('state_edoc', '=', 'a_enviar'),
         nfe_ids = p_xml.search([
-            ('document_type_id.code', '=', '55'),            
+            ('document_type_id.code', '=', '55'),
+            ('state_edoc', '!=', 'em_digitacao'),
             ('company_id', '=', int(empresa))
         ], limit=10, order="id desc")
         # if not nfe_ids:
@@ -149,9 +146,6 @@ class ConectaServerNFe():
         for prd in p_xml.browse(nfe_ids):
 
             chave = prd.document_key
-            if chave in notas_sistema:
-                _logger.info(f"NFe : {str(chave)} ja existe.")
-                continue
 
             # _logger.info(f"NFe: {str(chave)}")
             if prd.authorization_file_id:
@@ -160,25 +154,14 @@ class ConectaServerNFe():
                 xml_name = prd.authorization_file_id.name
                 xml_protocolo = prd.authorization_protocol
                 xml_situacao = "Autorizada"
-            else:
+            elif prd.send_file_id:
                 arquivo_name = os.path.join(arquivo, prd.send_file_id.name)
                 xml_data = prd.send_file_id.datas
                 xml_name = prd.send_file_id.name
                 xml_protocolo = ""
                 xml_situacao = "A_enviar"
-                # if Path(arquivo_name).is_file():
-                #     # verificar se xml tem protocolo
-                #     arquivo_protocol = arquivo_name
-                #     try:
-                #         tree = ET.parse(arquivo_protocol)
-                #         root = tree.getroot()
-                #         protNFe = root.find('{http://www.portalfiscal.inf.br/nfe}protNFe')
-                #         if protNFe:
-                #             _logger.info(f"NFe com protocolo : {str(chave)}")
-                #             continue
-                #     except:
-                #         _logger.info(f"Erro para ler xml")
-                #         arquivo_protocol = ''
+            else:
+                continue
             # existe = db.consulta_nfe(chave, empresa)
 
             # xml = base64.b64decode(prd.send_file_id.datas).decode('iso-8859-1')
@@ -189,13 +172,27 @@ class ConectaServerNFe():
 
             xml = base64.b64decode(xml_data).decode()
             arquivo_name = os.path.join(arquivo, xml_name)
-            save_file = open(arquivo_name, 'w')
-            save_file.write(xml)
+
+            # EVITO SOBRESCREVER ARQUIVO JA ENVIADO
+            # vou verificar se existe o arquivo local e se tem protocolo
+            if Path(arquivo_name).is_file():
+                # verificar se xml tem protocolo
+                nfe_proc = NfeProc.from_path(arquivo_name)
+                try:
+                    nProt = nfe_proc.protNFe.infProt.nProt
+                    continue
+                except:
+                    sem_protocolo = True
+            with open(arquivo_name, 'w') as save_file:
+                save_file.write(xml)
             _logger.info(f"Arquivo {str(arquivo_name)} criado.")
             if prd.authorization_protocol:
                 _logger.info(f"Chave: {chave}, protocolo: {prd.authorization_protocol}")
             emissao = datetime.strftime(prd.document_date,'%Y-%m-%d')
-            
+
+            if chave in notas_sistema:
+                _logger.info(f"NFe : {str(chave)} ja existe.")
+                continue            
             # file_binary = fdb.binary(xml)
             # data_tuple = (1, file_binary)
             data_fb = datetime.strftime(prd.write_date,'%Y.%m.%d, %H:%M:%S.0000')

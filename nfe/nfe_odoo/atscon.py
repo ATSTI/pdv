@@ -14,10 +14,14 @@ class Conexao:
         # psw = base64.b64decode(psw)
         host = cfg.get('DATABASE', 'Hostname')
         user = cfg.get('DATABASE', 'User')
+        self.path_retorno  = cfg.get('INTEGRA', 'Path_retorno')
         self.connection = fdb.connect(dsn=host, \
             user=user, password= psw, charset='win1252')
             # user='sysdba', password= psw.decode())
         self.cursor = self.connection.cursor()
+
+    def return_path(self):
+        return self.path_retorno
 
     def execute(self, query):
         try:
