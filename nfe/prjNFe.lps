@@ -8,7 +8,7 @@
       <Unit0>
         <Filename Value="prjNFe.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="4"/>
         <CursorPos X="79" Y="10"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
@@ -387,11 +387,10 @@
       </Unit47>
       <Unit48>
         <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrTCP\ACBrMail.pas"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="434"/>
         <CursorPos Y="445"/>
         <UsageCount Value="14"/>
-        <Loaded Value="True"/>
       </Unit48>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
