@@ -4289,11 +4289,17 @@ object fPDV_Rec: TfPDV_Rec
       'FROM FORMA_ENTRADA'
       'WHERE STATE < 2'
       '  AND ID_ENTRADA = :PCODMOV'
+      '  AND CAIXA = :PCAIXA'
     )
     Params = <    
       item
         DataType = ftInteger
         Name = 'PCODMOV'
+        ParamType = ptInput
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'PCAIXA'
         ParamType = ptInput
       end>
     Macros = <>

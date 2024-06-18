@@ -21,10 +21,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uPdv"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="5"/>
-        <TopLine Value="2626"/>
-        <CursorPos X="4" Y="2645"/>
+        <TopLine Value="2602"/>
+        <CursorPos X="49" Y="2607"/>
         <UsageCount Value="206"/>
         <Bookmarks Count="5">
           <Item0 X="52" Y="1652" ID="4"/>
@@ -42,12 +41,13 @@
         <ComponentName Value="fPDV_Rec"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="8"/>
-        <TopLine Value="1071"/>
-        <CursorPos X="82" Y="1076"/>
+        <TopLine Value="312"/>
+        <CursorPos X="19" Y="324"/>
         <UsageCount Value="205"/>
         <Bookmarks Count="1">
-          <Item0 X="11" Y="1989" ID="5"/>
+          <Item0 X="11" Y="1990" ID="5"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -704,123 +704,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="updv.pas"/>
-        <Caret Line="2631" TopLine="2624"/>
+        <Caret Line="2559" TopLine="2541"/>
       </Position1>
       <Position2>
         <Filename Value="updv.pas"/>
-        <Caret Line="2633" TopLine="2624"/>
+        <Caret Line="2561" TopLine="2541"/>
       </Position2>
       <Position3>
         <Filename Value="updv.pas"/>
-        <Caret Line="2634" TopLine="2624"/>
+        <Caret Line="2562" TopLine="2542"/>
       </Position3>
       <Position4>
         <Filename Value="updv.pas"/>
-        <Caret Line="2636" TopLine="2624"/>
+        <Caret Line="2589" TopLine="2578"/>
       </Position4>
       <Position5>
         <Filename Value="updv.pas"/>
-        <Caret Line="2643" TopLine="2628"/>
+        <Caret Line="2595" TopLine="2578"/>
       </Position5>
       <Position6>
         <Filename Value="updv.pas"/>
-        <Caret Line="2645" TopLine="2628"/>
+        <Caret Line="2600" TopLine="2580"/>
       </Position6>
       <Position7>
         <Filename Value="updv.pas"/>
-        <Caret Line="2552" TopLine="2545"/>
+        <Caret Line="2604" TopLine="2592"/>
       </Position7>
       <Position8>
         <Filename Value="updv.pas"/>
-        <Caret Line="2647" TopLine="2627"/>
+        <Caret Line="2609" TopLine="2592"/>
       </Position8>
       <Position9>
         <Filename Value="updv.pas"/>
-        <Caret Line="2554" TopLine="2541"/>
+        <Caret Line="2610" TopLine="2592"/>
       </Position9>
       <Position10>
         <Filename Value="updv.pas"/>
-        <Caret Line="2559" TopLine="2541"/>
+        <Caret Line="2614" TopLine="2594"/>
       </Position10>
       <Position11>
         <Filename Value="updv.pas"/>
-        <Caret Line="2561" TopLine="2541"/>
+        <Caret Line="2623" TopLine="2623"/>
       </Position11>
       <Position12>
         <Filename Value="updv.pas"/>
-        <Caret Line="2562" TopLine="2542"/>
+        <Caret Line="2631" TopLine="2623"/>
       </Position12>
       <Position13>
         <Filename Value="updv.pas"/>
-        <Caret Line="2589" TopLine="2578"/>
+        <Caret Line="2633" TopLine="2623"/>
       </Position13>
       <Position14>
         <Filename Value="updv.pas"/>
-        <Caret Line="2595" TopLine="2578"/>
+        <Caret Line="2634" TopLine="2623"/>
       </Position14>
       <Position15>
         <Filename Value="updv.pas"/>
-        <Caret Line="2600" TopLine="2580"/>
+        <Caret Line="2636" TopLine="2623"/>
       </Position15>
       <Position16>
         <Filename Value="updv.pas"/>
-        <Caret Line="2604" TopLine="2592"/>
+        <Caret Line="2643" TopLine="2628"/>
       </Position16>
       <Position17>
         <Filename Value="updv.pas"/>
-        <Caret Line="2609" TopLine="2592"/>
+        <Caret Line="2645" TopLine="2628"/>
       </Position17>
       <Position18>
         <Filename Value="updv.pas"/>
-        <Caret Line="2610" TopLine="2592"/>
+        <Caret Line="2552" TopLine="2547"/>
       </Position18>
       <Position19>
         <Filename Value="updv.pas"/>
-        <Caret Line="2614" TopLine="2594"/>
+        <Caret Line="2647" TopLine="2627"/>
       </Position19>
       <Position20>
         <Filename Value="updv.pas"/>
-        <Caret Line="2623" TopLine="2623"/>
+        <Caret Line="1112" TopLine="1093"/>
       </Position20>
       <Position21>
         <Filename Value="updv.pas"/>
-        <Caret Line="2631" TopLine="2623"/>
+        <Caret Line="1118" Column="17" TopLine="1111"/>
       </Position21>
       <Position22>
-        <Filename Value="updv.pas"/>
-        <Caret Line="2633" TopLine="2623"/>
+        <Filename Value="updv_rec.pas"/>
+        <Caret Line="1092" Column="62" TopLine="1071"/>
       </Position22>
       <Position23>
-        <Filename Value="updv.pas"/>
-        <Caret Line="2634" TopLine="2623"/>
+        <Filename Value="updv_rec.pas"/>
+        <Caret Line="2056" Column="22" TopLine="2042"/>
       </Position23>
       <Position24>
-        <Filename Value="updv.pas"/>
-        <Caret Line="2636" TopLine="2623"/>
+        <Filename Value="updv_rec.pas"/>
+        <Caret Line="323" Column="67" TopLine="311"/>
       </Position24>
       <Position25>
-        <Filename Value="updv.pas"/>
-        <Caret Line="2643" TopLine="2628"/>
+        <Filename Value="updv_rec.pas"/>
+        <Caret Line="324" Column="19" TopLine="311"/>
       </Position25>
       <Position26>
-        <Filename Value="updv.pas"/>
-        <Caret Line="2645" TopLine="2628"/>
+        <Filename Value="updv_rec.pas"/>
+        <Caret Line="323" Column="78" TopLine="307"/>
       </Position26>
       <Position27>
-        <Filename Value="updv.pas"/>
-        <Caret Line="2552" TopLine="2547"/>
+        <Filename Value="updv_rec.pas"/>
+        <Caret Line="324" Column="19" TopLine="307"/>
       </Position27>
       <Position28>
-        <Filename Value="updv.pas"/>
-        <Caret Line="2647" TopLine="2627"/>
+        <Filename Value="updv_rec.pas"/>
+        <Caret Line="466" Column="19" TopLine="458"/>
       </Position28>
       <Position29>
-        <Filename Value="updv.pas"/>
-        <Caret Line="1112" TopLine="1093"/>
+        <Filename Value="updv_rec.pas"/>
+        <Caret Line="786" Column="22" TopLine="773"/>
       </Position29>
       <Position30>
-        <Filename Value="updv.pas"/>
-        <Caret Line="1118" Column="17" TopLine="1111"/>
+        <Filename Value="updv_rec.pas"/>
+        <Caret Line="2057" Column="22" TopLine="2037"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -856,21 +856,21 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="updv_rec.pas"/>
-        <Line Value="978"/>
+        <Line Value="979"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="updv_rec.pas"/>
-        <Line Value="1109"/>
+        <Line Value="1110"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="updv_rec.pas"/>
-        <Line Value="1312"/>
+        <Line Value="1313"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
