@@ -1329,7 +1329,7 @@ var  logs:TextFile;
 begin
 
   dmPdv.sqUltimoLanc.Close;
-  dmPdv.sqUltimoLanc.Params[0].AsInteger:= CodMov;
+  dmPdv.sqUltimoLanc.Params[0].AsInteger:= apCodMov;
   dmPdv.sqUltimoLanc.Open;
   pStatus := dmPdv.sqUltimoLancSTATUS.AsInteger;
 

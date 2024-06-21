@@ -1,11 +1,12 @@
 object fPDV_Rec: TfPDV_Rec
-  Left = 292
+  Left = 547
   Height = 584
-  Top = 66
+  Top = 101
   Width = 776
   Caption = 'Frente De caixa'
   ClientHeight = 584
   ClientWidth = 776
+  OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
   PopupMenu = PopupMenu1
@@ -4222,6 +4223,7 @@ object fPDV_Rec: TfPDV_Rec
     end
   end
   object sqPagamento: TSQLQuery
+    PacketRecords = 1
     FieldDefs = <    
       item
         Name = 'CODFORMA'
@@ -4289,7 +4291,7 @@ object fPDV_Rec: TfPDV_Rec
       'FROM FORMA_ENTRADA'
       'WHERE STATE < 2'
       '  AND ID_ENTRADA = :PCODMOV'
-      '  AND CODCAIXA = :codCaixa'
+      '  AND CAIXA = :PCodCaixa'
       ''
     )
     Params = <    
@@ -4299,11 +4301,12 @@ object fPDV_Rec: TfPDV_Rec
         ParamType = ptInput
       end    
       item
-        DataType = ftSmallint
-        Name = 'codCaixa'
+        DataType = ftInteger
+        Name = 'PCodCaixa'
         ParamType = ptInput
       end>
     Macros = <>
+    ParseSQL = False
     Left = 200
     object sqPagamentoCOD_VENDA: TLongintField
       FieldKind = fkData

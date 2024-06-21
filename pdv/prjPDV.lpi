@@ -22,7 +22,7 @@
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
       <MinorVersionNr Value="4"/>
-      <BuildNr Value="7"/>
+      <BuildNr Value="8"/>
       <Language Value="0416"/>
       <StringTable CompanyName="ATS Soluções"/>
     </VersionInfo>
