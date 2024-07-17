@@ -2970,9 +2970,9 @@ begin
         if (dmPdv.qcdsFaturaVALOR.AsFloat > 0) then
         begin
           cobr.Fat.nFat  := Trim(dmPdv.qcdsNFNOTASERIE.ASSTRING);
-          cobr.Fat.vOrig := vlr_total;
+          cobr.Fat.vOrig := vlr_total + dmPdv.qcdsNFVALOR_DESCONTO.AsVariant;
 
-          cobr.Fat.vDesc := RoundTo(0.00, -2);
+          cobr.Fat.vDesc := RoundTo(dmPdv.qcdsNFVALOR_DESCONTO.AsCurrency, -2);
 
           cobr.Fat.vLiq  := vlr_total;
         end;
@@ -3956,6 +3956,7 @@ begin
                 vICMSDeson := dmPdv.cdsItensNFVALOR_ICMS.Value;
                 //vICMS      := cdsItensNFVALOR_ICMS.Value;
                 motDesICMS := mdiSuframa ;
+                indDeduzDeson := tieSim;
                 //vBC := cdsItensNFVLR_BASEICMS.AsVariant - cdsItensNFVALOR_ICMS.AsVariant;
                 //pICMS := cdsItensNFICMS.AsVariant;
                 //vICMS := cdsItensNFVALOR_ICMS.AsVariant;

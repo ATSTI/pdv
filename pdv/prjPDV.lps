@@ -4,7 +4,7 @@
     <PathDelim Value="\"/>
     <Version Value="12"/>
     <BuildModes Active="Default"/>
-    <Units Count="63">
+    <Units Count="72">
       <Unit0>
         <Filename Value="prjPDV.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -39,7 +39,6 @@
         <ComponentName Value="fPDV_Rec"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="10"/>
         <TopLine Value="471"/>
         <CursorPos X="24" Y="482"/>
@@ -248,7 +247,7 @@
         <ComponentName Value="fAbrirCaixa"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="12"/>
+        <EditorIndex Value="19"/>
         <TopLine Value="158"/>
         <CursorPos X="3" Y="143"/>
         <UsageCount Value="269"/>
@@ -430,7 +429,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="30"/>
         <CursorPos X="29" Y="31"/>
-        <UsageCount Value="196"/>
+        <UsageCount Value="198"/>
       </Unit35>
       <Unit36>
         <Filename Value="usaldo.pas"/>
@@ -441,7 +440,7 @@
         <EditorIndex Value="5"/>
         <TopLine Value="157"/>
         <CursorPos X="82" Y="178"/>
-        <UsageCount Value="69"/>
+        <UsageCount Value="71"/>
         <Loaded Value="True"/>
       </Unit36>
       <Unit37>
@@ -640,27 +639,95 @@
         <CursorPos X="33" Y="466"/>
         <UsageCount Value="5"/>
       </Unit62>
+      <Unit63>
+        <Filename Value="..\..\trunk2\Fontes\ACBrDFe\ACBrCTe\ACBrCTe.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="446"/>
+        <CursorPos X="31" Y="458"/>
+        <UsageCount Value="10"/>
+      </Unit63>
+      <Unit64>
+        <Filename Value="..\..\trunk2\Fontes\ACBrDFe\ACBrCTe\PCNCTe\pcteConversaoCTe.pas"/>
+        <EditorIndex Value="12"/>
+        <TopLine Value="412"/>
+        <CursorPos X="51" Y="424"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit64>
+      <Unit65>
+        <Filename Value="C:\home\trunk2\Fontes\PCNComum\pcnConversao.pas"/>
+        <EditorIndex Value="13"/>
+        <TopLine Value="125"/>
+        <CursorPos X="40" Y="137"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit65>
+      <Unit66>
+        <Filename Value="C:\home\trunk2\Fontes\ACBrTCP\ACBrConsultaCNPJ.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="303"/>
+        <CursorPos X="48" Y="315"/>
+        <UsageCount Value="10"/>
+      </Unit66>
+      <Unit67>
+        <Filename Value="C:\home\trunk2\Fontes\ACBrTCP\ACBrSocket.pas"/>
+        <EditorIndex Value="17"/>
+        <TopLine Value="273"/>
+        <CursorPos X="3" Y="285"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit67>
+      <Unit68>
+        <Filename Value="C:\home\trunk2\Fontes\ACBrComum\ACBrBase.pas"/>
+        <EditorIndex Value="18"/>
+        <TopLine Value="153"/>
+        <CursorPos Y="165"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit68>
+      <Unit69>
+        <Filename Value="C:\home\trunk2\Fontes\ACBrDiversos\ACBrValidador.pas"/>
+        <EditorIndex Value="14"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit69>
+      <Unit70>
+        <Filename Value="C:\home\trunk2\Fontes\ACBrDFe\ACBrCTe\DACTE\Fortes\ACBrCTeDACTeRLClass.pas"/>
+        <EditorIndex Value="15"/>
+        <TopLine Value="36"/>
+        <CursorPos Y="48"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit70>
+      <Unit71>
+        <Filename Value="C:\home\trunk2\Fontes\ACBrDFe\ACBrCTe\PCNCTe\pcteCTe.pas"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="16"/>
+        <CursorPos X="128" Y="6"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit71>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="24" HistoryIndex="23">
       <Position1>
         <Filename Value="updv_rec.pas"/>
-        <Caret Line="342" TopLine="327"/>
+        <Caret Line="342" TopLine="330"/>
       </Position1>
       <Position2>
         <Filename Value="updv_rec.pas"/>
-        <Caret Line="343" TopLine="327"/>
+        <Caret Line="440" Column="7" TopLine="420"/>
       </Position2>
       <Position3>
         <Filename Value="updv_rec.pas"/>
-        <Caret Line="342" TopLine="327"/>
+        <Caret Line="342" TopLine="330"/>
       </Position3>
       <Position4>
         <Filename Value="updv_rec.pas"/>
-        <Caret Line="343" TopLine="327"/>
+        <Caret Line="343" TopLine="305"/>
       </Position4>
       <Position5>
         <Filename Value="updv_rec.pas"/>
-        <Caret Line="2017" Column="19" TopLine="1995"/>
+        <Caret Line="472" TopLine="454"/>
       </Position5>
       <Position6>
         <Filename Value="updv_rec.pas"/>
@@ -668,7 +735,7 @@
       </Position6>
       <Position7>
         <Filename Value="updv_rec.pas"/>
-        <Caret Line="343" TopLine="330"/>
+        <Caret Line="475" Column="12" TopLine="462"/>
       </Position7>
       <Position8>
         <Filename Value="updv_rec.pas"/>
@@ -676,7 +743,7 @@
       </Position8>
       <Position9>
         <Filename Value="updv_rec.pas"/>
-        <Caret Line="473" Column="52" TopLine="456"/>
+        <Caret Line="343" TopLine="330"/>
       </Position9>
       <Position10>
         <Filename Value="updv_rec.pas"/>
@@ -700,7 +767,7 @@
       </Position14>
       <Position15>
         <Filename Value="updv_rec.pas"/>
-        <Caret Line="440" Column="7" TopLine="420"/>
+        <Caret Line="343" TopLine="330"/>
       </Position15>
       <Position16>
         <Filename Value="updv_rec.pas"/>
@@ -708,60 +775,35 @@
       </Position16>
       <Position17>
         <Filename Value="updv_rec.pas"/>
-        <Caret Line="343" TopLine="305"/>
+        <Caret Line="628" Column="19" TopLine="552"/>
       </Position17>
       <Position18>
         <Filename Value="updv_rec.pas"/>
-        <Caret Line="472" TopLine="454"/>
+        <Caret Line="482" Column="24" TopLine="471"/>
       </Position18>
       <Position19>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="342" TopLine="330"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="609" TopLine="597"/>
       </Position19>
       <Position20>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="475" Column="12" TopLine="462"/>
+        <Filename Value="..\..\trunk2\Fontes\ACBrDFe\ACBrCTe\PCNCTe\pcteConversaoCTe.pas"/>
+        <Caret Line="424" Column="51" TopLine="412"/>
       </Position20>
       <Position21>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="342" TopLine="330"/>
+        <Filename Value="C:\home\trunk2\Fontes\PCNComum\pcnConversao.pas"/>
+        <Caret Line="137" Column="40" TopLine="125"/>
       </Position21>
       <Position22>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="343" TopLine="330"/>
+        <Filename Value="C:\home\trunk2\Fontes\ACBrTCP\ACBrSocket.pas"/>
+        <Caret Line="285" Column="3" TopLine="273"/>
       </Position22>
       <Position23>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="342" TopLine="330"/>
+        <Filename Value="C:\home\trunk2\Fontes\ACBrComum\ACBrBase.pas"/>
+        <Caret Line="165" TopLine="153"/>
       </Position23>
       <Position24>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="343" TopLine="330"/>
+        <Filename Value="C:\home\trunk2\Fontes\ACBrDiversos\ACBrValidador.pas"/>
       </Position24>
-      <Position25>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="342" TopLine="330"/>
-      </Position25>
-      <Position26>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="343" TopLine="330"/>
-      </Position26>
-      <Position27>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="342" TopLine="330"/>
-      </Position27>
-      <Position28>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="343" TopLine="330"/>
-      </Position28>
-      <Position29>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="342" TopLine="330"/>
-      </Position29>
-      <Position30>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="628" Column="19" TopLine="552"/>
-      </Position30>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
