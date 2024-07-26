@@ -368,11 +368,11 @@ object fSangria: TfSangria
     ParentBackground = False
     TabOrder = 6
     object btnReimprimir: TButton
-      Left = 240
+      Left = 169
       Height = 25
-      Top = 240
+      Top = 241
       Width = 134
-      Caption = 'Imprimir a Selecionada S'
+      Caption = 'Imprimir a Selecionada '
       TabOrder = 0
       OnClick = btnReimprimirClick
     end
@@ -625,11 +625,11 @@ object fSangria: TfSangria
     ParentColor = False
   end
   object btnReimprimirReforco: TButton
-    Left = 96
+    Left = 168
     Height = 25
     Top = 439
     Width = 134
-    Caption = 'Imprimir a Selecionada R'
+    Caption = 'Imprimir a Selecionada '
     TabOrder = 9
     OnClick = btnReimprimirReforcoClick
   end
@@ -1125,8 +1125,8 @@ object fSangria: TfSangria
     )
     Params = <>
     Macros = <>
-    Left = 136
-    Top = 376
+    Left = 72
+    Top = 344
     object sqReforcoCOD_VENDA: TLongintField
       FieldKind = fkData
       FieldName = 'COD_VENDA'

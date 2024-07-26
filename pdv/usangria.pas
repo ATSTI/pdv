@@ -290,6 +290,7 @@ begin
   fAbrirCaixa.cxsangria := 1 ;
   fAbrirCaixa.mostrarCaixa(dmPdv.varLogado);
   fSangria.sqSangrias.Active:= True;
+  fSangria.sqReforco.Active:= True;
   Edit1.Text := dmPdv.nomeCaixa;
   Edit2.Text := fAbrirCaixa.disponivel_sangria;
 
