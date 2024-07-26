@@ -67,67 +67,16 @@ class MinhaGUI():
         self.labelX.pack()
         fm.pack(fill=BOTH, expand=YES)
 
-        # threading.Thread(
-        #         target=self.capture_output("pos_order_exec.py"), daemon=True
-        # ).start()
-        # t = threading.Thread(target=self.capture_output("pos_order.py"), daemon=True)
-        # t.start()
-
-        # self._executando_vendas()
-        # self.janela_principal.after_idle(self.executando_vendas())
-        # self.the_queue.put("1")
         threading.Thread(target=self.executando_vendas).start()
         # self.janela_principal.after(1000,  self.atualizando_msg)
         # Rodando
         self.janela_principal.mainloop()
     
-    # def start_new_thread(self):
-    #     thread = threading.Thread(target=self._executando_vendas())
-    #     thread.start()
-
-    # def atualizando_msg(self):
-    #     try:
-    #         message = self.the_queue.get(block=False)
-    #     except queue.Empty:
-    #         # let's try again later
-    #         self.janela_principal.after(1000, self.atualizando_msg)
-    #         return
-
-    #     print('Mensagem nova', message)
-    #     if message is not None:
-    #         # we're not done yet, let's do something with the message and
-    #         # come back later
-    #         self.labelX['text'] = message
-    #         self.janela_principal.after(100, self.atualizando_msg)        
-
     def executando_vendas(self):
         # ord = IntegracaoOdoo()
         now = datetime.datetime.now()
         min = now.minute
         print("Atualizando vendas-" + now.strftime("%Y-%m-%d %H:%M:%S") + " - " + str(min))
-        # message = self.the_queue.get()
-        # if message is not None:
-            # self.the_queue.put("1")
-            # else:
-        # self.num += int(message)
-            # self.the_queue.put(str(self.num))
-        # try:
-        #     message = self.the_queue.get(block=False)
-        # except queue.Empty:
-        #     # let's try again later
-        #     # self.janela_principal.after(100, self.executando_vendas)
-        #     return
-        # if message is not None:
-        #     # we're not done yet, let's do something with the message and
-        #     # come back later
-            # self.labelX['text'] = "2"
-        # else:
-            # self.labelX['text'] = "1"
-            # self.janela_principal.after(100, self.executando_vendas)
-        # if self.num == 1:
-        # self.the_queue.put(str(self.num+1))
-        # else:
-            # self.the_queue.put(str(self.num+5))
         th = threading.Thread(target=self.capture_output("pos_order_exec.py"), daemon=True)
         th.start()
         if min > 20 and min < 30:
