@@ -43,7 +43,7 @@ class Main():
         # ]
         for arq in arquivos:
             print ("Atualizando arquivos - " + arq) 
-            path_url = "https://github.com/ATSTI/pdv/raw/integracao_odoo_script/integracao_odoo/%s" %(arq)
+            path_url = "https://github.com/ATSTI/pdv/raw/master/integracao_odoo/%s" %(arq)
             retorno = rq.get(path_url)
             if arq == "pos_order.py":
                 file_retorno = "pos_order.pyw"
