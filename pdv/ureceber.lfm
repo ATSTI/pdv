@@ -9,7 +9,7 @@ object fRecebimento: TfRecebimento
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '2.2.4.0'
   object Panel1: TPanel
     Left = 0
     Height = 133
@@ -26,7 +26,6 @@ object fRecebimento: TfRecebimento
       Top = 43
       Width = 120
       Alignment = taRightJustify
-      CharCase = ecNormal
       MaxLength = 0
       ParentShowHint = False
       ShowHint = True
@@ -38,7 +37,7 @@ object fRecebimento: TfRecebimento
       Left = 592
       Height = 15
       Top = 15
-      Width = 57
+      Width = 54
       Caption = 'Valor Total'
       ParentColor = False
     end
@@ -48,7 +47,6 @@ object fRecebimento: TfRecebimento
       Top = 15
       Width = 120
       Alignment = taRightJustify
-      CharCase = ecNormal
       MaxLength = 0
       TabOrder = 0
       Text = '0,00'
@@ -61,7 +59,6 @@ object fRecebimento: TfRecebimento
       Top = 58
       Width = 88
       Alignment = taRightJustify
-      CharCase = ecNormal
       MaxLength = 0
       ParentShowHint = False
       ShowHint = True
@@ -73,7 +70,7 @@ object fRecebimento: TfRecebimento
       Left = 393
       Height = 15
       Top = 62
-      Width = 57
+      Width = 56
       Caption = 'Valor Pago'
       ParentColor = False
     end
@@ -1160,7 +1157,6 @@ object fRecebimento: TfRecebimento
       Top = 4
       Width = 88
       Alignment = taRightJustify
-      CharCase = ecNormal
       MaxLength = 0
       ParentShowHint = False
       ReadOnly = True
@@ -1173,7 +1169,7 @@ object fRecebimento: TfRecebimento
       Left = 393
       Height = 15
       Top = 8
-      Width = 69
+      Width = 68
       Caption = 'Valor a Pagar'
       ParentColor = False
     end
@@ -1184,7 +1180,6 @@ object fRecebimento: TfRecebimento
       Top = 30
       Width = 88
       Alignment = taRightJustify
-      CharCase = ecNormal
       MaxLength = 0
       ParentShowHint = False
       ShowHint = True
@@ -1196,7 +1191,7 @@ object fRecebimento: TfRecebimento
       Left = 393
       Height = 15
       Top = 34
-      Width = 60
+      Width = 59
       Caption = 'Valor Juros '
       ParentColor = False
     end
@@ -1263,7 +1258,6 @@ object fRecebimento: TfRecebimento
         'Memo1'
       )
       TabOrder = 1
-      Visible = False
     end
   end
   object Panel3: TPanel
@@ -2539,14 +2533,6 @@ object fRecebimento: TfRecebimento
       TabOrder = 3
     end
   end
-  object memoResult: TMemo
-    Left = 328
-    Height = 32
-    Top = 120
-    Width = 420
-    TabOrder = 4
-    Visible = False
-  end
   object StringGrid1: TStringGrid
     Left = 4
     Height = 319
@@ -2590,6 +2576,14 @@ object fRecebimento: TfRecebimento
       0
       'Multa/Juros'
     )
+  end
+  object memoResult: TMemo
+    Left = 96
+    Height = 176
+    Top = 216
+    Width = 564
+    TabOrder = 4
+    Visible = False
   end
   object dsRec: TDataSource
     DataSet = dmPdv.sqBusca
@@ -2671,6 +2665,7 @@ object fRecebimento: TfRecebimento
         Name = 'PCODMOV'
         ParamType = ptInput
       end>
+    Macros = <>
     Left = 360
     Top = 40
     object sqPagamentoCOD_VENDA: TLongintField
@@ -2882,6 +2877,7 @@ object fRecebimento: TfRecebimento
       '  and aml.boleto_emitido = ''t'''
     )
     Params = <>
+    Macros = <>
     Left = 512
     Top = 200
     object sqlOdoocodrecebimento: TLongintField

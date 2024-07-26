@@ -16,24 +16,27 @@ inherited fClienteBusca: TfClienteBusca
     end
     inherited Label1: TLabel
       Left = 24
+      Height = 21
       Top = 8
-      Width = 55
+      Width = 54
       Caption = 'Código'
     end
     inherited Edit2: TEdit
       Left = 264
       Width = 416
+      CharCase = ecUppercase
       OnKeyPress = Edit2KeyPress
       TabOrder = 0
     end
     inherited chInativo: TCheckBox
+      Width = 60
       OnChange = chInativoChange
     end
     object Label2: TLabel[4]
       Left = 208
-      Height = 19
+      Height = 21
       Top = 8
-      Width = 48
+      Width = 45
       Caption = 'Nome'
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
@@ -47,7 +50,7 @@ inherited fClienteBusca: TfClienteBusca
       Left = 88
       Height = 21
       Top = 40
-      Width = 110
+      Width = 100
       Caption = 'Cliente Curso'
       Checked = True
       Font.CharSet = ANSI_CHARSET
@@ -58,6 +61,21 @@ inherited fClienteBusca: TfClienteBusca
       ParentFont = False
       State = cbChecked
       TabOrder = 3
+      Visible = False
+    end
+    object chDesc: TCheckBox[6]
+      Left = 272
+      Height = 21
+      Top = 40
+      Width = 138
+      Caption = 'Ordem Decrescente'
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -13
+      Font.Name = '@Malgun Gothic'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      ParentFont = False
+      TabOrder = 4
     end
   end
   inherited Panel2: TPanel
@@ -114,7 +132,7 @@ inherited fClienteBusca: TfClienteBusca
   end
   object dsCliente: TDataSource[3]
     DataSet = dmPdv.sqBusca
-    left = 760
-    top = 352
+    Left = 760
+    Top = 352
   end
 end
