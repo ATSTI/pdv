@@ -101,6 +101,9 @@ begin
     begin
       ShowMessage('Sem Caixa Aberto para este usuário');
       dmPdv.nomeCaixa := 'FECHADO';
+      fPdv.btnNovo.Enabled:= False;
+      fPdv.btnReceber.Enabled:= False;
+      fPdv.btnInfo.Enabled:= False;
     end
     else begin
       // Sessao_id
@@ -111,6 +114,9 @@ begin
       ArquivoINI := TIniFile.Create('pdv_caixa.ini');
       ArquivoINI.WriteString('PDV', 'caixa', dmPdv.ccusto);
       ArquivoINI.Free;
+      fPdv.btnNovo.Enabled:= True;
+      fPdv.btnReceber.Enabled:= True;
+      fPdv.btnInfo.Enabled:= True;
     end;
     fPdv.ShowModal;
     Close;

@@ -1,7 +1,7 @@
 object fPdv: TfPdv
   Left = 203
   Height = 664
-  Top = 37
+  Top = 24
   Width = 1108
   Align = alLeft
   Caption = 'Ponto de Venda - ATS'
@@ -789,7 +789,6 @@ object fPdv: TfPdv
       ParentFont = False
       TabOrder = 8
       Visible = False
-      OnClick = pnComandaClick
     end
   end
   object Panel2: TPanel
@@ -12231,7 +12230,7 @@ object fPdv: TfPdv
         Left = 184
         Height = 15
         Top = 40
-        Width = 118
+        Width = 119
         Caption = 'TROCA / DEVOLUÇÃO'
         ParentColor = False
       end
@@ -12362,7 +12361,7 @@ object fPdv: TfPdv
         Left = 21
         Height = 15
         Top = 5
-        Width = 152
+        Width = 153
         Caption = 'PDV Versão : 1.0 - 20/11/2019'
         Font.Color = clWhite
         ParentColor = False

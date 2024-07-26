@@ -5283,6 +5283,8 @@ object fNFe: TfNFe
     CasasDecimais.vUnCom = 4
     CasasDecimais.MaskqCom = ',0.0000'
     CasasDecimais.MaskvUnCom = ',0.0000'
+    CasasDecimais.Aliquota = 2
+    CasasDecimais.MaskAliquota = ',0.00'
     ACBrNFe = ACBrNFe1
     ExibeCampoFatura = False
     LarguraCodProd = 150

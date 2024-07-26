@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, Buttons, udmpdv, JsonTools, fpjson, fphttpclient,
-  DB, StrUtils, opensslsockets, openssl, IniFiles;
+  DB, SQLDB, StrUtils, opensslsockets, openssl, IniFiles;
 
 type
 
@@ -38,11 +38,15 @@ type
     Label3: TLabel;
     Label4: TLabel;
     Memo1: TMemo;
+    Memo2: TMemo;
+    Memo3: TMemo;
+    Memo4: TMemo;
     memoDados: TMemo;
     memoResult: TMemo;
     Panel1: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
+    sTrans: TSQLTransaction;
     Timer2: TTimer;
     Timer3: TTimer;
     TimerPedido: TTimer;
@@ -61,6 +65,7 @@ type
     procedure btnTestClick(Sender: TObject);
     procedure btnUsuarioClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -455,14 +460,15 @@ begin
   memoResult.Lines.Clear;
   memoDados.Lines.Clear;
   exibe_sql.Clear;
-  cria_json(' NOT IN ' + edtUltimpoPedidoA.Text);
+  //cria_json(' NOT IN ' + edtUltimpoPedidoA.Text);
+  cria_json(' NOT IN (' + edtUltimpoPedidoA.Text +')'); // manoel 26/07/23 inclui os  ( )
   edtUltimpoPedidoA.Text := edtUltimpoPedido;
   memoResult.Lines.Assign(exibe_sql);
   edEste.Text := edEste_str;
 end;
 
 procedure TfIntegracaoOdoo.btnCaixaClick(Sender: TObject);
-{Var
+Var
   responseData: String;
   result: String;
   c: TJsonNode;
@@ -478,9 +484,10 @@ procedure TfIntegracaoOdoo.btnCaixaClick(Sender: TObject);
  J: integer;
  K: integer;
  ver: String;
- sql_campo, sql_valor: String;}
+ sql_campo, sql_valor: String;
 begin
   limpa_memo := 'N';
+
   btnSangria_Rec.Click;
   btnRecebimento.Click;
   btnConsultaUltimoPedidoGeral.Click;
@@ -489,6 +496,7 @@ begin
     ShowMessage('Execute o botão Cons. Pedido Geral');
     Exit;
   end;
+
   comunica_server('CAIXA_CONTROLE', 'CODCAIXA', 'CODCAIXA, SITUACAO', '');
   exit;
 
@@ -511,7 +519,7 @@ begin
     dmpdv.sqBusca.Next;
   end;}
   //dados += '}]';
-  {postJson.Add('caixa', dados);
+  postJson.Add('caixa', dados);
   dados := '';
   memoDados.Lines.Clear;
   DecimalSeparator:='.';
@@ -571,7 +579,7 @@ begin
         end;
       end;
       executa_sql;
-  end;}
+  end;
 end;
 
 procedure TfIntegracaoOdoo.btnConsultaUltimoPedidoGeralClick(Sender: TObject);
@@ -1201,21 +1209,28 @@ end;
 
 procedure TfIntegracaoOdoo.executa_sql;
 var   Linha: string;
-  i: Integer;
+  i,x: Integer;
   sql: String;
 begin
     sql := '';
+
     for i := 0 to memoDados.Lines.Count-1 do
     begin
       linha := memoDados.Lines.Strings[i];
+      // linha := memo4Dados.Lines.Strings[i];
       sql += linha;
       if AnsiEndsText(';', linha) then
       begin
+
         dmPdv.IbCon.ExecuteDirect(sql);
+        Memo3.Lines.Add(sql);
         dmPdv.sTrans.Commit;
         sql := '';
+
       end;
+
     end;
+
     //memoDados.Lines.Clear;
 end;
 
@@ -1298,7 +1313,7 @@ begin
     RequestBody := TStringStream.Create(postJson.AsJSON);
     responseData := Post(dmPdv.path_integra_url + url_server);
     memoResult.Lines.Add(responseData);
-   // memo2.Lines.Add(responseData);
+    memo2.Lines.Add(responseData);
     jData := GetJSON(responseData);
     for i := 0 to jData.Count - 1 do
     begin
@@ -1320,7 +1335,7 @@ begin
             if field_name = LowerCase(campo_chave) then
             begin
               dmpdv.busca_sql('SELECT ' + campos_select + ' FROM ' + tabela +
-                ' WHERE ' + campo_chave + ' = ' + field_value);
+                ' WHERE ' + campo_chave + ' = ' + field_value)  ;
               if dmpdv.sqBusca.IsEmpty then
               begin
                 ver := 'insere';
@@ -1353,6 +1368,8 @@ begin
           begin
             memoDados.Lines.add('INSERT INTO ' + tabela + '('+ sql_campo +
               ') VALUES(' + sql_valor + ');');
+            memo4.Lines.add('INSERT INTO ' + tabela + '('+ sql_campo +
+              ') VALUES(' + sql_valor + ');');
             ver := '';
             sql_update := '';
             sql_update1 := '';
@@ -1364,6 +1381,8 @@ begin
               if (dmpdv.sqBusca.Fields[0].AsDateTime < data_cad) then
               begin
                 memoDados.Lines.add('UPDATE ' + tabela + ' SET ' + sql_update1 + sql_update +
+                  ' WHERE ' + campo_chave + ' = ' + cod_chave + ';');
+                memo1.Lines.add('UPDATE ' + tabela + ' SET ' + sql_update1 + sql_update +
                   ' WHERE ' + campo_chave + ' = ' + cod_chave + ';');
               end;
             end;

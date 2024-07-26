@@ -9,7 +9,7 @@ object fMovimentoProc: TfMovimentoProc
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '2.2.4.0'
+  LCLVersion = '3.4.0.0'
   object Panel1: TPanel
     Left = 0
     Height = 72
@@ -24,6 +24,7 @@ object fMovimentoProc: TfMovimentoProc
     Font.Name = '@Malgun Gothic'
     Font.Pitch = fpVariable
     Font.Quality = fqDraft
+    ParentBackground = False
     ParentColor = False
     ParentFont = False
     TabOrder = 0
@@ -98,7 +99,7 @@ object fMovimentoProc: TfMovimentoProc
       MonthNames = 'Long'
     end
     object edPedido: TLabeledEdit
-      Left = 424
+      Left = 400
       Height = 29
       Top = 4
       Width = 80
@@ -114,13 +115,14 @@ object fMovimentoProc: TfMovimentoProc
       LabelPosition = lpLeft
       ParentFont = False
       TabOrder = 2
+      Visible = False
       OnKeyPress = edPedidoKeyPress
     end
     object rgStatus: TRadioGroup
-      Left = 696
+      Left = 720
       Height = 71
       Top = -2
-      Width = 234
+      Width = 210
       AutoFill = True
       Caption = 'Situacao'
       ChildSizing.LeftRightSpacing = 6
@@ -131,7 +133,7 @@ object fMovimentoProc: TfMovimentoProc
       ChildSizing.Layout = cclLeftToRightThenTopToBottom
       ChildSizing.ControlsPerLine = 2
       ClientHeight = 53
-      ClientWidth = 230
+      ClientWidth = 206
       Columns = 2
       Font.CharSet = ANSI_CHARSET
       Font.Color = clBlack
@@ -147,6 +149,7 @@ object fMovimentoProc: TfMovimentoProc
         'NFCe'
         'Troca/Dev.'
       )
+      ParentBackground = False
       ParentFont = False
       TabOrder = 3
     end
@@ -156,6 +159,7 @@ object fMovimentoProc: TfMovimentoProc
       Top = 40
       Width = 104
       Alignment = taRightJustify
+      EnableSets = False
       MaxLength = 0
       TabOrder = 4
       Text = '0,00'
@@ -642,6 +646,44 @@ object fMovimentoProc: TfMovimentoProc
       Width = 73
       Caption = 'Vendedor'
       ParentColor = False
+      Visible = False
+    end
+    object rgForma: TRadioGroup
+      Left = 384
+      Height = 84
+      Top = -15
+      Width = 312
+      AutoFill = True
+      ChildSizing.LeftRightSpacing = 6
+      ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+      ChildSizing.EnlargeVertical = crsHomogenousChildResize
+      ChildSizing.ShrinkHorizontal = crsScaleChilds
+      ChildSizing.ShrinkVertical = crsScaleChilds
+      ChildSizing.Layout = cclLeftToRightThenTopToBottom
+      ChildSizing.ControlsPerLine = 2
+      ClientHeight = 66
+      ClientWidth = 308
+      Columns = 2
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -11
+      Font.Name = '@Malgun Gothic'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      ItemIndex = 0
+      Items.Strings = (
+        'Todos'
+        'Dinheiro'
+        'Cartão Debito'
+        'Cartão Credito'
+        'Faturado'
+        'Cheque'
+        'Pix'
+        'Troca'
+      )
+      OnClick = btnProcurarClick
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 12
     end
   end
   object DBGrid1: TDBGrid
@@ -656,26 +698,26 @@ object fMovimentoProc: TfMovimentoProc
       item
         MaxSize = 140
         Title.Caption = 'Código'
-        Width = 115
+        Width = 107
       end    
       item
         MaxSize = 120
         Title.Caption = 'Data'
-        Width = 115
+        Width = 106
       end    
       item
         MaxSize = 100
         Title.Caption = 'Núm. Venda'
-        Width = 115
+        Width = 100
       end    
       item
         MaxSize = 70
         Title.Caption = 'Série'
-        Width = 115
+        Width = 70
       end    
       item
         Title.Caption = 'Vendedor'
-        Width = 115
+        Width = 106
       end    
       item
         MaxSize = 300
@@ -687,13 +729,17 @@ object fMovimentoProc: TfMovimentoProc
         MaxSize = 120
         Title.Alignment = taRightJustify
         Title.Caption = 'Valor'
-        Width = 115
+        Width = 106
       end    
       item
         Alignment = taRightJustify
         Title.Alignment = taRightJustify
         Title.Caption = 'Tempo'
-        Width = 117
+        Width = 106
+      end    
+      item
+        Title.Caption = 'Forma'
+        Width = 106
       end>
     DataSource = dsMovProc
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
@@ -715,6 +761,7 @@ object fMovimentoProc: TfMovimentoProc
       Top = 2
       Width = 89
       Alignment = taRightJustify
+      EnableSets = False
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
       Font.Name = 'Arial Unicode MS'
@@ -733,6 +780,7 @@ object fMovimentoProc: TfMovimentoProc
       Top = 2
       Width = 51
       Alignment = taRightJustify
+      EnableSets = False
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
       Font.Name = 'Arial Unicode MS'
@@ -746,11 +794,11 @@ object fMovimentoProc: TfMovimentoProc
       SpaceChar = '_'
     end
     object Label2: TLabel
-      Left = 443
+      Left = 488
       Height = 16
       Top = 2
-      Width = 123
-      Caption = 'Qtde Lançamentos:'
+      Width = 77
+      Caption = 'Qtde Lança:'
       Font.CharSet = ANSI_CHARSET
       Font.Height = -13
       Font.Name = 'Arial'
@@ -779,7 +827,7 @@ object fMovimentoProc: TfMovimentoProc
       Left = 8
       Height = 30
       Top = 0
-      Width = 144
+      Width = 133
       Caption = 'Fechar Caixa'
       Font.CharSet = ANSI_CHARSET
       Font.Height = -13
@@ -925,10 +973,10 @@ object fMovimentoProc: TfMovimentoProc
       TabOrder = 2
     end
     object btnSangria: TBitBtn
-      Left = 152
+      Left = 144
       Height = 30
       Top = 0
-      Width = 144
+      Width = 125
       Caption = 'Sangria(-)'
       Font.CharSet = ANSI_CHARSET
       Font.Height = -13
@@ -1074,10 +1122,10 @@ object fMovimentoProc: TfMovimentoProc
       TabOrder = 3
     end
     object btnReforco: TBitBtn
-      Left = 296
+      Left = 270
       Height = 30
       Top = 0
-      Width = 144
+      Width = 141
       Caption = 'Reforço Caixa(+)'
       Font.CharSet = ANSI_CHARSET
       Font.Height = -13
@@ -1243,6 +1291,7 @@ object fMovimentoProc: TfMovimentoProc
       Top = 2
       Width = 80
       Alignment = taRightJustify
+      EnableSets = False
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
       Font.Name = 'Arial Unicode MS'
@@ -1261,6 +1310,7 @@ object fMovimentoProc: TfMovimentoProc
       Top = 2
       Width = 91
       Alignment = taRightJustify
+      EnableSets = False
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
       Font.Name = 'Arial Unicode MS'
@@ -1288,6 +1338,15 @@ object fMovimentoProc: TfMovimentoProc
       ParentColor = False
       ParentFont = False
     end
+    object BitBtn1: TBitBtn
+      Left = 412
+      Height = 30
+      Top = 0
+      Width = 75
+      Caption = 'Saldo Final'
+      OnClick = BitBtn1Click
+      TabOrder = 7
+    end
   end
   object pnMemo: TPanel
     Left = 121
@@ -1307,8 +1366,8 @@ object fMovimentoProc: TfMovimentoProc
       Lines.Strings = (
         'Memo1'
       )
-      OnChange = Memo1Change
       TabOrder = 0
+      OnChange = Memo1Change
     end
   end
   object Label8: TLabel

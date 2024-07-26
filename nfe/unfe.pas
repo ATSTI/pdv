@@ -2970,9 +2970,9 @@ begin
         if (dmPdv.qcdsFaturaVALOR.AsFloat > 0) then
         begin
           cobr.Fat.nFat  := Trim(dmPdv.qcdsNFNOTASERIE.ASSTRING);
-          cobr.Fat.vOrig := vlr_total;
+          cobr.Fat.vOrig := vlr_total + dmPdv.qcdsNFVALOR_DESCONTO.AsVariant;
 
-          cobr.Fat.vDesc := RoundTo(0.00, -2);
+          cobr.Fat.vDesc := RoundTo(dmPdv.qcdsNFVALOR_DESCONTO.AsCurrency, -2);
 
           cobr.Fat.vLiq  := vlr_total;
         end;
@@ -3273,15 +3273,14 @@ begin
 
   //ComboBox1.ItemIndex := 0 ;
   ///*
-  {if (PageControl1.ActivePageIndex = 0) then
+  if (PageControl1.ActivePageIndex = 0) then
   begin
-    if(ComboBox1.Text = '') then
+    if(ComboBox1.Text <> '') then
     begin
-      MessageDlg('Centro de custo não selecionado', mtError, [mbOK], 0);
+      v_semp += ' AND NOME = ' + QuotedStr(Trim(ComboBox1.Text));
     end;
-    v_semp += ' AND NOME = ' + QuotedStr(Trim(ComboBox1.Text));
   end;
-  }
+
   if (PageControl1.ActivePageIndex = 1) then
   begin
     if(ComboBox2.Text = '') then
@@ -3313,6 +3312,7 @@ begin
     dmPdv.qsEmpresa.Params[0].AsInteger := 0
   else
     dmPdv.qsEmpresa.Params[0].AsInteger := dmPdv.sqBusca.FieldByName('CODIGO').AsInteger;
+  a := IntToStr(dmPdv.sqBusca.FieldByName('CODIGO').AsInteger);
   dmPdv.qsEmpresa.Open;
   fNFe.Caption := dmPdv.qsEmpresaEMPRESA.AsString;
 end;
@@ -3320,6 +3320,7 @@ end;
 procedure TfNFe.getCli_Fornec;
 var
   IERG : integer;
+  ver_str:String;
 begin
   pSuframa := '';
   vTipoFiscal := '';
@@ -3395,6 +3396,11 @@ begin
             begin
               Dest.IE := RemoveChar(Trim(dmPdv.qsFornecINSCESTADUAL.AsString));
             end;
+            if (Trim(dmPdv.qsFornecUF.AsString) = 'MG') then
+            begin
+              ver_str := AddChar('0', RemoveChar(Trim(dmPdv.qsFornecINSCESTADUAL.AsString)), 13);
+              Dest.IE := ver_str;
+            end
           end
           else begin
             if (Trim(dmPdv.qsFornecUF.AsString) <> 'EX') then
@@ -3497,6 +3503,11 @@ begin
             if (IERG > 11) then
             begin
               Dest.IE := RemoveChar(Trim(dmPdv.qsClienteINSCESTADUAL.AsString));
+            end;
+            if (Trim(dmPdv.qsClienteUF.AsString) = 'MG') then
+            begin
+              ver_str := AddChar('0', RemoveChar(Trim(dmPdv.qsClienteINSCESTADUAL.AsString)), 13);
+              Dest.IE := ver_str;
             end;
           end
           else begin
@@ -3872,7 +3883,9 @@ begin
               vBCFCPSTRet      := dmPdv.cdsItensNFV_B_FCPSTRET.Value;
               pFCPSTRet        := dmPdv.cdsItensNFP_FCPSTRET.Value;
               vFCPSTRet        := dmPdv.cdsItensNFV_FCPSTRET.Value;
-              vICMSSubstituto  := 0;
+              vICMSSubstituto  := dmPdv.cdsItensNFICMS_SUBST.Value;
+              vICMSSTRet       := dmPdv.cdsItensNFVICMSSTRET.Value;
+              vBCSTRet         := dmPdv.cdsItensNFVBCSTRET.Value;
             end
             else if (Trim(dmPdv.cdsItensNFCSOSN.AsString) = '900') then
             begin
@@ -3944,6 +3957,7 @@ begin
                 vICMSDeson := dmPdv.cdsItensNFVALOR_ICMS.Value;
                 //vICMS      := cdsItensNFVALOR_ICMS.Value;
                 motDesICMS := mdiSuframa ;
+                indDeduzDeson := tieSim;
                 //vBC := cdsItensNFVLR_BASEICMS.AsVariant - cdsItensNFVALOR_ICMS.AsVariant;
                 //pICMS := cdsItensNFICMS.AsVariant;
                 //vICMS := cdsItensNFVALOR_ICMS.AsVariant;
@@ -4136,7 +4150,7 @@ begin
           if (dmPdv.qsCFOPREDUCAO.IsNull) then
             pRedBC := 0
           else
-            pRedBC :=  dmPdv.qsCFOPREDUCAO.AsVariant;                          //ALIQUOTA DA REDUÇÃO DA BASE DE CALCULO
+            pRedBC := 100 - dmPdv.qsCFOPREDUCAO.AsVariant;                          //ALIQUOTA DA REDUÇÃO DA BASE DE CALCULO
           if (dmPdv.cdsItensNFICMS_SUBST.isnull) then
             vICMSST := 0
           else

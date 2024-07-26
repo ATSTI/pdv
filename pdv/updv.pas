@@ -5,11 +5,12 @@ unit uPdv;
 interface
 
 uses
-  Classes, SysUtils, db, FileUtil, SynEdit, RTTICtrls, Forms, Controls,
+  Classes, windows,SysUtils, db, FileUtil, SynEdit, RTTICtrls, Forms, Controls,
   Graphics, Dialogs, ExtCtrls, StdCtrls, Buttons, MaskEdit, DBGrids, ActnList,
   Menus, dateutils, uMovimento, uCompraCls, uUtil, uVendedorBusca,
-  uClienteBusca, uPermissao, uComandaJuntar, uReceber, Grids, ComCtrls,
-  ACBrPosPrinter, MTProcs, strutils, fphttpclient, JsonTools, fpjson,uIntegraSimples, crt;
+  uClienteBusca, uPermissao, uComandaJuntar, uReceber,  Grids,
+  ComCtrls, ACBrPosPrinter, MTProcs, strutils, fphttpclient, JsonTools, fpjson,
+  uIntegraSimples, crt;
 
 type
 
@@ -221,11 +222,11 @@ type
     procedure Panel2Click(Sender: TObject);
     procedure btnVendaClick(Sender: TObject);
     procedure Panel6Click(Sender: TObject);
-    procedure pnComandaClick(Sender: TObject);
     procedure TIButton2Click(Sender: TObject);
     procedure TIGroupBox1Click(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
+    procedure procFormShow;
   private
     ch_cp: String;
     e_comanda: String;
@@ -272,10 +273,13 @@ type
     procedure imprimirAcbr;
     procedure imprime_envio;
     procedure buscaProduto();
+
+
   public
      codMov: Integer;
      pSemValor : integer;
      pStatus : integer;
+     bmp: TBitmap;
   end;
 
 var
@@ -284,7 +288,7 @@ var
 
 implementation
 
-uses updv_rec,udmpdv, uMovimentoProc, uProdutoProc, uIntegracaoOdoo;
+uses updv_rec,udmpdv, uMovimentoProc, uProdutoProc, uIntegracaoOdoo,uAbrirCaixa2,uabrircaixa,usangria;
 
 {$R *.lfm}
 
@@ -443,7 +447,7 @@ end;
 
 procedure TfPdv.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
   DataCol: Integer; Column: TColumn; State: TGridDrawState);
-var bmp: TBitmap;
+
 begin
 
 
@@ -1206,84 +1210,11 @@ begin
 end;
 
 procedure TfPdv.FormShow(Sender: TObject);
-var sqlP : String;
-  logs:TextFile;
 begin
-  AssignFile(logs, 'log.txt');
-  try
-    Rewrite(logs);
-    Writeln(logs, 'Abrindo sistema');
-
-  codVendedorAnterior := 0;
-  if (dmpdv.empresa_integra <> 'ATS') then
-  begin
-    dmpdv.integra_caixa;
-    dmpdv.integra_caixa_mov;
-    dmpdv.integra_cliente;
-    dmpdv.integra_usuario;
-    dmpdv.integra_produtos;
-  end;
-  ACBrPosPrinter1.ControlePorta:=dmPdv.imp_controle_porta;
-  ACBrPosPrinter1.LinhasBuffer:=dmPdv.imp_LinhasBuffer;
-  ACBrPosPrinter1.Device.SendBytesInterval:=dmpdv.imp_Interval;
-
-  ultimo_pedido := 0;
-  consultaItem := 'NAO';
-  DBGrid2.Columns[0].FieldName:='CODPRO';
-  DBGrid2.Columns[1].FieldName:='PRODUTO';
-  DBGrid2.Columns[2].FieldName:='UNIDADEMEDIDA';
-  DBGrid2.Columns[3].FieldName:='VALOR_PRAZO';
-  DBGrid2.Columns[3].DisplayFormat:=',##0.00';
-  fPDV_Rec.OutrosCartoes:='N';
-  dmPdv.OutrosCartoes := 'N';
-  sqlP := 'SELECT * FROM PARAMETRO WHERE PARAMETRO = ' + QuotedStr('OUTROSCARTOES');
-  dmPdv.busca_sql(sqlP);
-  if (not dmPdv.sqBusca.IsEmpty) then
-  begin
-    fPDV_Rec.OutrosCartoes:='S';
-    dmPdv.OutrosCartoes := 'S';
-  end;
-  Writeln(logs, 'Abrindo sistema 2');
-  sqlP := 'SELECT CODCAIXA, NOMECAIXA ';
-  sqlP += ' FROM CAIXA_CONTROLE  ';
-  sqlP += ' WHERE CODUSUARIO = ' + dmPdv.varLogado;
-  sqlP += '   AND SITUACAO = ' + QuotedStr('o');
-  sqlP += ' ORDER BY IDCAIXACONTROLE DESC';
-  if (dmPdv.sqBusca.Active) then
-    dmPdv.sqBusca.Close;
-  dmPdv.sqBusca.SQL.Clear;
-  dmPdv.sqBusca.SQL.Add(sqlP);
-  dmPdv.sqBusca.Active:=True;
-  if (not dmPdv.sqBusca.IsEmpty) then
-  begin
-    dmPdv.ccusto := IntToStr(dmPdv.sqBusca.FieldByName('CODCAIXA').AsInteger);
-    num_pedido := dmPdv.sqBusca.FieldByName('NOMECAIXA').AsString;
-  end;
-  // TODO - carregar caixa logado na varivel abaixo
-  qtde_ped := 0;
-  codDet := 0;
-  caixa_local := StrToInt(dmPdv.ccusto);
-  codCaixa    := StrToInt(dmPdv.varLogado); // usuario
-  codCliente  := dmPdv.clientePadrao;
-  edClienteNome.Text := 'Consumidor';
-  edCliente.Text     := IntToStr(dmpdv.clientePadrao);
-  codVendedor := dmpdv.vendedor_padrao;
-  edVendedor.Text := IntToStr(dmpdv.vendedor_padrao);
-  edCaixa.Text := dmPdv.nomeLogado + '-' + dmPdv.nomeCaixa;
-  buscaPedidosAbertoCaixa(0);
-  Writeln(logs, 'Abrindo sistema 3');
-  if (dmPdv.usaComanda > 0) then
-  begin
-    if (btnVnd1.Caption <> '') then
-      abrePedido(StrToInt(btnVnd1.Caption));
-    pnComanda.Visible:=True;
-  end;
-  Writeln(logs, 'Abrindo sistema 4');
-  finally
-    CloseFile(logs);
-  end;
-
+  procFormShow;
 end;
+
+
 
 procedure TfPdv.Image1Click(Sender: TObject);
 begin
@@ -1357,10 +1288,6 @@ begin
 
 end;
 
-procedure TfPdv.pnComandaClick(Sender: TObject);
-begin
-
-end;
 
 
 procedure TfPdv.TIButton2Click(Sender: TObject);
@@ -1394,13 +1321,15 @@ begin
   //Executa('atsCliente.py');
 end;
 
+
+
 procedure TfPdv.abrePedido(apCodMov: Integer);
 var  logs:TextFile;
   vdr: String;
 begin
 
   dmPdv.sqUltimoLanc.Close;
-  dmPdv.sqUltimoLanc.Params[0].AsInteger:= CodMov;
+  dmPdv.sqUltimoLanc.Params[0].AsInteger:= apCodMov;
   dmPdv.sqUltimoLanc.Open;
   pStatus := dmPdv.sqUltimoLancSTATUS.AsInteger;
 
@@ -2646,6 +2575,112 @@ begin
   end;
 end;
 
+procedure TfPdv.procFormShow;
+var sqlP , camin : String;
+  logs:TextFile;
+begin
+  AssignFile(logs, 'log.txt');
+  try
+    Rewrite(logs);
+    Writeln(logs, 'Abrindo sistema');
 
+  codVendedorAnterior := 0;
+  if (dmpdv.empresa_integra <> 'ATS') then
+  begin
+    dmpdv.integra_caixa;
+    dmpdv.integra_caixa_mov;
+    dmpdv.integra_cliente;
+    dmpdv.integra_usuario;
+    dmpdv.integra_produtos;
+  end;
+  ACBrPosPrinter1.ControlePorta:=dmPdv.imp_controle_porta;
+  ACBrPosPrinter1.LinhasBuffer:=dmPdv.imp_LinhasBuffer;
+  ACBrPosPrinter1.Device.SendBytesInterval:=dmpdv.imp_Interval;
+
+  ultimo_pedido := 0;
+  consultaItem := 'NAO';
+  DBGrid2.Columns[0].FieldName:='CODPRO';
+  DBGrid2.Columns[1].FieldName:='PRODUTO';
+  DBGrid2.Columns[2].FieldName:='UNIDADEMEDIDA';
+  DBGrid2.Columns[3].FieldName:='VALOR_PRAZO';
+  DBGrid2.Columns[3].DisplayFormat:=',##0.00';
+  fPDV_Rec.OutrosCartoes:='N';
+  dmPdv.OutrosCartoes := 'N';
+  sqlP := 'SELECT * FROM PARAMETRO WHERE PARAMETRO = ' + QuotedStr('OUTROSCARTOES');
+  dmPdv.busca_sql(sqlP);
+  if (not dmPdv.sqBusca.IsEmpty) then
+  begin
+    fPDV_Rec.OutrosCartoes:='S';
+    dmPdv.OutrosCartoes := 'S';
+  end;
+  Writeln(logs, 'Abrindo sistema 2');
+  sqlP := 'SELECT CODCAIXA, NOMECAIXA ';
+  sqlP += ' FROM CAIXA_CONTROLE  ';
+  sqlP += ' WHERE CODUSUARIO = ' + dmPdv.varLogado;
+  sqlP += '   AND SITUACAO = ' + QuotedStr('o');
+  sqlP += ' ORDER BY IDCAIXACONTROLE DESC';
+  if (dmPdv.sqBusca.Active) then
+    dmPdv.sqBusca.Close;
+  dmPdv.sqBusca.SQL.Clear;
+  dmPdv.sqBusca.SQL.Add(sqlP);
+  dmPdv.sqBusca.Active:=True;
+  if (not dmPdv.sqBusca.IsEmpty) then
+  begin
+    dmPdv.ccusto := IntToStr(dmPdv.sqBusca.FieldByName('CODCAIXA').AsInteger);
+    num_pedido := dmPdv.sqBusca.FieldByName('NOMECAIXA').AsString;
+  end;
+  // TODO - carregar caixa logado na varivel abaixo
+  qtde_ped := 0;
+  codDet := 0;
+  caixa_local := StrToInt(dmPdv.ccusto);
+  codCaixa    := StrToInt(dmPdv.varLogado); // usuario
+  codCliente  := dmPdv.clientePadrao;
+  edClienteNome.Text := 'Consumidor';
+  edCliente.Text     := IntToStr(dmpdv.clientePadrao);
+  codVendedor := dmpdv.vendedor_padrao;
+  edVendedor.Text := IntToStr(dmpdv.vendedor_padrao);
+  edCaixa.Text := dmPdv.nomeLogado + '-' + dmPdv.nomeCaixa;
+  buscaPedidosAbertoCaixa(0);
+  Writeln(logs, 'Abrindo sistema 3');
+  if (dmPdv.usaComanda > 0) then
+  begin
+    if (btnVnd1.Caption <> '') then
+      abrePedido(StrToInt(btnVnd1.Caption));
+    pnComanda.Visible:=True;
+  end;
+  Writeln(logs, 'Abrindo sistema 4');
+  finally
+    CloseFile(logs);
+  end;
+
+  camin := dmPdv.caminhoEXEpdv ;
+
+  if(fSangria.abri_cx = 1)then
+  begin
+    ShowMessage('O Progama Sera Reiniciado para Atualizar o Caixa ');
+    fPdv.Close;
+    //WINEXEC('C:\home\felicita_linux\prjPDV.exe',SW_SHOWNORMAL);
+    ShellExecute(Application.Handle, PChar('open'), PChar(camin), PChar(' /e,C:\temp'), nil, SW_NORMAL);
+  end;
+
+
+
+  if(fAbreCaixa.abri_cx = 1)then
+  begin
+    ShowMessage('O Progama Sera Reiniciado para Atualizar o Caixa ');
+    fPdv.Close;
+   // WINEXEC('C:\home\felicita_linux\prjPDV.exe',SW_SHOWNORMAL);
+    ShellExecute(Application.Handle, PChar('open'), PChar(camin), PChar(' /e,C:\temp'), nil, SW_NORMAL);
+  end;
+
+  if(fAbrirCaixa.abri_cx = 1)then
+  begin
+    ShowMessage('O Progama Sera Reiniciado para Atualizar o Caixa ');
+    fPdv.Close;
+    //WINEXEC('C:\home\felicita_linux\prjPDV.exe',SW_SHOWNORMAL);
+    ShellExecute(Application.Handle, PChar('open'), PChar(camin), PChar(' /e,C:\temp'), nil, SW_NORMAL);
+  end;
+
+end;
 end.
 

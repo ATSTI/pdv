@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, db, FileUtil, DateTimePicker, Forms, Controls, Graphics,
   Dialogs, ExtCtrls, StdCtrls, DBGrids, ActnList, MaskEdit, Buttons,
-   udmpdv, uabrircaixa, usangria, uVendedorBusca, uAbrirCaixa2;
+   udmpdv, uabrircaixa, usangria, uVendedorBusca, uAbrirCaixa2, usaldo;
 
 type
 
@@ -17,6 +17,7 @@ type
     acBuscar: TAction;
     acFechar: TAction;
     ActionList1: TActionList;
+    BitBtn1: TBitBtn;
     BitBtn3: TBitBtn;
     btnSair: TBitBtn;
     btnConfirma: TBitBtn;
@@ -50,9 +51,11 @@ type
     Panel1: TPanel;
     Panel3: TPanel;
     pnMemo: TPanel;
+    rgForma: TRadioGroup;
     rgStatus: TRadioGroup;
     procedure acBuscarExecute(Sender: TObject);
     procedure acFecharExecute(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
     procedure btnConfirmaClick(Sender: TObject);
     procedure btnFecharCaixaOdooClick(Sender: TObject);
@@ -100,7 +103,14 @@ begin
   fSangria.SangriaReforco:= 'Reforco';
   fSangria.Caption := 'Reforço';
   fSangria.Label6.Caption := 'Incluir Reforço';
+  fSangria.Label7.Caption := 'Saldo em Caixa';
   fSangria.PanelSangria.Visible := False;
+  fSangria.Edit1.Visible := True;
+  fSangria.btnInsereMotivo.Visible := True;
+  fSangria.GroupAbreCaixa.Visible := True;
+  fSangria.btnReimprimirReforco.Visible:= True;
+  fSangria.DBGrid2.Visible:= True;
+  fSangria.ComboBox1.ItemIndex := 1;
   fSangria.ShowModal;
 end;
 
@@ -123,10 +133,12 @@ begin
   sqlProc += ' = m.CODMOVIMENTO) END ';
   sqlProc += ' AS VALOR, v.SERIE, m.STATUS ';
   sqlProc += ' ,((m.data_fechou-m.DATA_SISTEMA)*24*60) AS TEMPO ';
+  sqlProc += ' , f.forma_pgto,  f.n_doc ';
   sqlProc += ' FROM MOVIMENTO m  ';
   sqlProc += ' INNER JOIN CLIENTES c ON c.CODCLIENTE = m.CODCLIENTE';
   sqlProc += ' LEFT OUTER JOIN USUARIO u ON m.codVendedor = u.codUsuario';
   sqlProc += ' LEFT OUTER JOIN VENDA v ON v.CODMOVIMENTO = m.CODMOVIMENTO ';
+  sqlProc += ' inner join forma_entrada f on (m.codmovimento = f.id_entrada)';
   Case rgStatus.ItemIndex of
     0 : sqlProc += ' WHERE m.STATUS IN (0,1) ';
     1 : sqlProc += ' WHERE m.STATUS = 1 ';
@@ -134,6 +146,20 @@ begin
     3 : sqlProc += ' WHERE m.STATUS = 1 AND v.SERIE LIKE ' + QuotedStr('NFCE%');
     4 : sqlProc += ' WHERE m.STATUS = 9 ';
   end;
+
+  Case rgForma.ItemIndex of
+    0 : sqlProc += '' ;
+    1 : sqlProc += ' AND f.FORMA_PGTO = ' + QuotedStr('1') ;
+    2 : sqlProc += ' AND f.FORMA_PGTO = ' + QuotedStr('2') ;
+    3 : sqlProc += ' AND f.FORMA_PGTO = ' + QuotedStr('3') ;
+    4 : sqlProc += ' AND f.FORMA_PGTO = ' + QuotedStr('4') ;
+    5 : sqlProc += ' AND f.FORMA_PGTO = ' + QuotedStr('5') ;
+    6 : sqlProc += ' AND f.FORMA_PGTO = ' + QuotedStr('6') ;
+    7 : sqlProc += ' AND f.FORMA_PGTO = ' + QuotedStr('9') ;
+
+  end;
+
+
   if (rgStatus.ItemIndex = 4) then
     sqlProc += ' AND m.CODNATUREZA = 1 '
   else
@@ -220,6 +246,11 @@ end;
 procedure TfMovimentoProc.acFecharExecute(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TfMovimentoProc.BitBtn1Click(Sender: TObject);
+begin
+  fsaldo.ShowModal;
 end;
 
 procedure TfMovimentoProc.BitBtn3Click(Sender: TObject);
@@ -314,6 +345,7 @@ begin
       ShowMessage('Existe pedidos nao Encerrados : ' + nao_fechado);
     end;
     fAbrirCaixa.AbrirFechar:= 'Fechar';
+    fAbrirCaixa.cxsangria := 0 ;
     fAbrirCaixa.ShowModal;
     acBuscar.Execute;
   end;
@@ -330,9 +362,17 @@ begin
   fSangria.SangriaReforco:= 'Sangria';
   fSangria.Caption := 'Sangria';
   fSangria.Label6.Caption := 'Incluir Sangria';
+  fSangria.Label7.Caption := 'Disponivel Sangria';
   fSangria.PanelSangria.Visible := True;
+  fSangria.Edit1.Visible := False;
+  fSangria.btnInsereMotivo.Visible := False;
+  fSangria.GroupAbreCaixa.Visible := False;
+  fSangria.btnReimprimirReforco.Visible:= False;
+  fSangria.DBGrid2.Visible:= False;
+  fSangria.ComboBox1.ItemIndex := 0;
   fSangria.ShowModal;
 end;
+
 
 procedure TfMovimentoProc.DBGrid1CellClick(Column: TColumn);
 begin
@@ -364,6 +404,7 @@ begin
   DBGrid1.Columns[6].DisplayFormat:=',##0.00';
   DBGrid1.Columns[7].FieldName:='TEMPO';
   DBGrid1.Columns[7].DisplayFormat:=',##0.00';
+  DBGrid1.Columns[8].FieldName:='N_DOC';
 end;
 
 procedure TfMovimentoProc.FormShow(Sender: TObject);

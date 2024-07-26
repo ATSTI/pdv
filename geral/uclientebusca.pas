@@ -14,6 +14,7 @@ type
 
   TfClienteBusca = class(TfPadraoBusca)
     chCurso: TCheckBox;
+    chDesc: TCheckBox;
     dsCliente: TDataSource;
     Label2: TLabel;
     procedure btnExcluirClick(Sender: TObject);
@@ -154,15 +155,15 @@ begin
 
   if chCurso.Checked then
   begin
-    sql := ' WHERE STATUS = 1 AND REGIAO = 1';
+    sql := ' WHERE STATUS = 1 ';
   end
   else begin
-    sql := ' WHERE STATUS = 1 AND REGIAO = 0';
+    sql := ' WHERE STATUS = 1 ';
   end;
 
   if ((chCurso.Checked) and (chInativo.Checked)) then
   begin
-    sql := ' WHERE STATUS = 0 AND REGIAO = 1';
+    sql := ' WHERE STATUS = 0 ';
   end;
 
   if edit1.Text <> '' then
@@ -174,7 +175,15 @@ begin
     sql := sql + ' AND UPPER(NOMECLIENTE) LIKE UPPER(' + QuotedStr('%' + Edit2.Text + '%') + ')';
   end;
 
-  sql := 'SELECT * FROM CLIENTES ' + sql;
+  if (chDesc.Checked) then
+  begin
+    sql := 'SELECT * FROM CLIENTES ' + sql + ' order by codcliente desc';
+  end;
+
+  if (chDesc.Checked = False) then
+  begin
+    sql := 'SELECT * FROM CLIENTES ' + sql ;
+  end;
 
   dmPdv.sqBusca.SQL.Text := sql;
   dmPdv.sqBusca.Open;

@@ -2785,7 +2785,7 @@ object dmPdv: TdmPdv
     Database = IbCon
     Transaction = sTrans
     SQL.Strings = (
-      'select CODIGO, CONTA, NOME from PLANO where plnCtaRoot(CONTA) = :PCONTADESPESA AND CONSOLIDA = ''S'''
+      'select CODIGO, CONTA, NOME from PLANO where plnCtaRoot(CONTA) = :PCONTADESPESA AND CONSOLIDA = ''S'' ORDER BY NOME, CODIGO'
     )
     InsertSQL.Strings = (
       ''

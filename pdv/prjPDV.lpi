@@ -22,7 +22,7 @@
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
       <MinorVersionNr Value="4"/>
-      <BuildNr Value="7"/>
+      <BuildNr Value="8"/>
       <Language Value="0416"/>
       <StringTable CompanyName="ATS Soluções"/>
     </VersionInfo>
@@ -82,7 +82,7 @@
         <PackageName Value="LCL"/>
       </Item14>
     </RequiredPackages>
-    <Units Count="36">
+    <Units Count="37">
       <Unit0>
         <Filename Value="prjPDV.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -333,6 +333,13 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uMsg"/>
       </Unit35>
+      <Unit36>
+        <Filename Value="usaldo.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fsaldo"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit36>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

@@ -16,10 +16,17 @@ type
   TfSangria = class(TForm)
     btnFechar: TBitBtn;
     btnGravar: TBitBtn;
+    btnInsereMotivo: TBitBtn;
     btnReimprimir: TButton;
+    btnReimprimirReforco: TButton;
     ComboBox1: TComboBox;
     DBGrid1: TDBGrid;
+    DBGrid2: TDBGrid;
+    dsReforco: TDataSource;
     dsSangrias: TDataSource;
+    Edit1: TEdit;
+    Edit2: TEdit;
+    GroupAbreCaixa: TGroupBox;
     Label1: TLabel;
     Label2: TLabel;
     edMotivo: TMaskEdit;
@@ -28,8 +35,23 @@ type
     Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
     memoResult: TMemo;
     PanelSangria: TPanel;
+    sqReforco: TSQLQuery;
+    sqReforcoCAIXA: TSmallintField;
+    sqReforcoCAIXINHA: TFloatField;
+    sqReforcoCODFORMA: TLongintField;
+    sqReforcoCOD_VENDA: TLongintField;
+    sqReforcoDESCONTO: TFloatField;
+    sqReforcoFORMA_PGTO: TStringField;
+    sqReforcoID_ENTRADA: TLongintField;
+    sqReforcoN_DOC: TStringField;
+    sqReforcoSTATE: TSmallintField;
+    sqReforcoTROCO: TFloatField;
+    sqReforcoVALOR_PAGO: TFloatField;
     sqSangrias: TSQLQuery;
     sqPagamento: TSQLQuery;
     sqPagamentoCAIXA: TSmallintField;
@@ -54,14 +76,17 @@ type
     sqSangriasSTATE: TSmallintField;
     sqSangriasTROCO: TFloatField;
     sqSangriasVALOR_PAGO: TFloatField;
+    procedure btnInsereMotivoClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure btnGravarClick(Sender: TObject);
     procedure btnReimprimirClick(Sender: TObject);
+    procedure btnReimprimirReforcoClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormShow(Sender: TObject);
   private
 
   public
+    abri_cx : integer;
     SangriaReforco: String;
     procedure Sangria();
     procedure EnviaSangria;
@@ -72,7 +97,7 @@ var
   fSangria: TfSangria;
 
 implementation
-
+  uses uPdv,uMovimentoProc,uabrircaixa;
 {$R *.lfm}
 
 { TfSangria }
@@ -99,7 +124,7 @@ begin
   end;
 
   Sangria();
-  ShowMessage('Gravado com Sucesso!');
+
 
   if (dmPdv.CupomImp = 'Texto') then
   begin
@@ -143,11 +168,17 @@ begin
     CloseFile(IMPRESSORA);
   end;
 
-  close;
+  ShowMessage('Gravado com Sucesso!');
+ // close;
   if (UpperCase(dmpdv.usoSistema) = 'ODOO') then
   begin
     EnviaSangria;
   end;
+  abri_cx := 1;
+  btnFechar.Click;
+  fMovimentoProc.Close;
+  fPdv.procFormShow;
+
 end;
 
 procedure TfSangria.btnReimprimirClick(Sender: TObject);
@@ -197,6 +228,54 @@ begin
   end;
 end;
 
+procedure TfSangria.btnReimprimirReforcoClick(Sender: TObject);
+var
+  IMPRESSORA:TextFile;
+begin
+    if (dmPdv.CupomImp = 'Texto') then
+  begin
+    AssignFile(IMPRESSORA, dmPdv.portaIMP);
+  end
+  else begin
+    AssignFile(IMPRESSORA, dmPdv.path_imp);
+  end;
+
+  try
+    Rewrite(IMPRESSORA);
+    //lFile.LoadFromFile('caixa.txt');
+    Writeln(IMPRESSORA, 'Reimpressao');
+    Writeln(Impressora, 'Reforço' + ' CAIXA');
+    Writeln(IMPRESSORA, FormatDateTime('dd/mm/yyyy hh:MM:ss', Now));
+    Writeln(IMPRESSORA, '');
+    Writeln(Impressora, 'CAIXA : ' + sqReforcoCAIXA.AsString);
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, 'Valor  - ' + FormatFloat(',##0.00', sqReforcoVALOR_PAGO.AsCurrency));
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, 'Motivo :');
+    if (Length(sqReforcoN_DOC.AsString) > dmPdv.tamanhoLinha) then
+    begin
+      Writeln(IMPRESSORA, Copy(sqReforcoN_DOC.AsString,0,dmPdv.tamanhoLinha));
+      Writeln(IMPRESSORA, Copy(sqReforcoN_DOC.AsString,dmPdv.tamanhoLinha+1,dmPdv.tamanhoLinha));
+    end
+    else begin
+        Writeln(IMPRESSORA,sqReforcoN_DOC.AsString);
+    end;
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, 'Assinatura :');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '------------------------------');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+  finally
+    CloseFile(IMPRESSORA);
+  end;
+
+end;
+
 
 
 procedure TfSangria.FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -208,12 +287,23 @@ procedure TfSangria.FormShow(Sender: TObject);
 begin
   edMotivo.Text := '';
   edValor.Text := '0,00';
+  fAbrirCaixa.cxsangria := 1 ;
+  fAbrirCaixa.mostrarCaixa(dmPdv.varLogado);
   fSangria.sqSangrias.Active:= True;
+  fSangria.sqReforco.Active:= True;
+  Edit1.Text := dmPdv.nomeCaixa;
+  Edit2.Text := fAbrirCaixa.disponivel_sangria;
+
 end;
 
 procedure TfSangria.btnFecharClick(Sender: TObject);
 begin
   close;
+end;
+
+procedure TfSangria.btnInsereMotivoClick(Sender: TObject);
+begin
+  edMotivo.Text:= 'Abrir ' + Edit1.Text ;
 end;
 
 procedure TfSangria.Sangria();
@@ -313,7 +403,7 @@ begin
 end;
 
 procedure TfSangria.EnviaSangria;
-  var
+var
   vlrSangria: double;
   Campo : String;
   forma_pag : String;

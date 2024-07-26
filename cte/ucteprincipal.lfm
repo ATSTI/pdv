@@ -639,7 +639,7 @@ object fCTePrincipal: TfCTePrincipal
     object Label161: TLabel
       Left = 14
       Height = 19
-      Top = 8
+      Top = 6
       Width = 73
       Caption = 'CTe atual :'
       Font.CharSet = ANSI_CHARSET
@@ -655,7 +655,7 @@ object fCTePrincipal: TfCTePrincipal
     object lblCteAtual1: TLabel
       Left = 96
       Height = 19
-      Top = 8
+      Top = 6
       Width = 18
       Caption = '...'
       Font.CharSet = ANSI_CHARSET
@@ -667,6 +667,14 @@ object fCTePrincipal: TfCTePrincipal
       Font.Style = [fsBold]
       ParentColor = False
       ParentFont = False
+    end
+    object Label179: TLabel
+      Left = 304
+      Height = 15
+      Top = 28
+      Width = 86
+      Caption = 'EXE : 20/02/2024'
+      ParentColor = False
     end
   end
   object Label18: TLabel
@@ -6040,7 +6048,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 8
             Width = 712
             AutoFill = True
-            Caption = 'Tomador do Serviço'
+            Caption = 'Remetente'
             ChildSizing.LeftRightSpacing = 6
             ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
             ChildSizing.EnlargeVertical = crsHomogenousChildResize
@@ -10517,7 +10525,7 @@ object fCTePrincipal: TfCTePrincipal
                 TabOrder = 3
               end
               object Label100: TLabel
-                Left = 296
+                Left = 496
                 Height = 15
                 Top = 376
                 Width = 51
@@ -10535,17 +10543,17 @@ object fCTePrincipal: TfCTePrincipal
                 ParentColor = False
               end
               object edtOutrosDesc: TEdit
-                Left = 296
+                Left = 496
                 Height = 23
                 Top = 392
-                Width = 904
+                Width = 704
                 TabOrder = 4
               end
               object edtOutrosNum: TEdit
-                Left = 40
+                Left = 76
                 Height = 23
                 Top = 440
-                Width = 464
+                Width = 189
                 TabOrder = 5
               end
               object Label102: TLabel
@@ -10567,9 +10575,9 @@ object fCTePrincipal: TfCTePrincipal
                 ParentColor = False
               end
               object Label104: TLabel
-                Left = 784
+                Left = 283
                 Height = 15
-                Top = 424
+                Top = 376
                 Width = 107
                 Align = alCustom
                 Caption = 'Data do Documento'
@@ -10581,12 +10589,16 @@ object fCTePrincipal: TfCTePrincipal
                 Top = 392
                 Width = 225
                 ItemHeight = 15
+                Items.Strings = (
+                  '00'
+                  '99'
+                )
                 TabOrder = 6
               end
               object dataOutrosEmi: TDateTimePicker
-                Left = 784
+                Left = 283
                 Height = 23
-                Top = 440
+                Top = 392
                 Width = 143
                 ShowCheckBox = True
                 Checked = False
@@ -10715,6 +10727,14 @@ object fCTePrincipal: TfCTePrincipal
                 )
                 TabOrder = 11
                 Visible = False
+              end
+              object Label181: TLabel
+                Left = 40
+                Height = 15
+                Top = 444
+                Width = 27
+                Caption = 'Doc :'
+                ParentColor = False
               end
             end
             object tabSeguro: TTabSheet
@@ -11778,56 +11798,6 @@ object fCTePrincipal: TfCTePrincipal
         end
         object TabSheet1: TTabSheet
           Caption = 'OS Serviço'
-          ClientHeight = 527
-          ClientWidth = 1289
-          object RadioGroup1: TRadioGroup
-            Left = 65
-            Height = 50
-            Top = 64
-            Width = 399
-            AutoFill = True
-            Caption = 'Tipo Fretamento'
-            ChildSizing.LeftRightSpacing = 6
-            ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
-            ChildSizing.EnlargeVertical = crsHomogenousChildResize
-            ChildSizing.ShrinkHorizontal = crsScaleChilds
-            ChildSizing.ShrinkVertical = crsScaleChilds
-            ChildSizing.Layout = cclLeftToRightThenTopToBottom
-            ChildSizing.ControlsPerLine = 3
-            ClientHeight = 30
-            ClientWidth = 395
-            Columns = 3
-            Items.Strings = (
-              'Nenhum'
-              'Eventual'
-              'Continuo'
-            )
-            TabOrder = 0
-          end
-          object RadioGroup2: TRadioGroup
-            Left = 64
-            Height = 70
-            Top = 120
-            Width = 517
-            AutoFill = True
-            Caption = 'Tipo de Serviço'
-            ChildSizing.LeftRightSpacing = 6
-            ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
-            ChildSizing.EnlargeVertical = crsHomogenousChildResize
-            ChildSizing.ShrinkHorizontal = crsScaleChilds
-            ChildSizing.ShrinkVertical = crsScaleChilds
-            ChildSizing.Layout = cclLeftToRightThenTopToBottom
-            ChildSizing.ControlsPerLine = 3
-            ClientHeight = 50
-            ClientWidth = 513
-            Columns = 3
-            Items.Strings = (
-              'Transporte Pessoas'
-              'Transporte Valores'
-              'Excesso de Bagagem'
-            )
-            TabOrder = 1
-          end
         end
       end
     end
@@ -13688,6 +13658,22 @@ object fCTePrincipal: TfCTePrincipal
           TabOrder = 0
         end
       end
+      object Label180: TLabel
+        Left = 512
+        Height = 15
+        Top = 352
+        Width = 132
+        Caption = 'Versão Documento Fiscal'
+        ParentColor = False
+      end
+      object cbVersaoDF: TComboBox
+        Left = 512
+        Height = 23
+        Top = 368
+        Width = 248
+        ItemHeight = 15
+        TabOrder = 14
+      end
     end
     object TabSheet2: TTabSheet
       Caption = 'CTe -OS'
@@ -14557,6 +14543,7 @@ object fCTePrincipal: TfCTePrincipal
         Top = 128
         Width = 168
         Caption = 'Tomador'
+        OnClick = BitBtn18Click
         TabOrder = 17
       end
       object BitBtn19: TBitBtn
@@ -14626,6 +14613,7 @@ object fCTePrincipal: TfCTePrincipal
     Configuracoes.Geral.SSLHttpLib = httpWinHttp
     Configuracoes.Geral.SSLXmlSignLib = xsLibXml2
     Configuracoes.Geral.FormatoAlerta = 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.'
+    Configuracoes.Geral.VersaoDF = ve400
     Configuracoes.Arquivos.OrdenacaoPath = <>
     Configuracoes.Arquivos.SepararPorMes = True
     Configuracoes.WebServices.Visualizar = True
@@ -14638,8 +14626,8 @@ object fCTePrincipal: TfCTePrincipal
     Configuracoes.WebServices.TimeZoneConf.TimeZoneStr = '-03:00'
     Configuracoes.RespTec.IdCSRT = 0
     DACTE = ACBrCTeDACTeRL1
-    Left = 304
-    Top = 208
+    Left = 144
+    Top = 256
   end
   object ACBrCTeDACTeRL1: TACBrCTeDACTeRL
     UsaSeparadorPathPDF = True
@@ -14659,6 +14647,8 @@ object fCTePrincipal: TfCTePrincipal
     CasasDecimais.vUnCom = 2
     CasasDecimais.MaskqCom = ',0.00'
     CasasDecimais.MaskvUnCom = ',0.00'
+    CasasDecimais.Aliquota = 2
+    CasasDecimais.MaskAliquota = ',0.00'
     ACBrCTE = ACBrCTe1
     ImprimirHoraSaida = False
     TipoDACTE = tiSemGeracao
@@ -14677,6 +14667,7 @@ object fCTePrincipal: TfCTePrincipal
     Configuracoes.Geral.SSLHttpLib = httpNone
     Configuracoes.Geral.SSLXmlSignLib = xsNone
     Configuracoes.Geral.FormatoAlerta = 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.'
+    Configuracoes.Geral.VersaoDF = ve400
     Configuracoes.Arquivos.OrdenacaoPath = <>
     Configuracoes.WebServices.UF = 'SP'
     Configuracoes.WebServices.AguardarConsultaRet = 0
@@ -14688,9 +14679,11 @@ object fCTePrincipal: TfCTePrincipal
   object ZConn: TZConnection
     ControlsCodePage = cCP_UTF8
     AutoEncodeStrings = True
+    ClientCodepage = 'WIN1252'
     Properties.Strings = (
       'AutoEncodeStrings=True'
       'controls_cp=CP_UTF8'
+      'codepage=WIN1252'
     )
     HostName = 'localhost'
     Port = 3050
@@ -14938,8 +14931,8 @@ object fCTePrincipal: TfCTePrincipal
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      DisplayFormat = ',##0.0'
-      EditFormat = ',##0.0'
+      DisplayFormat = ',##0.00'
+      EditFormat = ',##0.00'
       Precision = 2
     end
     object ZsqQCUNIDADE: TStringField

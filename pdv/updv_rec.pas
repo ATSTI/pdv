@@ -150,6 +150,7 @@ type
     procedure edRestanteChange(Sender: TObject);
     procedure edTrocoChange(Sender: TObject);
     procedure edVDescontoKeyPress(Sender: TObject; var Key: char);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure GroupBox2Click(Sender: TObject);
@@ -167,7 +168,8 @@ type
     vResto: Double;
     vTroco: Double;
     function RemoveAcento(Str: string): string;
-    procedure calcula_total;
+    procedure calcula_total(tipo: string);
+    procedure carrega_valores;
     procedure grava_desconto;
     procedure registra_valores(v_vlr: Double);
     procedure encerra_venda();
@@ -229,6 +231,7 @@ begin
   vResto := vValorVenda;
   num_doc := 0;
   vValorTotal := 0;
+  vValorPago := 0;
   edvDesconto.Text := FormatFloat('#,,,0.00',vDesconto);
   vDesconto:=0;
   lblForma.Caption:='1-Dinheiro';
@@ -237,7 +240,7 @@ begin
   edVendedor.Text := vVendedorNome;
   edValorTotal.Text:= FormatFloat('#,,,0.00',vValorVenda);
   edValorVendaTotal.Text := vValor;
-  calcula_total;
+  calcula_total('inicio');
   edVDesconto.SetFocus;
   edPagamento.SetFocus;
 
@@ -271,6 +274,7 @@ begin
       end;
     end;
   end;
+  carrega_valores;
 end;
 
 procedure TfPDV_Rec.GroupBox2Click(Sender: TObject);
@@ -309,18 +313,62 @@ begin;
   Result := str;
 end;
 
-procedure TfPDV_Rec.calcula_total;
-var vaDesc: Double;
+procedure TfPDV_Rec.calcula_total(tipo: string);
+var
  vaTroco: Double;
  vaTotal: Double;
+ vaPagoC: Double;
+
+ vaResto: Double;
+ vaPago: Double;
+ vaDesc: Double;
+
+ vaRestoFim: Double;
+ vaTrocoIni: Double;
+ vaTrocoFim: Double;
+
+ vaPagoFim: Double;
+ vaDescIni: Double;
+ vaDescFim: Double;
+ vaA_pagarIni: Double;
+ vaA_pagarFim: Double;
+
 begin
   vaDesc := 0;
-  vaTroco := 0;
-  vaTotal := 0;
-  if sqPagamento.active then
+  //vaDesc := StrParaFloat(edDesconto.Text);
+  vaTroco := 0.0;
+  vaPago := 0.0;
+  vaDesc := StrParaFloat(edVDesconto.Text);
+  vaResto := StrParaFloat(edRestante.Text);
+  if tipo <> 'desconto' then
+    vaPago := StrParaFloat(edPagamento.Text);
+  if vaPago > vaResto then
+  begin
+    vaTroco := 0.0;
+    if ((vaPago - vaResto) > 0.001) then
+    begin
+      vaTroco := vaPago - vaResto;
+      vaResto := 0.0;
+    end;
+
+    edTroco.Text := FormatFloat('#,,,0.00', vaTroco);
+  end;
+  vResto := vaResto - vaDesc;
+  edValorPago.Text := FormatFloat('#,,,0.00', vaPago - vaTroco);
+  {
+  vaPagoIni := StrParaFloat(edValorPago.Text);
+  vaTrocoIni := StrParaFloat(edTroco.Text);
+  vaDescIni := StrParaFloat(edDesconto.Text);
+  vaA_pagarIni := StrParaFloat(edPagamento.Text);
+   }
+  //valResto := StrParaFloat(edRestante.Text);
+  //if vaTotal > 0.00 then
+  //  vaTroco := vaTotal - vResto - vDesconto;
+  {if sqPagamento.active then
     sqPagamento.Close;
   sqPagamento.Params.ParamByName('PCODMOV').AsInteger:=vCodMovimento;
-  sqPagamento.Open;
+  sqPagamento.Params.ParamByName('PCODCAIXA').AsInteger := StrToInt(dmPdv.idcaixa);
+  sqPagamento.open;
   if (not sqPagamento.IsEmpty) then
   begin
     vStatus := sqPagamentoSTATE.AsInteger;
@@ -330,29 +378,55 @@ begin
       num_doc := num_doc + 1;
       vaDesc  := vaDesc + sqPagamentoDESCONTO.AsFloat;
       vaTroco := vaTroco + sqPagamentoTROCO.AsFloat;
-      vaTotal := vaTotal+ sqPagamentoVALOR_PAGO.AsFloat;
+      vaPagoC := vaPagoC + sqPagamentoVALOR_PAGO.AsFloat;
       sqPagamento.Next;
     end;
   end;
-  vValorPago := vaTotal - vaDesc;
+  vaDesc := vaDesc + vDesconto;
+
+  //vResto := StrParaFloat(edPagamento.Text);
+  //valResto := vValorVenda - vaDesc - vaPagoC - vaTotal;
+  //vaDesc := vaDesc + vDesconto;
+
   if ((vaTotal + 0.00999) > vValorVenda) then
   begin
     vResto := 0;
   end
   else begin
-    vResto := vValorVenda - vaTotal;
+    vResto := valResto; // vValorVenda - vaTotal - vaDesc - vaPagoC;
+    if vResto < 0.01 then
+      vResto := 0.0
   end;
-  edValorPago.Text := FormatFloat('#,,,0.00',vaTotal);
+
+  if tipo = 'desconto' then
+  begin
+    vResto := vaTotal - vaDesc;
+    vValorVenda := vValorVenda - vaDesc;
+  end;
+  if tipo = 'pagamento' then
+  begin
+    vValorPago := vaTotal;
+    if ((vaTotal > 0) and (vaTotal > vResto)) then
+      vaTroco := vaTotal - vResto;
+    vResto := vValorVenda - vaDesc - vaPagoC - vaTotal;
+  end;
+
+  edValorPago.Text := FormatFloat('#,,,0.00',vaPagoC + vValorPago);
   edTroco.Text := FormatFloat('#,,,0.00',vaTroco);
-  vaDesc := vaDesc + vDesconto;
-  vResto := vResto - vaDesc;
+  //vResto := vResto - vaDesc;
   edDesconto.Text := FormatFloat('#,,,0.00',vaDesc);
   edRestante.Text := FormatFloat('#,,,0.00',vResto);
-  edPagamento.Text:= edRestante.Text;
   if vResto > 0.009 then
   begin
-    edPagamento.SetFocus;
+    edPagamento.Text:= edRestante.Text;
+  end
+  else begin
+    edPagamento.Text := '0,00';
+    edRestante.Text := '0,00';
   end;
+  edRestante.SetFocus;
+  edPagamento.SetFocus;
+  }
   if ((vStatus = 1) and (vResto < 0.009)) then
   begin
     edValorPago.Color := clSilver;
@@ -364,6 +438,49 @@ begin
   begin
      btnCadeira.Enabled := False;
   end;
+end;
+
+procedure TfPDV_Rec.carrega_valores;
+var vcResto,vcDesc,vcTroco, vcPago: Double;
+begin
+  vcResto := 0;
+  vcDesc := StrParaFloat(edVDesconto.Text);
+  vcTroco := 0;
+  vcPago := 0;
+  if sqPagamento.active then
+    sqPagamento.Close;
+  sqPagamento.Params.ParamByName('PCODMOV').AsInteger:=vCodMovimento;
+  sqPagamento.Params.ParamByName('PCODCAIXA').AsInteger := StrToInt(dmPdv.idcaixa);
+  sqPagamento.open;
+  if (not sqPagamento.IsEmpty) then
+  begin
+    //vStatus := sqPagamentoSTATE.AsInteger;
+   // vCodVenda:=sqPagamentoCOD_VENDA.AsInteger;
+    while not sqPagamento.EOF do
+    begin
+      num_doc := num_doc + 1;
+      vcDesc  += vcDesc + sqPagamentoDESCONTO.AsFloat;
+      vcTroco := vcTroco + sqPagamentoTROCO.AsFloat;
+      vcPago := vcPago + sqPagamentoVALOR_PAGO.AsFloat;
+      sqPagamento.Next;
+    end;
+  end;
+  if vcPago < 0.001 then
+    vcPago := 0.0;
+
+  edTroco.Text := FormatFloat('#,,,0.00',vcTroco);
+  // desconto nao carrega senao grava duas vezes
+  //edDesconto.Text := FormatFloat('#,,,0.00',vcDesc);
+  vcResto := vValorVenda - vcDesc - vcPago;
+  if vcResto < 0.001 then
+    vcResto := 0.0;
+
+  vResto := vcResto;
+  edRestante.Text := FormatFloat('#,,,0.00',vcResto);
+  edPagamento.Text := FormatFloat('#,,,0.00',vcResto);
+  edValorPago.Text := FormatFloat('#,,,0.00',vcPago);
+  edVDesconto.SetFocus;
+  edPagamento.SetFocus;
 end;
 
 procedure TfPDV_Rec.grava_desconto;
@@ -389,14 +506,15 @@ var
   fVnd : TVenda;
   vTeste: Integer;
   codForma: Integer;
-  vlr_desD: Double;
-  vlr_desT, ver_str: String;
+  vlr_desc, vlr_Troco: Double;
+  ver_str, insert_pag: String;
 begin
   if vStatus = 1 then
   begin
     ShowMessage('Venda já finalizada');
     Exit;
   end;
+
   // vTeste := vCodVenda;
   if vCodVenda = 0 then
   begin
@@ -462,38 +580,61 @@ begin
   end;
   codForma := dmPdv.sqGenerator.Fields[0].AsInteger;
   dmPdv.sqGenerator.Close;
-  sqPagamento.Open;
-  sqPagamento.Insert;
-  sqPagamentoCODFORMA.AsInteger  := codForma;
-  sqPagamentoCAIXA.AsInteger     := StrToInt(dmPdv.idcaixa);
-  sqPagamentoCOD_VENDA.AsInteger := vCodVenda;
-  sqPagamentoFORMA_PGTO.AsString := Copy(lblForma.Caption,1,1);
-  sqPagamentoID_ENTRADA.AsInteger:= vCodMovimento;
+  // sqPagamento.Insert;
+  insert_pag := 'INSERT INTO FORMA_ENTRADA (CODFORMA, CAIXA, COD_VENDA, '+
+     ' FORMA_PGTO, ID_ENTRADA, CAIXINHA, N_DOC, STATE, VALOR_PAGO, DESCONTO, TROCO) VALUES(';
+  insert_pag  += IntToStr(codForma) + ', ';
+  insert_pag  += dmPdv.idcaixa + ', ';
+  insert_pag  += IntToStr(vCodVenda) + ', ';
+  insert_pag  += QuotedStr(Copy(lblForma.Caption,1,1)) + ', ';
+  insert_pag  += IntToStr(vCodMovimento) + ', ';
   ver_str := Copy(lblForma.Caption,1,1);
   if ((cod_compra > 0) and (ver_str = '9')) then
-    sqPagamentoCAIXINHA.AsFloat := StrToFloat(IntToStr(cod_compra));
-  sqPagamentoN_DOC.AsString      := lblForma.Caption;
-  sqPagamentoSTATE.AsInteger     := 0;
-
+    insert_pag  += IntToStr(cod_compra) + ', '
+  else
+    insert_pag  += 'Null, ';
+  insert_pag  += QuotedStr(lblForma.Caption) + ', ';
+  insert_pag  += '0, ';
+  vlr_Troco := StrParaFloat(edTroco.Text);
   vValorPago := StrParaFloat(edPagamento.Text);
-  if vValorPago > vResto then
-  begin
-    vlr_desD := vValorPago - vResto; // so pra ver o Troco
-    vlr_desT := FloatToStr(vValorPago - vResto);
-    edTroco.Text := vlr_desT;
-    vValorPago := vResto;
-  end;
-  sqPagamentoVALOR_PAGO.AsFloat  := vValorPago;
+  vlr_desc := StrParaFloat(edVDesconto.Text);
+  //if vValorPago > vResto then
+  //begin
+  //  vlr_desD := vValorPago - vResto - vlr_desTroco; // so pra ver o Troco
+  //  vlr_desT := FloatToStr(vValorPago - vResto);
+  //  //edTroco.Text := vlr_desT;
+  //end
+  //else begin
+  //  vlr_desD := vValorPago - vlr_desTroco; // so pra ver o Troco
+  //end;
+  //vValorPago := vlr_desD;
+  DecimalSeparator:='.';
+  insert_pag  += FloatToStr(vValorPago-vlr_Troco) + ', ';
 
-  sqPagamentoDESCONTO.AsFloat    := vDesconto;
-  sqPagamentoTROCO.AsFloat       := StrParaFloat(edTroco.Text);
-  sqPagamento.ApplyUpdates;
+  insert_pag  += FloatToStr(vlr_desc) + ', ';
+  if vlr_Troco > 0.0 then
+    insert_pag  += FloatToStr(vlr_Troco)
+  else
+    insert_pag  += '0.0';
+  insert_pag += ')';
+  DecimalSeparator:=',';
+  dmPdv.IbCon.ExecuteDirect(insert_pag);
   dmPdv.sTrans.Commit;
+
+  if sqPagamento.Active then
+     sqPagamento.Close;
+  sqPagamento.Params.ParamByName('PCODMOV').AsInteger:=vCodMovimento;
+  sqPagamento.Params.ParamByName('PCODCAIXA').AsInteger := StrToInt(dmPdv.idcaixa);
+  sqPagamento.open;
+  //calcula_total('inicio');
   vDesconto := 0;
-  edDesconto.Text:='0,00';
+  edvDesconto.Text:='0,00';
   num_doc := num_doc + 1;
-  edPagamento.Text := '0,00';
-  calcula_total;
+  {if vResto > 0.0 then
+    edPagamento.Text := edRestante.Text
+  else
+    edPagamento.Text := '0,00';
+  edTroco.Text := '0,00';}
 end;
 
 procedure TfPDV_Rec.encerra_venda();
@@ -1759,7 +1900,9 @@ begin
           Exit;
         end;
       end;
+      calcula_total('pagamento');
       registra_valores(strParaFloat(edPagamento.Text));
+      carrega_valores;
     end;
     if lblForma.Caption = '9-Devol./Troca' then
     begin
@@ -1824,6 +1967,11 @@ begin
   end;
 end;
 
+procedure TfPDV_Rec.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  edPagamento.Text := '0,00';
+end;
+
 procedure TfPDV_Rec.FormCreate(Sender: TObject);
 var N: TACBrPosPrinterModelo;
 begin
@@ -1872,7 +2020,8 @@ begin
     end;
   end;
   grava_desconto;
-  calcula_total;
+  calcula_total('desconto');
+  carrega_valores;
 end;
 
 procedure TfPDV_Rec.edCupomChange(Sender: TObject);
@@ -1978,7 +2127,8 @@ begin
       sqPagamento.Active:=False;
       dmPdv.sTrans.Commit;
       sqPagamento.Active:=True;
-      calcula_total;
+      //calcula_total('inicio');
+      carrega_valores;
     end;
   end;
 end;
