@@ -15,7 +15,8 @@ class Conexao:
         host = cfg.get('DATABASE', 'Hostname')
         user = cfg.get('DATABASE', 'User')
         self.connection = fdb.connect(dsn=host, \
-            user=user, password= psw, charset='win1252')
+            user=user, password= psw, charset='utf-8')
+            # user=user, password= psw, charset='win1252')
             # user='sysdba', password= psw.decode())
         self.cursor = self.connection.cursor()
 
@@ -23,8 +24,9 @@ class Conexao:
         try:
             self.cursor.execute(query)
             self.connection.commit()
-        except:
-            self.connection.rollback()
+            return ""
+        except Exception as general_error:
+            return "Erro : %s" %(general_error)
 
     def query(self, query):
         cur = self.cursor.execute(query)

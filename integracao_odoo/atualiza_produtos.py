@@ -1,7 +1,7 @@
 from pos_order_script import IntegracaoOdoo
 
-ord = IntegracaoOdoo()
-ord._executando(tipo='geral')
+prd = IntegracaoOdoo()
+prd.action_atualiza_produtos()
 # class AtualizaProdutos:
 #     _name = 'atualiza.produtos'
     

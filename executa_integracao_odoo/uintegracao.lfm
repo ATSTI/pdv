@@ -1,0 +1,81 @@
+object Form1: TForm1
+  Left = 337
+  Height = 628
+  Top = 145
+  Width = 1149
+  Caption = 'Form1'
+  ClientHeight = 628
+  ClientWidth = 1149
+  OnShow = FormShow
+  LCLVersion = '2.2.6.0'
+  object PageControl1: TPageControl
+    Left = 8
+    Height = 608
+    Top = 8
+    Width = 1128
+    ActivePage = TabSheet1
+    TabIndex = 0
+    TabOrder = 0
+    object TabSheet1: TTabSheet
+      Caption = 'Integração'
+      ClientHeight = 582
+      ClientWidth = 1120
+      object Memo1: TMemo
+        Left = 16
+        Height = 501
+        Top = 48
+        Width = 1094
+        Lines.Strings = (
+          'Memo1'
+        )
+        TabOrder = 0
+      end
+      object BitBtn1: TBitBtn
+        Left = 21
+        Height = 36
+        Top = 4
+        Width = 131
+        Caption = 'Atualizar Produtos'
+        OnClick = BitBtn1Click
+        TabOrder = 1
+      end
+      object ProgressBar1: TProgressBar
+        Left = 16
+        Height = 20
+        Top = 552
+        Width = 1094
+        TabOrder = 2
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'Scripts'
+      ClientHeight = 582
+      ClientWidth = 1120
+      object Memo2: TMemo
+        Left = 8
+        Height = 554
+        Top = 24
+        Width = 1104
+        Lines.Strings = (
+          'Memo2'
+        )
+        ReadOnly = True
+        TabOrder = 0
+      end
+    end
+  end
+  object PythonEngine1: TPythonEngine
+    DllPath = 'C:\home\integracao_odoo'
+    IO = PythonGUIInputOutput1
+    OnAfterInit = PythonEngine1AfterInit
+    Left = 282
+    Top = 50
+  end
+  object PythonGUIInputOutput1: TPythonGUIInputOutput
+    UnicodeIO = True
+    RawOutput = True
+    Output = Memo1
+    Left = 384
+    Top = 50
+  end
+end
