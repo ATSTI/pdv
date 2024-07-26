@@ -119,7 +119,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="c:\home\sisadmin\NFe.exe"/>
+      <Filename Value="C:\home\sisadmin\NFe.exe"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>

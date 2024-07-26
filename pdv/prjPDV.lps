@@ -896,6 +896,13 @@
         <Source Value="ureceber.pas"/>
         <Line Value="381"/>
       </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="updv.pas"/>
+        <Line Value="2554"/>
+      </Item>
     </BreakPoints>
     <Watches>
       <Item/>

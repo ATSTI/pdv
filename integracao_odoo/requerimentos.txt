@@ -1,0 +1,4 @@
+requests
+fdb
+configparser
+unidecode
