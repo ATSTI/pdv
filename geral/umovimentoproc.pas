@@ -51,6 +51,7 @@ type
     Panel1: TPanel;
     Panel3: TPanel;
     pnMemo: TPanel;
+    rgForma: TRadioGroup;
     rgStatus: TRadioGroup;
     procedure acBuscarExecute(Sender: TObject);
     procedure acFecharExecute(Sender: TObject);
@@ -107,6 +108,8 @@ begin
   fSangria.Edit1.Visible := True;
   fSangria.btnInsereMotivo.Visible := True;
   fSangria.GroupAbreCaixa.Visible := True;
+  fSangria.btnReimprimirReforco.Visible:= True;
+  fSangria.DBGrid2.Visible:= True;
   fSangria.ComboBox1.ItemIndex := 1;
   fSangria.ShowModal;
 end;
@@ -130,10 +133,12 @@ begin
   sqlProc += ' = m.CODMOVIMENTO) END ';
   sqlProc += ' AS VALOR, v.SERIE, m.STATUS ';
   sqlProc += ' ,((m.data_fechou-m.DATA_SISTEMA)*24*60) AS TEMPO ';
+  sqlProc += ' , f.forma_pgto,  f.n_doc ';
   sqlProc += ' FROM MOVIMENTO m  ';
   sqlProc += ' INNER JOIN CLIENTES c ON c.CODCLIENTE = m.CODCLIENTE';
   sqlProc += ' LEFT OUTER JOIN USUARIO u ON m.codVendedor = u.codUsuario';
   sqlProc += ' LEFT OUTER JOIN VENDA v ON v.CODMOVIMENTO = m.CODMOVIMENTO ';
+  sqlProc += ' inner join forma_entrada f on (m.codmovimento = f.id_entrada)';
   Case rgStatus.ItemIndex of
     0 : sqlProc += ' WHERE m.STATUS IN (0,1) ';
     1 : sqlProc += ' WHERE m.STATUS = 1 ';
@@ -141,6 +146,20 @@ begin
     3 : sqlProc += ' WHERE m.STATUS = 1 AND v.SERIE LIKE ' + QuotedStr('NFCE%');
     4 : sqlProc += ' WHERE m.STATUS = 9 ';
   end;
+
+  Case rgForma.ItemIndex of
+    0 : sqlProc += '' ;
+    1 : sqlProc += ' AND f.FORMA_PGTO = ' + QuotedStr('1') ;
+    2 : sqlProc += ' AND f.FORMA_PGTO = ' + QuotedStr('2') ;
+    3 : sqlProc += ' AND f.FORMA_PGTO = ' + QuotedStr('3') ;
+    4 : sqlProc += ' AND f.FORMA_PGTO = ' + QuotedStr('4') ;
+    5 : sqlProc += ' AND f.FORMA_PGTO = ' + QuotedStr('5') ;
+    6 : sqlProc += ' AND f.FORMA_PGTO = ' + QuotedStr('6') ;
+    7 : sqlProc += ' AND f.FORMA_PGTO = ' + QuotedStr('9') ;
+
+  end;
+
+
   if (rgStatus.ItemIndex = 4) then
     sqlProc += ' AND m.CODNATUREZA = 1 '
   else
@@ -340,7 +359,6 @@ end;
 procedure TfMovimentoProc.btnSangriaClick(Sender: TObject);
 begin
   //fSangria.ShowModal;
-
   fSangria.SangriaReforco:= 'Sangria';
   fSangria.Caption := 'Sangria';
   fSangria.Label6.Caption := 'Incluir Sangria';
@@ -349,6 +367,8 @@ begin
   fSangria.Edit1.Visible := False;
   fSangria.btnInsereMotivo.Visible := False;
   fSangria.GroupAbreCaixa.Visible := False;
+  fSangria.btnReimprimirReforco.Visible:= False;
+  fSangria.DBGrid2.Visible:= False;
   fSangria.ComboBox1.ItemIndex := 0;
   fSangria.ShowModal;
 end;
@@ -384,6 +404,7 @@ begin
   DBGrid1.Columns[6].DisplayFormat:=',##0.00';
   DBGrid1.Columns[7].FieldName:='TEMPO';
   DBGrid1.Columns[7].DisplayFormat:=',##0.00';
+  DBGrid1.Columns[8].FieldName:='N_DOC';
 end;
 
 procedure TfMovimentoProc.FormShow(Sender: TObject);
