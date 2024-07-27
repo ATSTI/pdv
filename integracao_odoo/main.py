@@ -17,6 +17,16 @@ class Main():
     def buscando_script(self):
         path_url = "https://github.com/ATSTI/pdv/raw/master/integracao_odoo/%s" %(self.versao_name)
         retorno = rq.get(path_url)
+        if "SISTEMA" not in retorno.text:
+            print ("------------------------------------")
+            print ("Erro na atualizacao da versao,")
+            print ("...............................")
+            print (" ATENCAO: ")
+            print ("...............................")
+            print ("se continuar muito tempo assim, depois de horas, ")
+            print ("comunique a ATS.")
+            print ("------------------------------------")
+            return
         # print(retorno.text)
         with open(self.versao_name, mode="w") as arq_retorno:
             arq_retorno.write(retorno.text)
