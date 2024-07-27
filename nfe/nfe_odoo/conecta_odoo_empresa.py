@@ -48,7 +48,7 @@ class ConectaServer():
         try:
             db = con_fdb()
         except:
-            msg = u'Caminho ou nome do banco inválido.<br>'
+            msg = u'Caminho ou nome do banco invalido.<br>'
         con = self._conexao_odoo()
         # db = local_db(filename = 'lancamento.db', table = 'empresa')
         empresa = con.env['res.company']

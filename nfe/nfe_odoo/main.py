@@ -30,9 +30,19 @@ class Main():
         self.buscando_script()
 
     def buscando_script(self):
-        path_url = f"https://github.com/ATSTI/pdv/raw/integracao_nfe_odoo_a3/nfe/nfe_odoo/{self.versao_name}"
+        path_url = f"https://github.com/ATSTI/pdv/raw/master/nfe/nfe_odoo/{self.versao_name}"
         retorno = rq.get(path_url)
         # print(retorno.text)
+        if "SISTEMA" not in retorno.text:
+            print ("------------------------------------")
+            print ("Erro na atualizacao da versao,")
+            print ("...............................")
+            print (" ATENCAO: ")
+            print ("...............................")
+            print ("se continuar muito tempo assim, depois de horas, ")
+            print ("comunique a ATS.")
+            print ("------------------------------------")
+            return
         _logger.info(f"atualizando {retorno.text}")
         with open(self.versao_name, mode="w") as arq_retorno:
             arq_retorno.write(retorno.text)
@@ -51,8 +61,9 @@ class Main():
             'sqlite_bd.py'
         ]
         for arq in arquivos:
-            _logger.info(f"Atualizando arquivos - {arq}") 
-            path_url = f"https://github.com/ATSTI/pdv/raw/integracao_nfe_odoo_a3/nfe/nfe_odoo/{arq}"
+            _logger.info(f"Atualizando arquivos - {arq}")
+            print ("Atualizando arquivos - " + arq)
+            path_url = f"https://github.com/ATSTI/pdv/raw/master/nfe/nfe_odoo/{arq}"
             retorno = rq.get(path_url)
             file_retorno = arq
             if arq == 'executa_odoo_nfe_retorno.py':
