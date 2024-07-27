@@ -60,9 +60,10 @@ class Main():
             'executa_odoo_nfe_retorno.py',
             'sqlite_bd.py'
         ]
+        print ("Atualizando arquivos :")
         for arq in arquivos:
             _logger.info(f"Atualizando arquivos - {arq}")
-            print ("Atualizando arquivos - " + arq)
+            print (" - " + arq)
             path_url = f"https://github.com/ATSTI/pdv/raw/master/nfe/nfe_odoo/{arq}"
             retorno = rq.get(path_url)
             file_retorno = arq

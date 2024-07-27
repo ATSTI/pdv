@@ -70,7 +70,7 @@ class ConectaServer():
                     str(emp.id), emp.name, razao, cnpj
                 )
                 db.execute(sql)
-            replace = ['-', ' ', '(',')', '/', '.', ':','º','+55']
+            replace = ['-', ' ', '(',')', '/', '.', ':','+55']
             for i in replace:
                 cnpj = cnpj.replace(i, '')
             empresa_arquivo = os.path.join(self.path_retorno, 'empresas')
