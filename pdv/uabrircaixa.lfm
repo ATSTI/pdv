@@ -8,7 +8,7 @@ object fAbrirCaixa: TfAbrirCaixa
   ClientWidth = 575
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '2.2.4.0'
+  LCLVersion = '3.4.0.0'
   object Panel1: TPanel
     Left = -1
     Height = 280
@@ -17,6 +17,7 @@ object fAbrirCaixa: TfAbrirCaixa
     ClientHeight = 280
     ClientWidth = 576
     Color = clGradientInactiveCaption
+    ParentBackground = False
     ParentColor = False
     TabOrder = 0
     object edCcred: TMaskEdit
@@ -26,6 +27,7 @@ object fAbrirCaixa: TfAbrirCaixa
       Width = 116
       Alignment = taRightJustify
       Enabled = False
+      EnableSets = False
       MaxLength = 0
       TabOrder = 0
       Text = '0,00'
@@ -143,6 +145,7 @@ object fAbrirCaixa: TfAbrirCaixa
       Width = 116
       Alignment = taRightJustify
       Enabled = False
+      EnableSets = False
       MaxLength = 0
       TabOrder = 1
       Text = '0,00'
@@ -155,6 +158,7 @@ object fAbrirCaixa: TfAbrirCaixa
       Width = 116
       Alignment = taRightJustify
       Enabled = False
+      EnableSets = False
       MaxLength = 0
       TabOrder = 2
       Text = '0,00'
@@ -167,6 +171,7 @@ object fAbrirCaixa: TfAbrirCaixa
       Width = 116
       Alignment = taRightJustify
       Enabled = False
+      EnableSets = False
       MaxLength = 0
       TabOrder = 3
       Text = '0,00'
@@ -179,6 +184,7 @@ object fAbrirCaixa: TfAbrirCaixa
       Width = 116
       Alignment = taRightJustify
       Enabled = False
+      EnableSets = False
       MaxLength = 0
       TabOrder = 4
       Text = '0,00'
@@ -191,6 +197,7 @@ object fAbrirCaixa: TfAbrirCaixa
       Width = 116
       Alignment = taRightJustify
       Enabled = False
+      EnableSets = False
       MaxLength = 0
       TabOrder = 5
       Text = '0,00'
@@ -233,6 +240,7 @@ object fAbrirCaixa: TfAbrirCaixa
       Width = 116
       Alignment = taRightJustify
       Enabled = False
+      EnableSets = False
       MaxLength = 0
       TabOrder = 6
       Text = '0,00'
@@ -245,6 +253,7 @@ object fAbrirCaixa: TfAbrirCaixa
       Width = 116
       Alignment = taRightJustify
       Enabled = False
+      EnableSets = False
       MaxLength = 0
       TabOrder = 7
       Text = '0,00'
@@ -272,6 +281,7 @@ object fAbrirCaixa: TfAbrirCaixa
       Width = 116
       Alignment = taRightJustify
       Enabled = False
+      EnableSets = False
       MaxLength = 0
       TabOrder = 8
       Text = '0,00'
@@ -299,6 +309,7 @@ object fAbrirCaixa: TfAbrirCaixa
       Width = 116
       Alignment = taRightJustify
       Enabled = False
+      EnableSets = False
       MaxLength = 0
       TabOrder = 9
       Text = '0,00'
@@ -341,6 +352,7 @@ object fAbrirCaixa: TfAbrirCaixa
       Width = 116
       Alignment = taRightJustify
       Enabled = False
+      EnableSets = False
       MaxLength = 0
       TabOrder = 10
       Text = '0,00'
@@ -364,6 +376,7 @@ object fAbrirCaixa: TfAbrirCaixa
       Width = 116
       Alignment = taRightJustify
       Enabled = False
+      EnableSets = False
       MaxLength = 0
       TabOrder = 12
       Text = '0,00'
@@ -430,6 +443,7 @@ object fAbrirCaixa: TfAbrirCaixa
       Top = 48
       Width = 107
       Alignment = taRightJustify
+      EnableSets = False
       MaxLength = 0
       TabOrder = 0
       Visible = False

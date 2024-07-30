@@ -2166,7 +2166,7 @@ begin
     lblCancelamento.Caption := 'Gerando xml ' + DateTimeToStr(now);
     Try
       ACBrNFe1.EventoNFe.GerarXML;
-      ACBrNFe1.EventoNFe.Gerador.SalvarArquivo('C:\home\evento.xml');
+      //ACBrNFe1.EventoNFe.Gerador.SalvarArquivo('C:\home\evento.xml');
     Except
       ShowMessage('Erro para Gravar o XML : ' +
         AcbrNfe1.Configuracoes.Arquivos.PathSalvar);
