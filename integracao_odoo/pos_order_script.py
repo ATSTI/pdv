@@ -8,6 +8,7 @@ import re
 import time
 import os
 import json
+import base64
 import configparser
 from main import Main as verifica_versao
 from atscon import Conexao as con
@@ -338,6 +339,30 @@ class IntegracaoOdoo:
             prods = db.query(sqlp)
             if pr['codpro']:
                 codpro = pr['codpro'].strip()
+            if not os.path.exists('promocao'):
+                os.makedirs('promocao')
+            promo_jpg = f"promocao/{codpro}.jpg"
+            promo_txt = f"promocao/{codpro}.txt"
+            if pr['promocao_jpg']:
+                if not os.path.exists(promo_jpg):
+                    imagem = pr['promocao_jpg']
+                    imagem_dec = base64.b64decode(imagem)
+                    with open(promo_jpg, 'wb') as f:
+                        f.write(imagem_dec)
+            else:
+                if os.path.exists(promo_jpg):
+                    os.remove(promo_jpg)
+            if pr['promocao_txt']:
+                if not os.path.exists(promo_txt):
+                    with open(promo_txt, 'w') as f:
+                        f.write(pr['promocao_txt'])
+            else:
+                if os.path.exists(promo_txt):
+                    os.remove(promo_txt)
+
+
+
+
             #sqlp = 'select codproduto from produtos where codpro like \'%s\'' %(codp+'%')
             if codbarra:
                 # 03/10/2022 limpando o codigo de barra qdo ja existe  
