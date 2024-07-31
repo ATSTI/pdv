@@ -234,8 +234,10 @@ type
     consultaItem: String;
     ultimo_pedido: Integer;
     codproduto: Integer;
+    fotoproduto : string;
     codPro: String;
     proDesc: String;
+    pProd : string;
     num_pedido: String;
     precoL: Double;
     precoAtacadoL: Double;
@@ -288,7 +290,7 @@ var
 
 implementation
 
-uses updv_rec,udmpdv, uMovimentoProc, uProdutoProc, uIntegracaoOdoo,uAbrirCaixa2,uabrircaixa,usangria;
+uses updv_rec,udmpdv, uMovimentoProc, uProdutoProc, uIntegracaoOdoo,uAbrirCaixa2,uabrircaixa,usangria,umsgpromo;
 
 {$R *.lfm}
 
@@ -1113,6 +1115,7 @@ begin
 end;
 
 procedure TfPdv.edProdutoKeyPress(Sender: TObject; var Key: char);
+var achou : string;
 begin
   if (dmPdv.IbCon.Connected = False) then
     dmPdv.IbCon.Connected := True;
@@ -1121,6 +1124,8 @@ begin
     Key := #0;
     buscaProduto();
   end;
+
+
 end;
 
 procedure TfPdv.edQtde1KeyPress(Sender: TObject; var Key: char);
@@ -1744,15 +1749,15 @@ begin
 end;
 
 procedure TfPdv.adicionaProduto();
- var nprod : string;
+
 begin
-    nprod := fProdutoProc.produto ;
-    {
-    if(fProdutoProc.precoVenda = 0)then
+
+    fotoproduto:= dmPdv.sqBusca.FieldByName('FOTOPRODUTO').AsString;
+    if(fotoproduto <> '' )then
     begin
-      ShowMessage('Atenção  Produto  ' + nprod + '. Sem Preço! ' );
-    end;
-    }
+      fMsgPromo.ShowModal;
+    end ;
+
     codproduto := fProdutoProc.codProduto;
     codPro     := fProdutoProc.codProd;
     precoL     := fProdutoProc.precoVenda;
@@ -2477,7 +2482,7 @@ end;
 
 procedure TfPdv.buscaProduto();
 var i: Integer;
-  str_bsc: String;
+  str_bsc  : String;
 begin
 
   if ((statusPedido > 0) and (dmPdv.usaComanda = 0)) then
@@ -2573,6 +2578,7 @@ begin
   begin
  //   btnVnd1.Click;
   end;
+
 end;
 
 procedure TfPdv.procFormShow;

@@ -38,51 +38,54 @@
         <Mode0 Name="default"/>
       </Modes>
     </RunParams>
-    <RequiredPackages Count="14">
+    <RequiredPackages Count="15">
       <Item1>
-        <PackageName Value="ACBr_Integrador"/>
+        <PackageName Value="SQLDBLaz"/>
       </Item1>
       <Item2>
-        <PackageName Value="ACBr_SAT_Extrato_ESCPOS"/>
+        <PackageName Value="ACBr_Integrador"/>
       </Item2>
       <Item3>
-        <PackageName Value="ACBr_SAT"/>
+        <PackageName Value="ACBr_SAT_Extrato_ESCPOS"/>
       </Item3>
       <Item4>
-        <PackageName Value="lhelpcontrolpkg"/>
+        <PackageName Value="ACBr_SAT"/>
       </Item4>
       <Item5>
-        <PackageName Value="MultiThreadProcsLaz"/>
+        <PackageName Value="lhelpcontrolpkg"/>
       </Item5>
       <Item6>
-        <PackageName Value="ACBrSerial"/>
+        <PackageName Value="MultiThreadProcsLaz"/>
       </Item6>
       <Item7>
-        <PackageName Value="ACBrDiversos"/>
+        <PackageName Value="ACBrSerial"/>
       </Item7>
       <Item8>
-        <PackageName Value="ACBr_NFe_DanfeESCPOS"/>
+        <PackageName Value="ACBrDiversos"/>
       </Item8>
       <Item9>
-        <PackageName Value="ACBr_NFe"/>
+        <PackageName Value="ACBr_NFe_DanfeESCPOS"/>
       </Item9>
       <Item10>
-        <PackageName Value="DateTimeCtrls"/>
+        <PackageName Value="ACBr_NFe"/>
       </Item10>
       <Item11>
-        <PackageName Value="FCL"/>
+        <PackageName Value="DateTimeCtrls"/>
       </Item11>
       <Item12>
-        <PackageName Value="RunTimeTypeInfoControls"/>
+        <PackageName Value="FCL"/>
       </Item12>
       <Item13>
-        <PackageName Value="SynEdit"/>
+        <PackageName Value="RunTimeTypeInfoControls"/>
       </Item13>
       <Item14>
-        <PackageName Value="LCL"/>
+        <PackageName Value="SynEdit"/>
       </Item14>
+      <Item15>
+        <PackageName Value="LCL"/>
+      </Item15>
     </RequiredPackages>
-    <Units Count="37">
+    <Units Count="38">
       <Unit0>
         <Filename Value="prjPDV.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -340,13 +343,20 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit36>
+      <Unit37>
+        <Filename Value="umsgpromo.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fMsgPromo"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit37>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="C:\home\sisadmin\prjPDV"/>
+      <Filename Value="C:\home\felicita_linux\prjPDV"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>

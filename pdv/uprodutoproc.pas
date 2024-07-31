@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, db, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  DBGrids, StdCtrls, Buttons, udmpdv, uMsg, strutils;
+  DBGrids, StdCtrls, Buttons, udmpdv, uMsg, strutils,umsgpromo;
 
 type
 
@@ -62,6 +62,7 @@ type
     qtdeAtacado: Double;
     estoque: Double;
     tipo_venda: String;
+    fotoproduto : String;
     num_busca: Integer;
     procedure busca(codigo: String; barCode: String; produtoDesc: String; inativo: Boolean);
   end;
@@ -153,6 +154,12 @@ end;
 procedure TfProdutoProc.btnProcurarClick(Sender: TObject);
 begin
   busca(Edit1.Text, '', Edit2.Text, chInativo.Checked);
+
+  fotoproduto:= dmPdv.sqBusca.FieldByName('FOTOPRODUTO').AsString;
+  if(fotoproduto <> '' )then
+  begin
+   fMsgPromo.ShowModal;
+  end;
 end;
 
 procedure TfProdutoProc.btnSairClick(Sender: TObject);
@@ -192,10 +199,10 @@ end;
 
 procedure TfProdutoProc.btnConfirmaClick(Sender: TObject);
 begin
-  codProduto:= dmPdv.sqBusca.FieldByName('CODPRODUTO').AsInteger;
-  produto   := dmPdv.sqBusca.FieldByName('PRODUTO').AsString;
-  codProd   := dmPdv.sqBusca.FieldByName('CODPRO').AsString;
-  precoVenda:= dmPdv.sqBusca.FieldByName('VALOR_PRAZO').AsFloat;
+  codProduto := dmPdv.sqBusca.FieldByName('CODPRODUTO').AsInteger;
+  produto    := dmPdv.sqBusca.FieldByName('PRODUTO').AsString;
+  codProd    := dmPdv.sqBusca.FieldByName('CODPRO').AsString;
+  precoVenda := dmPdv.sqBusca.FieldByName('VALOR_PRAZO').AsFloat;
 
   if(precoVenda = 0.0 )then
   begin

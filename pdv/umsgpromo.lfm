@@ -1,0 +1,51 @@
+object fMsgPromo: TfMsgPromo
+  Left = 347
+  Height = 504
+  Top = 124
+  Width = 644
+  Caption = 'Promoção'
+  ClientHeight = 0
+  ClientWidth = 0
+  OnShow = FormShow
+  LCLVersion = '3.4.0.0'
+  object Label1: TLabel
+    Left = 24
+    Height = 25
+    Top = 0
+    Width = 60
+    Caption = 'Label1'
+    Font.Color = clRed
+    Font.Height = -19
+    Font.Style = [fsBold, fsItalic]
+    ParentColor = False
+    ParentFont = False
+  end
+  object Image1: TImage
+    Left = 24
+    Height = 449
+    Top = 32
+    Width = 592
+    Stretch = True
+  end
+  object Memo1: TMemo
+    Left = 24
+    Height = 448
+    Top = 32
+    Width = 584
+    TabOrder = 0
+  end
+  object TimerMSG: TTimer
+    Enabled = False
+    OnTimer = TimerMSGTimer
+    Left = 80
+    Top = 24
+  end
+  object OpenPictureDialog1: TOpenPictureDialog
+    Left = 40
+    Top = 88
+  end
+  object OpenDialog1: TOpenDialog
+    Left = 48
+    Top = 159
+  end
+end

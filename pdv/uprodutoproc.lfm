@@ -9,7 +9,7 @@ object fProdutoProc: TfProdutoProc
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  LCLVersion = '2.2.4.0'
+  LCLVersion = '3.4.0.0'
   object Panel1: TPanel
     Left = 0
     Height = 64
@@ -24,6 +24,7 @@ object fProdutoProc: TfProdutoProc
     Font.Name = '@Malgun Gothic'
     Font.Pitch = fpVariable
     Font.Quality = fqDraft
+    ParentBackground = False
     ParentColor = False
     ParentFont = False
     TabOrder = 0
@@ -37,11 +38,11 @@ object fProdutoProc: TfProdutoProc
       Font.Name = '@Malgun Gothic'
       Font.Pitch = fpVariable
       Font.Quality = fqDraft
+      ParentFont = False
+      TabOrder = 0
       OnChange = Edit1Change
       OnEnter = Edit1Enter
       OnKeyPress = Edit1KeyPress
-      ParentFont = False
-      TabOrder = 0
     end
     object Label1: TLabel
       Left = 16
@@ -67,24 +68,24 @@ object fProdutoProc: TfProdutoProc
       Font.Name = '@Malgun Gothic'
       Font.Pitch = fpVariable
       Font.Quality = fqDraft
-      OnKeyPress = Edit2KeyPress
       ParentFont = False
       TabOrder = 1
+      OnKeyPress = Edit2KeyPress
     end
     object chInativo: TCheckBox
       Left = 680
       Height = 21
       Top = 46
-      Width = 60
+      Width = 58
       Caption = 'Inativo'
       Font.CharSet = ANSI_CHARSET
       Font.Height = -13
       Font.Name = '@Malgun Gothic'
       Font.Pitch = fpVariable
       Font.Quality = fqDraft
-      OnChange = chInativoChange
       ParentFont = False
       TabOrder = 4
+      OnChange = chInativoChange
     end
     object btnProcurar: TBitBtn
       Left = 680
@@ -798,9 +799,9 @@ object fProdutoProc: TfProdutoProc
       Font.Pitch = fpVariable
       Font.Quality = fqDraft
       ItemHeight = 21
-      OnChange = cbSubGrupoChange
       ParentFont = False
       TabOrder = 3
+      OnChange = cbSubGrupoChange
     end
     object cbGrupo: TComboBox
       Left = 88
@@ -814,9 +815,9 @@ object fProdutoProc: TfProdutoProc
       Font.Pitch = fpVariable
       Font.Quality = fqDraft
       ItemHeight = 21
-      OnChange = cbGrupoChange
       ParentFont = False
       TabOrder = 2
+      OnChange = cbGrupoChange
     end
     object Label2: TLabel
       Left = 324
