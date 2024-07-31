@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, sqldb, db, FileUtil, Forms, Controls, Graphics, Dialogs,
   Buttons, MaskEdit, StdCtrls, ExtCtrls, DBGrids, udmpdv, fphttpclient, fpjson,
-  uIntegraSimples;
+  uIntegraSimples, jsonConf;
 
 type
 
@@ -414,6 +414,7 @@ var
   sql_str , pedidos: string;
   postJson : TJSONObject;
   httpClient : TFPHttpClient;
+  sl: TStringList;
 begin
   dmPdv.sqBusca1.Close;
   dmPdv.sqBusca1.Sql.Clear;
@@ -439,6 +440,35 @@ begin
   end;
   pedidos += '}]';
   memoResult.Lines.Add(pedidos);
+
+  {dmPdv.sqBusca1.FIRST;
+  while not dmPdv.sqBusca1.EOF do
+  begin
+
+    with TJSONConfig.Create(nil) do
+      try
+        FileName := 'samplexx.json';
+        sl := TStringList.Create;
+        try
+          //sl.SetStrings(['durable', 'economic']);
+          SetValue('/caixa', IntToStr(dmPdv.sqBusca1.Fields[0].AsInteger));
+          //sl.SetStrings(['cheap', 'elegance']);
+          SetValue('/motivo', dmPdv.sqBusca1.Fields[1].AsString);
+          //sl.SetStrings(['speed', 'versatile']);
+          SetValue('/valor', FloatToStr(dmPdv.sqBusca1.Fields[2].AsFloat));
+          //sl.SetStrings(['cheap', 'economic']);
+          SetValue('/codforma', IntToStr(dmPdv.sqBusca1.Fields[3].AsInteger));
+          SetValue('/codvenda', IntToStr(dmPdv.sqBusca1.Fields[4].AsInteger));
+        finally
+          sl.Free;
+        end;
+      finally
+        Free;
+      end;
+    dmPdv.sqBusca1.Next;
+  end;
+  exit;}
+
 
   httpClient := TFPHttpClient.Create(Nil);
   postJson := TJSONObject.Create;

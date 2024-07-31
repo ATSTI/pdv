@@ -1,0 +1,6 @@
+odoorpc
+configparser
+requests
+fdb
+nfelib
+# lxml
