@@ -213,10 +213,12 @@ class IntegracaoOdoo:
             vals['start_at'] = data_abertura
             if ses[3] == 'o':
                 vals['state'] = 'draft'
-                arquivo_nome = self.path_envio + '/caixa_%s.json' %(ses[1])
+                #arquivo_nome = self.path_envio + '/caixa_%s.json' %(ses[1])
+                arquivo_nome = os.path.join(self.path_envio, f"caixa_{ses[1]}.json")
             elif ses[3] == 'F':
                 vals['state'] = 'closed'
-                arquivo_nome = self.path_envio + '/caixaf_%s.json' %(ses[1])
+                #arquivo_nome = self.path_envio + '/caixaf_%s.json' %(ses[1])
+                arquivo_nome = os.path.join(self.path_envio, f"caixaf_{ses[1]}.json")
             if os.path.exists(arquivo_nome):
                 continue
             arquivo_json = open(arquivo_nome, 'w+')
@@ -256,7 +258,8 @@ class IntegracaoOdoo:
                         'caixa': cod_caixa,
                         'cod_venda': cod_venda,
             }
-            arquivo_nome = self.path_envio + '/sangria_%s.json' %(cod_forma)
+            #arquivo_nome = self.path_envio + '/sangria_%s.json' %(cod_forma)
+            arquivo_nome = os.path.join(self.path_envio, f"sangria_{cod_forma}.json")
             if os.path.exists(arquivo_nome):
                 continue
             arquivo_json = open(arquivo_nome, 'w+')
@@ -868,7 +871,8 @@ class IntegracaoOdoo:
                 _logger.info("Sem Devolucao para importar.")
             for mvs in movs:
                 ord_name = '%s-%s' %(str(cx[1]),str(mvs[1]))
-                arquivo_nome = self.path_envio + '/devolucao_%s.json' %(ord_name)
+                #arquivo_nome = self.path_envio + '/devolucao_%s.json' %(ord_name)
+                arquivo_nome = os.path.join(self.path_envio, f"devolucao_{ord_name}.json")
                 if os.path.exists(arquivo_nome):
                     continue
                 nome_busca = 'DEV-' + ord_name
@@ -951,7 +955,8 @@ class IntegracaoOdoo:
                 ord_p = False
                 ord_name = '%s-%s' %(str(cx[1]),str(mvs[0]))
                 _logger.info("Pedidos novos: %s" %(ord_name))
-                arquivo_nome = self.path_envio + '/pedido_%s.json' %(ord_name)
+                # arquivo_nome = self.path_envio + '/pedido_%s.json' %(ord_name)
+                arquivo_nome = os.path.join(self.path_envio, f"pedido_{ord_name}.json")
                 if os.path.exists(arquivo_nome):
                     continue
                 teve_desconto = 'n'
@@ -1126,7 +1131,8 @@ class IntegracaoOdoo:
                         # coloquei isto aqui pq qdo tem desconto
                         # e era a prazo o desconto do ultimo item nao ia pra
                         # fatura estas duas linhas abaixo eram feitas no create
-                        arquivo_nome = self.path_envio + '/pagline_%s.json' %(ord_name)
+                        # arquivo_nome = self.path_envio + '/pagline_%s.json' %(ord_name)
+                        arquivo_nome = os.path.join(self.path_envio, f"pagline_{ord_name}.json")
                         arquivo_json = open(arquivo_nome, 'w')
                         dados_vals = json.dumps(vals)
                         arquivo_json.write(dados_vals)
