@@ -463,14 +463,22 @@ begin
           h := '0';
           total_odoo := total_odoo + StrToFloat(b) ;
           dias := (today - StrToDate(d)); // conto os dias
-          juros := (0.03 * dias); //  mostra juros por dia
-          vJuros := ((juros * StrToFloat(b))/100);  // mostra juros mora
-          if(dias <> 0) then
+          vJuros := 0;
+          if (dias > 0) then
           begin
-            multa := StrToFloat(b) * (2/100);
-            h := FloatToStr(multa+vJuros) ;
-          end;
+            juros := (0.03 * dias); //  mostra juros por dia
+            vJuros := ((juros * StrToFloat(b))/100);  // mostra juros mora
 
+            if(dias <> 0) then
+            begin
+              multa := StrToFloat(b) * (2/100);
+              h := FloatToStr(multa+vJuros) ;
+            end;
+          end
+          else begin
+            multa := 0;
+            h := '0';
+          end;
           tt := tt + StrToFloat(h);
           edJurosMulta.Text := FormatFloat('###0.00',(tt));  // FloatToStr(tt) ;
 
@@ -629,7 +637,15 @@ begin
   vlr_pg := StrToFloat(edPago.Text);
   if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
   begin
-    enviar_caixa(vlr_pg,StrToInt(pCod)); // o codigo que foi selecionado no grid
+    try
+      enviar_caixa(vlr_pg,StrToInt(pCod)); // o codigo que foi selecionado no grid
+    except
+      ShowMessage('Verifique se baixou no ODOO.');
+    end;
+
+    // IMPRESSAO
+
+    try
     v_log := 'Log de impressão - ';
     totalP := 0;
     totalD := 0;
@@ -706,6 +722,11 @@ begin
     finally
       CloseFile(IMPRESSORA);
       lFile.Free;
+    end;
+
+    except
+      btnProcurar.Click;
+      ShowMessage('Erro na impressao');
     end;
     btnProcurar.Click;
     edPago.Text:= '0,00';

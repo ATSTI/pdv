@@ -416,10 +416,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uIntegraSimples"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="1517"/>
-        <CursorPos X="19" Y="1534"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="1120"/>
+        <CursorPos Y="1129"/>
         <UsageCount Value="200"/>
+        <Loaded Value="True"/>
       </Unit34>
       <Unit35>
         <Filename Value="umsg.pas"/>
@@ -896,20 +897,6 @@
         <WatchKind Value="wpkWrite"/>
         <Source Value="uabrircaixa2.pas"/>
         <Line Value="63"/>
-      </Item>
-      <Item>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="ureceber.pas"/>
-        <Line Value="630"/>
-      </Item>
-      <Item>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="ureceber.pas"/>
-        <Line Value="381"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
