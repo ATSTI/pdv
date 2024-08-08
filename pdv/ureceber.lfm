@@ -9,7 +9,7 @@ object fRecebimento: TfRecebimento
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '2.2.4.0'
+  LCLVersion = '3.4.0.0'
   object Panel1: TPanel
     Left = 0
     Height = 133
@@ -26,6 +26,7 @@ object fRecebimento: TfRecebimento
       Top = 43
       Width = 120
       Alignment = taRightJustify
+      EnableSets = False
       MaxLength = 0
       ParentShowHint = False
       ShowHint = True
@@ -37,7 +38,7 @@ object fRecebimento: TfRecebimento
       Left = 592
       Height = 15
       Top = 15
-      Width = 54
+      Width = 57
       Caption = 'Valor Total'
       ParentColor = False
     end
@@ -47,6 +48,7 @@ object fRecebimento: TfRecebimento
       Top = 15
       Width = 120
       Alignment = taRightJustify
+      EnableSets = False
       MaxLength = 0
       TabOrder = 0
       Text = '0,00'
@@ -59,6 +61,7 @@ object fRecebimento: TfRecebimento
       Top = 58
       Width = 88
       Alignment = taRightJustify
+      EnableSets = False
       MaxLength = 0
       ParentShowHint = False
       ShowHint = True
@@ -70,7 +73,7 @@ object fRecebimento: TfRecebimento
       Left = 393
       Height = 15
       Top = 62
-      Width = 56
+      Width = 57
       Caption = 'Valor Pago'
       ParentColor = False
     end
@@ -1157,6 +1160,7 @@ object fRecebimento: TfRecebimento
       Top = 4
       Width = 88
       Alignment = taRightJustify
+      EnableSets = False
       MaxLength = 0
       ParentShowHint = False
       ReadOnly = True
@@ -1169,7 +1173,7 @@ object fRecebimento: TfRecebimento
       Left = 393
       Height = 15
       Top = 8
-      Width = 68
+      Width = 69
       Caption = 'Valor a Pagar'
       ParentColor = False
     end
@@ -1180,6 +1184,7 @@ object fRecebimento: TfRecebimento
       Top = 30
       Width = 88
       Alignment = taRightJustify
+      EnableSets = False
       MaxLength = 0
       ParentShowHint = False
       ShowHint = True
@@ -1191,7 +1196,7 @@ object fRecebimento: TfRecebimento
       Left = 393
       Height = 15
       Top = 34
-      Width = 59
+      Width = 60
       Caption = 'Valor Juros '
       ParentColor = False
     end
@@ -1536,9 +1541,9 @@ object fRecebimento: TfRecebimento
       Height = 23
       Top = 8
       Width = 80
+      TabOrder = 2
       OnExit = edCodClienteExit
       OnKeyPress = edCodClienteKeyPress
-      TabOrder = 2
     end
     object edNomeCliente: TEdit
       Left = 175
@@ -1579,8 +1584,8 @@ object fRecebimento: TfRecebimento
       Top = 8
       Width = 26
       Caption = '...'
-      OnClick = Button1Click
       TabOrder = 5
+      OnClick = Button1Click
     end
     object BitBtn1: TBitBtn
       Left = 520
@@ -2016,6 +2021,7 @@ object fRecebimento: TfRecebimento
     ClientHeight = 226
     ClientWidth = 374
     Color = clInfoText
+    ParentBackground = False
     ParentColor = False
     TabOrder = 3
     Visible = False
