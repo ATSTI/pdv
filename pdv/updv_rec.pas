@@ -1111,9 +1111,14 @@ begin
       end
       else
         Writeln(Impressora,lFile[i]);
+
     end;
-
-
+    Writeln(Impressora, ' ');
+    Writeln(Impressora, ' ');
+    Writeln(Impressora, ' ');
+    Writeln(Impressora, ' ');
+    Writeln(Impressora, ' ');
+    Writeln(Impressora, ' ');
 
     // CUPOM PRAZO
     if prazo = 'S' then
@@ -1228,7 +1233,8 @@ begin
         else
           Writeln(Impressora,lFile[i]);
       end;
-             /////
+
+      /////
       linhaTxt := 'P' ;
       if linhaTxt = 'P' then
       begin
@@ -1240,9 +1246,9 @@ begin
           ' - ' + RemoveAcento(sqPagamentoN_DOC.AsString));
           sqPagamento.Next;
         end;
-       end
+      end
 
-       ////
+      ////
 
     end;
 
@@ -1497,7 +1503,7 @@ begin
     ACBrPosPrinter1.Imprimir;
     ACBrPosPrinter1.Imprimir;
   end;}
-
+   ACBrPosPrinter1.CortaPapel:= True;
 end;
 
 procedure TfPDV_Rec.insereRecebimento(parc_rec: Integer; vlr_rec: Double;
