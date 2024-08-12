@@ -2416,13 +2416,14 @@ begin
   ACBrPosPrinter1.ConfigBarras.MostrarCodigo := True;
   ACBrPosPrinter1.ConfigBarras.Margem:= dmPdv.margemCodBarra;
 
-  ACBrPosPrinter1.CortaPapel := True;
+
   ACBrPosPrinter1.TraduzirTags:=True;
   ACBrPosPrinter1.Modelo := TACBrPosPrinterModelo(dmPdv.ModeloImp);
   ACBrPosPrinter1.Ativar ;
 
   ACBrPosPrinter1.Buffer.Text := MemoImp.Lines.Text;
   ACBrPosPrinter1.Imprimir;
+  ACBrPosPrinter1.CortaPapel := True;
 end;
 
 procedure TfPdv.imprime_envio;

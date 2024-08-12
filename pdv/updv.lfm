@@ -12238,15 +12238,14 @@ object fPdv: TfPdv
       TabOrder = 6
       Visible = False
       object memoImp: TMemo
-        Left = 16
-        Height = 65
-        Top = 119
-        Width = 158
+        Left = 32
+        Height = 137
+        Top = 112
+        Width = 424
         Lines.Strings = (
           'memoImp'
         )
         TabOrder = 3
-        Visible = False
       end
       object Label1: TLabel
         Left = 184
@@ -12317,10 +12316,10 @@ object fPdv: TfPdv
         TabOrder = 2
       end
       object memoDevolucao: TMemo
-        Left = 16
-        Height = 65
+        Left = 7
+        Height = 66
         Top = 192
-        Width = 158
+        Width = 27
         Lines.Strings = (
           ''
         )

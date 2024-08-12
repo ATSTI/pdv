@@ -4,15 +4,14 @@
     <PathDelim Value="\"/>
     <Version Value="12"/>
     <BuildModes Active="Default"/>
-    <Units Count="73">
+    <Units Count="75">
       <Unit0>
         <Filename Value="prjPDV.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="12"/>
         <TopLine Value="27"/>
-        <CursorPos X="49" Y="47"/>
+        <CursorPos X="97" Y="28"/>
         <UsageCount Value="206"/>
-        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="updv.pas"/>
@@ -89,12 +88,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uProdutoProc"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="154"/>
         <CursorPos X="3" Y="156"/>
         <UsageCount Value="202"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit6>
       <Unit7>
         <Filename Value="..\geral\umovimentoproc.pas"/>
@@ -107,8 +104,6 @@
         <TopLine Value="127"/>
         <CursorPos X="52" Y="141"/>
         <UsageCount Value="200"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit7>
       <Unit8>
         <Filename Value="uexecutaintegracao.pas"/>
@@ -150,8 +145,6 @@
         <TopLine Value="89"/>
         <CursorPos Y="99"/>
         <UsageCount Value="217"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit11>
       <Unit12>
         <Filename Value="uvendedorbusca.pas"/>
@@ -229,8 +222,6 @@
         <Bookmarks Count="1">
           <Item0 X="3" Y="683" ID="8"/>
         </Bookmarks>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit17>
       <Unit18>
         <Filename Value="..\geral\ucertificadoler.pas"/>
@@ -252,8 +243,6 @@
         <TopLine Value="158"/>
         <CursorPos X="3" Y="143"/>
         <UsageCount Value="269"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit19>
       <Unit20>
         <Filename Value="usangria.pas"/>
@@ -265,8 +254,6 @@
         <TopLine Value="323"/>
         <CursorPos X="21" Y="331"/>
         <UsageCount Value="263"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit20>
       <Unit21>
         <Filename Value="ucadeira.pas"/>
@@ -293,6 +280,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uUtil"/>
         <EditorIndex Value="-1"/>
+        <TopLine Value="19"/>
+        <CursorPos X="10" Y="10"/>
         <UsageCount Value="271"/>
       </Unit23>
       <Unit24>
@@ -306,8 +295,6 @@
         <TopLine Value="97"/>
         <CursorPos Y="111"/>
         <UsageCount Value="232"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit24>
       <Unit25>
         <Filename Value="ucursobusca.pas"/>
@@ -418,8 +405,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uIntegraSimples"/>
-        <EditorIndex Value="4"/>
-        <TopLine Value="1120"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1117"/>
         <CursorPos Y="1129"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
@@ -431,12 +418,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uMsg"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="21"/>
         <CursorPos Y="30"/>
         <UsageCount Value="201"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit35>
       <Unit36>
         <Filename Value="usaldo.pas"/>
@@ -719,6 +704,20 @@
         <CursorPos X="128" Y="6"/>
         <UsageCount Value="9"/>
       </Unit72>
+      <Unit73>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrSerial\ACBrPosPrinter.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="3077"/>
+        <CursorPos Y="3089"/>
+        <UsageCount Value="10"/>
+      </Unit73>
+      <Unit74>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrSerial\ACBrDevice.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1150"/>
+        <CursorPos Y="1162"/>
+        <UsageCount Value="10"/>
+      </Unit74>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
