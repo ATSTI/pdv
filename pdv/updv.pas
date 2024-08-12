@@ -883,6 +883,7 @@ begin
        codVendedor := dmPdv.vendedor_padrao;
     edVendedor.Text:= IntToStr(codVendedor);
     codCliente := dmpdv.sqLancamentosCODCLIENTE.AsInteger;
+    Caixa_Local := dmpdv.sqLancamentosCODALMOXARIFADO.AsInteger;
     if (codCliente = 0) then
     begin
       codCliente := dmPdv.clientePadrao;
@@ -1422,6 +1423,7 @@ end;
 
 procedure TfPdv.iniciarVenda();
 begin
+  caixa_local := StrToInt(dmPdv.ccusto);
   if (dmPdv.IbCon.Connected = False) then
     dmPdv.IbCon.Connected := True;
   if (dmPdv.nomeCaixa <> 'FECHADO') then
@@ -2134,7 +2136,7 @@ var
    fInteg: TfIntegracaoOdoo;
    responseData: String;
 begin
-
+  caixa_local := StrToInt(dmPdv.ccusto);
   if (statusPedido > 0) then
   begin
     ShowMessage('Pedido ja finalizado.');
