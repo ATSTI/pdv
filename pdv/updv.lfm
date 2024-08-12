@@ -104,9 +104,9 @@ object fPdv: TfPdv
     end
     object Label3: TLabel
       Left = 272
-      Height = 21
+      Height = 22
       Top = 56
-      Width = 243
+      Width = 120
       Caption = 'Finalizar venda'
       Font.CharSet = ANSI_CHARSET
       Font.Color = clWhite
@@ -121,9 +121,9 @@ object fPdv: TfPdv
     end
     object Label4: TLabel
       Left = 400
-      Height = 21
+      Height = 22
       Top = 57
-      Width = 226
+      Width = 123
       Caption = 'Cancelar Venda'
       Font.CharSet = ANSI_CHARSET
       Font.Color = clWhite
@@ -138,9 +138,9 @@ object fPdv: TfPdv
     end
     object Label5: TLabel
       Left = 549
-      Height = 21
+      Height = 22
       Top = 57
-      Width = 119
+      Width = 61
       Caption = 'Sangria'
       Font.CharSet = ANSI_CHARSET
       Font.Color = clWhite
@@ -810,7 +810,7 @@ object fPdv: TfPdv
     OnClick = Panel2Click
     object edProdutoDescX: TEdit
       Left = 34
-      Height = 20
+      Height = 22
       Top = 415
       Width = 202
       Color = clGradientInactiveCaption
@@ -940,7 +940,7 @@ object fPdv: TfPdv
       end
       object edCaixa: TEdit
         Left = 81
-        Height = 15
+        Height = 18
         Top = 127
         Width = 203
         BorderStyle = bsNone
@@ -957,9 +957,9 @@ object fPdv: TfPdv
       end
       object Label14: TLabel
         Left = 3
-        Height = 12
+        Height = 15
         Top = 54
-        Width = 47
+        Width = 48
         Caption = 'Vendedor'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clWindowFrame
@@ -972,7 +972,7 @@ object fPdv: TfPdv
       end
       object edVendedor: TEdit
         Left = 3
-        Height = 25
+        Height = 31
         Top = 71
         Width = 61
         Color = 14803425
@@ -988,7 +988,7 @@ object fPdv: TfPdv
       end
       object edVendedorNome: TEdit
         Left = 65
-        Height = 25
+        Height = 31
         Top = 71
         Width = 194
         Color = 14803425
@@ -1016,9 +1016,9 @@ object fPdv: TfPdv
       end
       object Label7: TLabel
         Left = 3
-        Height = 12
+        Height = 15
         Top = 3
-        Width = 33
+        Width = 36
         Caption = 'Cliente'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clWindowFrame
@@ -1031,7 +1031,7 @@ object fPdv: TfPdv
       end
       object edCliente: TEdit
         Left = 3
-        Height = 25
+        Height = 31
         Top = 20
         Width = 61
         Color = 14803425
@@ -1048,7 +1048,7 @@ object fPdv: TfPdv
       end
       object edClienteNome: TEdit
         Left = 65
-        Height = 25
+        Height = 31
         Top = 20
         Width = 194
         Color = 14803425
@@ -11601,9 +11601,9 @@ object fPdv: TfPdv
         OnClick = Panel6Click
         object Label6: TLabel
           Left = 5
-          Height = 14
+          Height = 16
           Top = 3
-          Width = 66
+          Width = 69
           Caption = 'Cód. Barra:'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clWindowFrame
@@ -11617,7 +11617,7 @@ object fPdv: TfPdv
         end
         object edProduto: TEdit
           Left = 4
-          Height = 23
+          Height = 30
           Hint = 'Use F1 para Consulta (F1 para voltar)'
           Top = 28
           Width = 247
@@ -11673,9 +11673,9 @@ object fPdv: TfPdv
         TabOrder = 1
         object Label21: TLabel
           Left = 5
-          Height = 14
+          Height = 16
           Top = 3
-          Width = 69
+          Width = 72
           Caption = 'Quantidade:'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clWindowFrame
@@ -11689,7 +11689,7 @@ object fPdv: TfPdv
         end
         object edQtde: TMaskEdit
           Left = 6
-          Height = 21
+          Height = 27
           Top = 17
           Width = 112
           Alignment = taRightJustify
@@ -11726,7 +11726,7 @@ object fPdv: TfPdv
         TabOrder = 2
         object edPreco: TMaskEdit
           Left = 6
-          Height = 21
+          Height = 27
           Top = 16
           Width = 105
           Alignment = taRightJustify
@@ -11750,9 +11750,9 @@ object fPdv: TfPdv
         end
         object Label15: TLabel
           Left = 7
-          Height = 14
+          Height = 16
           Top = 3
-          Width = 38
+          Width = 36
           Caption = 'Preço:'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clWindowFrame
@@ -11766,9 +11766,9 @@ object fPdv: TfPdv
         end
         object Label16: TLabel
           Left = 152
-          Height = 13
+          Height = 15
           Top = 8
-          Width = 51
+          Width = 53
           Caption = 'Desconto:'
           Font.Color = clWhite
           ParentColor = False
@@ -11905,10 +11905,10 @@ object fPdv: TfPdv
       Visible = False
       object edBuscaDetalhe: TLabeledEdit
         Left = 104
-        Height = 21
+        Height = 23
         Top = 12
         Width = 344
-        EditLabel.Height = 13
+        EditLabel.Height = 15
         EditLabel.Width = 51
         EditLabel.Caption = 'Descrição'
         EditLabel.ParentColor = False
@@ -12030,9 +12030,9 @@ object fPdv: TfPdv
         end
         object lblProdBusca: TLabel
           Left = 24
-          Height = 21
+          Height = 26
           Top = 4
-          Width = 73
+          Width = 74
           Caption = 'Produto:'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clWhite
@@ -12071,7 +12071,7 @@ object fPdv: TfPdv
         TabOrder = 0
         object edTotalGeral: TMaskEdit
           Left = 42
-          Height = 30
+          Height = 38
           Top = 17
           Width = 165
           Alignment = taRightJustify
@@ -12094,9 +12094,9 @@ object fPdv: TfPdv
         end
         object Label9: TLabel
           Left = 16
-          Height = 12
+          Height = 16
           Top = 1
-          Width = 42
+          Width = 44
           Align = alCustom
           Caption = 'TOTAL:'
           Font.CharSet = ANSI_CHARSET
@@ -12124,9 +12124,9 @@ object fPdv: TfPdv
         TabOrder = 1
         object lblNumItem: TLabel
           Left = 40
-          Height = 30
+          Height = 38
           Top = 17
-          Width = 15
+          Width = 16
           Caption = '0'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clWindowFrame
@@ -12140,9 +12140,9 @@ object fPdv: TfPdv
         end
         object Label10: TLabel
           Left = 5
-          Height = 12
+          Height = 16
           Top = 0
-          Width = 26
+          Width = 28
           Caption = 'Itens'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clWindowFrame
@@ -12157,7 +12157,7 @@ object fPdv: TfPdv
       end
       object lblMSG: TLabel
         Left = 10
-        Height = 13
+        Height = 15
         Top = 49
         Width = 9
         Caption = '...'
@@ -12179,9 +12179,9 @@ object fPdv: TfPdv
         TabOrder = 2
         object lblPedido: TLabel
           Left = 80
-          Height = 30
+          Height = 38
           Top = 17
-          Width = 24
+          Width = 36
           Caption = '...'
           Enabled = False
           Font.CharSet = ANSI_CHARSET
@@ -12196,9 +12196,9 @@ object fPdv: TfPdv
         end
         object Label11: TLabel
           Left = 16
-          Height = 12
+          Height = 16
           Top = 1
-          Width = 41
+          Width = 38
           Caption = 'Pedido:'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clWindowFrame
@@ -12213,9 +12213,9 @@ object fPdv: TfPdv
       end
       object Label8: TLabel
         Left = 32
-        Height = 23
+        Height = 25
         Top = 16
-        Width = 18
+        Width = 15
         Caption = '...'
         Font.Color = clRed
         Font.Height = -19
@@ -12250,24 +12250,24 @@ object fPdv: TfPdv
       end
       object Label1: TLabel
         Left = 184
-        Height = 13
+        Height = 15
         Top = 40
-        Width = 118
+        Width = 119
         Caption = 'TROCA / DEVOLUÇÃO'
         ParentColor = False
       end
       object edMotivo: TEdit
         Left = 112
-        Height = 21
+        Height = 23
         Top = 88
         Width = 312
         TabOrder = 0
       end
       object Label2: TLabel
         Left = 57
-        Height = 13
+        Height = 15
         Top = 86
-        Width = 33
+        Width = 38
         Caption = 'Motivo'
         ParentColor = False
       end
@@ -12342,7 +12342,7 @@ object fPdv: TfPdv
       Visible = False
       object lblSenha: TLabel
         Left = 32
-        Height = 13
+        Height = 15
         Top = 297
         Width = 12
         Caption = '....'
@@ -12382,9 +12382,9 @@ object fPdv: TfPdv
       end
       object Label13: TLabel
         Left = 21
-        Height = 13
+        Height = 15
         Top = 5
-        Width = 152
+        Width = 153
         Caption = 'PDV Versão : 1.0 - 20/11/2019'
         Font.Color = clWhite
         ParentColor = False
@@ -12400,11 +12400,11 @@ object fPdv: TfPdv
         TabOrder = 1
         object TabSheet1: TTabSheet
           Caption = 'Info'
-          ClientHeight = 271
+          ClientHeight = 269
           ClientWidth = 496
           object Memo1: TMemo
             Left = 0
-            Height = 271
+            Height = 269
             Top = 0
             Width = 496
             Align = alClient
@@ -12430,11 +12430,11 @@ object fPdv: TfPdv
         end
         object TabSheet2: TTabSheet
           Caption = 'Logs'
-          ClientHeight = 271
+          ClientHeight = 269
           ClientWidth = 496
           object Memo2: TMemo
             Left = 0
-            Height = 271
+            Height = 269
             Top = 0
             Width = 496
             Align = alClient
@@ -12458,7 +12458,7 @@ object fPdv: TfPdv
       Visible = False
       object edQtde1: TMaskEdit
         Left = 176
-        Height = 29
+        Height = 35
         Top = 48
         Width = 112
         Alignment = taRightJustify
@@ -12481,9 +12481,9 @@ object fPdv: TfPdv
       end
       object Label17: TLabel
         Left = 94
-        Height = 21
+        Height = 27
         Top = 48
-        Width = 55
+        Width = 64
         Caption = 'Qtde.:'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clWhite
@@ -12497,9 +12497,9 @@ object fPdv: TfPdv
       end
       object Label18: TLabel
         Left = 48
-        Height = 21
+        Height = 27
         Top = 100
-        Width = 101
+        Width = 110
         Caption = 'Valor Unit.:'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clWhite
@@ -12513,7 +12513,7 @@ object fPdv: TfPdv
       end
       object edPreco1: TMaskEdit
         Left = 176
-        Height = 29
+        Height = 35
         Top = 93
         Width = 112
         Alignment = taRightJustify
@@ -12534,9 +12534,9 @@ object fPdv: TfPdv
       end
       object Label19: TLabel
         Left = 67
-        Height = 21
+        Height = 27
         Top = 141
-        Width = 95
+        Width = 91
         Caption = 'Desconto:'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clWhite
@@ -12550,7 +12550,7 @@ object fPdv: TfPdv
       end
       object edDesconto: TMaskEdit
         Left = 176
-        Height = 29
+        Height = 35
         Top = 136
         Width = 112
         Alignment = taRightJustify
@@ -12571,7 +12571,7 @@ object fPdv: TfPdv
       end
       object cbPercentual: TCheckBox
         Left = 293
-        Height = 17
+        Height = 19
         Top = 140
         Width = 28
         Caption = '%'
@@ -12653,9 +12653,9 @@ object fPdv: TfPdv
       end
       object Label20: TLabel
         Left = 72
-        Height = 21
+        Height = 22
         Top = 72
-        Width = 282
+        Width = 276
         Caption = 'PRODUTO NÃO LOCALIZADO '
         Font.CharSet = ANSI_CHARSET
         Font.Height = -19
@@ -12668,7 +12668,7 @@ object fPdv: TfPdv
       end
       object edProdNao: TEdit
         Left = 65
-        Height = 13
+        Height = 15
         Top = 107
         Width = 80
         BorderStyle = bsNone
