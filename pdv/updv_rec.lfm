@@ -11,7 +11,7 @@ object fPDV_Rec: TfPDV_Rec
   OnShow = FormShow
   PopupMenu = PopupMenu1
   Position = poScreenCenter
-  LCLVersion = '2.2.4.0'
+  LCLVersion = '3.4.0.0'
   object GroupBox1: TGroupBox
     Left = 0
     Height = 584
@@ -39,6 +39,7 @@ object fPDV_Rec: TfPDV_Rec
       Font.Pitch = fpVariable
       Font.Quality = fqDraft
       Font.Style = [fsBold]
+      ParentBackground = False
       ParentColor = False
       ParentFont = False
       TabOrder = 3
@@ -48,6 +49,7 @@ object fPDV_Rec: TfPDV_Rec
         Top = 18
         Width = 350
         Enabled = False
+        EnableSets = False
         Font.CharSet = ANSI_CHARSET
         Font.Height = -17
         Font.Name = 'Tahoma'
@@ -66,6 +68,7 @@ object fPDV_Rec: TfPDV_Rec
         Top = 18
         Width = 248
         Enabled = False
+        EnableSets = False
         Font.CharSet = ANSI_CHARSET
         Font.Height = -17
         Font.Name = 'Tahoma'
@@ -137,6 +140,7 @@ object fPDV_Rec: TfPDV_Rec
         Top = 216
         Width = 112
         Alignment = taRightJustify
+        EnableSets = False
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
         Font.Name = 'Tahoma'
@@ -158,6 +162,7 @@ object fPDV_Rec: TfPDV_Rec
         Top = 80
         Width = 112
         Alignment = taRightJustify
+        EnableSets = False
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
         Font.Name = 'Tahoma'
@@ -193,6 +198,7 @@ object fPDV_Rec: TfPDV_Rec
         Top = 43
         Width = 112
         Alignment = taRightJustify
+        EnableSets = False
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
         Font.Name = 'Tahoma'
@@ -239,6 +245,7 @@ object fPDV_Rec: TfPDV_Rec
         Anchors = [akTop, akLeft, akRight]
         Color = clGradientInactiveCaption
         Enabled = False
+        EnableSets = False
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
         Font.Name = 'Tahoma'
@@ -287,7 +294,7 @@ object fPDV_Rec: TfPDV_Rec
         Left = 264
         Height = 19
         Top = 40
-        Width = 84
+        Width = 82
         Action = acDescontoPercentual
         TabOrder = 4
       end
@@ -299,6 +306,7 @@ object fPDV_Rec: TfPDV_Rec
         Caption = 'Pagamentos'
         ClientHeight = 172
         ClientWidth = 508
+        ParentBackground = False
         TabOrder = 5
         OnClick = GroupBox2Click
         object DBGrid1: TDBGrid
@@ -399,6 +407,7 @@ object fPDV_Rec: TfPDV_Rec
         Width = 112
         Alignment = taRightJustify
         Color = clGradientInactiveCaption
+        EnableSets = False
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
         Font.Name = 'Tahoma'
@@ -420,6 +429,7 @@ object fPDV_Rec: TfPDV_Rec
         Width = 112
         Alignment = taRightJustify
         Color = clGradientActiveCaption
+        EnableSets = False
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
         Font.Name = 'Tahoma'
@@ -455,11 +465,11 @@ object fPDV_Rec: TfPDV_Rec
         Height = 23
         Top = 216
         Width = 30
-        OnChange = edParcelaChange
-        OnKeyPress = edParcelaKeyPress
         PopupMenu = PopupMenu1
         TabOrder = 8
         Text = '1'
+        OnChange = edParcelaChange
+        OnKeyPress = edParcelaKeyPress
       end
       object edValorPago: TMaskEdit
         Left = 104
@@ -468,6 +478,7 @@ object fPDV_Rec: TfPDV_Rec
         Width = 112
         Alignment = taRightJustify
         Color = clGradientInactiveCaption
+        EnableSets = False
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
         Font.Name = 'Tahoma'
@@ -496,6 +507,7 @@ object fPDV_Rec: TfPDV_Rec
         Top = 8
         Width = 112
         Alignment = taRightJustify
+        EnableSets = False
         Font.CharSet = ANSI_CHARSET
         Font.Height = -15
         Font.Name = 'Tahoma'
@@ -515,9 +527,9 @@ object fPDV_Rec: TfPDV_Rec
         Height = 23
         Top = 251
         Width = 112
-        OnKeyPress = edCupomKeyPress
         TabOrder = 11
         Visible = False
+        OnKeyPress = edCupomKeyPress
       end
       object lblCupom: TLabel
         Left = 11
@@ -1042,6 +1054,7 @@ object fPDV_Rec: TfPDV_Rec
         ClientHeight = 258
         ClientWidth = 374
         Color = clInfoText
+        ParentBackground = False
         ParentColor = False
         TabOrder = 12
         Visible = False
@@ -1649,6 +1662,7 @@ object fPDV_Rec: TfPDV_Rec
       ClientHeight = 514
       ClientWidth = 112
       Color = clGradientInactiveCaption
+      ParentBackground = False
       ParentColor = False
       TabOrder = 2
       object BitBtn25: TBitBtn
@@ -2190,6 +2204,7 @@ object fPDV_Rec: TfPDV_Rec
       ClientHeight = 514
       ClientWidth = 120
       Color = clGradientInactiveCaption
+      ParentBackground = False
       ParentColor = False
       TabOrder = 1
       object BitBtn9: TBitBtn
