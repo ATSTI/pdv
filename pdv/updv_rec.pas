@@ -338,7 +338,7 @@ begin
   //vaDesc := StrParaFloat(edDesconto.Text);
   vaTroco := 0.0;
   vaPago := 0.0;
-  vaDesc := StrParaFloat(edVDesconto.Text);
+  vaDesc := StrParaFloat(edDesconto.Text);
   vaResto := StrParaFloat(edRestante.Text);
   if tipo <> 'desconto' then
     vaPago := StrParaFloat(edPagamento.Text);
@@ -444,13 +444,13 @@ procedure TfPDV_Rec.carrega_valores;
 var vcResto,vcDesc,vcTroco, vcPago: Double;
 begin
   vcResto := 0;
-  vcDesc := StrParaFloat(edVDesconto.Text);
+  vcDesc := StrParaFloat(edDesconto.Text);
   vcTroco := 0;
   vcPago := 0;
   if sqPagamento.active then
     sqPagamento.Close;
   sqPagamento.Params.ParamByName('PCODMOV').AsInteger:=vCodMovimento;
-  sqPagamento.Params.ParamByName('PCODCAIXA').AsInteger := StrToInt(dmPdv.idcaixa);
+  sqPagamento.Params.ParamByName('PCODCAIXA').AsInteger := vCaixa_Local;
   sqPagamento.open;
   if (not sqPagamento.IsEmpty) then
   begin
@@ -597,7 +597,7 @@ begin
   insert_pag  += '0, ';
   vlr_Troco := StrParaFloat(edTroco.Text);
   vValorPago := StrParaFloat(edPagamento.Text);
-  vlr_desc := StrParaFloat(edVDesconto.Text);
+  vlr_desc := StrParaFloat(edDesconto.Text);
   //if vValorPago > vResto then
   //begin
   //  vlr_desD := vValorPago - vResto - vlr_desTroco; // so pra ver o Troco
@@ -629,6 +629,7 @@ begin
   //calcula_total('inicio');
   vDesconto := 0;
   edvDesconto.Text:='0,00';
+  edDesconto.Text:='0,00';
   num_doc := num_doc + 1;
   {if vResto > 0.0 then
     edPagamento.Text := edRestante.Text

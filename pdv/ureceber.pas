@@ -309,11 +309,16 @@ begin
 end;
 
 procedure TfRecebimento.enviar_caixa(valor_pago: Double; codRec: Integer);
-
+var insert_pag: String;
+    juros : Double;
 begin
   codRec := codRec + 9000000;
   // enviando o recebimento para o CAIXA
   rv_codForma := dmPdv.busca_generator('GEN_FORMA');
+
+  insert_pag := 'INSERT INTO FORMA_ENTRADA (CODFORMA, CAIXA, COD_VENDA, '+
+     ' FORMA_PGTO, ID_ENTRADA, CAIXINHA, N_DOC, STATE, VALOR_PAGO, DESCONTO, TROCO) VALUES(';
+  {
   if (not sqPagamento.Active) then
     sqPagamento.Open;
   sqPagamento.Insert;
@@ -328,6 +333,24 @@ begin
   sqPagamentoDESCONTO.AsFloat    := 0;
   sqPagamentoTROCO.AsFloat       := StrToFloat(edJuros.Text);
   sqPagamento.ApplyUpdates;
+  dmPdv.sTrans.Commit;}
+
+  insert_pag  += IntToStr(rv_codForma) + ', ';
+  insert_pag  += dmPdv.idcaixa + ', ';
+  insert_pag  += '2, ';
+  insert_pag  += QuotedStr(Copy(lblForma.Caption,1,1)) + ', ';
+  insert_pag  += pCod + ', NULL, ';
+  insert_pag  += QuotedStr(lblForma.Caption) + ', ';
+  insert_pag  += '1, ';
+  juros := strToFloat(edJuros.Text);
+  DecimalSeparator:='.';
+  insert_pag  += FloatToStr(valor_pago) + ', ';
+  insert_pag  += '0 , ';
+
+  insert_pag  += FloatToStr(juros);
+  insert_pag += ')';
+  DecimalSeparator:=',';
+  dmPdv.IbCon.ExecuteDirect(insert_pag);
   dmPdv.sTrans.Commit;
 end;
 

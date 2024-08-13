@@ -128,7 +128,7 @@ var sqlProc: String;
 begin
   sqlProc := 'SELECT m.CODMOVIMENTO, m.CONTROLE, m.DATA_SISTEMA as DATAMOVIMENTO, v.CODVENDA ';
   sqlProc += ' , u.NOMEUSUARIO as  VENDEDOR, c.NOMECLIENTE as CLIENTE ';
-  sqlProc += ' ,CASE WHEN COALESCE(v.VALOR, 0) > 0 THEN (v.VALOR-v.DESCONTO) ELSE ';
+  sqlProc += ' ,CASE WHEN COALESCE(f.VALOR_PAGO, 0) > 0 THEN f.VALOR_PAGO WHEN COALESCE(v.VALOR, 0) > 0 THEN (v.VALOR-v.DESCONTO) ELSE ';
   sqlProc += ' (SELECT SUM(VALTOTAL) FROM MOVIMENTODETALHE MD WHERE MD.CODMOVIMENTO ';
   sqlProc += ' = m.CODMOVIMENTO) END ';
   sqlProc += ' AS VALOR, v.SERIE, m.STATUS ';
@@ -138,7 +138,7 @@ begin
   sqlProc += ' INNER JOIN CLIENTES c ON c.CODCLIENTE = m.CODCLIENTE';
   sqlProc += ' LEFT OUTER JOIN USUARIO u ON m.codVendedor = u.codUsuario';
   sqlProc += ' LEFT OUTER JOIN VENDA v ON v.CODMOVIMENTO = m.CODMOVIMENTO ';
-  sqlProc += ' inner join forma_entrada f on (m.codmovimento = f.id_entrada)';
+  sqlProc += ' LEFT OUTER join forma_entrada f on (m.codmovimento = f.id_entrada and f.state = 1)';
   Case rgStatus.ItemIndex of
     0 : sqlProc += ' WHERE m.STATUS IN (0,1) ';
     1 : sqlProc += ' WHERE m.STATUS = 1 ';

@@ -8,7 +8,7 @@
       <Unit0>
         <Filename Value="prjPDV.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="12"/>
         <TopLine Value="27"/>
         <CursorPos X="97" Y="28"/>
         <UsageCount Value="206"/>
@@ -101,9 +101,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uMovimentoProc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="385"/>
-        <CursorPos X="3" Y="405"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="127"/>
+        <CursorPos X="52" Y="141"/>
         <UsageCount Value="200"/>
       </Unit7>
       <Unit8>
@@ -142,7 +142,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uLogin"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="10"/>
         <TopLine Value="89"/>
         <CursorPos Y="99"/>
         <UsageCount Value="217"/>
@@ -216,7 +216,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uNfce"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="14"/>
         <TopLine Value="597"/>
         <CursorPos Y="609"/>
         <UsageCount Value="200"/>
@@ -240,7 +240,7 @@
         <ComponentName Value="fAbrirCaixa"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="15"/>
         <TopLine Value="158"/>
         <CursorPos X="3" Y="143"/>
         <UsageCount Value="269"/>
@@ -251,9 +251,9 @@
         <ComponentName Value="fSangria"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="285"/>
-        <CursorPos X="35" Y="293"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="323"/>
+        <CursorPos X="21" Y="331"/>
         <UsageCount Value="263"/>
       </Unit20>
       <Unit21>
@@ -292,7 +292,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uAbrirCaixa2"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="11"/>
         <TopLine Value="97"/>
         <CursorPos Y="111"/>
         <UsageCount Value="232"/>
@@ -343,10 +343,15 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uReceber"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="361"/>
-        <CursorPos Y="381"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="729"/>
+        <CursorPos X="61" Y="750"/>
         <UsageCount Value="200"/>
+        <Bookmarks Count="1">
+          <Item0 Y="315" ID="1"/>
+        </Bookmarks>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit28>
       <Unit29>
         <Filename Value="..\geral\ufrmStatus.pas"/>
@@ -425,7 +430,7 @@
         <ComponentName Value="fsaldo"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="8"/>
         <TopLine Value="157"/>
         <CursorPos X="49" Y="178"/>
         <UsageCount Value="110"/>
@@ -436,8 +441,8 @@
         <ComponentName Value="fMsgPromo"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="43"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="56"/>
         <CursorPos Y="72"/>
         <UsageCount Value="57"/>
       </Unit37>
@@ -845,15 +850,22 @@
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
-        <Source Value="updv.pas"/>
-        <Line Value="915"/>
+        <Source Value="updv_rec.pas"/>
+        <Line Value="1454"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="updv.pas"/>
-        <Line Value="922"/>
+        <Line Value="916"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="updv.pas"/>
+        <Line Value="923"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
@@ -888,7 +900,7 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="updv.pas"/>
-        <Line Value="2552"/>
+        <Line Value="2553"/>
       </Item>
     </BreakPoints>
     <Watches>

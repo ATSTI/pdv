@@ -12252,7 +12252,7 @@ object fPdv: TfPdv
         Left = 184
         Height = 15
         Top = 40
-        Width = 118
+        Width = 119
         Caption = 'TROCA / DEVOLUÇÃO'
         ParentColor = False
       end
@@ -12384,7 +12384,7 @@ object fPdv: TfPdv
         Left = 21
         Height = 15
         Top = 5
-        Width = 152
+        Width = 153
         Caption = 'PDV Versão : 1.0 - 20/11/2019'
         Font.Color = clWhite
         ParentColor = False
