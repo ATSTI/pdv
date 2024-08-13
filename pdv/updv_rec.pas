@@ -1113,12 +1113,7 @@ begin
         Writeln(Impressora,lFile[i]);
 
     end;
-    Writeln(Impressora, ' ');
-    Writeln(Impressora, ' ');
-    Writeln(Impressora, ' ');
-    Writeln(Impressora, ' ');
-    Writeln(Impressora, ' ');
-    Writeln(Impressora, ' ');
+
 
     // CUPOM PRAZO
     if prazo = 'S' then
@@ -1245,15 +1240,24 @@ begin
           Writeln(Impressora, 'R$ ' + FormatFloat('#,,,0.00',sqPagamentoVALOR_PAGO.AsFloat) +
           ' - ' + RemoveAcento(sqPagamentoN_DOC.AsString));
           sqPagamento.Next;
-        end;
-      end
 
+        end;
+
+      end;
       ////
 
     end;
 
   finally
+
+    Writeln(Impressora, '.');
+    Writeln(Impressora, '.' );
+    Writeln(Impressora, '.');
+    Writeln(Impressora, '.' );
+    Writeln(Impressora, '-' );
     CloseFile(IMPRESSORA);
+
+
     lFile.Free;
   end;
   v_log := 'Log Impressao: ';
@@ -1460,6 +1464,7 @@ begin
   finally
     arquivo.free;
   end;
+
   ACBrPosPrinter1.Desativar;
   ACBrPosPrinter1.LinhasBuffer := dmpdv.imp_LinhasBuffer;
   ACBrPosPrinter1.LinhasEntreCupons := 0;
@@ -1486,9 +1491,11 @@ begin
   // ACBrPosPrinter1.ConfigLogo.FatorY := seLogoFatorY.Value;
   ACBrPosPrinter1.Modelo := TACBrPosPrinterModelo(cbxModeloPosPrinter.ItemIndex);
   ACBrPosPrinter1.Ativar;
-
+  MemoImp.Lines.Add('</corte_total>');
   ACBrPosPrinter1.Buffer.Text := MemoImp.Lines.Text;
+
   ACBrPosPrinter1.Imprimir;
+  ACBrPosPrinter1.CortaPapel := True;
   if (dmPdv.imp_vias = 2) then
   begin
     Sleep(1000);
