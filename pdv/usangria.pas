@@ -190,7 +190,8 @@ begin
     AssignFile(IMPRESSORA, dmPdv.portaIMP);
   end
   else begin
-    AssignFile(IMPRESSORA, dmPdv.path_imp);
+    AssignFile(IMPRESSORA, dmPdv.portaIMP);
+    //AssignFile(IMPRESSORA, dmPdv.path_imp);
   end;
 
   try
@@ -209,22 +210,34 @@ begin
     begin
       Writeln(IMPRESSORA, Copy(sqSangriasN_DOC.AsString,0,dmPdv.tamanhoLinha));
       Writeln(IMPRESSORA, Copy(sqSangriasN_DOC.AsString,dmPdv.tamanhoLinha+1,dmPdv.tamanhoLinha));
+      Writeln(IMPRESSORA, '');
+      Writeln(IMPRESSORA, '');
+      Writeln(IMPRESSORA, '');
+      Writeln(IMPRESSORA, '');
+      Writeln(IMPRESSORA, '');
+      Writeln(IMPRESSORA, '');
+      Writeln(IMPRESSORA, '.');
     end
     else begin
         Writeln(IMPRESSORA,sqSangriasN_DOC.AsString);
     end;
     Writeln(IMPRESSORA, '');
     Writeln(IMPRESSORA, 'Assinatura :');
-    Writeln(IMPRESSORA, '');
-    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '.');
+    Writeln(IMPRESSORA, '.');
+    Writeln(IMPRESSORA, '.');
+    Writeln(IMPRESSORA, '.');
     Writeln(IMPRESSORA, '------------------------------');
     Writeln(IMPRESSORA, '');
     Writeln(IMPRESSORA, '');
     Writeln(IMPRESSORA, '');
     Writeln(IMPRESSORA, '');
-    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '--*-----------*------------*--');
+
   finally
+
     CloseFile(IMPRESSORA);
+
   end;
 end;
 
@@ -237,14 +250,15 @@ begin
     AssignFile(IMPRESSORA, dmPdv.portaIMP);
   end
   else begin
-    AssignFile(IMPRESSORA, dmPdv.path_imp);
+    AssignFile(IMPRESSORA, dmPdv.portaIMP);
+    //AssignFile(IMPRESSORA, dmPdv.path_imp);
   end;
 
   try
     Rewrite(IMPRESSORA);
     //lFile.LoadFromFile('caixa.txt');
     Writeln(IMPRESSORA, 'Reimpressao');
-    Writeln(Impressora, 'Reforço' + ' CAIXA');
+    Writeln(Impressora, 'Reforco' + ' CAIXA');
     Writeln(IMPRESSORA, FormatDateTime('dd/mm/yyyy hh:MM:ss', Now));
     Writeln(IMPRESSORA, '');
     Writeln(Impressora, 'CAIXA : ' + sqReforcoCAIXA.AsString);
@@ -262,14 +276,16 @@ begin
     end;
     Writeln(IMPRESSORA, '');
     Writeln(IMPRESSORA, 'Assinatura :');
-    Writeln(IMPRESSORA, '');
-    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '.');
+    Writeln(IMPRESSORA, '.');
+    Writeln(IMPRESSORA, '.');
+    Writeln(IMPRESSORA, '.');
     Writeln(IMPRESSORA, '------------------------------');
     Writeln(IMPRESSORA, '');
     Writeln(IMPRESSORA, '');
     Writeln(IMPRESSORA, '');
     Writeln(IMPRESSORA, '');
-    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '--*-----------*------------*--');
   finally
     CloseFile(IMPRESSORA);
   end;
