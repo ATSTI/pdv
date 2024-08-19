@@ -1,7 +1,7 @@
 object fPDV_Rec: TfPDV_Rec
   Left = 547
   Height = 584
-  Top = 101
+  Top = 74
   Width = 776
   Caption = 'Frente De caixa'
   ClientHeight = 584
@@ -1047,9 +1047,9 @@ object fPDV_Rec: TfPDV_Rec
         Visible = False
       end
       object pnCartoes: TPanel
-        Left = 40
+        Left = 16
         Height = 258
-        Top = 240
+        Top = 216
         Width = 374
         ClientHeight = 258
         ClientWidth = 374
@@ -1651,6 +1651,18 @@ object fPDV_Rec: TfPDV_Rec
         Width = 9
         Caption = '...'
         ParentColor = False
+      end
+      object MemoImp: TMemo
+        Left = 13
+        Height = 136
+        Top = 304
+        Width = 523
+        Lines.Strings = (
+          'MemoImp'
+        )
+        ReadOnly = True
+        TabOrder = 14
+        Visible = False
       end
     end
     object Panel3: TPanel
@@ -3453,18 +3465,6 @@ object fPDV_Rec: TfPDV_Rec
         Caption = 'BitBtn16'
         TabOrder = 4
       end
-      object MemoImp: TMemo
-        Left = -2
-        Height = 81
-        Top = 512
-        Width = 190
-        Lines.Strings = (
-          'MemoImp'
-        )
-        ReadOnly = True
-        TabOrder = 5
-        Visible = False
-      end
       object cbxModeloPosPrinter: TComboBox
         Left = -2
         Height = 23
@@ -3472,7 +3472,7 @@ object fPDV_Rec: TfPDV_Rec
         Width = 189
         ItemHeight = 15
         Style = csDropDownList
-        TabOrder = 6
+        TabOrder = 5
         Visible = False
       end
       object btnCupom: TBitBtn
@@ -3782,7 +3782,7 @@ object fPDV_Rec: TfPDV_Rec
         Layout = blGlyphBottom
         OnClick = btnCupomClick
         ParentFont = False
-        TabOrder = 7
+        TabOrder = 6
       end
       object BitBtn19: TBitBtn
         Left = 16
@@ -4091,7 +4091,7 @@ object fPDV_Rec: TfPDV_Rec
         Layout = blGlyphBottom
         OnClick = BitBtn19Click
         ParentFont = False
-        TabOrder = 8
+        TabOrder = 7
       end
       object BitBtn21: TBitBtn
         Left = 16
@@ -4225,7 +4225,7 @@ object fPDV_Rec: TfPDV_Rec
         Layout = blGlyphBottom
         OnClick = BitBtn19Click
         ParentFont = False
-        TabOrder = 9
+        TabOrder = 8
       end
     end
     object Label2: TLabel

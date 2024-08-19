@@ -12246,6 +12246,7 @@ object fPdv: TfPdv
           'memoImp'
         )
         TabOrder = 3
+        Visible = False
       end
       object Label1: TLabel
         Left = 184
@@ -12443,7 +12444,7 @@ object fPdv: TfPdv
       end
     end
     object pnAltera: TPanel
-      Left = 32
+      Left = 80
       Height = 247
       Top = 216
       Width = 413
@@ -12609,9 +12610,9 @@ object fPdv: TfPdv
       end
     end
     object pnProdutoNaoLocalizado: TPanel
-      Left = 72
+      Left = 56
       Height = 162
-      Top = 208
+      Top = 144
       Width = 409
       ClientHeight = 162
       ClientWidth = 409
