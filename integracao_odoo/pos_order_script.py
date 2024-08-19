@@ -341,9 +341,11 @@ class IntegracaoOdoo:
                 codpro = pr['codpro'].strip()
             if not os.path.exists('promocao'):
                 os.makedirs('promocao')
-            promo_jpg = f"promocao/{codpro}.jpg"
-            promo_txt = f"promocao/{codpro}.txt"
+            promo_jpg = f"promocao\{codpro}.jpg"
+            promo_txt = f"promocao\{codpro}.txt"
+            img_sql = 'Null'
             if pr['promocao_jpg']:
+                img_sql = promo_jpg
                 if not os.path.exists(promo_jpg):
                     imagem = pr['promocao_jpg']
                     imagem_dec = base64.b64decode(imagem)
@@ -353,15 +355,13 @@ class IntegracaoOdoo:
                 if os.path.exists(promo_jpg):
                     os.remove(promo_jpg)
             if pr['promocao_txt']:
+                img_sql = promo_txt
                 if not os.path.exists(promo_txt):
                     with open(promo_txt, 'w') as f:
                         f.write(pr['promocao_txt'])
             else:
                 if os.path.exists(promo_txt):
                     os.remove(promo_txt)
-
-
-
 
             #sqlp = 'select codproduto from produtos where codpro like \'%s\'' %(codp+'%')
             if codbarra:
@@ -415,9 +415,10 @@ class IntegracaoOdoo:
                 codproduto = pr['codproduto'] * 10
                 insere = 'INSERT INTO PRODUTOS (UNIDADEMEDIDA, PRODUTO, PRECOMEDIO, CODPRO,\
                           TIPOPRECOVENDA, ORIGEM, NCM, VALORUNITARIOATUAL, VALOR_PRAZO, TIPO, RATEIO, \
-                          QTDEATACADO, PRECOATACADO, DATACADASTRO, CODPRODUTO'
+                          QTDEATACADO, PRECOATACADO, DATACADASTRO, CODPRODUTO, FOTOPRODUTO'
                 if codbarra:
                     insere += ', COD_BARRA'
+
                 insere += ') VALUES ('
                 insere += '\'' + un + '\''
                 insere += ', \'' + produto + '\''
@@ -434,6 +435,7 @@ class IntegracaoOdoo:
                 insere += ',' + precoatacado
                 insere += ', \'' + data_fb + '\''
                 insere += ',' + str(codproduto)
+                insere += ',' + img_sql                
                 if codbarra:
                     insere += ', \'' + str(codbarra) + '\''
                 insere += ')'
@@ -471,6 +473,7 @@ class IntegracaoOdoo:
                 altera += ', QTDEATACADO = ' + qtdeatacado 
                 altera += ', PRECOATACADO = ' + precoatacado
                 altera += ', DATACADASTRO = \'' + data_fb + '\''
+                altera += ', FOTOPRODUTO = \'' + img_sql + '\''
                 if codbarra:
                     altera += ', COD_BARRA = \'' + str(codbarra) + '\''
                 altera += ' WHERE CODPRO = \'' + str(pr['codpro']) + '\''
