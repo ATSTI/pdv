@@ -11659,6 +11659,16 @@ object fPdv: TfPdv
           OnClick = BitBtn4Click
           TabOrder = 2
         end
+        object edProduto_copia: TEdit
+          Left = 16
+          Height = 23
+          Hint = 'uso ele pra quando clicar no F5 , ter o item registrado pq no produto excluimos'
+          Top = 48
+          Width = 80
+          TabOrder = 3
+          Text = 'edProduto_copia'
+          Visible = False
+        end
       end
       object pnQtde: TPanel
         Left = 7
