@@ -11,7 +11,7 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
   OnDestroy = FormDestroy
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '2.2.4.0'
+  LCLVersion = '3.4.0.0'
   object Panel1: TPanel
     Left = 0
     Height = 144
@@ -27,8 +27,8 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       Top = 32
       Width = 100
       Caption = 'Consultar Pedido'
-      OnClick = btnConsultaUltimoPedidoClick
       TabOrder = 0
+      OnClick = btnConsultaUltimoPedidoClick
     end
     object Label1: TLabel
       Left = 16
@@ -52,8 +52,8 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       Top = 32
       Width = 100
       Caption = 'Enviar Pedidos'
-      OnClick = btnEnviandoPedidoClick
       TabOrder = 2
+      OnClick = btnEnviandoPedidoClick
     end
     object btnUsuario: TButton
       Left = 322
@@ -61,8 +61,8 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       Top = 32
       Width = 100
       Caption = 'Usuários'
-      OnClick = btnUsuarioClick
       TabOrder = 3
+      OnClick = btnUsuarioClick
     end
     object btnCaixa: TButton
       Left = 960
@@ -70,8 +70,8 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       Top = 32
       Width = 100
       Caption = 'Caixa'
-      OnClick = btnCaixaClick
       TabOrder = 4
+      OnClick = btnCaixaClick
     end
     object edEste: TEdit
       Left = 177
@@ -108,7 +108,7 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       Left = 640
       Height = 15
       Top = 104
-      Width = 52
+      Width = 54
       Caption = 'Tentativas'
       ParentColor = False
     end
@@ -198,8 +198,8 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       Top = 32
       Width = 100
       Caption = 'Produtos'
-      OnClick = btnProdutoClick
       TabOrder = 9
+      OnClick = btnProdutoClick
     end
     object btnCliente: TButton
       Left = 628
@@ -207,8 +207,8 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       Top = 32
       Width = 100
       Caption = 'Clientes'
-      OnClick = btnClienteClick
       TabOrder = 10
+      OnClick = btnClienteClick
     end
     object btnConecta: TBitBtn
       Left = 864
@@ -232,8 +232,8 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       Top = 32
       Width = 100
       Caption = 'Sangria/Rec'
-      OnClick = btnSangria_RecClick
       TabOrder = 13
+      OnClick = btnSangria_RecClick
     end
     object btnConsultaUltimoPedidoGeral: TButton
       Left = 2
@@ -241,8 +241,8 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       Top = 32
       Width = 118
       Caption = 'Cons. Pedido Geral'
-      OnClick = btnConsultaUltimoPedidoGeralClick
       TabOrder = 14
+      OnClick = btnConsultaUltimoPedidoGeralClick
     end
     object btnDevolucao: TButton
       Left = 424
@@ -250,8 +250,8 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       Top = 32
       Width = 100
       Caption = 'Devolução'
-      OnClick = btnDevolucaoClick
       TabOrder = 15
+      OnClick = btnDevolucaoClick
     end
     object Button1: TButton
       Left = 32
@@ -259,9 +259,9 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       Top = 4
       Width = 75
       Caption = 'Button1'
-      OnClick = Button1Click
       TabOrder = 16
       Visible = False
+      OnClick = Button1Click
     end
     object btnRecebimento: TButton
       Left = 728
@@ -269,8 +269,8 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       Top = 32
       Width = 100
       Caption = 'Recebimento'
-      OnClick = btnRecebimentoClick
       TabOrder = 17
+      OnClick = btnRecebimentoClick
     end
     object btnTest: TButton
       Left = 560
@@ -278,9 +278,9 @@ object fIntegracaoOdoo: TfIntegracaoOdoo
       Top = 120
       Width = 75
       Caption = 'btnTeste'
-      OnClick = btnTestClick
       TabOrder = 18
       Visible = False
+      OnClick = btnTestClick
     end
   end
   object Panel2: TPanel
