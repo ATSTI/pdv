@@ -52,6 +52,7 @@ type
     Label5: TLabel;
     Label6: TLabel;
     Label7: TLabel;
+    lblGrava: TLabel;
     lblForma: TLabel;
     Memo1: TMemo;
     memoResult: TMemo;
@@ -350,8 +351,12 @@ begin
   insert_pag  += FloatToStr(juros);
   insert_pag += ')';
   DecimalSeparator:=',';
-  dmPdv.IbCon.ExecuteDirect(insert_pag);
-  dmPdv.sTrans.Commit;
+  try
+    dmPdv.IbCon.ExecuteDirect(insert_pag);
+    dmPdv.sTrans.Commit;
+  except
+    ShowMessage('Verifique se baixou no ODOO.');
+  end;
 end;
 
 function TfRecebimento.RemoveAcento(Str: string): string;
@@ -626,6 +631,7 @@ var
  dataRec: string;
  vtotalR: Double;
 begin
+  lblGrava.Caption := 'Iniciando gravação';
   if (edCodCliente.Text = '') then
   begin
     ShowMessage('Informe o Código do Cliente.');
@@ -660,15 +666,17 @@ begin
   vlr_pg := StrToFloat(edPago.Text);
   if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
   begin
-    try
+    lblGrava.Caption := 'if usoSistema = ODOO';
+    //try
       enviar_caixa(vlr_pg,StrToInt(pCod)); // o codigo que foi selecionado no grid
-    except
-      ShowMessage('Verifique se baixou no ODOO.');
-    end;
+    //except
+    //  ShowMessage('Verifique se baixou no ODOO.');
+    //end;
 
     // IMPRESSAO
 
     try
+    lblGrava.Caption := 'if usoSistema = ODOO - imprimindo';
     v_log := 'Log de impressão - ';
     totalP := 0;
     totalD := 0;
