@@ -1047,9 +1047,9 @@ object fPDV_Rec: TfPDV_Rec
         Visible = False
       end
       object pnCartoes: TPanel
-        Left = 16
+        Left = 24
         Height = 258
-        Top = 216
+        Top = 352
         Width = 374
         ClientHeight = 258
         ClientWidth = 374
@@ -1653,9 +1653,9 @@ object fPDV_Rec: TfPDV_Rec
         ParentColor = False
       end
       object MemoImp: TMemo
-        Left = 13
+        Left = 16
         Height = 136
-        Top = 304
+        Top = 360
         Width = 523
         Lines.Strings = (
           'MemoImp'

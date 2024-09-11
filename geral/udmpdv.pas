@@ -1097,6 +1097,8 @@ type
     imp_ColunaFonteNormal: Integer;
     imp_larguraBobina: Integer;
     imp_desconto_item: String;
+    CobraJuros : String;
+    TempoPromocao : Integer;
     imp_numcopias: Integer;
     function executaSql(strSql: String): Boolean;
     procedure executaDSQL(strDSQL: String); // criei pra executar o atualiza Bd
@@ -1262,6 +1264,9 @@ begin
       imp_LinhasBuffer:= conf.ReadInteger('IMPRESSORA', 'LinhasBuffer', 10);
       imp_larguraBobina:= conf.ReadInteger('IMPRESSORA', 'LarguraBobina', 10);
       imp_numcopias:= conf.ReadInteger('IMPRESSORA', 'NumCopiasDanfe', 1);
+      CobraJuros := conf.ReadString('IMPRESSORA', 'CobraJuros', 'Nao');
+      TempoPromocao := conf.ReadInteger('IMPRESSORA', 'TempoPromocao',10);
+      //CobraJuros=Nao
       //snh:= EncodeStringBase64(snh); // Ver a senha Encryptada
       snh:= DecodeStringBase64(snh);
       IBCon.Password := snh;

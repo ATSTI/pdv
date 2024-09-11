@@ -359,10 +359,10 @@ object fAbrirCaixa: TfAbrirCaixa
       SpaceChar = '_'
     end
     object Memo1: TMemo
-      Left = 272
-      Height = 90
-      Top = 64
-      Width = 150
+      Left = 136
+      Height = 62
+      Top = 152
+      Width = 171
       Lines.Strings = (
         'Memo1'
       )

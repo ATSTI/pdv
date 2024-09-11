@@ -22,15 +22,15 @@ object fNfce: TfNfce
     Visible = False
     object Label10: TLabel
       Left = 45
-      Height = 13
+      Height = 15
       Top = 17
-      Width = 119
+      Width = 124
       Caption = 'Motivo Cancelamento :'
       ParentColor = False
     end
     object edCancelamentoMotivo: TEdit
       Left = 27
-      Height = 21
+      Height = 23
       Top = 50
       Width = 229
       TabOrder = 0
@@ -46,7 +46,7 @@ object fNfce: TfNfce
     end
     object lblCancelamento: TLabel
       Left = 9
-      Height = 13
+      Height = 15
       Top = 139
       Width = 6
       Caption = '..'
@@ -63,7 +63,7 @@ object fNfce: TfNfce
     end
     object lblCancelamento2: TLabel
       Left = 6
-      Height = 13
+      Height = 15
       Top = 156
       Width = 9
       Caption = '...'
@@ -72,7 +72,7 @@ object fNfce: TfNfce
   end
   object edCPF: TMaskEdit
     Left = 120
-    Height = 29
+    Height = 34
     Top = 28
     Width = 224
     EnableSets = False
@@ -91,10 +91,10 @@ object fNfce: TfNfce
   end
   object edCertificado: TLabeledEdit
     Left = 362
-    Height = 21
+    Height = 23
     Top = 28
     Width = 180
-    EditLabel.Height = 13
+    EditLabel.Height = 15
     EditLabel.Width = 180
     EditLabel.Caption = 'Certificado'
     EditLabel.ParentColor = False
@@ -142,10 +142,10 @@ object fNfce: TfNfce
   end
   object edNFce: TLabeledEdit
     Left = 16
-    Height = 21
+    Height = 23
     Top = 29
     Width = 72
-    EditLabel.Height = 13
+    EditLabel.Height = 15
     EditLabel.Width = 72
     EditLabel.Caption = 'Num. NFe'
     EditLabel.ParentColor = False
@@ -166,7 +166,7 @@ object fNfce: TfNfce
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 8
-    ClientHeight = 19
+    ClientHeight = 17
     ClientWidth = 612
     Columns = 8
     Items.Strings = (
@@ -184,7 +184,7 @@ object fNfce: TfNfce
   end
   object lblProtocolo: TLabel
     Left = 128
-    Height = 13
+    Height = 15
     Top = 59
     Width = 3
     Caption = '.'
@@ -195,12 +195,12 @@ object fNfce: TfNfce
     Height = 400
     Top = 80
     Width = 646
-    ActivePage = TabSheet4
-    TabIndex = 0
+    ActivePage = TabSheet5
+    TabIndex = 1
     TabOrder = 5
     object TabSheet4: TTabSheet
       Caption = 'NFCe'
-      ClientHeight = 374
+      ClientHeight = 372
       ClientWidth = 638
       object BitBtn3: TBitBtn
         Cursor = crHandPoint
@@ -2876,7 +2876,7 @@ object fNfce: TfNfce
     end
     object TabSheet5: TTabSheet
       Caption = 'Geral'
-      ClientHeight = 374
+      ClientHeight = 372
       ClientWidth = 638
       object Panel1: TPanel
         Left = 72
@@ -2889,7 +2889,7 @@ object fNfce: TfNfce
         Visible = False
         object edAno: TEdit
           Left = 153
-          Height = 21
+          Height = 23
           Top = 15
           Width = 80
           TabOrder = 0
@@ -2897,7 +2897,7 @@ object fNfce: TfNfce
         end
         object edModelo: TEdit
           Left = 153
-          Height = 21
+          Height = 23
           Top = 46
           Width = 80
           TabOrder = 1
@@ -2905,7 +2905,7 @@ object fNfce: TfNfce
         end
         object edSerie: TEdit
           Left = 153
-          Height = 21
+          Height = 23
           Top = 77
           Width = 80
           TabOrder = 2
@@ -2913,39 +2913,39 @@ object fNfce: TfNfce
         end
         object edNumIni: TEdit
           Left = 153
-          Height = 21
+          Height = 23
           Top = 108
           Width = 80
           TabOrder = 3
         end
         object edNumFim: TEdit
           Left = 153
-          Height = 21
+          Height = 23
           Top = 138
           Width = 80
           TabOrder = 4
         end
         object Label1: TLabel
           Left = 120
-          Height = 13
+          Height = 15
           Top = 15
-          Width = 20
+          Width = 22
           Caption = 'Ano'
           ParentColor = False
         end
         object Label5: TLabel
           Left = 101
-          Height = 13
+          Height = 15
           Top = 46
-          Width = 38
+          Width = 41
           Caption = 'Modelo'
           ParentColor = False
         end
         object Label6: TLabel
           Left = 117
-          Height = 13
+          Height = 15
           Top = 77
-          Width = 27
+          Width = 25
           Caption = 'Serie'
           ParentColor = False
         end
@@ -2969,32 +2969,32 @@ object fNfce: TfNfce
         end
         object Label7: TLabel
           Left = 96
-          Height = 13
+          Height = 15
           Top = 108
-          Width = 44
+          Width = 46
           Caption = 'Num. Ini'
           ParentColor = False
         end
         object Label8: TLabel
           Left = 89
-          Height = 13
+          Height = 15
           Top = 138
-          Width = 48
+          Width = 53
           Caption = 'Num. Fim'
           ParentColor = False
         end
         object edJustificativa: TEdit
           Left = 153
-          Height = 21
+          Height = 23
           Top = 166
           Width = 279
           TabOrder = 7
         end
         object Label9: TLabel
           Left = 81
-          Height = 13
+          Height = 15
           Top = 166
-          Width = 63
+          Width = 61
           Caption = 'Justificativa'
           ParentColor = False
         end
@@ -3167,7 +3167,7 @@ object fNfce: TfNfce
         TabOrder = 4
         object TabSheet1: TTabSheet
           Caption = 'Retorno'
-          ClientHeight = 254
+          ClientHeight = 252
           ClientWidth = 633
           object MemoResp: TMemo
             Left = 0
@@ -3179,7 +3179,7 @@ object fNfce: TfNfce
         end
         object TabSheet2: TTabSheet
           Caption = 'Envio'
-          ClientHeight = 254
+          ClientHeight = 252
           ClientWidth = 633
           object MemoDados: TMemo
             Left = 8
@@ -3191,86 +3191,86 @@ object fNfce: TfNfce
         end
         object TabSheet3: TTabSheet
           Caption = 'Configurações'
-          ClientHeight = 254
+          ClientHeight = 252
           ClientWidth = 633
           object cbSSLLib: TComboBox
             Left = 83
-            Height = 21
+            Height = 23
             Top = 22
             Width = 172
-            ItemHeight = 13
+            ItemHeight = 15
             TabOrder = 0
             Text = 'cbSSLLib'
             OnChange = cbSSLLibChange
           end
           object cbCryptLib: TComboBox
             Left = 83
-            Height = 21
+            Height = 23
             Top = 52
             Width = 172
-            ItemHeight = 13
+            ItemHeight = 15
             TabOrder = 1
             Text = 'cbCryptLib'
             OnChange = cbCryptLibChange
           end
           object cbXmlSignLib: TComboBox
             Left = 83
-            Height = 21
+            Height = 23
             Top = 112
             Width = 172
-            ItemHeight = 13
+            ItemHeight = 15
             TabOrder = 2
             Text = 'cbXmlSignLib'
             OnChange = cbXmlSignLibChange
           end
           object cbHttpLib: TComboBox
             Left = 83
-            Height = 21
+            Height = 23
             Top = 82
             Width = 172
-            ItemHeight = 13
+            ItemHeight = 15
             TabOrder = 3
             Text = 'cbHttpLib'
             OnChange = cbHttpLibChange
           end
           object lblcbSSLLib: TLabel
             Left = 34
-            Height = 13
+            Height = 15
             Top = 24
-            Width = 39
+            Width = 40
             Caption = 'SSL Lib.'
             ParentColor = False
           end
           object lblcbCryptLib: TLabel
             Left = 20
-            Height = 13
+            Height = 15
             Top = 48
-            Width = 50
+            Width = 54
             Caption = 'Crypt. Lib.'
             ParentColor = False
           end
           object Label2: TLabel
             Left = 5
-            Height = 13
+            Height = 15
             Top = 112
-            Width = 65
+            Width = 69
             Caption = 'Xml Sign Lib.'
             ParentColor = False
           end
           object Label3: TLabel
             Left = 28
-            Height = 13
+            Height = 15
             Top = 82
-            Width = 43
+            Width = 46
             Caption = 'Http Lib.'
             ParentColor = False
           end
           object edtCaminho: TLabeledEdit
             Left = 320
-            Height = 21
+            Height = 23
             Top = 32
             Width = 200
-            EditLabel.Height = 13
+            EditLabel.Height = 15
             EditLabel.Width = 200
             EditLabel.Caption = 'Certificado (Caminho PFX)'
             EditLabel.ParentColor = False
@@ -3278,10 +3278,10 @@ object fNfce: TfNfce
           end
           object edtSenha: TLabeledEdit
             Left = 320
-            Height = 21
+            Height = 23
             Top = 72
             Width = 200
-            EditLabel.Height = 13
+            EditLabel.Height = 15
             EditLabel.Width = 200
             EditLabel.Caption = 'Senha'
             EditLabel.ParentColor = False
@@ -3289,10 +3289,10 @@ object fNfce: TfNfce
           end
           object edtNumSerie: TLabeledEdit
             Left = 320
-            Height = 21
+            Height = 23
             Top = 112
             Width = 200
-            EditLabel.Height = 13
+            EditLabel.Height = 15
             EditLabel.Width = 200
             EditLabel.Caption = 'Série'
             EditLabel.ParentColor = False
@@ -3309,17 +3309,17 @@ object fNfce: TfNfce
           end
           object cbxModeloPosPrinter: TComboBox
             Left = 320
-            Height = 21
+            Height = 23
             Top = 160
             Width = 172
-            ItemHeight = 13
+            ItemHeight = 15
             TabOrder = 8
           end
           object Label4: TLabel
             Left = 320
-            Height = 13
+            Height = 15
             Top = 144
-            Width = 50
+            Width = 55
             Caption = 'Mod. Imp.'
             ParentColor = False
           end
@@ -3378,7 +3378,7 @@ object fNfce: TfNfce
             ChildSizing.ShrinkVertical = crsScaleChilds
             ChildSizing.Layout = cclLeftToRightThenTopToBottom
             ChildSizing.ControlsPerLine = 2
-            ClientHeight = 21
+            ClientHeight = 19
             ClientWidth = 181
             Columns = 2
             Items.Strings = (
@@ -3389,10 +3389,10 @@ object fNfce: TfNfce
           end
           object cbSSLType: TComboBox
             Left = 83
-            Height = 21
+            Height = 23
             Top = 140
             Width = 172
-            ItemHeight = 13
+            ItemHeight = 15
             Items.Strings = (
               'LT_all'
               'LT_SSLv2'
@@ -3408,9 +3408,9 @@ object fNfce: TfNfce
           end
           object Label11: TLabel
             Left = 24
-            Height = 13
+            Height = 15
             Top = 139
-            Width = 46
+            Width = 45
             Caption = 'SSL Type'
             ParentColor = False
           end
@@ -3467,7 +3467,7 @@ object fNfce: TfNfce
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 2
-    ClientHeight = 22
+    ClientHeight = 20
     ClientWidth = 230
     Columns = 2
     ItemIndex = 0
@@ -3493,8 +3493,8 @@ object fNfce: TfNfce
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 20
-    Top = 488
+    Height = 23
+    Top = 485
     Width = 687
     Panels = <    
       item
@@ -3507,9 +3507,9 @@ object fNfce: TfNfce
   end
   object chkmudarnumero: TCheckBox
     Left = 16
-    Height = 17
+    Height = 19
     Top = 55
-    Width = 97
+    Width = 98
     Caption = 'Mudar número'
     TabOrder = 10
     OnChange = chkmudarnumeroChange
@@ -3554,7 +3554,7 @@ object fNfce: TfNfce
   end
   object ACBrNFeDANFeESCPOS1: TACBrNFeDANFeESCPOS
     MostraSetup = True
-    Sistema = 'Projeto ACBr - www.projetoacbr.com.br'
+    Sistema = '...............'
     MargemInferior = 0.2
     MargemSuperior = 0.2
     MargemEsquerda = 0.2
@@ -3608,7 +3608,7 @@ object fNfce: TfNfce
     Top = 16
   end
   object ACBrSATExtratoESCPOS1: TACBrSATExtratoESCPOS
-    Sistema = 'Projeto ACBr - www.projetoacbr.com.br'
+    Sistema = '..................................'
     MargemInferior = 0.8
     MargemSuperior = 0.8
     MargemEsquerda = 0.6

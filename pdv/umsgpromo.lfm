@@ -4,8 +4,8 @@ object fMsgPromo: TfMsgPromo
   Top = 124
   Width = 644
   Caption = 'Promoção'
-  ClientHeight = 0
-  ClientWidth = 0
+  ClientHeight = 504
+  ClientWidth = 644
   OnShow = FormShow
   LCLVersion = '3.4.0.0'
   object Label1: TLabel

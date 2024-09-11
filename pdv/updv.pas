@@ -2265,14 +2265,16 @@ begin
   lFile := TStringList.Create;
   //Aqui uso o ACBR pra imprimir , entao nao precisa disto 10/11/2020
 
-  if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
+  if ((dmPdv.CupomImp = 'BARRA') or (dmPdv.CupomImp = 'DB')) then
   begin
     //v_log := 'Log portaImp - ' + dmPdv.portaIMP;
-    AssignFile(IMPRESSORA, dmPdv.portaIMP);
+    //AssignFile(IMPRESSORA, dmPdv.portaIMP);
+    AssignFile(IMPRESSORA, dmPdv.path_imp);
   end
   else begin
     //v_log := 'Log path_imp - ' + dmPdv.path_imp;
-    AssignFile(IMPRESSORA, dmPdv.path_imp);
+    //AssignFile(IMPRESSORA, dmPdv.path_imp);
+    AssignFile(IMPRESSORA, dmPdv.portaIMP);
   end;
 
 
@@ -2366,7 +2368,7 @@ begin
         barcode := IntToStr(codMov);
         barcode := '3' + ch_cp + AddChar('0', barcode, 7);
         barcode := barcode + uutil.EAN13(barcode);
-        Writeln(Impressora, '<code128>' + barcode + '</code128>');//Motivo
+        Writeln(Impressora, '<ean13>' + barcode + '</ean13>');//Motivo
         //Writeln(Impressora, barcode)
       end
       else if linhaTxt = '2' then
@@ -2393,15 +2395,15 @@ var arquivo: TStringList;
 begin
   arquivo := TStringList.Create();
   try
-    //if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
-    //begin
+    if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
+    begin
       //v_log := 'Log portaImp - ' + dmPdv.portaIMP;
-    //  arquivo.LoadFromFile(dmpdv.portaIMP);
-    //end
-    //else begin
+      arquivo.LoadFromFile(dmpdv.portaIMP);
+    end
+    else begin
       //v_log := 'Log path_imp - ' + dmPdv.path_imp;
       arquivo.LoadFromFile(dmpdv.path_imp);
-    //end;
+    end;
     MemoImp.Clear;
     MemoImp.Text := arquivo.Text;
   finally

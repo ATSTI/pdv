@@ -44,11 +44,14 @@ end;
 
 procedure TfMsgPromo.FormShow(Sender: TObject);
 var
-  minutos_ate_fechar: byte;
-  promo : string;
+  segundos_ate_fechar: byte;
+  promo , onde : string;
   Arquivo : TStringList;
+  pTempo : integer;
 begin
-  promo := dmPdv.sqBusca.FieldByName('FOTOPRODUTO').AsString;
+  onde := dmPdv.path_exe ;
+  pTempo:= dmPdv.TempoPromocao;
+  promo := onde + 'integracao_odoo\'+ dmPdv.sqBusca.FieldByName('FOTOPRODUTO').AsString;
 
   if pos('txt',promo)>0 then
   begin
@@ -64,10 +67,10 @@ begin
     Image1.Picture.LoadFromFile(promo);
   end;
 
-  Label1.Caption:= 'Promoção Produto  = ' + fProdutoProc.Produto ;
-  minutos_ate_fechar := 10; //
+  Label1.Caption:= fProdutoProc.Produto ;
+  segundos_ate_fechar := pTempo;
   TimerMSG.Enabled := False;
-  TimerMSG.Interval := (1000 * 1) * minutos_ate_fechar;
+  TimerMSG.Interval := (1000 * 1) * segundos_ate_fechar;
   TimerMSG.Enabled := True;
 
 end;

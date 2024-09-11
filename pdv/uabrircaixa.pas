@@ -243,12 +243,16 @@ begin
 
     //TODO  Imprimindo TODOS tipos de Sangria
 
-    sqlP := 'select FORMA_PGTO, N_DOC,  sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
+    sqlP := 'select FORMA_PGTO, N_DOC,sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
     sqlP += ' where CAIXA = ' + cx_m;
+    sqlP += ' and STATE = 1 and FORMA_PGTO IN (' + QuotedStr('S') + ', ' +
+      QuotedStr('R') + ')';//Sangrias
+    {
     sqlP += ' and STATE = 1 and FORMA_PGTO IN (' + QuotedStr('S') + ', ' +
       QuotedStr('R') + ', ' + QuotedStr('F') + ', ' + QuotedStr('U') + ', ' +
       QuotedStr('V') + ', ' + QuotedStr('T') + ')';//Sangrias
     sqlP += ' and cod_venda = 1  ';//1 para Sangria, >1 para Outros
+    }
     sqlP += ' GROUP BY FORMA_PGTO, N_DOC';
     if (dmPdv.sqBusca.Active) then
       dmPdv.sqBusca.Close;
@@ -278,7 +282,7 @@ begin
     end;
 
 
-    Writeln(IMPRESSORA, 'Reforco        - ' + edReforco.Text);
+    Writeln(IMPRESSORA, 'Total Reforco        - ' + edReforco.Text);
     Writeln(IMPRESSORA, '---------------------------');
     Writeln(IMPRESSORA, 'Saldo Caixa    - ' + edTCaixa.Text);
     Writeln(IMPRESSORA, '');
@@ -328,13 +332,33 @@ begin
     Writeln(IMPRESSORA, 'Cheque         - ' + edCheque.Text);
     Writeln(IMPRESSORA, 'PIX            - ' + edPix.Text);
     if (edFaturado.Text <> '0,00') then
-      Writeln(IMPRESSORA, 'Faturado       - ' + edFaturado.Text);
-
+    begin
+    Writeln(IMPRESSORA, 'Faturado       - ' + edFaturado.Text);
+    end;
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
     //Writeln(IMPRESSORA, 'Total Liquido  - ' + edTLiquido.Text);
     Writeln(IMPRESSORA, '---------------------------');
     Writeln(IMPRESSORA, 'Total Vendas   - ' + edTBruto.Text);
     //Writeln(IMPRESSORA, 'Saldo Abertura  - ' + edTLiquido.Text);
     Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '................')
   finally
     CloseFile(IMPRESSORA);
   end;

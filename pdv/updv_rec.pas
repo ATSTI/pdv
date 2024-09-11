@@ -959,7 +959,7 @@ begin
   // leio um arquivo txt e imprimo
   v_log := 'Log de impressão - criando lFile ';
   lFile := TStringList.Create;
-  if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
+  if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then   //manoel
   begin
     v_log := 'Log portaImp - ' + dmPdv.portaIMP;
     AssignFile(IMPRESSORA, dmPdv.portaIMP);
@@ -1890,11 +1890,7 @@ begin
   if Key = #13 then
   begin
     Key := #0;
-    if lblForma.Caption = '4-Faturar' then
-    begin
-      edParcela.SetFocus;
-      exit;
-    end;
+
     if lblForma.Caption = '9-Devol./Troca' then
     begin
       if (imgTroca.Visible = False) then
@@ -1918,6 +1914,12 @@ begin
       registra_valores(strParaFloat(edPagamento.Text));
       carrega_valores;
     end;
+    if lblForma.Caption = '4-Faturar' then
+    begin
+      edParcela.SetFocus;
+      exit;
+    end;
+
     if lblForma.Caption = '9-Devol./Troca' then
     begin
       edCupom.Text:='';
@@ -1955,6 +1957,7 @@ begin
         end;
       end;
       registra_valores(strParaFloat(edPagamento.Text));
+      edPagamento.SetFocus;
     end;
   end;
 end;
@@ -2159,7 +2162,7 @@ begin
   begin
     encerra_venda();
   end;
-  if (dmPdv.CupomImp = 'Texto') then
+  if (dmPdv.CupomImp = 'Texto') then   //manoel  if (dmPdv.CupomImp = 'Texto') then
   begin
     imprimirTxt();
     if (dmPdv.imp_vias = 2) then

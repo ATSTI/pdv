@@ -52,6 +52,8 @@ type
     Label5: TLabel;
     Label6: TLabel;
     Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
     lblForma: TLabel;
     Memo1: TMemo;
     memoResult: TMemo;
@@ -269,7 +271,7 @@ begin
 end;
 
 procedure TfRecebimento.StringGrid1Click(Sender: TObject);
-var a , c: string;
+var a , c , f: string;
     b , d: integer;
     vt : Double;
 begin
@@ -279,7 +281,7 @@ begin
 
    d:= StringGrid1.Row;
    c:= StringGrid1.Cells[4,d];
-
+  // f:= StringGrid1.Cells[1,d];
 
    vt:=(StrToFloat(a) + StrToFloat(c)) ;
 
@@ -287,6 +289,9 @@ begin
    //pCod := (StringGrid1.Cells[StringGrid1.Col, StringGrid1.Row]);
    pCod := StringGrid1.Cells[0,d];
    Label3.Caption := pCod ;
+   f := StringGrid1.Cells[1,d];
+   Label8.Caption := f ;
+
   // edJuros.Text:= (StringGrid1.Cells[StringGrid1.Col, StringGrid1.Row]);
 end;
 
@@ -400,6 +405,7 @@ var
   jItemB : TJSONData;
   a , b , c , d ,e ,f , g ,h ,v,vTotal: String;
   object_name, field_name, field_value, object_type, object_items: String;
+  pJuros : string;
 begin
   if (edCodCliente.Text = '') then
   begin
@@ -483,27 +489,38 @@ begin
 
             end;
 
-          h := '0';
-          total_odoo := total_odoo + StrToFloat(b) ;
-          dias := (today - StrToDate(d)); // conto os dias
-          vJuros := 0;
-          if (dias > 0) then
-          begin
-            juros := (0.03 * dias); //  mostra juros por dia
-            vJuros := ((juros * StrToFloat(b))/100);  // mostra juros mora
+          pJuros := dmPdv.CobraJuros;
 
-            if(dias <> 0) then
-            begin
-              multa := StrToFloat(b) * (2/100);
-              h := FloatToStr(multa+vJuros) ;
-            end;
-          end
-          else begin
-            multa := 0;
+          if(pJuros = 'Sim')then
+          begin
             h := '0';
+            total_odoo := total_odoo + StrToFloat(b) ;
+            dias := (today - StrToDate(d)); // conto os dias
+            vJuros := 0;
+            if (dias > 0) then
+            begin
+              juros := (0.03 * dias); //  mostra juros por dia
+              vJuros := ((juros * StrToFloat(b))/100);  // mostra juros mora
+
+              if(dias <> 0) then
+              begin
+                multa := StrToFloat(b) * (2/100);
+                h := FloatToStr(multa+vJuros) ;
+              end;
+            end
+            else begin
+              multa := 0;
+              h := '0';
+            end;
+            tt := tt + StrToFloat(h);
+            edJurosMulta.Text := FormatFloat('###0.00',(tt));  // FloatToStr(tt) ;
           end;
-          tt := tt + StrToFloat(h);
-          edJurosMulta.Text := FormatFloat('###0.00',(tt));  // FloatToStr(tt) ;
+
+          if(pJuros = 'Nao')then
+          begin
+            h := '0';
+            edJurosMulta.Text := FormatFloat('###0.00',(tt));
+          end;
 
           StringGrid1.RowCount := StringGrid1.RowCount + 1;
           StringGrid1.Cells[0, StringGrid1.RowCount - 1] := f;
@@ -605,8 +622,8 @@ var
   //vRec : TRecebimento;
   vr_formaRec: String;
 
-  IMPRESSORA:TextFile;
- lFile   : TStringList;
+ IMPRESSORA :TextFile;
+ lFile  : TStringList;
  i      : Integer;
  logradouro: String;
  cep: String;
@@ -625,6 +642,7 @@ var
  v_log: string;
  dataRec: string;
  vtotalR: Double;
+ ind : integer;
 begin
   if (edCodCliente.Text = '') then
   begin
@@ -701,15 +719,15 @@ begin
       v_log := 'Log path_imp - ' + dmPdv.path_imp;
       AssignFile(IMPRESSORA, dmPdv.path_imp);
     end;
-    v_log := 'Log abrindo cupomRec.txt ' + dmpdv.path_exe + 'cupomRec_Odoo.txt';
+    v_log := 'Log abrindo cupomRec.txt ' + dmpdv.path_exe + 'cupomRec.txt';
     try
       Rewrite(IMPRESSORA);
-      if not (FileExists(dmpdv.path_exe + 'cupomRec_Odoo.txt')) then
+      if not (FileExists(dmpdv.path_exe + 'cupomRec.txt')) then
       begin
-        ShowMessage('Crie o arquivo cupomRec_Odoo.txt');
+        ShowMessage('Crie o arquivo cupomRec.txt');
         Exit;
       end;
-      lFile.LoadFromFile(dmpdv.path_exe + 'cupomRec_Odoo.txt');
+      lFile.LoadFromFile(dmpdv.path_exe + 'cupomRec.txt');
       for i:=0 to lFile.Count-1 do
       begin
         v_log := 'Log lendo cupomRec.txt ';
@@ -734,18 +752,35 @@ begin
         end
         else if lFile[i] = 'doc' then
           Writeln(Impressora,'Recebido Dia.' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now));
+
         ///else
          if lFile[i] = 'recebi' then
          begin
            Writeln(Impressora,'-------------------------');
-           Writeln(Impressora,'  Valor Pago : ' + edPago.Text);
+           // Writeln(Impressora,'  Valor Pago : ' + edPago.Text);
+           Writeln(IMPRESSORA, ' Valor Pago : ' + FormatFloat(',##0.00', StrToFloat(edPago.Text)));
            Writeln(Impressora,'--------------------------');
          end;
+
+         if lFile[i] = 'pedido' then
+          begin
+            Writeln(Impressora,'Fatura :' + label8.Caption);
+          end;
+
+
+         Writeln(Impressora,'');
       end;
+         Writeln(Impressora,'');
+         Writeln(Impressora,'');
+         Writeln(Impressora,'');
+         Writeln(Impressora,'.');
+
     finally
+
       CloseFile(IMPRESSORA);
       lFile.Free;
     end;
+
 
     except
       btnProcurar.Click;

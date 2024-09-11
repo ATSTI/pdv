@@ -131,7 +131,8 @@ begin
     AssignFile(IMPRESSORA, dmPdv.portaIMP);
   end
   else begin
-    AssignFile(IMPRESSORA, dmPdv.path_imp);
+    AssignFile(IMPRESSORA, dmPdv.portaIMP) ;
+    //AssignFile(IMPRESSORA, dmPdv.path_imp);
   end;
 
   try
@@ -154,16 +155,17 @@ begin
     else begin
         Writeln(IMPRESSORA, edMotivo.Text);
     end;
-    Writeln(IMPRESSORA, '');
     Writeln(IMPRESSORA, 'Assinatura :');
-    Writeln(IMPRESSORA, '');
-    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '.');
+    Writeln(IMPRESSORA, '.');
+    Writeln(IMPRESSORA, '.');
+    Writeln(IMPRESSORA, '.');
     Writeln(IMPRESSORA, '------------------------------');
     Writeln(IMPRESSORA, '');
     Writeln(IMPRESSORA, '');
     Writeln(IMPRESSORA, '');
     Writeln(IMPRESSORA, '');
-    Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, '--*-----------*------------*--');
   finally
     CloseFile(IMPRESSORA);
   end;
