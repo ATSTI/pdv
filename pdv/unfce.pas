@@ -1451,7 +1451,7 @@ procedure TfNfce.GravarDadosNF(protocolo: String; recibo: String);
 var str: String;
   str_s: string;
 begin
-  try
+  //try
     if ((num_nfce > 0) and (protocolo <> '')) then
     begin
       str := 'UPDATE SERIES SET ULTIMO_NUMERO = ' + IntToSTR(num_nfce);
@@ -1499,14 +1499,15 @@ begin
     str := str + ' WHERE CODVENDA = ' + IntToStr(nfce_codVenda);
     dmPdv.IbCon.ExecuteDirect(str);
     dmPdv.sTrans.Commit;
-  except
+  {except
     on E : Exception do
     begin
       ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
-      dmPdv.sTrans.Rollback; //on failure, undo the changes}
+      dmPdv.sTrans.Rollback; //on failure, undo the changes
     end;
-  end;
 
+  end;
+   }
 end;
 
 procedure TfNfce.gerarSat();

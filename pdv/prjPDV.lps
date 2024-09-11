@@ -8,7 +8,7 @@
       <Unit0>
         <Filename Value="prjPDV.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="12"/>
+        <EditorIndex Value="13"/>
         <TopLine Value="27"/>
         <CursorPos Y="49"/>
         <UsageCount Value="206"/>
@@ -23,7 +23,6 @@
         <UnitName Value="uPdv"/>
         <TopLine Value="1745"/>
         <CursorPos Y="1757"/>
-        <ComponentState Value="1"/>
         <UsageCount Value="206"/>
         <Bookmarks Count="5">
           <Item0 X="14" Y="2575" ID="9"/>
@@ -41,10 +40,9 @@
         <ComponentName Value="fPDV_Rec"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="9"/>
-        <TopLine Value="1943"/>
-        <CursorPos X="27" Y="1960"/>
+        <EditorIndex Value="10"/>
+        <TopLine Value="1940"/>
+        <CursorPos X="16" Y="1956"/>
         <UsageCount Value="205"/>
         <Bookmarks Count="2">
           <Item0 X="26" Y="962" ID="1"/>
@@ -103,7 +101,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uMovimentoProc"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="7"/>
         <TopLine Value="122"/>
         <CursorPos X="35" Y="122"/>
         <UsageCount Value="200"/>
@@ -222,9 +220,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uNfce"/>
-        <EditorIndex Value="10"/>
-        <TopLine Value="2502"/>
-        <CursorPos X="85" Y="2503"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="11"/>
+        <TopLine Value="1455"/>
+        <CursorPos X="60" Y="1506"/>
+        <ComponentState Value="1"/>
         <UsageCount Value="200"/>
         <Bookmarks Count="1">
           <Item0 X="3" Y="683" ID="8"/>
@@ -248,9 +248,9 @@
         <ComponentName Value="fAbrirCaixa"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="8"/>
         <TopLine Value="684"/>
-        <CursorPos X="36" Y="753"/>
+        <CursorPos Y="753"/>
         <UsageCount Value="269"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -305,7 +305,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uAbrirCaixa2"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="9"/>
         <TopLine Value="58"/>
         <CursorPos Y="63"/>
         <UsageCount Value="232"/>
@@ -358,9 +358,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uReceber"/>
-        <EditorIndex Value="11"/>
-        <TopLine Value="780"/>
-        <CursorPos X="2" Y="780"/>
+        <EditorIndex Value="12"/>
+        <TopLine Value="320"/>
+        <CursorPos X="3" Y="367"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -420,7 +420,7 @@
         <UnitName Value="uIntegraSimples"/>
         <EditorIndex Value="2"/>
         <TopLine Value="1501"/>
-        <CursorPos X="43" Y="1461"/>
+        <CursorPos Y="1461"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit34>
@@ -445,7 +445,7 @@
         <EditorIndex Value="8"/>
         <TopLine Value="157"/>
         <CursorPos X="49" Y="178"/>
-        <UsageCount Value="198"/>
+        <UsageCount Value="199"/>
       </Unit36>
       <Unit37>
         <Filename Value="umsgpromo.pas"/>
@@ -456,7 +456,7 @@
         <EditorIndex Value="5"/>
         <TopLine Value="50"/>
         <CursorPos X="22" Y="71"/>
-        <UsageCount Value="145"/>
+        <UsageCount Value="146"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit37>
@@ -753,124 +753,124 @@
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="updv.pas"/>
-        <Caret Line="1767" TopLine="1758"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="132" Column="22" TopLine="113"/>
       </Position1>
       <Position2>
-        <Filename Value="updv.pas"/>
-        <Caret Line="1768" TopLine="1758"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="392" Column="31" TopLine="293"/>
       </Position2>
       <Position3>
-        <Filename Value="updv.pas"/>
-        <Caret Line="1769" TopLine="1758"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="163" Column="28" TopLine="153"/>
       </Position3>
       <Position4>
-        <Filename Value="updv.pas"/>
-        <Caret Line="1771" TopLine="1764"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="271" Column="18" TopLine="252"/>
       </Position4>
       <Position5>
-        <Filename Value="updv.pas"/>
-        <Caret Line="1772" TopLine="1764"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="306" Column="22" TopLine="287"/>
       </Position5>
       <Position6>
-        <Filename Value="updv.pas"/>
-        <Caret Line="1773" TopLine="1764"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="335" Column="22" TopLine="316"/>
       </Position6>
       <Position7>
-        <Filename Value="updv.pas"/>
-        <Caret Line="1774" TopLine="1764"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="362" Column="22" TopLine="343"/>
       </Position7>
       <Position8>
-        <Filename Value="updv.pas"/>
-        <Caret Line="1775" TopLine="1764"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="1492" Column="21" TopLine="1464"/>
       </Position8>
       <Position9>
-        <Filename Value="updv.pas"/>
-        <Caret Line="1776" TopLine="1764"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="2098" Column="10" TopLine="2093"/>
       </Position9>
       <Position10>
-        <Filename Value="updv.pas"/>
-        <Caret Line="1777" TopLine="1764"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="2233" Column="25" TopLine="2213"/>
       </Position10>
       <Position11>
-        <Filename Value="updv.pas"/>
-        <Caret Line="1778" TopLine="1764"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="2263" Column="25" TopLine="2243"/>
       </Position11>
       <Position12>
-        <Filename Value="updv.pas"/>
-        <Caret Line="1780" TopLine="1770"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="2311" Column="25" TopLine="2291"/>
       </Position12>
       <Position13>
-        <Filename Value="updv.pas"/>
-        <Caret Line="1781" TopLine="1770"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="2361" Column="25" TopLine="2341"/>
       </Position13>
       <Position14>
-        <Filename Value="updv.pas"/>
-        <Caret Line="1782" TopLine="1770"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="2391" Column="25" TopLine="2371"/>
       </Position14>
       <Position15>
-        <Filename Value="updv.pas"/>
-        <Caret Line="1783" TopLine="1770"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="2396" Column="25" TopLine="2376"/>
       </Position15>
       <Position16>
-        <Filename Value="updv.pas"/>
-        <Caret Line="1785" TopLine="1770"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="2402" Column="25" TopLine="2382"/>
       </Position16>
       <Position17>
-        <Filename Value="updv.pas"/>
-        <Caret Line="1786" TopLine="1773"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="2551" Column="25" TopLine="2531"/>
       </Position17>
       <Position18>
-        <Filename Value="updv.pas"/>
-        <Caret Line="282" Column="15" TopLine="268"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="41" Column="12" TopLine="30"/>
       </Position18>
       <Position19>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="2162" Column="30" TopLine="2150"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="31" Column="92" TopLine="30"/>
       </Position19>
       <Position20>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="1896" Column="43" TopLine="1892"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="46" Column="75" TopLine="30"/>
       </Position20>
       <Position21>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="1957" Column="23" TopLine="1941"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="2103" Column="74" TopLine="2093"/>
       </Position21>
       <Position22>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="2072" Column="25" TopLine="2056"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="2304" Column="18" TopLine="2285"/>
       </Position22>
       <Position23>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="1974" Column="3" TopLine="1971"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="2486" Column="18" TopLine="2467"/>
       </Position23>
       <Position24>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="2007" Column="3" TopLine="2019"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="2516" Column="22" TopLine="2497"/>
       </Position24>
       <Position25>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="1917" Column="4" TopLine="1901"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="2569" Column="22" TopLine="2549"/>
       </Position25>
       <Position26>
-        <Filename Value="updv.pas"/>
-        <Caret Line="1757" TopLine="1745"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="163" Column="28" TopLine="153"/>
       </Position26>
       <Position27>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="1903" TopLine="1899"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="271" Column="18" TopLine="252"/>
       </Position27>
       <Position28>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="2155" TopLine="2143"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="306" Column="22" TopLine="287"/>
       </Position28>
       <Position29>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="2174" TopLine="2163"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="335" Column="22" TopLine="316"/>
       </Position29>
       <Position30>
-        <Filename Value="updv_rec.pas"/>
-        <Caret Line="2176" TopLine="2163"/>
+        <Filename Value="unfce.pas"/>
+        <Caret Line="362" Column="22" TopLine="343"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -914,13 +914,6 @@
         <WatchKind Value="wpkWrite"/>
         <Source Value="uabrircaixa.pas"/>
         <Line Value="412"/>
-      </Item>
-      <Item>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="ureceber.pas"/>
-        <Line Value="793"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
@@ -991,6 +984,27 @@
         <WatchKind Value="wpkWrite"/>
         <Source Value="updv_rec.pas"/>
         <Line Value="1893"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="ureceber.pas"/>
+        <Line Value="804"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="ureceber.pas"/>
+        <Line Value="688"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="ureceber.pas"/>
+        <Line Value="322"/>
       </Item>
     </BreakPoints>
     <Watches>

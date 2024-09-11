@@ -45,6 +45,7 @@ type
     edJuros: TMaskEdit;
     Label1: TLabel;
     edTotalGeral: TMaskEdit;
+    Label10: TLabel;
     Label2: TLabel;
     edPago: TMaskEdit;
     Label3: TLabel;
@@ -55,6 +56,7 @@ type
     Label8: TLabel;
     Label9: TLabel;
     lblForma: TLabel;
+    lblGrava: TLabel;
     Memo1: TMemo;
     memoResult: TMemo;
     Panel1: TPanel;
@@ -355,12 +357,14 @@ begin
   insert_pag  += FloatToStr(juros);
   insert_pag += ')';
   DecimalSeparator:=',';
-  try
+
+  //try
     dmPdv.IbCon.ExecuteDirect(insert_pag);
     dmPdv.sTrans.Commit;
-  except
-    ShowMessage('Verifique se baixou no ODOO.');
-  end;
+  //except
+  //  ShowMessage('Verifique se baixou no ODOO.');
+  //end;
+
 end;
 
 function TfRecebimento.RemoveAcento(Str: string): string;
