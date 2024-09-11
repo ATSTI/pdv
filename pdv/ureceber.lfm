@@ -1234,6 +1234,13 @@ object fRecebimento: TfRecebimento
       ParentColor = False
       ParentFont = False
     end
+    object lblGrava: TLabel
+      Left = 26
+      Height = 15
+      Top = 89
+      Width = 110
+      Caption = 'Mensagem gravação'
+    end
   end
   object Panel2: TPanel
     Left = 0

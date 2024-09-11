@@ -103,10 +103,12 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uMovimentoProc"/>
-        <EditorIndex Value="7"/>
-        <TopLine Value="127"/>
-        <CursorPos X="52" Y="141"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="122"/>
+        <CursorPos X="35" Y="122"/>
         <UsageCount Value="200"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit7>
       <Unit8>
         <Filename Value="uexecutaintegracao.pas"/>

@@ -1475,6 +1475,8 @@ begin
       str := 'UPDATE VENDA SET ';
       str := str + ' NOMEXML = ' +
           QuotedStr('NFCE-' + dmPdv.varLogado + '-' + IntToStr(num_nfce));
+      str := str + ', NOTAFISCAL = ' + IntToStr(num_nfce);
+      str := str + ', SERIE = ' + QuotedStr('NFCE-'+dmPdv.varLogado);
       if (dmPdv.NFE_Teste = 'S') then
       begin
         // ----------------------------------------------------------------

@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, Buttons, udmpdv, JsonTools, fpjson, fphttpclient,
-  DB, SQLDB, StrUtils, opensslsockets, openssl, IniFiles;
+  DB, SQLDB, StrUtils, opensslsockets, openssl, IniFiles, jsonConf;
 
 type
 
@@ -460,8 +460,8 @@ begin
   memoResult.Lines.Clear;
   memoDados.Lines.Clear;
   exibe_sql.Clear;
-  //cria_json(' NOT IN ' + edtUltimpoPedidoA.Text);
-  cria_json(' NOT IN (' + edtUltimpoPedidoA.Text +')'); // manoel 26/07/23 inclui os  ( )
+  cria_json(' NOT IN ' + edtUltimpoPedidoA.Text);
+  //cria_json(' NOT IN (' + edtUltimpoPedidoA.Text +')'); // manoel 26/07/23 inclui os  ( )
   edtUltimpoPedidoA.Text := edtUltimpoPedido;
   memoResult.Lines.Assign(exibe_sql);
   edEste.Text := edEste_str;
@@ -742,6 +742,7 @@ begin
   TimerPedido.Enabled:=False;
   Sleep(5000);
   btnConsultaUltimoPedidoGeral.Click;
+  btnDevolucao.Click;
   TimerPedido.Enabled:=True;
 end;
 
@@ -827,7 +828,11 @@ begin
   sql_str += '   AND md.STATUS = ' + QuotedStr('0');
   sql_str += ' ORDER BY m.CODMOVIMENTO DESC ';
   dmPdv.sqBusca1.SQL.Add(sql_str);
-  dmPdv.sqBusca1.Open;
+  try
+    dmPdv.sqBusca1.Open;
+  except on e: Exception do
+    ShowMessage(e.Message);
+  end;
   while not dmPdv.sqBusca1.EOF do
   begin
       ver_str := dmPdv.sqBusca1.Fields[0].DisplayName;
@@ -1472,7 +1477,7 @@ var
 begin
   dmPdv.sqBusca1.Close;
   dmPdv.sqBusca1.Sql.Clear;
-  sql_str := 'select first 1 mov.codmovimento,mov.codnatureza,mov.hist_mov, ';
+  sql_str := 'select first 10 mov.codmovimento,mov.codnatureza,mov.hist_mov, ';
   sql_str += 'movd.quantidade,movd.codproduto, p.produto ';
   sql_str += 'from produtos p ';
   sql_str += 'inner join movimentodetalhe movd on (p.codproduto = movd.codproduto) ';
@@ -1485,20 +1490,15 @@ begin
   devolucao := '[{';
   while not dmPdv.sqBusca1.EOF do
   begin
-    if devolucao <> '[{' then
-      devolucao += '}, {';
-    devolucao += '"motivo": "' + dmPdv.sqBusca1.Fields[2].AsString + '",' +
-      '"origin": "' + IntToStr(dmPdv.sqBusca1.Fields[0].AsInteger)+ '",' +
-      '"quantidade": "' + FloatToStr(dmPdv.sqBusca1.Fields[3].AsFloat) + '",' +
-      '"produto": "' + IntToStr(dmPdv.sqBusca1.Fields[4].AsInteger) + '",'+
-     '"nproduto": "' + dmPdv.sqBusca1.Fields[5].AsString + '"';
-
-    dmPdv.sqBusca1.Next;
-  end;
-  devolucao += '}]';
-  memoResult.Lines.Add(devolucao);
-
-  if(devolucao <> '[{}]') then
+     devolucao += '"motivo": "' + dmPdv.sqBusca1.Fields[2].AsString + '",' +
+         '"origin": "' + IntToStr(dmPdv.sqBusca1.Fields[0].AsInteger)+ '",' +
+         '"quantidade": "' + FloatToStr(dmPdv.sqBusca1.Fields[3].AsFloat) + '",' +
+         '"produto": "' + IntToStr(dmPdv.sqBusca1.Fields[4].AsInteger) + '",'+
+         '"nproduto": "' + dmPdv.sqBusca1.Fields[5].AsString + '"';
+     devolucao += '}]';
+     memoResult.Lines.Add(devolucao);
+     devolucao := '[{';
+  //if(devolucao <> '[{}]') then
   begin
     //httpClient := TFPHttpClient.Create(Nil);
     //postJson := TJSONObject.Create;
@@ -1520,9 +1520,12 @@ begin
       end;
       //fInteg.Free;
       //postJson.Free;
+      postJson.Clear;
     except
     end;
   end;
+  dmPdv.sqBusca1.Next;
+end;
 
 end;
 

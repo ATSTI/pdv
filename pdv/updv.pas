@@ -60,6 +60,7 @@ type
     edCliente: TEdit;
     edClienteNome: TEdit;
     edDesconto: TMaskEdit;
+    edProduto_copia: TEdit;
     edMotivo: TEdit;
     edPreco: TMaskEdit;
     edProdNao: TEdit;
@@ -907,10 +908,15 @@ end;
 procedure TfPdv.acQuantidadeExecute(Sender: TObject);
 var i: Integer;
 begin
-  if (edProduto.Text = '') then
+  if ((edProduto.Text = '') and (edProduto_copia.Text = '')) then
   begin
     ShowMessage('Selecione o ITEM.');
     Exit;
+  end;
+
+  if (edProduto.Text = '') then
+  begin
+    edProduto.Text := edProduto_copia.Text;
   end;
 
   if (statusPedido > 0) then
@@ -1346,7 +1352,7 @@ begin
     edTotalGeral.Text:= '';
     exit;
   end;
-
+  edProduto_copia.Text:= '';
   statusPedido:=0;
   edProdutoDesc.Lines.Clear;
   edQtde.Text:='0';
@@ -1751,15 +1757,13 @@ begin
 end;
 
 procedure TfPdv.adicionaProduto();
-
 begin
-
     fotoproduto:= dmPdv.sqBusca.FieldByName('FOTOPRODUTO').AsString;
     if(fotoproduto <> '' )then
     begin
       fMsgPromo.ShowModal;
     end ;
-
+    edProduto_copia.Text := fProdutoProc.codProd;
     codproduto := fProdutoProc.codProduto;
     codPro     := fProdutoProc.codProd;
     precoL     := fProdutoProc.precoVenda;
@@ -2489,7 +2493,6 @@ procedure TfPdv.buscaProduto();
 var i: Integer;
   str_bsc  : String;
 begin
-
   if ((statusPedido > 0) and (dmPdv.usaComanda = 0)) then
   begin
     ShowMessage('Pedido ja finalizado. Clique no Incluir para novo pedido.');
