@@ -123,8 +123,9 @@ type
     rv_codForma: Integer;
     codClienteR : Integer;
     pCod : string; /// codigo do Odoo
-    procedure enviar_caixa(valor_pago: Double; codRec: Integer);
+    function enviar_caixa(valor_pago: Double; codRec: Integer): Boolean;
     function RemoveAcento(Str: string): string;
+    function titulo_selecionado():Boolean;
   public
 
   end;
@@ -315,7 +316,8 @@ begin
   C := ACol;
 end;
 
-procedure TfRecebimento.enviar_caixa(valor_pago: Double; codRec: Integer);
+function TfRecebimento.enviar_caixa(valor_pago: Double; codRec: Integer
+  ): Boolean;
 var insert_pag: String;
     juros : Double;
 begin
@@ -358,13 +360,21 @@ begin
   insert_pag += ')';
   DecimalSeparator:=',';
 
-  //try
+  try
     dmPdv.IbCon.ExecuteDirect(insert_pag);
     dmPdv.sTrans.Commit;
-  //except
-  //  ShowMessage('Verifique se baixou no ODOO.');
-  //end;
-
+  except
+    on E:Exception do
+    begin
+      result := False;
+      edPago.Text:= '0,00';
+      ShowMessage('Erro para gravar a baixa, erro : ' + e.Message);
+      exit;
+    end;
+  end;
+  //dmPdv.busca_sql('SELECT CODFORMA FROM FORMA_ENTRADA WHERE CODFORMA = ' + IntToStr(rv_codForma));
+  //dmPdv.sqBusca.FieldByName('CODFORMA').AsInteger;
+  Result := True;
 end;
 
 function TfRecebimento.RemoveAcento(Str: string): string;
@@ -393,6 +403,18 @@ for x := 1 to Length(Str) do
 Result := str;
 
 
+end;
+
+function TfRecebimento.titulo_selecionado(): Boolean;
+begin
+  if (Label3.Caption = '...') then
+  begin
+    ShowMessage('Clique no título para baixar');
+    result := False;
+  end
+  else begin
+    result := True;
+  end;
 end;
 
 procedure TfRecebimento.btnProcurarClick(Sender: TObject);
@@ -651,6 +673,7 @@ var
  dataRec: string;
  vtotalR: Double;
  ind : integer;
+ resultado : Boolean;
 begin
   lblGrava.Caption := 'Iniciando gravação';
   if (edCodCliente.Text = '') then
@@ -689,110 +712,108 @@ begin
   begin
     lblGrava.Caption := 'if usoSistema = ODOO';
     //try
-      enviar_caixa(vlr_pg,StrToInt(pCod)); // o codigo que foi selecionado no grid
+    resultado := enviar_caixa(vlr_pg,StrToInt(pCod)); // o codigo que foi selecionado no grid
+    if (resultado = False) then
+    begin
+      ShowMessage('Erro para baixar o titulo.');
+      exit;
+    end;
     //except
     //  ShowMessage('Verifique se baixou no ODOO.');
     //end;
 
     // IMPRESSAO
+    //end;
 
     try
-    lblGrava.Caption := 'if usoSistema = ODOO - imprimindo';
-    v_log := 'Log de impressão - ';
-    totalP := 0;
-    totalD := 0;
-    totalR := 0;
-    if (not dmPdv.sqEmpresa.Active) then
+      lblGrava.Caption := 'if usoSistema = ODOO - imprimindo';
+      v_log := 'Log de impressão - ';
+      totalP := 0;
+      totalD := 0;
+      totalR := 0;
+      if (not dmPdv.sqEmpresa.Active) then
       dmPdv.sqEmpresa.Open;
-    v_log := 'Log de impressão 3 ';
-    {----- aqui monto o endereço-----}
-    logradouro := '  ' + dmPdv.sqEmpresaENDERECO.Value +
-       ', ' + dmPdv.sqEmpresaBAIRRO.Value;
-    cep :=  '  ' + dmPdv.sqEmpresaCIDADE.Value + ' - ' + dmPdv.sqEmpresaUF.Value +
-    ' - ' + dmPdv.sqEmpresaCEP.Value;
-    fone := '  (19)' + dmPdv.sqEmpresaFONE.Value + ' / ' + dmPdv.sqEmpresaFONE_1.Value +
-    ' / ' + dmPdv.sqEmpresaFONE_2.Value;
-    {------------------------DADOS DO CLIENTE--------------------------}
-   // clientecupom := '  ' + IntToStr(dmPdv.sqBusca.FieldByName('CODCLIENTE').asInteger) +
-    //    '-' + RemoveAcento(dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString);
-    clientecupom := '  ' + edCodCliente.Text +
+      v_log := 'Log de impressão 3 ';
+      {----- aqui monto o endereço-----}
+      logradouro := '  ' + dmPdv.sqEmpresaENDERECO.Value +
+        ', ' + dmPdv.sqEmpresaBAIRRO.Value;
+      cep :=  '  ' + dmPdv.sqEmpresaCIDADE.Value + ' - ' + dmPdv.sqEmpresaUF.Value +
+        ' - ' + dmPdv.sqEmpresaCEP.Value;
+      fone := '  (19)' + dmPdv.sqEmpresaFONE.Value + ' / ' + dmPdv.sqEmpresaFONE_1.Value +
+        ' / ' + dmPdv.sqEmpresaFONE_2.Value;
+      {------------------------DADOS DO CLIENTE--------------------------}
+      // clientecupom := '  ' + IntToStr(dmPdv.sqBusca.FieldByName('CODCLIENTE').asInteger) +
+      //    '-' + RemoveAcento(dmPdv.sqBusca.FieldByName('NOMECLIENTE').AsString);
+      clientecupom := '  ' + edCodCliente.Text +
         '-' + edNomeCliente.Text;
 
-    // leio um arquivo txt e imprimo
-    v_log := 'Log de impressão - criando lFile ';
-    lFile := TStringList.Create;
-    if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
-    begin
-      v_log := 'Log portaImp - ' + dmPdv.portaIMP;
-      AssignFile(IMPRESSORA, dmPdv.portaIMP);
-    end
-    else begin
-      v_log := 'Log path_imp - ' + dmPdv.path_imp;
-      AssignFile(IMPRESSORA, dmPdv.path_imp);
-    end;
-    v_log := 'Log abrindo cupomRec.txt ' + dmpdv.path_exe + 'cupomRec.txt';
-    try
-      Rewrite(IMPRESSORA);
-      if not (FileExists(dmpdv.path_exe + 'cupomRec.txt')) then
+      // leio um arquivo txt e imprimo
+      v_log := 'Log de impressão - criando lFile ';
+      lFile := TStringList.Create;
+      if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
       begin
-        ShowMessage('Crie o arquivo cupomRec.txt');
-        Exit;
+        v_log := 'Log portaImp - ' + dmPdv.portaIMP;
+        AssignFile(IMPRESSORA, dmPdv.portaIMP);
+      end
+      else begin
+        v_log := 'Log path_imp - ' + dmPdv.path_imp;
+        AssignFile(IMPRESSORA, dmPdv.path_imp);
       end;
-      lFile.LoadFromFile(dmpdv.path_exe + 'cupomRec.txt');
-      for i:=0 to lFile.Count-1 do
-      begin
-        v_log := 'Log lendo cupomRec.txt ';
-        linhaTxt := Copy(lFile[i],0,1);
-        if lFile[i] = 'empresa' then
-          Writeln(Impressora, RemoveAcento(Format('  %-36s',[dmPdv.sqEmpresaRAZAO.Value])))
-        else if lFile[i] = 'logradouro' then
-          Writeln(Impressora, logradouro)
-        else if lFile[i] = 'cep' then
-          Writeln(Impressora, cep)
-        else if lFile[i] = 'fone' then
+      v_log := 'Log abrindo cupomRec.txt ' + dmpdv.path_exe + 'cupomRec.txt';
+      try
+        Rewrite(IMPRESSORA);
+        if not (FileExists(dmpdv.path_exe + 'cupomRec.txt')) then
         begin
-          Writeln(Impressora, fone);
-        end
-        else if lFile[i] = 'usuario' then
+          ShowMessage('Crie o arquivo cupomRec.txt');
+          Exit;
+        end;
+        lFile.LoadFromFile(dmpdv.path_exe + 'cupomRec.txt');
+        for i:=0 to lFile.Count-1 do
         begin
-          Writeln(Impressora,'');
-          Writeln(Impressora,'-------------------------');
-          Writeln(impressora, 'Usuario: ' + dmpdv.nomeLogado);
-          Writeln(Impressora,'-------------------------');
-          Writeln(Impressora, clientecupom);
-        end
-        else if lFile[i] = 'doc' then
-          Writeln(Impressora,'Recebido Dia.' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now));
-
-        ///else
-         if lFile[i] = 'recebi' then
-         begin
-           Writeln(Impressora,'-------------------------');
-           // Writeln(Impressora,'  Valor Pago : ' + edPago.Text);
-           Writeln(IMPRESSORA, ' Valor Pago : ' + FormatFloat(',##0.00', StrToFloat(edPago.Text)));
-           Writeln(Impressora,'--------------------------');
-         end;
-
-         if lFile[i] = 'pedido' then
+          v_log := 'Log lendo cupomRec.txt ';
+          linhaTxt := Copy(lFile[i],0,1);
+          if lFile[i] = 'empresa' then
+            Writeln(Impressora, RemoveAcento(Format('  %-36s',[dmPdv.sqEmpresaRAZAO.Value])))
+          else if lFile[i] = 'logradouro' then
+            Writeln(Impressora, logradouro)
+          else if lFile[i] = 'cep' then
+            Writeln(Impressora, cep)
+          else if lFile[i] = 'fone' then
+          begin
+            Writeln(Impressora, fone);
+          end
+          else if lFile[i] = 'usuario' then
+          begin
+            Writeln(Impressora,'');
+            Writeln(Impressora,'-------------------------');
+            Writeln(impressora, 'Usuario: ' + dmpdv.nomeLogado);
+            Writeln(Impressora,'-------------------------');
+            Writeln(Impressora, clientecupom);
+          end
+          else if lFile[i] = 'doc' then
+            Writeln(Impressora,'Recebido Dia.' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now));
+          ///else
+          if lFile[i] = 'recebi' then
+          begin
+            Writeln(Impressora,'-------------------------');
+            // Writeln(Impressora,'  Valor Pago : ' + edPago.Text);
+            Writeln(IMPRESSORA, ' Valor Pago : ' + FormatFloat(',##0.00', StrToFloat(edPago.Text)));
+            Writeln(Impressora,'--------------------------');
+          end;
+          if lFile[i] = 'pedido' then
           begin
             Writeln(Impressora,'Fatura :' + label8.Caption);
           end;
-
-
-         Writeln(Impressora,'');
+          Writeln(Impressora,'');
+        end;
+        Writeln(Impressora,'');
+        Writeln(Impressora,'');
+        Writeln(Impressora,'');
+        Writeln(Impressora,'.');
+      finally
+        CloseFile(IMPRESSORA);
+        lFile.Free;
       end;
-         Writeln(Impressora,'');
-         Writeln(Impressora,'');
-         Writeln(Impressora,'');
-         Writeln(Impressora,'.');
-
-    finally
-
-      CloseFile(IMPRESSORA);
-      lFile.Free;
-    end;
-
-
     except
       btnProcurar.Click;
       ShowMessage('Erro na impressao');
@@ -801,118 +822,116 @@ begin
     edPago.Text:= '0,00';
   end
   else begin
-  if ((UpperCase(dmpdv.usoSistema) = 'ATS') or (UpperCase(dmpdv.usoSistema) = 'ODOO')) then
-  begin
-    dmPdv.sqBusca.First;
-    str_rec := IntToStr(dmPdv.sqBusca.FieldByName('CODCLIENTE').AsInteger);
-    While not dmPdv.sqBusca.EOF do
+    if ((UpperCase(dmpdv.usoSistema) = 'ATS') or (UpperCase(dmpdv.usoSistema) = 'ODOO')) then
     begin
-      if (str_rec <> IntToStr(dmPdv.sqBusca.FieldByName('CODCLIENTE').AsInteger)) then
-      begin
-        ShowMessage('Selecione um cliente para fazer a Baixa, não pode ter clientes diferentes');
-        Exit;
-      end;
-      dmPdv.sqBusca.Next;
-    end;
-
-    vlr_rt := vlr_pg;
-    dmPdv.sqBusca.First;
-    str_rec := '';
-    DecimalSeparator:='.';
-    While vlr_rt > 0 do
-    begin
+      dmPdv.sqBusca.First;
+      str_rec := IntToStr(dmPdv.sqBusca.FieldByName('CODCLIENTE').AsInteger);
       While not dmPdv.sqBusca.EOF do
       begin
-        if (vlr_rt > 0) then
+        if (str_rec <> IntToStr(dmPdv.sqBusca.FieldByName('CODCLIENTE').AsInteger)) then
         begin
-          vlr_juro:= RoundTo(dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat -
-              dmPdv.sqBusca.FieldByName('RESTO').AsFloat, -2);
-          if ((dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat - vlr_juro) > (vlr_rt-vlr_juro)) then
-          begin
-            // duplico o lancamento no recebimento
-            // este novo item o valor vai ser a diferenca do pago
-            // um vai ficar em aberto o outro como pago
-            str_rec := 'INSERT INTO RECEBIMENTO (  ' +
-              ' CODRECEBIMENTO, TITULO, EMISSAO, CODCLIENTE, DATAVENCIMENTO' +
-              ', CAIXA, STATUS, VIA, CODVENDA, CODALMOXARIFADO, CODVENDEDOR' +
-              ', CODUSUARIO, DATASISTEMA, VALOR_PRIM_VIA, VALOR_RESTO, VALORTITULO' +
-              ', PARCELAS, FORMARECEBIMENTO) SELECT ' +
-              ' GEN_ID(COD_AREC, 1), TITULO, EMISSAO, CODCLIENTE, DATAVENCIMENTO' +
-              ', CAIXA, STATUS, VIA, CODVENDA, CODALMOXARIFADO, CODVENDEDOR' +
-              ', CODUSUARIO, DATASISTEMA, ';
-            vlr_pg := RoundTo(dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat - vlr_rt, -2);
-            str_rec += FloatToStr(vlr_pg) + ', ' + FloatToStr(vlr_pg); //VALOR_PRIM_VIA, VALOR_RESTO
-            str_rec += ', VALORTITULO, PARCELAS, FORMARECEBIMENTO ';
-            str_rec += ' FROM RECEBIMENTO WHERE CODRECEBIMENTO = ';
-            str_rec += IntToStr(dmPdv.sqBusca.FieldByName('CODRECEBIMENTO').AsInteger);
-            dmPdv.executaSql(str_rec);
-            vlr_pg := vlr_rt;
-          end
-          else begin
-            vlr_pg := RoundTo(dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat, -2);
-          end;
-          dmPdv.executaSql('UPDATE RECEBIMENTO SET STATUS = ' +
-            QuotedStr('7-') + ', VALORRECEBIDO = ' + FloattoStr(vlr_pg) +
-            ' , JUROS = ' + FloattoStr(vlr_juro) +
-            ' , FORMARECEBIMENTO = ' + QuotedStr(vr_formaRec) +
-            ' , DATARECEBIMENTO = ' + QuotedStr(FormatDateTime('mm/dd/2022', Now)) +
-            ' , DATABAIXA = ' + QuotedStr(FormatDateTime('mm/dd/2022', Now)) +
-            ' , CAIXA = ' + dmPdv.idcaixa +
-            ' , CODALMOXARIFADO = ' + dmPdv.ccusto +
-            ' , CODUSUARIO = ' + dmPdv.varLogado +
-            ' , HISTORICO = ' + QuotedStr('Pagamento Caixa PDV : ' +
-              dmPdv.nomeLogado + ', ' + dmPdv.nomeCaixa) +
-            ' WHERE CODRECEBIMENTO = ' +
-            IntToStr(dmPdv.sqBusca.FieldByName('CODRECEBIMENTO').asInteger));
-          enviar_caixa(vlr_pg, dmPdv.sqBusca.FieldByName('CODRECEBIMENTO').AsInteger);
-          vlr_rt -= vlr_pg;
+          ShowMessage('Selecione um cliente para fazer a Baixa, não pode ter clientes diferentes');
+          Exit;
         end;
         dmPdv.sqBusca.Next;
       end;
-    end;
-    dmPdv.sTrans.Commit;
-  end;
-  if (UpperCase(dmpdv.usoSistema) = 'ODOO-LOCAL') then
-  begin
-    // inserir dados no Contas_receber odoo a rotina integracao vai fazer o resto no odoo
-    vlr_pg := StrToFloat(edPago.Text);
-    vlr_rt := vlr_pg;
-    sqlOdoo.First;
-    str_rec := '';
-    DecimalSeparator:='.';
-    While vlr_rt > 0 do
-    begin
-      While not sqlOdoo.EOF do
+      vlr_rt := vlr_pg;
+      dmPdv.sqBusca.First;
+      str_rec := '';
+      DecimalSeparator:='.';
+      While vlr_rt > 0 do
       begin
-        if (vlr_rt > 0) then
+        While not dmPdv.sqBusca.EOF do
         begin
-          if (sqlOdoo.FieldByName('VALOR_RESTO').AsFloat > vlr_rt) then
+          if (vlr_rt > 0) then
           begin
-            vlr_pg := sqlOdoo.FieldByName('VALOR_RESTO').AsFloat - vlr_rt;
-          end
-          else begin
-            vlr_pg := sqlOdoo.FieldByName('VALOR_RESTO').AsFloat;
+            vlr_juro:= RoundTo(dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat -
+              dmPdv.sqBusca.FieldByName('RESTO').AsFloat, -2);
+            if ((dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat - vlr_juro) > (vlr_rt-vlr_juro)) then
+            begin
+              // duplico o lancamento no recebimento
+              // este novo item o valor vai ser a diferenca do pago
+              // um vai ficar em aberto o outro como pago
+              str_rec := 'INSERT INTO RECEBIMENTO (  ' +
+                ' CODRECEBIMENTO, TITULO, EMISSAO, CODCLIENTE, DATAVENCIMENTO' +
+                ', CAIXA, STATUS, VIA, CODVENDA, CODALMOXARIFADO, CODVENDEDOR' +
+                ', CODUSUARIO, DATASISTEMA, VALOR_PRIM_VIA, VALOR_RESTO, VALORTITULO' +
+                ', PARCELAS, FORMARECEBIMENTO) SELECT ' +
+                ' GEN_ID(COD_AREC, 1), TITULO, EMISSAO, CODCLIENTE, DATAVENCIMENTO' +
+                ', CAIXA, STATUS, VIA, CODVENDA, CODALMOXARIFADO, CODVENDEDOR' +
+                ', CODUSUARIO, DATASISTEMA, ';
+              vlr_pg := RoundTo(dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat - vlr_rt, -2);
+              str_rec += FloatToStr(vlr_pg) + ', ' + FloatToStr(vlr_pg); //VALOR_PRIM_VIA, VALOR_RESTO
+              str_rec += ', VALORTITULO, PARCELAS, FORMARECEBIMENTO ';
+              str_rec += ' FROM RECEBIMENTO WHERE CODRECEBIMENTO = ';
+              str_rec += IntToStr(dmPdv.sqBusca.FieldByName('CODRECEBIMENTO').AsInteger);
+              dmPdv.executaSql(str_rec);
+              vlr_pg := vlr_rt;
+            end
+            else begin
+              vlr_pg := RoundTo(dmPdv.sqBusca.FieldByName('VALOR_RESTO').AsFloat, -2);
+            end;
+            dmPdv.executaSql('UPDATE RECEBIMENTO SET STATUS = ' +
+              QuotedStr('7-') + ', VALORRECEBIDO = ' + FloattoStr(vlr_pg) +
+              ' , JUROS = ' + FloattoStr(vlr_juro) +
+              ' , FORMARECEBIMENTO = ' + QuotedStr(vr_formaRec) +
+              ' , DATARECEBIMENTO = ' + QuotedStr(FormatDateTime('mm/dd/2022', Now)) +
+              ' , DATABAIXA = ' + QuotedStr(FormatDateTime('mm/dd/2022', Now)) +
+              ' , CAIXA = ' + dmPdv.idcaixa +
+              ' , CODALMOXARIFADO = ' + dmPdv.ccusto +
+              ' , CODUSUARIO = ' + dmPdv.varLogado +
+              ' , HISTORICO = ' + QuotedStr('Pagamento Caixa PDV : ' +
+             dmPdv.nomeLogado + ', ' + dmPdv.nomeCaixa) +
+              ' WHERE CODRECEBIMENTO = ' +
+              IntToStr(dmPdv.sqBusca.FieldByName('CODRECEBIMENTO').asInteger));
+            enviar_caixa(vlr_pg, dmPdv.sqBusca.FieldByName('CODRECEBIMENTO').AsInteger);
+            vlr_rt -= vlr_pg;
           end;
-          str_rec := 'INSERT INTO CONTAS_RECEBER (name, invoice_id, valor_titulo,';
-          str_rec += ' valor_recebido, data_recebido, caixa_recebeu, forma_recebimento) VALUES(';
-          str_rec += QuotedStr(sqlOdoo.FieldByName('TITULO').AsString);
-          str_rec += ', ' + IntToStr(sqlOdoo.FieldByName('invoice_id').AsInteger);
-          str_rec += ', ' + FloattoStr(vlr_pg);
-          str_rec += ', ' + FloattoStr(vlr_pg);
-          str_rec += ', ' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now));
-          str_rec += ', ' + dmPdv.idcaixa;
-          str_rec += ', ' + QuotedStr(vr_formaRec)  + ')';
-          vlr_rt -= vlr_pg;
-          conOdoo.ExecuteDirect(str_rec);
-          enviar_caixa(vlr_pg, sqlOdoo.FieldByName('CODRECEBIMENTO').AsInteger);
+          dmPdv.sqBusca.Next;
         end;
-        sqlOdoo.Next;
       end;
+      dmPdv.sTrans.Commit;
     end;
-    transODoo.Commit;
+    if (UpperCase(dmpdv.usoSistema) = 'ODOO-LOCAL') then
+    begin
+      // inserir dados no Contas_receber odoo a rotina integracao vai fazer o resto no odoo
+      vlr_pg := StrToFloat(edPago.Text);
+      vlr_rt := vlr_pg;
+      sqlOdoo.First;
+      str_rec := '';
+      DecimalSeparator:='.';
+      While vlr_rt > 0 do
+      begin
+        While not sqlOdoo.EOF do
+        begin
+          if (vlr_rt > 0) then
+          begin
+            if (sqlOdoo.FieldByName('VALOR_RESTO').AsFloat > vlr_rt) then
+            begin
+              vlr_pg := sqlOdoo.FieldByName('VALOR_RESTO').AsFloat - vlr_rt;
+            end
+            else begin
+              vlr_pg := sqlOdoo.FieldByName('VALOR_RESTO').AsFloat;
+            end;
+            str_rec := 'INSERT INTO CONTAS_RECEBER (name, invoice_id, valor_titulo,';
+            str_rec += ' valor_recebido, data_recebido, caixa_recebeu, forma_recebimento) VALUES(';
+            str_rec += QuotedStr(sqlOdoo.FieldByName('TITULO').AsString);
+            str_rec += ', ' + IntToStr(sqlOdoo.FieldByName('invoice_id').AsInteger);
+            str_rec += ', ' + FloattoStr(vlr_pg);
+            str_rec += ', ' + FloattoStr(vlr_pg);
+            str_rec += ', ' + QuotedStr(FormatDateTime('mm/dd/yyyy', Now));
+            str_rec += ', ' + dmPdv.idcaixa;
+            str_rec += ', ' + QuotedStr(vr_formaRec)  + ')';
+            vlr_rt -= vlr_pg;
+            conOdoo.ExecuteDirect(str_rec);
+            enviar_caixa(vlr_pg, sqlOdoo.FieldByName('CODRECEBIMENTO').AsInteger);
+          end;
+          sqlOdoo.Next;
+        end;
+      end;
+      transODoo.Commit;
+    end;
   end;
-  end;
-
   DecimalSeparator:=',';
   ShowMessage('Baixa efetuada com sucesso.'+#13+
              'Se a Baixa foi Parcial o valor Sera Corrigido');
@@ -922,9 +941,9 @@ begin
   edPago.Enabled:=False;
   if (UpperCase(dmpdv.usoSistema) = 'ODOO') then
   begin
-     rgSituacao.ItemIndex := 0;
+    rgSituacao.ItemIndex := 0;
   end else
-  rgSituacao.ItemIndex := 1;
+    rgSituacao.ItemIndex := 1;
   btnProcurar.Click;
 end;
 
@@ -955,9 +974,12 @@ end;
 
 procedure TfRecebimento.BitBtn21Click(Sender: TObject);
 begin
-  lblForma.Caption:= '6-Pix';
-  edPago.Enabled:=True;
-  edPago.SetFocus;
+  if (titulo_selecionado = True) then
+  begin
+    lblForma.Caption:= '6-Pix';
+    edPago.Enabled:=True;
+    edPago.SetFocus;
+  end;
 end;
 
 procedure TfRecebimento.BitBtn24Click(Sender: TObject);
@@ -1120,7 +1142,6 @@ end;
 
           end;
           Writeln(Impressora,texto6);
-
         end
         else
           Writeln(Impressora,lFile[i]);
@@ -1134,26 +1155,35 @@ end;
 
 procedure TfRecebimento.BitBtn2Click(Sender: TObject);
 begin
-  lblForma.Caption:='7-Sianet';
-  pnCartoes.Visible:=False;
-  edPago.Enabled:=True;
-  edPago.SetFocus;
+  if (titulo_selecionado = True) then
+  begin
+    lblForma.Caption:='7-Sianet';
+    pnCartoes.Visible:=False;
+    edPago.Enabled:=True;
+    edPago.SetFocus;
+  end;
 end;
 
 procedure TfRecebimento.BitBtn3Click(Sender: TObject);
 begin
-  lblForma.Caption:='8-Brasil Card';
-  pnCartoes.Visible:=False;
-  edPago.Enabled:=True;
-  edPago.SetFocus;
+  if (titulo_selecionado = True) then
+  begin
+    lblForma.Caption:='8-Brasil Card';
+    pnCartoes.Visible:=False;
+    edPago.Enabled:=True;
+    edPago.SetFocus;
+  end;
 end;
 
 procedure TfRecebimento.BitBtn4Click(Sender: TObject);
 begin
-  lblForma.Caption:='3-Cartao Credito';
-  pnCartoes.Visible:=False;
-  edPago.Enabled:=True;
-  edPago.SetFocus;
+  if (titulo_selecionado = True) then
+  begin
+    lblForma.Caption:='3-Cartao Credito';
+    pnCartoes.Visible:=False;
+    edPago.Enabled:=True;
+    edPago.SetFocus;
+  end;
 end;
 
 procedure TfRecebimento.BitBtn5Click(Sender: TObject);
@@ -1163,30 +1193,42 @@ end;
 
 procedure TfRecebimento.acDinheiroExecute(Sender: TObject);
 begin
-  lblForma.Caption := '1-Dinheiro';
-  edPago.Enabled:=True;
-  edPago.SetFocus;
+  if (titulo_selecionado = True) then
+  begin
+    lblForma.Caption := '1-Dinheiro';
+    edPago.Enabled:=True;
+    edPago.SetFocus;
+  end;
 end;
 
 procedure TfRecebimento.BitBtn18Click(Sender: TObject);
 begin
-  lblForma.Caption := '2-Debito';
-  edPago.Enabled:=True;
-  edPago.SetFocus;
+  if (titulo_selecionado = True) then
+  begin
+    lblForma.Caption := '2-Debito';
+    edPago.Enabled:=True;
+    edPago.SetFocus;
+  end;
 end;
 
 procedure TfRecebimento.acDebitoExecute(Sender: TObject);
 begin
-  lblForma.Caption := '2-Debito';
-  edPago.Enabled:=True;
-  edPago.SetFocus;
+  if (titulo_selecionado = True) then
+  begin
+    lblForma.Caption := '2-Debito';
+    edPago.Enabled:=True;
+    edPago.SetFocus;
+  end;
 end;
 
 procedure TfRecebimento.acCreditoExecute(Sender: TObject);
 begin
-  lblForma.Caption := '3-Credito';
-  edPago.Enabled:=True;
-  edPago.SetFocus;
+  if (titulo_selecionado = True) then
+  begin
+    lblForma.Caption := '3-Credito';
+    edPago.Enabled:=True;
+    edPago.SetFocus;
+  end;
 end;
 
 procedure TfRecebimento.btnSairClick(Sender: TObject);

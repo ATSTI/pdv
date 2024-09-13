@@ -3410,7 +3410,7 @@ object fNfce: TfNfce
             Left = 24
             Height = 15
             Top = 139
-            Width = 45
+            Width = 47
             Caption = 'SSL Type'
             ParentColor = False
           end

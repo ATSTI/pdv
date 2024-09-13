@@ -160,7 +160,7 @@ type
     procedure pegaTributos(codMov: Integer; codProd: Integer);
     procedure pegaItens();
     procedure AtualizaSSLLibsCombo;
-    procedure GravarDadosNF(protocolo: String; recibo: String);
+    function GravarDadosNF(protocolo: String; recibo: String): Boolean;
     procedure gerarSat();
     procedure gerarLog(const ALogLine: String; var Tratado: Boolean);
     procedure TrataErros(Sender: TObject; E: Exception);
@@ -268,7 +268,11 @@ begin
     //ACBrNFe1.NotasFiscais.GravarXML(AcbrNfe1.Configuracoes.Arquivos.PathSalvar);
 
     // Gravando a nota aqui pois se der erro no validar ja gravei
-    GravarDadosNF('', '');
+    if (GravarDadosNF('', '') = False) then
+    begin
+      MessageDlg('Erro para gravar notas.',mtError,[mbok],0);
+      Exit;
+    end;
     // estou pegando o ultimo numero usado em venda pra nao pular
     memoLog.Lines.Append('Gravando XML');
     //ACBrNFe1.NotasFiscais.Items[0].GravarXML();
@@ -303,7 +307,11 @@ begin
         //Recibo := ACBrNFe1.WebServices.Retorno.Recibo;
         Protocolo := ACBrNFe1.NotasFiscais.Items[0].NFe.procNFe.nProt;
         Recibo := ACBrNFe1.WebServices.Enviar.Recibo;
-        GravarDadosNF(protocolo, recibo);
+        if (GravarDadosNF(protocolo, recibo) = False) then
+        begin
+          MessageDlg('Erro para gravar nota ja enviada.',mtError,[mbok],0);
+          Exit;
+        end;
       end;
     end;
   Except
@@ -1447,7 +1455,7 @@ begin
   cbXmlSignLib.ItemIndex := Integer( ACBrNFe1.Configuracoes.Geral.SSLXmlSignLib );
 end;
 
-procedure TfNfce.GravarDadosNF(protocolo: String; recibo: String);
+function TfNfce.GravarDadosNF(protocolo: String; recibo: String): Boolean;
 var str: String;
   str_s: string;
 begin
@@ -1497,17 +1505,18 @@ begin
         str := str + ', CONTROLE = ' + QuotedStr('Manual');
       end;
     str := str + ' WHERE CODVENDA = ' + IntToStr(nfce_codVenda);
+  try
     dmPdv.IbCon.ExecuteDirect(str);
     dmPdv.sTrans.Commit;
-  {except
+    result := True;
+  except
     on E : Exception do
     begin
+      result := False;
       ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
       dmPdv.sTrans.Rollback; //on failure, undo the changes
     end;
-
   end;
-   }
 end;
 
 procedure TfNfce.gerarSat();
@@ -2302,7 +2311,11 @@ begin
     //ShowMessage(ACBrNFe1.WebServices.Consulta.Protocolo);
     Protocolo := ACBrNFe1.WebServices.Consulta.Protocolo;
     Recibo := 'recibo';//ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe. .WebServices.Consulta.Recibo;
-    GravarDadosNF(protocolo, recibo);
+    if (GravarDadosNF(protocolo, recibo) = False) then
+    begin
+      MessageDlg('Erro para gravar notas.',mtError,[mbok],0);
+      Exit;
+    end;
   end;
   memoLog.Lines.Append('Imprimindo NFCe ' + IntToStr(ACBrNFe1.NotasFiscais.Count));
   if ACBrNFe1.NotasFiscais.Count > 0 then
@@ -2484,7 +2497,11 @@ begin
       ACBrNFe1.NotasFiscais.Assinar;
 
     // Gravando a nota aqui pois se der erro no validar ja gravei
-    GravarDadosNF('', '');
+    if (GravarDadosNF('', '') = False) then
+    begin
+      MessageDlg('Erro para gravar notas.',mtError,[mbok],0);
+      Exit;
+    end;
     // estou pegando o ultimo numero usado em venda pra nao pular
     memoLog.Lines.Append('Gravando XML');
     //ACBrNFe1.NotasFiscais.Items[0].GravarXML();
@@ -2567,8 +2584,12 @@ begin
       memoLog.Lines.Append('cStat : ' + IntToStr(ACBrNFe1.WebServices.Retorno.cStat));
       if (ACBrNFe1.WebServices.Retorno.cStat = 100) then
       begin
-        GravarDadosNF(ACBrNFe1.WebServices.Retorno.Protocolo,
-          ACBrNFe1.WebServices.Retorno.Recibo);
+        if (GravarDadosNF(ACBrNFe1.WebServices.Retorno.Protocolo,
+          ACBrNFe1.WebServices.Retorno.Recibo) = False) then
+          begin
+            MessageDlg('Erro para gravar notas.',mtError,[mbok],0);
+            Exit;
+          end;
       end;
     Except
       on E:Exception do
