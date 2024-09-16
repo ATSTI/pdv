@@ -40,6 +40,7 @@
         <ComponentName Value="fPDV_Rec"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="10"/>
         <TopLine Value="1940"/>
         <CursorPos X="16" Y="1956"/>
@@ -90,6 +91,7 @@
         <EditorIndex Value="4"/>
         <TopLine Value="200"/>
         <CursorPos X="5" Y="207"/>
+        <ComponentState Value="1"/>
         <UsageCount Value="202"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -104,6 +106,7 @@
         <EditorIndex Value="7"/>
         <TopLine Value="122"/>
         <CursorPos X="35" Y="122"/>
+        <ComponentState Value="1"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -220,10 +223,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uNfce"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="11"/>
-        <TopLine Value="1455"/>
-        <CursorPos X="60" Y="1506"/>
+        <TopLine Value="270"/>
+        <CursorPos Y="279"/>
         <ComponentState Value="1"/>
         <UsageCount Value="200"/>
         <Bookmarks Count="1">
@@ -251,6 +253,7 @@
         <EditorIndex Value="8"/>
         <TopLine Value="684"/>
         <CursorPos Y="753"/>
+        <ComponentState Value="1"/>
         <UsageCount Value="269"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -264,6 +267,7 @@
         <EditorIndex Value="6"/>
         <TopLine Value="235"/>
         <CursorPos X="29" Y="279"/>
+        <ComponentState Value="1"/>
         <UsageCount Value="263"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -308,6 +312,7 @@
         <EditorIndex Value="9"/>
         <TopLine Value="58"/>
         <CursorPos Y="63"/>
+        <ComponentState Value="1"/>
         <UsageCount Value="232"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -360,7 +365,7 @@
         <UnitName Value="uReceber"/>
         <EditorIndex Value="12"/>
         <TopLine Value="320"/>
-        <CursorPos X="3" Y="367"/>
+        <CursorPos Y="367"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -456,6 +461,7 @@
         <EditorIndex Value="5"/>
         <TopLine Value="50"/>
         <CursorPos X="22" Y="71"/>
+        <ComponentState Value="1"/>
         <UsageCount Value="146"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -754,123 +760,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="unfce.pas"/>
-        <Caret Line="132" Column="22" TopLine="113"/>
+        <Caret Line="225" Column="75" TopLine="214"/>
       </Position1>
       <Position2>
         <Filename Value="unfce.pas"/>
-        <Caret Line="392" Column="31" TopLine="293"/>
+        <Caret Line="198" TopLine="187"/>
       </Position2>
       <Position3>
         <Filename Value="unfce.pas"/>
-        <Caret Line="163" Column="28" TopLine="153"/>
+        <Caret Line="199" TopLine="187"/>
       </Position3>
       <Position4>
         <Filename Value="unfce.pas"/>
-        <Caret Line="271" Column="18" TopLine="252"/>
+        <Caret Line="200" TopLine="187"/>
       </Position4>
       <Position5>
         <Filename Value="unfce.pas"/>
-        <Caret Line="306" Column="22" TopLine="287"/>
+        <Caret Line="203" Column="57" TopLine="199"/>
       </Position5>
       <Position6>
         <Filename Value="unfce.pas"/>
-        <Caret Line="335" Column="22" TopLine="316"/>
+        <Caret Line="206" TopLine="199"/>
       </Position6>
       <Position7>
         <Filename Value="unfce.pas"/>
-        <Caret Line="362" Column="22" TopLine="343"/>
+        <Caret Line="207" TopLine="199"/>
       </Position7>
       <Position8>
         <Filename Value="unfce.pas"/>
-        <Caret Line="1492" Column="21" TopLine="1464"/>
+        <Caret Line="208" TopLine="199"/>
       </Position8>
       <Position9>
         <Filename Value="unfce.pas"/>
-        <Caret Line="2098" Column="10" TopLine="2093"/>
+        <Caret Line="209" TopLine="199"/>
       </Position9>
       <Position10>
         <Filename Value="unfce.pas"/>
-        <Caret Line="2233" Column="25" TopLine="2213"/>
+        <Caret Line="212" Column="50" TopLine="205"/>
       </Position10>
       <Position11>
         <Filename Value="unfce.pas"/>
-        <Caret Line="2263" Column="25" TopLine="2243"/>
+        <Caret Line="221" TopLine="205"/>
       </Position11>
       <Position12>
         <Filename Value="unfce.pas"/>
-        <Caret Line="2311" Column="25" TopLine="2291"/>
+        <Caret Line="224" Column="84" TopLine="208"/>
       </Position12>
       <Position13>
         <Filename Value="unfce.pas"/>
-        <Caret Line="2361" Column="25" TopLine="2341"/>
+        <Caret Line="228" TopLine="209"/>
       </Position13>
       <Position14>
         <Filename Value="unfce.pas"/>
-        <Caret Line="2391" Column="25" TopLine="2371"/>
+        <Caret Line="235" TopLine="224"/>
       </Position14>
       <Position15>
         <Filename Value="unfce.pas"/>
-        <Caret Line="2396" Column="25" TopLine="2376"/>
+        <Caret Line="236" TopLine="224"/>
       </Position15>
       <Position16>
         <Filename Value="unfce.pas"/>
-        <Caret Line="2402" Column="25" TopLine="2382"/>
+        <Caret Line="240" TopLine="224"/>
       </Position16>
       <Position17>
         <Filename Value="unfce.pas"/>
-        <Caret Line="2551" Column="25" TopLine="2531"/>
+        <Caret Line="242" TopLine="230"/>
       </Position17>
       <Position18>
         <Filename Value="unfce.pas"/>
-        <Caret Line="41" Column="12" TopLine="30"/>
+        <Caret Line="248" TopLine="230"/>
       </Position18>
       <Position19>
         <Filename Value="unfce.pas"/>
-        <Caret Line="31" Column="92" TopLine="30"/>
+        <Caret Line="257" TopLine="246"/>
       </Position19>
       <Position20>
         <Filename Value="unfce.pas"/>
-        <Caret Line="46" Column="75" TopLine="30"/>
+        <Caret Line="260" TopLine="246"/>
       </Position20>
       <Position21>
         <Filename Value="unfce.pas"/>
-        <Caret Line="2103" Column="74" TopLine="2093"/>
+        <Caret Line="261" TopLine="246"/>
       </Position21>
       <Position22>
         <Filename Value="unfce.pas"/>
-        <Caret Line="2304" Column="18" TopLine="2285"/>
+        <Caret Line="262" TopLine="246"/>
       </Position22>
       <Position23>
         <Filename Value="unfce.pas"/>
-        <Caret Line="2486" Column="18" TopLine="2467"/>
+        <Caret Line="263" TopLine="255"/>
       </Position23>
       <Position24>
         <Filename Value="unfce.pas"/>
-        <Caret Line="2516" Column="22" TopLine="2497"/>
+        <Caret Line="265" TopLine="255"/>
       </Position24>
       <Position25>
         <Filename Value="unfce.pas"/>
-        <Caret Line="2569" Column="22" TopLine="2549"/>
+        <Caret Line="266" TopLine="255"/>
       </Position25>
       <Position26>
         <Filename Value="unfce.pas"/>
-        <Caret Line="163" Column="28" TopLine="153"/>
+        <Caret Line="271" TopLine="261"/>
       </Position26>
       <Position27>
         <Filename Value="unfce.pas"/>
-        <Caret Line="271" Column="18" TopLine="252"/>
+        <Caret Line="273" TopLine="261"/>
       </Position27>
       <Position28>
         <Filename Value="unfce.pas"/>
-        <Caret Line="306" Column="22" TopLine="287"/>
+        <Caret Line="275" TopLine="261"/>
       </Position28>
       <Position29>
         <Filename Value="unfce.pas"/>
-        <Caret Line="335" Column="22" TopLine="316"/>
+        <Caret Line="276" TopLine="261"/>
       </Position29>
       <Position30>
         <Filename Value="unfce.pas"/>
-        <Caret Line="362" Column="22" TopLine="343"/>
+        <Caret Line="278" TopLine="261"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -1005,6 +1011,20 @@
         <WatchKind Value="wpkWrite"/>
         <Source Value="ureceber.pas"/>
         <Line Value="322"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="unfce.pas"/>
+        <Line Value="198"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="unfce.pas"/>
+        <Line Value="227"/>
       </Item>
     </BreakPoints>
     <Watches>

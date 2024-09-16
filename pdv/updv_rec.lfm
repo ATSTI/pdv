@@ -1047,9 +1047,9 @@ object fPDV_Rec: TfPDV_Rec
         Visible = False
       end
       object pnCartoes: TPanel
-        Left = 24
+        Left = 40
         Height = 258
-        Top = 352
+        Top = 120
         Width = 374
         ClientHeight = 258
         ClientWidth = 374
@@ -1633,6 +1633,7 @@ object fPDV_Rec: TfPDV_Rec
           }
           OnClick = BitBtn3Click
           TabOrder = 4
+          Visible = False
         end
       end
       object Label3: TLabel
