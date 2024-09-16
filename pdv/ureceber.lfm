@@ -41,7 +41,7 @@ object fRecebimento: TfRecebimento
       Left = 608
       Height = 21
       Top = 15
-      Width = 82
+      Width = 84
       Caption = 'Valor Total'
       Font.Height = -16
       Font.Style = [fsBold]
@@ -85,7 +85,7 @@ object fRecebimento: TfRecebimento
       Left = 391
       Height = 21
       Top = 70
-      Width = 83
+      Width = 84
       Caption = 'Valor Pago'
       Font.Height = -16
       Font.Style = [fsBold]
@@ -1198,7 +1198,7 @@ object fRecebimento: TfRecebimento
       Left = 389
       Height = 21
       Top = 8
-      Width = 101
+      Width = 102
       Caption = 'Valor a Pagar'
       Font.Height = -16
       Font.Style = [fsBold]
@@ -1227,7 +1227,7 @@ object fRecebimento: TfRecebimento
       Left = 391
       Height = 21
       Top = 40
-      Width = 88
+      Width = 89
       Caption = 'Valor Juros '
       Font.Height = -16
       Font.Style = [fsBold]

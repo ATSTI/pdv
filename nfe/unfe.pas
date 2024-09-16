@@ -293,10 +293,12 @@ type
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure cbCryptLibChange(Sender: TObject);
+    procedure cbEmpresaChange(Sender: TObject);
     procedure cbHttpLibChange(Sender: TObject);
     procedure cbSSLLibChange(Sender: TObject);
     procedure cbXmlSignLibChange(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
+    procedure ComboBox2Change(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
     procedure DBGrid1ColEnter(Sender: TObject);
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
@@ -341,6 +343,7 @@ type
     tot1: double;
     tot2: double;
     tot3: double;
+    tot4: double;
     totIPIDevol: double;
     cst_utilizado: String;
     c_custo_open: String;
@@ -2111,6 +2114,12 @@ begin
   end;
 end;
 
+procedure TfNFe.cbEmpresaChange(Sender: TObject);
+begin
+  ComboBox1.ItemIndex := cbEmpresa.ItemIndex;
+  ComboBox2.ItemIndex := cbEmpresa.ItemIndex;
+end;
+
 procedure TfNFe.cbHttpLibChange(Sender: TObject);
 begin
   try
@@ -2143,9 +2152,17 @@ end;
 
 procedure TfNFe.ComboBox1Change(Sender: TObject);
 begin
+  cbEmpresa.ItemIndex := ComboBox1.ItemIndex;
+  ComboBox2.ItemIndex := ComboBox1.ItemIndex;
   abrirEmpresa;
   carregaTudo;
   abrindoSistema;
+end;
+
+procedure TfNFe.ComboBox2Change(Sender: TObject);
+begin
+  ComboBox1.ItemIndex := ComboBox2.ItemIndex;
+  cbEmpresa.ItemIndex := ComboBox2.ItemIndex;
 end;
 
 procedure TfNFe.DBGrid1CellClick(Column: TColumn);
@@ -3273,7 +3290,7 @@ begin
 
   //ComboBox1.ItemIndex := 0 ;
   ///*
-  if (PageControl1.ActivePageIndex = 0) then
+  //if (PageControl1.ActivePageIndex = 0) then
   begin
     if(ComboBox1.Text <> '') then
     begin
@@ -3281,8 +3298,8 @@ begin
     end;
   end;
 
-  if (PageControl1.ActivePageIndex = 1) then
-  begin
+  //if (PageControl1.ActivePageIndex = 1) then
+  {begin
     if(ComboBox2.Text = '') then
     begin
       MessageDlg('Centro de custo não selecionado', mtError, [mbOK], 0);
@@ -3290,14 +3307,14 @@ begin
     v_semp += ' AND NOME = ' + QuotedStr(Trim(ComboBox2.Text));
   end;
 
-  if (PageControl1.ActivePageIndex = 3) then
+  //if (PageControl1.ActivePageIndex = 3) then
   begin
     if(cbEmpresa.Text = '') then
     begin
       MessageDlg('Centro de custo não selecionado', mtError, [mbOK], 0);
     end;
     v_semp += ' AND NOME = ' + QuotedStr(Trim(cbEmpresa.Text));
-  end;
+  end;}
 
   ///
   //dmPdv.qcds_ccusto.SQL.Add(v_semp);
@@ -4298,6 +4315,7 @@ begin
              pICMSUFDest    := dmPdv.cdsItensNFPICMSUFDEST.AsCurrency;
              pICMSInter     := dmPdv.cdsItensNFPICMSINTER.AsCurrency;
              pICMSInterPart := dmPdv.cdsItensNFPICMSINTERPART.AsCurrency;
+             tot4           := tot4 + dmPdv.cdsItensNFVFCPUFDEST.AsCurrency;
              vFCPUFDest     := dmPdv.cdsItensNFVFCPUFDEST.AsCurrency;
              tot1           := tot1 + dmPdv.cdsItensNFVFCPUFDEST.AsCurrency;
              vICMSUFDest    := dmPdv.cdsItensNFVICMSUFDEST.AsCurrency;
@@ -5001,9 +5019,11 @@ begin
         edtNumSerie.Text := Trim(dmPdv.qsEmpresaCERTIFICADO.AsString);
         edtNumSerie1.Text := Trim(dmPdv.qsEmpresaCERTIFICADO.AsString);
         edtNumSerie2.Text := Trim(dmPdv.qsEmpresaCERTIFICADO.AsString);
+        edtNumSerieABA.Text := Trim(dmPdv.qsEmpresaCERTIFICADO.AsString);
       end;
       Edit1.Text := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString);
       Edit3.Text := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString);
+      Edit6.Text := Trim(dmPdv.qsEmpresaDIVERSOS1.AsString);
       //sq := trim(dmPdv.qsEmpresaTIPO.AsString);
       if (trim(dmPdv.qsEmpresaTIPO.AsString) = '0') then
       begin
@@ -5447,6 +5467,7 @@ begin
         tot1 := 0;
         tot2 := 0;
         tot3 := 0;
+        tot4 := 0;
 
         infCplTrib := '';
         //if ((cdsNFVLRTOT_TRIB.AsFloat > 0) and (dm.vTipoFiscal = '9'))  then
@@ -5561,6 +5582,7 @@ begin
         Total.ICMSTot.vNF   := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant;
         Total.ICMSTot.vTotTrib := dmPdv.qcdsNFVLRTOT_TRIB.AsVariant;
         Total.ICMSTot.vICMSUFDest:=tot2;
+        Total.ICMSTot.vFCPUFDest:=tot4;
 
 
         if (totIPIDevol > 0) then
