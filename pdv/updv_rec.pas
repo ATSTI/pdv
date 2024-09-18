@@ -462,6 +462,7 @@ begin
       vcDesc  += vcDesc + sqPagamentoDESCONTO.AsFloat;
       vcTroco := vcTroco + sqPagamentoTROCO.AsFloat;
       vcPago := vcPago + sqPagamentoVALOR_PAGO.AsFloat;
+      vCodVenda := sqPagamentoCOD_VENDA.AsInteger;
       sqPagamento.Next;
     end;
   end;
@@ -2232,8 +2233,6 @@ begin
     sqPagamento.Next;
   end;
   NFP := NFR + NFD;
-
-
   if vStatus = 0 then
   begin
     encerra_venda();
