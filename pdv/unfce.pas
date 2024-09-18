@@ -977,16 +977,17 @@ begin
     with pag.Add do
     begin
       tPag := fpCreditoLoja;
-      tpIntegra := tiPagNaoIntegrado;
       if (trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString) = '1') then
         tPag := fpDinheiro
       else if (trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString) = '3') then
       begin
         tPag := fpCartaoCredito;
+        tpIntegra := tiPagNaoIntegrado;
       end
       else if trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString) = '2' then
       begin
         tPag := fpCartaoDebito;
+        tpIntegra := tiPagNaoIntegrado;
       end
       else if trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString) = '5' then
       begin
@@ -1483,8 +1484,6 @@ begin
       str := 'UPDATE VENDA SET ';
       str := str + ' NOMEXML = ' +
           QuotedStr('NFCE-' + dmPdv.varLogado + '-' + IntToStr(num_nfce));
-      str := str + ', NOTAFISCAL = ' + IntToStr(num_nfce);
-      str := str + ', SERIE = ' + QuotedStr('NFCE-'+dmPdv.varLogado);
       if (dmPdv.NFE_Teste = 'S') then
       begin
         // ----------------------------------------------------------------
