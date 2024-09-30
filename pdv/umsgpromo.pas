@@ -15,6 +15,7 @@ type
   TfMsgPromo = class(TForm)
     Image1: TImage;
     Label1: TLabel;
+    Label2: TLabel;
     Memo1: TMemo;
     OpenDialog1: TOpenDialog;
     OpenPictureDialog1: TOpenPictureDialog;
@@ -49,9 +50,11 @@ var
   Arquivo : TStringList;
   pTempo : integer;
 begin
-  onde := dmPdv.path_exe ;
+  onde := 'C:\home\' ; //dmPdv.path_exe ;
   pTempo:= dmPdv.TempoPromocao;
   promo := onde + 'integracao_odoo\'+ dmPdv.sqBusca.FieldByName('FOTOPRODUTO').AsString;
+
+  label2.Caption:= promo;
 
   if pos('txt',promo)>0 then
   begin

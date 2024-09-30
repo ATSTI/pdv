@@ -150,6 +150,8 @@ begin
   edCodCliente.Text := IntToStr(codClienteR);
 end;
 
+
+
 procedure TfRecebimento.edCodClienteExit(Sender: TObject);
 begin
   if (edCodCliente.Text <> '') then
@@ -256,6 +258,7 @@ begin
   edNomeCliente.Text:= '';
   pCod:='';
   label3.Caption:='...';
+  label8.Caption:='...' ;
   edPago.Text:= '0,00';
   edPago1.Text:= '0,00';
   edJuros.Text:= '0,00';
@@ -641,6 +644,8 @@ begin
    end;
  end;
  edPago.Text:= '0,00';
+
+ btnProcurar.Enabled := False;
 end;
 
 procedure TfRecebimento.btnConfirmaClick(Sender: TObject);
@@ -804,12 +809,66 @@ begin
           begin
             Writeln(Impressora,'Fatura :' + label8.Caption);
           end;
-          Writeln(Impressora,'');
+          //Writeln(Impressora,'');
+        end;
+        Writeln(Impressora,'');
+        Writeln(Impressora,'');
+        Writeln(Impressora,'------- Via do Cliente  ---------');
+        Writeln(Impressora,'');
+        Writeln(Impressora,'');
+        ///
+        Rewrite(IMPRESSORA);
+        if not (FileExists(dmpdv.path_exe + 'cupomRec.txt')) then
+        begin
+          ShowMessage('Crie o arquivo cupomRec.txt');
+          Exit;
+        end;
+        lFile.LoadFromFile(dmpdv.path_exe + 'cupomRec.txt');
+        for i:=0 to lFile.Count-1 do
+        begin
+          v_log := 'Log lendo cupomRec.txt ';
+          linhaTxt := Copy(lFile[i],0,1);
+          if lFile[i] = 'empresa' then
+            Writeln(Impressora, RemoveAcento(Format('  %-36s',[dmPdv.sqEmpresaRAZAO.Value])))
+          else if lFile[i] = 'logradouro' then
+            Writeln(Impressora, logradouro)
+          else if lFile[i] = 'cep' then
+            Writeln(Impressora, cep)
+          else if lFile[i] = 'fone' then
+          begin
+            Writeln(Impressora, fone);
+          end
+          else if lFile[i] = 'usuario' then
+          begin
+            Writeln(Impressora,'');
+            Writeln(Impressora,'-------------------------');
+            Writeln(impressora, 'Usuario: ' + dmpdv.nomeLogado);
+            Writeln(Impressora,'-------------------------');
+            Writeln(Impressora, clientecupom);
+          end
+          else if lFile[i] = 'doc' then
+            Writeln(Impressora,'Recebido Dia.' + FormatDateTime('dd/mm/yyyy hh:MM:ss', Now));
+          ///else
+          if lFile[i] = 'recebi' then
+          begin
+            Writeln(Impressora,'-------------------------');
+            // Writeln(Impressora,'  Valor Pago : ' + edPago.Text);
+            Writeln(IMPRESSORA, ' Valor Pago : ' + FormatFloat(',##0.00', StrToFloat(edPago.Text)));
+            Writeln(Impressora,'--------------------------');
+            Writeln(Impressora,'');
+           end;
+          if lFile[i] = 'pedido' then
+          begin
+            Writeln(Impressora,'Fatura :' + label8.Caption);
+          end;
+         // Writeln(Impressora,'');
         end;
         Writeln(Impressora,'');
         Writeln(Impressora,'');
         Writeln(Impressora,'');
-        Writeln(Impressora,'.');
+        Writeln(Impressora,'========');
+
+        ///
       finally
         CloseFile(IMPRESSORA);
         lFile.Free;
@@ -1233,7 +1292,9 @@ end;
 
 procedure TfRecebimento.btnSairClick(Sender: TObject);
 begin
+  btnProcurar.Enabled := True;
   Close;
+
 end;
 
 end.

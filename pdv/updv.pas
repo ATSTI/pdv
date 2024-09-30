@@ -251,7 +251,6 @@ type
     codCaixa: Integer; // cod Usuario
     codVendedor: Integer;
     codVendedorAnterior : Integer;
-
     codDet: Integer;
     qtde_ped: Integer;
     num_item: Integer;
@@ -2183,11 +2182,11 @@ begin
     fCpr.Free;
   end;
   dmPdv.sTrans.Commit;
-  if (dmPdv.CupomImp = 'Texto') then
+  if (dmPdv.CupomImp <> 'Texto') then
     if not (DirectoryExists(ExtractFilePath(dmPdv.path_imp))) then
       CreateDir(ExtractFilePath(dmPdv.path_imp));
   imprimirCupomTroca;
-  if (dmPdv.CupomImp <> 'Texto') then
+  if (dmPdv.CupomImp = 'Texto') then  // BARRA
     imprimirAcbr;
 
 
@@ -2269,7 +2268,7 @@ begin
   lFile := TStringList.Create;
   //Aqui uso o ACBR pra imprimir , entao nao precisa disto 10/11/2020
 
-  if ((dmPdv.CupomImp = 'BARRA') or (dmPdv.CupomImp = 'DB')) then
+  if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
   begin
     //v_log := 'Log portaImp - ' + dmPdv.portaIMP;
     //AssignFile(IMPRESSORA, dmPdv.portaIMP);
@@ -2399,7 +2398,7 @@ var arquivo: TStringList;
 begin
   arquivo := TStringList.Create();
   try
-    if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
+    if ((dmPdv.CupomImp <> 'Texto') or (dmPdv.CupomImp = 'DB')) then
     begin
       //v_log := 'Log portaImp - ' + dmPdv.portaIMP;
       arquivo.LoadFromFile(dmpdv.portaIMP);
