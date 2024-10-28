@@ -3410,7 +3410,7 @@ object fNfce: TfNfce
             Left = 24
             Height = 15
             Top = 139
-            Width = 47
+            Width = 45
             Caption = 'SSL Type'
             ParentColor = False
           end
@@ -3554,7 +3554,8 @@ object fNfce: TfNfce
   end
   object ACBrNFeDANFeESCPOS1: TACBrNFeDANFeESCPOS
     MostraSetup = True
-    Sistema = '...............'
+    Sistema = 'Troca Apresentar Esse Cupom Em ate 10 Dias'
+    Site = 'Nao Trocamos Itens De Fantasia / Consulte nossa política de trocas'
     MargemInferior = 0.2
     MargemSuperior = 0.2
     MargemEsquerda = 0.2
@@ -3608,7 +3609,8 @@ object fNfce: TfNfce
     Top = 16
   end
   object ACBrSATExtratoESCPOS1: TACBrSATExtratoESCPOS
-    Sistema = '..................................'
+    Sistema = 'Troca Apresentar Esse Cupom Em Ate 10 Dias'
+    Site = 'Nao Trocamos Itens De Fantasia '
     MargemInferior = 0.8
     MargemSuperior = 0.8
     MargemEsquerda = 0.6
