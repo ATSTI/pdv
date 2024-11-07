@@ -113,6 +113,7 @@ type
     MenuItem10: TMenuItem;
     MenuItem11: TMenuItem;
     MenuItem12: TMenuItem;
+    MenuItem13: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
@@ -216,6 +217,7 @@ type
     procedure Image2Click(Sender: TObject);
     procedure Image3Click(Sender: TObject);
     procedure MenuItem10Click(Sender: TObject);
+    procedure MenuItem13Click(Sender: TObject);
     procedure MenuItem5Click(Sender: TObject);
     procedure MenuItem6Click(Sender: TObject);
     procedure MenuItem8Click(Sender: TObject);
@@ -1260,6 +1262,13 @@ begin
        ShowMessage('Erro para finalizar a venda.');
      end;
    end;
+end;
+
+procedure TfPdv.MenuItem13Click(Sender: TObject);
+begin
+     dmpdv.IbCon.ExecuteDirect('UPDATE PRODUTOS SET FOTOPRODUTO = null WHERE FOTOPRODUTO ='+ QuotedStr('Null'));
+     dmpdv.sTrans.Commit;
+     ShowMessage('Promoção Corrigida');
 end;
 
 procedure TfPdv.MenuItem5Click(Sender: TObject);

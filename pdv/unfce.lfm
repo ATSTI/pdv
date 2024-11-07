@@ -3555,7 +3555,7 @@ object fNfce: TfNfce
   object ACBrNFeDANFeESCPOS1: TACBrNFeDANFeESCPOS
     MostraSetup = True
     Sistema = 'Troca Apresentar Esse Cupom Em ate 10 Dias'
-    Site = 'Nao Trocamos Itens De Fantasia / Consulte nossa política de trocas'
+    Site = 'Consulte nossa política de trocas'
     MargemInferior = 0.2
     MargemSuperior = 0.2
     MargemEsquerda = 0.2
