@@ -339,29 +339,32 @@ class IntegracaoOdoo:
             prods = db.query(sqlp)
             if pr['codpro']:
                 codpro = pr['codpro'].strip()
-            if not os.path.exists('promocao'):
-                os.makedirs('promocao')
-            promo_jpg = f"promocao\{codpro}.jpg"
-            promo_txt = f"promocao\{codpro}.txt"
-            img_sql = 'Null'
-            if pr['promocao_jpg']:
-                img_sql = promo_jpg
-                if not os.path.exists(promo_jpg):
-                    imagem = pr['promocao_jpg']
-                    imagem_dec = base64.b64decode(imagem)
-                    with open(promo_jpg, 'wb') as f:
-                        f.write(imagem_dec)
-            else:
-                if os.path.exists(promo_jpg):
-                    os.remove(promo_jpg)
-            if pr['promocao_txt']:
-                img_sql = promo_txt
-                if not os.path.exists(promo_txt):
-                    with open(promo_txt, 'w') as f:
-                        f.write(pr['promocao_txt'])
-            else:
-                if os.path.exists(promo_txt):
-                    os.remove(promo_txt)
+
+            # serve pra identificar se usa o pdv_integracao ou o pdv_integracao_outros
+            if 'tipo_venda' in pr and pr['tipo_venda']:
+                if not os.path.exists('promocao'):
+                    os.makedirs('promocao')
+                promo_jpg = f"promocao{codpro}.jpg"
+                promo_txt = f"promocao{codpro}.txt"
+                img_sql = 'Null'
+                if pr['promocao_jpg']:
+                    img_sql = promo_jpg
+                    if not os.path.exists(promo_jpg):
+                        imagem = pr['promocao_jpg']
+                        imagem_dec = base64.b64decode(imagem)
+                        with open(promo_jpg, 'wb') as f:
+                            f.write(imagem_dec)
+                else:
+                    if os.path.exists(promo_jpg):
+                        os.remove(promo_jpg)
+                if pr['promocao_txt']:
+                    img_sql = promo_txt
+                    if not os.path.exists(promo_txt):
+                        with open(promo_txt, 'w') as f:
+                            f.write(pr['promocao_txt'])
+                else:
+                    if os.path.exists(promo_txt):
+                        os.remove(promo_txt)
 
             #sqlp = 'select codproduto from produtos where codpro like \'%s\'' %(codp+'%')
             if codbarra:
@@ -503,11 +506,12 @@ class IntegracaoOdoo:
 
     def action_atualiza_clientes(self):
         self._inicia()
-        try:
-            db = con()
-            dblocal = local_db(filename = 'lancamento.db', table = 'cliente')
-        except:
-            msg_sis = u'Caminho ou nome do banco invalido. '
+        envia("cliente")
+        # try:
+        db = con()
+        #     dblocal = local_db(filename = 'lancamento.db', table = 'cliente')
+        # except:
+        #     msg_sis = u'Caminho ou nome do banco invalido. '
         msg_erro = ''
         msg_sis = 'Integrando Clientes para o PDV '
         print("Atualizando clientes.")
@@ -515,11 +519,20 @@ class IntegracaoOdoo:
         alterado = 0
         hj = datetime.now()
         hj = datetime.strftime(hj,'%Y-%m-%d')
-        cli_ids = dblocal.consulta_cliente()
-        if not cli_ids:
+        # cli_ids = dblocal.consulta_cliente()
+        arquivo_json = os.path.join(self.path_envio, "clientes.json")
+        try:
+            f = open(arquivo_json)
+        except:
+            return
+        cliente_arquivo = json.load(f)
+        
+        cli_novo = json.loads(cliente_arquivo['result'])
+
+        if not cli_novo:
             print('Sem clientes pra atualizar')
             return
-        for partner_id in cli_ids:
+        for partner_id in cli_novo:
             nome = partner_id['nomecliente']
             nome = self.removerAcentosECaracteresEspeciais(nome)
             razao = nome  

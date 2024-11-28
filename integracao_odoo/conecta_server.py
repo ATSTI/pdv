@@ -6,7 +6,7 @@ from datetime import datetime
 # from atscon import Conexao as con
 from sqlite_bd import Database as local_db
 # import numpy as np
-import pandas as pd
+# import pandas as pd
 # from pandas import DataFrame, Series
 import sqlite3 as db
 
