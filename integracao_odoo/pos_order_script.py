@@ -341,7 +341,7 @@ class IntegracaoOdoo:
                 codpro = pr['codpro'].strip()
 
             # serve pra identificar se usa o pdv_integracao ou o pdv_integracao_outros
-            if 'tipo_venda' in pr and pr['tipo_venda']:
+            if 'tipo_venda' in pr:
                 if not os.path.exists('promocao'):
                     os.makedirs('promocao')
                 promo_jpg = f"promocao{codpro}.jpg"
@@ -438,7 +438,8 @@ class IntegracaoOdoo:
                 insere += ',' + precoatacado
                 insere += ', \'' + data_fb + '\''
                 insere += ',' + str(codproduto)
-                insere += ',' + img_sql                
+                if 'tipo_venda' in pr:
+                    insere += ',' + img_sql                
                 if codbarra:
                     insere += ', \'' + str(codbarra) + '\''
                 insere += ')'
