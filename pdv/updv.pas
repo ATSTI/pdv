@@ -113,6 +113,7 @@ type
     MenuItem10: TMenuItem;
     MenuItem11: TMenuItem;
     MenuItem12: TMenuItem;
+    MenuItem13: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
@@ -216,6 +217,7 @@ type
     procedure Image2Click(Sender: TObject);
     procedure Image3Click(Sender: TObject);
     procedure MenuItem10Click(Sender: TObject);
+    procedure MenuItem13Click(Sender: TObject);
     procedure MenuItem5Click(Sender: TObject);
     procedure MenuItem6Click(Sender: TObject);
     procedure MenuItem8Click(Sender: TObject);
@@ -251,7 +253,6 @@ type
     codCaixa: Integer; // cod Usuario
     codVendedor: Integer;
     codVendedorAnterior : Integer;
-
     codDet: Integer;
     qtde_ped: Integer;
     num_item: Integer;
@@ -1263,6 +1264,13 @@ begin
    end;
 end;
 
+procedure TfPdv.MenuItem13Click(Sender: TObject);
+begin
+     dmpdv.IbCon.ExecuteDirect('UPDATE PRODUTOS SET FOTOPRODUTO = null WHERE FOTOPRODUTO ='+ QuotedStr('Null'));
+     dmpdv.sTrans.Commit;
+     ShowMessage('Promoção Corrigida');
+end;
+
 procedure TfPdv.MenuItem5Click(Sender: TObject);
 begin
   if (statusPedido > 0) then
@@ -2183,11 +2191,11 @@ begin
     fCpr.Free;
   end;
   dmPdv.sTrans.Commit;
-  if (dmPdv.CupomImp = 'Texto') then
+  if (dmPdv.CupomImp <> 'Texto') then
     if not (DirectoryExists(ExtractFilePath(dmPdv.path_imp))) then
       CreateDir(ExtractFilePath(dmPdv.path_imp));
   imprimirCupomTroca;
-  if (dmPdv.CupomImp <> 'Texto') then
+  if (dmPdv.CupomImp = 'Texto') then  // BARRA
     imprimirAcbr;
 
 
@@ -2269,7 +2277,7 @@ begin
   lFile := TStringList.Create;
   //Aqui uso o ACBR pra imprimir , entao nao precisa disto 10/11/2020
 
-  if ((dmPdv.CupomImp = 'BARRA') or (dmPdv.CupomImp = 'DB')) then
+  if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
   begin
     //v_log := 'Log portaImp - ' + dmPdv.portaIMP;
     //AssignFile(IMPRESSORA, dmPdv.portaIMP);
@@ -2399,7 +2407,7 @@ var arquivo: TStringList;
 begin
   arquivo := TStringList.Create();
   try
-    if ((dmPdv.CupomImp = 'Texto') or (dmPdv.CupomImp = 'DB')) then
+    if ((dmPdv.CupomImp <> 'Texto') or (dmPdv.CupomImp = 'DB')) then
     begin
       //v_log := 'Log portaImp - ' + dmPdv.portaIMP;
       arquivo.LoadFromFile(dmpdv.portaIMP);

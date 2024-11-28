@@ -12785,6 +12785,10 @@ object fPdv: TfPdv
       Action = acFechar
       Caption = 'Fechar'
     end
+    object MenuItem13: TMenuItem
+      Caption = 'Promoção'
+      OnClick = MenuItem13Click
+    end
   end
   object dsProdProc: TDataSource
     DataSet = dmPdv.sqBusca

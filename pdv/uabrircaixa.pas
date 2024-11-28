@@ -72,13 +72,14 @@ type
     procedure dtDataChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure mostrarCaixa(usuarioCX: String);
+
   private
     cartao_debito_vlr: Double;
     cartao_credito_vlr: Double;
     cx_m: String;
     procedure AbrirCaixa();
     procedure FecharCaixa();
-
+    function strParaFloat(vlr_st: String): Double;
 
   public
     cxsangria : integer;
@@ -100,6 +101,7 @@ uses uIntegraSimples,uPdv,uMovimentoProc;
 {$R *.lfm}
 
 { TfAbrirCaixa }
+
 
 procedure TfAbrirCaixa.btnAbrefechaClick(Sender: TObject);
 var
@@ -751,6 +753,29 @@ begin
 
 end;
 
+function TfAbrirCaixa.strParaFloat(vlr_st: String): Double;
+  var tam: Integer;
+    vVlrStr: String;
+    vVlr_decimais: String;
+  begin
+    if (Length(vlr_st) > 6) then
+    begin
+      vVlr_decimais := Copy(vlr_st,pos(',',vlr_st)+1,Length(vlr_st));
+      Vlr_st := Copy(vlr_st,0,pos(',',vlr_st)-1);
+      if (Length(vlr_st) > 3) then
+      begin
+        vVlrStr := StringReplace(vlr_st, '.', '', [rfReplaceAll]);
+        vlr_st := vVlrStr + ',' + vVlr_decimais;
+      end
+      else begin
+        vlr_st := vlr_st + ',' + vVlr_decimais;
+      end;
+    end;
+    result := StrToFloat(vlr_st);
+
+
+end;
+
 procedure TfAbrirCaixa.Sangria;
 var
   codForma: integer;
@@ -799,13 +824,12 @@ begin
   //  4: forma_pag := 'V';
   //  5: forma_pag := 'T';
   end;
-
   //ComboBox1.ItemIndex
   sqPagamentoFORMA_PGTO.AsString := forma_pag;
   sqPagamentoID_ENTRADA.AsInteger:= StrToINT(dmPdv.idcaixa);
   sqPagamentoN_DOC.AsString      := 'Sangria Fechar Caixa :'+ dmPdv.idcaixa;
   sqPagamentoSTATE.AsInteger     := 1;
-  vlrSangria := StrToFloat(edTCaixa.Text);
+  vlrSangria := strParaFloat(edTCaixa.Text);
   //DecimalSeparator:='.';
   sqPagamentoVALOR_PAGO.AsFloat := vlrSangria;
   //DecimalSeparator:=',';
