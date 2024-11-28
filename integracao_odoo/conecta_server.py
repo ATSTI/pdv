@@ -158,7 +158,7 @@ class EnviaServer:
             #             # Atualizar no banco de DADOS (firebird) ou fazer insert
 
     def buscando_clientes(self):
-        conn = db.connect('lancamento.db')
+        # conn = db.connect('lancamento.db')
         headers = {'Content-type': 'application/json'}
         AUTH_URL = "http://%s/web/session/authenticate" %(self.url)
         data = {
@@ -189,17 +189,20 @@ class EnviaServer:
         }
         vals = {}
         json_data = json.dumps(vals)
+        arquivo_json = os.path.join(self.path_envio, "clientes.json")
         retorno = rq.post("http://{}".format(base_url), data=json_data, headers=json_headers, cookies=cookies)
         if retorno:
             file_json = retorno.json()
+            with open(arquivo_json, 'w', encoding='utf-8') as f:
+                json.dump(file_json, f, ensure_ascii=False, indent=4)
 
-            for item in file_json.values():
-                # print (item)
-                if item != None and len(item)>5:
-                    item_json = eval(item)
-                    m_df = pd.DataFrame(item_json)
-                    # print(m_df)
-                    m_df.to_sql('cliente', conn, if_exists='replace', index=False)
+            # for item in file_json.values():
+            #     # print (item)
+            #     if item != None and len(item)>5:
+            #         item_json = eval(item)
+            #         m_df = pd.DataFrame(item_json)
+            #         # print(m_df)
+            #         m_df.to_sql('cliente', conn, if_exists='replace', index=False)
 
     def lendo_arquivos(self):
         hj = datetime.now()       
