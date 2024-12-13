@@ -487,6 +487,7 @@ class IntegracaoOdoo:
                 if codbarra:
                     altera += ', COD_BARRA = \'' + str(codbarra) + '\''
                 altera += ' WHERE CODPRO = \'' + str(pr['codpro']) + '\''
+                altera += ' OR CODPRODUTO = ' + str(codproduto)
                 retorno = db.insert(altera)
                 if retorno:
                     print ('SQL : %s' %(altera))
