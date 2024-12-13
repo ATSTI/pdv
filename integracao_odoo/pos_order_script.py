@@ -309,6 +309,7 @@ class IntegracaoOdoo:
             _logger.info("Sem produtos pra atualizar")
             return False
         for pr in prod_novo:
+            codproduto = pr['codproduto'] * 10
             ncm = ''
             if 'ncm' in pr and pr['ncm']:
                 ncm = pr['ncm']
@@ -335,7 +336,9 @@ class IntegracaoOdoo:
             codp = str(pr['codproduto'])
 
             sqlp = "select FIRST 1 CODPRODUTO,\
-                    DATACADASTRO, VALOR_PRAZO from produtos where codpro = '%s'" %(pr["codpro"])
+                    DATACADASTRO, VALOR_PRAZO from produtos \
+                    where codpro = '%s' \
+                    or codproduto = %s" %(pr["codpro"], str(codproduto))
             prods = db.query(sqlp)
             if pr['codpro']:
                 codpro = pr['codpro'].strip()
@@ -415,10 +418,12 @@ class IntegracaoOdoo:
                 #    codp = str(product_id.id) 
                 #print ('Incluindo - %s-%s' %(str(product_id.id),product_id.name))
                 un = pr['unidademedida'][:2]
-                codproduto = pr['codproduto'] * 10
+                
                 insere = 'INSERT INTO PRODUTOS (UNIDADEMEDIDA, PRODUTO, PRECOMEDIO, CODPRO,\
                           TIPOPRECOVENDA, ORIGEM, NCM, VALORUNITARIOATUAL, VALOR_PRAZO, TIPO, RATEIO, \
-                          QTDEATACADO, PRECOATACADO, DATACADASTRO, CODPRODUTO, FOTOPRODUTO'
+                          QTDEATACADO, PRECOATACADO, DATACADASTRO, CODPRODUTO'
+                if 'tipo_venda' in pr:
+                    insere += ', FOTOPRODUTO'
                 if codbarra:
                     insere += ', COD_BARRA'
 
@@ -477,7 +482,8 @@ class IntegracaoOdoo:
                 altera += ', QTDEATACADO = ' + qtdeatacado 
                 altera += ', PRECOATACADO = ' + precoatacado
                 altera += ', DATACADASTRO = \'' + data_fb + '\''
-                altera += ', FOTOPRODUTO = \'' + img_sql + '\''
+                if 'tipo_venda' in pr:
+                    altera += ', FOTOPRODUTO = \'' + img_sql + '\''
                 if codbarra:
                     altera += ', COD_BARRA = \'' + str(codbarra) + '\''
                 altera += ' WHERE CODPRO = \'' + str(pr['codpro']) + '\''
