@@ -255,6 +255,7 @@ class IntegracaoOdoo:
                         'name': str(cod_forma),
                         'caixa': cod_caixa,
                         'cod_venda': cod_venda,
+                        'user_id': self.caixa_user,
             }
             arquivo_nome = self.path_envio + '/sangria_%s.json' %(cod_forma)
             if os.path.exists(arquivo_nome):
