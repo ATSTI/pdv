@@ -70,7 +70,6 @@ type
     procedure edPedidoKeyPress(Sender: TObject; var Key: char);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure Memo1Change(Sender: TObject);
   private
 
   public
@@ -419,11 +418,6 @@ begin
     btnFecharCaixa.Caption:= 'Abrir Caixa';
   end;
   acBuscar.Execute;
-end;
-
-procedure TfMovimentoProc.Memo1Change(Sender: TObject);
-begin
-
 end;
 
 end.

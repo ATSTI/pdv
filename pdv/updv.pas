@@ -60,6 +60,7 @@ type
     edCliente: TEdit;
     edClienteNome: TEdit;
     edDesconto: TMaskEdit;
+    edLocalizacao: TMemo;
     edProduto_copia: TEdit;
     edMotivo: TEdit;
     edPreco: TMaskEdit;
@@ -163,19 +164,13 @@ type
     procedure BitBtn11Click(Sender: TObject);
     procedure BitBtn12Click(Sender: TObject);
     procedure BitBtn13Click(Sender: TObject);
-    procedure btnProdutoProc1Click(Sender: TObject);
     procedure btnProdutoProcClick(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
     procedure BitBtn4Click(Sender: TObject);
-    procedure BitBtn5Click(Sender: TObject);
-    procedure BitBtn7Click(Sender: TObject);
     procedure BitBtn8Click(Sender: TObject);
     procedure BitBtn9Click(Sender: TObject);
     procedure btnInfoClick(Sender: TObject);
-    procedure btnNovoClick(Sender: TObject);
-    procedure btnReceberClick(Sender: TObject);
-    procedure btnVendasClick(Sender: TObject);
     procedure btnVnd1Click(Sender: TObject);
     procedure btnVnd2Click(Sender: TObject);
     procedure btnVnd3Click(Sender: TObject);
@@ -189,17 +184,10 @@ type
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure DBGrid2CellClick(Column: TColumn);
-    procedure DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
-      DataCol: Integer; Column: TColumn; State: TGridDrawState);
-    procedure DBGrid2Enter(Sender: TObject);
     procedure DBGrid2KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState
       );
-    procedure DBGrid2KeyPress(Sender: TObject; var Key: char);
     procedure DBGrid2KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure edBuscaDetalheChange(Sender: TObject);
-    procedure edClienteChange(Sender: TObject);
     procedure edClienteKeyPress(Sender: TObject; var Key: char);
-    procedure edDescontoChange(Sender: TObject);
     procedure edDescontoKeyPress(Sender: TObject; var Key: char);
     procedure edPreco1KeyPress(Sender: TObject; var Key: char);
     procedure edPrecoChange(Sender: TObject);
@@ -209,24 +197,16 @@ type
     procedure edQtdeChange(Sender: TObject);
     procedure edQtdeKeyPress(Sender: TObject; var Key: char);
     procedure edVendedorKeyPress(Sender: TObject; var Key: char);
-    procedure FlowPanel1Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure Image1Click(Sender: TObject);
-    procedure Image2Click(Sender: TObject);
     procedure Image3Click(Sender: TObject);
     procedure MenuItem10Click(Sender: TObject);
     procedure MenuItem13Click(Sender: TObject);
     procedure MenuItem5Click(Sender: TObject);
     procedure MenuItem6Click(Sender: TObject);
     procedure MenuItem8Click(Sender: TObject);
-    procedure Panel1Click(Sender: TObject);
-    procedure Panel2Click(Sender: TObject);
-    procedure btnVendaClick(Sender: TObject);
-    procedure Panel6Click(Sender: TObject);
     procedure TIButton2Click(Sender: TObject);
-    procedure TIGroupBox1Click(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
     procedure procFormShow;
@@ -298,16 +278,6 @@ uses updv_rec,udmpdv, uMovimentoProc, uProdutoProc, uIntegracaoOdoo,uAbrirCaixa2
 
 { TfPdv }
 
-procedure TfPdv.Panel2Click(Sender: TObject);
-begin
-
-end;
-
-procedure TfPdv.edClienteChange(Sender: TObject);
-begin
-
-end;
-
 procedure TfPdv.edClienteKeyPress(Sender: TObject; var Key: char);
 begin
   if Key = #13 then
@@ -331,11 +301,6 @@ begin
       codCliente := fClienteBusca.cCodCliente;
     end;
   end;
-end;
-
-procedure TfPdv.edDescontoChange(Sender: TObject);
-begin
-
 end;
 
 procedure TfPdv.edDescontoKeyPress(Sender: TObject; var Key: char);
@@ -388,16 +353,19 @@ begin
   if Key = #13 then
   begin
     Key := #0;
-    if (dmPdv.precoLivre <> 'LIVRE') then
+    if(dmPdv.MudarPreco = 'NAO')then
     begin
-      if (edPreco.Text <> edPreco1.Text) then
+      if (dmPdv.precoLivre <> 'LIVRE') then
       begin
-        fPermissao.Permissao_Fazer := 'PRECO';
-        fPermissao.ShowModal;
-        if (fPermissao.Permissao_Fazer = 'NAO') then
+        if (edPreco.Text <> edPreco1.Text) then
         begin
-          ShowMessage('Sem Permissao para alterar o preço.');
-          Exit;
+          fPermissao.Permissao_Fazer := 'PRECO';
+          fPermissao.ShowModal;
+          if (fPermissao.Permissao_Fazer = 'NAO') then
+          begin
+            ShowMessage('Sem Permissao para alterar o preço.');
+            Exit;
+          end;
         end;
       end;
     end;
@@ -444,6 +412,8 @@ begin
     precoAtacadoL   := dmPdv.sqLancamentosPRECOATACADO.AsFloat;
     qtdeAtacadoL    := dmPdv.sqLancamentosQTDEATACADO.AsFloat;
     edDesconto.Text:= FormatFloat('#,,,0.00',dmPdv.sqLancamentosDESCONTO.AsFloat);
+    edLocalizacao.Text:= dmPdv.sqLancamentosLOCALIZACAO.AsString;
+
     buscaVendedor(IntToStr(dmPdv.sqLancamentosCODVENDEDOR.AsInteger));
     preencherDescItem(dmPdv.sqLancamentosDESCPRODUTO.AsString);
   end;
@@ -490,16 +460,6 @@ begin
   lblProdBusca.Caption:=dmPdv.sqBusca.FieldByName('PRODUTO').AsString;
 end;
 
-procedure TfPdv.DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
-  DataCol: Integer; Column: TColumn; State: TGridDrawState);
-begin
-
-end;
-
-procedure TfPdv.DBGrid2Enter(Sender: TObject);
-begin
-end;
-
 procedure TfPdv.DBGrid2KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
@@ -528,10 +488,6 @@ begin
 
 end;
 
-procedure TfPdv.DBGrid2KeyPress(Sender: TObject; var Key: char);
-begin
-end;
-
 procedure TfPdv.DBGrid2KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState
   );
 begin
@@ -558,20 +514,6 @@ begin
     end;
   end;
 
-end;
-
-procedure TfPdv.edBuscaDetalheChange(Sender: TObject);
-begin
-
-end;
-
-procedure TfPdv.btnReceberClick(Sender: TObject);
-begin
-
-end;
-
-procedure TfPdv.BitBtn7Click(Sender: TObject);
-begin
 end;
 
 procedure TfPdv.btnProdutoProcClick(Sender: TObject);
@@ -635,11 +577,6 @@ end;
 procedure TfPdv.BitBtn4Click(Sender: TObject);
 begin
   acQuantidade.Execute;
-end;
-
-procedure TfPdv.BitBtn5Click(Sender: TObject);
-begin
-
 end;
 
 procedure TfPdv.acReceberExecute(Sender: TObject);
@@ -769,11 +706,6 @@ end;
 procedure TfPdv.BitBtn13Click(Sender: TObject);
 begin
   pnTroca.Visible := False;
-end;
-
-procedure TfPdv.btnProdutoProc1Click(Sender: TObject);
-begin
-
 end;
 
 procedure TfPdv.acFecharExecute(Sender: TObject);
@@ -969,15 +901,6 @@ end;
 procedure TfPdv.btnInfoClick(Sender: TObject);
 begin
   PopupMenu1.PopUp;
-end;
-
-procedure TfPdv.btnNovoClick(Sender: TObject);
-begin
-
-end;
-
-procedure TfPdv.btnVendasClick(Sender: TObject);
-begin
 end;
 
 procedure TfPdv.btnVnd1Click(Sender: TObject);
@@ -1200,11 +1123,6 @@ begin
   end;
 end;
 
-procedure TfPdv.FlowPanel1Click(Sender: TObject);
-begin
-
-end;
-
 procedure TfPdv.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   if dmpdv.empresa_integra <> 'ATS' then
@@ -1228,16 +1146,6 @@ begin
 end;
 
 
-
-procedure TfPdv.Image1Click(Sender: TObject);
-begin
-
-end;
-
-procedure TfPdv.Image2Click(Sender: TObject);
-begin
-
-end;
 
 procedure TfPdv.Image3Click(Sender: TObject);
 begin
@@ -1293,23 +1201,6 @@ begin
   fRecebimento.ShowModal;
 end;
 
-procedure TfPdv.Panel1Click(Sender: TObject);
-begin
-
-end;
-
-procedure TfPdv.btnVendaClick(Sender: TObject);
-begin
-
-end;
-
-procedure TfPdv.Panel6Click(Sender: TObject);
-begin
-
-end;
-
-
-
 procedure TfPdv.TIButton2Click(Sender: TObject);
 begin
   if (edMotivo.Text = '') then
@@ -1320,11 +1211,6 @@ begin
   trocaDevolucao;
   btnNovo.Click;
   pnTroca.Visible := False;
-end;
-
-procedure TfPdv.TIGroupBox1Click(Sender: TObject);
-begin
-
 end;
 
 procedure TfPdv.Timer1Timer(Sender: TObject);
@@ -1410,6 +1296,7 @@ begin
     edQtde.Text    := FormatFloat('#,,,0.00',dmPdv.sqLancamentosQUANTIDADE.AsFloat);
     edPreco.Text   := FormatFloat('#,,,0.00',dmPdv.sqLancamentosPRECO.AsFloat);
     edDesconto.Text:= FormatFloat('#,,,0.00',dmPdv.sqLancamentosDESCONTO.AsFloat);
+    edLocalizacao.Text:= dmPdv.sqLancamentosLOCALIZACAO.AsString;
     buscaVendedor(IntToStr(dmPdv.sqLancamentosCODVENDEDOR.AsInteger));
     codCliente := dmpdv.sqLancamentosCODCLIENTE.AsInteger;
     edCliente.Text := IntToStr(codCliente);

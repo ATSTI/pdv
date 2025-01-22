@@ -152,7 +152,6 @@ object fPDV_Rec: TfPDV_Rec
         ReadOnly = True
         TabOrder = 13
         Visible = False
-        OnChange = edTrocoChange
         Text = '0,00'
         SpaceChar = '_'
       end
@@ -308,7 +307,6 @@ object fPDV_Rec: TfPDV_Rec
         ClientWidth = 508
         ParentBackground = False
         TabOrder = 5
-        OnClick = GroupBox2Click
         object DBGrid1: TDBGrid
           Left = 0
           Height = 172
@@ -418,7 +416,6 @@ object fPDV_Rec: TfPDV_Rec
         ParentFont = False
         ReadOnly = True
         TabOrder = 6
-        OnChange = edRestanteChange
         Text = '0,00'
         SpaceChar = '_'
       end
@@ -440,7 +437,6 @@ object fPDV_Rec: TfPDV_Rec
         ParentFont = False
         ReadOnly = True
         TabOrder = 7
-        OnChange = edTrocoChange
         Text = '0,00'
         SpaceChar = '_'
       end
@@ -458,7 +454,6 @@ object fPDV_Rec: TfPDV_Rec
         Font.Style = [fsBold]
         ParentColor = False
         ParentFont = False
-        OnClick = lblParcelaClick
       end
       object edParcela: TEdit
         Left = 104
@@ -468,7 +463,6 @@ object fPDV_Rec: TfPDV_Rec
         PopupMenu = PopupMenu1
         TabOrder = 8
         Text = '1'
-        OnChange = edParcelaChange
         OnKeyPress = edParcelaKeyPress
       end
       object edValorPago: TMaskEdit
@@ -518,7 +512,6 @@ object fPDV_Rec: TfPDV_Rec
         ParentFont = False
         ReadOnly = True
         TabOrder = 10
-        OnChange = edTrocoChange
         Text = '0,00'
         SpaceChar = '_'
       end
@@ -1047,9 +1040,9 @@ object fPDV_Rec: TfPDV_Rec
         Visible = False
       end
       object pnCartoes: TPanel
-        Left = 40
+        Left = 72
         Height = 258
-        Top = 120
+        Top = 96
         Width = 374
         ClientHeight = 258
         ClientWidth = 374
@@ -2207,6 +2200,30 @@ object fPDV_Rec: TfPDV_Rec
         TabOrder = 3
         Visible = False
       end
+      object btnRecSemImp: TBitBtn
+        Left = 8
+        Height = 42
+        Top = 188
+        Width = 98
+        Align = alCustom
+        Caption = 'Finalizar '
+        OnClick = btnRecSemImpClick
+        TabOrder = 4
+      end
+      object Label13: TLabel
+        Left = 52
+        Height = 15
+        Top = 232
+        Width = 46
+        Caption = 'Imprimir'
+      end
+      object Label12: TLabel
+        Left = 24
+        Height = 15
+        Top = 232
+        Width = 23
+        Caption = 'Sem'
+      end
     end
     object Panel1: TPanel
       Left = 0
@@ -2834,7 +2851,6 @@ object fPDV_Rec: TfPDV_Rec
           0000000000000000000000000000000000000000000000000000
         }
         Layout = blGlyphBottom
-        OnClick = BitBtn17Click
         ParentFont = False
         TabOrder = 1
       end
@@ -3144,7 +3160,6 @@ object fPDV_Rec: TfPDV_Rec
           0000000000000000000000000000000000000000000000000000
         }
         Layout = blGlyphBottom
-        OnClick = BitBtn18Click
         ParentFont = False
         TabOrder = 2
       end
@@ -3454,7 +3469,6 @@ object fPDV_Rec: TfPDV_Rec
           0000000000000000000000000000000000000000000000000000
         }
         Layout = blGlyphBottom
-        OnClick = BitBtn20Click
         ParentFont = False
         TabOrder = 3
       end
@@ -4090,7 +4104,6 @@ object fPDV_Rec: TfPDV_Rec
           0000000000000000000000000000000000000000000000000000
         }
         Layout = blGlyphBottom
-        OnClick = BitBtn19Click
         ParentFont = False
         TabOrder = 7
       end
@@ -4224,7 +4237,6 @@ object fPDV_Rec: TfPDV_Rec
           00000000000000000000
         }
         Layout = blGlyphBottom
-        OnClick = BitBtn19Click
         ParentFont = False
         TabOrder = 8
       end

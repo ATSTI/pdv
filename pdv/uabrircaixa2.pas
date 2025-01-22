@@ -110,6 +110,8 @@ begin
    fMovimentoProc.Close;
    fPdv.procFormShow;
 
+   btnAbrefecha.Enabled := False;
+
 end;
 
 procedure TfAbreCaixa.btnAbreCXClick(Sender: TObject);

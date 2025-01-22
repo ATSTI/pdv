@@ -1,7 +1,7 @@
 object fPdv: TfPdv
-  Left = 203
+  Left = 179
   Height = 664
-  Top = 24
+  Top = 15
   Width = 1108
   Align = alLeft
   Caption = 'Ponto de Venda - ATS'
@@ -28,7 +28,6 @@ object fPdv: TfPdv
     ParentColor = False
     PopupMenu = PopupMenu1
     TabOrder = 0
-    OnClick = Panel1Click
     object Image4: TImage
       Left = 302
       Height = 42
@@ -419,7 +418,6 @@ object fPdv: TfPdv
           ADFFADADA9FFA9A9A5FFA6A6A3FEADADA86D0000000000000000000000000000
           0000000000000000000000000000000000000000000000000000
         }
-        OnClick = btnNovoClick
         ParentShowHint = False
         ShowHint = True
         TabOrder = 0
@@ -563,7 +561,6 @@ object fPdv: TfPdv
           0000000000000000000000000000000000000000000000000000000000000000
           0000000000000000000000000000000000000000000000000000
         }
-        OnClick = btnVendasClick
         ParentShowHint = False
         ShowHint = True
         TabOrder = 1
@@ -707,7 +704,6 @@ object fPdv: TfPdv
           0000000000000000000000000000000000000000000000000000000000000000
           0000000000000000000000000000000000000000000000000000
         }
-        OnClick = btnReceberClick
         ParentShowHint = False
         PopupMenu = PopupMenu1
         ShowHint = True
@@ -807,7 +803,6 @@ object fPdv: TfPdv
     ParentColor = False
     PopupMenu = PopupMenu1
     TabOrder = 1
-    OnClick = Panel2Click
     object edProdutoDescX: TEdit
       Left = 34
       Height = 22
@@ -1043,7 +1038,6 @@ object fPdv: TfPdv
         Font.Quality = fqDraft
         ParentFont = False
         TabOrder = 4
-        OnChange = edClienteChange
         OnKeyPress = edClienteKeyPress
       end
       object edClienteNome: TEdit
@@ -11598,7 +11592,6 @@ object fPdv: TfPdv
         ParentBackground = False
         ParentColor = False
         TabOrder = 0
-        OnClick = Panel6Click
         object Label6: TLabel
           Left = 5
           Height = 16
@@ -11799,7 +11792,7 @@ object fPdv: TfPdv
       end
       object edProdutoDesc: TMemo
         Left = 7
-        Height = 101
+        Height = 72
         Top = 144
         Width = 282
         BorderStyle = bsNone
@@ -11816,6 +11809,28 @@ object fPdv: TfPdv
         ParentFont = False
         ReadOnly = True
         TabOrder = 3
+        WantReturns = False
+        WordWrap = False
+      end
+      object edLocalizacao: TMemo
+        Left = 8
+        Height = 34
+        Top = 218
+        Width = 282
+        BorderStyle = bsNone
+        Color = 14803425
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clWindowFrame
+        Font.Height = -16
+        Font.Name = 'Comic Sans MS'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Lines.Strings = (
+          'Lacalização:'
+        )
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 4
         WantReturns = False
         WordWrap = False
       end
@@ -11924,7 +11939,6 @@ object fPdv: TfPdv
         EditLabel.ParentColor = False
         LabelPosition = lpLeft
         TabOrder = 2
-        OnChange = edBuscaDetalheChange
       end
       object pnIntegra: TPanel
         Left = 11
@@ -11988,10 +12002,7 @@ object fPdv: TfPdv
         ParentFont = False
         TabOrder = 0
         OnCellClick = DBGrid2CellClick
-        OnDrawColumnCell = DBGrid2DrawColumnCell
-        OnEnter = DBGrid2Enter
         OnKeyDown = DBGrid2KeyDown
-        OnKeyPress = DBGrid2KeyPress
         OnKeyUp = DBGrid2KeyUp
       end
       object Panel3: TPanel
@@ -12089,7 +12100,7 @@ object fPdv: TfPdv
           Color = 14803425
           EnableSets = False
           Font.CharSet = ANSI_CHARSET
-          Font.Color = clWindowFrame
+          Font.Color = clBtnText
           Font.Height = -27
           Font.Name = 'Comic Sans MS'
           Font.Pitch = fpVariable
@@ -12139,7 +12150,7 @@ object fPdv: TfPdv
           Width = 16
           Caption = '0'
           Font.CharSet = ANSI_CHARSET
-          Font.Color = clWindowFrame
+          Font.Color = clBtnText
           Font.Height = -27
           Font.Name = 'Comic Sans MS'
           Font.Pitch = fpVariable
@@ -12401,7 +12412,7 @@ object fPdv: TfPdv
         ParentFont = False
       end
       object PageControl1: TPageControl
-        Left = 40
+        Left = 28
         Height = 297
         Top = 23
         Width = 504
@@ -12574,7 +12585,6 @@ object fPdv: TfPdv
         MaxLength = 0
         ParentFont = False
         TabOrder = 2
-        OnChange = edDescontoChange
         OnKeyPress = edDescontoKeyPress
         Text = '0,00'
         SpaceChar = '_'
@@ -12620,9 +12630,9 @@ object fPdv: TfPdv
       end
     end
     object pnProdutoNaoLocalizado: TPanel
-      Left = 56
+      Left = -1
       Height = 162
-      Top = 144
+      Top = 64
       Width = 409
       ClientHeight = 162
       ClientWidth = 409

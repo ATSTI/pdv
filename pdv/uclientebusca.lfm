@@ -26,7 +26,7 @@ inherited fClienteBusca: TfClienteBusca
       OnKeyPress = Edit2KeyPress
     end
     inherited chInativo: TCheckBox
-      Width = 60
+      Width = 58
       OnChange = chInativoChange
     end
     object Label2: TLabel[4]
@@ -47,16 +47,14 @@ inherited fClienteBusca: TfClienteBusca
       Left = 88
       Height = 21
       Top = 40
-      Width = 100
+      Width = 98
       Caption = 'Cliente Curso'
-      Checked = True
       Font.CharSet = ANSI_CHARSET
       Font.Height = -13
       Font.Name = '@Malgun Gothic'
       Font.Pitch = fpVariable
       Font.Quality = fqDraft
       ParentFont = False
-      State = cbChecked
       TabOrder = 3
     end
   end

@@ -38,6 +38,7 @@ type
     BitBtn3: TBitBtn;
     BitBtn4: TBitBtn;
     BitBtn5: TBitBtn;
+    btnRecSemImp: TBitBtn;
     btnCupom: TBitBtn;
     BitBtn16: TBitBtn;
     BitBtn17: TBitBtn;
@@ -72,6 +73,8 @@ type
     Label1: TLabel;
     Label10: TLabel;
     Label11: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     lblCupom: TLabel;
@@ -122,39 +125,24 @@ type
     procedure acPrazoExecute(Sender: TObject);
     procedure actionPixExecute(Sender: TObject);
     procedure acVoltarVendaExecute(Sender: TObject);
-    procedure BitBtn12Click(Sender: TObject);
-    procedure BitBtn17Click(Sender: TObject);
-    procedure BitBtn18Click(Sender: TObject);
-    procedure BitBtn19Click(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
-    procedure BitBtn20Click(Sender: TObject);
-    procedure BitBtn21Click(Sender: TObject);
     procedure BitBtn22Click(Sender: TObject);
-    procedure BitBtn26Click(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
     procedure BitBtn4Click(Sender: TObject);
     procedure BitBtn5Click(Sender: TObject);
     procedure btnCadeiraClick(Sender: TObject);
     procedure btnCupomClick(Sender: TObject);
-    procedure btnDescontoPercentClick(Sender: TObject);
     procedure BitBtn24Click(Sender: TObject);
-    procedure BitBtn9Click(Sender: TObject);
     procedure btnDscClick(Sender: TObject);
-    procedure edCupomChange(Sender: TObject);
+    procedure btnRecSemImpClick(Sender: TObject);
     procedure edCupomKeyPress(Sender: TObject; var Key: char);
     procedure edPagamentoKeyPress(Sender: TObject; var Key: char);
-    procedure edPagoChange(Sender: TObject);
-    procedure edParcelaChange(Sender: TObject);
     procedure edParcelaKeyPress(Sender: TObject; var Key: char);
-    procedure edRestanteChange(Sender: TObject);
-    procedure edTrocoChange(Sender: TObject);
     procedure edVDescontoKeyPress(Sender: TObject; var Key: char);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure GroupBox2Click(Sender: TObject);
-    procedure lblParcelaClick(Sender: TObject);
   private
     cupom_mv: String;
     cod_compra: Integer;
@@ -275,16 +263,6 @@ begin
     end;
   end;
   carrega_valores;
-end;
-
-procedure TfPDV_Rec.GroupBox2Click(Sender: TObject);
-begin
-
-end;
-
-procedure TfPDV_Rec.lblParcelaClick(Sender: TObject);
-begin
-
 end;
 
 function TfPDV_Rec.RemoveAcento(Str: string): string;
@@ -1932,16 +1910,6 @@ begin
   end;
 end;
 
-procedure TfPDV_Rec.edPagoChange(Sender: TObject);
-begin
-
-end;
-
-procedure TfPDV_Rec.edParcelaChange(Sender: TObject);
-begin
-
-end;
-
 procedure TfPDV_Rec.edParcelaKeyPress(Sender: TObject; var Key: char);
 begin
   if Key = #13 then
@@ -1961,16 +1929,6 @@ begin
       edPagamento.SetFocus;
     end;
   end;
-end;
-
-procedure TfPDV_Rec.edRestanteChange(Sender: TObject);
-begin
-
-end;
-
-procedure TfPDV_Rec.edTrocoChange(Sender: TObject);
-begin
-
 end;
 
 procedure TfPDV_Rec.edVDescontoKeyPress(Sender: TObject; var Key: char);
@@ -1998,11 +1956,6 @@ begin
   For N := Low(TACBrPosPrinterModelo) to High(TACBrPosPrinterModelo) do
      cbxModeloPosPrinter.Items.Add(GetEnumName(TypeInfo(TACBrPosPrinterModelo), integer(N) ));
   cbxModeloPosPrinter.ItemIndex := dmPdv.ModeloImp;
-end;
-
-procedure TfPDV_Rec.BitBtn9Click(Sender: TObject);
-begin
-
 end;
 
 procedure TfPDV_Rec.btnDscClick(Sender: TObject);
@@ -2042,8 +1995,23 @@ begin
   carrega_valores;
 end;
 
-procedure TfPDV_Rec.edCupomChange(Sender: TObject);
+procedure TfPDV_Rec.btnRecSemImpClick(Sender: TObject);
+  var ult_pedido: String;
 begin
+  if (vResto > 0.009) then
+  begin
+    ShowMessage('Informe o Pagamento.');
+    Exit;
+  end;
+  if vStatus = 0 then
+  begin
+    encerra_venda();
+  end;
+  begin
+    btnCadeira.Enabled := True;
+  end;
+
+  Close;
 
 end;
 
@@ -2081,26 +2049,11 @@ begin
 
 end;
 
-procedure TfPDV_Rec.BitBtn18Click(Sender: TObject);
-begin
-
-end;
-
-procedure TfPDV_Rec.BitBtn19Click(Sender: TObject);
-begin
-
-end;
-
 procedure TfPDV_Rec.BitBtn1Click(Sender: TObject);
 begin
   lblForma.Caption:='7-Sianet';
   pnCartoes.Visible:=False;
   edPagamento.SetFocus;
-end;
-
-procedure TfPDV_Rec.BitBtn17Click(Sender: TObject);
-begin
-
 end;
 
 procedure TfPDV_Rec.acDescontoValorExecute(Sender: TObject);
@@ -2292,11 +2245,6 @@ begin
   Close;
 end;
 
-procedure TfPDV_Rec.BitBtn12Click(Sender: TObject);
-begin
-
-end;
-
 procedure TfPDV_Rec.acDescontoPercentualExecute(Sender: TObject);
 var percent: Double;
 begin
@@ -2365,16 +2313,6 @@ begin
   end;
 end;
 
-procedure TfPDV_Rec.BitBtn20Click(Sender: TObject);
-begin
-
-end;
-
-procedure TfPDV_Rec.BitBtn21Click(Sender: TObject);
-begin
-
-end;
-
 procedure TfPDV_Rec.BitBtn22Click(Sender: TObject);
 begin
   if (vStatus = 1) then
@@ -2390,10 +2328,6 @@ begin
 end;
 
 
-
-procedure TfPDV_Rec.BitBtn26Click(Sender: TObject);
-begin
-end;
 
 procedure TfPDV_Rec.BitBtn2Click(Sender: TObject);
 begin
@@ -2439,11 +2373,6 @@ begin
   edCupom.SetFocus;
 end;
 
-
-procedure TfPDV_Rec.btnDescontoPercentClick(Sender: TObject);
-begin
-
-end;
 
 procedure TfPDV_Rec.BitBtn24Click(Sender: TObject);
 begin

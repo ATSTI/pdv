@@ -34,7 +34,13 @@ type
     Label13: TLabel;
     Label14: TLabel;
     Label15: TLabel;
+    Label16: TLabel;
+    Label17: TLabel;
+    Label18: TLabel;
+    Label19: TLabel;
     Label2: TLabel;
+    Label20: TLabel;
+    Label21: TLabel;
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
@@ -82,6 +88,9 @@ type
     function strParaFloat(vlr_st: String): Double;
 
   public
+    seriecx: string;
+    numcx : integer;
+    numcodserie: string;
     cxsangria : integer;
     abri_cx : integer;
     AbrirFechar:string;
@@ -197,6 +206,9 @@ begin
     Writeln(IMPRESSORA, '');
     Writeln(IMPRESSORA, '');
     Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, 'Serie CX   - ' + seriecx);
+    Writeln(IMPRESSORA, 'Num NFCe   - ' + IntToStr(numcx));
+    Writeln(IMPRESSORA, 'Serie NFCe - ' + numcodserie);
   finally
     CloseFile(IMPRESSORA);
   end;
@@ -360,6 +372,9 @@ begin
     Writeln(IMPRESSORA, '');
     Writeln(IMPRESSORA, '');
     Writeln(IMPRESSORA, '');
+    Writeln(IMPRESSORA, 'Serie CX   - ' + seriecx);
+    Writeln(IMPRESSORA, 'Num NFCe   - ' + IntToStr(numcx));
+    Writeln(IMPRESSORA, 'Serie NFCe - ' + numcodserie);
     Writeln(IMPRESSORA, '................')
   finally
     CloseFile(IMPRESSORA);
@@ -427,6 +442,19 @@ begin
   end;
   dtData.Date:=Now;
   mostrarCaixa(dmPdv.varLogado);
+
+     dmPdv.sqUpdate.Close;
+    dmPdv.sqUpdate.SQL.Clear;
+    dmPdv.sqUpdate.SQL.Text := 'SELECT * FROM SERIES WHERE SERIE = ' +
+      QuotedStr('NFCE-'+dmPdv.varLogado);
+    dmPdv.sqUpdate.Open;
+    seriecx := dmPdv.sqUpdate.FieldByName('SERIE').AsString;
+    numcx := dmPdv.sqUpdate.FieldByName('ULTIMO_NUMERO').AsInteger;
+    numcodserie := dmPdv.sqUpdate.FieldByName('CODSERIE').AsString;
+    dmPdv.sqUpdate.Close;
+    Label16.Caption:= seriecx;
+    Label17.Caption:= IntToStr(numcx);
+    Label18.Caption:= numcodserie;
 end;
 
 procedure TfAbrirCaixa.mostrarCaixa(usuarioCX: String);

@@ -412,6 +412,54 @@ object fAbrirCaixa: TfAbrirCaixa
       Text = 'Sangria'
       Visible = False
     end
+    object Label16: TLabel
+      Left = 64
+      Height = 15
+      Top = 261
+      Width = 12
+      Caption = '....'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label17: TLabel
+      Left = 182
+      Height = 15
+      Top = 261
+      Width = 12
+      Caption = '....'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label18: TLabel
+      Left = 289
+      Height = 15
+      Top = 261
+      Width = 18
+      Caption = '......'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label19: TLabel
+      Left = 12
+      Height = 15
+      Top = 261
+      Width = 46
+      Caption = 'SerieCX :'
+    end
+    object Label20: TLabel
+      Left = 123
+      Height = 15
+      Top = 261
+      Width = 52
+      Caption = 'Nº NFCe :'
+    end
+    object Label21: TLabel
+      Left = 216
+      Height = 15
+      Top = 261
+      Width = 66
+      Caption = 'Serie NFCe : '
+    end
   end
   object Panel2: TPanel
     Left = 0

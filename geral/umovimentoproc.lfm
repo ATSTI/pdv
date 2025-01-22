@@ -1,7 +1,7 @@
 object fMovimentoProc: TfMovimentoProc
-  Left = 126
+  Left = 216
   Height = 566
-  Top = 75
+  Top = 113
   Width = 1120
   Caption = 'Lista Pedidos'
   ClientHeight = 566
@@ -1367,7 +1367,6 @@ object fMovimentoProc: TfMovimentoProc
         'Memo1'
       )
       TabOrder = 0
-      OnChange = Memo1Change
     end
   end
   object Label8: TLabel

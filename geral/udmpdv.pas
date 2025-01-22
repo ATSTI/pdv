@@ -1015,12 +1015,7 @@ type
     Timer1: TTimer;
     Timer2: TTimer;
     procedure DataModuleCreate(Sender: TObject);
-    procedure dsNFDataChange(Sender: TObject; Field: TField);
-    procedure IbConAfterConnect(Sender: TObject);
-    procedure IbConAfterDisconnect(Sender: TObject);
-    procedure IbConBeforeConnect(Sender: TObject);
     procedure qcdsNFAfterOpen(DataSet: TDataSet);
-    procedure qcdsNFAfterPost(DataSet: TDataSet);
     procedure Timer1Timer(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
   private
@@ -1031,6 +1026,7 @@ type
 
   public
     caminhoEXEpdv: String;
+    MudarPreco : String;
     odoo_database: String;
     odoo_user: STring;
     odoo_acesso: String;
@@ -1296,6 +1292,7 @@ begin
       //imp_desconto_item := conf.ReadString( 'Outros','ImprimeDescontoItem','N');
       modoDesenvolvedor := conf.ReadString( 'Outros','modoDesenvolvedor','N');
       caminhoEXEpdv  := conf.ReadString( 'Outros','caminhoEXEpdv','');
+      MudarPreco   := conf.ReadString( 'Outros','MudarPreco','NAO');
      {
       ZCon.Connected       := False;
       ZCon.HostName        := conf.ReadString('ZConn', 'Hostname', '');
@@ -1447,36 +1444,10 @@ begin
   //end;
 end;
 
-procedure TdmPdv.dsNFDataChange(Sender: TObject; Field: TField);
-begin
-
-end;
-
-procedure TdmPdv.IbConAfterConnect(Sender: TObject);
-begin
-
-end;
-
-procedure TdmPdv.IbConAfterDisconnect(Sender: TObject);
-begin
-
-end;
-
-procedure TdmPdv.IbConBeforeConnect(Sender: TObject);
-begin
-
-end;
-
 procedure TdmPdv.qcdsNFAfterOpen(DataSet: TDataSet);
 var ver_str: String;
 begin
   ver_str := qcdsNFCORPONF1.AsString;
-end;
-
-procedure TdmPdv.qcdsNFAfterPost(DataSet: TDataSet);
-
-begin
-
 end;
 
 procedure TdmPdv.Timer1Timer(Sender: TObject);
@@ -1558,7 +1529,7 @@ begin
       campo_novo('PRODUTOS', 'QTDEATACADO', 'DOUBLE PRECISION');
       campo_novo('FORMA_ENTRADA', 'CODFORMA', 'INTEGER NOT NULL');
       campo_novo('FORMA_ENTRADA', 'PRIMARY KEY', '(CODFORMA)');
-      ShowMessage('Execute este comando no IBSQL: CREATE SEQUENCE GEN_FORMA');
+      //ShowMessage('Execute este comando no IBSQL: CREATE SEQUENCE GEN_FORMA');
       campo_novo('MOVIMENTO', 'DESCONTO', 'DOUBLE PRECISION');
       campo_novo('venda', 'XMLNFE', 'BLOB SUB_TYPE 0');
       campo_novo('venda', 'NOMEXML', 'VARCHAR( 60 )');

@@ -181,6 +181,8 @@ begin
   fMovimentoProc.Close;
   fPdv.procFormShow;
 
+  btnGravar.Enabled := False;
+
 end;
 
 procedure TfSangria.btnReimprimirClick(Sender: TObject);
