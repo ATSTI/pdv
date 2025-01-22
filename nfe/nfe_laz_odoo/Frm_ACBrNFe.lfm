@@ -15,7 +15,7 @@ object frmACBrNFe: TfrmACBrNFe
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '2.2.6.0'
+  LCLVersion = '3.4.0.0'
   object PageControl2: TPageControl
     Left = 0
     Height = 626
@@ -83,9 +83,9 @@ object frmACBrNFe: TfrmACBrNFe
             Top = 32
             Width = 88
             Caption = 'Busca Emitente'
-            OnClick = Button1Click
             TabOrder = 2
             Visible = False
+            OnClick = Button1Click
           end
           object Edit2: TEdit
             Left = 24
@@ -130,9 +130,9 @@ object frmACBrNFe: TfrmACBrNFe
             Top = 440
             Width = 64
             Caption = 'Cadastrar Emitente'
-            OnClick = btnCadastrarClick
             TabOrder = 5
             Visible = False
+            OnClick = btnCadastrarClick
           end
           object DBEdit3: TDBEdit
             Left = 120
@@ -152,9 +152,9 @@ object frmACBrNFe: TfrmACBrNFe
             Top = 528
             Width = 160
             Caption = 'Carregar Notas da Empresa'
-            OnClick = btnCarregaNfeEmpresaClick
             TabOrder = 7
             Visible = False
+            OnClick = btnCarregaNfeEmpresaClick
           end
           object Label54: TLabel
             Left = 128
@@ -170,8 +170,8 @@ object frmACBrNFe: TfrmACBrNFe
             Top = 24
             Width = 376
             CharCase = ecUppercase
-            OnChange = Edit4Change
             TabOrder = 8
+            OnChange = Edit4Change
           end
           object Edit5: TEdit
             Left = 377
@@ -248,8 +248,8 @@ object frmACBrNFe: TfrmACBrNFe
             Top = 488
             Width = 107
             Caption = 'Gravar certificado'
-            OnClick = Button2Click
             TabOrder = 13
+            OnClick = Button2Click
           end
           object BitBtn1: TBitBtn
             Left = 850
@@ -403,6 +403,7 @@ object frmACBrNFe: TfrmACBrNFe
             ClientHeight = 45
             ClientWidth = 1084
             Color = clGrayText
+            ParentBackground = False
             ParentColor = False
             TabOrder = 15
             object BitBtn2: TBitBtn
@@ -655,9 +656,9 @@ object frmACBrNFe: TfrmACBrNFe
             Top = 448
             Width = 104
             Caption = 'Gerar NFe'
-            OnClick = BtnAssinarClick
             TabOrder = 1
             Visible = False
+            OnClick = BtnAssinarClick
           end
           object DBEdit4: TDBEdit
             Left = 264
@@ -675,9 +676,9 @@ object frmACBrNFe: TfrmACBrNFe
             Top = 416
             Width = 115
             Caption = 'Voltar Aba Empresa'
-            OnClick = btnVoltaPrincipalClick
             TabOrder = 3
             Visible = False
+            OnClick = btnVoltaPrincipalClick
           end
           object BitBtn3: TBitBtn
             Left = 922
@@ -831,117 +832,9 @@ object frmACBrNFe: TfrmACBrNFe
             ClientHeight = 45
             ClientWidth = 1084
             Color = clGrayText
+            ParentBackground = False
             ParentColor = False
             TabOrder = 5
-            object BitBtn4: TBitBtn
-              Left = 824
-              Height = 40
-              Top = 2
-              Width = 136
-              Caption = 'Gerar NFe'
-              Glyph.Data = {
-                360C0000424D360C000000000000360000002800000020000000200000000100
-                180000000000000C000000000000000000000000000000000000C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C0C0C0C0001100001100000E00C0C0C0C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C00022001A7B1312760C1A6918000D00C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0001F0005860038D62E3BD834098307001300C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C07D8281000100
-                0006040003000004000106040400040701060002000004000003070002010009
-                000013000021000B82002BE81A1DF90D1AED13008E0000210000050000091000
-                0007000100C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0787B79BDC4BF
-                B2C3B8B7C9BCB3C1B6B9C2B8BFC7C0B6BFB5B9C6B8B9CBBEA9C0B8A4CDB294DD
-                9713790D007F0035DE2318FC0702FE000BFC0724E324117914001500ACBDB9BD
-                BCC50A0202C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0868785BAC3B6
-                455A3A425A38F6FFF5F2FFF33B5D35385B33F1FFF5E9FFF12A562F2277220086
-                0028E61D2AF61917F60603FB0003FF010CFF0A1BEC18008400002500B4CCB4CC
-                BFC70E0000C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0817F85B8BCB6
-                F3FFE3BACEABB9C6B8B9CCBBA6CEA5AAD2A9B8CBBCB4C7B8AAD5A816791129E3
-                1F10FB050DFF0309FD050CF50F0DED1218F01B1EEA1F24E225018A00001500C7
-                C4BC120203C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C07C778CBFBEC8
-                FDFFF7B9C4B0F8FFF9F3FFFBECFFF7EFFFF6FDFBFAFFFFFAF1FFF1156A1533E9
-                270AF60200F6080AF01B28E133008500008C002EDD361DED1D2EE128267C1E00
-                0E00040200C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C07E7A8DC5C4CD
-                40483DB6C4B2F6FFF9F1FAF7FDFFFFFFFDFFFFFBFFFFFCFCFFFDF2E6FFDB0285
-                002DE82113EC1F1FE22E047A03D1FFCAC9FFC9087F052AE3272BE926007A0000
-                2700001100C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C07E7F7BBAC2B7
-                41573BB5CEB2F2FFF4FFFFFB2A090D3C080F3F0408420C0B351109140C000121
-                0021770B3CD93B008300032600241900FFFFE7002200047E0035DD362ADE2B00
-                8900001A00C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C07F8378BCC8B6
-                F1FFEBACC9A8F3FFF4FFFDF6FFF7FEFFF4FCFFF5F9FFF8F7FFF3F1FFFDF4FFFF
-                EFFFFFDF1D7210217213FFFFE7FFFBF6FFFBF2FFFFE7D6FFCF00830021E72325
-                E229087513001700C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0808381B8C2B6
-                F3FFF0ADC6AAF4FFF5FFFFFBFFF4F8FFF4FCFFF7F8FFF5F4FFF8F8FFF9F8FFF7
-                F1FFFFF1FFFFE8FAFFEBFFFFF4FFFFF7FFFFF7F9FFF0E8FFEA19781D21DA2024
-                EF243BD247002300C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C07F8182BDC5BE
-                455740B7CCB3F6FFF7FFFCF72805093D0B0F3B0B0941120E3503053C0A0C3E0E
-                0D3B12101D0205FFFDFEFCF8F7F9FDF7FFFFF8FBFFF8F6FFFB97D19B0089002D
-                E02D2DDC35007B00001600C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0818082BBBFB9
-                434F39BECBB3F6FFF3FDFFFCFFFFFFFFFDFEFFFDF6FFFFF8FFFDFCFFFCFBFFF9
-                F3FFFCF5FFFEFEFFF7FAFFF9FFFFFAFFFFFEFCFFF9F4FFFFFFB2CAB8D6FFDC05
-                7A0732E02E35DD30002F00C0C0C0C0C0C0C0C0C0C0C0C0C0C0C07B7A7CC3C7C1
-                F8FFF2B8C8B1FCFFF7F9FFFDF3FFFFEAFAF9F6FFFBFEFFF6FFFCFEFFFCFCFFFB
-                F5FFFFF9FFFEFEFFFCFF2D0511FFEEF9FFFCFCFFFFFBFFFEFFBEC5BEE4FFEC90
-                DF950088003FDA3145C941002600C0C0C0C0C0C0C0C0C0C0C0C0858787B4BFB7
-                E8FFEEB4D1B8F8FEF3FDFFFEEBFBFFEFFFFFFBFFFCFFFBF8FFF6FF45040DFFF9
-                F9FFFCF8FFF8F8FFF2F6420911FFF7FEFFFAF9FFF9F3FFFFF8BCC2AF315F3499
-                D99D001E001B790E36D53938C83A002100C0C0C0C0C0C0C0C0C07A797BB9C6BE
-                325A419DCAB0B1CAC0AAC2C24E73779BC2C4A7C6C5BBBBBB410914FFF3FF3F01
-                073C0B0DFFF6F83B1416FFF0F43F0609FFFBFBFFFDFB220A04CAC6B3325731AA
-                D6AD000A00C0C0C00286034BD84B002300C0C0C0C0C0C0C0C0C0858089B9C4C1
-                26533995D4BA3C7E792B7275307F7C277C781E7878457A7DFFFAFF43070F3203
-                0CFFF8FF2F0B11FFF4F63B0D0CFFF7F6FFF9FC340C11381012D7BEBAFCFFF3B1
-                C3B2000200C0C0C0C0C0C0196A1356C559002500C0C0C0C0C0C0837E87B5C0BD
-                DFFFF044856BB6FFFC2C7F81B1FFFF1C7E78167D7F2F7477FFFDFF32090EFFF9
-                FFFFFAFFFFFAFDFFFCFBFFFDF82D0C09330B10FFF5FCFFF6FAD5C0BEFDFFF5B5
-                C6B8000203C0C0C0C0C0C0C0C0C00E741558C363001300C0C0C07D7C80C1CBC5
-                E4FFEBA3D2B8437770C9FFFF3079772E7D7A307D7A417575FBFFFFFFFDFEFFFE
-                FEFFFDFAFFFEFCFFFAF6FFFFF7FFFCF5FFFCFEFFFBFFFFFCFDC5C7BB345631AC
-                D2AE000300C0C0C0C0C0C0C0C0C0C0C0C01B682468B85F002900828387B7C1BB
-                39533BE5FFF1A5C9C34B777892C8C98BC3C491C3C1A0C2C1F8FFFFFFFFFEFAFB
-                F7FFFFFBFBFBF5FFFFFBFDFFFBFFFFFBFFFEFEFFFDFDFFFFFCBCC5B84063419F
-                C6A6000500C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0216C161B73097F7F85B6BFBC
-                3C5541ABCCB7587671A4C3C6507075A1C1C6ABC7C8AFC3C4FAFFFFFEFEFEFEFF
-                FBFCFFFAF7FEF9F3FCF9F9FFFEF9FEFCFCFFFAFCFFF6FFFFFCC1BDBCF0F7F2B7
-                C9C2000903C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0888686B8C1B7
-                EAFFEBABD1B3E6FFF5EBFFFFE8FFFCEAFFFCEDFEFBF2FFFCF6FFF8F7FFF6FBFF
-                F6FAFFF8EAFFF3EFFFF9FAFFFFF6FDF8F1FFF4F3FFF4FBFAF6C7C0C3FBFFFFB3
-                C3BC000600C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C07F7A71C3D0B8
-                E3FFDCA0D49FB7CDBBB2C4B7A9D2ADA0C9A4B6C8BBB2C3B5AFD2AAA8C99DC7D4
-                BAB9C9B2A5D0AF9EC7ABC0C8BDBAC4B4A1CEA7A2CEAABCC1C0C2C1C53A543DAA
-                CAAB000900C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C089837CBAC6B0
-                35612C32602CFAFFF5FBFFF83557323A613BF4FFF7F4FFF5395D333D5E31F9FF
-                ECF6FFEE375D3F31573BF5FCEFFBFFF52A562F386141FAFFFFFBFCFF3D593CAC
-                CCA9000700C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C07F7E88B9C0BD
-                B3C9B0B9CCB1C5BDBDC2B9BCBCCABFADC1B4B6C1BEB9C2BFB4C6B5BDCABABFC0
-                B7C3C0BCBDC3BEBAC1BCC2C5C3BBC2BBB7C7B5B4C3B5BFBEC0C1C0C2BAC5B5BF
-                CEB9010600C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C07A7A8C7F828A
-                7A867A7F83778D7C8091808B777A7E7985857A81847C81827B827F7C7F7D8681
-                82877E81887D85847E83818082767B7982857C83857F817E808080807E81787C
-                8374818278C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-                C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-              }
-              OnClick = BitBtn4Click
-              TabOrder = 0
-            end
             object BitBtn6: TBitBtn
               Left = 976
               Height = 40
@@ -971,7 +864,7 @@ object frmACBrNFe: TfrmACBrNFe
                 FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
               }
               OnClick = BitBtn5Click
-              TabOrder = 1
+              TabOrder = 0
             end
             object lblEmpresa1: TLabel
               Left = 8
@@ -1047,8 +940,8 @@ object frmACBrNFe: TfrmACBrNFe
               Width = 127
               Caption = 'Carta de Correção'
               Color = clBlack
-              OnClick = btnCartadeCorrecaoClick
               TabOrder = 0
+              OnClick = btnCartadeCorrecaoClick
             end
             object btnCancelarChave1: TButton
               Left = 16
@@ -1056,8 +949,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 83
               Width = 127
               Caption = 'Cancelar NFe'
-              OnClick = btnCancelarChaveClick
               TabOrder = 1
+              OnClick = btnCancelarChaveClick
             end
             object DBEdit7: TDBEdit
               Left = 56
@@ -1089,8 +982,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 126
               Width = 127
               Caption = 'Inutilizar Numeração'
-              OnClick = btnInutilizarClick
               TabOrder = 4
+              OnClick = btnInutilizarClick
             end
           end
           object DBEdit6: TDBEdit
@@ -1114,6 +1007,115 @@ object frmACBrNFe: TfrmACBrNFe
             MaxLength = 0
             TabOrder = 10
             Visible = False
+          end
+          object BitBtn4: TBitBtn
+            Left = 944
+            Height = 40
+            Top = 360
+            Width = 136
+            Caption = 'Gerar NFe'
+            Glyph.Data = {
+              360C0000424D360C000000000000360000002800000020000000200000000100
+              180000000000000C000000000000000000000000000000000000C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0001100001100000E00C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C00022001A7B1312760C1A6918000D00C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0001F0005860038D62E3BD834098307001300C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C07D8281000100
+              0006040003000004000106040400040701060002000004000003070002010009
+              000013000021000B82002BE81A1DF90D1AED13008E0000210000050000091000
+              0007000100C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0787B79BDC4BF
+              B2C3B8B7C9BCB3C1B6B9C2B8BFC7C0B6BFB5B9C6B8B9CBBEA9C0B8A4CDB294DD
+              9713790D007F0035DE2318FC0702FE000BFC0724E324117914001500ACBDB9BD
+              BCC50A0202C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0868785BAC3B6
+              455A3A425A38F6FFF5F2FFF33B5D35385B33F1FFF5E9FFF12A562F2277220086
+              0028E61D2AF61917F60603FB0003FF010CFF0A1BEC18008400002500B4CCB4CC
+              BFC70E0000C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0817F85B8BCB6
+              F3FFE3BACEABB9C6B8B9CCBBA6CEA5AAD2A9B8CBBCB4C7B8AAD5A816791129E3
+              1F10FB050DFF0309FD050CF50F0DED1218F01B1EEA1F24E225018A00001500C7
+              C4BC120203C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C07C778CBFBEC8
+              FDFFF7B9C4B0F8FFF9F3FFFBECFFF7EFFFF6FDFBFAFFFFFAF1FFF1156A1533E9
+              270AF60200F6080AF01B28E133008500008C002EDD361DED1D2EE128267C1E00
+              0E00040200C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C07E7A8DC5C4CD
+              40483DB6C4B2F6FFF9F1FAF7FDFFFFFFFDFFFFFBFFFFFCFCFFFDF2E6FFDB0285
+              002DE82113EC1F1FE22E047A03D1FFCAC9FFC9087F052AE3272BE926007A0000
+              2700001100C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C07E7F7BBAC2B7
+              41573BB5CEB2F2FFF4FFFFFB2A090D3C080F3F0408420C0B351109140C000121
+              0021770B3CD93B008300032600241900FFFFE7002200047E0035DD362ADE2B00
+              8900001A00C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C07F8378BCC8B6
+              F1FFEBACC9A8F3FFF4FFFDF6FFF7FEFFF4FCFFF5F9FFF8F7FFF3F1FFFDF4FFFF
+              EFFFFFDF1D7210217213FFFFE7FFFBF6FFFBF2FFFFE7D6FFCF00830021E72325
+              E229087513001700C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0808381B8C2B6
+              F3FFF0ADC6AAF4FFF5FFFFFBFFF4F8FFF4FCFFF7F8FFF5F4FFF8F8FFF9F8FFF7
+              F1FFFFF1FFFFE8FAFFEBFFFFF4FFFFF7FFFFF7F9FFF0E8FFEA19781D21DA2024
+              EF243BD247002300C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C07F8182BDC5BE
+              455740B7CCB3F6FFF7FFFCF72805093D0B0F3B0B0941120E3503053C0A0C3E0E
+              0D3B12101D0205FFFDFEFCF8F7F9FDF7FFFFF8FBFFF8F6FFFB97D19B0089002D
+              E02D2DDC35007B00001600C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0818082BBBFB9
+              434F39BECBB3F6FFF3FDFFFCFFFFFFFFFDFEFFFDF6FFFFF8FFFDFCFFFCFBFFF9
+              F3FFFCF5FFFEFEFFF7FAFFF9FFFFFAFFFFFEFCFFF9F4FFFFFFB2CAB8D6FFDC05
+              7A0732E02E35DD30002F00C0C0C0C0C0C0C0C0C0C0C0C0C0C0C07B7A7CC3C7C1
+              F8FFF2B8C8B1FCFFF7F9FFFDF3FFFFEAFAF9F6FFFBFEFFF6FFFCFEFFFCFCFFFB
+              F5FFFFF9FFFEFEFFFCFF2D0511FFEEF9FFFCFCFFFFFBFFFEFFBEC5BEE4FFEC90
+              DF950088003FDA3145C941002600C0C0C0C0C0C0C0C0C0C0C0C0858787B4BFB7
+              E8FFEEB4D1B8F8FEF3FDFFFEEBFBFFEFFFFFFBFFFCFFFBF8FFF6FF45040DFFF9
+              F9FFFCF8FFF8F8FFF2F6420911FFF7FEFFFAF9FFF9F3FFFFF8BCC2AF315F3499
+              D99D001E001B790E36D53938C83A002100C0C0C0C0C0C0C0C0C07A797BB9C6BE
+              325A419DCAB0B1CAC0AAC2C24E73779BC2C4A7C6C5BBBBBB410914FFF3FF3F01
+              073C0B0DFFF6F83B1416FFF0F43F0609FFFBFBFFFDFB220A04CAC6B3325731AA
+              D6AD000A00C0C0C00286034BD84B002300C0C0C0C0C0C0C0C0C0858089B9C4C1
+              26533995D4BA3C7E792B7275307F7C277C781E7878457A7DFFFAFF43070F3203
+              0CFFF8FF2F0B11FFF4F63B0D0CFFF7F6FFF9FC340C11381012D7BEBAFCFFF3B1
+              C3B2000200C0C0C0C0C0C0196A1356C559002500C0C0C0C0C0C0837E87B5C0BD
+              DFFFF044856BB6FFFC2C7F81B1FFFF1C7E78167D7F2F7477FFFDFF32090EFFF9
+              FFFFFAFFFFFAFDFFFCFBFFFDF82D0C09330B10FFF5FCFFF6FAD5C0BEFDFFF5B5
+              C6B8000203C0C0C0C0C0C0C0C0C00E741558C363001300C0C0C07D7C80C1CBC5
+              E4FFEBA3D2B8437770C9FFFF3079772E7D7A307D7A417575FBFFFFFFFDFEFFFE
+              FEFFFDFAFFFEFCFFFAF6FFFFF7FFFCF5FFFCFEFFFBFFFFFCFDC5C7BB345631AC
+              D2AE000300C0C0C0C0C0C0C0C0C0C0C0C01B682468B85F002900828387B7C1BB
+              39533BE5FFF1A5C9C34B777892C8C98BC3C491C3C1A0C2C1F8FFFFFFFFFEFAFB
+              F7FFFFFBFBFBF5FFFFFBFDFFFBFFFFFBFFFEFEFFFDFDFFFFFCBCC5B84063419F
+              C6A6000500C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0216C161B73097F7F85B6BFBC
+              3C5541ABCCB7587671A4C3C6507075A1C1C6ABC7C8AFC3C4FAFFFFFEFEFEFEFF
+              FBFCFFFAF7FEF9F3FCF9F9FFFEF9FEFCFCFFFAFCFFF6FFFFFCC1BDBCF0F7F2B7
+              C9C2000903C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0888686B8C1B7
+              EAFFEBABD1B3E6FFF5EBFFFFE8FFFCEAFFFCEDFEFBF2FFFCF6FFF8F7FFF6FBFF
+              F6FAFFF8EAFFF3EFFFF9FAFFFFF6FDF8F1FFF4F3FFF4FBFAF6C7C0C3FBFFFFB3
+              C3BC000600C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C07F7A71C3D0B8
+              E3FFDCA0D49FB7CDBBB2C4B7A9D2ADA0C9A4B6C8BBB2C3B5AFD2AAA8C99DC7D4
+              BAB9C9B2A5D0AF9EC7ABC0C8BDBAC4B4A1CEA7A2CEAABCC1C0C2C1C53A543DAA
+              CAAB000900C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C089837CBAC6B0
+              35612C32602CFAFFF5FBFFF83557323A613BF4FFF7F4FFF5395D333D5E31F9FF
+              ECF6FFEE375D3F31573BF5FCEFFBFFF52A562F386141FAFFFFFBFCFF3D593CAC
+              CCA9000700C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C07F7E88B9C0BD
+              B3C9B0B9CCB1C5BDBDC2B9BCBCCABFADC1B4B6C1BEB9C2BFB4C6B5BDCABABFC0
+              B7C3C0BCBDC3BEBAC1BCC2C5C3BBC2BBB7C7B5B4C3B5BFBEC0C1C0C2BAC5B5BF
+              CEB9010600C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C07A7A8C7F828A
+              7A867A7F83778D7C8091808B777A7E7985857A81847C81827B827F7C7F7D8681
+              82877E81887D85847E83818082767B7982857C83857F817E808080807E81787C
+              8374818278C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+            }
+            OnClick = BitBtn4Click
+            TabOrder = 11
           end
         end
         object TabSheet20: TTabSheet
@@ -1251,6 +1253,7 @@ object frmACBrNFe: TfrmACBrNFe
             ClientHeight = 49
             ClientWidth = 1088
             Color = clGrayText
+            ParentBackground = False
             ParentColor = False
             TabOrder = 2
             object btnImportaNfeOdoo: TButton
@@ -1259,8 +1262,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 4
               Width = 160
               Caption = 'Importa Nfe Odoo'
-              OnClick = btnImportaNfeOdooClick
               TabOrder = 0
+              OnClick = btnImportaNfeOdooClick
             end
             object btnNotasGeradas: TButton
               Left = 807
@@ -1268,8 +1271,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 4
               Width = 160
               Caption = 'Atualizar Odoo Notas Geradas'
-              OnClick = btnNotasGeradasClick
               TabOrder = 1
+              OnClick = btnNotasGeradasClick
             end
             object BitBtn7: TBitBtn
               Left = 982
@@ -1329,6 +1332,7 @@ object frmACBrNFe: TfrmACBrNFe
         Align = alClient
         ClientHeight = 600
         ClientWidth = 817
+        ParentBackground = False
         TabOrder = 0
         OnClick = pnlCentralClick
         object pgcBotoes: TPageControl
@@ -1352,9 +1356,9 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 71
               Width = 177
               Caption = 'Criar e Enviar'
-              OnClick = btnCriarEnviarClick
               TabOrder = 2
               Visible = False
+              OnClick = btnCriarEnviarClick
             end
             object btnValidarRegrasNegocio: TButton
               Left = 400
@@ -1362,9 +1366,9 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 72
               Width = 177
               Caption = 'Validar Regras de Negócio'
-              OnClick = btnValidarRegrasNegocioClick
               TabOrder = 5
               Visible = False
+              OnClick = btnValidarRegrasNegocioClick
             end
             object btnGerarTXT: TButton
               Left = 592
@@ -1372,9 +1376,9 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 48
               Width = 177
               Caption = 'Gerar TXT'
-              OnClick = btnGerarTXTClick
               TabOrder = 1
               Visible = False
+              OnClick = btnGerarTXTClick
             end
             object btnGerarXML: TButton
               Left = 592
@@ -1382,9 +1386,9 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 16
               Width = 177
               Caption = 'Gerar NFe'
-              OnClick = btnGerarXMLClick
               TabOrder = 0
               Visible = False
+              OnClick = btnGerarXMLClick
             end
             object btnImportarXML: TButton
               Left = 400
@@ -1392,9 +1396,9 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 16
               Width = 177
               Caption = 'Importar TXT/XML'
-              OnClick = btnImportarXMLClick
               TabOrder = 4
               Visible = False
+              OnClick = btnImportarXMLClick
             end
             object btnGerarPDF: TButton
               Left = 184
@@ -1402,8 +1406,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 56
               Width = 177
               Caption = 'Gerar PDF'
-              OnClick = btnGerarPDFClick
               TabOrder = 10
+              OnClick = btnGerarPDFClick
             end
             object btnValidarXML: TButton
               Left = 184
@@ -1411,8 +1415,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 16
               Width = 177
               Caption = 'Validar XML'
-              OnClick = btnValidarXMLClick
               TabOrder = 6
+              OnClick = btnValidarXMLClick
             end
             object btnImprimir: TButton
               Left = 0
@@ -1420,8 +1424,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 56
               Width = 177
               Caption = 'Imprimir DANFE'
-              OnClick = btnImprimirClick
               TabOrder = 9
+              OnClick = btnImprimirClick
             end
             object btnEnviarEmail: TButton
               Left = 9
@@ -1429,8 +1433,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 133
               Width = 177
               Caption = 'Enviar NFe Email'
-              OnClick = btnEnviarEmailClick
               TabOrder = 11
+              OnClick = btnEnviarEmailClick
             end
             object btnAdicionarProtocolo: TButton
               Left = 592
@@ -1438,9 +1442,9 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 96
               Width = 177
               Caption = 'Adicionar Protocolo ao XML'
-              OnClick = btnAdicionarProtocoloClick
               TabOrder = 8
               Visible = False
+              OnClick = btnAdicionarProtocoloClick
             end
             object btnCarregarXMLEnviar: TButton
               Left = 0
@@ -1448,8 +1452,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 16
               Width = 177
               Caption = 'Carregar XML e Enviar'
-              OnClick = btnCarregarXMLEnviarClick
               TabOrder = 3
+              OnClick = btnCarregarXMLEnviarClick
             end
             object btnValidarAssinatura: TButton
               Left = 400
@@ -1457,9 +1461,9 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 48
               Width = 177
               Caption = 'Validar Assinatura'
-              OnClick = btnValidarAssinaturaClick
               TabOrder = 7
               Visible = False
+              OnClick = btnValidarAssinaturaClick
             end
             object btnImprimirDANFCE: TButton
               Left = 192
@@ -1467,8 +1471,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 133
               Width = 177
               Caption = 'Imprimir DANFCE'
-              OnClick = btnImprimirDANFCEClick
               TabOrder = 12
+              OnClick = btnImprimirDANFCEClick
             end
             object btnImprimirDANFCEOffline: TButton
               Left = 375
@@ -1476,8 +1480,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 133
               Width = 177
               Caption = 'Imprimir DANFCE Offline'
-              OnClick = btnImprimirDANFCEOfflineClick
               TabOrder = 13
+              OnClick = btnImprimirDANFCEOfflineClick
             end
           end
           object tsConsultas: TTabSheet
@@ -1491,8 +1495,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 9
               Width = 177
               Caption = 'Consultar carregando XML'
-              OnClick = btnConsultarClick
               TabOrder = 1
+              OnClick = btnConsultarClick
             end
             object btnConsultarChave: TButton
               Left = 384
@@ -1500,8 +1504,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 9
               Width = 177
               Caption = 'Consultar pela Chave'
-              OnClick = btnConsultarChaveClick
               TabOrder = 3
+              OnClick = btnConsultarChaveClick
             end
             object btnConsCad: TButton
               Left = 592
@@ -1509,9 +1513,9 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 9
               Width = 177
               Caption = 'Consulta Cadastro'
-              OnClick = btnConsCadClick
               TabOrder = 4
               Visible = False
+              OnClick = btnConsCadClick
             end
             object btnConsultarRecibo: TButton
               Left = 592
@@ -1519,9 +1523,9 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 40
               Width = 177
               Caption = 'Consultar Recibo Lote'
-              OnClick = btnConsultarReciboClick
               TabOrder = 2
               Visible = False
+              OnClick = btnConsultarReciboClick
             end
             object btnStatusServ: TButton
               Left = 8
@@ -1529,8 +1533,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 9
               Width = 177
               Caption = ' Status de Serviço'
-              OnClick = btnStatusServClick
               TabOrder = 0
+              OnClick = btnStatusServClick
             end
           end
           object tsEventos: TTabSheet
@@ -1544,8 +1548,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 9
               Width = 177
               Caption = 'Cancelamento com XML'
-              OnClick = btnCancelarXMLClick
               TabOrder = 0
+              OnClick = btnCancelarXMLClick
             end
             object btnCancelarChave: TButton
               Left = 191
@@ -1553,8 +1557,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 9
               Width = 177
               Caption = 'Cancelamento pela Chave'
-              OnClick = btnCancelarChaveClick
               TabOrder = 1
+              OnClick = btnCancelarChaveClick
             end
             object btnCartadeCorrecao: TButton
               Left = 374
@@ -1562,8 +1566,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 9
               Width = 177
               Caption = 'Carta de Correção'
-              OnClick = btnCartadeCorrecaoClick
               TabOrder = 2
+              OnClick = btnCartadeCorrecaoClick
             end
             object btnImprimirEvento: TButton
               Left = 8
@@ -1571,9 +1575,9 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 100
               Width = 177
               Caption = 'Imprimir Evento'
-              OnClick = btnImprimirEventoClick
               TabOrder = 4
               Visible = False
+              OnClick = btnImprimirEventoClick
             end
             object btnEnviarEventoEmail: TButton
               Left = 191
@@ -1581,9 +1585,9 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 100
               Width = 177
               Caption = 'Enviar Evento Email'
-              OnClick = btnEnviarEventoEmailClick
               TabOrder = 5
               Visible = False
+              OnClick = btnEnviarEventoEmailClick
             end
             object btnAtorInterNFeTransp: TButton
               Left = 8
@@ -1591,9 +1595,9 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 40
               Width = 177
               Caption = 'Ator Interessado na NF-e Transp.'
-              OnClick = btnAtorInterNFeTranspClick
               TabOrder = 3
               Visible = False
+              OnClick = btnAtorInterNFeTranspClick
             end
           end
           object tsInutilizacao: TTabSheet
@@ -1607,8 +1611,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 9
               Width = 177
               Caption = 'Inutilizar Numeração'
-              OnClick = btnInutilizarClick
               TabOrder = 0
+              OnClick = btnInutilizarClick
             end
             object btnInutilizarImprimir: TButton
               Left = 191
@@ -1616,8 +1620,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 9
               Width = 177
               Caption = 'Inutilizar Imprimir'
-              OnClick = btnInutilizarImprimirClick
               TabOrder = 1
+              OnClick = btnInutilizarImprimirClick
             end
           end
           object tsDistribuicao: TTabSheet
@@ -1631,8 +1635,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 40
               Width = 178
               Caption = 'Manif. Dest. - Conf. Operação'
-              OnClick = btnManifDestConfirmacaoClick
               TabOrder = 3
+              OnClick = btnManifDestConfirmacaoClick
             end
             object btnDistrDFePorUltNSU: TButton
               Left = 8
@@ -1640,8 +1644,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 9
               Width = 178
               Caption = 'Distribuição DF-e por último NSU'
-              OnClick = btnDistrDFePorUltNSUClick
               TabOrder = 0
+              OnClick = btnDistrDFePorUltNSUClick
             end
             object btnDistrDFePorNSU: TButton
               Left = 192
@@ -1649,8 +1653,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 9
               Width = 178
               Caption = 'Distribuição DF-e por NSU'
-              OnClick = btnDistrDFePorNSUClick
               TabOrder = 1
+              OnClick = btnDistrDFePorNSUClick
             end
             object btnDistrDFePorChave: TButton
               Left = 376
@@ -1658,8 +1662,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 9
               Width = 178
               Caption = 'Distribuição DF-e por Chave'
-              OnClick = btnDistrDFePorChaveClick
               TabOrder = 2
+              OnClick = btnDistrDFePorChaveClick
             end
             object btnManifDestDesconnhecimento: TButton
               Left = 192
@@ -1667,8 +1671,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 40
               Width = 178
               Caption = 'Manif. Dest. - Desconhecimento'
-              OnClick = btnManifDestConfirmacaoClick
               TabOrder = 4
+              OnClick = btnManifDestConfirmacaoClick
             end
             object btnManifDestCiencia: TButton
               Left = 377
@@ -1676,8 +1680,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 40
               Width = 178
               Caption = 'Manif. Dest. - Ciência'
-              OnClick = btnManifDestConfirmacaoClick
               TabOrder = 5
+              OnClick = btnManifDestConfirmacaoClick
             end
             object btnManifDestOperNaoRealizada: TButton
               Left = 8
@@ -1685,8 +1689,8 @@ object frmACBrNFe: TfrmACBrNFe
               Top = 71
               Width = 178
               Caption = 'Manif. Dest. - Oper. Não Realizada'
-              OnClick = btnManifDestConfirmacaoClick
               TabOrder = 6
+              OnClick = btnManifDestConfirmacaoClick
             end
           end
         end
@@ -1729,7 +1733,7 @@ object frmACBrNFe: TfrmACBrNFe
               ParentColor = False
               ParentFont = False
               TabOrder = 0
-              Gutter.Width = 57
+              Gutter.Width = 0
               Gutter.MouseActions = <>
               RightGutter.Width = 0
               RightGutter.MouseActions = <>
@@ -2178,39 +2182,6 @@ object frmACBrNFe: TfrmACBrNFe
               LineHighlightColor.Background = clNone
               LineHighlightColor.Foreground = clNone
               inline SynLeftGutterPartList1: TSynGutterPartList
-                object SynGutterMarks1: TSynGutterMarks
-                  Width = 24
-                  MouseActions = <>
-                end
-                object SynGutterLineNumber1: TSynGutterLineNumber
-                  Width = 17
-                  MouseActions = <>
-                  MarkupInfo.Background = clBtnFace
-                  MarkupInfo.Foreground = clNone
-                  DigitCount = 2
-                  ShowOnlyLineNumbersMultiplesOf = 1
-                  ZeroStart = False
-                  LeadingZeros = False
-                end
-                object SynGutterChanges1: TSynGutterChanges
-                  Width = 4
-                  MouseActions = <>
-                  ModifiedColor = 59900
-                  SavedColor = clGreen
-                end
-                object SynGutterSeparator1: TSynGutterSeparator
-                  Width = 2
-                  MouseActions = <>
-                  MarkupInfo.Background = clWhite
-                  MarkupInfo.Foreground = clGray
-                end
-                object SynGutterCodeFolding1: TSynGutterCodeFolding
-                  MouseActions = <>
-                  MarkupInfo.Background = clNone
-                  MarkupInfo.Foreground = clGray
-                  MouseActionsExpanded = <>
-                  MouseActionsCollapsed = <>
-                end
               end
             end
           end
@@ -2287,6 +2258,7 @@ object frmACBrNFe: TfrmACBrNFe
         Align = alLeft
         ClientHeight = 600
         ClientWidth = 297
+        ParentBackground = False
         TabOrder = 1
         object PageControl1: TPageControl
           Left = 0
@@ -2367,6 +2339,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Caption = 'Certificado'
                   ClientHeight = 166
                   ClientWidth = 259
+                  ParentBackground = False
                   TabOrder = 0
                   object Label1: TLabel
                     Left = 5
@@ -2503,8 +2476,8 @@ object frmACBrNFe: TfrmACBrNFe
                   Top = 305
                   Width = 99
                   Caption = 'Data de Validade'
-                  OnClick = btnDataValidadeClick
                   TabOrder = 1
+                  OnClick = btnDataValidadeClick
                 end
                 object btnNumSerie: TButton
                   Left = 111
@@ -2512,8 +2485,8 @@ object frmACBrNFe: TfrmACBrNFe
                   Top = 305
                   Width = 73
                   Caption = 'Num.Série'
-                  OnClick = btnNumSerieClick
                   TabOrder = 2
+                  OnClick = btnNumSerieClick
                 end
                 object btnSubName: TButton
                   Left = 7
@@ -2521,8 +2494,8 @@ object frmACBrNFe: TfrmACBrNFe
                   Top = 337
                   Width = 99
                   Caption = 'Subject Name'
-                  OnClick = btnSubNameClick
                   TabOrder = 4
+                  OnClick = btnSubNameClick
                 end
                 object btnCNPJ: TButton
                   Left = 112
@@ -2530,8 +2503,8 @@ object frmACBrNFe: TfrmACBrNFe
                   Top = 337
                   Width = 73
                   Caption = 'CNPJ'
-                  OnClick = btnCNPJClick
                   TabOrder = 5
+                  OnClick = btnCNPJClick
                 end
                 object btnIssuerName: TButton
                   Left = 190
@@ -2539,8 +2512,8 @@ object frmACBrNFe: TfrmACBrNFe
                   Top = 306
                   Width = 76
                   Caption = 'Issuer Name'
-                  OnClick = btnIssuerNameClick
                   TabOrder = 3
+                  OnClick = btnIssuerNameClick
                 end
                 object GroupBox1: TGroupBox
                   Left = 3
@@ -2550,6 +2523,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Caption = 'Calculo de Hash e assinatura'
                   ClientHeight = 51
                   ClientWidth = 259
+                  ParentBackground = False
                   TabOrder = 7
                   object Edit1: TEdit
                     Left = 1
@@ -2565,8 +2539,8 @@ object frmACBrNFe: TfrmACBrNFe
                     Top = 27
                     Width = 99
                     Caption = 'SHA256+RSA'
-                    OnClick = btnSha256Click
                     TabOrder = 1
+                    OnClick = btnSha256Click
                   end
                   object cbAssinar: TCheckBox
                     Left = 142
@@ -2585,8 +2559,8 @@ object frmACBrNFe: TfrmACBrNFe
                   Top = 442
                   Width = 128
                   Caption = 'HTTPS sem Certificado'
-                  OnClick = btnHTTPSClick
                   TabOrder = 8
+                  OnClick = btnHTTPSClick
                 end
                 object btnLeituraX509: TButton
                   Left = 145
@@ -2594,8 +2568,8 @@ object frmACBrNFe: TfrmACBrNFe
                   Top = 442
                   Width = 115
                   Caption = 'Leitura de X509'
-                  OnClick = btnLeituraX509Click
                   TabOrder = 9
+                  OnClick = btnLeituraX509Click
                 end
                 object cbSSLLib: TComboBox
                   Left = 80
@@ -2603,9 +2577,9 @@ object frmACBrNFe: TfrmACBrNFe
                   Top = 8
                   Width = 160
                   ItemHeight = 13
-                  OnChange = cbSSLLibChange
                   Style = csDropDownList
                   TabOrder = 10
+                  OnChange = cbSSLLibChange
                 end
                 object cbCryptLib: TComboBox
                   Left = 80
@@ -2613,9 +2587,9 @@ object frmACBrNFe: TfrmACBrNFe
                   Top = 35
                   Width = 160
                   ItemHeight = 13
-                  OnChange = cbCryptLibChange
                   Style = csDropDownList
                   TabOrder = 11
+                  OnChange = cbCryptLibChange
                 end
                 object cbHttpLib: TComboBox
                   Left = 80
@@ -2623,9 +2597,9 @@ object frmACBrNFe: TfrmACBrNFe
                   Top = 62
                   Width = 160
                   ItemHeight = 13
-                  OnChange = cbHttpLibChange
                   Style = csDropDownList
                   TabOrder = 12
+                  OnChange = cbHttpLibChange
                 end
                 object cbXmlSignLib: TComboBox
                   Left = 80
@@ -2633,9 +2607,9 @@ object frmACBrNFe: TfrmACBrNFe
                   Top = 89
                   Width = 160
                   ItemHeight = 13
-                  OnChange = cbXmlSignLibChange
                   Style = csDropDownList
                   TabOrder = 13
+                  OnChange = cbXmlSignLibChange
                 end
                 object btVersao: TButton
                   Left = 190
@@ -2643,8 +2617,8 @@ object frmACBrNFe: TfrmACBrNFe
                   Top = 336
                   Width = 76
                   Caption = 'Ver.SSL Lib'
-                  OnClick = btVersaoClick
                   TabOrder = 6
+                  OnClick = btVersaoClick
                 end
               end
               object TabSheet4: TTabSheet
@@ -2660,6 +2634,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Caption = 'Geral'
                   ClientHeight = 371
                   ClientWidth = 261
+                  ParentBackground = False
                   TabOrder = 0
                   object sbtnPathSalvar: TSpeedButton
                     Left = 236
@@ -2871,6 +2846,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Caption = 'WebService'
                   ClientHeight = 172
                   ClientWidth = 261
+                  ParentBackground = False
                   TabOrder = 0
                   object Label6: TLabel
                     Left = 6
@@ -2983,6 +2959,7 @@ object frmACBrNFe: TfrmACBrNFe
                       'Produção'
                       'Homologação'
                     )
+                    ParentBackground = False
                     TabOrder = 2
                   end
                   object cbxSalvarSOAP: TCheckBox
@@ -3011,9 +2988,9 @@ object frmACBrNFe: TfrmACBrNFe
                     Top = 146
                     Width = 160
                     ItemHeight = 13
-                    OnChange = cbSSLTypeChange
                     Style = csDropDownList
                     TabOrder = 5
+                    OnChange = cbSSLTypeChange
                   end
                 end
                 object gbProxy: TGroupBox
@@ -3024,6 +3001,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Caption = 'Proxy'
                   ClientHeight = 86
                   ClientWidth = 261
+                  ParentBackground = False
                   TabOrder = 1
                   object Label8: TLabel
                     Left = 6
@@ -3096,6 +3074,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Caption = 'Retorno de Envio'
                   ClientHeight = 59
                   ClientWidth = 261
+                  ParentBackground = False
                   TabOrder = 2
                   object Label36: TLabel
                     Left = 91
@@ -3379,6 +3358,7 @@ object frmACBrNFe: TfrmACBrNFe
                     'Simples Nacional'
                     'Simples Nacional, excesso sublimite de receita bruta'
                     'Regime Normal'
+                    'MEI'
                   )
                   ParentFont = False
                   Style = csDropDownList
@@ -3735,6 +3715,7 @@ object frmACBrNFe: TfrmACBrNFe
                 'Retrato'
                 'Paisagem'
               )
+              ParentBackground = False
               TabOrder = 1
             end
             object gbEscPos: TGroupBox
@@ -3745,6 +3726,7 @@ object frmACBrNFe: TfrmACBrNFe
               Caption = 'EscPos'
               ClientHeight = 215
               ClientWidth = 253
+              ParentBackground = False
               TabOrder = 2
               object Label43: TLabel
                 Left = 6
@@ -3929,6 +3911,7 @@ object frmACBrNFe: TfrmACBrNFe
                 'EscPos'
                 'A4'
               )
+              ParentBackground = False
               TabOrder = 3
             end
           end
@@ -4239,18 +4222,20 @@ object frmACBrNFe: TfrmACBrNFe
   end
   object ZConn: TZConnection
     ControlsCodePage = cCP_UTF8
-    AutoEncodeStrings = True
     Properties.Strings = (
       'AutoEncodeStrings=True'
       'controls_cp=CP_UTF8'
+      'RawStringEncoding=DB_CP'
     )
     TransactIsolationLevel = tiReadCommitted
-    HostName = 'localhost'
+    AddLogMsgToExceptionOrWarningMsg = False
+    DisableSavepoints = False
+    HostName = '172.17.0.2'
     Port = 3050
-    Database = 'C:\home\bd\LANCAMENTO.FDB'
-    User = 'sysdba'
-    Password = 'masterkey'
-    Protocol = 'firebirdd-2.5'
+    Database = 'C:\home\odoo_nfe\bd\LANCAMENTO.FDB'
+    User = 'SYSDBA'
+    Password = '4fde4f377bd5fae06b5e'
+    Protocol = 'firebird'
     LibraryLocation = 'C:\home\odoo_nfe\fbclient.dll'
     Left = 56
     Top = 120
@@ -4263,8 +4248,8 @@ object frmACBrNFe: TfrmACBrNFe
     Top = 184
   end
   object ZQemp: TZQuery
-    Connection = ZConn
     OnFilterRecord = ZQempFilterRecord
+    Connection = ZConn
     SQL.Strings = (
       'select * from empresa order by empresa_id'
     )

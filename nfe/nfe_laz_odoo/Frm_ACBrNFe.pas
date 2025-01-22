@@ -38,10 +38,10 @@ uses
   LCLIntf, LCLType, LMessages, Messages, SysUtils, Variants, Classes, Graphics,
   Controls, Forms, Dialogs, ComCtrls, StdCtrls, Spin, Buttons, ExtCtrls,
   DBCtrls, DBGrids, PythonEngine, Lcl.PythonGUIInputOutput, ZConnection,
-  ZDataset, SynEdit, SynHighlighterXML, ACBrPosPrinter, ACBrNFeDANFeESCPOS,
-  ACBrNFeDANFEClass, ACBrDANFCeFortesFr, ACBrDFeReport, ACBrDFeDANFeReport,
-  ACBrNFeDANFeRLClass, ACBrBase, ACBrDFe, ACBrNFe, ACBrUtil, ACBrMail,
-  ACBrIntegrador, DB, ACBrDANFCeFortesFrA4, Types,strUtils;
+  ZDataset, SynEdit, SynHighlighterXML, SynGutterBase, ACBrPosPrinter,
+  ACBrNFeDANFeESCPOS, ACBrNFeDANFEClass, ACBrDANFCeFortesFr, ACBrDFeReport,
+  ACBrDFeDANFeReport, ACBrNFeDANFeRLClass, ACBrBase, ACBrDFe, ACBrNFe, ACBrUtil,
+  ACBrMail, ACBrIntegrador, DB, ACBrDANFCeFortesFrA4, Types, strUtils;
 
 type
 
@@ -2308,24 +2308,57 @@ begin
 end;
 
 procedure TfrmACBrNFe.btnConsultarClick(Sender: TObject);
+var sSQL : string;
+  path_nfe: String;
 begin
-  OpenDialog1.Title := 'Selecione a NFe';
-  OpenDialog1.DefaultExt := '*-nfe.XML';
-  OpenDialog1.Filter := 'Arquivos NFe (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+  if (dbEdit4.Text = '') then
+  begin
+    ShowMessage('Selecione a nota a consultar');
+    exit;
+  end;
+  path_nfe := ExtractFilePath(Application.ExeName) + 'notas\' + 'NFe'+ dbEdit4.Text + '-env.xml';
 
-  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
-
-  if OpenDialog1.Execute then
+  if FileExists(path_nfe) then
   begin
     ACBrNFe1.NotasFiscais.Clear;
-    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+    ACBrNFe1.NotasFiscais.LoadFromFile(path_nfe, False);
+  end
+  else begin
+    OpenDialog1.Title := 'Selecione a NFe';
+    OpenDialog1.DefaultExt := '*-nfe.XML';
+    OpenDialog1.Filter := 'Arquivos NFe (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+
+    OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
+
+    if OpenDialog1.Execute then
+    begin
+      ACBrNFe1.NotasFiscais.Clear;
+      ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+    end;
+  end;
     ACBrNFe1.Consultar;
 
     ShowMessage(ACBrNFe1.WebServices.Consulta.Protocolo);
+
+    ZQprotocolo.Active := False;
+    sSQL := ' UPDATE nfe' +
+          ' SET' +
+          ' protocolo = ' + QuotedStr(ACBrNFe1.WebServices.Consulta.Protocolo) +
+          ' , situacao = ' + QuotedStr('Autorizada') +
+          ' WHERE chave = ' + QuotedStr(dbEdit4.Text);
+
+    ZQprotocolo.SQL.Clear;
+    ZQprotocolo.SQL.Add(sSQL);
+    ZQprotocolo.ExecSQL;
+
+    ZQprotocolo.Close;
+    ZQprotocolo.SQL.Text := 'SELECT * FROM nfe ORDER BY DATA_EMISSAO DESC, CHAVE DESC, NUM_NFE DESC';
+    ZQprotocolo.ExecSQL;
+    ZQprotocolo.Open;
+
     MemoResp.Lines.Text := ACBrNFe1.WebServices.Consulta.RetWS;
     memoRespWS.Lines.Text := ACBrNFe1.WebServices.Consulta.RetornoWS;
     LoadXML(MemoResp, WBResposta);
-  end;
 end;
 
 procedure TfrmACBrNFe.btnConsultarReciboClick(Sender: TObject);
