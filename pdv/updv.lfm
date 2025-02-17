@@ -1,7 +1,7 @@
 object fPdv: TfPdv
-  Left = 179
+  Left = 198
   Height = 664
-  Top = 15
+  Top = 20
   Width = 1108
   Align = alLeft
   Caption = 'Ponto de Venda - ATS'
@@ -11866,20 +11866,20 @@ object fPdv: TfPdv
         item
           MaxSize = 140
           Title.Caption = 'Código'
-          Width = 160
+          Width = 70
           FieldName = 'CODPRO'
         end      
         item
           MinSize = 200
           MaxSize = 600
           Title.Caption = 'Descrição'
-          Width = 400
+          Width = 240
           FieldName = 'DESCPRODUTO'
         end      
         item
           MaxSize = 60
           Title.Caption = 'Un.'
-          Width = 60
+          Width = 40
           FieldName = 'UNIDADEMEDIDA'
         end      
         item
@@ -11887,7 +11887,7 @@ object fPdv: TfPdv
           MaxSize = 120
           Title.Alignment = taRightJustify
           Title.Caption = 'Quant.'
-          Width = 80
+          Width = 70
           FieldName = 'QUANTIDADE'
         end      
         item
@@ -11895,7 +11895,7 @@ object fPdv: TfPdv
           MaxSize = 120
           Title.Alignment = taRightJustify
           Title.Caption = 'Preço'
-          Width = 80
+          Width = 70
           FieldName = 'PRECO'
           DisplayFormat = ',##0.00'
         end      
@@ -11904,7 +11904,7 @@ object fPdv: TfPdv
           MaxSize = 140
           Title.Alignment = taRightJustify
           Title.Caption = 'Total'
-          Width = 100
+          Width = 70
           FieldName = 'TOTALITEM'
         end>
       DataSource = dsLanc
@@ -11972,23 +11972,23 @@ object fPdv: TfPdv
           item
             MaxSize = 120
             Title.Caption = 'Cód.'
-            Width = 140
+            Width = 80
           end        
           item
             MaxSize = 300
             Title.Caption = 'Descrição'
-            Width = 468
+            Width = 500
           end        
           item
             MaxSize = 60
             Title.Caption = 'Un.'
-            Width = 50
+            Width = 60
           end        
           item
             MaxSize = 80
             Title.Alignment = taRightJustify
             Title.Caption = 'Preço'
-            Width = 100
+            Width = 80
           end>
         DataSource = dsProdProc
         Font.CharSet = ANSI_CHARSET
@@ -12796,7 +12796,7 @@ object fPdv: TfPdv
       Caption = 'Fechar'
     end
     object MenuItem13: TMenuItem
-      Caption = 'Promoção'
+      Caption = 'Corrigir erro Promoção'
       OnClick = MenuItem13Click
     end
   end

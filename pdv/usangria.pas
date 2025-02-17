@@ -420,6 +420,8 @@ begin
     except
     end;
   end;}
+
+  btnGravar.Enabled:= False;
 end;
 
 procedure TfSangria.EnviaSangria;
