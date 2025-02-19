@@ -37,6 +37,7 @@ type
     edVendedorNome: TEdit;
     Label1: TLabel;
     edPedido: TLabeledEdit;
+    Label10: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     edValorTotal: TMaskEdit;
@@ -230,7 +231,7 @@ begin
     dmpdv.sqBusca1.SQL.Clear;
     dmpdv.sqBusca1.sql.Add('SELECT SUM(VALOR_PAGO) AS VLR FROM FORMA_ENTRADA ' +
       'WHERE COD_VENDA IN (' + cod_venda_str + ')' +
-      '  AND N_DOC = ' + QuotedStr('9-Devol./Troca'));
+      '  AND N_DOC = ' + QuotedStr('9-Devol./Troca') + 'AND STATE = ' + QuotedStr('1')  );
     dmpdv.sqBusca1.Open;
     if (not dmpdv.sqBusca1.IsEmpty) then
     begin

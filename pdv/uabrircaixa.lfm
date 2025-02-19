@@ -422,7 +422,7 @@ object fAbrirCaixa: TfAbrirCaixa
       ParentFont = False
     end
     object Label17: TLabel
-      Left = 182
+      Left = 196
       Height = 15
       Top = 261
       Width = 12
@@ -431,7 +431,7 @@ object fAbrirCaixa: TfAbrirCaixa
       ParentFont = False
     end
     object Label18: TLabel
-      Left = 289
+      Left = 352
       Height = 15
       Top = 261
       Width = 18
@@ -447,14 +447,14 @@ object fAbrirCaixa: TfAbrirCaixa
       Caption = 'SerieCX :'
     end
     object Label20: TLabel
-      Left = 123
+      Left = 137
       Height = 15
       Top = 261
       Width = 52
       Caption = 'Nº NFCe :'
     end
     object Label21: TLabel
-      Left = 216
+      Left = 277
       Height = 15
       Top = 261
       Width = 66
