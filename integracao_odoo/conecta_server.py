@@ -2,7 +2,7 @@ import requests as rq
 import json
 import os
 import configparser
-from datetime import datetime
+from datetime import datetime, timedelta
 # from atscon import Conexao as con
 from sqlite_bd import Database as local_db
 # import numpy as np
@@ -207,6 +207,13 @@ class EnviaServer:
     def lendo_arquivos(self):
         hj = datetime.now()       
         hj = datetime.strftime(hj,'%m-%d-%Y')
+        # hoje = datetime.today()
+        # name_file_controle = 'file_controle_pedido%s_%s.txt' %(str(hoje.day), str(hoje.month))
+        # if os.path.exists(name_file_controle):
+        #     ontem = datetime.today() - timedelta(days=1)
+        #     old_file_name = 'file_controle_pedido%s_%s.txt' %(str(ontem.day-1), str(ontem.month))
+        #     os.remove(old_file_name)
+
         dblocal = local_db(filename = 'lancamento.db', table = 'lancamento')
         # le arquivos na pasta
         arquivos = os.listdir(self.path_envio)

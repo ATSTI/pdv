@@ -469,9 +469,25 @@ class IntegracaoOdoo:
                 ativo = 'S'
                 codprox = pr['codpro']
                 if pr['usa'] != 'S':
-                   ativo = 'N'
-                   codbarra = ''
-                   codprox = codprox + 'x'
+                    ativo = 'N'
+                    codbarra = ''
+                    codprox = codprox + '-x-'
+                    if len(codprox) > 15:
+                        codprox = codprox[:14]+str(len(prods)+1)
+                    
+                    # tentando arrumar codpro repetido
+                    sqlp = "select CODPRODUTO,\
+                        DATACADASTRO, VALOR_PRAZO, USA from produtos \
+                        where codpro = '%s' " %(codprox)
+                    # AND ((USA = 'S') OR (USA IS NULL)
+                    prods = db.query(sqlp)
+                    if len(prods):
+                        codprox = codprox + '-x-' + str(len(prods)+1)
+                        if len(codprox) > 15:
+                            codprox = codprox[:14]+str(len(prods)+1)
+                        if prods[0][3] == 'N':
+                            continue
+
                 altera = 'UPDATE PRODUTOS SET PRODUTO = '
                 altera += '\'' + produto + '\''
                 altera += ', VALOR_PRAZO = ' + str(round(p_venda, 2))
