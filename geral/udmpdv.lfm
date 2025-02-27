@@ -8,7 +8,6 @@ object dmPdv: TdmPdv
   object IbCon: TIBConnection
     Connected = False
     LoginPrompt = False
-    AfterConnect = IbConAfterConnect
     DatabaseName = 'C:\home\sisadmin\bd\sge_martinelli.fdb'
     KeepConnection = False
     Params.Strings = (
@@ -4274,7 +4273,6 @@ object dmPdv: TdmPdv
   end
   object dsNF: TDataSource
     DataSet = qcdsNF
-    OnDataChange = dsNFDataChange
     Left = 40
     Top = 400
   end
