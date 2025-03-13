@@ -265,6 +265,10 @@ begin
       end;
     end;
   end;
+  if(dmpdv.Usa_Servipa = 'NAO')then
+  begin
+    BitBtn23.Visible:= False;
+  end;
   carrega_valores;
 end;
 

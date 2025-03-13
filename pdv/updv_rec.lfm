@@ -3491,9 +3491,9 @@ object fPDV_Rec: TfPDV_Rec
         Visible = False
       end
       object btnCupom: TBitBtn
-        Left = 16
+        Left = 19
         Height = 60
-        Top = 446
+        Top = 384
         Width = 90
         Caption = 'Cupom'
         Font.CharSet = ANSI_CHARSET
@@ -4243,7 +4243,7 @@ object fPDV_Rec: TfPDV_Rec
       object BitBtn23: TBitBtn
         Left = 17
         Height = 60
-        Top = 383
+        Top = 449
         Width = 90
         Action = actionPix_Servipa
         Font.CharSet = ANSI_CHARSET
