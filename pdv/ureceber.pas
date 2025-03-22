@@ -24,6 +24,7 @@ type
     BitBtn2: TBitBtn;
     BitBtn20: TBitBtn;
     BitBtn21: TBitBtn;
+    BitBtn22: TBitBtn;
     BitBtn24: TBitBtn;
     BitBtn3: TBitBtn;
     BitBtn4: TBitBtn;
@@ -97,6 +98,7 @@ type
     procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn20Click(Sender: TObject);
     procedure BitBtn21Click(Sender: TObject);
+    procedure BitBtn22Click(Sender: TObject);
     procedure BitBtn24Click(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
@@ -110,7 +112,6 @@ type
     procedure edCodClienteKeyPress(Sender: TObject; var Key: char);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure Label3Click(Sender: TObject);
     procedure rgSituacaoClick(Sender: TObject);
     procedure StringGrid1Click(Sender: TObject);
     procedure StringGrid1DrawCell(Sender: TObject; aCol, aRow: Integer;
@@ -245,6 +246,12 @@ begin
     DBGrid1.Columns[7].DisplayFormat:=',##0.00';
   end;
 
+  if(dmpdv.Usa_Servipa = 'NAO')then
+  begin
+    BitBtn22.Visible:= False;
+  end;
+
+
 end;
 
 procedure TfRecebimento.FormShow(Sender: TObject);
@@ -265,11 +272,6 @@ begin
   edJurosMulta.Text := '0,00';
   edTotalGeral.Text := '0,00';
  end;
-
-procedure TfRecebimento.Label3Click(Sender: TObject);
-begin
-
-end;
 
 procedure TfRecebimento.rgSituacaoClick(Sender: TObject);
 begin
@@ -1036,6 +1038,16 @@ begin
   if (titulo_selecionado = True) then
   begin
     lblForma.Caption:= '6-Pix';
+    edPago.Enabled:=True;
+    edPago.SetFocus;
+  end;
+end;
+
+procedure TfRecebimento.BitBtn22Click(Sender: TObject);
+begin
+    if (titulo_selecionado = True) then
+  begin
+    lblForma.Caption:= '0-Pix Servipa';
     edPago.Enabled:=True;
     edPago.SetFocus;
   end;

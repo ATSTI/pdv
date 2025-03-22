@@ -1096,6 +1096,7 @@ type
     CobraJuros : String;
     TempoPromocao : Integer;
     imp_numcopias: Integer;
+    usa_servipa :string;
     function executaSql(strSql: String): Boolean;
     procedure executaDSQL(strDSQL: String); // criei pra executar o atualiza Bd
     procedure gravaLog(DataLog: TDateTime; usuario: String; tipoMovimento: String;
@@ -1293,6 +1294,7 @@ begin
       modoDesenvolvedor := conf.ReadString( 'Outros','modoDesenvolvedor','N');
       caminhoEXEpdv  := conf.ReadString( 'Outros','caminhoEXEpdv','');
       MudarPreco   := conf.ReadString( 'Outros','MudarPreco','NAO');
+      Usa_Servipa := conf.ReadString( 'Outros','UsaServipa','NAO');
      {
       ZCon.Connected       := False;
       ZCon.HostName        := conf.ReadString('ZConn', 'Hostname', '');

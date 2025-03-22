@@ -350,7 +350,7 @@ class IntegracaoOdoo:
                     os.makedirs('promocao')
                 promo_jpg = f"promocao{codpro}.jpg"
                 promo_txt = f"promocao{codpro}.txt"
-                img_sql = 'Null'
+                img_sql = ''
                 if pr['promocao_jpg']:
                     img_sql = promo_jpg
                     if not os.path.exists(promo_jpg):
@@ -476,7 +476,7 @@ class IntegracaoOdoo:
                         codprox = codprox[:14]+str(len(prods)+1)
                     
                     # tentando arrumar codpro repetido
-                    sqlp = "select CODPRODUTO,\
+                    sqlp = "select first 1 CODPRODUTO,\
                         DATACADASTRO, VALOR_PRAZO, USA from produtos \
                         where codpro = '%s' " %(codprox)
                     # AND ((USA = 'S') OR (USA IS NULL)
@@ -503,8 +503,8 @@ class IntegracaoOdoo:
                     altera += ', FOTOPRODUTO = \'' + img_sql + '\''
                 if codbarra:
                     altera += ', COD_BARRA = \'' + str(codbarra) + '\''
-                altera += ' WHERE CODPRO = \'' + str(pr['codpro']) + '\''
-                altera += ' OR CODPRODUTO = ' + str(codproduto)
+                #altera += ' WHERE CODPRO = \'' + str(pr['codpro']) + '\''
+                altera += ' WHERE CODPRODUTO = ' + str(prods[0][0])
                 retorno = db.insert(altera)
                 if retorno:
                     print ('SQL : %s' %(altera))

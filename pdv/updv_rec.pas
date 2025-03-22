@@ -28,6 +28,7 @@ type
     acExcluirLancamento: TAction;
     acCancelaFechamento: TAction;
     acNfce: TAction;
+    actionPix_Servipa: TAction;
     actionPix: TAction;
     acVoltarVenda: TAction;
     ActionListFechamento: TActionList;
@@ -35,6 +36,7 @@ type
     BitBtn19: TBitBtn;
     BitBtn2: TBitBtn;
     BitBtn21: TBitBtn;
+    BitBtn23: TBitBtn;
     BitBtn3: TBitBtn;
     BitBtn4: TBitBtn;
     BitBtn5: TBitBtn;
@@ -124,6 +126,7 @@ type
     procedure acOutrosExecute(Sender: TObject);
     procedure acPrazoExecute(Sender: TObject);
     procedure actionPixExecute(Sender: TObject);
+    procedure actionPix_ServipaExecute(Sender: TObject);
     procedure acVoltarVendaExecute(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn22Click(Sender: TObject);
@@ -261,6 +264,10 @@ begin
         dmPdv.sqLancamentos.Next;
       end;
     end;
+  end;
+  if(dmpdv.Usa_Servipa = 'NAO')then
+  begin
+    BitBtn23.Visible:= False;
   end;
   carrega_valores;
 end;
@@ -2237,6 +2244,12 @@ procedure TfPDV_Rec.actionPixExecute(Sender: TObject);
 begin
   // PIX
   lblForma.Caption:='6-Pix';
+  edPagamento.SetFocus;
+end;
+
+procedure TfPDV_Rec.actionPix_ServipaExecute(Sender: TObject);
+begin
+  lblForma.Caption:='0-Pix Servipa';
   edPagamento.SetFocus;
 end;
 
