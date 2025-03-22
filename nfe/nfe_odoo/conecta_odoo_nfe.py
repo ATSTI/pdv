@@ -70,6 +70,7 @@ class ConectaServerNFe():
         busca += " order by chave desc "
         dados = db.query(busca)
         if not dados:
+            _logger.info(f"NFe/NFCe : {str(chave)} NAO existe.")
             return False
         ultima_modificacao = datetime.now()
         for item in dados:
@@ -113,13 +114,16 @@ class ConectaServerNFe():
         # chave = '35xxxxxxxxxxx8550010000093411523728494'
         # nfe_ids = p_xml.search([('document_key', '=', chave)])
         # ('state_edoc', '=', 'a_enviar'),
-        nfe_ids = p_xml.search([
-            ('document_type_id.code', '=', '55'),
+        
+        nfe_ids = p_xml.search([   
+            ('document_type_id.code', 'in', ('55', '65')),
             ('state_edoc', '!=', 'em_digitacao'),
             ('company_id', '=', int(empresa))
         ], limit=10, order="id desc")
-        # if not nfe_ids:
-        #     _logger.info(f"Sem NFe para a empresa: {str(empresa)}")
+        #print(nfe_ids)
+        if not nfe_ids:
+            _logger.info(f"Sem NFe para a empresa: {str(empresa)}")
+        _logger.info(f"ID da fatura no Odoo: {str(nfe_ids)}")
         arquivo = os.path.join(self.path_retorno, "notas")
         # Check whether the specified path exists or not
         isExist = os.path.exists(arquivo)
@@ -130,7 +134,8 @@ class ConectaServerNFe():
         # db = local_db(filename = 'lancamento.db', table = 'nfe')
         # existe_notas = db.consulta_nfe(chave='', empresa_id=empresa, limit=50)
         existe_notas = self.consulta_nfe(db=db, chave='', empresa_id=empresa, limit=50)
-
+        _logger.info(f"Retorno existe notas: {str(existe_notas)}")
+        
         notas_sistema = set()
         if existe_notas:
             for nf in existe_notas:
@@ -144,23 +149,27 @@ class ConectaServerNFe():
                 notas_sistema.add(nf[3])
 
         for prd in p_xml.browse(nfe_ids):
-
+            _logger.info(f" Lendo xml ID {str(prd)}")
             chave = prd.document_key
-
+            _logger.info(f" Chave xml {chave}")
             # _logger.info(f"NFe: {str(chave)}")
             if prd.authorization_file_id:
+                _logger.info(f" Entrou no IF  file autorization_id ")
                 arquivo_name = os.path.join(arquivo, prd.authorization_file_id.name)
                 xml_data = prd.authorization_file_id.datas
                 xml_name = prd.authorization_file_id.name
+                _logger.info(f" File autorization_id {xml_name}")
                 xml_protocolo = prd.authorization_protocol
                 xml_situacao = "Autorizada"
             elif prd.send_file_id:
                 arquivo_name = os.path.join(arquivo, prd.send_file_id.name)
                 xml_data = prd.send_file_id.datas
                 xml_name = prd.send_file_id.name
+                _logger.info(f" send_file_id {xml_name}")
                 xml_protocolo = ""
                 xml_situacao = "A_enviar"
             else:
+                _logger.info(f" Nenhuma das opcoes")
                 continue
             # existe = db.consulta_nfe(chave, empresa)
 
@@ -211,8 +220,10 @@ class ConectaServerNFe():
         busca += " order by move_id desc "
         dados = db.query(busca)
         if not dados:
+            _logger.info(f"NFe/NFCe : {str(chave)} NAO existe.")
             return False
         else:
+            _logger.info(f"NFe/NFCe : {str(chave)} existe na base.")
             return dados
 
     def retornar_notas_canceladas(self, empresa):
