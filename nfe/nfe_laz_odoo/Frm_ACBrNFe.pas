@@ -2143,9 +2143,21 @@ begin
     end;
 
     if ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.modelo = 55 then
-      ACBrNFe1.Enviar(1)
-    else
+    begin
+      ACBrNFe1.Configuracoes.Geral.ModeloDF:=moNFe;
+      ACBrNFe1.Configuracoes.Geral.ModeloDFCodigo:=55;
+      ACBrNFe1.Configuracoes.Geral.VersaoDF:=ve400;
+      ACBrNFe1.Enviar(1);
+    end
+    else begin
+      ACBrNFe1.Configuracoes.Geral.ModeloDF:=moNFCe;
+      ACBrNFe1.Configuracoes.Geral.ModeloDFCodigo:=65;
+      ACBrNFe1.Configuracoes.Geral.CSC:=edtToken.Text;
+      ACBrNFe1.Configuracoes.Geral.IdCSC:=edtIdToken.Text;
+      ACBrNFe1.Configuracoes.Geral.VersaoQRCode:=veqr200;
+      ACBrNFe1.Configuracoes.Geral.VersaoDF:=ve200;
       ACBrNFe1.Enviar(1, True, True);
+    end;
 
     MemoResp.Lines.Text := ACBrNFe1.WebServices.Retorno.RetWS;
     memoRespWS.Lines.Text := ACBrNFe1.WebServices.Retorno.RetornoWS;
