@@ -21,6 +21,7 @@ type
     btnSair: TBitBtn;
     ComboBox1: TComboBox;
     dtData: TDateTimePicker;
+    edPixServipa: TMaskEdit;
     edPix: TMaskEdit;
     edReforco: TMaskEdit;
     edSaldoini: TMaskEdit;
@@ -41,6 +42,7 @@ type
     Label2: TLabel;
     Label20: TLabel;
     Label21: TLabel;
+    Label22: TLabel;
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
@@ -345,6 +347,7 @@ begin
     end;
     Writeln(IMPRESSORA, 'Cheque         - ' + edCheque.Text);
     Writeln(IMPRESSORA, 'PIX            - ' + edPix.Text);
+    Writeln(IMPRESSORA, 'PIX-SERVIPA    - ' + edPixServipa.Text);
     if (edFaturado.Text <> '0,00') then
     begin
     Writeln(IMPRESSORA, 'Faturado       - ' + edFaturado.Text);
@@ -588,6 +591,25 @@ begin
     total += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     totalliquido += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
     edCheque.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
+  end;
+
+  // PIX SERVIPA
+  sqlP := 'select sum(VALOR_PAGO) as Valor from FORMA_ENTRADA';
+  sqlP += ' where CAIXA = ' + cx_m;
+  sqlP += ' and STATE = 1 and FORMA_PGTO = ' + QuotedStr('0');//Cheque
+  sqlP += ' and cod_venda > 1  ';//1 para Sangria, >1 para Outros
+  if (dmPdv.sqBusca.Active) then
+    dmPdv.sqBusca.Close;
+  dmPdv.sqBusca.SQL.Clear;
+  dmPdv.sqBusca.SQL.Add(sqlP);
+  dmPdv.sqBusca.Active:=True;
+  if (not dmPdv.sqBusca.IsEmpty) then
+  begin
+    // esta entrando o pix aqui tbem por isso tirei das entradas
+    //vendacaixa += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    total += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    totalliquido += dmPdv.sqBusca.FieldByName('Valor').AsFloat;
+    edPixServipa.Text:= format('%6.2n',[dmPdv.sqBusca.FieldByName('Valor').AsFloat]);
   end;
 
   // PIX
