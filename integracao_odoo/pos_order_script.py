@@ -423,7 +423,7 @@ class IntegracaoOdoo:
                 insere = 'INSERT INTO PRODUTOS (UNIDADEMEDIDA, PRODUTO, PRECOMEDIO, CODPRO,\
                           TIPOPRECOVENDA, ORIGEM, NCM, VALORUNITARIOATUAL, VALOR_PRAZO, TIPO, RATEIO, \
                           QTDEATACADO, PRECOATACADO, DATACADASTRO, CODPRODUTO'
-                if 'tipo_venda' in pr:
+                if 'tipo_venda' in pr and img_sql:
                     insere += ', FOTOPRODUTO'
                 if codbarra:
                     insere += ', COD_BARRA'
@@ -444,12 +444,11 @@ class IntegracaoOdoo:
                 insere += ',' + precoatacado
                 insere += ', \'' + data_fb + '\''
                 insere += ',' + str(codproduto)
-                if 'tipo_venda' in pr:
+                if 'tipo_venda' in pr and img_sql:
                     insere += ',' + img_sql                
                 if codbarra:
                     insere += ', \'' + str(codbarra) + '\''
                 insere += ')'
-                
                 # try:
                 retorno = db.insert(insere)
                 if retorno:
@@ -499,7 +498,7 @@ class IntegracaoOdoo:
                 altera += ', QTDEATACADO = ' + qtdeatacado 
                 altera += ', PRECOATACADO = ' + precoatacado
                 altera += ', DATACADASTRO = \'' + data_fb + '\''
-                if 'tipo_venda' in pr:
+                if 'tipo_venda' in pr and img_sql:
                     altera += ', FOTOPRODUTO = \'' + img_sql + '\''
                 if codbarra:
                     altera += ', COD_BARRA = \'' + str(codbarra) + '\''
