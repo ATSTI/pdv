@@ -338,8 +338,8 @@ class IntegracaoOdoo:
 
             sqlp = "select FIRST 1 CODPRODUTO,\
                     DATACADASTRO, VALOR_PRAZO from produtos \
-                    where codpro = '%s' \
-                    or codproduto = %s" %(pr["codpro"], str(codproduto))
+                    where codproduto = %s" %(str(codproduto))
+            print(sqlp)
             prods = db.query(sqlp)
             if pr['codpro']:
                 codpro = pr['codpro'].strip()
@@ -470,23 +470,8 @@ class IntegracaoOdoo:
                 if pr['usa'] != 'S':
                     ativo = 'N'
                     codbarra = ''
-                    codprox = codprox + '-x-'
-                    if len(codprox) > 15:
-                        codprox = codprox[:14]+str(len(prods)+1)
-                    
-                    # tentando arrumar codpro repetido
-                    sqlp = "select first 1 CODPRODUTO,\
-                        DATACADASTRO, VALOR_PRAZO, USA from produtos \
-                        where codpro = '%s' " %(codprox)
-                    # AND ((USA = 'S') OR (USA IS NULL)
-                    prods = db.query(sqlp)
-                    if len(prods):
-                        codprox = codprox + '-x-' + str(len(prods)+1)
-                        if len(codprox) > 15:
-                            codprox = codprox[:14]+str(len(prods)+1)
-                        if prods[0][3] == 'N':
-                            continue
-
+              
+               
                 altera = 'UPDATE PRODUTOS SET PRODUTO = '
                 altera += '\'' + produto + '\''
                 altera += ', VALOR_PRAZO = ' + str(round(p_venda, 2))
@@ -503,7 +488,8 @@ class IntegracaoOdoo:
                 if codbarra:
                     altera += ', COD_BARRA = \'' + str(codbarra) + '\''
                 #altera += ' WHERE CODPRO = \'' + str(pr['codpro']) + '\''
-                altera += ' WHERE CODPRODUTO = ' + str(prods[0][0])
+                altera += ' WHERE CODPRODUTO = ' + str(codproduto)
+                #print(altera)
                 retorno = db.insert(altera)
                 if retorno:
                     print ('SQL : %s' %(altera))
