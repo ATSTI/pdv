@@ -4318,7 +4318,6 @@ object frmACBrNFe: TfrmACBrNFe
   end
   object PythonEngine1: TPythonEngine
     DllName = 'python38.dll'
-    DllPath = 'C:\Users\Docker\AppData\Local\Programs\Python\Python38-32'
     APIVersion = 1013
     RegVersion = '3.8'
     UseLastKnownVersion = False

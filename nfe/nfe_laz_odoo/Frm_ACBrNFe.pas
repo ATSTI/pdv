@@ -2142,16 +2142,16 @@ begin
       Emit.CRT               := StrToCRT(Ok, IntToStr(cbTipoEmpresa.ItemIndex + 1));
     end;
 
-    if ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.modelo = 55 then
+    if (ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.modelo = 55) then
     begin
-      ACBrNFe1.Configuracoes.Geral.ModeloDF:=moNFe;
-      ACBrNFe1.Configuracoes.Geral.ModeloDFCodigo:=55;
-      ACBrNFe1.Configuracoes.Geral.VersaoDF:=ve400;
+      ACBrNFe1.Configuracoes.Geral.ModeloDF := moNFe;
+      //ACBrNFe1.Configuracoes.Geral.ModeloDF := moNFe;
+      ACBrNFe1.Configuracoes.Geral.VersaoDF := ve400;
       ACBrNFe1.Enviar(1);
     end
     else begin
       ACBrNFe1.Configuracoes.Geral.ModeloDF:=moNFCe;
-      ACBrNFe1.Configuracoes.Geral.ModeloDFCodigo:=65;
+      //ACBrNFe1.Configuracoes.Geral.ModeloDFCodigo:=moNFCe;
       ACBrNFe1.Configuracoes.Geral.CSC:=edtToken.Text;
       ACBrNFe1.Configuracoes.Geral.IdCSC:=edtIdToken.Text;
       ACBrNFe1.Configuracoes.Geral.VersaoQRCode:=veqr200;
@@ -3862,6 +3862,7 @@ begin
   Zconn.User := lendo;
   // Edit4.SetFocus;
   ZQemp.Active:= True;
+  PythonEngine1.DllPath := conf_file.ReadString('PYTHON', 'Path', ExtractFilePath(Application.ExeName));
   carregar_empresas;
   //zqprotocolo.active := True;
 end;
@@ -4502,7 +4503,7 @@ begin
     cbCryptLib.ItemIndex   := Ini.ReadInteger('Certificado', 'CryptLib',   0);
     cbHttpLib.ItemIndex    := Ini.ReadInteger('Certificado', 'HttpLib',    0);
     cbXmlSignLib.ItemIndex := Ini.ReadInteger('Certificado', 'XmlSignLib', 0);
-    cbSSLLibChange(cbSSLLib);
+    //cbSSLLibChange(cbSSLLib);
     edtURLPFX.Text         := Ini.ReadString( 'Certificado', 'URL',        '');
     edtCaminho.Text        := Ini.ReadString( 'Certificado', 'Caminho',    '');
     edtSenha.Text          := Ini.ReadString( 'Certificado', 'Senha',      '');
