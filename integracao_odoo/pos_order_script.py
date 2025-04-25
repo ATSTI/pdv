@@ -310,7 +310,7 @@ class IntegracaoOdoo:
             _logger.info("Sem produtos pra atualizar")
             return False
         for pr in prod_novo:
-            codproduto = pr['codproduto'] * 10
+            codproduto = pr['codproduto']
             ncm = ''
             if 'ncm' in pr and pr['ncm']:
                 ncm = pr['ncm']
@@ -373,11 +373,11 @@ class IntegracaoOdoo:
             #sqlp = 'select codproduto from produtos where codpro like \'%s\'' %(codp+'%')
             if codbarra:
                 # 03/10/2022 limpando o codigo de barra qdo ja existe  
-                sql_bar = 'select codpro from produtos where cod_barra = \'%s\' AND CODPRO <> \'%s\'' %(codbarra, codpro)
+                sql_bar = 'select codpro from produtos where cod_barra = \'%s\' AND CODPRODUTO <> \'%s\'' %(codbarra, codproduto)
                 barra = db.query(sql_bar)
                 if len(barra):
                     _logger.info("Limpando codigo de barras, se existir outro item %s - %s-%s" %(codbarra,codpro,produto)) 
-                    up_bar = 'UPDATE PRODUTOS SET COD_BARRA = NULL WHERE COD_BARRA = \'%s\' AND CODPRO <> \'%s\'' %(codbarra, codpro)
+                    up_bar = 'UPDATE PRODUTOS SET COD_BARRA = NULL WHERE COD_BARRA = \'%s\' AND CODPRODUTO <> \'%s\'' %(codbarra, codproduto)
                     for sess_bar in barra:
                         cod_p_barra = str(sess_bar[0])
                         if str(codpro) == cod_p_barra:
