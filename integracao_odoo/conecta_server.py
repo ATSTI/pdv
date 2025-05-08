@@ -39,7 +39,7 @@ class EnviaServer:
         if tipo == "sangria":
             self.lendo_arquivos()
 
-    def enviando_arquivo(self, retorno, arq, file_name):
+    def get_session(self, ):
         headers = {'Content-type': 'application/json'}
         AUTH_URL = "http://%s/web/session/authenticate" %(self.url)
         data = {
@@ -50,13 +50,16 @@ class EnviaServer:
                         "password": self.passwd,
                     }
                 }  
+        res = rq.get(AUTH_URL, data=json.dumps(data),headers=headers)
+        session_id = res.cookies["session_id"]
+        return session_id
+
+    def enviando_arquivo(self, retorno, arq, file_name, session_id):
         parameter = {
                         "db": self.db,
                         "login": self.login,
                         "password": self.passwd,
                     }
-        res = rq.get(AUTH_URL, data=json.dumps(data),headers=headers)
-        session_id = res.cookies["session_id"]
         base_url = '%s/integrapdv' %(self.url)
         # base_url = "127.0.0.1:8072/api/v1/modules/" # your api 
         json_data = json.dumps(parameter)
@@ -220,6 +223,7 @@ class EnviaServer:
         # para cada arquivo na pasta
         # db = con.Conexao(host, db)
         get_return = False
+        session_id = self.get_session()
         for i in arquivos:
             nome_arq = i[:i.index('.')]
             retorno_ids = []
@@ -267,14 +271,14 @@ class EnviaServer:
                         enviado = True
 
                 if not enviado and ((nome_arq[:6] == 'caixa_') or (nome_arq[:7] == 'pedido_') or (nome_arq[:10] == 'devolucao_') or (nome_arq[:8] == 'sangria_')):
-                    get_return = self.enviando_arquivo(get_return, nome_arq[:3], i)
+                    get_return = self.enviando_arquivo(get_return, nome_arq[:3], i, session_id)
 
                 if enviado and ((nome_arq[:6] == 'caixa_') or (nome_arq[:7] == 'pedido_') or (nome_arq[:10] == 'devolucao_') or (nome_arq[:8] == 'sangria_')):
                     # os.remove(self.path_envio + '/' + i)
                     file_remove = os.path.join(self.path_envio, i)
                     os.remove(file_remove)
             else:
-                get_return = self.enviando_arquivo(get_return, nome_arq[:3], i)
+                get_return = self.enviando_arquivo(get_return, nome_arq[:3], i, session_id)
                 if tipo and caixa:
                     dblocal.insert(dict(
                             tipo = tipo,
