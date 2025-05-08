@@ -72,7 +72,8 @@ begin
     ArquivoINI.Free;
   end
   else
-    str := str + ', ' + dmpdv.ccusto_padrao;
+    //str := str + ', ' + dmpdv.ccusto_padrao; // Manoel
+    str := str + ', ' + IntToStr(codCaixa);
   str := str + ', ' + dmpdv.varLogado;
   str := str + ', ' + QuotedStr('o');
   if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
@@ -104,7 +105,11 @@ begin
         end;
       end;
 
+  if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
+  begin
    btnAbreCX.Click;
+   end;
+
    abri_cx := 1;
    btnSair.Click;
    fMovimentoProc.Close;
