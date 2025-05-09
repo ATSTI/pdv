@@ -100,14 +100,10 @@ type
     TabSheet3: TTabSheet;
     TabSheet4: TTabSheet;
     TabSheet5: TTabSheet;
-    procedure ACBrNFe1AntesDeAssinar(var ConteudoXML: String; const docElement,
-      infElement, SignatureNode, SelectionNamespaces, IdSignature: String);
     procedure ACBrNFe1GerarLog(const ALogLine: String; var Tratado: Boolean);
     procedure ACBrNFe1StatusChange(Sender: TObject);
     procedure ACBrNFe1TransmitError(const HttpError, InternalError: Integer;
       const URL, DadosEnviados, SoapAction: String; var Retentar: Boolean;
-      var Tratado: Boolean);
-    procedure ACBrPosPrinter1EnviarStringDevice(const ALogLine: String;
       var Tratado: Boolean);
     procedure ACBrSAT1GetcodigoDeAtivacao(var Chave: AnsiString);
     procedure ACBrSAT1GetsignAC(var Chave: AnsiString);
@@ -2601,13 +2597,6 @@ begin
   end;
 end;
 
-procedure TfNfce.ACBrNFe1AntesDeAssinar(var ConteudoXML: String;
-  const docElement, infElement, SignatureNode, SelectionNamespaces,
-  IdSignature: String);
-begin
-
-end;
-
 procedure TfNfce.ACBrNFe1GerarLog(const ALogLine: String; var Tratado: Boolean);
 begin
   memoLog.Lines.Append(ALogLine);
@@ -2722,12 +2711,6 @@ begin
               'InternalError: '+IntToStr(InternalError)  );
 
   //TryAgain := False;
-end;
-
-procedure TfNfce.ACBrPosPrinter1EnviarStringDevice(const ALogLine: String;
-  var Tratado: Boolean);
-begin
-
 end;
 
 procedure TfNfce.ACBrSAT1GetcodigoDeAtivacao(var Chave: AnsiString);

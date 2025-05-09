@@ -333,6 +333,7 @@ object fSangria: TfSangria
       'Reforço'
     )
     TabOrder = 4
+    OnChange = ComboBox1Change
   end
   object Label3: TLabel
     Left = 40
@@ -1182,6 +1183,8 @@ object fSangria: TfSangria
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
+      DisplayFormat = ',##0.00'
+      EditFormat = ',##0.00'
       Precision = -1
     end
     object sqReforcoCAIXINHA: TFloatField

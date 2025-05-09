@@ -81,6 +81,7 @@ type
     procedure btnGravarClick(Sender: TObject);
     procedure btnReimprimirClick(Sender: TObject);
     procedure btnReimprimirReforcoClick(Sender: TObject);
+    procedure ComboBox1Change(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormShow(Sender: TObject);
   private
@@ -107,6 +108,14 @@ procedure TfSangria.btnGravarClick(Sender: TObject);
 var
   IMPRESSORA:TextFile;
 begin
+
+  if(ComboBox1.Text <> fSangria.Caption)then
+  begin
+     ShowMessage('Aqui Somente ' + fSangria.Caption);
+     exit;
+  end;
+
+
   if (ComboBox1.ItemIndex = -1) then
   begin
     ShowMessage('Informar o Tipo de Sangria ' + SangriaReforco);
@@ -296,6 +305,18 @@ begin
 
 end;
 
+procedure TfSangria.ComboBox1Change(Sender: TObject);
+begin
+  if(ComboBox1.Text <> fSangria.Caption)then
+  begin
+     ShowMessage('Aqui Somente ' + fSangria.Caption);
+     edMotivo.Text := '';
+     edValor.Text := '0,00';
+     exit;
+  end;
+end;
+
+
 
 
 procedure TfSangria.FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -313,6 +334,7 @@ begin
   fSangria.sqReforco.Active:= True;
   Edit1.Text := dmPdv.nomeCaixa;
   Edit2.Text := fAbrirCaixa.disponivel_sangria;
+
 
 end;
 
