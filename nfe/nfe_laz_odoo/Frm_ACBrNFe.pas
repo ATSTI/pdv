@@ -373,10 +373,7 @@ type
     procedure BitBtn4Click(Sender: TObject);
     procedure BitBtn5Click(Sender: TObject);
     procedure BtnAssinarClick(Sender: TObject);
-    procedure btnCadastrarClick(Sender: TObject);
-    procedure btnCadastroEmpresaClick(Sender: TObject);
     procedure btnCarregaNfeEmpresaClick(Sender: TObject);
-    procedure btnExecEmpresaClick(Sender: TObject);
     procedure btnImportaNfeOdooClick(Sender: TObject);
     procedure btnNotasGeradasClick(Sender: TObject);
     procedure btnVoltaPrincipalClick(Sender: TObject);
@@ -391,9 +388,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure btnSalvarConfigClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure PageControl2Change(Sender: TObject);
-    procedure pgcBotoesChange(Sender: TObject);
-    procedure pnlCentralClick(Sender: TObject);
+    procedure PageControl3Change(Sender: TObject);
     procedure sbPathNFeClick(Sender: TObject);
     procedure sbPathCanClick(Sender: TObject);
     procedure sbPathCCeClick(Sender: TObject);
@@ -457,8 +452,6 @@ type
     procedure btnAtorInterNFeTranspClick(Sender: TObject);
     procedure btnDistrDFePorNSUClick(Sender: TObject);
     procedure btnDistrDFePorChaveClick(Sender: TObject);
-    procedure TabSheet11ContextPopup(Sender: TObject; MousePos: TPoint;
-      var Handled: Boolean);
     procedure tbsheet_notaShow(Sender: TObject);
     procedure ZQempFilterRecord(DataSet: TDataSet; var Accept: Boolean);
   private
@@ -1968,20 +1961,22 @@ end;
 procedure TfrmACBrNFe.btnCancelarChaveClick(Sender: TObject);
 var
   Chave, Status ,idLote, CNPJ, Protocolo, Justificativa,sSQL: string;
+  idLoteCancelar : integer;
 begin
-
   Status := dbEdit6.Text;
-  {if(Status = 'A_enviar')then
+  if(Status = 'A_enviar')then
   begin
     ShowMessage('Somente Notas Autorizadas');
     exit;
-  end;}
+  end;
 
   Chave := dbEdit4.Text;
   //if not(InputQuery('WebServices Eventos: Cancelamento', 'Chave da NF-e', Chave)) then
   //   exit;
   Chave := Trim(OnlyNumber(Chave));
-  idLote := '1';
+  idLoteCancelar := StrToInt(FormatDateTime('mmddhhmm', NOW));
+  idLote := IntToStr(idLoteCancelar) ;
+
   //if not(InputQuery('WebServices Eventos: Cancelamento', 'Identificador de controle do Lote de envio do Evento', idLote)) then
   //   exit;
   CNPJ := copy(Chave,7,14);
@@ -2198,6 +2193,7 @@ end;
 procedure TfrmACBrNFe.btnCartadeCorrecaoClick(Sender: TObject);
 var
   Chave, Status, idLote, CNPJ, nSeqEvento, Correcao ,sSQL : string;
+  idLoteCC : integer;
 begin
 
   Status := dbEdit6.Text;
@@ -2212,7 +2208,9 @@ begin
   //if not(InputQuery('WebServices Eventos: Carta de Correção', 'Chave da NF-e', Chave)) then
   //   exit;
   Chave := Trim(OnlyNumber(Chave));
-  idLote := '1';
+  idLoteCC := StrToInt(FormatDateTime('mmddhhmm', NOW));
+  idLote := IntToStr(idLoteCC) ;
+
   //if not(InputQuery('WebServices Eventos: Carta de Correção', 'Identificador de controle do Lote de envio do Evento', idLote)) then
   //   exit;
   CNPJ := copy(Chave,7,14);
@@ -2542,12 +2540,6 @@ begin
   memoRespWS.Lines.Text := ACBrNFe1.WebServices.DistribuicaoDFe.RetornoWS;
 
   LoadXML(MemoResp, WBResposta);
-end;
-
-procedure TfrmACBrNFe.TabSheet11ContextPopup(Sender: TObject; MousePos: TPoint;
-  var Handled: Boolean);
-begin
-
 end;
 
 procedure TfrmACBrNFe.tbsheet_notaShow(Sender: TObject);
@@ -3865,21 +3857,17 @@ begin
   PythonEngine1.DllPath := conf_file.ReadString('PYTHON', 'Path', ExtractFilePath(Application.ExeName));
   carregar_empresas;
   //zqprotocolo.active := True;
+  lblEmpresa.Caption:= 'Selecione uma Empresa , Clique no Nome ' ;
 end;
 
-procedure TfrmACBrNFe.PageControl2Change(Sender: TObject);
+procedure TfrmACBrNFe.PageControl3Change(Sender: TObject);
 begin
-
-end;
-
-procedure TfrmACBrNFe.pgcBotoesChange(Sender: TObject);
-begin
-
-end;
-
-procedure TfrmACBrNFe.pnlCentralClick(Sender: TObject);
-begin
-
+  if(Edit3.Text = '')then
+   begin
+     PageControl3.ActivePage := tbsheet_empresa;
+     ShowMessage('Para Carregar as Notas , Clique no Nome da Empresa');
+     exit;
+   end;
 end;
 
 procedure TfrmACBrNFe.btnSha256Click(Sender: TObject);
@@ -4188,11 +4176,6 @@ begin
 
 end;
 
-procedure TfrmACBrNFe.btnExecEmpresaClick(Sender: TObject);
-begin
-
-end;
-
 procedure TfrmACBrNFe.btnImportaNfeOdooClick(Sender: TObject);
 begin
   carregar_notas;
@@ -4324,16 +4307,6 @@ begin
   Edit5.Text:= DBEdit3.Text;
 end;
 
-procedure TfrmACBrNFe.btnCadastrarClick(Sender: TObject);
-begin
-
-end;
-
-procedure TfrmACBrNFe.btnCadastroEmpresaClick(Sender: TObject);
-begin
-
-end;
-
 procedure TfrmACBrNFe.BitBtn1Click(Sender: TObject);
 begin
   // carrega empresa
@@ -4342,6 +4315,11 @@ end;
 
 procedure TfrmACBrNFe.BitBtn2Click(Sender: TObject);
 begin
+  if(Edit3.Text = '')then
+  begin
+    ShowMessage('Para Carregar as Notas , Clique no Nome da Empresa');
+  exit;
+  end;
   btnCarregaNfeEmpresa.Click;
 end;
 

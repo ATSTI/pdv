@@ -15,7 +15,7 @@ object frmACBrNFe: TfrmACBrNFe
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '3.6.0.0'
+  LCLVersion = '3.4.0.0'
   object PageControl2: TPageControl
     Left = 0
     Height = 626
@@ -25,12 +25,10 @@ object frmACBrNFe: TfrmACBrNFe
     Align = alClient
     TabIndex = 0
     TabOrder = 0
-    OnChange = PageControl2Change
     object TabSheet11: TTabSheet
       Caption = 'Principal'
       ClientHeight = 600
       ClientWidth = 1114
-      OnContextPopup = TabSheet11ContextPopup
       object PageControl3: TPageControl
         Left = 8
         Height = 592
@@ -39,6 +37,7 @@ object frmACBrNFe: TfrmACBrNFe
         ActivePage = tbsheet_empresa
         TabIndex = 0
         TabOrder = 0
+        OnChange = PageControl3Change
         object tbsheet_empresa: TTabSheet
           Caption = 'Empresas'
           ClientHeight = 566
@@ -132,7 +131,6 @@ object frmACBrNFe: TfrmACBrNFe
             Caption = 'Cadastrar Emitente'
             TabOrder = 5
             Visible = False
-            OnClick = btnCadastrarClick
           end
           object DBEdit3: TDBEdit
             Left = 120
@@ -594,7 +592,7 @@ object frmACBrNFe: TfrmACBrNFe
           ClientWidth = 1088
           OnShow = tbsheet_notaShow
           object DBGrid2: TDBGrid
-            Left = 16
+            Left = 8
             Height = 420
             Top = 8
             Width = 904
@@ -1128,6 +1126,7 @@ object frmACBrNFe: TfrmACBrNFe
             Top = 0
             Width = 1088
             Align = alTop
+            Alignment = taCenter
             TabOrder = 0
           end
           object Memo2: TMemo
@@ -1334,7 +1333,6 @@ object frmACBrNFe: TfrmACBrNFe
         ClientWidth = 817
         ParentBackground = False
         TabOrder = 0
-        OnClick = pnlCentralClick
         object pgcBotoes: TPageControl
           Left = 1
           Height = 598
@@ -1344,7 +1342,6 @@ object frmACBrNFe: TfrmACBrNFe
           Align = alClient
           TabIndex = 0
           TabOrder = 0
-          OnChange = pgcBotoesChange
           object tsEnvios: TTabSheet
             Caption = 'Envios'
             ClientHeight = 572
@@ -1430,7 +1427,7 @@ object frmACBrNFe: TfrmACBrNFe
             object btnEnviarEmail: TButton
               Left = 9
               Height = 25
-              Top = 133
+              Top = 134
               Width = 177
               Caption = 'Enviar NFe Email'
               TabOrder = 11
@@ -1466,9 +1463,9 @@ object frmACBrNFe: TfrmACBrNFe
               OnClick = btnValidarAssinaturaClick
             end
             object btnImprimirDANFCE: TButton
-              Left = 192
+              Left = 200
               Height = 25
-              Top = 133
+              Top = 134
               Width = 177
               Caption = 'Imprimir DANFCE'
               TabOrder = 12
@@ -1576,7 +1573,6 @@ object frmACBrNFe: TfrmACBrNFe
               Width = 177
               Caption = 'Imprimir Evento'
               TabOrder = 4
-              Visible = False
               OnClick = btnImprimirEventoClick
             end
             object btnEnviarEventoEmail: TButton
@@ -1699,8 +1695,8 @@ object frmACBrNFe: TfrmACBrNFe
           Height = 439
           Top = 160
           Width = 815
-          ActivePage = Dados
-          TabIndex = 5
+          ActivePage = TabSheet5
+          TabIndex = 0
           TabOrder = 1
           object TabSheet5: TTabSheet
             Caption = 'Respostas'
@@ -2277,10 +2273,10 @@ object frmACBrNFe: TfrmACBrNFe
               Height = 518
               Top = 0
               Width = 287
-              ActivePage = TabSheet4
+              ActivePage = TabSheet12
               Align = alClient
               MultiLine = True
-              TabIndex = 1
+              TabIndex = 3
               TabOrder = 0
               Options = [nboMultiLine]
               object TabSheet3: TTabSheet
@@ -4222,14 +4218,13 @@ object frmACBrNFe: TfrmACBrNFe
   end
   object ZConn: TZConnection
     ControlsCodePage = cCP_UTF8
+    AutoEncodeStrings = True
     Properties.Strings = (
       'AutoEncodeStrings=True'
       'controls_cp=CP_UTF8'
       'RawStringEncoding=DB_CP'
     )
     TransactIsolationLevel = tiReadCommitted
-    AddLogMsgToExceptionOrWarningMsg = False
-    DisableSavepoints = False
     HostName = '172.17.0.2'
     Port = 3050
     Database = 'C:\home\odoo_nfe\bd\LANCAMENTO.FDB'
@@ -4248,8 +4243,8 @@ object frmACBrNFe: TfrmACBrNFe
     Top = 184
   end
   object ZQemp: TZQuery
-    OnFilterRecord = ZQempFilterRecord
     Connection = ZConn
+    OnFilterRecord = ZQempFilterRecord
     SQL.Strings = (
       'select * from empresa order by empresa_id'
     )

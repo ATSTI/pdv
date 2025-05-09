@@ -8,9 +8,9 @@
       <Unit0>
         <Filename Value="ACBrNFe_Exemplo.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="3"/>
         <CursorPos X="26" Y="15"/>
-        <UsageCount Value="159"/>
+        <UsageCount Value="165"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
@@ -20,15 +20,15 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="3854"/>
-        <CursorPos X="104" Y="3865"/>
-        <UsageCount Value="159"/>
+        <TopLine Value="3850"/>
+        <CursorPos X="64" Y="3860"/>
+        <UsageCount Value="165"/>
         <Bookmarks Count="5">
-          <Item0 X="29" Y="4848" ID="4"/>
-          <Item1 Y="2557" ID="5"/>
-          <Item2 Y="1979" ID="2"/>
-          <Item3 X="45" Y="2050" ID="3"/>
-          <Item4 X="39" Y="2155" ID="1"/>
+          <Item0 X="29" Y="4826" ID="4"/>
+          <Item1 Y="2549" ID="5"/>
+          <Item2 X="14" Y="4318" ID="1"/>
+          <Item3 Y="2547" ID="2"/>
+          <Item4 Y="3865" ID="3"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -42,7 +42,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="25"/>
         <CursorPos X="34" Y="45"/>
-        <UsageCount Value="159"/>
+        <UsageCount Value="165"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit2>
       <Unit3>
@@ -50,7 +50,7 @@
         <IsPartOfProject Value="True"/>
         <HasResources Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="159"/>
+        <UsageCount Value="165"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit3>
       <Unit4>
@@ -59,7 +59,7 @@
         <HasResources Value="True"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="19"/>
-        <UsageCount Value="159"/>
+        <UsageCount Value="165"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit4>
       <Unit5>
@@ -736,18 +736,20 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uInutilizar"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="4"/>
         <TopLine Value="93"/>
         <CursorPos Y="111"/>
-        <UsageCount Value="22"/>
+        <UsageCount Value="24"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit89>
       <Unit90>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\sysutils\sysstrh.inc"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="121"/>
         <CursorPos X="10" Y="131"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
       </Unit90>
       <Unit91>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\sysutils\datih.inc"/>
@@ -771,14 +773,14 @@
       </Unit93>
       <Unit94>
         <Filename Value="Frm_ACBrNFe.lfm"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="2"/>
         <CursorPos X="13" Y="20"/>
-        <UsageCount Value="16"/>
+        <UsageCount Value="18"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit94>
       <Unit95>
-        <Filename Value="C:\home\trunk2\Fontes\ACBrDFe\ACBrNFe\PCNNFe\pcnNFe.pas"/>
+        <Filename Value="..\..\..\trunk2\Fontes\ACBrDFe\ACBrNFe\PCNNFe\pcnNFe.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="397"/>
         <CursorPos X="14" Y="414"/>
@@ -786,7 +788,7 @@
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit95>
       <Unit96>
-        <Filename Value="C:\home\trunk2\Fontes\PCNComum\pcnConversao.pas"/>
+        <Filename Value="..\..\..\trunk2\Fontes\PCNComum\pcnConversao.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="90"/>
         <CursorPos X="3" Y="108"/>
@@ -795,141 +797,139 @@
       </Unit96>
       <Unit97>
         <Filename Value="\\host.lan\Data\desenv\ACBr\Fontes\ACBrDFe\ACBrNFe\ACBrNFeConfiguracoes.pas"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="39"/>
         <CursorPos X="5" Y="50"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit97>
       <Unit98>
         <Filename Value="\\host.lan\Data\desenv\ACBr\Fontes\ACBrDFe\ACBrNFe\PCNNFe\pcnConversaoNFe.pas"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="280"/>
         <CursorPos X="24" Y="291"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit98>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="638" Column="19" TopLine="619"/>
+        <Caret Line="4819" TopLine="4808"/>
       </Position1>
       <Position2>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1839" Column="50" TopLine="1839"/>
+        <Caret Line="4820" TopLine="4808"/>
       </Position2>
       <Position3>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1840" Column="50" TopLine="1835"/>
+        <Caret Line="4821" TopLine="4808"/>
       </Position3>
       <Position4>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1841" Column="50" TopLine="1835"/>
+        <Caret Line="4815" TopLine="4808"/>
       </Position4>
       <Position5>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1842" Column="50" TopLine="1835"/>
+        <Caret Line="4822" TopLine="4808"/>
       </Position5>
       <Position6>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1844" Column="38" TopLine="1835"/>
+        <Caret Line="4815" TopLine="4808"/>
       </Position6>
       <Position7>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="1855" Column="42" TopLine="1836"/>
+        <Caret Line="4822" TopLine="4808"/>
       </Position7>
       <Position8>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2000" Column="46" TopLine="1982"/>
+        <Caret Line="2540" TopLine="2533"/>
       </Position8>
       <Position9>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2065" Column="42" TopLine="2046"/>
+        <Caret Line="2549" Column="53" TopLine="2539"/>
       </Position9>
       <Position10>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2110" Column="42" TopLine="2091"/>
+        <Caret Line="4259" Column="5" TopLine="4257"/>
       </Position10>
       <Position11>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2147" Column="20" TopLine="2129"/>
+        <Caret Line="4251" Column="3" TopLine="4248"/>
       </Position11>
       <Position12>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2148" Column="22" TopLine="2130"/>
+        <Caret Line="3874" Column="20" TopLine="3871"/>
       </Position12>
       <Position13>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2149" Column="20" TopLine="2131"/>
+        <Caret Line="4322" Column="14" TopLine="4312"/>
       </Position13>
       <Position14>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2153" Column="20" TopLine="2135"/>
+        <Caret Line="2542" TopLine="2540"/>
       </Position14>
       <Position15>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2154" Column="22" TopLine="2136"/>
+        <Caret Line="2208" Column="13" TopLine="34"/>
       </Position15>
       <Position16>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2155" Column="20" TopLine="2137"/>
+        <Caret Line="2209" Column="18" TopLine="2199"/>
       </Position16>
       <Position17>
-        <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2156" Column="20" TopLine="2138"/>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\sysutils\sysstrh.inc"/>
+        <Caret Line="131" Column="10" TopLine="121"/>
       </Position17>
       <Position18>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2157" Column="20" TopLine="2139"/>
+        <Caret Line="2211" Column="33" TopLine="2236"/>
       </Position18>
       <Position19>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2158" Column="20" TopLine="2140"/>
+        <Caret Line="1980" Column="3" TopLine="1968"/>
       </Position19>
       <Position20>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2343" Column="44" TopLine="2325"/>
+        <Caret Line="1965" Column="33" TopLine="1960"/>
       </Position20>
       <Position21>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2430" Column="19" TopLine="2412"/>
+        <Caret Line="2211" Column="60" TopLine="2214"/>
       </Position21>
       <Position22>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2602" Column="42" TopLine="2583"/>
+        <Caret Line="2043" Column="51" TopLine="2034"/>
       </Position22>
       <Position23>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2617" Column="39" TopLine="2599"/>
+        <Caret Line="4254" Column="13" TopLine="4240"/>
       </Position23>
       <Position24>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="2710" Column="42" TopLine="2691"/>
+        <Caret Line="4255" Column="13" TopLine="4240"/>
       </Position24>
       <Position25>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="4609" Column="56" TopLine="4611"/>
+        <Caret Line="4256" Column="13" TopLine="4240"/>
       </Position25>
       <Position26>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="4375" Column="18" TopLine="4366"/>
+        <Caret Line="265" Column="15" TopLine="256"/>
       </Position26>
       <Position27>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="4492" Column="16" TopLine="4485"/>
+        <Caret Line="274" Column="15" TopLine="258"/>
       </Position27>
       <Position28>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="4499" Column="18" TopLine="4485"/>
+        <Caret Line="275" Column="15" TopLine="259"/>
       </Position28>
       <Position29>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="3867" Column="43" TopLine="3848"/>
+        <Caret Line="4254" Column="13" TopLine="4240"/>
       </Position29>
       <Position30>
         <Filename Value="Frm_ACBrNFe.pas"/>
-        <Caret Line="3865" Column="48" TopLine="3855"/>
+        <Caret Line="3860" Column="24" TopLine="3850"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -951,7 +951,7 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="Frm_ACBrNFe.pas"/>
-        <Line Value="2002"/>
+        <Line Value="1997"/>
       </Item>
     </BreakPoints>
   </Debugging>
