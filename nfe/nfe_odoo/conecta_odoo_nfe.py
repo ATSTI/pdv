@@ -12,7 +12,7 @@ import locale
 from glob import iglob
 from os.path import getmtime
 from nfelib.nfe.bindings.v4_0.proc_nfe_v4_00 import NfeProc
-from nfelib.nfe_evento_cce.bindings.v1_0.ret_env_cce_v1_00 import RetEnvEvento
+# from nfelib.nfe_evento_cancel.bindings.v1_0.evento_canc_nfe_v1_00 import Evento as Cancel
 
 
 _logger = logging.getLogger(__name__)
@@ -227,41 +227,40 @@ class ConectaServerNFe():
             _logger.info(f"NFe/NFCe : {str(chave)} existe na base.")
             return dados
 
-    def retornar_notas_canceladas(self, empresa):
-        try:
-            db = con_fdb()
-        except:
-            msg = u'Caminho ou nome do banco invalido.<br>'
-            _logger.info(msg)        
-        busca = "select first 5 move_id, num_nfe, situacao, chave, empresa_id, data_alteracao from nfe "
-        busca += " WHERE situacao = 'Cancelada' AND empresa_id = %s" %(empresa)
-        busca += " order by move_id desc "
-        dados = db.query(busca)
-        if not dados:
-            return False
-        else:
-            con = self._conexao_odoo()
-            n_xml = con.env['account.move']
-            for nf in dados:
-                nfe_ids = n_xml.search([
-                    ('document_key', '=', nf[3]),
-                    ('state_edoc', '!=', 'cancelada')
-                ])
-                if not nfe_ids:
-                    # _logger.info(f"NFe nao encontrada no odoo {nota[3]}")
-                    _logger.info(f"NFe ja atualizada odoo {nf[3]}")
-                    continue
-                for nfe in n_xml.browse(nfe_ids):
-                    atualiza = {'state_edoc': 'cancelada'}
-                    nfe.write(atualiza)
-                    _logger.info(f"Situacao alterada com sucesso, NFe: {str(nfe.document_number)}")
-            return True
+    # def retornar_notas_canceladas(self, empresa):
+    #     try:
+    #         db = con_fdb()
+    #     except:
+    #         msg = u'Caminho ou nome do banco invalido.<br>'
+    #         _logger.info(msg)        
+    #     busca = "select first 5 move_id, num_nfe, situacao, chave, empresa_id, data_alteracao from nfe "
+    #     busca += " WHERE situacao = 'Cancelada' AND empresa_id = %s" %(empresa)
+    #     busca += " order by move_id desc "
+    #     dados = db.query(busca)
+    #     if not dados:
+    #         return False
+    #     else:
+    #         con = self._conexao_odoo()
+    #         n_xml = con.env['account.move']
+    #         for nf in dados:
+    #             nfe_ids = n_xml.search([
+    #                 ('document_key', '=', nf[3]),
+    #                 ('state_edoc', '!=', 'cancelada')
+    #             ])
+    #             if not nfe_ids:
+    #                 # _logger.info(f"NFe nao encontrada no odoo {nota[3]}")
+    #                 _logger.info(f"NFe ja atualizada odoo {nf[3]}")
+    #                 continue
+    #             for nfe in n_xml.browse(nfe_ids):
+    #                 atualiza = {'state_edoc': 'cancelada'}
+    #                 nfe.write(atualiza)
+    #                 _logger.info(f"Situacao alterada com sucesso, NFe: {str(nfe.document_number)}")
+    #         return True
 
-    def retorna_cce(self, empresa):
-        _logger.info('Enviando CCe para o odoo')
-    
-        arquivo = os.path.join(self.path_retorno, "eventos", '*.xml')
-        # lendo o diretorio e pegando somente os ultimos 5 autorizados
+    def retorna_notas_canceladas(self, empresa):
+        _logger.info('Enviando Cancelamento para o odoo')
+        arquivo = os.path.join(self.path_retorno, "eventos", '110111*.xml')
+        # lendo o diretorio e pegando somente os ultimos 5 cancelamentos
         files = iglob(arquivo)
         sorted_files = sorted(files, key=getmtime, reverse=True)
         num_arquivo = 1
@@ -269,20 +268,30 @@ class ConectaServerNFe():
         n_xml = con.env['account.move']
         for xml_arquivo in sorted_files:
             # pega so os ultimos 5 arquivos
-            if num_arquivo < 10:
+            if num_arquivo < 6:
                 num_arquivo += 1
                 # print(xml_arquivo)
-                cce_ret = RetEnvEvento.from_path(xml_arquivo)
+                cancel_ret = Cancel.from_path(xml_arquivo)
+                # cancel_ret = parser.parse(xml_arquivo, Evento)
                 try:
-                    tipoEvento = cce_ret.retEvento.infEvento.tpEvento
+                    cancel_ret.retEvento.infEvento.tpEvento
                 except:
                     continue
-                chave = cce_ret.retEvento.infEvento.chNFe
-                protocolo = cce_ret.retEvento.infEvento.nProt
-                justificativa = cce_ret.evento.infEvento.detEvento.xCorrecao
+                chave = cancel_ret.retEvento.infEvento.chNFe
+                protocolo = cancel_ret.retEvento.infEvento.nProt
+                motivo = cancel_ret.evento.infEvento.detEvento.xJust
+                cStat = cancel_ret.retEvento.infEvento.cStat
+                if cStat not in ("135", "155"):
+                    continue
+                if cStat == "135":
+                    state = "02"
+                else:
+                    state = "03"
+
                 nfe_ids = n_xml.search([
                     ('document_key', '=', chave),
-                    ('state_edoc', '=', 'autorizada')
+                    ('state_edoc', '=', 'autorizada'),
+                    ('company_id', '=', empresa)
                 ])
                 if not nfe_ids:
                     _logger.info(f"NFe nao localizada no odoo: {chave}")
@@ -291,7 +300,8 @@ class ConectaServerNFe():
                     event = con.env['l10n_br_fiscal.event']
                     cce = event.search([
                         ('protocol_number', '=', protocolo),
-                        ('document_id', '=', nfe.fiscal_document_id.id)
+                        ('document_id', '=', nfe.fiscal_document_id.id),
+                        ('type', '=', '2')
                     ])
                     if cce:
                         continue
@@ -300,7 +310,7 @@ class ConectaServerNFe():
                     vals = {
                         "company_id": nfe.company_id.id,
                         "environment": environment,
-                        "type": "0",
+                        "type": "2",
                         "document_id": nfe.fiscal_document_id.id,
                         "document_type_id": nfe.document_type_id.id,
                         "document_serie_id": nfe.document_serie_id.id,
@@ -323,28 +333,31 @@ class ConectaServerNFe():
                     })
                     # event_id.file_response_id = False
                     event_id.file_response_id = att_file
-                    dt_protocol = cce_ret.retEvento.infEvento.dhRegEvento
+                    dt_protocol = cancel_ret.retEvento.infEvento.dhRegEvento
                     dt_protocol = datetime.strptime(dt_protocol, '%Y-%m-%dT%H:%M:%S%z')
                     dt_protocol = dt_protocol.strftime('%Y-%m-%d %H:%M:%S')
                     event_id.write(
                         {
                                 "state": "done",
-                                "status_code": "135",
+                                "status_code": cStat,
                                 "response": "Evento registrado e vinculado a NF-e",
                                 "protocol_date": dt_protocol,
                                 "protocol_number": protocolo,
-                                "justification": justificativa,
-                                "type": "14",
+                                "justification": motivo,
                             }
                         )
+                    nfe.write({
+                        "state_fiscal": state,
+                        "state_edoc": "cancelada"
+                    })
                     _logger.info(f"Situacao evento CCe alterada com sucesso, NFe: {str(nfe.document_number)}")
+            else:
+                break
 
     def retorna_xml_validado(self, empresa):
         _logger.info('Iniciando envio para o odoo')
         # protocolocanc
-        self.retornar_notas_canceladas(empresa)
-        self.retorna_cce(empresa)
-    
+        self.retorna_notas_canceladas(empresa)
         arquivo = os.path.join(self.path_retorno, "notas", '*.xml')
         # 07/05/2024 lendo o diretorio e pegando somente os ultimos 5 autorizados
         files = iglob(arquivo)
@@ -357,10 +370,11 @@ class ConectaServerNFe():
             if num_arquivo < 6:
                 num_arquivo += 1
                 # print(xml_arquivo)
-                nfe_proc = NfeProc.from_path(xml_arquivo)
                 try:
+                    nfe_proc = NfeProc.from_path(xml_arquivo)
                     chave = nfe_proc.NFe.infNFe.Id[3:]
                 except:
+                    _logger.info(f"Erro arquivo {xml_arquivo}")
                     continue
                 nProt = nfe_proc.protNFe.infProt.nProt
                 # nfe_proc.protNFe.infProt.chNFe
@@ -448,5 +462,7 @@ class ConectaServerNFe():
                         _logger.info(f"Situacao alterada com sucesso, NFe: {str(nfe.document_number)}")
                         # except:
                             # _logger.info(f"ERRO lendo protocolo no XML, NFe: {str(nfe.document_number)}")
+            else:
+                break
 
 # ConectaServerNFe(empresa=3)
