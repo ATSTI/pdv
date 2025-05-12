@@ -302,6 +302,7 @@ type
     pnlMenus: TPanel;
     PythonEngine1: TPythonEngine;
     PythonGUIInputOutput1: TPythonGUIInputOutput;
+    RgSituacao: TRadioGroup;
     rgDANFCE: TRadioGroup;
     rgTipoAmb: TRadioGroup;
     rgTipoDanfe: TRadioGroup;
@@ -389,6 +390,7 @@ type
     procedure btnSalvarConfigClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure PageControl3Change(Sender: TObject);
+    procedure RgSituacaoClick(Sender: TObject);
     procedure sbPathNFeClick(Sender: TObject);
     procedure sbPathCanClick(Sender: TObject);
     procedure sbPathCCeClick(Sender: TObject);
@@ -2548,6 +2550,7 @@ begin
   begin
     abrir_tabela_notas;
   end;
+  RgSituacao.ItemIndex := 1;
 end;
 
 procedure TfrmACBrNFe.ZQempFilterRecord(DataSet: TDataSet; var Accept: Boolean);
@@ -3870,6 +3873,44 @@ begin
    end;
 end;
 
+
+
+procedure TfrmACBrNFe.RgSituacaoClick(Sender: TObject);
+var sql_notas: string;
+begin
+  If RgSituacao.ItemIndex = 0 Then
+  begin
+    ZQNotas.Active:=False;
+    ZQNotas.SQL.Clear;
+    sql_notas := 'SELECT * FROM nfe WHERE empresa_id = ' + DBEdit3.Text + ' ORDER BY DATA_EMISSAO DESC, CHAVE DESC, NUM_NFE DESC';
+    ZQNotas.SQL.Add(sql_notas);
+    ZQNotas.ExecSQL;
+    ZQNotas.Active:=True
+  end;
+
+  If RgSituacao.ItemIndex = 1 Then
+  begin
+    ZQNotas.Active:=False;
+    ZQNotas.SQL.Clear;
+    sql_notas := 'SELECT * FROM nfe WHERE empresa_id = ' + DBEdit3.Text + ' and situacao = ' + QuotedStr( 'A_enviar') + ' ORDER BY DATA_EMISSAO DESC, CHAVE DESC, NUM_NFE DESC';
+    ZQNotas.SQL.Add(sql_notas);
+    ZQNotas.ExecSQL;
+    ZQNotas.Active:=True
+  end;
+
+  If RgSituacao.ItemIndex = 2 Then
+  begin
+    ZQNotas.Active:=False;
+    ZQNotas.SQL.Clear;
+    sql_notas := 'SELECT * FROM nfe WHERE empresa_id = ' + DBEdit3.Text + ' and situacao = ' + QuotedStr( 'Cancelada') + ' ORDER BY DATA_EMISSAO DESC, CHAVE DESC, NUM_NFE DESC';
+    ZQNotas.SQL.Add(sql_notas);
+    ZQNotas.ExecSQL;
+    ZQNotas.Active:=True
+  end;
+
+end;
+
+
 procedure TfrmACBrNFe.btnSha256Click(Sender: TObject);
 var
   Ahash: AnsiString;
@@ -4824,7 +4865,7 @@ var sql_notas: string;
 begin
   ZQNotas.Active:=False;
   ZQNotas.SQL.Clear;
-  sql_notas := 'SELECT * FROM nfe WHERE empresa_id = ' + DBEdit3.Text + ' ORDER BY DATA_EMISSAO DESC, CHAVE DESC, NUM_NFE DESC';
+  sql_notas := 'SELECT * FROM nfe WHERE empresa_id = ' + DBEdit3.Text + ' and situacao = ' + QuotedStr( 'A_enviar') + ' ORDER BY DATA_EMISSAO DESC, CHAVE DESC, NUM_NFE DESC';
   ZQNotas.SQL.Add(sql_notas);
   ZQNotas.ExecSQL;
   ZQNotas.Active:=True;
