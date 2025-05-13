@@ -47,7 +47,6 @@ class TestStringMethods(unittest.TestCase):
         total_xml = 0
         total_database = 0
         for xml_arquivo in files:
-            # import pudb;pu.db
             total_xml += 1
             print (xml_arquivo)
             nfe_proc = NfeProc.from_path(xml_arquivo)
@@ -72,7 +71,6 @@ class TestStringMethods(unittest.TestCase):
             busca += " where empresa_id = %s " %(str(empresa))
             busca += " and chave = '%s'" %(str(chave))
             dados = db.query(busca)
-            # import pudb;pu.db
             for item in dados:
                 total_database += 1
                 if protocolo:

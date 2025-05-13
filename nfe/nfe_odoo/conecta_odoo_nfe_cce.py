@@ -60,7 +60,6 @@ class ConectaServerNFeCCe():
             if num_arquivo < 6:
                 num_arquivo += 1
                 # print(xml_arquivo)
-                import pudb;pu.db
                 cce_ret = CCe.from_path(xml_arquivo)
                 try:
                     cce_ret.retEvento.infEvento.tpEvento
