@@ -7,16 +7,14 @@ from datetime import datetime
 import base64
 import configparser
 from pathlib import Path
-from atscon import Conexao as con_fdb
-import locale
 from glob import iglob
 from os.path import getmtime
-from nfelib.nfe_evento_cce.bindings.v1_0.ret_env_cce_v1_00 import RetEnvEvento as CCe
+from nfelib.nfe_evento_cancel.bindings.v1_0.evento_canc_nfe_v1_00 import Evento as Cancel
 
 
 _logger = logging.getLogger(__name__)
 Path('logs').mkdir(parents=True, exist_ok=True) # Create folder if not exists
-handlers = [ RotatingFileHandler(filename='logs/log_cce.txt',
+handlers = [ RotatingFileHandler(filename='logs/log_cancel.txt',
             mode='w', 
             maxBytes=512000, 
             backupCount=4)
@@ -28,10 +26,10 @@ logging.basicConfig(handlers=handlers,
 _logger.setLevel(logging.INFO)
 
 
-class ConectaServerNFeCCe():
-    _name = 'conecta.server.nfe.cce'
+class ConectaServerNFeCancela():
+    _name = 'conecta.server.nfe.cancela'
 
-    def __init__(self, empresa='999999'):
+    def __init__(self, funcao_exec='PEGA_XML', empresa='999999'):
         cfg = configparser.ConfigParser()
         cfg.read('conf.ini')
         self.path_retorno  = cfg.get('INTEGRA', 'Path_retorno')
@@ -46,10 +44,10 @@ class ConectaServerNFeCCe():
         origem.login(self.db, self.login, self.passwd)
         return origem
 
-    def retorna_cce(self, empresa):
-        _logger.info('Enviando CCe para o odoo')
-        arquivo = os.path.join(self.path_retorno, "eventos", '110110*.xml')
-        # lendo o diretorio e pegando somente os ultimos 5 autorizados
+    def retorna_notas_canceladas(self, empresa):
+        _logger.info('Enviando Cancelamento para o odoo')
+        arquivo = os.path.join(self.path_retorno, "eventos", '110111*.xml')
+        # lendo o diretorio e pegando somente os ultimos 5 cancelamentos
         files = iglob(arquivo)
         sorted_files = sorted(files, key=getmtime, reverse=True)
         num_arquivo = 1
@@ -60,14 +58,23 @@ class ConectaServerNFeCCe():
             if num_arquivo < 6:
                 num_arquivo += 1
                 # print(xml_arquivo)
-                cce_ret = CCe.from_path(xml_arquivo)
+                cancel_ret = Cancel.from_path(xml_arquivo)
+                # cancel_ret = parser.parse(xml_arquivo, Evento)
                 try:
-                    cce_ret.retEvento.infEvento.tpEvento
+                    cancel_ret.retEvento.infEvento.tpEvento
                 except:
                     continue
-                chave = cce_ret.retEvento.infEvento.chNFe
-                protocolo = cce_ret.retEvento.infEvento.nProt
-                justificativa = cce_ret.evento.infEvento.detEvento.xCorrecao
+                chave = cancel_ret.retEvento.infEvento.chNFe
+                protocolo = cancel_ret.retEvento.infEvento.nProt
+                motivo = cancel_ret.evento.infEvento.detEvento.xJust
+                cStat = cancel_ret.retEvento.infEvento.cStat
+                if cStat not in ("135", "155"):
+                    continue
+                if cStat == "135":
+                    state = "02"
+                else:
+                    state = "03"
+
                 nfe_ids = n_xml.search([
                     ('document_key', '=', chave),
                     ('state_edoc', '=', 'autorizada'),
@@ -80,7 +87,7 @@ class ConectaServerNFeCCe():
                     cce = event.search([
                         ('protocol_number', '=', protocolo),
                         ('document_id', '=', nfe.fiscal_document_id.id),
-                        ('type', '=', '14')
+                        ('type', '=', '2')
                     ])
                     if cce:
                         continue
@@ -89,7 +96,7 @@ class ConectaServerNFeCCe():
                     vals = {
                         "company_id": nfe.company_id.id,
                         "environment": environment,
-                        "type": "14",
+                        "type": "2",
                         "document_id": nfe.fiscal_document_id.id,
                         "document_type_id": nfe.document_type_id.id,
                         "document_serie_id": nfe.document_serie_id.id,
@@ -98,7 +105,7 @@ class ConectaServerNFeCCe():
                     event_ids = event.create(vals)
                     event_id = event.browse(event_ids)
                     if event_id:
-                        _logger.info(f"Evento da CCe criado com sucesso, nota: {nfe.document_number}")
+                        _logger.info(f"Evento de Cancelamento criado com sucesso, nota: {nfe.document_number}")
                     attach = con.env["ir.attachment"]
                     file_name = chave + "-proc-env.xml"
                     xml_file = open(xml_arquivo, 'r')
@@ -112,19 +119,23 @@ class ConectaServerNFeCCe():
                     })
                     # event_id.file_response_id = False
                     event_id.file_response_id = att_file
-                    dt_protocol = cce_ret.retEvento.infEvento.dhRegEvento
+                    dt_protocol = cancel_ret.retEvento.infEvento.dhRegEvento
                     dt_protocol = datetime.strptime(dt_protocol, '%Y-%m-%dT%H:%M:%S%z')
                     dt_protocol = dt_protocol.strftime('%Y-%m-%d %H:%M:%S')
                     event_id.write(
                         {
                                 "state": "done",
-                                "status_code": "135",
+                                "status_code": cStat,
                                 "response": "Evento registrado e vinculado a NF-e",
                                 "protocol_date": dt_protocol,
                                 "protocol_number": protocolo,
-                                "justification": justificativa,
+                                "justification": motivo,
                             }
                         )
-                    _logger.info(f"Situacao evento CCe alterada com sucesso, NFe: {str(nfe.document_number)}")
+                    nfe.write({
+                        "state_fiscal": state,
+                        "state_edoc": "cancelada"
+                    })
+                    _logger.info(f"Situacao evento Cancelamento alterada com sucesso, NFe: {str(nfe.document_number)}")
             else:
                 break

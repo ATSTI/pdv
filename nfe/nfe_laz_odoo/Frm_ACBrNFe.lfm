@@ -15,7 +15,7 @@ object frmACBrNFe: TfrmACBrNFe
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '3.4.0.0'
+  LCLVersion = '3.6.0.0'
   object PageControl2: TPageControl
     Left = 0
     Height = 626
@@ -834,11 +834,11 @@ object frmACBrNFe: TfrmACBrNFe
             ParentColor = False
             TabOrder = 5
             object BitBtn6: TBitBtn
-              Left = 976
+              Left = 904
               Height = 40
               Top = 2
-              Width = 96
-              Caption = 'Fechar'
+              Width = 168
+              Caption = 'Atualizar Odoo e Fechar'
               Glyph.Data = {
                 76020000424D7602000000000000760000002800000020000000200000000100
                 0400000000000002000000000000000000001000000000000000000000000000
@@ -2300,10 +2300,10 @@ object frmACBrNFe: TfrmACBrNFe
               Height = 518
               Top = 0
               Width = 287
-              ActivePage = TabSheet12
+              ActivePage = TabSheet3
               Align = alClient
               MultiLine = True
-              TabIndex = 3
+              TabIndex = 0
               TabOrder = 0
               Options = [nboMultiLine]
               object TabSheet3: TTabSheet
@@ -4084,6 +4084,7 @@ object frmACBrNFe: TfrmACBrNFe
     Configuracoes.Geral.AtualizarXMLCancelado = True
     Configuracoes.Geral.VersaoQRCode = veqr000
     Configuracoes.Arquivos.OrdenacaoPath = <>
+    Configuracoes.Arquivos.SalvarEvento = True
     Configuracoes.WebServices.UF = 'SP'
     Configuracoes.WebServices.AguardarConsultaRet = 15000
     Configuracoes.WebServices.AjustaAguardaConsultaRet = True
@@ -4245,13 +4246,13 @@ object frmACBrNFe: TfrmACBrNFe
   end
   object ZConn: TZConnection
     ControlsCodePage = cCP_UTF8
-    AutoEncodeStrings = True
     Properties.Strings = (
       'AutoEncodeStrings=True'
       'controls_cp=CP_UTF8'
       'RawStringEncoding=DB_CP'
     )
     TransactIsolationLevel = tiReadCommitted
+    DisableSavepoints = False
     HostName = '172.17.0.2'
     Port = 3050
     Database = 'C:\home\odoo_nfe\bd\LANCAMENTO.FDB'
@@ -4270,8 +4271,8 @@ object frmACBrNFe: TfrmACBrNFe
     Top = 184
   end
   object ZQemp: TZQuery
-    Connection = ZConn
     OnFilterRecord = ZQempFilterRecord
+    Connection = ZConn
     SQL.Strings = (
       'select * from empresa order by empresa_id'
     )

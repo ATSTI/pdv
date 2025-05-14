@@ -2023,15 +2023,23 @@ begin
     infEvento.detEvento.xJust := Justificativa;
     infEvento.detEvento.nProt := Protocolo;
   end;
-
+  if (Length(Justificativa) < 15) then
+  begin
+    MessageDlg('Mensagem precisa ter mais de 15 caracteres', 'Aumente o texto de justificativa', mtWarning,[mbok], 0);
+    exit;
+  end;
   ACBrNFe1.EnviarEvento(StrToInt(idLote));
 
   MemoResp.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetWS;
   memoRespWS.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetornoWS;
   LoadXML(MemoResp, WBResposta);
-  ShowMessage(IntToStr(ACBrNFe1.WebServices.EnvEvento.cStat));
-  ShowMessage(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.nProt);
-
+  //ShowMessage(IntToStr(ACBrNFe1.WebServices.EnvEvento.cStat));
+  if (ACBrNFe1.WebServices.EnvEvento.cStat <> 135) then
+  begin
+    MessageDlg('Erro no Cancelamento', ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.xMotivo, mtError,[mbok], 0);
+    exit;
+  end;
+  ShowMessage('Nota cancelada com sucesso, PROTOCOLO: ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.nProt);
   ZQprotocolo.Active := False;
   sSQL := ' UPDATE nfe' +
         ' SET' +
@@ -4857,6 +4865,18 @@ begin
   // Memo3.Lines.Add('Executando envio NFe para o Odoo ...');
   Memo3.Lines.Add('Enviando notas Autorizadas...');
   //PythonEngine1. := Memo4;
+  PythonEngine1.ExecStrings(script);
+
+  script.LoadFromFile('executa_odoo_nfe_retorno_cancel.py');
+  Memo2.Clear;
+  memo2.Text:= script.Text;
+  Memo3.Lines.Add('Enviando cancelamentos...');
+  PythonEngine1.ExecStrings(script);
+
+  script.LoadFromFile('executa_odoo_nfe_retorno_cce.py');
+  Memo2.Clear;
+  memo2.Text:= script.Text;
+  Memo3.Lines.Add('Enviando notas Autorizadas...');
   PythonEngine1.ExecStrings(script);
 end;
 

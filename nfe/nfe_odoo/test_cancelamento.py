@@ -1,10 +1,6 @@
 import unittest
 import os
-import shutil
-
-from glob import iglob
-from os.path import getmtime
-from conecta_odoo_nfe import ConectaServerNFe as nfe_envia
+from conecta_odoo_nfe_cancela import ConectaServerNFeCancela as nfe_cancel
 from nfelib.nfe_evento_cancel.bindings.v1_0.evento_canc_nfe_v1_00 import Evento as Cancel
 
 class TestStringMethods(unittest.TestCase):
@@ -14,7 +10,7 @@ class TestStringMethods(unittest.TestCase):
         # empresa Armax
         empresa = 2
         # limpando para executar teste completo
-        conecta = nfe_envia(empresa=empresa, funcao_exec='PEGA_XML')
+        conecta = nfe_cancel(empresa=empresa, funcao_exec='PEGA_XML')
         con = conecta._conexao_odoo()
         # buscando xml e inserindo
         conecta.retorna_notas_canceladas(empresa)
