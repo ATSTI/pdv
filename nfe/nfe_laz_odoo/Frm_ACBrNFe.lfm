@@ -15,7 +15,7 @@ object frmACBrNFe: TfrmACBrNFe
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '3.6.0.0'
+  LCLVersion = '3.4.0.0'
   object PageControl2: TPageControl
     Left = 0
     Height = 626
@@ -2300,10 +2300,10 @@ object frmACBrNFe: TfrmACBrNFe
               Height = 518
               Top = 0
               Width = 287
-              ActivePage = TabSheet3
+              ActivePage = TabSheet12
               Align = alClient
               MultiLine = True
-              TabIndex = 0
+              TabIndex = 3
               TabOrder = 0
               Options = [nboMultiLine]
               object TabSheet3: TTabSheet
@@ -3378,6 +3378,7 @@ object frmACBrNFe: TfrmACBrNFe
                   Font.Name = 'MS Sans Serif'
                   ItemHeight = 16
                   Items.Strings = (
+                    'Selecione Um Tipo'
                     'Simples Nacional'
                     'Simples Nacional, excesso sublimite de receita bruta'
                     'Regime Normal'
@@ -4246,13 +4247,13 @@ object frmACBrNFe: TfrmACBrNFe
   end
   object ZConn: TZConnection
     ControlsCodePage = cCP_UTF8
+    AutoEncodeStrings = True
     Properties.Strings = (
       'AutoEncodeStrings=True'
       'controls_cp=CP_UTF8'
       'RawStringEncoding=DB_CP'
     )
     TransactIsolationLevel = tiReadCommitted
-    DisableSavepoints = False
     HostName = '172.17.0.2'
     Port = 3050
     Database = 'C:\home\odoo_nfe\bd\LANCAMENTO.FDB'
@@ -4271,8 +4272,8 @@ object frmACBrNFe: TfrmACBrNFe
     Top = 184
   end
   object ZQemp: TZQuery
-    OnFilterRecord = ZQempFilterRecord
     Connection = ZConn
+    OnFilterRecord = ZQempFilterRecord
     SQL.Strings = (
       'select * from empresa order by empresa_id'
     )
