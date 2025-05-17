@@ -4338,7 +4338,7 @@ end;
 procedure TfrmACBrNFe.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   //try
-  //  envia_nota_odoo;
+   envia_nota_odoo;
   //finally
   //end;
 end;
