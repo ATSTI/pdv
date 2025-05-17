@@ -72,32 +72,6 @@ class ConectaServerNFe():
         if not dados:
             _logger.info(f"NFe/NFCe : {str(chave)} NAO existe.")
             return False
-        ultima_modificacao = datetime.now()
-        for item in dados:
-            situacao = item[1]
-            # coloquei o limit > 5 pq qdo consulta pra enviar para o odoo nao pode exluir
-            if situacao == 'A_enviar' and item[2] != ultima_modificacao:
-                arquivo = os.path.join(self.path_retorno, item[0]+"-proc-env.xml")
-                exclui = False
-                if os.path.exists(arquivo):
-                    nfe_proc = NfeProc.from_path(arquivo)
-                    try:
-                        nProt = nfe_proc.protNFe.infProt.nProt
-                        edita = "UPDATE FROM nfe SET situacao = 'Autorizada', protocolo = '%s' WHERE empresa_id = %s and num_nfe = %s" %(
-                            str(nProt),
-                            str(empresa_id),
-                            item[0]
-                        )
-                        db.execute(edita)
-                    except:
-                        exclui = True
-                # if exclui:
-                #     excluir = "DELETE FROM nfe WHERE empresa_id = %s and num_nfe = %s" %(
-                #         str(empresa_id),
-                #         item[0]
-                #     )
-                #     db.execute(excluir)
-                # continue
         return dados
 
     def pega_xml(self, empresa):
@@ -134,24 +108,44 @@ class ConectaServerNFe():
         # db = local_db(filename = 'lancamento.db', table = 'nfe')
         # existe_notas = db.consulta_nfe(chave='', empresa_id=empresa, limit=50)
         existe_notas = self.consulta_nfe(db=db, chave='', empresa_id=empresa, limit=50)
-        _logger.info(f"Retorno existe notas: {str(existe_notas)}")
-        
-        notas_sistema = set()
+        _logger.info(f"Retorno existe notas: {str(existe_notas)}")       
+        notas_sistema = []
+        nota_bd = set()
         if existe_notas:
             for nf in existe_notas:
-                # if nf[3] in notas_sistema:
-                #     USADO PRA LIMPAR SUJEIRA
-                #     excluir = "DELETE FROM nfe WHERE empresa_id = %s and chave = '%s'" %(
-                #             int(empresa),
-                #             str(nf[3])
-                #         )
-                #     db.execute(excluir)
-                notas_sistema.add(nf[3])
-
+                notas_sistema.append({
+                    'chave': nf[3],
+                    'data_nota': nf[2],
+                    'situacao': nf[1]
+                })
+                nota_bd.add(nf[3])
         for prd in p_xml.browse(nfe_ids):
             _logger.info(f" Lendo xml ID {str(prd)}")
+            if len(notas_sistema) and not prd.authorization_file_id:
+                # verifica se precisa substituir o xml
+                for nf in notas_sistema:
+                    if prd.document_key == nf["chave"]:
+                        if nf["situacao"] != "A_enviar":
+                            continue
+                        data_odoo = datetime.strftime(prd.write_date, '%Y-%m-%d %H:%M')
+                        data_nota_gravada = datetime.strftime(nf["data_nota"], '%Y-%m-%d %H:%M')
+                        if data_odoo != data_nota_gravada:
+                            _logger.info(f" Data divergente, excluindo xml {prd.write_date, data_nota_gravada}")
+                            arquivo_name = os.path.join(arquivo, prd.send_file_id.name)
+                            if os.path.isfile(arquivo_name):
+                                os.remove(arquivo_name)
+                            excluir = "DELETE FROM nfe WHERE empresa_id = %s and chave = '%s' and situacao = '%s'" %(
+                                int(empresa),
+                                str(nf["chave"]),
+                                "A_enviar"
+                            )
+                            db.execute(excluir)
+                            nota_bd.remove(nf["chave"])
             chave = prd.document_key
             _logger.info(f" Chave xml {chave}")
+            # breakpoint()
+            if chave in nota_bd:
+                continue
             # _logger.info(f"NFe: {str(chave)}")
             if prd.authorization_file_id:
                 _logger.info(f" Entrou no IF  file autorization_id ")
@@ -367,5 +361,6 @@ class ConectaServerNFe():
                             # _logger.info(f"ERRO lendo protocolo no XML, NFe: {str(nfe.document_number)}")
             else:
                 break
+        os._exit(0)
 
 # ConectaServerNFe(empresa=3)
