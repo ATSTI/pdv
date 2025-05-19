@@ -361,6 +361,5 @@ class ConectaServerNFe():
                             # _logger.info(f"ERRO lendo protocolo no XML, NFe: {str(nfe.document_number)}")
             else:
                 break
-        os._exit(0)
 
 # ConectaServerNFe(empresa=3)

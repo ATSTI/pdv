@@ -31,7 +31,7 @@ _logger.setLevel(logging.INFO)
 class ConectaServerNFeCCe():
     _name = 'conecta.server.nfe.cce'
 
-    def __init__(self, empresa='999999'):
+    def __init__(self, funcao_exec='PEGA_XML', empresa='999999'):
         cfg = configparser.ConfigParser()
         cfg.read('conf.ini')
         self.path_retorno  = cfg.get('INTEGRA', 'Path_retorno')

@@ -133,6 +133,7 @@ class ConectaServerNFeCancela():
                             }
                         )
                     nfe.write({
+                        "state": "cancel",
                         "state_fiscal": state,
                         "state_edoc": "cancelada"
                     })

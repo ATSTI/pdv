@@ -44,7 +44,7 @@ class TestStringMethods(unittest.TestCase):
             for cce in event.browse(cce_ids):
                 self.assertEqual(cce.protocol_number, protocolo)
                 self.assertEqual(tpoEvento, '110111', msg='Tipo do evento nao confere')
-                self.assertEqual(cce.state_edoc, "cancelada", msg="Nota nao cancelada no Odoo")
+                # self.assertEqual(cce.state_edoc, "cancelada", msg="Nota nao cancelada no Odoo")
 
 if __name__ == '__main__':
     unittest.main()

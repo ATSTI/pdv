@@ -37,7 +37,7 @@ interface
 uses
   LCLIntf, LCLType, LMessages, Messages, SysUtils, Variants, Classes, Graphics,
   Controls, Forms, Dialogs, ComCtrls, StdCtrls, Spin, Buttons, ExtCtrls,
-  DBCtrls, DBGrids, PythonEngine, Lcl.PythonGUIInputOutput, ZConnection,
+  DBCtrls, DBGrids, PythonEngine, PythonGUIInputOutput, ZConnection,
   ZDataset, SynEdit, SynHighlighterXML, SynGutterBase, ACBrPosPrinter,
   ACBrNFeDANFeESCPOS, ACBrNFeDANFEClass, ACBrDANFCeFortesFr, ACBrDFeReport,
   ACBrDFeDANFeReport, ACBrNFeDANFeRLClass, ACBrBase, ACBrDFe, ACBrNFe, ACBrUtil,
@@ -49,12 +49,15 @@ type
 
   TfrmACBrNFe = class(TForm)
     BitBtn1: TBitBtn;
+    BitBtn10: TBitBtn;
     BitBtn2: TBitBtn;
     BitBtn3: TBitBtn;
     BitBtn4: TBitBtn;
     BitBtn5: TBitBtn;
     BitBtn6: TBitBtn;
     BitBtn7: TBitBtn;
+    BitBtn8: TBitBtn;
+    BitBtn9: TBitBtn;
     btnAdicionarProtocolo: TButton;
     BtnAssinar: TButton;
     btnAtorInterNFeTransp: TButton;
@@ -302,8 +305,8 @@ type
     pnlMenus: TPanel;
     PythonEngine1: TPythonEngine;
     PythonGUIInputOutput1: TPythonGUIInputOutput;
-    RgSituacao: TRadioGroup;
     rgDANFCE: TRadioGroup;
+    RgSituacao: TRadioGroup;
     rgTipoAmb: TRadioGroup;
     rgTipoDanfe: TRadioGroup;
     sbPathCan: TSpeedButton;
@@ -368,11 +371,14 @@ type
     ZQnotas: TZQuery;
     ZQprotocolo: TZQuery;
 
+    procedure BitBtn10Click(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
     procedure BitBtn4Click(Sender: TObject);
     procedure BitBtn5Click(Sender: TObject);
+    procedure BitBtn8Click(Sender: TObject);
+    procedure BitBtn9Click(Sender: TObject);
     procedure BtnAssinarClick(Sender: TObject);
     procedure btnCarregaNfeEmpresaClick(Sender: TObject);
     procedure btnImportaNfeOdooClick(Sender: TObject);
@@ -2034,7 +2040,7 @@ begin
   memoRespWS.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetornoWS;
   LoadXML(MemoResp, WBResposta);
   //ShowMessage(IntToStr(ACBrNFe1.WebServices.EnvEvento.cStat));
-  if (ACBrNFe1.WebServices.EnvEvento.cStat <> 135) then
+  if (ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.cStat <> 135) then
   begin
     MessageDlg('Erro no Cancelamento', ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.xMotivo, mtError,[mbok], 0);
     exit;
@@ -2055,7 +2061,7 @@ begin
   ZQprotocolo.SQL.Text := 'SELECT * FROM nfe ORDER BY DATA_EMISSAO DESC, CHAVE DESC, NUM_NFE DESC';
   ZQprotocolo.ExecSQL;
   ZQprotocolo.Open;
-
+  BitBtn9.Click;
 
 end;
 
@@ -2227,8 +2233,8 @@ begin
   //if not(InputQuery('WebServices Eventos: Carta de Correção', 'CNPJ ou o CPF do autor do Evento', CNPJ)) then
   //   exit;
   nSeqEvento := '1';
-  //if not(InputQuery('WebServices Eventos: Carta de Correção', 'Sequencial do evento para o mesmo tipo de evento', nSeqEvento)) then
-  //   exit;
+  if not(InputQuery('Carta de Correção, número sequencial', 'Número da carta, use 1 se for a primeira desta nota ...', nSeqEvento)) then
+     exit;
   Correcao := '';
   if not(InputQuery('WebServices Eventos: Carta de Correção', 'Correção a ser considerada', Correcao)) then
      exit;
@@ -2250,6 +2256,12 @@ begin
   MemoResp.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetWS;
   LoadXML(MemoResp, WBResposta);
 
+  if (ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.cStat <> 135) then
+  begin
+    MessageDlg('Erro para enviar: ', ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.xMotivo, mtError,[mbok], 0);
+    exit;
+  end;
+
   ZQprotocolo.Active := False;
   sSQL := ' UPDATE nfe' +
           ' SET' +
@@ -2264,7 +2276,8 @@ begin
   ZQprotocolo.SQL.Text := 'SELECT * FROM nfe ORDER BY DATA_EMISSAO DESC, CHAVE DESC, NUM_NFE DESC';
   ZQprotocolo.ExecSQL;
   ZQprotocolo.Open;
-
+  btnImprimirEvento.Click;
+  BitBtn10.Click;
 end;
 
 procedure TfrmACBrNFe.btnCNPJClick(Sender: TObject);
@@ -3632,23 +3645,10 @@ end;
 
 procedure TfrmACBrNFe.btnImprimirEventoClick(Sender: TObject);
 begin
-  OpenDialog1.Title := 'Selecione a NFe';
-  OpenDialog1.DefaultExt := '*-nfe.XML';
-  OpenDialog1.Filter := 'Arquivos NFe (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
-
-  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
-
-  if OpenDialog1.Execute then
-  begin
-    ACBrNFe1.NotasFiscais.Clear;
-    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
-  end;
-
+  OpenDialog1.InitialDir := ExtractFilePath(Application.ExeName) + 'eventos\' + '*.xml';
   OpenDialog1.Title := 'Selecione o Evento';
-  OpenDialog1.DefaultExt := '*.XML';
-  OpenDialog1.Filter := 'Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
-
-  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
+  OpenDialog1.DefaultExt := '*.xml';
+  OpenDialog1.Filter := '*.xml';
 
   if OpenDialog1.Execute then
   begin
@@ -4147,6 +4147,11 @@ var
   N: TACBrPosPrinterModelo;
   O: TACBrPosPaginaCodigo;
 begin
+  PythonEngine1.UseLastKnownVersion:=False;
+  PythonEngine1.DllName := 'python38.dll';
+  PythonEngine1.IO := PythonGUIInputOutput1;
+  PythonGUIInputOutput1.Output := Memo4;
+
   cbSSLLib.Items.Clear;
   for T := Low(TSSLLib) to High(TSSLLib) do
     cbSSLLib.Items.Add( GetEnumName(TypeInfo(TSSLLib), integer(T) ) );
@@ -4362,6 +4367,19 @@ begin
   carregar_empresas;
 end;
 
+procedure TfrmACBrNFe.BitBtn10Click(Sender: TObject);
+  var scriptCce: TStringList;
+begin
+  scriptCce := TStringList.Create();
+  scriptCce.LoadFromFile('executa_odoo_nfe_retorno_cce.py');
+  Memo2.Clear;
+  memo2.Text:= scriptCce.Text;
+  Memo3.Lines.Add('Enviando Carta Correção (CCe) odoo');
+  PythonEngine1.ExecStrings(scriptCce);
+  Memo3.Lines.Add('Finalizado o enviando da Carta Correção.');
+  scriptCce.Free;
+end;
+
 procedure TfrmACBrNFe.BitBtn2Click(Sender: TObject);
 begin
   if(Edit3.Text = '')then
@@ -4390,6 +4408,24 @@ procedure TfrmACBrNFe.BitBtn5Click(Sender: TObject);
 begin
   envia_nota_odoo;
   Close;
+end;
+
+procedure TfrmACBrNFe.BitBtn8Click(Sender: TObject);
+begin
+  envia_nota_odoo;
+end;
+
+procedure TfrmACBrNFe.BitBtn9Click(Sender: TObject);
+var scriptCancel: TStringList;
+begin
+  scriptCancel := TStringList.Create();
+  scriptCancel.LoadFromFile('executa_odoo_nfe_retorno_cancel.py');
+  Memo2.Clear;
+  memo2.Text:= scriptCancel.Text;
+  Memo3.Lines.Add('Enviando cancelamentos odoo.');
+  PythonEngine1.ExecStrings(scriptCancel);
+  Memo3.Lines.Add('Nota cancelada no sistema odoo.');
+  scriptCancel.Free;
 end;
 
 procedure TfrmACBrNFe.GravarConfiguracao;
@@ -4520,6 +4556,7 @@ var
   Ini: TIniFile;
   StreamMemo: TMemoryStream;
   valor: String;
+  path_eventos: String;
 begin
   edCertificado.Text := '';
   if Edit3.Text = '' then
@@ -4573,7 +4610,9 @@ begin
     cbxPastaMensal.Checked      := Ini.ReadBool(  'Arquivos', 'PastaMensal',      false);
     cbxAdicionaLiteral.Checked  := Ini.ReadBool(  'Arquivos', 'AddLiteral',       false);
     cbxEmissaoPathNFe.Checked   := Ini.ReadBool(  'Arquivos', 'EmissaoPathNFe',   false);
+    path_eventos := ExtractFilePath(Application.ExeName) + 'eventos\' + '*-eve.xml';
     cbxSalvaPathEvento.Checked  := Ini.ReadBool(  'Arquivos', 'SalvarPathEvento', false);
+    edtPathEvento.Text          := Ini.ReadString('Arquivos', 'PathEvento', path_eventos);
     cbxSepararPorCNPJ.Checked   := Ini.ReadBool(  'Arquivos', 'SepararPorCNPJ',   false);
     cbxSepararPorModelo.Checked := Ini.ReadBool(  'Arquivos', 'SepararPorModelo', false);
     edtPathNFe.Text             := Ini.ReadString('Arquivos', 'PathNFe',          '');
@@ -4581,7 +4620,6 @@ begin
     edtPathInu.Text             := Ini.ReadString('Arquivos', 'PathInu',          '');
     edtPathDPEC.Text            := Ini.ReadString('Arquivos', 'PathDPEC',         '');
     edtPathCCe.Text             := Ini.ReadString('Arquivos', 'PathCCe',          '');
-    edtPathEvento.Text          := Ini.ReadString('Arquivos', 'PathEvento',       '');
 
     edtEmitCNPJ.Text       := Ini.ReadString('Emitente', 'CNPJ',        '');
     edtEmitIE.Text         := Ini.ReadString('Emitente', 'IE',          '');
@@ -4864,20 +4902,10 @@ begin
   memo2.Text:= script.Text;
   // Memo3.Lines.Add('Executando envio NFe para o Odoo ...');
   Memo3.Lines.Add('Enviando notas Autorizadas...');
+  Memo3.Lines.Add('Aguarde ...');
   //PythonEngine1. := Memo4;
   PythonEngine1.ExecStrings(script);
-
-  script.LoadFromFile('executa_odoo_nfe_retorno_cancel.py');
-  Memo2.Clear;
-  memo2.Text:= script.Text;
-  Memo3.Lines.Add('Enviando cancelamentos...');
-  PythonEngine1.ExecStrings(script);
-
-  script.LoadFromFile('executa_odoo_nfe_retorno_cce.py');
-  Memo2.Clear;
-  memo2.Text:= script.Text;
-  Memo3.Lines.Add('Enviando notas Autorizadas...');
-  PythonEngine1.ExecStrings(script);
+  Memo3.Lines.Add('Notas enviadas com sucesso.');
 end;
 
 procedure TfrmACBrNFe.abrir_tabela_notas;

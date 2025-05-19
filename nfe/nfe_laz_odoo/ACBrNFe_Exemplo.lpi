@@ -106,10 +106,10 @@
     </RunParams>
     <RequiredPackages Count="16">
       <Item1>
-        <PackageName Value="SynEditDsgn"/>
+        <PackageName Value="python4lazarus_package"/>
       </Item1>
       <Item2>
-        <PackageName Value="P4DLaz"/>
+        <PackageName Value="SynEditDsgn"/>
       </Item2>
       <Item3>
         <PackageName Value="FCL"/>
