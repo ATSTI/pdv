@@ -1,0 +1,34 @@
+object fPermissaoCX: TfPermissaoCX
+  Left = 443
+  Height = 156
+  Top = 229
+  Width = 387
+  Caption = 'Administrador'
+  ClientHeight = 156
+  ClientWidth = 387
+  LCLVersion = '4.0.0.4'
+  OnShow = FormShow
+  object edSenha: TLabeledEdit
+    Left = 48
+    Height = 23
+    Top = 48
+    Width = 168
+    EchoMode = emPassword
+    EditLabel.Height = 15
+    EditLabel.Width = 168
+    EditLabel.Caption = 'Chave'
+    EditLabel.ParentColor = False
+    PasswordChar = '*'
+    TabOrder = 0
+    OnKeyPress = edSenhaKeyPress
+  end
+  object btnLogin: TBitBtn
+    Left = 224
+    Height = 28
+    Top = 48
+    Width = 91
+    Caption = 'Liberar'
+    TabOrder = 1
+    OnClick = btnLoginClick
+  end
+end

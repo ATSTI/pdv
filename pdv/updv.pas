@@ -796,6 +796,13 @@ begin
     dmPdv.IbCon.Connected := True;
   if (dmPdv.usaComanda > 0) then
      pnComanda.Caption := '';
+
+  if(dmPdv.nomeCaixa = 'FECHADO')then
+  begin
+    fMovimentoProc.btnSangria.Enabled := False;
+    fMovimentoProc.btnReforco.Enabled := False;
+  end;
+
   fMovimentoProc.ShowModal;
   if (fMovimentoProc.codMovimentoProc > 0) then
   begin

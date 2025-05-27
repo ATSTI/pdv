@@ -48,7 +48,7 @@ var
   fAbreCaixa: TfAbreCaixa;
 
 implementation
-uses uPdv,uMovimentoProc;
+uses uPdv,uMovimentoProc,uPermissao,uPermissaoCX;
 {$R *.lfm}
 
 { TfAbreCaixa }
@@ -59,7 +59,18 @@ var str:string;
   vlrCaixa:double;
   ArquivoINI: TIniFile;
 begin
+
+  if(dmpdv.SenhaAbrirCX = 'SIM')then
+  begin
+    fPermissaoCX.ShowModal;
+    if (fPermissaoCX.Permissao_Fazer = 'NAO') then
+    begin
+      Exit;
+    end;
+  end;
+
   try
+
   codCaixa := dmPdv.busca_generator('GEN_CAIXA');
   str := 'insert into CAIXA_CONTROLE (IDCAIXACONTROLE, CODCAIXA, CODUSUARIO,' +
     'SITUACAO, NOMECAIXA, MAQUINA, DATAABERTURA, VALORABRE, DATAFECHAMENTO) values (';

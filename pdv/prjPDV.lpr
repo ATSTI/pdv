@@ -10,7 +10,7 @@ uses
   Forms, runtimetypeinfocontrols, datetimectrls, lhelpcontrolpkg, uPdv,
   updv_rec, uMovimento, uMovimentoDetalhe, udmpdv, uprodutoproc, uMovimentoProc,
   uvenda, uRecebimento, uExecutaIntegracao, uLogin, uVendedorBusca,
-  uClienteBusca, uSenhaNova, uPermissao, uExcluirItem, uNfce, uabrircaixa,
+  uClienteBusca, uSenhaNova, uPermissao,uPermissaoCX, uExcluirItem, uNfce, uabrircaixa,
   uCadeira, usangria, uAbrirCaixa2, uCursoBusca, uAlunoBusca, uComandaJuntar,
   uReceber, uEstoqueExecuta, uIntegracaoOdoo, uIntegraSimples, uMsg, usaldo,
   umsgpromo;
@@ -32,6 +32,7 @@ begin
   Application.CreateForm(TfClienteBusca, fClienteBusca);
   Application.CreateForm(TfSenhaNova, fSenhaNova);
   Application.CreateForm(TfPermissao, fPermissao);
+  Application.CreateForm(TfPermissaoCX, fPermissaoCX);
   Application.CreateForm(TfNfce, fNfce);
   Application.CreateForm(TfExclusao, fExclusao);
   Application.CreateForm(TfAbrirCaixa, fAbrirCaixa);

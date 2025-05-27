@@ -107,7 +107,7 @@ var
 
 implementation
 
-uses uIntegraSimples,uPdv,uMovimentoProc;
+uses uIntegraSimples,uPdv,uMovimentoProc, uPermissao,uPermissaoCX;
 
 {$R *.lfm}
 
@@ -153,6 +153,16 @@ var
   IMPRESSORA:TextFile;
   vlr : string;
 begin
+
+  if(dmpdv.SenhaAbrirCX = 'SIM')then
+  begin
+    fPermissaoCX.ShowModal;
+    if (fPermissaoCX.Permissao_Fazer = 'NAO') then
+    begin
+      Exit;
+    end;
+  end;
+
   if (ComboBox1.ItemIndex <> 0) then
   begin
     ShowMessage('Informar o Tipo de Sangria ' + SangriaReforco);

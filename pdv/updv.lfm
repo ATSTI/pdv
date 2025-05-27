@@ -12763,7 +12763,6 @@ object fPdv: TfPdv
     end
     object MenuItem3: TMenuItem
       Action = acExcluirItemPedido
-      Caption = 'Exluir Item/Pedido'
     end
     object MenuItem5: TMenuItem
       Caption = 'Troca/Devolução'

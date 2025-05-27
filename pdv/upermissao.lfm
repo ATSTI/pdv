@@ -7,7 +7,7 @@ object fPermissao: TfPermissao
   ClientHeight = 156
   ClientWidth = 387
   OnShow = FormShow
-  LCLVersion = '2.2.4.0'
+  LCLVersion = '3.4.0.0'
   object edSenha: TLabeledEdit
     Left = 48
     Height = 23

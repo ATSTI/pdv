@@ -46,8 +46,10 @@ begin
   begin
     Permissao_Fazer := 'NAO';
     ShowMessage('Sem Cadastro de usuário no sistema');
+    Close;
     Exit;
   end;
+
   if ((Trim(dmPdv.sqBusca.FieldByName('PERFIL').AsString) = 'GERENTE') and
      (permissao_inicio = 'EXCLUIR')) then
   begin
