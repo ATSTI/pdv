@@ -2504,8 +2504,8 @@ object frmACBrNFe: TfrmACBrNFe
           Height = 544
           Top = 0
           Width = 295
-          ActivePage = TabSheet14
-          TabIndex = 2
+          ActivePage = TabSheet1
+          TabIndex = 0
           TabOrder = 0
           object TabSheet1: TTabSheet
             Caption = 'Configurações'
@@ -2516,10 +2516,10 @@ object frmACBrNFe: TfrmACBrNFe
               Height = 518
               Top = 0
               Width = 287
-              ActivePage = TabSheet7
+              ActivePage = TabSheet12
               Align = alClient
               MultiLine = True
-              TabIndex = 2
+              TabIndex = 3
               TabOrder = 0
               Options = [nboMultiLine]
               object TabSheet3: TTabSheet

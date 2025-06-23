@@ -708,7 +708,7 @@ begin
     // esta sendo somando 1 uma vez que o ItemIndex inicia do zero e devemos
     // passar os valores 1, 2 ou 3
     // (1-crtSimplesNacional, 2-crtSimplesExcessoReceita, 3-crtRegimeNormal)
-    Emit.CRT  := StrToCRT(Ok, IntToStr(cbTipoEmpresa.ItemIndex + 1));
+    Emit.CRT  := StrToCRT(Ok, IntToStr(cbTipoEmpresa.ItemIndex));
 
     // Na NFC-e o Destinatário é opcional
     {
@@ -1220,7 +1220,7 @@ begin
     // esta sendo somando 1 uma vez que o ItemIndex inicia do zero e devemos
     // passar os valores 1, 2 ou 3
     // (1-crtSimplesNacional, 2-crtSimplesExcessoReceita, 3-crtRegimeNormal)
-  NotaF.NFe.Emit.CRT  := StrToCRT(Ok, IntToStr(cbTipoEmpresa.ItemIndex + 1));
+  NotaF.NFe.Emit.CRT  := StrToCRT(Ok, IntToStr(cbTipoEmpresa.ItemIndex));
 
 //Para NFe Avulsa preencha os campos abaixo
 
@@ -2150,7 +2150,7 @@ begin
       Emit.IM                := ''; // Preencher no caso de existir serviços na nota
       Emit.CNAE              := ''; // Verifique na cidade do emissor da NFe se é permitido
                                     // a inclusão de serviços na NFe
-      Emit.CRT               := StrToCRT(Ok, IntToStr(cbTipoEmpresa.ItemIndex + 1));
+      Emit.CRT               := StrToCRT(Ok, IntToStr(cbTipoEmpresa.ItemIndex));
     end;
 
     if (ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.modelo = 55) then
