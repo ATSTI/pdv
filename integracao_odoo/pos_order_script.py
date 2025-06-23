@@ -924,7 +924,7 @@ class IntegracaoOdoo:
                     arquivo_json = open(arquivo_nome, 'w')
                     arquivo_json.write(dados_vals)
                     arquivo_json.close()
-                _logger.info("Devolução enviada: %s" %(nome_busca))
+                _logger.info("Devolucao enviada: %s" %(nome_busca))
         envia("devolucao")
 
     def action_atualiza_vendas(self):
