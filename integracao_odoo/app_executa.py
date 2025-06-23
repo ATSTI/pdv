@@ -89,6 +89,8 @@ class MinhaGUI():
         if min > 40 and min < 50:
             th = threading.Thread(target=self.capture_output("atualiza_produtos.py"), daemon=True)
             th.start()
+            th = threading.Thread(target=self.capture_output("atualiza_devolucao.py"), daemon=True)
+            th.start()            
         if min < 10:
             th = threading.Thread(target=self.capture_output("atualiza_produtos.py"), daemon=True)
             th.start()

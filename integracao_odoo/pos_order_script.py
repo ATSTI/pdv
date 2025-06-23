@@ -125,8 +125,8 @@ class IntegracaoOdoo:
                     _logger.info ('Caixa atualizando.')
                     self.action_atualiza_caixas()
                     # ESTA SENDO FEITO DIRETO NO PDV usando o main
-                    # _logger.info ('Atualiza devolucoes.')
-                    # self.action_devolucao()
+                    _logger.info ('Atualiza devolucoes.')
+                    self.action_devolucao()
                 _logger.info ('Enviando pedidos.')
                 envia("pedido")
                 # # Busca alteracoes dos produtos e grava no database local para ser comparado com o BD do PDV
@@ -872,7 +872,7 @@ class IntegracaoOdoo:
         db = con()
         _logger.info("Integrando Devolucao PDV para Odoo")
         hj = datetime.now()
-        hj = hj - timedelta(days=2)
+        hj = hj - timedelta(days=20)
         hj = datetime.strftime(hj, '%m-%d-%Y')
         sqlc = "SELECT r.IDCAIXACONTROLE, r.CODCAIXA,  \
                r.VALORABRE, r.VALORFECHA  \
@@ -909,7 +909,7 @@ class IntegracaoOdoo:
                 vals['caixa'] = mvs[0]
                 prd = {}
 
-                prd['product_code']= mvs[8]
+                prd['product_code']= mvs[3]
                 prd['product_uom_qty'] = mvs[2]
                 prd['product_uom_id'] = 1
                 prd['product_uom'] = 1
@@ -923,7 +923,9 @@ class IntegracaoOdoo:
                 if not os.path.exists(arquivo_nome):
                     arquivo_json = open(arquivo_nome, 'w')
                     arquivo_json.write(dados_vals)
-                    arquivo_json.close()    
+                    arquivo_json.close()
+                _logger.info("Devolução enviada: %s" %(nome_busca))
+        envia("devolucao")
 
     def action_atualiza_vendas(self):
         self._inicia()
@@ -1100,7 +1102,7 @@ class IntegracaoOdoo:
                     if md[7].strip():
                         tipo = md[7].strip()
 
-                    prd['product_id'] = md[8]
+                    prd['product_id'] = md[1]
                     prd['discount'] = desconto
                     prd['qty'] = md[2]
                     prd['price_unit'] = md[3]
