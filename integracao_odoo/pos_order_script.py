@@ -339,7 +339,7 @@ class IntegracaoOdoo:
             sqlp = "select FIRST 1 CODPRODUTO,\
                     DATACADASTRO, VALOR_PRAZO from produtos \
                     where codproduto = %s" %(str(codproduto))
-            print(sqlp)
+            #print(sqlp)
             prods = db.query(sqlp)
             if pr['codpro']:
                 codpro = pr['codpro'].strip()
@@ -1108,6 +1108,7 @@ class IntegracaoOdoo:
                     prd['price_unit'] = md[3]
                     prd['tipo_venda'] = tipo
                     prd['name'] = prdname
+                    prd['codpro'] = md[8]
 
                     order_line.append((0, 0,prd))
                 if troca:
@@ -1117,6 +1118,7 @@ class IntegracaoOdoo:
                     prd['price_unit'] = troca * (-1)
                     prd['tipo_venda'] = tipo
                     prd['name'] = 'Troca/Devolucao'
+                    prd['codpro'] = md[8]
                     order_line.append((0, 0,prd))
 
                 vals['amount_return'] = vlr_total
