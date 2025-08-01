@@ -84,7 +84,8 @@ class ConectaServerNFe():
         # print (msg)
         _logger.info(msg)
         con = self._conexao_odoo()
-        p_xml = con.env['account.move']
+        #p_xml = con.env['account.move']
+        p_xml = con.env['l10n_br_fiscal.document']
         # chave = '35xxxxxxxxxxx8550010000093411523728494'
         # nfe_ids = p_xml.search([('document_key', '=', chave)])
         # ('state_edoc', '=', 'a_enviar'),
@@ -261,7 +262,8 @@ class ConectaServerNFe():
         sorted_files = sorted(files, key=getmtime, reverse=True)
         num_arquivo = 1
         con = self._conexao_odoo()
-        n_xml = con.env['account.move']
+        #n_xml = con.env['account.move']
+        n_xml = con.env['l10n_br_fiscal.document']
         for xml_arquivo in sorted_files:
             # pega so os ultimos 5 arquivos
             if num_arquivo < 6:
