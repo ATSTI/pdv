@@ -2158,7 +2158,7 @@ begin
       ACBrNFe1.Configuracoes.Geral.ModeloDF := moNFe;
       //ACBrNFe1.Configuracoes.Geral.ModeloDF := moNFe;
       ACBrNFe1.Configuracoes.Geral.VersaoDF := ve400;
-      ACBrNFe1.Enviar(1);
+      ACBrNFe1.Enviar(1, True, True);
     end
     else begin
       ACBrNFe1.Configuracoes.Geral.ModeloDF:=moNFCe;
@@ -2176,20 +2176,20 @@ begin
 
     MemoDados.Lines.Add('');
     MemoDados.Lines.Add('Envio NFe');
-    MemoDados.Lines.Add('tpAmb: '+ TpAmbToStr(ACBrNFe1.WebServices.Retorno.TpAmb));
-    MemoDados.Lines.Add('verAplic: '+ ACBrNFe1.WebServices.Retorno.verAplic);
-    MemoDados.Lines.Add('cStat: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cStat));
-    MemoDados.Lines.Add('cUF: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cUF));
-    MemoDados.Lines.Add('xMotivo: '+ ACBrNFe1.WebServices.Retorno.xMotivo);
-    MemoDados.Lines.Add('cMsg: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cMsg));
-    MemoDados.Lines.Add('xMsg: '+ ACBrNFe1.WebServices.Retorno.xMsg);
-    MemoDados.Lines.Add('Recibo: '+ ACBrNFe1.WebServices.Retorno.Recibo);
-    MemoDados.Lines.Add('Protocolo: '+ ACBrNFe1.WebServices.Retorno.Protocolo);
+    MemoDados.Lines.Add('tpAmb: '+ TpAmbToStr(ACBrNFe1.WebServices.Enviar.TpAmb));
+    MemoDados.Lines.Add('verAplic: '+ ACBrNFe1.WebServices.Enviar.verAplic);
+    MemoDados.Lines.Add('cStat: '+ IntToStr(ACBrNFe1.WebServices.Enviar.cStat));
+    MemoDados.Lines.Add('cUF: '+ IntToStr(ACBrNFe1.WebServices.Enviar.cUF));
+    MemoDados.Lines.Add('xMotivo: '+ ACBrNFe1.WebServices.Enviar.xMotivo);
+    //MemoDados.Lines.Add('cMsg: '+ IntToStr(ACBrNFe1.WebServices.Enviar.cMsg));
+    //MemoDados.Lines.Add('xMsg: '+ ACBrNFe1.WebServices.Enviar.xMsg);
+    MemoDados.Lines.Add('Recibo: '+ ACBrNFe1.WebServices.Enviar.Recibo);
+    MemoDados.Lines.Add('Protocolo: '+ ACBrNFe1.WebServices.Enviar.Protocolo);
 
     ZQprotocolo.Active := False;
     sSQL := ' UPDATE nfe' +
           ' SET' +
-          ' protocolo = ' + QuotedStr(ACBrNFe1.WebServices.Retorno.Protocolo) +
+          ' protocolo = ' + QuotedStr(ACBrNFe1.WebServices.Enviar.Protocolo) +
           ' , situacao = ' + QuotedStr('Autorizada') +
           ' WHERE chave = ' + QuotedStr(dbEdit4.Text);
 
