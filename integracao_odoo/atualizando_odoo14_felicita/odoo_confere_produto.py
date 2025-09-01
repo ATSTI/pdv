@@ -66,6 +66,7 @@ for pr in browse_p:
         fb_prod = db.execute(sqld)
         achou = False
         precisa_update = False
+        sql_update = ''
         #corrigir = ''
         for fb in fb_prod:
             #print('CODPRO / DEFAULT_CODE : %s - %s - %s' %(fb[1], pr.default_code, str(pr.id)))
@@ -85,6 +86,13 @@ for pr in browse_p:
                         continue
                     precisa_update = True
                     print('CODPRO diferente (id: %s): %s - %s' %(str(pr.id), fb[1], pr.default_code))
+                if fb[0] != pr.id:
+                    if fb[0]/10 == pr.id:
+                        sql_update = 'UPDATE PRODUTOS set codproduto = %s WHERE codproduto = %s' %(str(pr.id), str(fb[0]))
+                    if fb[4] == 'N':
+                        continue
+                    precisa_update = True
+
         #if corrigir:
         #    try:
         #        db.execute(corrigir)
@@ -100,6 +108,14 @@ for pr in browse_p:
             print('CODPRO DIFERENTE (id: %s) : CODPRO : %s - id: %s' %(str(pr.id), fb[1], str(fb[0])))
             print(' UPDATE GERAL   ITEM ODOO : DEFAULT_CODE : %s - id: %s' %(pr.default_code, str(pr.id)))
             
+            if sql_update:
+                try:
+                    db.execute(sql_update)
+                    connection.commit()
+                    continue
+                except:
+                    print('ERRO UPDATE CODPRODUTO : %s' %(corrigir))
+
             # se existir este codpro entao coloca como NULL
             code = pr.default_code[:14] + '_'
             corrigir = corrigir = "UPDATE PRODUTOS set COD_BARRA = Null, USA = 'N', CODPRO = '" + code + "' WHERE CODPRO = '" + pr.default_code + "'"
