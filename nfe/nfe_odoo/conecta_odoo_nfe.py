@@ -183,7 +183,7 @@ class ConectaServerNFe():
                 # verificar se xml tem protocolo
                 nfe_proc = NfeProc.from_path(arquivo_name)
                 try:
-                    nProt = nfe_proc.protNFe.infProt.nProt
+                    nProt = nfe_proc.infNFe.protNFe.infProt.nProt
                     continue
                 except:
                     sem_protocolo = True
@@ -301,7 +301,7 @@ class ConectaServerNFe():
                             "company_id": nfe.company_id.id,
                             "environment": environment,
                             "type": "0",
-                            "document_id": nfe.fiscal_document_id.id,
+                            "document_id": nfe.id,
                             "document_type_id": nfe.document_type_id.id,
                             "document_serie_id": nfe.document_serie_id.id,
                             "document_number": nfe.document_number
