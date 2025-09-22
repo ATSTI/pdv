@@ -8,7 +8,7 @@ object dmPdv: TdmPdv
   object IbCon: TIBConnection
     Connected = False
     LoginPrompt = False
-    DatabaseName = 'C:\home\sisadmin\bd\sge_martinelli.fdb'
+    DatabaseName = 'D:\clientes\marquinhos\bd\SGE_MARQUINHO.FDB'
     KeepConnection = False
     Params.Strings = (
       'port=3050'
@@ -10211,7 +10211,13 @@ object dmPdv: TdmPdv
         Name = 'CPRODANP'
         DataType = ftString
         Precision = -1
-        Size = 80
+        Size = 20
+      end    
+      item
+        Name = 'EMBALAGEM'
+        DataType = ftString
+        Precision = -1
+        Size = 40
       end    
       item
         Name = 'PMIXGN'
@@ -10226,7 +10232,7 @@ object dmPdv: TdmPdv
     Database = IbCon
     Transaction = sTrans
     SQL.Strings = (
-      'select p.cProdANP, PMIXGN, VALIQPROD  from PRODUTOS p'
+      'select p.cProdANP, p.embalagem, p.PMIXGN, p.VALIQPROD  from PRODUTOS p'
       'where p.CODPRODUTO = :Codpro and p.CPRODANP is not null'
       ''
     )
@@ -10268,6 +10274,16 @@ object dmPdv: TdmPdv
       ReadOnly = False
       Required = False
       Precision = -1
+    end
+    object sdsProd_CombEMBALAGEM: TStringField
+      FieldKind = fkData
+      FieldName = 'EMBALAGEM'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
     end
   end
   object sdsCfopNCM: TSQLQuery

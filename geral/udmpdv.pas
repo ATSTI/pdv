@@ -611,6 +611,7 @@ type
     sdsCfopProdVICMSUFDEST: TFloatField;
     sdsCfopProdVICMSUFREMET: TFloatField;
     sdsProd_CombCPRODANP: TStringField;
+    sdsProd_CombEMBALAGEM: TStringField;
     sdsProd_CombPMIXGN: TFloatField;
     sdsProd_CombVALIQPROD: TFloatField;
     sqBusca: TSQLQuery;
@@ -1019,7 +1020,6 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
   private
-
     procedure atualiza_bd(sistema: String);
     procedure campo_novo(tabela, campo, tipo: String);
     function existe_campo(tabela, campo: String): Boolean;
@@ -1098,6 +1098,8 @@ type
     imp_numcopias: Integer;
     usa_servipa :string;
     SenhaAbrirCX : string;
+    ReformaTributaria : string;
+
     function executaSql(strSql: String): Boolean;
     procedure executaDSQL(strDSQL: String); // criei pra executar o atualiza Bd
     procedure gravaLog(DataLog: TDateTime; usuario: String; tipoMovimento: String;
@@ -1211,6 +1213,7 @@ begin
       NfceSat := conf.ReadString( 'Outros','NfceSat','NFCE');
       ccusto := conf.ReadString( 'Outros','CentroCusto','');
       modoDesenvolvedor := conf.ReadString( 'Outros','modoDesenvolvedor','N');
+      ReformaTributaria := conf.ReadString( 'Outros','ReformaTributaria','NAO');
     finally
       conf.free;
     end;
@@ -1297,6 +1300,7 @@ begin
       MudarPreco   := conf.ReadString( 'Outros','MudarPreco','NAO');
       Usa_Servipa := conf.ReadString( 'Outros','UsaServipa','NAO');
       SenhaAbrirCx  := conf.ReadString( 'Outros','SenhaAbrirCx','NAO');
+      ReformaTributaria := conf.ReadString( 'Outros','ReformaTributaria','NAO');
      {
       ZCon.Connected       := False;
       ZCon.HostName        := conf.ReadString('ZConn', 'Hostname', '');

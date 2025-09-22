@@ -339,7 +339,17 @@ begin
     str := str + QuotedStr(FormatDateTime('mm/dd/yyyy',Self.DataVcto))           + ', ';
     str := str + '0, ';  // Banco
     str := str + IntToStr(Self.CodComprador) + ' ,' + IntToStr(Self.Status)       + ', ';
-    str := str + IntToStr(Self.CodUsuario)  + ' ,';
+
+    if (UpperCase(dmPdv.usoSistema) = 'ATS') then
+    begin
+      str := str + IntToStr(dmPdv.vendedor_padrao ) + ' ,';
+    end;
+
+    if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
+    begin
+      str := str + IntToStr(Self.CodUsuario)  + ' ,';
+    end;
+
     str := str + QuotedStr(FormatDateTime('mm/dd/yyyy', Today))                  + ', ';
     str := str + FloatToStr(Self.Valor)     + ', ';
     str := str + IntToStr(Self.NotaFiscal)  + ', ' + QuotedStr(Self.Serie)       + ', ';

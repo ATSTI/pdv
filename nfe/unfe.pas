@@ -7,9 +7,13 @@ interface
 uses
   Windows, Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls,
   ComCtrls, StdCtrls, DBGrids, Buttons, EditBtn, ACBrNFe, ACBrNFeDANFeRLClass,
-  ACBrValidador, db, Grids, Spin, DBCtrls, uCertificadoLer, uInutilizar,
-  IniFiles, ACBrUtil, pcnConversao, ACBrMail, ACBrIntegrador, pcnConversaoNFe,
-  math, MaskUtils, StrUtils, DOM, FileUtil, SynMemo, SynHighlighterXML;
+  ACBrValidador, db, Spin, DBCtrls, uCertificadoLer, uInutilizar,Grids,
+  ACBrUtil, ACBrMail, ACBrIntegrador, MaskUtils,  DOM, FileUtil, SynMemo, SynHighlighterXML,
+
+  ACBrNFeDANFEClass, ACBrDANFCeFortesFr,ACBrDFeReport, ACBrDFeDANFeReport,
+  ACBrBase, ACBrDFe, ACBrDANFCeFortesFrA4,
+
+  Messages, Variants,  ShellAPI,   zlib;
 
 
 type
@@ -393,7 +397,17 @@ var
   tp_amb : integer;
 implementation
 
-uses udmpdv , ACBrDFeSSL,TypInfo,ufrmStatus, blcksock;
+uses udmpdv , ufrmStatus,
+StrUtils, math, TypInfo, DateUtils, synacode, blcksock, FileCtrl,
+IniFiles, Printers,
+pcnAuxiliar, ACBrNFe.Classes, pcnConversao, pcnConversaoNFe, pcnNFeRTXT, pcnRetConsReciDFe,
+ACBrDFeConfiguracoes, ACBrDFeSSL, ACBrDFeOpenSSL, ACBrDFeUtil,
+ACBrNFeNotasFiscais, ACBrNFeConfiguracoes,ACBrDFe.Conversao,
+                                                               // Grids,
+
+
+ACBrUtil.Base, ACBrUtil.FilesIO, ACBrUtil.DateTime, ACBrUtil.Strings,
+ACBrUtil.XMLHTML;
 
 const
   libName: String = 'fbclient.dll';
@@ -1754,15 +1768,18 @@ begin
     gravaRetornoEnvio('', '');
     pvalor := dmPdv.qcdsNFRAZAOSOCIAL.AsString;
 
-    ACBrNFe1.Enviar(0);
+    ACBrNFe1.Enviar(0, True, True);
     AcbrNfe1.Configuracoes.Arquivos.PathNFe := Edit1.Text;
 
     //ShowMessage('Nº do Protocolo de envio ' + ACBrNFe1.WebServices.Retorno.Protocolo);
     StatusBar1.SimpleText := 'Nº do Protocolo de envio : ' + ACBrNFe1.WebServices.Retorno.Protocolo +
       ', Nº do Recibo de envio : ' + ACBrNFe1.WebServices.Retorno.Recibo;
     //ShowMessage('Nº do Recibo de envio ' + ACBrNFe1.WebServices.Retorno.Recibo);
-    Recibo := ACBrNFe1.WebServices.Retorno.Recibo;
-    Protocolo := ACBrNFe1.WebServices.Retorno.Protocolo;
+    //Recibo := ACBrNFe1.WebServices.Retorno.Recibo;  01/09/2025
+    //Protocolo := ACBrNFe1.WebServices.Retorno.Protocolo;
+    Recibo := ACBrNFe1.WebServices.Enviar.Recibo;
+    Protocolo := ACBrNFe1.WebServices.Enviar.Protocolo;
+
 
     FormatSettings.DecimalSeparator := ',';
     gravaRetornoEnvio(Protocolo, Recibo);
@@ -2920,7 +2937,7 @@ end;
 procedure TfNFe.getPagamento;
 var
  c : integer;
- vlr_total: double;
+ vlr_total , A , B , pTroco: double;
  num_fat: Integer;
 begin
   num_fat := 1;
@@ -2955,20 +2972,28 @@ begin
         c := 0;
         vlr_total := 0;
 
-        // 03/07/18
-        forma_pag := trim(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString);
-        if ((forma_pag <> '') and (forma_pag <> 'R')) then
+       // 03/07/18
+       //forma_pag := trim(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString);
+       // if ((forma_pag <> '') and (forma_pag <> 'R')) then
+
+       forma_pag := trim(dmPdv.qcdsFaturaFORMAPAGAMENTO.AsString);
+       while not dmPdv.qcdsFatura.eof do
+       begin
+         vlr_total := vlr_total + dmPdv.qcdsFaturaVALOR.AsCurrency;
+         dmPdv.qcdsFatura.next;
+       end;
+        A := dmPdv.qcdsNFVALOR_PAGAR.AsFloat;
+        B := dmPdv.qcdsNFENTRADA.AsFloat ;
+
+        if ((forma_pag <> '') and (forma_pag <> 'R') and
+             (dmPdv.qcdsNFVALOR_PAGAR.AsFloat <> dmPdv.qcdsNFENTRADA.AsFloat)) then
+
         begin
-          while not dmPdv.qcdsFatura.eof do
-          begin
-            vlr_total := vlr_total + dmPdv.qcdsFaturaVALOR.AsCurrency;
-            dmPdv.qcdsFatura.next;
-          end;
           dmPdv.qcdsFatura.First;
+
           while not dmPdv.qcdsFatura.eof do
           begin
-            if (dmPdv.qcdsFaturaVALOR.AsFloat > 0) {and    manoel dia 13/06/19
-              (cdsFaturaDATAFATURA.AsDateTime <> cdsNFDTAEMISSAO.AsDateTime))} then
+            if ((dmPdv.qcdsFaturaVALOR.AsFloat > 0) and (dmPdv.qcdsFaturaDATAFATURA.AsDateTime <> dmPdv.qcdsNFDTAEMISSAO.AsDateTime)) then
             begin
               Cobr.Dup.Add;
               if (num_fat < 10) then
@@ -2992,6 +3017,7 @@ begin
           cobr.Fat.vDesc := RoundTo(dmPdv.qcdsNFVALOR_DESCONTO.AsCurrency, -2);
 
           cobr.Fat.vLiq  := vlr_total;
+
         end;
 
         if (c = 0) then
@@ -3075,9 +3101,18 @@ begin
       begin
         tPag := fpDepositoBancario;               //12
       end;
-      if (forma_pag <> 'R' )then
-        vPag := vlr_total;
+      pTroco := dmPdv.qcdsNFVALOR_PAGAR.AsFloat - dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant;
 
+      if (forma_pag <> 'R' )then
+        begin
+          if (vlr_total = 0) then
+            vPag := dmPdv.qcdsNFVALOR_PAGAR.AsFloat
+          else
+            vPag := vlr_total;
+           if( pTroco > 0.00)then   // manoel
+          // pag.vTroco := dmPdv.qcdsNFVALOR_PAGAR.AsFloat - dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant;
+          vPag := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant;
+        end;
     end;
 
   end;
@@ -3586,6 +3621,8 @@ var
   inf_add_prd, prd : String;
   nfe_itens_tottrib ,vu, valun ,vt, vUnTrib: String;
   ver_valor : Double;
+  IBSCBS: TIBSCBS;
+ // Produto: TDetCollectionItem;
 begin
   BC := 0;
   BCST := 4;
@@ -3760,6 +3797,16 @@ begin
               MessageDlg('O Código tem que ser Númerico.', mtWarning, [mbOK], 0);
               exit;
             end;
+           {incluido 02/05/2025}
+           descANP  := Trim(dmPdv.sdsProd_CombEMBALAGEM.AsString);
+           UFcons := ufDest;
+
+
+           {incluido 02/05/2025}
+
+
+           { comentado dia 02/07/2025
+
             //pMixGN := sdsProd_CombPMIXGN.AsFloat;  // removido 27/07/18
             UFcons := ufDest;
            // CODIF := '0';      // removido 30/07/18
@@ -3774,7 +3821,7 @@ begin
             vPart := dmPdv.cdsItensNFVPART.AsCurrency; // 10.00 ;
             pGNi  := dmPdv.cdsItensNFPGNI.AsCurrency; // 0.00;
             // incluido 27/07/18
-
+             comentado dia 02/07/2025 }
           end;
         end;
 
@@ -4053,6 +4100,59 @@ begin
             else
               CST := cst00;
             }
+          end;
+
+          // Reforma Tributaria
+          {
+            Utilize os CST (cst000, cst200, cst220, cst510 e cst550) e os cClassTrib
+            correspondentes para gerar o grupo IBSCBS
+            Utilize o CST cst620 e os cClassTrib correspondentes para gerar o grupo
+            IBSCBSMono
+            Utilize o CST cst800 e os cClassTrib correspondentes para gerar o grupo
+            gTransfCred
+            Utilize o CST cst810 e os cClassTrib correspondentes para gerar o grupo
+            gCredPresIBSZFM
+          }
+
+          if(dmPdv.ReformaTributaria = 'SIM' )then
+          begin
+            IBSCBS.CST := cst000;
+            IBSCBS.cClassTrib := ct000001;
+
+            IBSCBS.gIBSCBS.vBC := dmPdv.cdsItensNFVALTOTAL.AsFloat;
+
+            IBSCBS.gIBSCBS.gIBSUF.pIBSUF := 0.10;
+            IBSCBS.gIBSCBS.gIBSUF.vIBSUF := ((dmPdv.cdsItensNFVALTOTAL.AsFloat*0.10)/100);
+
+            //IBSCBS.gIBSCBS.gIBSUF.gDif.pDif := 5;
+            //IBSCBS.gIBSCBS.gIBSUF.gDif.vDif := 100;
+
+            //IBSCBS.gIBSCBS.gIBSUF.gDevTrib.vDevTrib := 100;
+
+            //IBSCBS.gIBSCBS.gIBSUF.gRed.pRedAliq := 5;
+            //IBSCBS.gIBSCBS.gIBSUF.gRed.pAliqEfet := 5;
+
+            IBSCBS.gIBSCBS.gIBSMun.pIBSMun := 0;
+            IBSCBS.gIBSCBS.gIBSMun.vIBSMun := 0;
+
+            //IBSCBS.gIBSCBS.gIBSMun.gDif.pDif := 5;
+            //IBSCBS.gIBSCBS.gIBSMun.gDif.vDif := 100;
+
+            //IBSCBS.gIBSCBS.gIBSMun.gDevTrib.vDevTrib := 100;
+
+            //IBSCBS.gIBSCBS.gIBSMun.gRed.pRedAliq := 5;
+            //IBSCBS.gIBSCBS.gIBSMun.gRed.pAliqEfet := 5;
+
+            IBSCBS.gIBSCBS.gCBS.pCBS := 0.90;
+            IBSCBS.gIBSCBS.gCBS.vCBS := ((dmPdv.cdsItensNFVALTOTAL.AsFloat*0.90)/100);
+
+            //IBSCBS.gIBSCBS.gCBS.gDif.pDif := 5;
+            //IBSCBS.gIBSCBS.gCBS.gDif.vDif := 100;
+
+            //IBSCBS.gIBSCBS.gCBS.gDevTrib.vDevTrib := 100;
+
+            //IBSCBS.gIBSCBS.gCBS.gRed.pRedAliq := 5;
+            //IBSCBS.gIBSCBS.gCBS.gRed.pAliqEfet := 5;
           end;
 
           orig :=     dmPdv.qsProdutosORIGEM.AsVariant;                       //ORIGEM DO PRODUTO
@@ -5091,6 +5191,7 @@ end;
 function TfNFe.GerarNFe: Boolean;
 var i: integer;
      var_str: String;
+     NotaF: NotaFiscal;
 begin
   ///*
   codnf := 0;
@@ -5289,6 +5390,14 @@ begin
           Ide.tpEmis    := teSVCAN;
           Ide.serie     := nfe_serie_receita;
         end;
+
+        // Reforma Tributaria   5 – Nota de Crédito 6 – Nota de Débito
+        if(dmPdv.ReformaTributaria = 'SIM')then
+        begin
+          NotaF := ACBrNFe1.NotasFiscais.Add;
+          NotaF.NFe.Ide.cMunFGIBS := 717177;
+        end;
+
         // pcNao, pcPresencial, pcInternet, pcTeleatendimento, pcEntregaDomicilio, pcPresencialForaEstabelecimento, pcOutros
         if (dmPdv.qcdsNFNFE_INDPRES.AsString = 'pcPresencial') then
           ide.indPres := pcPresencial
@@ -5331,39 +5440,25 @@ begin
         else begin
           ide.finNFe    := fnComplementar;
         end;
-        {// Se naõ tiver a Chave para GERAR Nota de Devolução usar isso abaixo
-        if (length(dmPdv.qcdsNFIDCOMPLEMENTAR.AsString) < 20) then
-        begin
-          ide.finNFe    := fnDevolucao;
-          with ide.NFref.New.RefNF do
-          begin
-            nNF    := 0;
-            cUF    := 35;
-            AAMM   := '';
-            CNPJ   := '';
-            modelo := 1;
-            serie  := 1;
-          end;
-        end;}
+
         if (length(dmPdv.qcdsNFIDCOMPLEMENTAR.AsString) > 20) then
         begin
            ide.NFref.Add.refNFe := dmPdv.qcdsNFIDCOMPLEMENTAR.AsString;
         end;
-        //carlos removi um end;
 
         Ide.nNF       := StrToInt(dmPdv.qcdsNFNOTASERIE.AsString);
         Ide.dEmi      := dmPdv.qcdsNFDTAEMISSAO.AsDateTime;
         Ide.dSaiEnt   := dmPdv.qcdsNFDTASAIDA.AsDateTime;
         Ide.hSaiEnt   := dmPdv.qcdsNFHORASAIDA.AsDateTime;
 
-        ///
+
         if (dmPdv.qcdsNFNFE_FINNFE.AsString = 'fnAjuste') then
         begin
           InputQuery('Justificativa do estorno nas Informações Adicionais de Interesse do Fisco', 'Justificativa', vAux);
           infAdic.infAdFisco := vAux;
         end;
 
-        ///
+
 
         if (dmPdv.qcdsNFCORPONF6.AsString <> '') then
         begin
@@ -5487,11 +5582,6 @@ begin
 
         InfAdic.infCpl := infCplTrib;
 
-        ///
-
-        //Carrega os itens da NF
-        //pegaItens(cbTipoNota.ItemIndex);
-
         i := 1;
         while not dmPdv.cdsItensNF.Eof do // Escrevo os itens
         begin
@@ -5525,11 +5615,14 @@ begin
             Result := False;
             Exit;
           end;
+
           // DADOS DOS PRODUTOS DA NOTA
           getItens(i);
           i := i + 1;
           dmPdv.cdsItensNF.Next;
         end;
+
+
         //end; // fim with nfe
         getTransportadora();
 
@@ -5543,7 +5636,7 @@ begin
           exporta.xLocDespacho:= edit4.Text;
         end;
 
-
+        // NotaF.NFe.Total.ISTot.vIS := 999;
         //VALOR TORAL
         cst_utilizado := Trim(dmPdv.cdsItensNFCSOSN.AsString);
         if not ((ACBrNFe1.NotasFiscais.Items[0].NFe.Emit.CRT = crtSimplesNacional) and (dmPdv.cdsItensNFCSOSN.AsString <> '900')) then
@@ -5579,11 +5672,37 @@ begin
         if ((dmPdv.qcdsNFVALOR_COFINS.AsFloat <> 0) or (dmPdv.qcdsNFVALOR_COFINS.AsFloat <> null )) then
           Total.ICMSTot.vCOFINS := dmPdv.qcdsNFVALOR_COFINS.AsFloat;
         Total.ICMSTot.vOutro := dmPdv.qcdsNFOUTRAS_DESP.AsVariant;
-        Total.ICMSTot.vNF   := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant;
-        Total.ICMSTot.vTotTrib := dmPdv.qcdsNFVLRTOT_TRIB.AsVariant;
         Total.ICMSTot.vICMSUFDest:=tot2;
         Total.ICMSTot.vFCPUFDest:=tot4;
 
+
+        // Reforma Tributaria
+        if(dmPdv.ReformaTributaria = 'SIM')then
+        begin
+          Total.IBSCBSTot.vBCIBSCBS := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant;
+
+          Total.IBSCBSTot.gIBS.vIBS := ((dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant*0.10)/100);//  0.83;
+          Total.IBSCBSTot.gIBS.vCredPres := 0.00;
+          Total.IBSCBSTot.gIBS.vCredPresCondSus := 0.00;
+
+          Total.IBSCBSTot.gIBS.gIBSUFTot.vDif := 0.00;
+          Total.IBSCBSTot.gIBS.gIBSUFTot.vDevTrib := 0.00;
+          Total.IBSCBSTot.gIBS.gIBSUFTot.vIBSUF := ((dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant*0.10)/100);
+
+          Total.IBSCBSTot.gIBS.gIBSMunTot.vDif := 0.00;
+          Total.IBSCBSTot.gIBS.gIBSMunTot.vDevTrib := 0.00;
+          Total.IBSCBSTot.gIBS.gIBSMunTot.vIBSMun := 0.00;
+
+          Total.IBSCBSTot.gCBS.vDif := 0.00;
+          Total.IBSCBSTot.gCBS.vDevTrib := 0.00;
+          Total.IBSCBSTot.gCBS.vCBS := ((dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant*0.90)/100);
+          Total.IBSCBSTot.gCBS.vCredPres := 0.00;
+          Total.IBSCBSTot.gCBS.vCredPresCondSus := 0.00;
+
+        end;
+
+        Total.ICMSTot.vNF   := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant;
+        Total.ICMSTot.vTotTrib := dmPdv.qcdsNFVLRTOT_TRIB.AsVariant;
 
         if (totIPIDevol > 0) then
            Total.ICMSTot.vIPIDevol := totIPIDevol;
@@ -5595,13 +5714,14 @@ begin
         if ((cstSuframa <> '00') and ( pSuframa <> '')) then
         begin
           // comentei o if abaixo por causa da DNZ
-          //if (cst_utilizado <> '101') then
+          if (cst_utilizado <> '101') then  // foi descomentado dia 15/09/2025 Velopark
             Total.ICMSTot.vICMSDeson := dmPdv.qcdsNFVALOR_ICMS.AsVariant;
         end;
       end;
       break; // saio do while se a já peguei a nota selecionada
     end; // fim do if (se nota selecionada)
     dmPdv.qcdsNF.Next;
+
   end; // fim do 1. while
 
   AcbrNfe1.Configuracoes.Arquivos.PathNFe := Edit1.Text;

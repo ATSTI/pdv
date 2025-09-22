@@ -6,10 +6,10 @@ object fMovimentoProc: TfMovimentoProc
   Caption = 'Lista Pedidos'
   ClientHeight = 566
   ClientWidth = 1120
+  Position = poScreenCenter
+  LCLVersion = '4.0.0.4'
   OnCreate = FormCreate
   OnShow = FormShow
-  Position = poScreenCenter
-  LCLVersion = '3.4.0.0'
   object Panel1: TPanel
     Left = 0
     Height = 72
@@ -103,7 +103,7 @@ object fMovimentoProc: TfMovimentoProc
       Height = 29
       Top = 41
       Width = 80
-      EditLabel.Height = 21
+      EditLabel.Height = 29
       EditLabel.Width = 71
       EditLabel.Caption = 'edPedido'
       EditLabel.ParentColor = False
@@ -325,10 +325,10 @@ object fMovimentoProc: TfMovimentoProc
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000
       }
-      OnClick = btnProcurarClick
       ParentShowHint = False
       ShowHint = True
       TabOrder = 6
+      OnClick = btnProcurarClick
     end
     object btnConfirma: TBitBtn
       Left = 1000
@@ -468,10 +468,10 @@ object fMovimentoProc: TfMovimentoProc
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000
       }
-      OnClick = btnConfirmaClick
       ParentShowHint = False
       ShowHint = True
       TabOrder = 7
+      OnClick = btnConfirmaClick
     end
     object btnSair: TBitBtn
       Left = 1064
@@ -579,10 +579,10 @@ object fMovimentoProc: TfMovimentoProc
         C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
         C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
       }
-      OnClick = btnSairClick
       ParentShowHint = False
       ShowHint = True
       TabOrder = 8
+      OnClick = btnSairClick
     end
     object Label5: TLabel
       Left = 16
@@ -636,8 +636,8 @@ object fMovimentoProc: TfMovimentoProc
       Top = 40
       Width = 28
       Caption = '...'
-      OnClick = BitBtn3Click
       TabOrder = 11
+      OnClick = BitBtn3Click
     end
     object Label6: TLabel
       Left = 350
@@ -679,10 +679,10 @@ object fMovimentoProc: TfMovimentoProc
         'Pix'
         'Troca'
       )
-      OnClick = btnProcurarClick
       ParentBackground = False
       ParentFont = False
       TabOrder = 12
+      OnClick = btnProcurarClick
     end
     object Label10: TLabel
       Left = 448
@@ -698,18 +698,17 @@ object fMovimentoProc: TfMovimentoProc
     Top = 72
     Width = 1120
     Align = alClient
-    AutoFillColumns = True
     Color = clWindow
     Columns = <    
       item
         MaxSize = 140
         Title.Caption = 'Código'
-        Width = 107
+        Width = 80
       end    
       item
         MaxSize = 120
         Title.Caption = 'Data'
-        Width = 106
+        Width = 130
       end    
       item
         MaxSize = 100
@@ -729,13 +728,13 @@ object fMovimentoProc: TfMovimentoProc
         MaxSize = 300
         SizePriority = 0
         Title.Caption = 'Cliente'
-        Width = 280
+        Width = 294
       end    
       item
         MaxSize = 120
         Title.Alignment = taRightJustify
         Title.Caption = 'Valor'
-        Width = 106
+        Width = 80
       end    
       item
         Alignment = taRightJustify
@@ -974,9 +973,9 @@ object fMovimentoProc: TfMovimentoProc
         0000000000000000000000000000000000000000000000000000
       }
       Layout = blGlyphRight
-      OnClick = btnFecharCaixaClick
       ParentFont = False
       TabOrder = 2
+      OnClick = btnFecharCaixaClick
     end
     object btnSangria: TBitBtn
       Left = 144
@@ -1123,9 +1122,9 @@ object fMovimentoProc: TfMovimentoProc
         0000000000000000000000000000000000000000000000000000
       }
       Layout = blGlyphRight
-      OnClick = btnSangriaClick
       ParentFont = False
       TabOrder = 3
+      OnClick = btnSangriaClick
     end
     object btnReforco: TBitBtn
       Left = 270
@@ -1272,9 +1271,9 @@ object fMovimentoProc: TfMovimentoProc
         0000000000000000000000000000000000000000000000000000
       }
       Layout = blGlyphRight
-      OnClick = btnReforcoClick
       ParentFont = False
       TabOrder = 4
+      OnClick = btnReforcoClick
     end
     object Label7: TLabel
       Left = 768
@@ -1350,25 +1349,24 @@ object fMovimentoProc: TfMovimentoProc
       Top = 0
       Width = 75
       Caption = 'Saldo Final'
-      OnClick = BitBtn1Click
       TabOrder = 7
+      OnClick = BitBtn1Click
     end
   end
   object pnMemo: TPanel
-    Left = 121
-    Height = 424
-    Top = 88
-    Width = 696
-    ClientHeight = 424
-    ClientWidth = 696
+    Left = 288
+    Height = 248
+    Top = 264
+    Width = 529
+    ClientHeight = 248
+    ClientWidth = 529
     TabOrder = 3
     Visible = False
     object Memo1: TMemo
-      Left = 1
-      Height = 422
-      Top = 1
-      Width = 694
-      Align = alClient
+      Left = 16
+      Height = 198
+      Top = 32
+      Width = 472
       Lines.Strings = (
         'Memo1'
       )
@@ -1400,13 +1398,13 @@ object fMovimentoProc: TfMovimentoProc
     Top = 16
     object acBuscar: TAction
       Caption = 'Busca'
-      OnExecute = acBuscarExecute
       ShortCut = 119
+      OnExecute = acBuscarExecute
     end
     object acFechar: TAction
       Caption = 'acFechar'
-      OnExecute = acFecharExecute
       ShortCut = 115
+      OnExecute = acFecharExecute
     end
   end
 end
