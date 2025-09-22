@@ -6,11 +6,11 @@ object fCTePrincipal: TfCTePrincipal
   Caption = 'CTe - Conhecimento de Transporte Eletrônico'
   ClientHeight = 649
   ClientWidth = 1305
+  Position = poScreenCenter
+  LCLVersion = '4.0.0.4'
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnShow = FormShow
-  Position = poScreenCenter
-  LCLVersion = '2.2.4.0'
   object Panel1: TPanel
     Left = 0
     Height = 66
@@ -117,8 +117,8 @@ object fCTePrincipal: TfCTePrincipal
         25A288AE25D388AE25FB88AE25FF88AE25FB88AE25D388AE25A288AE255488AE
         2508FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
       }
-      OnClick = btnGerarCteClick
       TabOrder = 1
+      OnClick = btnGerarCteClick
     end
     object btnPreVisu: TBitBtn
       Left = 574
@@ -222,8 +222,8 @@ object fCTePrincipal: TfCTePrincipal
         CBFFB7B3BEFFC1BDC3FFC5C0BFFFBFB9B4FFD0C8C1FFFFFCF7FFD2D7D5FFFAFF
         FFFFDEDDE1FFE1DDE2FFFFFCFFFFCFD0D4FFEFF6F1FFE3EAE3FFDAD7D9FF
       }
-      OnClick = btnPreVisuClick
       TabOrder = 2
+      OnClick = btnPreVisuClick
     end
     object btnGravarCTe: TBitBtn
       Left = 704
@@ -308,8 +308,8 @@ object fCTePrincipal: TfCTePrincipal
         B4FFAAA7B6FFAAA7B6FFACA7B6FFAAA7B6FFA9A9B7FFA5A7B2FFABABB7FFA5A7
         AFFFABAAB3FFA9AAAEFF9A9B9FFFF1F3F4FFFFFEFFFF
       }
-      OnClick = btnGravarCTeClick
       TabOrder = 3
+      OnClick = btnGravarCTeClick
     end
     object StatusBar1: TStatusBar
       Left = 1
@@ -400,8 +400,8 @@ object fCTePrincipal: TfCTePrincipal
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       }
-      OnClick = BitBtn2Click
       TabOrder = 5
+      OnClick = BitBtn2Click
     end
     object btnGerarCte1: TBitBtn
       Left = 1091
@@ -491,8 +491,8 @@ object fCTePrincipal: TfCTePrincipal
         6100007061000070610000706100007061000070610000706100007061000070
         61000070610000706100007061000070610000706100E08110FF00706100
       }
-      OnClick = btnGerarCte1Click
       TabOrder = 6
+      OnClick = btnGerarCte1Click
     end
     object btnCancelarEdicaoCTe: TBitBtn
       Left = 833
@@ -633,8 +633,8 @@ object fCTePrincipal: TfCTePrincipal
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000
       }
-      OnClick = btnCancelarEdicaoCTeClick
       TabOrder = 7
+      OnClick = btnCancelarEdicaoCTeClick
     end
     object Label161: TLabel
       Left = 14
@@ -781,9 +781,9 @@ object fCTePrincipal: TfCTePrincipal
           Top = 24
           Width = 551
           ItemHeight = 15
-          OnChange = comboEmpresaChange
           TabOrder = 0
           Text = 'Selecione a Empresa'
+          OnChange = comboEmpresaChange
         end
         object Label121: TLabel
           Left = 632
@@ -877,8 +877,8 @@ object fCTePrincipal: TfCTePrincipal
             FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           }
           GlyphShowMode = gsmAlways
-          OnClick = btnListarCteClick
           TabOrder = 1
+          OnClick = btnListarCteClick
         end
         object btnDuplicar: TBitBtn
           Left = 992
@@ -933,8 +933,8 @@ object fCTePrincipal: TfCTePrincipal
             FCFFCBDDFF2A3AA53641A33D48A43E47A83C48A8414BB03D4DAE3A52AC3955AC
             3A55B0405EB7385DB23D62B74160BD4462BB85A8F2CFEEFFECFAFFF6FDFF
           }
-          OnClick = btnDuplicarClick
           TabOrder = 2
+          OnClick = btnDuplicarClick
         end
         object btnIncCte: TBitBtn
           Left = 896
@@ -998,8 +998,8 @@ object fCTePrincipal: TfCTePrincipal
             7F16117C1519822157B060BEFFC5EAFFEEF1FCF2FAFFFCFDFFFFFFF8FFFFF9FF
             F7FCFDF4FFFAF9FFFBF8FDFBFFFDFF000000
           }
-          OnClick = btnIncCteClick
           TabOrder = 3
+          OnClick = btnIncCteClick
         end
         object btnEditarCte: TBitBtn
           Left = 1088
@@ -1093,8 +1093,8 @@ object fCTePrincipal: TfCTePrincipal
             E9FFFFFFF3FFFDFAF2FFF6FBF9FFF6FAFBFFF5F9FAFFFAF9FBFFFCFAF9FFFFFC
             F4FF
           }
-          OnClick = btnEditarCteClick
           TabOrder = 4
+          OnClick = btnEditarCteClick
         end
         object BitBtn5: TBitBtn
           Left = 1184
@@ -1184,8 +1184,8 @@ object fCTePrincipal: TfCTePrincipal
             90FF4E4D91FF4E4D91FF4E4E91FF4E4E92FF4F4E92FF4F4F93FF504F94FF5050
             94FF515095FF515195FF515194FF6C6C92FFB2B2C0FFF8F8F9FFFEFEFEFF
           }
-          OnClick = BitBtn5Click
           TabOrder = 5
+          OnClick = BitBtn5Click
         end
         object BitBtn13: TBitBtn
           Left = 8
@@ -1404,8 +1404,8 @@ object fCTePrincipal: TfCTePrincipal
             BDFFFFF6D5FFFFFFECFFFFFFF9FFF4FCFCFFF5FAFDFFF8FBFFFFFDFFFFFFFCFC
             FCFFFCFFFAFFFCFEF8FFFFFEFFFFFFFEFFFFFEFDF9FFFFFFFBFF
           }
-          OnClick = BitBtn13Click
           TabOrder = 6
+          OnClick = BitBtn13Click
         end
         object Label156: TLabel
           Left = 40
@@ -1503,16 +1503,16 @@ object fCTePrincipal: TfCTePrincipal
             90FF4E4D91FF4E4D91FF4E4E91FF4E4E92FF4F4E92FF4F4F93FF504F94FF5050
             94FF515095FF515195FF515194FF6C6C92FFB2B2C0FFF8F8F9FFFEFEFEFF
           }
-          OnClick = btnLimpaBuscaClick
           TabOrder = 7
+          OnClick = btnLimpaBuscaClick
         end
         object edtDestNome1: TEdit
           Left = 40
           Height = 23
           Top = 72
           Width = 520
-          OnKeyPress = edtDestNome1KeyPress
           TabOrder = 8
+          OnKeyPress = edtDestNome1KeyPress
         end
         object DateTimePicker1: TDateTimePicker
           Left = 632
@@ -1629,10 +1629,10 @@ object fCTePrincipal: TfCTePrincipal
                   Height = 23
                   Top = 24
                   Width = 624
-                  OnChange = edtEmitenteCteChange
                   ReadOnly = True
                   TabStop = False
                   TabOrder = 0
+                  OnChange = edtEmitenteCteChange
                 end
                 object Label1: TLabel
                   Left = 129
@@ -1719,8 +1719,8 @@ object fCTePrincipal: TfCTePrincipal
                   Height = 23
                   Top = 124
                   Width = 109
-                  OnExit = edtCfopExit
                   TabOrder = 5
+                  OnExit = edtCfopExit
                 end
                 object Label141: TLabel
                   Left = 254
@@ -1855,7 +1855,7 @@ object fCTePrincipal: TfCTePrincipal
                   Left = 129
                   Height = 15
                   Top = 332
-                  Width = 135
+                  Width = 136
                   Align = alCustom
                   Caption = 'Local de Emissão do CT-e'
                   ParentColor = False
@@ -2077,8 +2077,8 @@ object fCTePrincipal: TfCTePrincipal
                     BDFFFFF6D5FFFFFFECFFFFFFF9FFF4FCFCFFF5FAFDFFF8FBFFFFFDFFFFFFFCFC
                     FCFFFCFFFAFFFCFEF8FFFFFEFFFFFFFEFFFFFEFDF9FFFFFFFBFF
                   }
-                  OnClick = BitBtn1Click
                   TabOrder = 13
+                  OnClick = BitBtn1Click
                 end
                 object edtEnvUF: TEdit
                   Left = 162
@@ -2327,8 +2327,8 @@ object fCTePrincipal: TfCTePrincipal
                     BDFFFFF6D5FFFFFFECFFFFFFF9FFF4FCFCFFF5FAFDFFF8FBFFFFFDFFFFFFFCFC
                     FCFFFCFFFAFFFCFEF8FFFFFEFFFFFFFEFFFFFEFDF9FFFFFFFBFF
                   }
-                  OnClick = BitBtn3Click
                   TabOrder = 17
+                  OnClick = BitBtn3Click
                 end
                 object edtIniUF: TEdit
                   Left = 162
@@ -2355,7 +2355,7 @@ object fCTePrincipal: TfCTePrincipal
                   Left = 144
                   Height = 15
                   Top = 439
-                  Width = 161
+                  Width = 162
                   Align = alCustom
                   Caption = 'Local do Término da Prestação'
                   ParentColor = False
@@ -2577,8 +2577,8 @@ object fCTePrincipal: TfCTePrincipal
                     BDFFFFF6D5FFFFFFECFFFFFFF9FFF4FCFCFFF5FAFDFFF8FBFFFFFDFFFFFFFCFC
                     FCFFFCFFFAFFFCFEF8FFFFFEFFFFFFFEFFFFFEFDF9FFFFFFFBFF
                   }
-                  OnClick = BitBtn4Click
                   TabOrder = 21
+                  OnClick = BitBtn4Click
                 end
                 object edtFimUF: TEdit
                   Left = 162
@@ -2633,9 +2633,9 @@ object fCTePrincipal: TfCTePrincipal
                     3BB33773333773333773B333333B3333333B7333333733333337
                   }
                   NumGlyphs = 2
-                  OnClick = sbtnLerXmlCteClick
                   ShowHint = True
                   ParentShowHint = False
+                  OnClick = sbtnLerXmlCteClick
                 end
                 object Edit1: TEdit
                   Left = 130
@@ -4792,9 +4792,9 @@ object fCTePrincipal: TfCTePrincipal
                   F9F3F1F9F2F1F9F3F6F8F7F7F8F7F8F8F8F7F8F8F7F8F8F8F8F8F8F8F8F8F8F8
                   F8F8F8F8F8F8F8F8F800
                 }
-                OnClick = btnProximoClick
                 ParentBidiMode = False
                 TabOrder = 2
+                OnClick = btnProximoClick
               end
               object Label176: TLabel
                 Left = 144
@@ -5042,8 +5042,8 @@ object fCTePrincipal: TfCTePrincipal
             Height = 23
             Top = 240
             Width = 440
-            OnChange = edtEmitCompChange
             TabOrder = 7
+            OnChange = edtEmitCompChange
           end
           object Label19: TLabel
             Left = 969
@@ -5129,7 +5129,7 @@ object fCTePrincipal: TfCTePrincipal
             Left = 970
             Height = 15
             Top = 272
-            Width = 44
+            Width = 45
             Align = alCustom
             Caption = 'Telefone'
             ParentColor = False
@@ -5359,8 +5359,8 @@ object fCTePrincipal: TfCTePrincipal
               BDFFFFF6D5FFFFFFECFFFFFFF9FFF4FCFCFFF5FAFDFFF8FBFFFFFDFFFFFFFCFC
               FCFFFCFFFAFFFCFEF8FFFFFEFFFFFFFEFFFFFEFDF9FFFFFFFBFF
             }
-            OnClick = BitBtn6Click
             TabOrder = 14
+            OnClick = BitBtn6Click
           end
           object btnProximo1: TBitBtn
             Left = 896
@@ -5435,9 +5435,9 @@ object fCTePrincipal: TfCTePrincipal
               F9F3F1F9F2F1F9F3F6F8F7F7F8F7F8F8F8F7F8F8F7F8F8F8F8F8F8F8F8F8F8F8
               F8F8F8F8F8F8F8F8F800
             }
-            OnClick = btnProximo1Click
             ParentBidiMode = False
             TabOrder = 15
+            OnClick = btnProximo1Click
           end
         end
         object TabTomador: TTabSheet
@@ -5476,9 +5476,9 @@ object fCTePrincipal: TfCTePrincipal
               'Destinatário'
               'Outros'
             )
-            OnClick = rgTomadorClick
             ParentFont = False
             TabOrder = 0
+            OnClick = rgTomadorClick
           end
           object GroupBoxTomador: TGroupBox
             Left = 8
@@ -5724,16 +5724,16 @@ object fCTePrincipal: TfCTePrincipal
                 BDFFFFF6D5FFFFFFECFFFFFFF9FFF4FCFCFFF5FAFDFFF8FBFFFFFDFFFFFFFCFC
                 FCFFFCFFFAFFFCFEF8FFFFFEFFFFFFFEFFFFFEFDF9FFFFFFFBFF
               }
-              OnClick = BitBtn7Click
               TabOrder = 0
+              OnClick = BitBtn7Click
             end
             object edtBuscaTomador: TEdit
               Left = 56
               Height = 23
               Top = 24
               Width = 144
-              OnExit = edtBuscaTomadorExit
               TabOrder = 1
+              OnExit = edtBuscaTomadorExit
             end
             object edtNomeTomador: TEdit
               Left = 208
@@ -5833,7 +5833,7 @@ object fCTePrincipal: TfCTePrincipal
               Left = 880
               Height = 15
               Top = 264
-              Width = 44
+              Width = 45
               Align = alCustom
               Caption = 'Telefone'
               ParentColor = False
@@ -6033,9 +6033,9 @@ object fCTePrincipal: TfCTePrincipal
               F9F3F1F9F2F1F9F3F6F8F7F7F8F7F8F8F8F7F8F8F7F8F8F8F8F8F8F8F8F8F8F8
               F8F8F8F8F8F8F8F8F800
             }
-            OnClick = btnProximo2Click
             ParentBidiMode = False
             TabOrder = 2
+            OnClick = btnProximo2Click
           end
         end
         object TabSheet6: TTabSheet
@@ -6065,9 +6065,9 @@ object fCTePrincipal: TfCTePrincipal
               'Sem Remetente (Redespacho Intermediário)'
               'Sem Remetente (Serviço Vinculado a Multimodal)'
             )
-            OnClick = rgRemClick
             ParentFont = False
             TabOrder = 0
+            OnClick = rgRemClick
           end
           object GroupBoxRemetente: TGroupBox
             Left = 8
@@ -6089,7 +6089,7 @@ object fCTePrincipal: TfCTePrincipal
               Left = 880
               Height = 15
               Top = 264
-              Width = 44
+              Width = 45
               Align = alCustom
               Caption = 'Telefone'
               ParentColor = False
@@ -6291,8 +6291,8 @@ object fCTePrincipal: TfCTePrincipal
               Height = 23
               Top = 17
               Width = 144
-              OnExit = edtRemBuscaExit
               TabOrder = 13
+              OnExit = edtRemBuscaExit
             end
             object Label25: TLabel
               Left = 56
@@ -6520,8 +6520,8 @@ object fCTePrincipal: TfCTePrincipal
                 BDFFFFF6D5FFFFFFECFFFFFFF9FFF4FCFCFFF5FAFDFFF8FBFFFFFDFFFFFFFCFC
                 FCFFFCFFFAFFFCFEF8FFFFFEFFFFFFFEFFFFFEFDF9FFFFFFFBFF
               }
-              OnClick = BitBtn9Click
               TabOrder = 14
+              OnClick = BitBtn9Click
             end
             object Label143: TLabel
               Left = 256
@@ -6606,9 +6606,9 @@ object fCTePrincipal: TfCTePrincipal
               F9F3F1F9F2F1F9F3F6F8F7F7F8F7F8F8F8F7F8F8F7F8F8F8F8F8F8F8F8F8F8F8
               F8F8F8F8F8F8F8F8F800
             }
-            OnClick = btnProximo3Click
             ParentBidiMode = False
             TabOrder = 2
+            OnClick = btnProximo3Click
           end
         end
         object TabExpedidor: TTabSheet
@@ -6638,9 +6638,9 @@ object fCTePrincipal: TfCTePrincipal
               'Com Expedidor'
               'Sem Expedidor'
             )
-            OnClick = rgExpClick
             ParentFont = False
             TabOrder = 0
+            OnClick = rgExpClick
           end
           object GroupBoxExpeditor: TGroupBox
             Left = 8
@@ -6868,16 +6868,16 @@ object fCTePrincipal: TfCTePrincipal
                 BDFFFFF6D5FFFFFFECFFFFFFF9FFF4FCFCFFF5FAFDFFF8FBFFFFFDFFFFFFFCFC
                 FCFFFCFFFAFFFCFEF8FFFFFEFFFFFFFEFFFFFEFDF9FFFFFFFBFF
               }
-              OnClick = BitBtn10Click
               TabOrder = 0
+              OnClick = BitBtn10Click
             end
             object edtExpBusca: TEdit
               Left = 56
               Height = 23
               Top = 17
               Width = 144
-              OnExit = edtExpBuscaExit
               TabOrder = 1
+              OnExit = edtExpBuscaExit
             end
             object Label39: TLabel
               Left = 56
@@ -7054,7 +7054,7 @@ object fCTePrincipal: TfCTePrincipal
               Left = 880
               Height = 15
               Top = 264
-              Width = 44
+              Width = 45
               Align = alCustom
               Caption = 'Telefone'
               ParentColor = False
@@ -7170,9 +7170,9 @@ object fCTePrincipal: TfCTePrincipal
               F9F3F1F9F2F1F9F3F6F8F7F7F8F7F8F8F8F7F8F8F7F8F8F8F8F8F8F8F8F8F8F8
               F8F8F8F8F8F8F8F8F800
             }
-            OnClick = btnProximo4Click
             ParentBidiMode = False
             TabOrder = 2
+            OnClick = btnProximo4Click
           end
         end
         object TabRecebedor: TTabSheet
@@ -7203,11 +7203,11 @@ object fCTePrincipal: TfCTePrincipal
               'Com Recebedor'
               'Sem Recebedor'
             )
-            OnClick = rgRecClick
             ParentBackground = False
             ParentFont = False
             ParentColor = False
             TabOrder = 0
+            OnClick = rgRecClick
           end
           object GroupBoxRecebedor: TGroupBox
             Left = 8
@@ -7435,16 +7435,16 @@ object fCTePrincipal: TfCTePrincipal
                 BDFFFFF6D5FFFFFFECFFFFFFF9FFF4FCFCFFF5FAFDFFF8FBFFFFFDFFFFFFFCFC
                 FCFFFCFFFAFFFCFEF8FFFFFEFFFFFFFEFFFFFEFDF9FFFFFFFBFF
               }
-              OnClick = BitBtn11Click
               TabOrder = 0
+              OnClick = BitBtn11Click
             end
             object edtRecBusca: TEdit
               Left = 56
               Height = 23
               Top = 17
               Width = 144
-              OnExit = edtRecBuscaExit
               TabOrder = 1
+              OnExit = edtRecBuscaExit
             end
             object Label67: TLabel
               Left = 55
@@ -7658,7 +7658,7 @@ object fCTePrincipal: TfCTePrincipal
               Left = 880
               Height = 15
               Top = 264
-              Width = 44
+              Width = 45
               Align = alCustom
               Caption = 'Telefone'
               ParentColor = False
@@ -7737,9 +7737,9 @@ object fCTePrincipal: TfCTePrincipal
               F9F3F1F9F2F1F9F3F6F8F7F7F8F7F8F8F8F7F8F8F7F8F8F8F8F8F8F8F8F8F8F8
               F8F8F8F8F8F8F8F8F800
             }
-            OnClick = btnProximo5Click
             ParentBidiMode = False
             TabOrder = 2
+            OnClick = btnProximo5Click
           end
         end
         object TabDestinatario: TTabSheet
@@ -7770,9 +7770,9 @@ object fCTePrincipal: TfCTePrincipal
               'Sem Destino: Redespacho Intermediário'
               'Sem Destino: Serviço Vinculado a Multimodal'
             )
-            OnClick = rgDestClick
             ParentFont = False
             TabOrder = 0
+            OnClick = rgDestClick
           end
           object GroupBoxDestinatario: TGroupBox
             Left = 8
@@ -8000,16 +8000,16 @@ object fCTePrincipal: TfCTePrincipal
                 BDFFFFF6D5FFFFFFECFFFFFFF9FFF4FCFCFFF5FAFDFFF8FBFFFFFDFFFFFFFCFC
                 FCFFFCFFFAFFFCFEF8FFFFFEFFFFFFFEFFFFFEFDF9FFFFFFFBFF
               }
-              OnClick = BitBtn12Click
               TabOrder = 0
+              OnClick = BitBtn12Click
             end
             object edtDestBusca: TEdit
               Left = 56
               Height = 23
               Top = 17
               Width = 144
-              OnExit = edtDestBuscaExit
               TabOrder = 1
+              OnExit = edtDestBuscaExit
             end
             object edtDestNome: TEdit
               Left = 208
@@ -8223,7 +8223,7 @@ object fCTePrincipal: TfCTePrincipal
               Left = 880
               Height = 15
               Top = 264
-              Width = 44
+              Width = 45
               Align = alCustom
               Caption = 'Telefone'
               ParentColor = False
@@ -8310,9 +8310,9 @@ object fCTePrincipal: TfCTePrincipal
               F9F3F1F9F2F1F9F3F6F8F7F7F8F7F8F8F8F7F8F8F7F8F8F8F8F8F8F8F8F8F8F8
               F8F8F8F8F8F8F8F8F800
             }
-            OnClick = btnProximo6Click
             ParentBidiMode = False
             TabOrder = 2
+            OnClick = btnProximo6Click
           end
         end
         object TabServicosImpostos: TTabSheet
@@ -8378,8 +8378,8 @@ object fCTePrincipal: TfCTePrincipal
             Top = 104
             Width = 216
             Caption = 'Componente do Valor da Prestação'
-            OnClick = StaticText13Click
             TabOrder = 7
+            OnClick = StaticText13Click
           end
           object StaticText14: TStaticText
             Left = 32
@@ -8503,8 +8503,8 @@ object fCTePrincipal: TfCTePrincipal
             Top = 408
             Width = 128
             Caption = '% Aliquota ICMS'
-            OnClick = StaticText22Click
             TabOrder = 23
+            OnClick = StaticText22Click
           end
           object StaticText24: TStaticText
             Left = 744
@@ -8572,9 +8572,9 @@ object fCTePrincipal: TfCTePrincipal
           end
           object CheckBox1: TCheckBox
             Left = 744
-            Height = 19
+            Height = 17
             Top = 5
-            Width = 20
+            Width = 18
             TabOrder = 31
           end
           object StaticText30: TStaticText
@@ -8661,8 +8661,8 @@ object fCTePrincipal: TfCTePrincipal
               11FF0F7E14FF188120FF59AF61FFC4FFC9FFEDFFF0FFF8FFF9FFFBFFFFFFFFFD
               FFFFFFFBFFFFFFFBFFFFFCFEFFFFF9FFFEFFFBFFFFFFFAFFFDFFFFFFFCFF
             }
-            OnClick = BitBtn15Click
             TabOrder = 33
+            OnClick = BitBtn15Click
           end
           object btnEditarComp: TBitBtn
             Left = 160
@@ -8756,8 +8756,8 @@ object fCTePrincipal: TfCTePrincipal
               E9FFFFFFF3FFFDFAF2FFF6FBF9FFF6FAFBFFF5F9FAFFFAF9FBFFFCFAF9FFFFFC
               F4FF
             }
-            OnClick = btnEditarCompClick
             TabOrder = 34
+            OnClick = btnEditarCompClick
           end
           object btnExcluirComp: TBitBtn
             Left = 288
@@ -8847,8 +8847,8 @@ object fCTePrincipal: TfCTePrincipal
               90FF4E4D91FF4E4D91FF4E4E91FF4E4E92FF4F4E92FF4F4F93FF504F94FF5050
               94FF515095FF515195FF515194FF6C6C92FFB2B2C0FFF8F8F9FFFEFEFEFF
             }
-            OnClick = btnExcluirCompClick
             TabOrder = 35
+            OnClick = btnExcluirCompClick
           end
           object dbValTotPrest: TDBEdit
             Left = 364
@@ -9040,9 +9040,9 @@ object fCTePrincipal: TfCTePrincipal
               F9F3F1F9F2F1F9F3F6F8F7F7F8F7F8F8F8F7F8F8F7F8F8F8F8F8F8F8F8F8F8F8
               F8F8F8F8F8F8F8F8F800
             }
-            OnClick = btnProximo7Click
             ParentBidiMode = False
             TabOrder = 44
+            OnClick = btnProximo7Click
           end
           object GroupBox20: TGroupBox
             Left = 33
@@ -9150,18 +9150,18 @@ object fCTePrincipal: TfCTePrincipal
             Top = 267
             Width = 99
             Caption = 'btnInsertComp'
-            OnClick = btnInsertCompClick
             TabOrder = 46
             Visible = False
+            OnClick = btnInsertCompClick
           end
           object edtComp: TEdit
             Left = 36
             Height = 23
             Top = 295
             Width = 520
-            OnChange = edtCompChange
             TabOrder = 47
             Visible = False
+            OnChange = edtCompChange
           end
         end
         object TabSheet11: TTabSheet
@@ -9393,8 +9393,8 @@ object fCTePrincipal: TfCTePrincipal
                       E9FFFFFFF3FFFDFAF2FFF6FBF9FFF6FAFBFFF5F9FAFFFAF9FBFFFCFAF9FFFFFC
                       F4FF
                     }
-                    OnClick = btnInfCargaEditaClick
                     TabOrder = 1
+                    OnClick = btnInfCargaEditaClick
                   end
                   object btnInfCargaExclui1: TBitBtn
                     Left = 352
@@ -9484,8 +9484,8 @@ object fCTePrincipal: TfCTePrincipal
                       90FF4E4D91FF4E4D91FF4E4E91FF4E4E92FF4F4E92FF4F4F93FF504F94FF5050
                       94FF515095FF515195FF515194FF6C6C92FFB2B2C0FFF8F8F9FFFEFEFEFF
                     }
-                    OnClick = btnInfCargaExcluiClick
                     TabOrder = 2
+                    OnClick = btnInfCargaExcluiClick
                   end
                 end
               end
@@ -9579,19 +9579,19 @@ object fCTePrincipal: TfCTePrincipal
                         Alignment = taCenter
                         Title.Alignment = taCenter
                         Title.Caption = 'Unidade'
-                        Width = 214
+                        Width = 215
                         FieldName = 'MEDIDA'
                       end                    
                       item
                         Title.Alignment = taCenter
                         Title.Caption = 'Medida'
-                        Width = 214
+                        Width = 215
                         FieldName = 'UNIDADE'
                       end                    
                       item
                         Title.Alignment = taCenter
                         Title.Caption = 'Quantidade'
-                        Width = 216
+                        Width = 214
                         FieldName = 'QUANT'
                       end>
                     DataSource = DSZqsQC
@@ -9693,8 +9693,8 @@ object fCTePrincipal: TfCTePrincipal
                       11FF0F7E14FF188120FF59AF61FFC4FFC9FFEDFFF0FFF8FFF9FFFBFFFFFFFFFD
                       FFFFFFFBFFFFFFFBFFFFFCFEFFFFF9FFFEFFFBFFFFFFFAFFFDFFFFFFFCFF
                     }
-                    OnClick = btnInfCargaIncluiClick
                     TabOrder = 0
+                    OnClick = btnInfCargaIncluiClick
                   end
                   object btnInfCargaEdita: TBitBtn
                     Left = 176
@@ -9788,8 +9788,8 @@ object fCTePrincipal: TfCTePrincipal
                       E9FFFFFFF3FFFDFAF2FFF6FBF9FFF6FAFBFFF5F9FAFFFAF9FBFFFCFAF9FFFFFC
                       F4FF
                     }
-                    OnClick = btnInfCargaEditaClick
                     TabOrder = 1
+                    OnClick = btnInfCargaEditaClick
                   end
                   object btnInfCargaExclui: TBitBtn
                     Left = 304
@@ -9879,8 +9879,8 @@ object fCTePrincipal: TfCTePrincipal
                       90FF4E4D91FF4E4D91FF4E4E91FF4E4E92FF4F4E92FF4F4F93FF504F94FF5050
                       94FF515095FF515195FF515194FF6C6C92FFB2B2C0FFF8F8F9FFFEFEFEFF
                     }
-                    OnClick = btnInfCargaExcluiClick
                     TabOrder = 2
+                    OnClick = btnInfCargaExcluiClick
                   end
                   object btnProximo8: TBitBtn
                     Left = 560
@@ -9955,9 +9955,9 @@ object fCTePrincipal: TfCTePrincipal
                       F9F3F1F9F2F1F9F3F6F8F7F7F8F7F8F8F8F7F8F8F7F8F8F8F8F8F8F8F8F8F8F8
                       F8F8F8F8F8F8F8F8F800
                     }
-                    OnClick = btnProximo8Click
                     ParentBidiMode = False
                     TabOrder = 3
+                    OnClick = btnProximo8Click
                   end
                   object btnInserirQC: TButton
                     Left = 461
@@ -9965,9 +9965,9 @@ object fCTePrincipal: TfCTePrincipal
                     Top = 9
                     Width = 75
                     Caption = 'btnInserirQC'
-                    OnClick = btnInserirQCClick
                     TabOrder = 4
                     Visible = False
+                    OnClick = btnInserirQCClick
                   end
                 end
               end
@@ -10051,7 +10051,7 @@ object fCTePrincipal: TfCTePrincipal
                 Left = 32
                 Height = 15
                 Top = 160
-                Width = 180
+                Width = 181
                 Align = alCustom
                 Caption = 'Chave de Acesso do CT-e Anterior'
                 ParentColor = False
@@ -10129,9 +10129,9 @@ object fCTePrincipal: TfCTePrincipal
                   F9F3F1F9F2F1F9F3F6F8F7F7F8F7F8F8F8F7F8F8F7F8F8F8F8F8F8F8F8F8F8F8
                   F8F8F8F8F8F8F8F8F800
                 }
-                OnClick = btnProximo9Click
                 ParentBidiMode = False
                 TabOrder = 5
+                OnClick = btnProximo9Click
               end
               object sbtnLerXmlCte: TSpeedButton
                 Left = 696
@@ -10177,7 +10177,7 @@ object fCTePrincipal: TfCTePrincipal
                 Left = 32
                 Height = 15
                 Top = 232
-                Width = 187
+                Width = 188
                 Align = alCustom
                 Caption = 'Chave de Acesso do CT-e Anulação'
                 ParentColor = False
@@ -10238,7 +10238,7 @@ object fCTePrincipal: TfCTePrincipal
                   item
                     Alignment = taCenter
                     Title.Caption = 'Chave de Acesso NF-e'
-                    Width = 351
+                    Width = 503
                     FieldName = 'CHAVE'
                   end                
                   item
@@ -10246,13 +10246,13 @@ object fCTePrincipal: TfCTePrincipal
                     MinSize = 50
                     MaxSize = 50
                     Title.Caption = 'PIN'
-                    Width = 351
+                    Width = 50
                     FieldName = 'PIN'
                   end                
                   item
                     Alignment = taCenter
                     Title.Caption = 'Data Prevista de Entrega'
-                    Width = 353
+                    Width = 502
                     FieldName = 'DPREV'
                   end>
                 DataSource = DSZsqNFe
@@ -10351,8 +10351,8 @@ object fCTePrincipal: TfCTePrincipal
                   E9FFFFFFF3FFFDFAF2FFF6FBF9FFF6FAFBFFF5F9FAFFFAF9FBFFFCFAF9FFFFFC
                   F4FF
                 }
-                OnClick = btnEditarNFeClick
                 TabOrder = 1
+                OnClick = btnEditarNFeClick
               end
               object btnIncluirNFe: TBitBtn
                 Left = 40
@@ -10430,8 +10430,8 @@ object fCTePrincipal: TfCTePrincipal
                   11FF0F7E14FF188120FF59AF61FFC4FFC9FFEDFFF0FFF8FFF9FFFBFFFFFFFFFD
                   FFFFFFFBFFFFFFFBFFFFFCFEFFFFF9FFFEFFFBFFFFFFFAFFFDFFFFFFFCFF
                 }
-                OnClick = btnIncluirNFeClick
                 TabOrder = 2
+                OnClick = btnIncluirNFeClick
               end
               object btnExcluirNFe: TBitBtn
                 Left = 296
@@ -10521,8 +10521,8 @@ object fCTePrincipal: TfCTePrincipal
                   90FF4E4D91FF4E4D91FF4E4E91FF4E4E92FF4F4E92FF4F4F93FF504F94FF5050
                   94FF515095FF515195FF515194FF6C6C92FFB2B2C0FFF8F8F9FFFEFEFEFF
                 }
-                OnClick = btnExcluirNFeClick
                 TabOrder = 3
+                OnClick = btnExcluirNFeClick
               end
               object Label100: TLabel
                 Left = 496
@@ -10703,9 +10703,9 @@ object fCTePrincipal: TfCTePrincipal
                   F9F3F1F9F2F1F9F3F6F8F7F7F8F7F8F8F8F7F8F8F7F8F8F8F8F8F8F8F8F8F8F8
                   F8F8F8F8F8F8F8F8F800
                 }
-                OnClick = btnProximo10Click
                 ParentBidiMode = False
                 TabOrder = 9
+                OnClick = btnProximo10Click
               end
               object btnInserirvNfe: TButton
                 Left = 440
@@ -10713,9 +10713,9 @@ object fCTePrincipal: TfCTePrincipal
                 Top = 328
                 Width = 123
                 Caption = 'btnInserirvNfe'
-                OnClick = btnInserirvNfeClick
                 TabOrder = 10
                 Visible = False
+                OnClick = btnInserirvNfeClick
               end
               object edtnfe: TMemo
                 Left = 800
@@ -10918,8 +10918,8 @@ object fCTePrincipal: TfCTePrincipal
                   11FF0F7E14FF188120FF59AF61FFC4FFC9FFEDFFF0FFF8FFF9FFFBFFFFFFFFFD
                   FFFFFFFBFFFFFFFBFFFFFCFEFFFFF9FFFEFFFBFFFFFFFAFFFDFFFFFFFCFF
                 }
-                OnClick = btnIncluirNFe1Click
                 TabOrder = 5
+                OnClick = btnIncluirNFe1Click
               end
               object btnEditarNFe1: TBitBtn
                 Left = 320
@@ -11013,8 +11013,8 @@ object fCTePrincipal: TfCTePrincipal
                   E9FFFFFFF3FFFDFAF2FFF6FBF9FFF6FAFBFFF5F9FAFFFAF9FBFFFCFAF9FFFFFC
                   F4FF
                 }
-                OnClick = btnEditarNFe1Click
                 TabOrder = 6
+                OnClick = btnEditarNFe1Click
               end
               object btnExcluirNFe1: TBitBtn
                 Left = 448
@@ -11104,8 +11104,8 @@ object fCTePrincipal: TfCTePrincipal
                   90FF4E4D91FF4E4D91FF4E4E91FF4E4E92FF4F4E92FF4F4F93FF504F94FF5050
                   94FF515095FF515195FF515194FF6C6C92FFB2B2C0FFF8F8F9FFFEFEFEFF
                 }
-                OnClick = btnExcluirNFe1Click
                 TabOrder = 7
+                OnClick = btnExcluirNFe1Click
               end
             end
           end
@@ -11129,7 +11129,7 @@ object fCTePrincipal: TfCTePrincipal
               Left = 48
               Height = 15
               Top = 32
-              Width = 37
+              Width = 38
               Align = alCustom
               Caption = 'RNTRC'
               ParentColor = False
@@ -11415,8 +11415,8 @@ object fCTePrincipal: TfCTePrincipal
                   E9FFFFFFF3FFFDFAF2FFF6FBF9FFF6FAFBFFF5F9FAFFFAF9FBFFFCFAF9FFFFFC
                   F4FF
                 }
-                OnClick = btnVeicEditarClick
                 TabOrder = 2
+                OnClick = btnVeicEditarClick
               end
               object btnVeicExcluir1: TBitBtn
                 Left = 272
@@ -11604,8 +11604,8 @@ object fCTePrincipal: TfCTePrincipal
                   11FF0F7E14FF188120FF59AF61FFC4FFC9FFEDFFF0FFF8FFF9FFFBFFFFFFFFFD
                   FFFFFFFBFFFFFFFBFFFFFCFEFFFFF9FFFEFFFBFFFFFFFAFFFDFFFFFFFCFF
                 }
-                OnClick = btnVeicIncluirClick
                 TabOrder = 1
+                OnClick = btnVeicIncluirClick
               end
               object btnVeicEditar: TBitBtn
                 Left = 144
@@ -11699,8 +11699,8 @@ object fCTePrincipal: TfCTePrincipal
                   E9FFFFFFF3FFFDFAF2FFF6FBF9FFF6FAFBFFF5F9FAFFFAF9FBFFFCFAF9FFFFFC
                   F4FF
                 }
-                OnClick = btnVeicEditarClick
                 TabOrder = 2
+                OnClick = btnVeicEditarClick
               end
               object btnVeicExcluir: TBitBtn
                 Left = 272
@@ -11790,8 +11790,8 @@ object fCTePrincipal: TfCTePrincipal
                   90FF4E4D91FF4E4D91FF4E4E91FF4E4E92FF4F4E92FF4F4F93FF504F94FF5050
                   94FF515095FF515195FF515194FF6C6C92FFB2B2C0FFF8F8F9FFFEFEFEFF
                 }
-                OnClick = btnVeicExcluirClick
                 TabOrder = 3
+                OnClick = btnVeicExcluirClick
               end
             end
           end
@@ -11811,8 +11811,8 @@ object fCTePrincipal: TfCTePrincipal
         Height = 23
         Top = 152
         Width = 144
-        OnChange = edtXMLCodChange
         TabOrder = 0
+        OnChange = edtXMLCodChange
       end
       object edtXMLNome: TEdit
         Left = 232
@@ -12017,7 +12017,7 @@ object fCTePrincipal: TfCTePrincipal
         Left = 967
         Height = 15
         Top = 352
-        Width = 44
+        Width = 45
         Align = alCustom
         Caption = 'Telefone'
         ParentColor = False
@@ -12046,8 +12046,8 @@ object fCTePrincipal: TfCTePrincipal
         Top = 21
         Width = 289
         Caption = 'Importar XML - NFe'
-        OnClick = btnImportarXMLClick
         TabOrder = 14
+        OnClick = btnImportarXMLClick
       end
     end
     object TabSheet17: TTabSheet
@@ -12061,8 +12061,8 @@ object fCTePrincipal: TfCTePrincipal
         Width = 269
         Caption = 'Carta de Correção'
         Enabled = False
-        OnClick = btnCCClick
         TabOrder = 0
+        OnClick = btnCCClick
       end
       object edtCceChave: TEdit
         Left = 280
@@ -12199,9 +12199,9 @@ object fCTePrincipal: TfCTePrincipal
         Top = 456
         Width = 266
         Caption = 'Importar XML'
-        OnClick = btnImportarXML1Click
         TabOrder = 0
         Visible = False
+        OnClick = btnImportarXML1Click
       end
       object Button30: TButton
         Left = 896
@@ -12209,9 +12209,9 @@ object fCTePrincipal: TfCTePrincipal
         Top = 464
         Width = 258
         Caption = 'Importar txt/XML'
-        OnClick = Button30Click
         TabOrder = 1
         Visible = False
+        OnClick = Button30Click
       end
       object btnAtualizarBD: TButton
         Left = 752
@@ -12219,8 +12219,8 @@ object fCTePrincipal: TfCTePrincipal
         Top = 504
         Width = 346
         Caption = 'Atualizar Banco de Dados'
-        OnClick = btnAtualizarBDClick
         TabOrder = 2
+        OnClick = btnAtualizarBDClick
       end
       object MemoDados: TMemo
         Left = 872
@@ -12258,9 +12258,9 @@ object fCTePrincipal: TfCTePrincipal
         Top = 448
         Width = 249
         Caption = 'Enviar Evento Email'
-        OnClick = btnEnviarEventoEmailClick
         TabOrder = 7
         Visible = False
+        OnClick = btnEnviarEventoEmailClick
       end
       object GroupBox14: TGroupBox
         Left = 336
@@ -12359,8 +12359,8 @@ object fCTePrincipal: TfCTePrincipal
             D7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5A
             D7FF4A5AD7FF4A5AD7FF4A5AD7FF4A5AD7FF8BFF3A008BFF3A008BFF3A00
           }
-          OnClick = btnCancelarCteClick
           TabOrder = 0
+          OnClick = btnCancelarCteClick
         end
         object edCteCancelar: TLabeledEdit
           Left = 8
@@ -12523,8 +12523,8 @@ object fCTePrincipal: TfCTePrincipal
             C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
             C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
           }
-          OnClick = btnInutilizarClick
           TabOrder = 2
+          OnClick = btnInutilizarClick
         end
         object Label150: TLabel
           Left = 8
@@ -12577,8 +12577,8 @@ object fCTePrincipal: TfCTePrincipal
           Top = 49
           Width = 128
           Caption = 'Imprimir Inutilização'
-          OnClick = btnImprimirInutClick
           TabOrder = 6
+          OnClick = btnImprimirInutClick
         end
         object btnGerarPDFInut: TBitBtn
           Left = 185
@@ -12586,8 +12586,8 @@ object fCTePrincipal: TfCTePrincipal
           Top = 90
           Width = 128
           Caption = 'Gerar PDF Inutilização'
-          OnClick = btnGerarPDFInutClick
           TabOrder = 7
+          OnClick = btnGerarPDFInutClick
         end
         object edInutJustificativa: TEdit
           Left = 8
@@ -12620,8 +12620,8 @@ object fCTePrincipal: TfCTePrincipal
           Top = 3
           Width = 266
           Caption = '1 - Status Serviço'
-          OnClick = btnStatusServClick
           TabOrder = 0
+          OnClick = btnStatusServClick
         end
         object btnConsCad: TButton
           Left = 346
@@ -12629,8 +12629,8 @@ object fCTePrincipal: TfCTePrincipal
           Top = 3
           Width = 266
           Caption = '4 - Consulta Cadastro'
-          OnClick = btnConsCadClick
           TabOrder = 1
+          OnClick = btnConsCadClick
         end
         object btnConsultarRecibo: TButton
           Left = 8
@@ -12638,8 +12638,8 @@ object fCTePrincipal: TfCTePrincipal
           Top = 45
           Width = 266
           Caption = '2 - Consultar Recibo Lote'
-          OnClick = btnConsultarReciboClick
           TabOrder = 2
+          OnClick = btnConsultarReciboClick
         end
         object btnConsultar: TButton
           Left = 346
@@ -12647,8 +12647,8 @@ object fCTePrincipal: TfCTePrincipal
           Top = 45
           Width = 266
           Caption = '5 - Consultar Carregando XML'
-          OnClick = btnConsultarClick
           TabOrder = 3
+          OnClick = btnConsultarClick
         end
         object btnConsultarChave: TButton
           Left = 8
@@ -12656,8 +12656,8 @@ object fCTePrincipal: TfCTePrincipal
           Top = 87
           Width = 266
           Caption = '3 - Consultar Chave Acesso'
-          OnClick = btnConsultarChaveClick
           TabOrder = 4
+          OnClick = btnConsultarChaveClick
         end
         object btnValidarXML: TButton
           Left = 346
@@ -12665,8 +12665,8 @@ object fCTePrincipal: TfCTePrincipal
           Top = 87
           Width = 266
           Caption = '6 - Validar XML'
-          OnClick = btnValidarXMLClick
           TabOrder = 5
+          OnClick = btnValidarXMLClick
         end
       end
       object GroupBox17: TGroupBox
@@ -12767,8 +12767,8 @@ object fCTePrincipal: TfCTePrincipal
             2508FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
           }
           ImageWidth = 40
-          OnClick = btnGerarCteClick
           TabOrder = 0
+          OnClick = btnGerarCteClick
         end
         object btnImprimir: TButton
           Left = 8
@@ -12776,8 +12776,8 @@ object fCTePrincipal: TfCTePrincipal
           Top = 40
           Width = 258
           Caption = 'Imprimir DACTe'
-          OnClick = btnImprimirClick
           TabOrder = 1
+          OnClick = btnImprimirClick
         end
         object btnGerarPDF: TBitBtn
           Left = 8
@@ -12785,8 +12785,8 @@ object fCTePrincipal: TfCTePrincipal
           Top = 80
           Width = 258
           Caption = 'Gerar PDF'
-          OnClick = btnGerarPDFClick
           TabOrder = 2
+          OnClick = btnGerarPDFClick
         end
         object btnEnviarEmail: TBitBtn
           Left = 8
@@ -12794,8 +12794,8 @@ object fCTePrincipal: TfCTePrincipal
           Top = 120
           Width = 258
           Caption = 'Enviar CT-e Email'
-          OnClick = btnEnviarEmailClick
           TabOrder = 3
+          OnClick = btnEnviarEmailClick
         end
       end
       object GroupBox18: TGroupBox
@@ -12813,8 +12813,8 @@ object fCTePrincipal: TfCTePrincipal
           Top = 0
           Width = 258
           Caption = 'Imprimir Evento'
-          OnClick = btnImprimirEventoClick
           TabOrder = 0
+          OnClick = btnImprimirEventoClick
         end
         object btnGerarPDFEvento: TBitBtn
           Left = 6
@@ -12822,8 +12822,8 @@ object fCTePrincipal: TfCTePrincipal
           Top = 40
           Width = 258
           Caption = 'Gerar PDF Evento'
-          OnClick = btnGerarPDFEventoClick
           TabOrder = 1
+          OnClick = btnGerarPDFEventoClick
         end
       end
       object lblCteAtual: TLabel
@@ -12920,6 +12920,7 @@ object fCTePrincipal: TfCTePrincipal
           Caption = 'Certificado Arquivo PFX(A1)'
           ClientHeight = 61
           ClientWidth = 453
+          ParentBackground = False
           TabOrder = 1
           object Label120: TLabel
             Left = 8
@@ -13150,8 +13151,8 @@ object fCTePrincipal: TfCTePrincipal
           'SVC-RS'
           'SVC-SP'
         )
-        OnClick = rgFormaEmissaoClick
         TabOrder = 6
+        OnClick = rgFormaEmissaoClick
       end
       object GroupBox9: TGroupBox
         Left = 792
@@ -13169,7 +13170,7 @@ object fCTePrincipal: TfCTePrincipal
           Left = 49
           Height = 15
           Top = 8
-          Width = 30
+          Width = 31
           Align = alCustom
           Caption = 'SMTP'
           ParentColor = False
@@ -13228,7 +13229,7 @@ object fCTePrincipal: TfCTePrincipal
           Left = 51
           Height = 19
           Top = 288
-          Width = 170
+          Width = 167
           Caption = 'SMTP Exige Conexão Segura'
           TabOrder = 2
         end
@@ -13238,11 +13239,11 @@ object fCTePrincipal: TfCTePrincipal
           Top = 168
           Width = 351
           DoubleBuffered = True
-          OnChange = mmEmailMsgChange
           ParentDoubleBuffered = False
           ParentShowHint = False
           ShowHint = True
           TabOrder = 3
+          OnChange = mmEmailMsgChange
         end
         object edtSmtpPort: TEdit
           Left = 280
@@ -13317,9 +13318,9 @@ object fCTePrincipal: TfCTePrincipal
           Top = 8
           Width = 160
           ItemHeight = 15
-          OnChange = cbSSLLibChange
           Style = csDropDownList
           TabOrder = 0
+          OnChange = cbSSLLibChange
         end
         object cbCryptLib: TComboBox
           Left = 112
@@ -13327,9 +13328,9 @@ object fCTePrincipal: TfCTePrincipal
           Top = 40
           Width = 160
           ItemHeight = 15
-          OnChange = cbCryptLibChange
           Style = csDropDownList
           TabOrder = 1
+          OnChange = cbCryptLibChange
         end
         object cbHttpLib: TComboBox
           Left = 112
@@ -13337,9 +13338,9 @@ object fCTePrincipal: TfCTePrincipal
           Top = 72
           Width = 160
           ItemHeight = 15
-          OnChange = cbHttpLibChange
           Style = csDropDownList
           TabOrder = 2
+          OnChange = cbHttpLibChange
         end
         object cbXmlSignLib: TComboBox
           Left = 112
@@ -13347,9 +13348,9 @@ object fCTePrincipal: TfCTePrincipal
           Top = 104
           Width = 160
           ItemHeight = 15
-          OnChange = cbXmlSignLibChange
           Style = csDropDownList
           TabOrder = 3
+          OnChange = cbXmlSignLibChange
         end
         object cbSSLType: TComboBox
           Left = 112
@@ -13358,15 +13359,15 @@ object fCTePrincipal: TfCTePrincipal
           Top = 136
           Width = 160
           ItemHeight = 15
-          OnChange = cbSSLTypeChange
           Style = csDropDownList
           TabOrder = 4
+          OnChange = cbSSLTypeChange
         end
         object lSSLLib1: TLabel
           Left = 30
           Height = 15
           Top = 136
-          Width = 41
+          Width = 42
           Alignment = taRightJustify
           Caption = 'SSLType'
           ParentColor = False
@@ -13401,7 +13402,7 @@ object fCTePrincipal: TfCTePrincipal
           Left = 88
           Height = 15
           Top = 1
-          Width = 64
+          Width = 65
           Align = alCustom
           Caption = 'Último CT-e'
           ParentColor = False
@@ -13441,8 +13442,8 @@ object fCTePrincipal: TfCTePrincipal
           Top = 16
           Width = 133
           Caption = 'Corrigir'
-          OnClick = btnCorrigirSerieClick
           TabOrder = 3
+          OnClick = btnCorrigirSerieClick
         end
       end
       object GroupBox13: TGroupBox
@@ -13458,7 +13459,7 @@ object fCTePrincipal: TfCTePrincipal
           Left = 112
           Height = 19
           Top = 4
-          Width = 208
+          Width = 206
           Caption = 'Salvar Arquivos de Envio e Resposta'
           TabOrder = 0
         end
@@ -13495,7 +13496,7 @@ object fCTePrincipal: TfCTePrincipal
           Left = 336
           Height = 19
           Top = 4
-          Width = 69
+          Width = 67
           Caption = 'Visualizar'
           TabOrder = 2
         end
@@ -13550,7 +13551,7 @@ object fCTePrincipal: TfCTePrincipal
           Left = 6
           Height = 15
           Top = 8
-          Width = 71
+          Width = 72
           Caption = 'Caminho CTe'
           ParentColor = False
         end
@@ -13637,8 +13638,8 @@ object fCTePrincipal: TfCTePrincipal
           B4FFAAA7B6FFAAA7B6FFACA7B6FFAAA7B6FFA9A9B7FFA5A7B2FFABABB7FFA5A7
           AFFFABAAB3FFA9AAAEFF9A9B9FFFF1F3F4FFFFFEFFFF
         }
-        OnClick = btnGravarCTe1Click
         TabOrder = 12
+        OnClick = btnGravarCTe1Click
       end
       object GroupBox22: TGroupBox
         Left = 20
@@ -13653,7 +13654,7 @@ object fCTePrincipal: TfCTePrincipal
           Left = 8
           Height = 19
           Top = 0
-          Width = 140
+          Width = 138
           Caption = 'Alterado pelo tomador'
           TabOrder = 0
         end
@@ -13679,13 +13680,13 @@ object fCTePrincipal: TfCTePrincipal
       Caption = 'CTe -OS'
       ClientHeight = 555
       ClientWidth = 1297
-      OnContextPopup = TabSheet2ContextPopup
       TabVisible = False
+      OnContextPopup = TabSheet2ContextPopup
       object Label122: TLabel
         Left = 429
         Height = 15
         Top = 10
-        Width = 39
+        Width = 40
         Caption = 'CTe-OS'
         ParentColor = False
       end
@@ -13718,8 +13719,8 @@ object fCTePrincipal: TfCTePrincipal
         Height = 23
         Top = 55
         Width = 109
-        OnExit = edtCfopExit
         TabOrder = 1
+        OnExit = edtCfopExit
       end
       object Label169: TLabel
         Left = 285
@@ -13791,7 +13792,7 @@ object fCTePrincipal: TfCTePrincipal
         Left = 49
         Height = 15
         Top = 440
-        Width = 135
+        Width = 136
         Align = alCustom
         Caption = 'Local de Emissão do CT-e'
         ParentColor = False
@@ -14013,8 +14014,8 @@ object fCTePrincipal: TfCTePrincipal
           BDFFFFF6D5FFFFFFECFFFFFFF9FFF4FCFCFFF5FAFDFFF8FBFFFFFDFFFFFFFCFC
           FCFFFCFFFAFFFCFEF8FFFFFEFFFFFFFEFFFFFEFDF9FFFFFFFBFF
         }
-        OnClick = BitBtn1Click
         TabOrder = 5
+        OnClick = BitBtn1Click
       end
       object edtEnvUF1: TEdit
         Left = 82
@@ -14263,8 +14264,8 @@ object fCTePrincipal: TfCTePrincipal
           BDFFFFF6D5FFFFFFECFFFFFFF9FFF4FCFCFFF5FAFDFFF8FBFFFFFDFFFFFFFCFC
           FCFFFCFFFAFFFCFEF8FFFFFEFFFFFFFEFFFFFEFDF9FFFFFFFBFF
         }
-        OnClick = BitBtn3Click
         TabOrder = 9
+        OnClick = BitBtn3Click
       end
       object edtIniUF1: TEdit
         Left = 82
@@ -14291,7 +14292,7 @@ object fCTePrincipal: TfCTePrincipal
         Left = 64
         Height = 15
         Top = 547
-        Width = 161
+        Width = 162
         Align = alCustom
         Caption = 'Local do Término da Prestação'
         ParentColor = False
@@ -14513,8 +14514,8 @@ object fCTePrincipal: TfCTePrincipal
           BDFFFFF6D5FFFFFFECFFFFFFF9FFF4FCFCFFF5FAFDFFF8FBFFFFFDFFFFFFFCFC
           FCFFFCFFFAFFFCFEF8FFFFFEFFFFFFFEFFFFFEFDF9FFFFFFFBFF
         }
-        OnClick = BitBtn4Click
         TabOrder = 13
+        OnClick = BitBtn4Click
       end
       object edtFimUF1: TEdit
         Left = 82
@@ -14543,8 +14544,8 @@ object fCTePrincipal: TfCTePrincipal
         Top = 128
         Width = 168
         Caption = 'Tomador'
-        OnClick = BitBtn18Click
         TabOrder = 17
+        OnClick = BitBtn18Click
       end
       object BitBtn19: TBitBtn
         Left = 225
@@ -14613,7 +14614,6 @@ object fCTePrincipal: TfCTePrincipal
     Configuracoes.Geral.SSLHttpLib = httpWinHttp
     Configuracoes.Geral.SSLXmlSignLib = xsLibXml2
     Configuracoes.Geral.FormatoAlerta = 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.'
-    Configuracoes.Geral.VersaoDF = ve400
     Configuracoes.Arquivos.OrdenacaoPath = <>
     Configuracoes.Arquivos.SepararPorMes = True
     Configuracoes.WebServices.Visualizar = True
@@ -14667,7 +14667,6 @@ object fCTePrincipal: TfCTePrincipal
     Configuracoes.Geral.SSLHttpLib = httpNone
     Configuracoes.Geral.SSLXmlSignLib = xsNone
     Configuracoes.Geral.FormatoAlerta = 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.'
-    Configuracoes.Geral.VersaoDF = ve400
     Configuracoes.Arquivos.OrdenacaoPath = <>
     Configuracoes.WebServices.UF = 'SP'
     Configuracoes.WebServices.AguardarConsultaRet = 0
@@ -14678,18 +14677,20 @@ object fCTePrincipal: TfCTePrincipal
   end
   object ZConn: TZConnection
     ControlsCodePage = cCP_UTF8
-    AutoEncodeStrings = True
     ClientCodepage = 'WIN1252'
     Properties.Strings = (
       'AutoEncodeStrings=True'
       'controls_cp=CP_UTF8'
       'codepage=WIN1252'
+      'RawStringEncoding=DB_CP'
     )
+    DisableSavepoints = False
     HostName = 'localhost'
     Port = 3050
+    Database = 'D:\clientes\vca\2024\sge_cteos.fdb'
     User = 'sysdba'
     Password = 'masterkey'
-    Protocol = 'firebirdd-2.5'
+    Protocol = 'firebird'
     Left = 456
     Top = 424
   end
@@ -14726,7 +14727,7 @@ object fCTePrincipal: TfCTePrincipal
       item
         DataType = ftInteger
         Name = 'pCTE'
-        ParamType = ptUnknown
+        SQLType = stInteger
       end>
     Left = 640
     Top = 424
@@ -14734,7 +14735,7 @@ object fCTePrincipal: TfCTePrincipal
       item
         DataType = ftInteger
         Name = 'pCTE'
-        ParamType = ptUnknown
+        SQLType = stInteger
       end>
     object ZsqNFeCOD_CTE_NFE: TLongintField
       FieldKind = fkData
@@ -14803,7 +14804,7 @@ object fCTePrincipal: TfCTePrincipal
       item
         DataType = ftInteger
         Name = 'pCTE'
-        ParamType = ptUnknown
+        SQLType = stInteger
       end>
     Left = 456
     Top = 480
@@ -14811,7 +14812,7 @@ object fCTePrincipal: TfCTePrincipal
       item
         DataType = ftInteger
         Name = 'pCTE'
-        ParamType = ptUnknown
+        SQLType = stInteger
       end>
     object ZsqCompCOD_CTE_COMP: TLongintField
       FieldKind = fkData
@@ -14876,7 +14877,7 @@ object fCTePrincipal: TfCTePrincipal
       item
         DataType = ftInteger
         Name = 'pCTE'
-        ParamType = ptUnknown
+        SQLType = stInteger
       end>
     Left = 457
     Top = 545
@@ -14884,7 +14885,7 @@ object fCTePrincipal: TfCTePrincipal
       item
         DataType = ftInteger
         Name = 'pCTE'
-        ParamType = ptUnknown
+        SQLType = stInteger
       end>
     object ZsqQCCOD_CTE_QC: TLongintField
       FieldKind = fkData
