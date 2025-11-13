@@ -5394,8 +5394,8 @@ begin
         // Reforma Tributaria   5 – Nota de Crédito 6 – Nota de Débito
         if(dmPdv.ReformaTributaria = 'SIM')then
         begin
-          NotaF := ACBrNFe1.NotasFiscais.Add;
-          NotaF.NFe.Ide.cMunFGIBS := 717177;
+         // NotaF := ACBrNFe1.NotasFiscais.Add;
+         // NotaF.NFe.Ide.cMunFGIBS := 717177;
         end;
 
         // pcNao, pcPresencial, pcInternet, pcTeleatendimento, pcEntregaDomicilio, pcPresencialForaEstabelecimento, pcOutros

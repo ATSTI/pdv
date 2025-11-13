@@ -22,8 +22,8 @@
         <UnitName Value="uNFe"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="2987"/>
-        <CursorPos Y="2993"/>
+        <TopLine Value="3085"/>
+        <CursorPos X="13" Y="3038"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="7">
           <Item0 Y="707" ID="6"/>
@@ -382,8 +382,8 @@
       <Unit47>
         <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="497"/>
-        <CursorPos X="11" Y="508"/>
+        <TopLine Value="4706"/>
+        <CursorPos X="17" Y="4726"/>
         <UsageCount Value="29"/>
         <Loaded Value="True"/>
       </Unit47>
@@ -403,127 +403,123 @@
         <Loaded Value="True"/>
       </Unit49>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="unfe.pas"/>
-        <Caret Line="2989" TopLine="2984"/>
+        <Caret Line="2993" TopLine="3107"/>
       </Position1>
       <Position2>
         <Filename Value="unfe.pas"/>
-        <Caret Line="2992" TopLine="2984"/>
+        <Caret Line="3038" Column="13" TopLine="3085"/>
       </Position2>
       <Position3>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="2994" TopLine="2990"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="2372" Column="61" TopLine="2363"/>
       </Position3>
       <Position4>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="2996" TopLine="2990"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="2386" Column="9" TopLine="2369"/>
       </Position4>
       <Position5>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="2998" TopLine="2990"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="2388" Column="7" TopLine="2371"/>
       </Position5>
       <Position6>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="3011" TopLine="3001"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="2392" Column="43" TopLine="2375"/>
       </Position6>
       <Position7>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="2998" Column="13" TopLine="2984"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="2393" Column="50" TopLine="2376"/>
       </Position7>
       <Position8>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="2985" TopLine="2981"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="2396" Column="34" TopLine="2379"/>
       </Position8>
       <Position9>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="2986" TopLine="2981"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="2398" Column="23" TopLine="2381"/>
       </Position9>
       <Position10>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="2988" TopLine="2981"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="2399" Column="23" TopLine="2382"/>
       </Position10>
       <Position11>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="2989" TopLine="2981"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="2401" Column="41" TopLine="2384"/>
       </Position11>
       <Position12>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="2992" TopLine="2981"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="2762" Column="15" TopLine="2745"/>
       </Position12>
       <Position13>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="3001" Column="14" TopLine="2987"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="2776" Column="33" TopLine="2760"/>
       </Position13>
       <Position14>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="2985" TopLine="2975"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="2796" Column="56" TopLine="2781"/>
       </Position14>
       <Position15>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="2986" TopLine="2984"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="2862" Column="19" TopLine="2845"/>
       </Position15>
       <Position16>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="2988" TopLine="2984"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="2923" Column="34" TopLine="2906"/>
       </Position16>
       <Position17>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="2989" TopLine="2984"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="4041" Column="7" TopLine="4024"/>
       </Position17>
       <Position18>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="2992" TopLine="2984"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="4043" Column="34" TopLine="4026"/>
       </Position18>
       <Position19>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="2995" TopLine="2987"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="4048" Column="45" TopLine="4031"/>
       </Position19>
       <Position20>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="2997" TopLine="2987"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="4059" Column="17" TopLine="4042"/>
       </Position20>
       <Position21>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="3003" Column="78" TopLine="2993"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="4065" Column="54" TopLine="4048"/>
       </Position21>
       <Position22>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="3002" Column="19" TopLine="2992"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="4067" Column="17" TopLine="4050"/>
       </Position22>
       <Position23>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="2985" TopLine="2975"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="4070" Column="15" TopLine="4053"/>
       </Position23>
       <Position24>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="2986" TopLine="2975"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="4071" Column="14" TopLine="4054"/>
       </Position24>
       <Position25>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="2988" TopLine="2981"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="4076" Column="34" TopLine="4059"/>
       </Position25>
       <Position26>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="2989" TopLine="2981"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="4078" Column="17" TopLine="4061"/>
       </Position26>
       <Position27>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="2992" TopLine="2987"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="4707" Column="7" TopLine="4690"/>
       </Position27>
       <Position28>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="2995" TopLine="2987"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="4709" Column="49" TopLine="4692"/>
       </Position28>
       <Position29>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="3002" TopLine="2993"/>
+        <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
+        <Caret Line="4712" Column="27" TopLine="4695"/>
       </Position29>
-      <Position30>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="3014" TopLine="3004"/>
-      </Position30>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
