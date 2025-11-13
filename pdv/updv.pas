@@ -51,6 +51,7 @@ type
     btnVnd6: TBitBtn;
     btnVnd7: TBitBtn;
     btnVnd8: TBitBtn;
+    btnCorrigiValor: TButton;
     cbPercentual: TCheckBox;
     dsProdProc: TDataSource;
     DBGrid1: TDBGrid;
@@ -61,6 +62,7 @@ type
     edClienteNome: TEdit;
     edDesconto: TMaskEdit;
     edLocalizacao: TMemo;
+    edCorrigiPreco: TMaskEdit;
     edProduto_copia: TEdit;
     edMotivo: TEdit;
     edPreco: TMaskEdit;
@@ -179,6 +181,7 @@ type
     procedure btnVnd6Click(Sender: TObject);
     procedure btnVnd7Click(Sender: TObject);
     procedure btnVnd8Click(Sender: TObject);
+    procedure btnCorrigiValorClick(Sender: TObject);
     procedure cbPercentualClick(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
@@ -406,12 +409,12 @@ begin
     begin
       edProduto.Text := dmPdv.sqLancamentosCODPRO.AsString;
     end;
-    edQtde.Text    := FormatFloat('#,,,0.00',dmPdv.sqLancamentosQUANTIDADE.AsFloat);
-    edPreco.Text   := FormatFloat('#,,,0.00',dmPdv.sqLancamentosPRECO.AsFloat);
+    edQtde.Text    := FormatFloat('#,##0.00',dmPdv.sqLancamentosQUANTIDADE.AsFloat);
+    edPreco.Text   := FormatFloat('#,##0.00',dmPdv.sqLancamentosPRECO.AsFloat);
     precoL         := dmPdv.sqLancamentosPRECO.AsFloat;
     precoAtacadoL   := dmPdv.sqLancamentosPRECOATACADO.AsFloat;
     qtdeAtacadoL    := dmPdv.sqLancamentosQTDEATACADO.AsFloat;
-    edDesconto.Text:= FormatFloat('#,,,0.00',dmPdv.sqLancamentosDESCONTO.AsFloat);
+    edDesconto.Text:= FormatFloat('#,##0.00',dmPdv.sqLancamentosDESCONTO.AsFloat);
     edLocalizacao.Text:= dmPdv.sqLancamentosLOCALIZACAO.AsString;
 
     buscaVendedor(IntToStr(dmPdv.sqLancamentosCODVENDEDOR.AsInteger));
@@ -848,6 +851,7 @@ end;
 procedure TfPdv.acQuantidadeExecute(Sender: TObject);
 var i: Integer;
 begin
+  precoL := 0.00;
   if ((edProduto.Text = '') and (edProduto_copia.Text = '')) then
   begin
     ShowMessage('Selecione o ITEM.');
@@ -1045,6 +1049,60 @@ begin
     btnVnd6.Font.Color := clBlack;
     btnVnd7.Font.Color := clBlack;
   end;
+end;
+
+procedure TfPdv.btnCorrigiValorClick(Sender: TObject);
+var vcodpro : string;
+    vAtualizado , pCODBARRA : string;
+    vAtual ,vPrazo : double;
+begin
+  vcodpro := dmPdv.sqBusca.FieldByName('CODPRO').AsString;
+  vPrazo  := dmPdv.sqBusca.FieldByName('VALOR_PRAZO').AsFloat;
+  {
+  if(vPrazo <> 0.00)then
+  begin
+    ShowMessage('Somente Corrigir se Valor for 0,00');
+    exit;
+  end;
+ }
+  if(edCorrigiPreco.Text = '0,00')then
+  begin
+    ShowMessage('Digitar o Valor a ser Corrigido');
+    edCorrigiPreco.SetFocus;
+    exit;
+  end;
+    if (dmPdv.precoLivre <> 'LIVRE') then
+    begin
+      fPermissao.Permissao_Fazer := 'PRECO';
+      fPermissao.ShowModal;
+    end;
+
+   if( fPermissao.nPode = 'NAO') then
+   begin
+     exit;
+   end;
+
+  DecimalSeparator := ',';
+  vAtual           := strParaFloat(edCorrigiPreco.Text);
+  DecimalSeparator := '.';
+  vAtualizado := FloatToStr(vAtual);
+
+  if MessageDlg('Confirma:', 'Confirma a ALTERAÇAO no Valor do Produto : ',mtConfirmation,  [mbYes, mbNo],0) = mrYes then
+  begin
+
+    dmPdv.executaSql('UPDATE PRODUTOS SET VALOR_PRAZO = ' +  QuotedStr(vAtualizado) +
+                     ' WHERE CODPRO  = ' + QuotedStr(vcodpro));
+
+    try
+      dmPdv.sTrans.Commit;
+    except
+      dmpdv.sTrans.Rollback;
+      ShowMessage('Erro ao alterar Valor.');
+    end;
+  end;
+  edCorrigiPreco.Text := '0,00';
+
+
 end;
 
 procedure TfPdv.cbPercentualClick(Sender: TObject);
@@ -1379,6 +1437,13 @@ begin
       FMov.Status      := 0;
       FMov.CodUsuario  := codCaixa;
       FMov.CodVendedor := codVendedor;
+
+      // correcao CASA da FRALDA
+      if (UpperCase(dmPdv.usoSistema) = 'ATS') then
+      begin
+        FMov.CodVendedor  :=  codCaixa ;
+      end;
+
       // TODO - Usar o campo Controle para Informar a SESSAO do PDV
       FMov.Controle    := num_pedido;
       FMov.DataMov     := Now;
@@ -1564,7 +1629,7 @@ begin
   sQtde := edQtde.Text;
   sDesc := edDesconto.Text;
   try
-    tQtde := fPDV_Rec.strParaFloat(sQtde);
+    tQtde := fPDV_Rec.strParaFloat(sQtde);   //28/10/2025
   except
     tQtde := fPDV_Rec.strParaFloat(StringReplace(sQtde,',','.',[rfReplaceAll]));;
   end;
@@ -1675,10 +1740,14 @@ begin
     proDesc    := fProdutoProc.produto;
     //edProdutoDescX.Text := proDesc;
     preencherDescItem(proDesc);
-    edPreco.Text:= FormatFloat('#,,,0.00',precoL);
-    edPreco1.Text:= FormatFloat('#,,,0.00',precoL);
-    edQtde.Text  := FormatFloat('#,,,0.000', fProdutoProc.quantidadeVenda);
-    edQtde1.Text := FormatFloat('#,,,0.000', fProdutoProc.quantidadeVenda);
+    edPreco.Text:= FormatFloat('#,##0.00',precoL);
+    edPreco1.Text:= FormatFloat('#,##0.00',precoL);
+    edQtde.Text  := FormatFloat('#,##0.00', fProdutoProc.quantidadeVenda);
+    //edQtde.Text  :=  fProdutoProc.quantidadeVendaFormatada;
+
+
+    edQtde1.Text := FormatFloat('#,##0.00', fProdutoProc.quantidadeVenda);
+    //edQtde1.Text  :=  fProdutoProc.quantidadeVendaFormatada;
     edDesconto.Text:='0,00';
     edDesconto.Text:='0,00';
     registrar_item();
@@ -2394,6 +2463,7 @@ end;
 procedure TfPdv.buscaProduto();
 var i: Integer;
   str_bsc  : String;
+  pProdr  : String;
 begin
   if ((statusPedido > 0) and (dmPdv.usaComanda = 0)) then
   begin
@@ -2571,31 +2641,45 @@ begin
 
   camin := dmPdv.caminhoEXEpdv ;
 
-  if(fSangria.abri_cx = 1)then
-  begin
-    ShowMessage('O Progama Sera Reiniciado para Atualizar o Caixa ');
-    fPdv.Close;
-    //WINEXEC('C:\home\felicita_linux\prjPDV.exe',SW_SHOWNORMAL);
-    ShellExecute(Application.Handle, PChar('open'), PChar(camin), PChar(' /e,C:\temp'), nil, SW_NORMAL);
-  end;
 
+  //Para não Fcehar o PDV quando for TIPO USO ATS
 
+ // if (UpperCase(dmPdv.usoSistema) = 'odoo') then
+//  begin
 
-  if(fAbreCaixa.abri_cx = 1)then
-  begin
-    ShowMessage('O Progama Sera Reiniciado para Atualizar o Caixa ');
-    fPdv.Close;
-   // WINEXEC('C:\home\felicita_linux\prjPDV.exe',SW_SHOWNORMAL);
-    ShellExecute(Application.Handle, PChar('open'), PChar(camin), PChar(' /e,C:\temp'), nil, SW_NORMAL);
-  end;
+    if(fSangria.abri_cx = 1)then
+    begin
+      ShowMessage('O Progama Sera Reiniciado para Atualizar o Caixa ');
+      fPdv.Close;
+      //WINEXEC('C:\home\felicita_linux\prjPDV.exe',SW_SHOWNORMAL);
+      ShellExecute(Application.Handle, PChar('open'), PChar(camin), PChar(' /e,C:\temp'), nil, SW_NORMAL);
+    end;
 
-  if(fAbrirCaixa.abri_cx = 1)then
-  begin
-    ShowMessage('O Progama Sera Reiniciado para Atualizar o Caixa ');
-    fPdv.Close;
-    //WINEXEC('C:\home\felicita_linux\prjPDV.exe',SW_SHOWNORMAL);
-    ShellExecute(Application.Handle, PChar('open'), PChar(camin), PChar(' /e,C:\temp'), nil, SW_NORMAL);
-  end;
+    if(fAbreCaixa.abri_cx = 1)then
+    begin
+      ShowMessage('O Progama Sera Reiniciado para Atualizar o Caixa ');
+      fPdv.Close;
+     // WINEXEC('C:\home\felicita_linux\prjPDV.exe',SW_SHOWNORMAL);
+      ShellExecute(Application.Handle, PChar('open'), PChar(camin), PChar(' /e,C:\temp'), nil, SW_NORMAL);
+    end;
+
+    if(fAbrirCaixa.abri_cx = 1)then
+    begin
+      ShowMessage('O Progama Sera Reiniciado para Atualizar o Caixa ');
+      fPdv.Close;
+      //WINEXEC('C:\home\felicita_linux\prjPDV.exe',SW_SHOWNORMAL);
+      ShellExecute(Application.Handle, PChar('open'), PChar(camin), PChar(' /e,C:\temp'), nil, SW_NORMAL);
+    end;
+
+ // end;
+
+  //if (UpperCase(dmPdv.usoSistema) = 'ATS') then
+  //begin
+  //  btnNovo.Enabled:= True;
+  //  btnReceber.Enabled:= True;
+  //  btnInfo.Enabled:= True;
+
+  //end;
 
 end;
 end.

@@ -6,8 +6,8 @@ object fPermissao: TfPermissao
   Caption = 'Administrador'
   ClientHeight = 156
   ClientWidth = 387
+  LCLVersion = '4.0.0.4'
   OnShow = FormShow
-  LCLVersion = '3.4.0.0'
   object edSenha: TLabeledEdit
     Left = 48
     Height = 23
@@ -28,7 +28,7 @@ object fPermissao: TfPermissao
     Top = 48
     Width = 91
     Caption = 'Liberar'
-    OnClick = btnLoginClick
     TabOrder = 1
+    OnClick = btnLoginClick
   end
 end

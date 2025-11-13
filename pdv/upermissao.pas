@@ -26,6 +26,7 @@ type
     permCodDet : Integer;
     itemExcP: String;
     itemExcC: String;
+    nPode: String;
   end;
 
 var
@@ -46,6 +47,7 @@ begin
   begin
     Permissao_Fazer := 'NAO';
     ShowMessage('Sem Cadastro de usuário no sistema');
+    nPode := 'NAO';
     Close;
     Exit;
   end;
@@ -68,12 +70,14 @@ begin
   begin
     Permissao_Fazer := 'NAO';
     ShowMessage('Usuário sem permissão.');
+    nPode := 'NAO';
     Close;
   end;
   if ((Trim(dmPdv.sqBusca.FieldByName('PERFIL').AsString) = 'GERENTE') and
      (permissao_inicio <> 'EXCLUIR')) then
   begin
     Permissao_Fazer := 'SIM';
+    nPode := 'SIM';
     Close;
   end;
 

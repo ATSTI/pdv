@@ -1099,6 +1099,8 @@ type
     usa_servipa :string;
     SenhaAbrirCX : string;
     ReformaTributaria : string;
+    FiltrarPedidos : string;
+    path_xml_alternativo : string;
 
     function executaSql(strSql: String): Boolean;
     procedure executaDSQL(strDSQL: String); // criei pra executar o atualiza Bd
@@ -1214,6 +1216,7 @@ begin
       ccusto := conf.ReadString( 'Outros','CentroCusto','');
       modoDesenvolvedor := conf.ReadString( 'Outros','modoDesenvolvedor','N');
       ReformaTributaria := conf.ReadString( 'Outros','ReformaTributaria','NAO');
+
     finally
       conf.free;
     end;
@@ -1238,7 +1241,9 @@ begin
       Writeln(logs, 'Host conf.ini ' + vstr);
       path_python := conf.ReadString('PATH', 'PathPython', '');
       path_script := conf.ReadString('PATH', 'PathScript', '');
-      path_xml := conf.ReadString('PATH', 'PathXML', path_exe);
+      path_xml_alternativo := conf.ReadString( 'PATH','path_xml_alternativo','');
+      if(path_xml_alternativo = '')then
+        path_xml := conf.ReadString('PATH', 'PathXML', path_exe);
       path_imp := conf.ReadString('PATH', 'PathIMP', 'imp.txt');
       path_integra := conf.ReadString('PATH', 'PathIntegra', path_exe);
       path_integra_url := conf.ReadString('PATH', 'PathIntegraUrl', path_exe);
@@ -1301,6 +1306,7 @@ begin
       Usa_Servipa := conf.ReadString( 'Outros','UsaServipa','NAO');
       SenhaAbrirCx  := conf.ReadString( 'Outros','SenhaAbrirCx','NAO');
       ReformaTributaria := conf.ReadString( 'Outros','ReformaTributaria','NAO');
+      FiltrarPedidos := conf.ReadString( 'Outros','FiltrarPedidos','SIM');
      {
       ZCon.Connected       := False;
       ZCon.HostName        := conf.ReadString('ZConn', 'Hostname', '');

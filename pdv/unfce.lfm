@@ -4,13 +4,13 @@ object fNfce: TfNfce
   Top = 130
   Width = 687
   Caption = 'Nota Fiscal Eletronica - Consumidor'
-  ClientHeight = 508
-  ClientWidth = 687
+  ClientHeight = 0
+  ClientWidth = 0
+  Position = poScreenCenter
+  LCLVersion = '4.0.0.4'
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  Position = poScreenCenter
-  LCLVersion = '3.4.0.0'
   object pnCancelamento: TPanel
     Left = 160
     Height = 173
@@ -41,8 +41,8 @@ object fNfce: TfNfce
       Top = 102
       Width = 120
       Caption = 'Enviar Cancelamento'
-      OnClick = BitBtn6Click
       TabOrder = 1
+      OnClick = BitBtn6Click
     end
     object lblCancelamento: TLabel
       Left = 9
@@ -58,8 +58,8 @@ object fNfce: TfNfce
       Top = 102
       Width = 75
       Caption = 'Fechar'
-      OnClick = BitBtn7Click
       TabOrder = 2
+      OnClick = BitBtn7Click
     end
     object lblCancelamento2: TLabel
       Left = 6
@@ -84,10 +84,10 @@ object fNfce: TfNfce
     MaxLength = 14
     ParentFont = False
     TabOrder = 0
-    OnKeyPress = edCPFKeyPress
     EditMask = '999.999.999-99;1;_'
     Text = '   .   .   -  '
     SpaceChar = '_'
+    OnKeyPress = edCPFKeyPress
   end
   object edCertificado: TLabeledEdit
     Left = 362
@@ -137,8 +137,8 @@ object fNfce: TfNfce
       979A858789789593898C888897939B7E81898B97977B91887B947B91A58B636C
       65CBD0C6FFFFFAF9F8F7FEF6FF00
     }
-    OnClick = BitBtn1Click
     TabOrder = 2
+    OnClick = BitBtn1Click
   end
   object edNFce: TLabeledEdit
     Left = 16
@@ -1540,9 +1540,9 @@ object fNfce: TfNfce
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         }
         Layout = blGlyphBottom
-        OnClick = BitBtn3Click
         ParentFont = False
         TabOrder = 0
+        OnClick = BitBtn3Click
       end
       object BitBtn4: TBitBtn
         Cursor = crHandPoint
@@ -2861,9 +2861,9 @@ object fNfce: TfNfce
           16FF2E1D17FF321F19FF33201AFF3A251EFF3A251DFF3F2820FF
         }
         Layout = blGlyphBottom
-        OnClick = BitBtn4Click
         ParentFont = False
         TabOrder = 1
+        OnClick = BitBtn4Click
       end
       object memoLog: TMemo
         Left = 3
@@ -2955,8 +2955,8 @@ object fNfce: TfNfce
           Top = 208
           Width = 80
           Caption = 'Enviar'
-          OnClick = btnNFce4Click
           TabOrder = 5
+          OnClick = btnNFce4Click
         end
         object btnNFce5: TBitBtn
           Left = 304
@@ -2964,8 +2964,8 @@ object fNfce: TfNfce
           Top = 208
           Width = 72
           Caption = 'Fechar'
-          OnClick = btnNFce5Click
           TabOrder = 6
+          OnClick = btnNFce5Click
         end
         object Label7: TLabel
           Left = 96
@@ -3005,8 +3005,8 @@ object fNfce: TfNfce
         Top = 8
         Width = 151
         Caption = 'Nota Fiscal'
-        OnClick = btnNFceClick
         TabOrder = 0
+        OnClick = btnNFceClick
       end
       object btnNFce1: TBitBtn
         Left = 164
@@ -3036,8 +3036,8 @@ object fNfce: TfNfce
           FFFFF70888888888888888888000000000000088888888888888888888888888
           8888888888888888888888888888888888888888888888888888
         }
-        OnClick = btnNFce1Click
         TabOrder = 1
+        OnClick = btnNFce1Click
       end
       object btnNFce2: TBitBtn
         Left = 320
@@ -3145,8 +3145,8 @@ object fNfce: TfNfce
           D4D7D5D5D7D2D4D9D0D3DBCDCED6C8C9D4C7CFCEC6CDCBC0C8D4C9CBC2B2ACC0
           C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
         }
-        OnClick = btnNFce2Click
         TabOrder = 2
+        OnClick = btnNFce2Click
       end
       object btnFechar: TBitBtn
         Left = 475
@@ -3154,8 +3154,8 @@ object fNfce: TfNfce
         Top = 8
         Width = 91
         Action = acFechar
-        OnClick = btnFecharClick
         TabOrder = 3
+        OnClick = btnFecharClick
       end
       object PageControl1: TPageControl
         Left = 8
@@ -3304,8 +3304,8 @@ object fNfce: TfNfce
             Top = 208
             Width = 200
             Caption = 'Gravar Configurações'
-            OnClick = BitBtn2Click
             TabOrder = 7
+            OnClick = BitBtn2Click
           end
           object cbxModeloPosPrinter: TComboBox
             Left = 320
@@ -3361,8 +3361,8 @@ object fNfce: TfNfce
               979A858789789593898C888897939B7E81898B97977B91887B947B91A58B636C
               65CBD0C6FFFFFAF9F8F7FEF6FF00
             }
-            OnClick = BitBtn8Click
             TabOrder = 9
+            OnClick = BitBtn8Click
           end
           object rgAmbiente: TRadioGroup
             Left = 16
@@ -3410,7 +3410,7 @@ object fNfce: TfNfce
             Left = 24
             Height = 15
             Top = 139
-            Width = 45
+            Width = 46
             Caption = 'SSL Type'
             ParentColor = False
           end
@@ -3422,8 +3422,8 @@ object fNfce: TfNfce
         Top = 56
         Width = 151
         Caption = 'Inutilizar Numeração'
-        OnClick = btnNFce3Click
         TabOrder = 5
+        OnClick = btnNFce3Click
       end
       object btnNFce6: TBitBtn
         Left = 164
@@ -3431,8 +3431,8 @@ object fNfce: TfNfce
         Top = 56
         Width = 151
         Caption = 'Cancelar NFCe'
-        OnClick = btnNFce6Click
         TabOrder = 7
+        OnClick = btnNFce6Click
       end
       object btnNFce7: TBitBtn
         Left = 320
@@ -3440,8 +3440,8 @@ object fNfce: TfNfce
         Top = 56
         Width = 151
         Caption = 'NFCe Contigência'
-        OnClick = btnNFce7Click
         TabOrder = 8
+        OnClick = btnNFce7Click
       end
       object btnNFce8: TBitBtn
         Left = 472
@@ -3449,8 +3449,8 @@ object fNfce: TfNfce
         Top = 56
         Width = 151
         Caption = 'Enviar Contigência'
-        OnClick = btnNFce8Click
         TabOrder = 9
+        OnClick = btnNFce8Click
       end
     end
   end
@@ -3475,8 +3475,8 @@ object fNfce: TfNfce
       'CPF'
       'CNPJ'
     )
-    OnClick = RadioGroup2Click
     TabOrder = 6
+    OnClick = RadioGroup2Click
   end
   object BitBtn5: TBitBtn
     Left = 88
@@ -3486,10 +3486,10 @@ object fNfce: TfNfce
     Width = 28
     Caption = '...'
     Enabled = False
-    OnClick = BitBtn5Click
     ParentShowHint = False
     ShowHint = True
     TabOrder = 7
+    OnClick = BitBtn5Click
   end
   object StatusBar1: TStatusBar
     Left = 0
@@ -3548,8 +3548,8 @@ object fNfce: TfNfce
     Top = 88
     object acFechar: TAction
       Caption = 'Fechar-F9'
-      OnExecute = acFecharExecute
       ShortCut = 120
+      OnExecute = acFecharExecute
     end
   end
   object ACBrNFeDANFeESCPOS1: TACBrNFeDANFeESCPOS

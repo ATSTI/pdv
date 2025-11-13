@@ -230,6 +230,13 @@ end;
 
 procedure TfAbreCaixa.FormShow(Sender: TObject);
 begin
+  if (dmPdv.usoSistema = 'ATS')then
+  begin
+    Label2.Visible:= True;
+    edValor.Visible:= True;
+  end;
+
+
   dtData.Date:=Now;
   dmPdv.busca_sql('SELECT NOMECAIXA FROM CAIXA_CONTROLE ' +
     ' WHERE CODCAIXA = ' + dmpdv.ccusto_padrao +

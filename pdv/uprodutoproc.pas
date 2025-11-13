@@ -58,6 +58,7 @@ type
     codProd: String;
     precoVenda: Double;
     quantidadeVenda: Double;
+    quantidadeVendaFormatada: String;
     precoVendaAtacado: Double;
     qtdeAtacado: Double;
     estoque: Double;
@@ -295,6 +296,7 @@ end;
 procedure TfProdutoProc.busca(codigo: String; barCode: String; produtoDesc: String; inativo: Boolean);
 var sqlProc: String;
   cod_bs: String;
+  cod_bsD: Double;
   sqlP: String;
   busca_wrd: String;
   j: integer;
@@ -363,7 +365,7 @@ begin
       sqlProc := sqlProc + ' AND COD_BARRA = ' + QuotedStr(barCode);
     end;
   end;
-  if (produtoDesc <> '') then
+  if (produtoDesc <> '') then   // 366 para 382
   begin
     i := 0;
     j := WordCount(produtoDesc, [' ']);
@@ -384,7 +386,7 @@ begin
   dmPdv.sqBusca.SQL.Clear;
   dmPdv.sqBusca.SQL.Add(sqlProc);
   dmPdv.sqBusca.Active:=True;
-  if ((dmPdv.sqBusca.IsEmpty) and (barCode <> '')) then
+  if ((dmPdv.sqBusca.IsEmpty) and (barCode = '')) then
   begin
     sqlProc := 'SELECT * FROM PRODUTOS ';
     sqlProc := sqlProc + 'WHERE ((USA IS NULL) OR (USA <> ' +
@@ -396,6 +398,7 @@ begin
       sqlProc := sqlProc + ' AND COD_BARRA LIKE ' +
          QuotedStr(Copy(barCode,0,12) + '%');
     end;
+    ShowMessage(sqlProc);
     if (dmPdv.sqBusca.Active) then
       dmPdv.sqBusca.Close;
     dmPdv.sqBusca.SQL.Clear;
@@ -432,8 +435,11 @@ begin
       quantidadeVenda := 1;
       if (dmPdv.tipo_CodBarra = 'PESO') then
       begin
+
         precoVenda := dmPdv.sqBusca.FieldByName('VALOR_PRAZO').AsFloat;
         quantidadeVenda := StrToFloat(cod_bs)/1000;
+        //quantidadeVendaFormatada := FloatToStrF(quantidadeVenda, ffFixed, 0, 2);
+
       end
       else
         precoVenda := StrToFloat(cod_bs);

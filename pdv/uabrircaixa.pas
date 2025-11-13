@@ -357,7 +357,18 @@ begin
     end;
     Writeln(IMPRESSORA, 'Cheque         - ' + edCheque.Text);
     Writeln(IMPRESSORA, 'PIX            - ' + edPix.Text);
-    Writeln(IMPRESSORA, 'PIX-SERVIPA    - ' + edPixServipa.Text);
+
+    if(dmpdv.Usa_Servipa = 'SIM')then
+    begin
+      Writeln(IMPRESSORA, 'PIX-SERVIPA    - ' + edPixServipa.Text);
+    end;
+
+    if(dmpdv.Usa_Servipa = 'NAO')then
+    begin
+      Writeln(IMPRESSORA, 'OUTROS         - ' + edPixServipa.Text);
+    end;
+
+
     if (edFaturado.Text <> '0,00') then
     begin
     Writeln(IMPRESSORA, 'Faturado       - ' + edFaturado.Text);
@@ -366,7 +377,7 @@ begin
     Writeln(IMPRESSORA, '');
     //Writeln(IMPRESSORA, 'Total Liquido  - ' + edTLiquido.Text);
     Writeln(IMPRESSORA, '---------------------------');
-    Writeln(IMPRESSORA, 'Total Vendas   - ' + edTBruto.Text);
+    Writeln(IMPRESSORA, 'Total Vendas      - ' + edTBruto.Text);
     //Writeln(IMPRESSORA, 'Saldo Abertura  - ' + edTLiquido.Text);
     Writeln(IMPRESSORA, '');
     Writeln(IMPRESSORA, '');
@@ -436,6 +447,12 @@ end;
 
 procedure TfAbrirCaixa.FormShow(Sender: TObject);
 begin
+
+  if(dmpdv.Usa_Servipa = 'NAO')then
+  begin
+    Label22.Caption := 'Outros' ;
+  end;
+
   btnEnvSangria.Enabled := True;
   if (AbrirFechar = 'Abrir') then
   begin
@@ -456,18 +473,19 @@ begin
   dtData.Date:=Now;
   mostrarCaixa(dmPdv.varLogado);
 
-     dmPdv.sqUpdate.Close;
-    dmPdv.sqUpdate.SQL.Clear;
-    dmPdv.sqUpdate.SQL.Text := 'SELECT * FROM SERIES WHERE SERIE = ' +
+  dmPdv.sqUpdate.Close;
+  dmPdv.sqUpdate.SQL.Clear;
+  dmPdv.sqUpdate.SQL.Text := 'SELECT * FROM SERIES WHERE SERIE = ' +
       QuotedStr('NFCE-'+dmPdv.varLogado);
-    dmPdv.sqUpdate.Open;
+  dmPdv.sqUpdate.Open;
     seriecx := dmPdv.sqUpdate.FieldByName('SERIE').AsString;
     numcx := dmPdv.sqUpdate.FieldByName('ULTIMO_NUMERO').AsInteger;
     numcodserie := dmPdv.sqUpdate.FieldByName('CODSERIE').AsString;
-    dmPdv.sqUpdate.Close;
+  dmPdv.sqUpdate.Close;
     Label16.Caption:= seriecx;
     Label17.Caption:= IntToStr(numcx);
     Label18.Caption:= numcodserie;
+
 end;
 
 procedure TfAbrirCaixa.mostrarCaixa(usuarioCX: String);

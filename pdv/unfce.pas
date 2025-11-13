@@ -171,6 +171,8 @@ var
   fNfce: TfNfce;
 
 implementation
+uses
+ACBrNFe.Classes,ACBrDFe.Conversao;
 
 {$R *.lfm}
 
@@ -821,6 +823,7 @@ var
  vlr_pg_acum: Double;
  num_parc: Integer;
  conta_parc: Integer;
+ total_nota: Double;
 begin
   // gerar nfce
   if (dmPdv.sqEmpresa.Active) then
@@ -991,7 +994,11 @@ begin
       end
       else if trim(dmPdv.sqBusca.FieldByName('FORMA_PGTO').AsString) = '6' then
       begin
-        tPag := fpPagamentoInstantaneo;
+        tPag := fpPagamentoInstantaneo; //
+        tpIntegra := tiPagNaoIntegrado;
+        //indPag:= ipVista;
+        //CNPJ:= '16501555000157';
+        //cAut:='0001';
       end;
       //else
       //  tPag := fpOutro;
@@ -1067,7 +1074,34 @@ begin
       Total.ISSQNTot.vPIS    := 0;
       Total.ISSQNTot.vCOFINS := 0;
 
+      //Reforma Tributaria
 
+      if(dmPdv.ReformaTributaria = 'SIM') then
+      begin
+
+        total_nota := dmPdv.sqLancamentosVALTOTAL.AsFloat;
+
+        Total.IBSCBSTot.vBCIBSCBS := dmPdv.sqLancamentosVALTOTAL.AsFloat;
+
+        Total.IBSCBSTot.gIBS.vIBS := ((dmPdv.sqLancamentosVALTOTAL.AsFloat*0.10)/100);//  0.83;
+        Total.IBSCBSTot.gIBS.vCredPres := 0.00;
+        Total.IBSCBSTot.gIBS.vCredPresCondSus := 0.00;
+
+        Total.IBSCBSTot.gIBS.gIBSUFTot.vDif := 0.00;
+        Total.IBSCBSTot.gIBS.gIBSUFTot.vDevTrib := 0.00;
+        Total.IBSCBSTot.gIBS.gIBSUFTot.vIBSUF := ((dmPdv.sqLancamentosVALTOTAL.AsFloat*0.10)/100);
+
+        Total.IBSCBSTot.gIBS.gIBSMunTot.vDif := 0.00;
+        Total.IBSCBSTot.gIBS.gIBSMunTot.vDevTrib := 0.00;
+        Total.IBSCBSTot.gIBS.gIBSMunTot.vIBSMun := 0.00;
+
+        Total.IBSCBSTot.gCBS.vDif := 0.00;
+        Total.IBSCBSTot.gCBS.vDevTrib := 0.00;
+        Total.IBSCBSTot.gCBS.vCBS := ((dmPdv.sqLancamentosVALTOTAL.AsFloat*0.90)/100);
+        Total.IBSCBSTot.gCBS.vCredPres := 0.00;
+        Total.IBSCBSTot.gCBS.vCredPresCondSus := 0.00;
+
+      end;
 
    end;
 ////
@@ -1126,6 +1160,7 @@ var contaItens :integer;
   ncm_str: String;
   num_itens: Integer;
   icms_cst: String;
+  IBSCBS: TIBSCBS;
 begin
   desconto_rateio := 0;
   desc_rateado := 0;
@@ -1322,6 +1357,27 @@ begin
                 CST := cst90
               else
                 CST := cst00;
+            end;
+
+            //Reforma Tributaria
+            if(dmPdv.ReformaTributaria = 'SIM') then
+            begin
+
+              IBSCBS.CST := cst000;
+              IBSCBS.cClassTrib := ct000001;
+
+              IBSCBS.gIBSCBS.vBC := dmPdv.cdsItensNFVALTOTAL.AsFloat;
+
+              IBSCBS.gIBSCBS.gIBSUF.pIBSUF := 0.10;
+              IBSCBS.gIBSCBS.gIBSUF.vIBSUF := ((dmPdv.cdsItensNFVALTOTAL.AsFloat*0.10)/100);
+
+              IBSCBS.gIBSCBS.gIBSMun.pIBSMun := 0;
+              IBSCBS.gIBSCBS.gIBSMun.vIBSMun := 0;
+
+              IBSCBS.gIBSCBS.gCBS.pCBS := 0.90;
+              IBSCBS.gIBSCBS.gCBS.vCBS := ((dmPdv.cdsItensNFVALTOTAL.AsFloat*0.90)/100);
+
+              //IBSCBS.gIBSCBS.vIBS := 0.001;
             end;
 
             if Trim(dmPdv.sqLancamentosORIGEM.AsString) = '0' then
@@ -1976,13 +2032,25 @@ begin
   ACBrNFe1.Configuracoes.Geral.CSC := dmPdv.tk;
   ACBrNFe1.Configuracoes.WebServices.TimeOut := 35000;
 
-  if (not DirectoryExists(dmpdv.path_xml + '\NFce')) then
-    CreateDir(dmpdv.path_xml + '\NFce');
-  if (not DirectoryExists(dmpdv.path_xml + '\Eventos')) then
-    CreateDir(dmpdv.path_xml + '\Eventos');
+  if(dmPdv.path_xml_alternativo = '') then
+  begin
+    if (not DirectoryExists(dmpdv.path_xml + '\NFce')) then
+      CreateDir(dmpdv.path_xml + '\NFce');
+    if (not DirectoryExists(dmpdv.path_xml + '\Eventos')) then
+      CreateDir(dmpdv.path_xml + '\Eventos');
+    AcbrNfe1.Configuracoes.Arquivos.PathSalvar := dmpdv.path_xml + '\NFce';
+    AcbrNfe1.Configuracoes.Arquivos.PathEvento := dmpdv.path_xml + '\Eventos';
+  end;
 
-  AcbrNfe1.Configuracoes.Arquivos.PathSalvar := dmpdv.path_xml + '\NFce';
-  AcbrNfe1.Configuracoes.Arquivos.PathEvento := dmpdv.path_xml + '\Eventos';
+  if(dmPdv.path_xml_alternativo <> '') then
+  begin
+    if (not DirectoryExists(dmpdv.path_xml_alternativo + '\NFce')) then
+      CreateDir(dmpdv.path_xml + '\NFce');
+    if (not DirectoryExists(dmpdv.path_xml_alternativo + '\Eventos')) then
+      CreateDir(dmpdv.path_xml + '\Eventos');
+    AcbrNfe1.Configuracoes.Arquivos.PathSalvar := dmpdv.path_xml_alternativo + '\NFce';
+    AcbrNfe1.Configuracoes.Arquivos.PathEvento := dmpdv.path_xml_alternativo + '\Eventos';
+  end;
 
   //ACBrNFe1.Configuracoes.WebServices.UFCodigo := 35;
   if (Trim(dmPdv.sqEmpresaTIPO.AsString) = '1') then

@@ -6,12 +6,12 @@ object fPDV_Rec: TfPDV_Rec
   Caption = 'Frente De caixa'
   ClientHeight = 584
   ClientWidth = 776
+  PopupMenu = PopupMenu1
+  Position = poScreenCenter
+  LCLVersion = '4.0.0.4'
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  PopupMenu = PopupMenu1
-  Position = poScreenCenter
-  LCLVersion = '3.4.0.0'
   object GroupBox1: TGroupBox
     Left = 0
     Height = 584
@@ -59,8 +59,8 @@ object fPDV_Rec: TfPDV_Rec
         MaxLength = 0
         ParentFont = False
         TabOrder = 0
-        OnKeyPress = edPagamentoKeyPress
         SpaceChar = '_'
+        OnKeyPress = edPagamentoKeyPress
       end
       object edVendedor: TMaskEdit
         Left = 408
@@ -78,8 +78,8 @@ object fPDV_Rec: TfPDV_Rec
         MaxLength = 0
         ParentFont = False
         TabOrder = 1
-        OnKeyPress = edPagamentoKeyPress
         SpaceChar = '_'
+        OnKeyPress = edPagamentoKeyPress
       end
       object BitBtn22: TBitBtn
         Left = 368
@@ -87,8 +87,8 @@ object fPDV_Rec: TfPDV_Rec
         Top = 15
         Width = 32
         Caption = '...'
-        OnClick = BitBtn22Click
         TabOrder = 2
+        OnClick = BitBtn22Click
       end
       object Label9: TLabel
         Left = 16
@@ -172,9 +172,9 @@ object fPDV_Rec: TfPDV_Rec
         ParentFont = False
         PopupMenu = PopupMenu1
         TabOrder = 2
-        OnKeyPress = edPagamentoKeyPress
         Text = '0,00'
         SpaceChar = '_'
+        OnKeyPress = edPagamentoKeyPress
       end
       object lblForma: TLabel
         Left = 224
@@ -208,8 +208,8 @@ object fPDV_Rec: TfPDV_Rec
         ParentFont = False
         PopupMenu = PopupMenu1
         TabOrder = 1
-        OnKeyPress = edVDescontoKeyPress
         SpaceChar = '_'
+        OnKeyPress = edVDescontoKeyPress
       end
       object btnDsc: TBitBtn
         Left = 224
@@ -217,8 +217,8 @@ object fPDV_Rec: TfPDV_Rec
         Top = 40
         Width = 32
         Caption = 'R$'
-        OnClick = btnDscClick
         TabOrder = 3
+        OnClick = btnDscClick
       end
       object Label6: TLabel
         Left = 8
@@ -255,9 +255,9 @@ object fPDV_Rec: TfPDV_Rec
         ParentFont = False
         ReadOnly = True
         TabOrder = 0
-        OnKeyPress = edPagamentoKeyPress
         Text = '0,00'
         SpaceChar = '_'
+        OnKeyPress = edPagamentoKeyPress
       end
       object Label7: TLabel
         Left = 8
@@ -1330,8 +1330,8 @@ object fPDV_Rec: TfPDV_Rec
             55FF0CAE54FF13B157FF13B159FF11B059FF0BAE56FF0AAE56FF07AC54FF0DAC
             55FF15A354FF09562FFF070907FF070903FF
           }
-          OnClick = BitBtn1Click
           TabOrder = 0
+          OnClick = BitBtn1Click
         end
         object BitBtn2: TBitBtn
           Left = 80
@@ -1543,8 +1543,8 @@ object fPDV_Rec: TfPDV_Rec
             01FF874A01FF874A01FF874A01FF874A01FF874A01FF874A01FF874A01FF874A
             01FF874A01FF874A01FF874A00FF874A00FF874A00FF874A00FF
           }
-          OnClick = BitBtn2Click
           TabOrder = 1
+          OnClick = BitBtn2Click
         end
         object BitBtn4: TBitBtn
           Left = 80
@@ -1552,8 +1552,8 @@ object fPDV_Rec: TfPDV_Rec
           Top = 184
           Width = 152
           Caption = 'Outros Cartões'
-          OnClick = BitBtn4Click
           TabOrder = 2
+          OnClick = BitBtn4Click
         end
         object BitBtn5: TBitBtn
           Left = 272
@@ -1561,8 +1561,8 @@ object fPDV_Rec: TfPDV_Rec
           Top = 184
           Width = 88
           Caption = 'Fechar'
-          OnClick = BitBtn5Click
           TabOrder = 3
+          OnClick = BitBtn5Click
         end
         object BitBtn3: TBitBtn
           Left = 80
@@ -1624,9 +1624,9 @@ object fPDV_Rec: TfPDV_Rec
             FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF667FFFFFFFFFFFFF
             FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000
           }
-          OnClick = BitBtn3Click
           TabOrder = 4
           Visible = False
+          OnClick = BitBtn3Click
         end
       end
       object Label3: TLabel
@@ -2030,12 +2030,12 @@ object fPDV_Rec: TfPDV_Rec
           0000000000000000000000000000000000000000000000000000
         }
         Layout = blGlyphBottom
-        OnClick = BitBtn24Click
         ParentFont = False
         ParentShowHint = False
         PopupMenu = PopupMenu1
         ShowHint = True
         TabOrder = 1
+        OnClick = BitBtn24Click
       end
       object BitBtn27: TBitBtn
         Left = 8
@@ -2184,11 +2184,11 @@ object fPDV_Rec: TfPDV_Rec
           0000000000000000000000000000000000000000000000000000
         }
         Layout = blGlyphBottom
-        OnClick = acVoltarVendaExecute
         ParentFont = False
         ParentShowHint = False
         ShowHint = True
         TabOrder = 2
+        OnClick = acVoltarVendaExecute
       end
       object btnCadeira: TBitBtn
         Left = 8
@@ -2196,9 +2196,9 @@ object fPDV_Rec: TfPDV_Rec
         Top = 370
         Width = 90
         Caption = 'Cadeiras'
-        OnClick = btnCadeiraClick
         TabOrder = 3
         Visible = False
+        OnClick = btnCadeiraClick
       end
       object btnRecSemImp: TBitBtn
         Left = 8
@@ -2207,8 +2207,8 @@ object fPDV_Rec: TfPDV_Rec
         Width = 98
         Align = alCustom
         Caption = 'Finalizar '
-        OnClick = btnRecSemImpClick
         TabOrder = 4
+        OnClick = btnRecSemImpClick
       end
       object Label13: TLabel
         Left = 52
@@ -3795,9 +3795,9 @@ object fPDV_Rec: TfPDV_Rec
           0000000000000000000000000000000000000000000000000000
         }
         Layout = blGlyphBottom
-        OnClick = btnCupomClick
         ParentFont = False
         TabOrder = 6
+        OnClick = btnCupomClick
       end
       object BitBtn19: TBitBtn
         Left = 16
@@ -4586,33 +4586,33 @@ object fPDV_Rec: TfPDV_Rec
     Left = 368
     object acDescontoValor: TAction
       Caption = 'acDescontoValor'
-      OnExecute = acDescontoValorExecute
       ShortCut = 118
+      OnExecute = acDescontoValorExecute
     end
     object acDescontoPercentual: TAction
       Caption = 'Des. % - F12'
-      OnExecute = acDescontoPercentualExecute
       ShortCut = 123
+      OnExecute = acDescontoPercentualExecute
     end
     object acCartaoDebito: TAction
       Caption = 'Cartão Débito-F2'
-      OnExecute = acCartaoDebitoExecute
       ShortCut = 113
+      OnExecute = acCartaoDebitoExecute
     end
     object acCartaoCredito: TAction
       Caption = 'Cartão Crédito-F3'
-      OnExecute = acCartaoCreditoExecute
       ShortCut = 114
+      OnExecute = acCartaoCreditoExecute
     end
     object acPrazo: TAction
       Caption = 'Crédito - F4'
-      OnExecute = acPrazoExecute
       ShortCut = 115
+      OnExecute = acPrazoExecute
     end
     object acCheque: TAction
       Caption = 'Cheque - F5'
-      OnExecute = acChequeExecute
       ShortCut = 116
+      OnExecute = acChequeExecute
     end
     object acFechar: TAction
       Caption = 'Fechar-F9'
@@ -4620,33 +4620,33 @@ object fPDV_Rec: TfPDV_Rec
     end
     object acDinheiro: TAction
       Caption = 'Dinheiro-F1'
-      OnExecute = acDinheiroExecute
       ShortCut = 112
+      OnExecute = acDinheiroExecute
     end
     object acExcluirLancamento: TAction
       Caption = 'Excluir Baixa'
-      OnExecute = acExcluirLancamentoExecute
       ShortCut = 121
+      OnExecute = acExcluirLancamentoExecute
     end
     object acCancelaFechamento: TAction
       Caption = 'Cancelar Fechamento'
-      OnExecute = acCancelaFechamentoExecute
       ShortCut = 122
+      OnExecute = acCancelaFechamentoExecute
     end
     object acNfce: TAction
       Caption = 'NFCe-F8'
-      OnExecute = acNfceExecute
       ShortCut = 119
+      OnExecute = acNfceExecute
     end
     object acVoltarVenda: TAction
       Caption = 'Voltar-F12'
-      OnExecute = acVoltarVendaExecute
       ShortCut = 123
+      OnExecute = acVoltarVendaExecute
     end
     object actionPix: TAction
       Caption = 'Pix'
-      OnExecute = actionPixExecute
       ShortCut = 117
+      OnExecute = actionPixExecute
     end
     object actionPix_Servipa: TAction
       Caption = 'Pix Servipa'

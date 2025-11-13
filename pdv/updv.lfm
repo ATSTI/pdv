@@ -8,13 +8,13 @@ object fPdv: TfPdv
   ClientHeight = 664
   ClientWidth = 1108
   Color = clBlack
+  PopupMenu = PopupMenu1
+  Position = poWorkAreaCenter
+  LCLVersion = '4.0.0.4'
+  WindowState = wsMaximized
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  PopupMenu = PopupMenu1
-  Position = poWorkAreaCenter
-  LCLVersion = '3.4.0.0'
-  WindowState = wsMaximized
   object Panel1: TPanel
     Left = 0
     Height = 48
@@ -156,7 +156,6 @@ object fPdv: TfPdv
       Height = 42
       Top = 16
       Width = 90
-      OnClick = Image3Click
       Picture.Data = {
         0A544A706567496D6167654A040000FFD8FFE000104A46494600010100000100
         010000FFDB0043000302020302020303030304030304050805050404050A0707
@@ -196,6 +195,7 @@ object fPdv: TfPdv
       }
       Stretch = True
       Visible = False
+      OnClick = Image3Click
     end
     object btnVnd1: TBitBtn
       Left = 386
@@ -203,8 +203,8 @@ object fPdv: TfPdv
       Top = 5
       Width = 64
       Color = clGradientActiveCaption
-      OnClick = btnVnd1Click
       TabOrder = 0
+      OnClick = btnVnd1Click
     end
     object btnVnd2: TBitBtn
       Left = 449
@@ -212,8 +212,8 @@ object fPdv: TfPdv
       Top = 5
       Width = 64
       Color = clGradientActiveCaption
-      OnClick = btnVnd2Click
       TabOrder = 1
+      OnClick = btnVnd2Click
     end
     object btnVnd3: TBitBtn
       Left = 513
@@ -221,8 +221,8 @@ object fPdv: TfPdv
       Top = 5
       Width = 64
       Color = clGradientActiveCaption
-      OnClick = btnVnd3Click
       TabOrder = 2
+      OnClick = btnVnd3Click
     end
     object btnVnd4: TBitBtn
       Left = 577
@@ -230,8 +230,8 @@ object fPdv: TfPdv
       Top = 5
       Width = 64
       Color = clGradientActiveCaption
-      OnClick = btnVnd4Click
       TabOrder = 3
+      OnClick = btnVnd4Click
     end
     object btnVnd5: TBitBtn
       Left = 641
@@ -239,8 +239,8 @@ object fPdv: TfPdv
       Top = 5
       Width = 64
       Color = clGradientActiveCaption
-      OnClick = btnVnd5Click
       TabOrder = 4
+      OnClick = btnVnd5Click
     end
     object btnVnd6: TBitBtn
       Left = 706
@@ -248,8 +248,8 @@ object fPdv: TfPdv
       Top = 5
       Width = 64
       Color = clGradientActiveCaption
-      OnClick = btnVnd6Click
       TabOrder = 5
+      OnClick = btnVnd6Click
     end
     object btnVnd7: TBitBtn
       Left = 771
@@ -257,8 +257,8 @@ object fPdv: TfPdv
       Top = 5
       Width = 64
       Color = clGradientActiveCaption
-      OnClick = btnVnd7Click
       TabOrder = 6
+      OnClick = btnVnd7Click
     end
     object btnVnd8: TBitBtn
       Left = 835
@@ -266,8 +266,8 @@ object fPdv: TfPdv
       Top = 5
       Width = 64
       Color = clGradientActiveCaption
-      OnClick = btnVnd8Click
       TabOrder = 7
+      OnClick = btnVnd8Click
     end
     object pnBotoesSistema: TPanel
       Left = 1
@@ -737,10 +737,10 @@ object fPdv: TfPdv
           8077777777770EE6077888888888888880777777777770EE0788888888888888
           8000000000000000088888888888888888888888888888888888
         }
-        OnClick = BitBtn8Click
         ParentShowHint = False
         ShowHint = True
         TabOrder = 3
+        OnClick = BitBtn8Click
       end
       object btnInfo: TBitBtn
         Left = 176
@@ -769,8 +769,8 @@ object fPdv: TfPdv
           880FF08778FF0FFF8880FFF0FFF08778888000778FF0F0FFF888FFF0FF08778F
           F8880078FF0FF0FFFF88FFFFF08778FFFF88808FF0FFF0FFFFF8
         }
-        OnClick = btnInfoClick
         TabOrder = 4
+        OnClick = btnInfoClick
       end
     end
     object pnComanda: TPanel
@@ -1004,10 +1004,10 @@ object fPdv: TfPdv
         Top = 71
         Width = 28
         Caption = '...'
-        OnClick = BitBtn3Click
         ParentShowHint = False
         ShowHint = True
         TabOrder = 3
+        OnClick = BitBtn3Click
       end
       object Label7: TLabel
         Left = 3
@@ -1063,10 +1063,10 @@ object fPdv: TfPdv
         Top = 20
         Width = 28
         Caption = '...'
-        OnClick = BitBtn2Click
         ParentShowHint = False
         ShowHint = True
         TabOrder = 6
+        OnClick = BitBtn2Click
       end
     end
     object pnLogo: TPanel
@@ -11609,7 +11609,7 @@ object fPdv: TfPdv
           ParentFont = False
         end
         object edProduto: TEdit
-          Left = 4
+          Left = 6
           Height = 30
           Hint = 'Use F1 para Consulta (F1 para voltar)'
           Top = 28
@@ -11638,10 +11638,10 @@ object fPdv: TfPdv
           Top = 28
           Width = 28
           Caption = '...'
-          OnClick = btnProdutoProcClick
           ParentShowHint = False
           ShowHint = True
           TabOrder = 1
+          OnClick = btnProdutoProcClick
         end
         object BitBtn4: TBitBtn
           Left = 234
@@ -11649,8 +11649,8 @@ object fPdv: TfPdv
           Top = 72
           Width = 48
           Caption = '... F5'
-          OnClick = BitBtn4Click
           TabOrder = 2
+          OnClick = BitBtn4Click
         end
         object edProduto_copia: TEdit
           Left = 16
@@ -11710,10 +11710,10 @@ object fPdv: TfPdv
           ParentFont = False
           ReadOnly = True
           TabOrder = 0
-          OnChange = edQtdeChange
-          OnKeyPress = edQtdeKeyPress
           Text = '1'
           SpaceChar = '_'
+          OnChange = edQtdeChange
+          OnKeyPress = edQtdeKeyPress
         end
       end
       object pnPreco: TPanel
@@ -11746,10 +11746,10 @@ object fPdv: TfPdv
           MaxLength = 0
           ParentFont = False
           TabOrder = 0
-          OnChange = edPrecoChange
-          OnKeyPress = edPrecoKeyPress
           Text = '0,00'
           SpaceChar = '_'
+          OnChange = edPrecoChange
+          OnKeyPress = edPrecoKeyPress
         end
         object Label15: TLabel
           Left = 7
@@ -11784,10 +11784,10 @@ object fPdv: TfPdv
           Top = 14
           Width = 28
           Caption = '... F5'
-          OnClick = BitBtn4Click
           ParentShowHint = False
           ShowHint = True
           TabOrder = 1
+          OnClick = BitBtn4Click
         end
       end
       object edProdutoDesc: TMemo
@@ -11933,7 +11933,7 @@ object fPdv: TfPdv
         Height = 23
         Top = 12
         Width = 344
-        EditLabel.Height = 15
+        EditLabel.Height = 23
         EditLabel.Width = 51
         EditLabel.Caption = 'Descrição'
         EditLabel.ParentColor = False
@@ -12046,8 +12046,8 @@ object fPdv: TfPdv
             8077777777770EE6077888888888888880777777777770EE0788888888888888
             8000000000000000088888888888888888888888888888888888
           }
-          OnClick = BitBtn11Click
           TabOrder = 0
+          OnClick = BitBtn11Click
         end
         object lblProdBusca: TLabel
           Left = 24
@@ -12063,6 +12063,36 @@ object fPdv: TfPdv
           Font.Quality = fqDraft
           ParentColor = False
           ParentFont = False
+        end
+        object btnCorrigiValor: TButton
+          Left = 112
+          Height = 25
+          Top = 16
+          Width = 120
+          Caption = 'Corrigir Valor'
+          TabOrder = 1
+          OnClick = btnCorrigiValorClick
+        end
+        object edCorrigiPreco: TMaskEdit
+          Left = 240
+          Height = 35
+          Top = 8
+          Width = 112
+          Alignment = taRightJustify
+          EnableSets = False
+          Font.CharSet = ANSI_CHARSET
+          Font.Height = -19
+          Font.Name = 'Comic Sans MS'
+          Font.Pitch = fpVariable
+          Font.Quality = fqDraft
+          Font.Style = [fsBold]
+          MaxLength = 0
+          ParentFont = False
+          TabOrder = 2
+          Text = '0,00'
+          SpaceChar = '_'
+          OnChange = edPrecoChange
+          OnKeyPress = edPreco1KeyPress
         end
       end
     end
@@ -12247,9 +12277,9 @@ object fPdv: TfPdv
       end
     end
     object pnTroca: TPanel
-      Left = 288
+      Left = 264
       Height = 262
-      Top = 256
+      Top = 128
       Width = 470
       ClientHeight = 262
       ClientWidth = 470
@@ -12273,7 +12303,7 @@ object fPdv: TfPdv
         Left = 184
         Height = 15
         Top = 40
-        Width = 118
+        Width = 119
         Caption = 'TROCA / DEVOLUÇÃO'
         ParentColor = False
       end
@@ -12320,10 +12350,10 @@ object fPdv: TfPdv
           8077777777770EE6077888888888888880777777777770EE0788888888888888
           8000000000000000088888888888888888888888888888888888
         }
-        OnClick = BitBtn13Click
         ParentShowHint = False
         ShowHint = True
         TabOrder = 1
+        OnClick = BitBtn13Click
       end
       object TIButton2: TTIButton
         Left = 200
@@ -12352,7 +12382,7 @@ object fPdv: TfPdv
     object pnInfo: TPanel
       Left = 6
       Height = 362
-      Top = 101
+      Top = 80
       Width = 565
       ClientHeight = 362
       ClientWidth = 565
@@ -12398,8 +12428,8 @@ object fPdv: TfPdv
           8077777777770EE6077888888888888880777777777770EE0788888888888888
           8000000000000000088888888888888888888888888888888888
         }
-        OnClick = BitBtn9Click
         TabOrder = 0
+        OnClick = BitBtn9Click
       end
       object Label13: TLabel
         Left = 21
@@ -12465,9 +12495,9 @@ object fPdv: TfPdv
       end
     end
     object pnAltera: TPanel
-      Left = 80
+      Left = 88
       Height = 247
-      Top = 216
+      Top = 190
       Width = 413
       BorderStyle = bsSingle
       ClientHeight = 243
@@ -12496,9 +12526,9 @@ object fPdv: TfPdv
         MaxLength = 0
         ParentFont = False
         TabOrder = 0
-        OnKeyPress = edQtde1KeyPress
         Text = '1'
         SpaceChar = '_'
+        OnKeyPress = edQtde1KeyPress
       end
       object Label17: TLabel
         Left = 94
@@ -12548,10 +12578,10 @@ object fPdv: TfPdv
         MaxLength = 0
         ParentFont = False
         TabOrder = 1
-        OnChange = edPrecoChange
-        OnKeyPress = edPreco1KeyPress
         Text = '0,00'
         SpaceChar = '_'
+        OnChange = edPrecoChange
+        OnKeyPress = edPreco1KeyPress
       end
       object Label19: TLabel
         Left = 67
@@ -12585,9 +12615,9 @@ object fPdv: TfPdv
         MaxLength = 0
         ParentFont = False
         TabOrder = 2
-        OnKeyPress = edDescontoKeyPress
         Text = '0,00'
         SpaceChar = '_'
+        OnKeyPress = edDescontoKeyPress
       end
       object cbPercentual: TCheckBox
         Left = 293
@@ -12625,8 +12655,8 @@ object fPdv: TfPdv
           8077777777770EE6077888888888888880777777777770EE0788888888888888
           8000000000000000088888888888888888888888888888888888
         }
-        OnClick = BitBtn10Click
         TabOrder = 4
+        OnClick = BitBtn10Click
       end
     end
     object pnProdutoNaoLocalizado: TPanel
@@ -12668,8 +12698,8 @@ object fPdv: TfPdv
           8077777777770EE6077888888888888880777777777770EE0788888888888888
           8000000000000000088888888888888888888888888888888888
         }
-        OnClick = BitBtn12Click
         TabOrder = 0
+        OnClick = BitBtn12Click
       end
       object Label20: TLabel
         Left = 72
@@ -12707,40 +12737,40 @@ object fPdv: TfPdv
     Left = 704
     Top = 152
     object acReceber: TAction
-      OnExecute = acReceberExecute
       ShortCut = 115
+      OnExecute = acReceberExecute
     end
     object acFechar: TAction
-      OnExecute = acFecharExecute
       ShortCut = 120
+      OnExecute = acFecharExecute
     end
     object acProcurar: TAction
-      OnExecute = acProcurarExecute
       ShortCut = 119
+      OnExecute = acProcurarExecute
     end
     object acNova: TAction
-      OnExecute = acNovaExecute
       ShortCut = 113
+      OnExecute = acNovaExecute
     end
     object acExcluirItemPedido: TAction
       Caption = 'Exluir Item/Pedido-F12'
-      OnExecute = acExcluirItemPedidoExecute
       ShortCut = 123
+      OnExecute = acExcluirItemPedidoExecute
     end
     object acQuantidade: TAction
       Caption = 'Alterar Quantidade'
-      OnExecute = acQuantidadeExecute
       ShortCut = 116
+      OnExecute = acQuantidadeExecute
     end
     object acConsultaItem: TAction
       Caption = 'Consulta Produto'
-      OnExecute = acConsultaItemExecute
       ShortCut = 112
+      OnExecute = acConsultaItemExecute
     end
     object acComandaJuntar: TAction
       Caption = 'Juntar Comandas'
-      OnExecute = acComandaJuntarExecute
       ShortCut = 114
+      OnExecute = acComandaJuntarExecute
     end
     object acEnviarPedido: TAction
       Caption = 'Enviar Pedido'

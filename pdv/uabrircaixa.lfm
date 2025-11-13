@@ -6,9 +6,9 @@ object fAbrirCaixa: TfAbrirCaixa
   Caption = 'Caixa'
   ClientHeight = 358
   ClientWidth = 575
-  OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '3.4.0.0'
+  LCLVersion = '4.0.0.4'
+  OnShow = FormShow
   object Panel1: TPanel
     Left = -1
     Height = 280
@@ -681,8 +681,8 @@ object fAbrirCaixa: TfAbrirCaixa
         0000000000000000000000000000000000000000000000000000
       }
       Layout = blGlyphRight
-      OnClick = btnAbrefechaClick
       TabOrder = 2
+      OnClick = btnAbrefechaClick
     end
     object BitBtn24: TBitBtn
       Left = 353
@@ -829,11 +829,11 @@ object fAbrirCaixa: TfAbrirCaixa
         0000000000000000000000000000000000000000000000000000
       }
       Layout = blGlyphBottom
-      OnClick = BitBtn24Click
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
       TabOrder = 3
+      OnClick = BitBtn24Click
     end
     object btnSair: TBitBtn
       Left = 460
@@ -940,8 +940,8 @@ object fAbrirCaixa: TfAbrirCaixa
         C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
         C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
       }
-      OnClick = btnSairClick
       TabOrder = 4
+      OnClick = btnSairClick
     end
     object btnEnvSangria: TBitBtn
       Left = 232
@@ -1088,9 +1088,9 @@ object fAbrirCaixa: TfAbrirCaixa
         0000000000000000000000000000000000000000000000000000
       }
       Layout = blGlyphRight
-      OnClick = btnEnvSangriaClick
       ParentFont = False
       TabOrder = 5
+      OnClick = btnEnvSangriaClick
     end
   end
   object edPixServipa: TMaskEdit

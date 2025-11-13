@@ -737,13 +737,14 @@ object fMovimentoProc: TfMovimentoProc
         Width = 80
       end    
       item
-        Alignment = taRightJustify
-        Title.Alignment = taRightJustify
-        Title.Caption = 'Tempo'
+        Alignment = taLeftJustify
+        Title.Caption = 'Forma'
         Width = 106
       end    
       item
-        Title.Caption = 'Forma'
+        Alignment = taRightJustify
+        Title.Alignment = taRightJustify
+        Title.Caption = 'Tempo'
         Width = 106
       end>
     DataSource = dsMovProc

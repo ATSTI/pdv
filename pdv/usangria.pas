@@ -98,7 +98,7 @@ var
   fSangria: TfSangria;
 
 implementation
-  uses uPdv,uMovimentoProc,uabrircaixa;
+  uses uPdv,uMovimentoProc,uabrircaixa,uPermissaoCX;
 {$R *.lfm}
 
 { TfSangria }
@@ -326,6 +326,17 @@ end;
 
 procedure TfSangria.FormShow(Sender: TObject);
 begin
+  if(dmpdv.SenhaAbrirCX = 'SIM')then
+  begin
+    fPermissaoCX.ShowModal;
+    if (fPermissaoCX.Permissao_Fazer = 'NAO') then
+    begin
+      fSangria.Close;
+      Exit;
+    end;
+  end;
+
+
   edMotivo.Text := '';
   edValor.Text := '0,00';
   fAbrirCaixa.cxsangria := 1 ;

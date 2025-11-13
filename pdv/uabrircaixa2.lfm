@@ -6,9 +6,9 @@ object fAbreCaixa: TfAbreCaixa
   Caption = 'Abertura do Caixa'
   ClientHeight = 278
   ClientWidth = 522
+  LCLVersion = '4.0.0.4'
   OnCreate = FormCreate
   OnShow = FormShow
-  LCLVersion = '3.4.0.0'
   object Panel1: TPanel
     Left = 0
     Height = 139
@@ -157,8 +157,8 @@ object fAbreCaixa: TfAbreCaixa
         0000000000000000000000000000000000000000000000000000
       }
       Layout = blGlyphRight
-      OnClick = btnAbrefechaClick
       TabOrder = 0
+      OnClick = btnAbrefechaClick
     end
     object btnSair: TBitBtn
       Left = 371
@@ -265,8 +265,8 @@ object fAbreCaixa: TfAbreCaixa
         C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
         C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
       }
-      OnClick = btnSairClick
       TabOrder = 1
+      OnClick = btnSairClick
     end
     object btnAbreCX: TBitBtn
       Left = 85
@@ -274,9 +274,9 @@ object fAbreCaixa: TfAbreCaixa
       Top = 35
       Width = 75
       Caption = 'btnAbreCX'
-      OnClick = btnAbreCXClick
       TabOrder = 2
       Visible = False
+      OnClick = btnAbreCXClick
     end
     object Label3: TLabel
       Left = 88
@@ -320,6 +320,7 @@ object fAbreCaixa: TfAbreCaixa
       CenturyFrom = 1941
       MaxDate = 2958465
       MinDate = 36892
+      ReadOnly = True
       Font.CharSet = ANSI_CHARSET
       Font.Height = -17
       Font.Name = 'Arial'

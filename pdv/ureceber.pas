@@ -25,6 +25,7 @@ type
     BitBtn20: TBitBtn;
     BitBtn21: TBitBtn;
     BitBtn22: TBitBtn;
+    BitBtn23: TBitBtn;
     BitBtn24: TBitBtn;
     BitBtn3: TBitBtn;
     BitBtn4: TBitBtn;
@@ -99,6 +100,7 @@ type
     procedure BitBtn20Click(Sender: TObject);
     procedure BitBtn21Click(Sender: TObject);
     procedure BitBtn22Click(Sender: TObject);
+    procedure BitBtn23Click(Sender: TObject);
     procedure BitBtn24Click(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
@@ -251,6 +253,10 @@ begin
     BitBtn22.Visible:= False;
   end;
 
+  if(dmpdv.Usa_Servipa = 'SIM')then
+  begin
+    BitBtn22.Visible:= False;
+  end;
 
 end;
 
@@ -293,7 +299,7 @@ begin
 
    vt:=(StrToFloat(a) + StrToFloat(c)) ;
 
-   edPago1.Text:= FloatToStr(vt);
+   edPago1.Text:= FormatFloat('###0.00',(vt));  //  FloatToStr(vt);
    //pCod := (StringGrid1.Cells[StringGrid1.Col, StringGrid1.Row]);
    pCod := StringGrid1.Cells[0,d];
    Label3.Caption := pCod ;
@@ -609,7 +615,7 @@ begin
        dmPdv.sqBusca.Next;
      end;
      dmPdv.sqBusca.First;
-     edTotalGeral.Text := FormatFloat('#,,,0.00',total_rec);
+     edTotalGeral.Text := FormatFloat('###0.00',total_rec);
    end;
    if (UpperCase(dmpdv.usoSistema) = 'ODOO-LOCAL') then
    begin
@@ -642,7 +648,7 @@ begin
      sqlOdoo.Next;
      end;
      sqlOdoo.First;
-     edTotalGeral.Text := FormatFloat('#,,,0.00',total_rec);
+     edTotalGeral.Text := FormatFloat('###0.00',total_rec);
    end;
  end;
  edPago.Text:= '0,00';
@@ -707,6 +713,10 @@ begin
     vr_formaRec := '7';
   if (lblForma.Caption = '3-Credito') then
     vr_formaRec := '6';
+
+  if (lblForma.Caption = '0-Outros') then
+    vr_formaRec := '0';
+
 
   if (edPago.Text = '0,00') then
   begin
@@ -806,6 +816,10 @@ begin
             // Writeln(Impressora,'  Valor Pago : ' + edPago.Text);
             Writeln(IMPRESSORA, ' Valor Pago : ' + FormatFloat(',##0.00', StrToFloat(edPago.Text)));
             Writeln(Impressora,'--------------------------');
+            Writeln(IMPRESSORA, ' Valor Pago : ' + FormatFloat(',##0.00', StrToFloat(edPago.Text)));
+            Writeln(Impressora,'--------------------------');
+            Writeln(Impressora,'Forma Pagamento');
+            Writeln(Impressora,lblForma.Caption);
           end;
           if lFile[i] = 'pedido' then
           begin
@@ -855,9 +869,12 @@ begin
           begin
             Writeln(Impressora,'-------------------------');
             // Writeln(Impressora,'  Valor Pago : ' + edPago.Text);
+            Writeln(IMPRESSORA, ' Valor Devido : ' + FormatFloat(',##0.00', StrToFloat(edPago1.Text)));
+            Writeln(Impressora,'--------------------------');
             Writeln(IMPRESSORA, ' Valor Pago : ' + FormatFloat(',##0.00', StrToFloat(edPago.Text)));
             Writeln(Impressora,'--------------------------');
-            Writeln(Impressora,'');
+            Writeln(Impressora,'Forma Pagamento');
+            Writeln(Impressora,lblForma.Caption);
            end;
           if lFile[i] = 'pedido' then
           begin
@@ -1048,6 +1065,16 @@ begin
     if (titulo_selecionado = True) then
   begin
     lblForma.Caption:= '0-Pix Servipa';
+    edPago.Enabled:=True;
+    edPago.SetFocus;
+  end;
+end;
+
+procedure TfRecebimento.BitBtn23Click(Sender: TObject);
+begin
+  if (titulo_selecionado = True) then
+  begin
+    lblForma.Caption:= '0-Outros';
     edPago.Enabled:=True;
     edPago.SetFocus;
   end;

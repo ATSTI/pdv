@@ -1568,6 +1568,8 @@ begin
     strG := strG + ' Null, ';
   end;
   strG := strG + InttoStr(vCodVenda) + ', ';
+
+
   strG := strG + InttoStr(vCaixa_Local) + ', ';
   strG := strG + InttoStr(vVendedor) + ', ';
   strG := strG + InttoStr(vUsuario) + ', ';

@@ -2,22 +2,22 @@ object fProdutoProc: TfProdutoProc
   Left = 344
   Height = 512
   Top = 108
-  Width = 877
+  Width = 878
   Caption = 'Procura Produto'
   ClientHeight = 512
-  ClientWidth = 877
+  ClientWidth = 878
+  LCLVersion = '4.0.0.4'
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  LCLVersion = '3.4.0.0'
   object Panel1: TPanel
     Left = 0
     Height = 64
     Top = 0
-    Width = 877
+    Width = 878
     Align = alTop
     ClientHeight = 64
-    ClientWidth = 877
+    ClientWidth = 878
     Color = clSilver
     Font.CharSet = ANSI_CHARSET
     Font.Height = -37
@@ -225,10 +225,10 @@ object fProdutoProc: TfProdutoProc
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000
       }
-      OnClick = btnProcurarClick
       ParentShowHint = False
       ShowHint = True
       TabOrder = 5
+      OnClick = btnProcurarClick
     end
     object btnConfirma: TBitBtn
       Left = 728
@@ -368,10 +368,10 @@ object fProdutoProc: TfProdutoProc
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000
       }
-      OnClick = btnConfirmaClick
       ParentShowHint = False
       ShowHint = True
       TabOrder = 6
+      OnClick = btnConfirmaClick
     end
     object BitBtn2: TBitBtn
       Left = 776
@@ -671,10 +671,10 @@ object fProdutoProc: TfProdutoProc
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000
       }
-      OnClick = BitBtn2Click
       ParentShowHint = False
       ShowHint = True
       TabOrder = 7
+      OnClick = BitBtn2Click
     end
     object btnSair: TBitBtn
       Left = 824
@@ -782,10 +782,10 @@ object fProdutoProc: TfProdutoProc
         C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
         C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
       }
-      OnClick = btnSairClick
       ParentShowHint = False
       ShowHint = True
       TabOrder = 8
+      OnClick = btnSairClick
     end
     object cbSubGrupo: TComboBox
       Left = 412
@@ -852,7 +852,7 @@ object fProdutoProc: TfProdutoProc
     Left = 0
     Height = 448
     Top = 64
-    Width = 877
+    Width = 878
     Align = alClient
     Color = clWindow
     Columns = <    

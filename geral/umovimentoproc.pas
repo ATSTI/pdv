@@ -202,19 +202,25 @@ begin
   total := 0;
   qtde := 0;
   cod_venda_str:='';
-  while not dmPdv.sqBusca.EOF do
+
+  if(dmpdv.FiltrarPedidos = 'SIM')then
   begin
-    qtde := qtde + 1;
-    total := total + dmPdv.sqBusca.FieldByName('VALOR').AsFloat;
-    if (not dmPdv.sqBusca.FieldByName('CODVENDA').IsNull) then
+
+    while not dmPdv.sqBusca.EOF do
     begin
-      if (cod_venda_str = '') then
-        cod_venda_str += IntToStr(dmPdv.sqBusca.FieldByName('CODVENDA').AsInteger)
-      else
-        cod_venda_str += ',' + IntToStr(dmPdv.sqBusca.FieldByName('CODVENDA').AsInteger)
+      qtde := qtde + 1;
+      total := total + dmPdv.sqBusca.FieldByName('VALOR').AsFloat;
+      if (not dmPdv.sqBusca.FieldByName('CODVENDA').IsNull) then
+      begin
+        if (cod_venda_str = '') then
+          cod_venda_str += IntToStr(dmPdv.sqBusca.FieldByName('CODVENDA').AsInteger)
+        else
+          cod_venda_str += ',' + IntToStr(dmPdv.sqBusca.FieldByName('CODVENDA').AsInteger)
+      end;
+      dmPdv.sqBusca.Next;
     end;
-    dmPdv.sqBusca.Next;
   end;
+
   edValorTotal.Text:= FormatFloat('#,,,0.00',total);
   edQtdeLancamento.Text:= FormatFloat('#,,,0',qtde);
   if (not dmPdv.sqBusca.IsEmpty) then
@@ -402,9 +408,10 @@ begin
   DBGrid1.Columns[5].FieldName:='CLIENTE';
   DBGrid1.Columns[6].FieldName:='VALOR';
   DBGrid1.Columns[6].DisplayFormat:=',##0.00';
-  DBGrid1.Columns[7].FieldName:='TEMPO';
-  DBGrid1.Columns[7].DisplayFormat:=',##0.00';
-  DBGrid1.Columns[8].FieldName:='N_DOC';
+  DBGrid1.Columns[7].FieldName:='N_DOC';
+  DBGrid1.Columns[8].FieldName:='TEMPO';
+  DBGrid1.Columns[8].DisplayFormat:=',##0.00';
+
 end;
 
 procedure TfMovimentoProc.FormShow(Sender: TObject);
