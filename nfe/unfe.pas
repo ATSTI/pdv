@@ -86,6 +86,8 @@ type
     CCe: TTabSheet;
     Certificado: TTabSheet;
     CheckBox1: TCheckBox;
+    chek1: TRadioButton;
+    chek2: TRadioButton;
     chkScan: TCheckBox;
     chkTodas: TCheckBox;
     ckImpEAN: TCheckBox;
@@ -135,6 +137,7 @@ type
     GroupBox12: TGroupBox;
     GroupBox13: TGroupBox;
     GroupBox14: TGroupBox;
+    GroupBox16: TGroupBox;
     GroupBox2: TGroupBox;
     GroupBox3: TGroupBox;
     GroupBox4: TGroupBox;
@@ -294,6 +297,7 @@ type
     procedure btnValidarXMLClick(Sender: TObject);
     procedure btnValidaXMLClick(Sender: TObject);
     procedure btnStatusMenMemoClick(Sender: TObject);
+
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure cbCryptLibChange(Sender: TObject);
@@ -353,6 +357,7 @@ type
     c_custo_open: String;
     nota_selec: String;
     forma_pag: String;
+    resul : String;
     function validaNumNfeScan():Boolean;
     function GerarNFe: Boolean;
     procedure getPagamento;
@@ -387,8 +392,19 @@ type
     tipoNota: Char;
     codnf: integer;
     Protocolo, Recibo, str, vAux : String;
-
+    pReducaoIBS : double;
+    pReducaoCBS : double;
+    pRedcomRed : double;
+    pA : double;
+    total_ibs : double;
+    total_cbs : double;
+    total_nota : double;
+    pIBS_CBS : string;
+    pCASTRIB : string;
+    vpCBS  : double;
+    vpIBS  : double;
     function GetVersion :  string;
+
   end;
 
 var
@@ -706,6 +722,11 @@ begin
       else begin
         Protocolo := ACBrNFe1.WebServices.Consulta.protNFe.nProt;
       end;
+
+      if(chek1.Checked = True)then
+        ACBrNFeDANFeRL1.TipoDANFE := tiRetrato
+      else ACBrNFeDANFeRL1.TipoDANFE := tiPaisagem  ;
+
       ACBrNFe1.NotasFiscais.Imprimir;
       if (AcbrNfe1.WebServices.Consulta.Protocolo <> '') then
         ACBrNFe1.NotasFiscais.Items[0].GravarXML;
@@ -918,6 +939,9 @@ begin
       nfe_carregalogo;
       ACBrNFe1.NotasFiscais.Clear;
       CarregarXML(Copy(Trim(dmPdv.qcdsNFNOMEXML.AsString),0,44));
+      if(chek1.Checked = True)then
+        ACBrNFeDANFeRL1.TipoDANFE := tiRetrato
+      else ACBrNFeDANFeRL1.TipoDANFE := tiPaisagem  ;
       ACBrNFe1.NotasFiscais.ImprimirPDF;
     end;
     dmPdv.qcdsNf.Next;
@@ -1753,6 +1777,9 @@ begin
   begin
     ACBrNFe1.NotasFiscais.Assinar;
     ACBrNFe1.NotasFiscais.Validar;
+    if(chek1.Checked = True)then
+      ACBrNFeDANFeRL1.TipoDANFE := tiRetrato
+    else ACBrNFeDANFeRL1.TipoDANFE := tiPaisagem  ;
     ACBrNFe1.NotasFiscais.Imprimir;
   end
   else if (tp_amb = 4) then
@@ -1807,6 +1834,9 @@ begin
   begin
     Exit;
   end;
+  if(chek1.Checked = True)then
+    ACBrNFeDANFeRL1.TipoDANFE := tiRetrato
+  else ACBrNFeDANFeRL1.TipoDANFE := tiPaisagem  ;
   ACBrNFe1.NotasFiscais.Imprimir;
 end;
 
@@ -2082,6 +2112,8 @@ begin
   end;
 
 end;
+
+
 
 procedure TfNFe.Button3Click(Sender: TObject);
 begin
@@ -3171,6 +3203,12 @@ begin
       ' , LOTE ' +
       ' , DTAFAB ' +
       ' , DTAVCTO ' +
+      ' , md.CST_IBS_CBS ' +
+      ' , md.CCLASSTRIB ' +
+      ' , md.P_IBS ' +
+      ' , md.P_CBS ' +
+      ' , md.REDUCAO_IBS ' +
+      ' , md.REDUCAO_CBS ' +
 
       ' from compra cp  inner join MOVIMENTODETALHE md on md.CODMOVIMENTO = cp.CODMOVIMENTO ' +
       'inner join NOTAFISCAL nf on nf.CODVENDA = cp.CODCOMPRA ' +
@@ -3227,7 +3265,12 @@ begin
       ' , LOTE ' +
       ' , DTAFAB ' +
       ' , DTAVCTO ' +
-
+      ' , md.CST_IBS_CBS ' +
+      ' , md.CCLASSTRIB ' +
+      ' , md.P_IBS ' +
+      ' , md.P_CBS ' +
+      ' , md.REDUCAO_IBS ' +
+      ' , md.REDUCAO_CBS ' +
       ' from VENDA vd inner join MOVIMENTODETALHE md on md.CODMOVIMENTO = vd.CODMOVIMENTO ' +
       'inner join NOTAFISCAL nf on nf.CODVENDA = vd.CODVENDA ' +
       'inner join PRODUTOS pr on pr.CODPRODUTO = md.CODPRODUTO ' +
@@ -3622,6 +3665,8 @@ var
   nfe_itens_tottrib ,vu, valun ,vt, vUnTrib: String;
   ver_valor : Double;
   IBSCBS: TIBSCBS;
+  //LcClassTrib: TcClassTrib;
+  LCST      : TCSTIBSCBS;
  // Produto: TDetCollectionItem;
 begin
   BC := 0;
@@ -4103,57 +4148,142 @@ begin
           end;
 
           // Reforma Tributaria
-          {
-            Utilize os CST (cst000, cst200, cst220, cst510 e cst550) e os cClassTrib
-            correspondentes para gerar o grupo IBSCBS
-            Utilize o CST cst620 e os cClassTrib correspondentes para gerar o grupo
-            IBSCBSMono
-            Utilize o CST cst800 e os cClassTrib correspondentes para gerar o grupo
-            gTransfCred
-            Utilize o CST cst810 e os cClassTrib correspondentes para gerar o grupo
-            gCredPresIBSZFM
-          }
-
           if(dmPdv.ReformaTributaria = 'SIM' )then
           begin
-            IBSCBS.CST := cst000;
-            IBSCBS.cClassTrib := ct000001;
+
+            pIBS_CBS := dmPdv.cdsItensNFCST_IBS_CBS.AsString;
+            pCASTRIB := dmPdv.cdsItensNFCCLASSTRIB.AsString;
+
+          //  DecimalSeparator := '.';
+            pReducaoIBS := StrToFloat(dmPdv.cdsItensNFP_IBS.AsString);
+            pReducaoCBS := StrToFloat(dmPdv.cdsItensNFP_CBS.AsString);
+
+            pRedcomRed  := dmPdv.cdsItensNFREDUCAO_CBS.AsFloat;
+
+            // CST
+            for LCST := Low(TCSTIBSCBS) to High(TCSTIBSCBS) do
+            begin
+              if Trim(pIBS_CBS) = TCSTIBSCBSArrayStrings[LCST] then
+              begin
+                IBSCBS.CST := LCST;
+              end;
+            end;
+
+            // CASTRIB
+            {
+            for LcClassTrib := Low(TcClassTrib) to High(TcClassTrib) do
+            begin
+              if Trim(pCASTRIB) = TcClassTribArrayStrings[LcClassTrib] then
+              begin
+                IBSCBS.cClassTrib := LcClassTrib;
+              end;
+            end;
+
+           }
+;
+            IBSCBS.cClassTrib := pCASTRIB;
+
+
 
             IBSCBS.gIBSCBS.vBC := dmPdv.cdsItensNFVALTOTAL.AsFloat;
 
-            IBSCBS.gIBSCBS.gIBSUF.pIBSUF := 0.10;
-            IBSCBS.gIBSCBS.gIBSUF.vIBSUF := ((dmPdv.cdsItensNFVALTOTAL.AsFloat*0.10)/100);
 
-            //IBSCBS.gIBSCBS.gIBSUF.gDif.pDif := 5;
-            //IBSCBS.gIBSCBS.gIBSUF.gDif.vDif := 100;
+            IBSCBS.gIBSCBS.vIBS := ((dmPdv.cdsItensNFVALTOTAL.AsFloat*pReducaoIBS)/100);
 
-            //IBSCBS.gIBSCBS.gIBSUF.gDevTrib.vDevTrib := 100;
+         pA :=  RoundABNT((dmPdv.cdsItensNFVALTOTAL.AsFloat*pReducaoIBS)/100,2);
 
-            //IBSCBS.gIBSCBS.gIBSUF.gRed.pRedAliq := 5;
-            //IBSCBS.gIBSCBS.gIBSUF.gRed.pAliqEfet := 5;
+         pA := ((100 - pRedcomRed)/100);
+
+         pA :=  (pA*(pReducaoIBS))/100;
+
+         pA := (dmPdv.cdsItensNFVALTOTAL.AsFloat)*(pA);
+
+         if(pIBS_CBS <> '000')then
+         begin
+           IBSCBS.gIBSCBS.vIBS := pA ;
+         end;
+
+
+
+            IBSCBS.gIBSCBS.gIBSUF.pIBSUF := pReducaoIBS;
+           // IBSCBS.gIBSCBS.gIBSUF.vIBSUF := ((dmPdv.cdsItensNFVALTOTAL.AsFloat*pReducaoIBS)/100);
+
+         pA:= (dmPdv.cdsItensNFVALTOTAL.AsFloat*pReducaoIBS)/100;
+
+         pA := ((100 - pRedcomRed)/100);
+
+         pA :=  (pA*(pReducaoIBS))/100;
+
+         pA := (dmPdv.cdsItensNFVALTOTAL.AsFloat)*(pA);
+
+         vpIBS := ((pReducaoIBS)*(100- pRedcomRed)/100);
+
+
+        // if(pIBS_CBS <> '000')then
+        // begin
+           IBSCBS.gIBSCBS.gIBSUF.vIBSUF := pA ; //vpIBS;
+           total_ibs += pA;
+        // end;
+
+         IBSCBS.gIBSCBS.gIBSUF.gRed.pRedAliq := dmPdv.cdsItensNFREDUCAO_CBS.AsFloat;
+         IBSCBS.gIBSCBS.gIBSUF.gRed.pAliqEfet := ((dmPdv.cdsItensNFVALTOTAL.AsFloat*pReducaoIBS)/100);
+
+         IBSCBS.gIBSCBS.gIBSMun.pIBSMun := 0;
+         IBSCBS.gIBSCBS.gIBSMun.vIBSMun := 0;
+
+         if(pIBS_CBS <> '000')then
+         begin
+           vpIBS := ((pReducaoIBS)*(100- pRedcomRed)/100);
+           IBSCBS.gIBSCBS.gIBSUF.gRed.pAliqEfet := vpIBS ;
+         end;
 
             IBSCBS.gIBSCBS.gIBSMun.pIBSMun := 0;
             IBSCBS.gIBSCBS.gIBSMun.vIBSMun := 0;
 
-            //IBSCBS.gIBSCBS.gIBSMun.gDif.pDif := 5;
-            //IBSCBS.gIBSCBS.gIBSMun.gDif.vDif := 100;
+            IBSCBS.gIBSCBS.gIBSMun.gRed.pRedAliq := dmPdv.cdsItensNFREDUCAO_IBS.AsFloat;
+            IBSCBS.gIBSCBS.gIBSMun.gRed.pAliqEfet := 0;
 
-            //IBSCBS.gIBSCBS.gIBSMun.gDevTrib.vDevTrib := 100;
+        if(pIBS_CBS <> '000')then
+        begin
 
-            //IBSCBS.gIBSCBS.gIBSMun.gRed.pRedAliq := 5;
-            //IBSCBS.gIBSCBS.gIBSMun.gRed.pAliqEfet := 5;
+          vpCBS := ((pReducaoCBS)*(100- pRedcomRed)/100);
 
-            IBSCBS.gIBSCBS.gCBS.pCBS := 0.90;
-            IBSCBS.gIBSCBS.gCBS.vCBS := ((dmPdv.cdsItensNFVALTOTAL.AsFloat*0.90)/100);
+          IBSCBS.gIBSCBS.gCBS.gRed.pRedAliq := dmPdv.cdsItensNFREDUCAO_CBS.AsFloat;
+          IBSCBS.gIBSCBS.gCBS.gRed.pAliqEfet := vpCBS ; //RoundABNT((dmPdv.sqLancamentosVALTOTAL.AsFloat*pReducaoCBS)/100,2);
 
-            //IBSCBS.gIBSCBS.gCBS.gDif.pDif := 5;
-            //IBSCBS.gIBSCBS.gCBS.gDif.vDif := 100;
+          vpIBS := ((pReducaoIBS)*(100- pRedcomRed)/100);
 
-            //IBSCBS.gIBSCBS.gCBS.gDevTrib.vDevTrib := 100;
+        // pA := ((dmPdv.sqLancamentosVALTOTAL.AsFloat)*(pA),2);
 
-            //IBSCBS.gIBSCBS.gCBS.gRed.pRedAliq := 5;
-            //IBSCBS.gIBSCBS.gCBS.gRed.pAliqEfet := 5;
-          end;
+       // xx  IBSCBS.gIBSCBS.gIBSUF.gRed.pRedAliq := dmPdv.cdsItensNFREDUCAO_IBS.AsFloat;
+       // xx  IBSCBS.gIBSCBS.gIBSUF.gRed.pAliqEfet := vpIBS ;
+        end;
+
+           
+
+
+            IBSCBS.gIBSCBS.gCBS.pCBS := pReducaoCBS;
+
+      //  xx    IBSCBS.gIBSCBS.gIBSMun.gRed.pRedAliq := 0.00;
+       // xx   IBSCBS.gIBSCBS.gIBSMun.gRed.pAliqEfet := 0.00;
+
+            IBSCBS.gIBSCBS.gCBS.vCBS := ((dmPdv.cdsItensNFVALTOTAL.AsFloat*pReducaoCBS)/100);
+
+
+       // if(pIBS_CBS <> '000')then
+       // begin
+            pA := ((100 - pRedcomRed)/100);
+
+            pA :=  (pA*(pReducaoCBS))/100;
+
+            pA := RoundABNT((dmPdv.cdsItensNFVALTOTAL.AsFloat)*(pA),2);
+
+            total_cbs += pA;
+            IBSCBS.gIBSCBS.gCBS.vCBS := pA ;
+       // end;
+
+
+          end;  //Fim da reforma
 
           orig :=     dmPdv.qsProdutosORIGEM.AsVariant;                       //ORIGEM DO PRODUTO
           modBC :=    BC;                                              //MODO DE BASE DE CALCULO (0) POR %
@@ -5169,6 +5299,7 @@ begin
   //messagedlg('Fim abrindo sistema!',mterror,[mbok],0);
 end;
 
+
 {
 procedure TfNFe.LoadXML(MyMemo: TMemo; MyWebBrowser: TSynMemo);
   var
@@ -5583,6 +5714,9 @@ begin
         InfAdic.infCpl := infCplTrib;
 
         i := 1;
+        total_ibs := 0;  // reforma tributaria
+        total_cbs :=0;
+
         while not dmPdv.cdsItensNF.Eof do // Escrevo os itens
         begin
           if (dmPdv.qsProdutos.Active) then
@@ -5677,17 +5811,49 @@ begin
 
 
         // Reforma Tributaria
+
+        total_nota := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsFloat;
+
         if(dmPdv.ReformaTributaria = 'SIM')then
         begin
           Total.IBSCBSTot.vBCIBSCBS := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant;
 
-          Total.IBSCBSTot.gIBS.vIBS := ((dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant*0.10)/100);//  0.83;
-          Total.IBSCBSTot.gIBS.vCredPres := 0.00;
-          Total.IBSCBSTot.gIBS.vCredPresCondSus := 0.00;
+
+          Total.IBSCBSTot.gIBS.vIBS := ((dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant*pReducaoIBS)/100);
+
+
+
+          if(pIBS_CBS <> '000')then
+          begin
+            pA := ((100 - pRedcomRed)/100);
+            pA :=  (pA*(pReducaoIBS))/100;
+            pA := ((total_nota)*(pA));
+
+            Total.IBSCBSTot.gIBS.vIBS  := total_ibs ;
+          end;
+
+
+
+          //Total.IBSCBSTot.gIBS.vCredPres := 0.00;
+          //Total.IBSCBSTot.gIBS.vCredPresCondSus := 0.00;
+
+          // conferir como deve ser 14/11/2025 e corrigir
 
           Total.IBSCBSTot.gIBS.gIBSUFTot.vDif := 0.00;
           Total.IBSCBSTot.gIBS.gIBSUFTot.vDevTrib := 0.00;
-          Total.IBSCBSTot.gIBS.gIBSUFTot.vIBSUF := ((dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant*0.10)/100);
+
+         // Total.IBSCBSTot.gIBS.gIBSUFTot.vIBSUF := ((dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant*0.10)/100);
+
+         // if(pIBS_CBS <> '000')then
+         // begin
+            pA := ((100 - pRedcomRed)/100);
+
+            pA :=  (pA*(pReducaoIBS))/100;
+
+            pA := ((total_nota)*(pA));
+
+            Total.IBSCBSTot.gIBS.gIBSUFTot.vIBSUF := total_ibs ;
+         // end;
 
           Total.IBSCBSTot.gIBS.gIBSMunTot.vDif := 0.00;
           Total.IBSCBSTot.gIBS.gIBSMunTot.vDevTrib := 0.00;
@@ -5695,7 +5861,25 @@ begin
 
           Total.IBSCBSTot.gCBS.vDif := 0.00;
           Total.IBSCBSTot.gCBS.vDevTrib := 0.00;
-          Total.IBSCBSTot.gCBS.vCBS := ((dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant*0.90)/100);
+
+        //  Total.IBSCBSTot.gCBS.vCBS := ((dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant* pReducaoCBS)/100);
+
+
+        pA := ((100 - pRedcomRed)/100);
+
+        pA := (pA*(pReducaoCBS))/100;
+
+        pA := (total_nota)*(pA);
+
+
+        //if(pIBS_CBS <> '000')then
+       // begin
+          Total.IBSCBSTot.gCBS.vCBS := total_cbs ;
+       // end;
+
+
+
+
           Total.IBSCBSTot.gCBS.vCredPres := 0.00;
           Total.IBSCBSTot.gCBS.vCredPresCondSus := 0.00;
 
