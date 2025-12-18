@@ -1742,11 +1742,11 @@ begin
     preencherDescItem(proDesc);
     edPreco.Text:= FormatFloat('#,##0.00',precoL);
     edPreco1.Text:= FormatFloat('#,##0.00',precoL);
-    edQtde.Text  := FormatFloat('#,##0.00', fProdutoProc.quantidadeVenda);
+    edQtde.Text  := FormatFloat('#,##0.000', fProdutoProc.quantidadeVenda);
     //edQtde.Text  :=  fProdutoProc.quantidadeVendaFormatada;
 
 
-    edQtde1.Text := FormatFloat('#,##0.00', fProdutoProc.quantidadeVenda);
+    edQtde1.Text := FormatFloat('#,##0.000', fProdutoProc.quantidadeVenda);
     //edQtde1.Text  :=  fProdutoProc.quantidadeVendaFormatada;
     edDesconto.Text:='0,00';
     edDesconto.Text:='0,00';

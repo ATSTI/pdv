@@ -15,6 +15,7 @@ type
 
   TdmPdv = class(TDataModule)
     cdsItensNFBCII: TFloatField;
+    cdsItensNFCCLASSTRIB: TStringField;
     cdsItensNFCEST: TStringField;
     cdsItensNFCFOP: TStringField;
     cdsItensNFCODDETALHE: TLongintField;
@@ -27,6 +28,7 @@ type
     cdsItensNFCSTCOFINS: TStringField;
     cdsItensNFCSTIPI: TStringField;
     cdsItensNFCSTPIS: TStringField;
+    cdsItensNFCST_IBS_CBS: TStringField;
     cdsItensNFCST_IPI_CENQ: TStringField;
     cdsItensNFDESCPRODUTO: TStringField;
     cdsItensNFDTAFAB: TDateField;
@@ -53,10 +55,14 @@ type
     cdsItensNFPIPI: TFloatField;
     cdsItensNFPPIS: TFloatField;
     cdsItensNFPRECO: TFloatField;
+    cdsItensNFP_CBS: TFloatField;
     cdsItensNFP_FCP: TFloatField;
     cdsItensNFP_FCPST: TFloatField;
     cdsItensNFP_FCPSTRET: TFloatField;
+    cdsItensNFP_IBS: TFloatField;
     cdsItensNFQUANTIDADE: TFloatField;
+    cdsItensNFREDUCAO_CBS: TFloatField;
+    cdsItensNFREDUCAO_IBS: TFloatField;
     cdsItensNFUNIDADEMEDIDA: TStringField;
     cdsItensNFVALORIPIDEVOL: TFloatField;
     cdsItensNFVALOR_COFINS: TFloatField;
@@ -819,6 +825,12 @@ type
     sqEmpresaWEB: TStringField;
     sqGenerator: TSQLQuery;
     sqLancamentos: TSQLQuery;
+    sqLancamentosCCLASSTRIB: TStringField;
+    sqLancamentosCST_IBS_CBS: TStringField;
+    sqLancamentosP_CBS: TFloatField;
+    sqLancamentosP_IBS: TFloatField;
+    sqLancamentosREDUCAO_CBS: TFloatField;
+    sqLancamentosREDUCAO_IBS: TFloatField;
     sqLancZero: TSQLQuery;
     sqLancamentosALIQ_CUPOM: TStringField;
     sqLancamentosBAIXA: TStringField;
@@ -1568,6 +1580,10 @@ begin
       sTrans.Commit;
     end;
   end;
+
+
+
+
   if (sistema = 'CTe') then
   begin
     if (versao_sistema = '1.0') then

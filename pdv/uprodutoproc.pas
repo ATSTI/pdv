@@ -398,7 +398,7 @@ begin
       sqlProc := sqlProc + ' AND COD_BARRA LIKE ' +
          QuotedStr(Copy(barCode,0,12) + '%');
     end;
-    ShowMessage(sqlProc);
+    //ShowMessage(sqlProc);
     if (dmPdv.sqBusca.Active) then
       dmPdv.sqBusca.Close;
     dmPdv.sqBusca.SQL.Clear;

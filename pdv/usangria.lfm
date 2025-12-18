@@ -378,9 +378,9 @@ object fSangria: TfSangria
       OnClick = btnReimprimirClick
     end
     object DBGrid1: TDBGrid
-      Left = 8
+      Left = 16
       Height = 204
-      Top = 34
+      Top = 16
       Width = 493
       Color = clWindow
       Columns = <      
@@ -391,13 +391,17 @@ object fSangria: TfSangria
         end      
         item
           Title.Caption = 'Drescrição'
-          Width = 340
+          Width = 260
           FieldName = 'N_DOC'
         end      
         item
           Title.Caption = 'Valor'
-          Width = 60
+          Width = 80
           FieldName = 'VALOR_PAGO'
+        end      
+        item
+          Title.Caption = 'Data'
+          FieldName = 'DATAABERTURA'
         end>
       DataSource = dsSangrias
       TabOrder = 1
@@ -635,9 +639,9 @@ object fSangria: TfSangria
     OnClick = btnReimprimirReforcoClick
   end
   object DBGrid2: TDBGrid
-    Left = 16
+    Left = 8
     Height = 204
-    Top = 232
+    Top = 216
     Width = 496
     Color = clWindow
     Columns = <    
@@ -648,13 +652,17 @@ object fSangria: TfSangria
       end    
       item
         Title.Caption = 'Drescrição'
-        Width = 340
+        Width = 260
         FieldName = 'N_DOC'
       end    
       item
         Title.Caption = 'Valor'
         Width = 60
         FieldName = 'VALOR_PAGO'
+      end    
+      item
+        Title.Caption = 'Data'
+        FieldName = 'DATAABERTURA'
       end>
     DataSource = dsReforco
     TabOrder = 10
@@ -905,6 +913,11 @@ object fSangria: TfSangria
         Name = 'CODFORMA'
         DataType = ftInteger
         Precision = -1
+      end    
+      item
+        Name = 'DATAABERTURA'
+        DataType = ftDate
+        Precision = -1
       end>
     Database = dmPdv.IbCon
     Transaction = dmPdv.sTrans
@@ -920,8 +933,10 @@ object fSangria: TfSangria
       '    state,'
       '    troco,'
       '    desconto,'
-      '    codforma'
+      '    codforma,'
+      '    dataabertura'
       'from forma_entrada'
+      'inner join caixa_controle on (forma_entrada.caixa = caixa_controle.codcaixa)'
       'where cod_venda = 1 order by codforma desc'
     )
     Params = <>
@@ -1035,6 +1050,15 @@ object fSangria: TfSangria
       ReadOnly = False
       Required = True
     end
+    object sqSangriasDATAABERTURA: TDateField
+      FieldKind = fkData
+      FieldName = 'DATAABERTURA'
+      Index = 11
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
   end
   object dsSangrias: TDataSource
     DataSet = sqSangrias
@@ -1105,6 +1129,11 @@ object fSangria: TfSangria
         Name = 'CODFORMA'
         DataType = ftInteger
         Precision = -1
+      end    
+      item
+        Name = 'DATAABERTURA'
+        DataType = ftDate
+        Precision = -1
       end>
     Database = dmPdv.IbCon
     Transaction = dmPdv.sTrans
@@ -1120,8 +1149,10 @@ object fSangria: TfSangria
       '    state,'
       '    troco,'
       '    desconto,'
-      '    codforma'
+      '    codforma,'
+      '    dataabertura'
       'from forma_entrada'
+      'inner join caixa_controle on (forma_entrada.caixa = caixa_controle.codcaixa)'
       'where cod_venda = 0 order by codforma desc'
     )
     Params = <>
@@ -1234,6 +1265,15 @@ object fSangria: TfSangria
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = True
+    end
+    object sqReforcoDATAABERTURA: TDateField
+      FieldKind = fkData
+      FieldName = 'DATAABERTURA'
+      Index = 11
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
     end
   end
 end

@@ -737,7 +737,6 @@ object fMovimentoProc: TfMovimentoProc
         Width = 80
       end    
       item
-        Alignment = taLeftJustify
         Title.Caption = 'Forma'
         Width = 106
       end    

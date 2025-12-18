@@ -59,6 +59,7 @@ var str:string;
   vlrCaixa:double;
   ArquivoINI: TIniFile;
 begin
+  btnAbrefecha.Enabled := False;
 
   if(dmpdv.SenhaAbrirCX = 'SIM')then
   begin
@@ -230,6 +231,7 @@ end;
 
 procedure TfAbreCaixa.FormShow(Sender: TObject);
 begin
+
   if (dmPdv.usoSistema = 'ATS')then
   begin
     Label2.Visible:= True;

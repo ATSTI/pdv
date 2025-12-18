@@ -153,6 +153,7 @@ var
   IMPRESSORA:TextFile;
   vlr : string;
 begin
+  btnEnvSangria.Enabled := False;
 
   if(dmpdv.SenhaAbrirCX = 'SIM')then
   begin

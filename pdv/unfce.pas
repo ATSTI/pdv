@@ -165,6 +165,17 @@ type
     nfce_valor: Double;
     nfce_desconto: Double;
     nfce_codVenda: Integer;
+    pReducaoIBS : double;
+    pReducaoCBS : double;
+    pRedcomRed : double;
+    pA : double;
+    total_ibs : double;
+    total_cbs : double;
+    pVBC : double;
+    pIBS_CBS : string;
+    pCASTRIB : string;
+    vpCBS  : double;
+    vpIBS  : double;
   end;
 
 var
@@ -1078,18 +1089,46 @@ begin
 
       if(dmPdv.ReformaTributaria = 'SIM') then
       begin
+        pA := pVBC ; //  pVCB é valor do produto que tem Redução
 
-        total_nota := dmPdv.sqLancamentosVALTOTAL.AsFloat;
+        total_nota := RoundABNT(nfce_valor,2) ;
 
-        Total.IBSCBSTot.vBCIBSCBS := dmPdv.sqLancamentosVALTOTAL.AsFloat;
+        Total.IBSCBSTot.vBCIBSCBS := RoundABNT(total_nota,2);
 
-        Total.IBSCBSTot.gIBS.vIBS := ((dmPdv.sqLancamentosVALTOTAL.AsFloat*0.10)/100);//  0.83;
+        Total.IBSCBSTot.gIBS.vIBS := ((total_nota*pReducaoIBS)/100);
+
+        if(pIBS_CBS <> '000')then
+        begin
+
+          pA := ((100 - pRedcomRed)/100);
+          pA :=  (pA*(pReducaoIBS))/100;
+          pA := ((total_nota)*(pA)); // vIBS
+         // pA := (pVBC)*(pA);
+          Total.IBSCBSTot.gIBS.vIBS  := total_ibs ;
+        end;
+
+        pA :=0;
+
+        pA := ((total_nota*pReducaoIBS)/100); // vIBSUF
+
         Total.IBSCBSTot.gIBS.vCredPres := 0.00;
         Total.IBSCBSTot.gIBS.vCredPresCondSus := 0.00;
 
         Total.IBSCBSTot.gIBS.gIBSUFTot.vDif := 0.00;
         Total.IBSCBSTot.gIBS.gIBSUFTot.vDevTrib := 0.00;
-        Total.IBSCBSTot.gIBS.gIBSUFTot.vIBSUF := ((dmPdv.sqLancamentosVALTOTAL.AsFloat*0.10)/100);
+        //Total.IBSCBSTot.gIBS.gIBSUFTot.vIBSUF := total_ibs ;
+
+
+       // if(pIBS_CBS <> '000')then
+      //  begin
+          pA :=0;
+          pA := ((100 - pRedcomRed)/100);
+          pA :=  (pA*(pReducaoIBS))/100;
+          vpIBS := ((pReducaoIBS)*(100- pRedcomRed)/100);
+          pA := (total_nota)*(pA);
+          //pA := (pVBC)*(pA);
+          Total.IBSCBSTot.gIBS.gIBSUFTot.vIBSUF := total_ibs ; // vIBSUF
+       // end;
 
         Total.IBSCBSTot.gIBS.gIBSMunTot.vDif := 0.00;
         Total.IBSCBSTot.gIBS.gIBSMunTot.vDevTrib := 0.00;
@@ -1097,7 +1136,26 @@ begin
 
         Total.IBSCBSTot.gCBS.vDif := 0.00;
         Total.IBSCBSTot.gCBS.vDevTrib := 0.00;
-        Total.IBSCBSTot.gCBS.vCBS := ((dmPdv.sqLancamentosVALTOTAL.AsFloat*0.90)/100);
+       // Total.IBSCBSTot.gCBS.vCBS := ((total_nota*pReducaoCBS)/100);
+
+
+
+       // if(pIBS_CBS <> '000')then
+       // begin
+
+          pA :=0;
+          pA := ((100 - pRedcomRed)/100);
+          pA := (pA*(pReducaoCBS))/100;
+
+          pA := (total_nota)*(pA);
+
+          //pA := (pVBC)*(pA); // pVCB é valor do produto que tem Redução
+
+          Total.IBSCBSTot.gCBS.vCBS := total_cbs;
+        //end;
+
+        pA :=0;
+
         Total.IBSCBSTot.gCBS.vCredPres := 0.00;
         Total.IBSCBSTot.gCBS.vCredPresCondSus := 0.00;
 
@@ -1161,6 +1219,9 @@ var contaItens :integer;
   num_itens: Integer;
   icms_cst: String;
   IBSCBS: TIBSCBS;
+  vNOTA_REFORMA : double;
+  LCST   : TCSTIBSCBS;
+
 begin
   desconto_rateio := 0;
   desc_rateado := 0;
@@ -1179,8 +1240,11 @@ begin
       dmPdv.sqLancamentos.open;
     dmPdv.sqLancamentos.First;
     total_tributos := 0;
+    /////vVBS  :=0;
     vICMS := 0;
     vBC := 0;
+    total_ibs := 0;
+    total_cbs :=0;
     num_itens := dmPdv.sqLancamentos.RecordCount;
     while not dmPdv.sqLancamentos.Eof do
     begin
@@ -1191,6 +1255,7 @@ begin
       contaItens := contaItens + 1;
       vBC += dmPdv.sqLancamentosVLR_BASEICMS.AsVariant;
       vICMS += dmPdv.sqLancamentosVALOR_ICMS.AsVariant;
+      ///vVBS +=  dmPdv.sqLancamentosVALTOTAL.AsFloat;
       with Det.Add do
       begin
         Prod.nItem    := contaItens; // Número sequencial, para cada item deve ser incrementado
@@ -1359,26 +1424,123 @@ begin
                 CST := cst00;
             end;
 
+            pIBS_CBS := dmPdv.sqLancamentosCST_IBS_CBS.AsString;
+            pCASTRIB := dmPdv.sqLancamentosCCLASSTRIB.AsString;
+
+            DecimalSeparator := '.';
+            pReducaoIBS := StrToFloat(dmPdv.sqLancamentosP_IBS.AsString);
+            pReducaoCBS := StrToFloat(dmPdv.sqLancamentosP_CBS.AsString);
+
+            pRedcomRed  := dmPdv.sqLancamentosREDUCAO_CBS.AsFloat;
+
+
             //Reforma Tributaria
             if(dmPdv.ReformaTributaria = 'SIM') then
             begin
 
-              IBSCBS.CST := cst000;
-              IBSCBS.cClassTrib := ct000001;
+              DecimalSeparator :=',' ;
+              // CST
+              for LCST := Low(TCSTIBSCBS) to High(TCSTIBSCBS) do
+              begin
+                if Trim(pIBS_CBS) = TCSTIBSCBSArrayStrings[LCST] then
+                begin
+                  IBSCBS.CST := LCST;
+                end;
+              end;
 
-              IBSCBS.gIBSCBS.vBC := dmPdv.cdsItensNFVALTOTAL.AsFloat;
+              //IBSCBS.CST := cst000;
+              IBSCBS.cClassTrib := pCASTRIB; // '000001';
+              IBSCBS.gIBSCBS.vIBS := ((dmPdv.sqLancamentosVALTOTAL.AsFloat*pReducaoIBS)/100);
 
-              IBSCBS.gIBSCBS.gIBSUF.pIBSUF := 0.10;
-              IBSCBS.gIBSCBS.gIBSUF.vIBSUF := ((dmPdv.cdsItensNFVALTOTAL.AsFloat*0.10)/100);
+
+
+              if(pIBS_CBS <> '000')then
+              begin
+                //pA :=  RoundABNT((dmPdv.sqLancamentosVALTOTAL.AsFloat*pReducaoIBS)/100,2);
+
+                pA := ((100 - pRedcomRed)/100);
+
+                pA :=  (pA*(pReducaoIBS))/100;
+
+                pA := (dmPdv.sqLancamentosVALTOTAL.AsFloat)*(pA);
+
+                IBSCBS.gIBSCBS.vIBS := pA ; //vpIBS;
+              end;
+
+
+              vNOTA_REFORMA := RoundABNT(dmPdv.sqLancamentosVALTOTAL.AsFloat,2);
+
+              pVBC :=  RoundABNT(dmPdv.sqLancamentosVALTOTAL.AsFloat,2); //vBC  aqui carrego so os que tem redução
+
+              IBSCBS.gIBSCBS.vBC := RoundABNT(dmPdv.sqLancamentosVALTOTAL.AsFloat,2);
+
+              IBSCBS.gIBSCBS.gIBSUF.pIBSUF := pReducaoIBS;
+              //IBSCBS.gIBSCBS.gIBSUF.vIBSUF := (dmPdv.sqLancamentosVALTOTAL.AsFloat*pReducaoIBS)/100;
+
+
+
+              //if(pIBS_CBS <> '000')then
+             // begin
+                //pA:= (dmPdv.sqLancamentosVALTOTAL.AsFloat*pReducaoIBS)/100;
+
+                pA := ((100 - pRedcomRed)/100);
+
+                pA :=  (pA*(pReducaoIBS))/100;
+
+                pA := RoundABNT((dmPdv.sqLancamentosVALTOTAL.AsFloat)*(pA),2);
+
+                //vpIBS := ((pReducaoIBS)*(100- pRedcomRed)/100);
+
+                IBSCBS.gIBSCBS.gIBSUF.vIBSUF := pA ; //vpIBS;
+                total_ibs += pA;
+              //end;
 
               IBSCBS.gIBSCBS.gIBSMun.pIBSMun := 0;
               IBSCBS.gIBSCBS.gIBSMun.vIBSMun := 0;
 
-              IBSCBS.gIBSCBS.gCBS.pCBS := 0.90;
-              IBSCBS.gIBSCBS.gCBS.vCBS := ((dmPdv.cdsItensNFVALTOTAL.AsFloat*0.90)/100);
+              if(pIBS_CBS = '000')then
+              begin
+                IBSCBS.gIBSCBS.gIBSUF.gRed.pRedAliq  := dmPdv.sqLancamentosREDUCAO_IBS.AsFloat;
+                IBSCBS.gIBSCBS.gIBSUF.gRed.pAliqEfet := 0;
 
-              //IBSCBS.gIBSCBS.vIBS := 0.001;
-            end;
+                IBSCBS.gIBSCBS.gIBSMun.gRed.pRedAliq  := 0;
+                IBSCBS.gIBSCBS.gIBSMun.gRed.pAliqEfet := 0;
+
+                IBSCBS.gIBSCBS.gCBS.gRed.pRedAliq  := dmPdv.sqLancamentosREDUCAO_CBS.AsFloat;
+                IBSCBS.gIBSCBS.gCBS.gRed.pAliqEfet := 0;
+              end;
+
+
+              if(pIBS_CBS <> '000')then
+              begin
+                vpIBS := ((pReducaoIBS)*(100- pRedcomRed)/100);
+                IBSCBS.gIBSCBS.gIBSUF.gRed.pRedAliq := dmPdv.sqLancamentosREDUCAO_IBS.AsFloat;
+                IBSCBS.gIBSCBS.gIBSUF.gRed.pAliqEfet := vpIBS ;
+                IBSCBS.gIBSCBS.gIBSMun.gRed.pRedAliq := dmPdv.sqLancamentosREDUCAO_IBS.AsFloat;
+                IBSCBS.gIBSCBS.gIBSMun.gRed.pAliqEfet := 0;
+
+              end;
+
+              IBSCBS.gIBSCBS.gCBS.pCBS := pReducaoCBS;
+
+              if(pIBS_CBS <> '000')then
+              begin
+                vpCBS := ((pReducaoCBS)*(100- pRedcomRed)/100);
+                IBSCBS.gIBSCBS.gCBS.gRed.pRedAliq := dmPdv.sqLancamentosREDUCAO_CBS.AsFloat;
+                IBSCBS.gIBSCBS.gCBS.gRed.pAliqEfet := vpCBS ;
+              end;
+
+
+              pA := ((100 - pRedcomRed)/100);
+
+              pA :=  (pA*(pReducaoCBS))/100;
+
+              pA := RoundABNT((dmPdv.sqLancamentosVALTOTAL.AsFloat)*(pA),2);
+
+              total_cbs += pA;
+              IBSCBS.gIBSCBS.gCBS.vCBS := pA ;
+
+          end;
 
             if Trim(dmPdv.sqLancamentosORIGEM.AsString) = '0' then
               orig  := oeNacional                       //ORIGEM DO PRODUTO

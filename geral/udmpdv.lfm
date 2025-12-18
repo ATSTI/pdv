@@ -8,7 +8,7 @@ object dmPdv: TdmPdv
   object IbCon: TIBConnection
     Connected = False
     LoginPrompt = False
-    DatabaseName = 'D:\clientes\marquinhos\bd\SGE_MARQUINHO.FDB'
+    DatabaseName = 'D:\clientes\loide_agropecuaria\bd\SGE_VS_LOJA.FDB'
     KeepConnection = False
     Params.Strings = (
       'port=3050'
@@ -665,7 +665,7 @@ object dmPdv: TdmPdv
       end    
       item
         Name = 'QTDEATACADO'
-        DataType = ftInteger
+        DataType = ftFloat
         Precision = -1
       end    
       item
@@ -700,6 +700,38 @@ object dmPdv: TdmPdv
         DataType = ftFixedChar
         Precision = -1
         Size = 1
+      end    
+      item
+        Name = 'CST_IBS_CBS'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 3
+      end    
+      item
+        Name = 'CCLASSTRIB'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 6
+      end    
+      item
+        Name = 'P_IBS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'P_CBS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'REDUCAO_IBS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'REDUCAO_CBS'
+        DataType = ftFloat
+        Precision = -1
       end>
     Database = IbCon
     Transaction = sTrans
@@ -720,7 +752,8 @@ object dmPdv: TdmPdv
       '    p.USA, p.LOCALIZACAO,  p.TIPOPRECOVENDA, p.UNIDADEMEDIDA,'
       '    a.ORIGEM, p.OBS OBS_PROD, p.CEST, p.PRECOATACADO, p.QTDEATACADO,'
       '    (COALESCE(A.VALTOTAL,0) - COALESCE(A.VALOR_DESCONTO, 0)) AS TOTALITEM ,'
-      '    a.ICMS_SUBST, c.NOMECLIENTE, p.RATEIO, m.DATA_SISTEMA, a.CORTESIA'
+      '    a.ICMS_SUBST, c.NOMECLIENTE, p.RATEIO, m.DATA_SISTEMA, a.CORTESIA,'
+      '    a.CST_IBS_CBS, a.CCLASSTRIB, a.P_IBS, a.P_CBS, a.REDUCAO_IBS, a.REDUCAO_CBS'
       'FROM MOVIMENTO m'
       '  INNER JOIN CLIENTES c ON  c.CODCLIENTE = m.CODCLIENTE'
       '  LEFT OUTER JOIN MOVIMENTODETALHE a ON M.CODMOVIMENTO = a.CODMOVIMENTO'
@@ -1467,6 +1500,66 @@ object dmPdv: TdmPdv
       ReadOnly = False
       Required = False
       Size = 1
+    end
+    object sqLancamentosCST_IBS_CBS: TStringField
+      FieldKind = fkData
+      FieldName = 'CST_IBS_CBS'
+      Index = 74
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 3
+    end
+    object sqLancamentosCCLASSTRIB: TStringField
+      FieldKind = fkData
+      FieldName = 'CCLASSTRIB'
+      Index = 75
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 6
+    end
+    object sqLancamentosP_IBS: TFloatField
+      FieldKind = fkData
+      FieldName = 'P_IBS'
+      Index = 76
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqLancamentosP_CBS: TFloatField
+      FieldKind = fkData
+      FieldName = 'P_CBS'
+      Index = 77
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqLancamentosREDUCAO_IBS: TFloatField
+      FieldKind = fkData
+      FieldName = 'REDUCAO_IBS'
+      Index = 78
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqLancamentosREDUCAO_CBS: TFloatField
+      FieldKind = fkData
+      FieldName = 'REDUCAO_CBS'
+      Index = 79
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
     end
   end
   object SQLQuery1: TSQLQuery
@@ -7393,6 +7486,38 @@ object dmPdv: TdmPdv
         Name = 'DTAVCTO'
         DataType = ftDate
         Precision = -1
+      end    
+      item
+        Name = 'CST_IBS_CBS'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 3
+      end    
+      item
+        Name = 'CCLASSTRIB'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 6
+      end    
+      item
+        Name = 'P_IBS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'P_CBS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'REDUCAO_IBS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'REDUCAO_CBS'
+        DataType = ftFloat
+        Precision = -1
       end>
     Database = IbCon
     Transaction = sTrans
@@ -7455,10 +7580,15 @@ object dmPdv: TdmPdv
       '        , UDF_ROUNDDEC(pr.pGNn , 2) as pGNn'
       '        , UDF_ROUNDDEC(pr.vPart, 2) as vPart'
       '        , UDF_ROUNDDEC(pr.pGNi, 2) as pGNi'
-      '        , md. LOTE'
-      '        , md. DTAFAB'
-      '        , md. DTAVCTO'
-      ''
+      '        , md.LOTE'
+      '        , md.DTAFAB'
+      '        , md.DTAVCTO'
+      '        , md.CST_IBS_CBS'
+      '        , md.CCLASSTRIB'
+      '        , UDF_ROUNDDEC(md.P_IBS, 2) as P_IBS'
+      '        , UDF_ROUNDDEC(md.P_CBS, 2) as P_CBS'
+      '        , UDF_ROUNDDEC(md.REDUCAO_IBS, 2) as REDUCAO_IBS'
+      '        , UDF_ROUNDDEC(md.REDUCAO_CBS, 2) as REDUCAO_CBS'
       'from VENDA vd'
       'inner join MOVIMENTODETALHE md on'
       'md.CODMOVIMENTO = vd.CODMOVIMENTO'
@@ -8220,6 +8350,66 @@ object dmPdv: TdmPdv
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
+    end
+    object cdsItensNFCST_IBS_CBS: TStringField
+      FieldKind = fkData
+      FieldName = 'CST_IBS_CBS'
+      Index = 75
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 3
+    end
+    object cdsItensNFCCLASSTRIB: TStringField
+      FieldKind = fkData
+      FieldName = 'CCLASSTRIB'
+      Index = 76
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 6
+    end
+    object cdsItensNFP_IBS: TFloatField
+      FieldKind = fkData
+      FieldName = 'P_IBS'
+      Index = 77
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object cdsItensNFP_CBS: TFloatField
+      FieldKind = fkData
+      FieldName = 'P_CBS'
+      Index = 78
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object cdsItensNFREDUCAO_IBS: TFloatField
+      FieldKind = fkData
+      FieldName = 'REDUCAO_IBS'
+      Index = 79
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object cdsItensNFREDUCAO_CBS: TFloatField
+      FieldKind = fkData
+      FieldName = 'REDUCAO_CBS'
+      Index = 80
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
     end
   end
   object sqlTotal_tributos: TSQLQuery

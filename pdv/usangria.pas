@@ -45,6 +45,7 @@ type
     sqReforcoCAIXINHA: TFloatField;
     sqReforcoCODFORMA: TLongintField;
     sqReforcoCOD_VENDA: TLongintField;
+    sqReforcoDATAABERTURA: TDateField;
     sqReforcoDESCONTO: TFloatField;
     sqReforcoFORMA_PGTO: TStringField;
     sqReforcoID_ENTRADA: TLongintField;
@@ -69,6 +70,7 @@ type
     sqSangriasCAIXINHA: TFloatField;
     sqSangriasCODFORMA: TLongintField;
     sqSangriasCOD_VENDA: TLongintField;
+    sqSangriasDATAABERTURA: TDateField;
     sqSangriasDESCONTO: TFloatField;
     sqSangriasFORMA_PGTO: TStringField;
     sqSangriasID_ENTRADA: TLongintField;
