@@ -168,7 +168,7 @@ class IntegracaoOdoo:
         palavraSemAcento = u"".join([c for c in nfkd if not unicodedata.combining(c)])
 
         # Usa expressao regular para retornar a palavra apenas com numeros, letras e espaco
-        return re.sub('[^a-zA-Z0-9 \\\]', '', palavraSemAcento)    
+        return re.sub('[^a-zA-Z0-9]', ' ', palavraSemAcento)    
 
     def action_atualiza_caixas(self):
         self._inicia()
@@ -178,6 +178,7 @@ class IntegracaoOdoo:
         except:
             msg_sis = u'Caminho ou nome do banco invalido. '
         msg_erro = ''
+        #breakpoint()
         print('Atualizando Caixa.')
         hj = datetime.now()
         hj = hj - timedelta(days=5)
@@ -306,6 +307,7 @@ class IntegracaoOdoo:
         #     print(str(t['codproduto']) + '-' + t['produto'])
         incluido = 0
         alterado = 0
+        #breakpoint()
         if not prod_novo:
             _logger.info("Sem produtos pra atualizar")
             return False
@@ -339,10 +341,15 @@ class IntegracaoOdoo:
             sqlp = "select FIRST 1 CODPRODUTO,\
                     DATACADASTRO, VALOR_PRAZO from produtos \
                     where codproduto = %s" %(str(codproduto))
-            #print(sqlp)
+            print(sqlp)
             prods = db.query(sqlp)
             if pr['codpro']:
                 codpro = pr['codpro'].strip()
+            if not len(prods) and pr['codpro']:
+                sqlp = "select FIRST 1 CODPRODUTO,\
+                    DATACADASTRO, VALOR_PRAZO from produtos \
+                    where codpro = \'%s\'" %(codpro)
+                prods = db.query(sqlp)
 
             # serve pra identificar se usa o pdv_integracao ou o pdv_integracao_outros
             if 'tipo_venda' in pr:
@@ -458,10 +465,10 @@ class IntegracaoOdoo:
                 # TODO tratar isso e enviar email
             elif len(prods):
                 alterado += 1
-                # breakpoint()
+                print(data_cad + ' - ' + data_nova)
                 if data_cad == data_nova and round(prods[0][2],2) == round(p_venda,2):
                     _logger.info("Item ja atualizado: %s-%s" %(codpro, produto))
-                    # print("Item ja atualizado: %s-%s" %(codpro, produto))
+                    print("Item ja atualizado: %s-%s" %(codpro, produto))
                     continue
                 _logger.info("Atualizando item: %s-%s" %(codpro, produto))
                 print("Atualizando item: %s-%s" %(codpro, produto))
@@ -490,6 +497,7 @@ class IntegracaoOdoo:
                 #altera += ' WHERE CODPRO = \'' + str(pr['codpro']) + '\''
                 altera += ' WHERE CODPRODUTO = ' + str(codproduto)
                 #print(altera)
+                #breakpoint()
                 retorno = db.insert(altera)
                 if retorno:
                     print ('SQL : %s' %(altera))
@@ -928,6 +936,7 @@ class IntegracaoOdoo:
         envia("devolucao")
 
     def action_atualiza_vendas(self):
+        #breakpoint()
         self._inicia()
         caixa_falta = False
         # Fazer um loop pela pasta de arquivos pegando o codigo dos pedidos
@@ -952,6 +961,7 @@ class IntegracaoOdoo:
         else:       
             sqlc += " WHERE DATAABERTURA > '%s' AND r.CODUSUARIO = %s \
                ORDER BY r.CODCAIXA " %(hj, self.caixa_user)
+        
         caixa_aberto = db.query(sqlc)
         sqld = False
         for cx in caixa_aberto:
@@ -1136,6 +1146,7 @@ class IntegracaoOdoo:
                 nomecliente = (nomecliente)
                 vals_ped['nomecliente'] = nomecliente
                 dados_vals = json.dumps(vals_ped)
+                #breakpoint()
                 if not os.path.exists(arquivo_nome):
                     arquivo_json = open(arquivo_nome, 'w')
                     arquivo_json.write(dados_vals)
