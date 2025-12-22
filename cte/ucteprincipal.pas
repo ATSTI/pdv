@@ -2064,8 +2064,8 @@ begin
 
             pReducao  := dmPdv.sqEmpresaREDUCAO_IBS .AsFloat; // fazer do CBS
 
-            baseIBS_CBS := dmPdv.cdsItensNFVALTOTAL.AsFloat - dmPdv.cdsItensNFVALOR_ICMS.AsFloat - dmPdv.cdsItensNFVALOR_COFINS.AsFloat
-            - dmPdv.cdsItensNFVALOR_PIS.AsFloat;
+            baseIBS_CBS := dmCte.cdsCteVPREST.AsFloat; //dmPdv.cdsItensNFVALTOTAL.AsFloat - dmPdv.cdsItensNFVALOR_ICMS.AsFloat - dmPdv.cdsItensNFVALOR_COFINS.AsFloat
+           // - dmPdv.cdsItensNFVALOR_PIS.AsFloat;
     
             // CST
             for LCST := Low(TCSTIBSCBS) to High(TCSTIBSCBS) do
@@ -2082,9 +2082,9 @@ begin
           Imp.IBSCBS.cClassTrib := pCASTRIB; // dmPdv.sqEmpresaCCLASSTRIB.AsString; //;'000001';
           //Imp.IBSCBS.indDoacao := tieSim; //tieNenhum;
 
-          Imp.IBSCBS.gIBSCBS.vBC := 100;
+          Imp.IBSCBS.gIBSCBS.vBC := dmCte.cdsCteVPREST.AsFloat;
 
-          Imp.IBSCBS.gIBSCBS.gIBSUF.pIBS := 5;
+          Imp.IBSCBS.gIBSCBS.gIBSUF.pIBS := dmPdv.sqEmpresaP_IBS.AsFloat;
           //Imp.IBSCBS.gIBSCBS.gIBSUF.gDif.pDif := 5;
           //Imp.IBSCBS.gIBSCBS.gIBSUF.gDif.vDif := 50;
           //Imp.IBSCBS.gIBSCBS.gIBSUF.gDevTrib.vDevTrib := 50;
@@ -2095,9 +2095,9 @@ begin
             Imp.IBSCBS.gIBSCBS.gIBSUF.gRed.pAliqEfet := ((baseIBS_CBS*pIBS)/100);
           end;
 
-          Imp.IBSCBS.gIBSCBS.gIBSUF.vIBS := 50;
+          Imp.IBSCBS.gIBSCBS.gIBSUF.vIBS := ((baseIBS_CBS*pIBS)/100);;
 
-          Imp.IBSCBS.gIBSCBS.gIBSMun.pIBS := 5;
+          Imp.IBSCBS.gIBSCBS.gIBSMun.pIBS := 0;
           //Imp.IBSCBS.gIBSCBS.gIBSMun.gDif.pDif := 5;
           //Imp.IBSCBS.gIBSCBS.gIBSMun.gDif.vDif := 50;
           //Imp.IBSCBS.gIBSCBS.gIBSMun.gDevTrib.vDevTrib := 50;
@@ -2108,15 +2108,12 @@ begin
           Imp.IBSCBS.gIBSCBS.gIBSMun.gRed.pAliqEfet := 0;
 
 
-          Imp.IBSCBS.gIBSCBS.gIBSMun.vIBS := 50;
-
-
-
+          Imp.IBSCBS.gIBSCBS.gIBSMun.vIBS := 0;
 
 
           //\\\\ vIBS = vIBS do IBSUF + vIBS do IBSMun
-          Imp.IBSCBS.gIBSCBS.vIBS := 100;
-          Imp.IBSCBS.gIBSCBS.gCBS.pCBS := 5;
+          Imp.IBSCBS.gIBSCBS.vIBS := ((baseIBS_CBS*pIBS)/100);
+          Imp.IBSCBS.gIBSCBS.gCBS.pCBS := pCBS;
           //Imp.IBSCBS.gIBSCBS.gCBS.gDif.pDif := 5;
           //Imp.IBSCBS.gIBSCBS.gCBS.gDif.vDif := 50;
           //Imp.IBSCBS.gIBSCBS.gCBS.gDevTrib.vDevTrib := 50;
@@ -2129,7 +2126,7 @@ begin
             Imp.IBSCBS.gIBSCBS.gCBS.gRed.pAliqEfet := vpCBS ;
           end;
 
-          Imp.IBSCBS.gIBSCBS.gCBS.vCBS := 50;
+          Imp.IBSCBS.gIBSCBS.gCBS.vCBS := ((baseIBS_CBS*pCBS)/100);
 
           {
           Imp.IBSCBS.gIBSCBS.gTribRegular.CSTReg := cst000;
