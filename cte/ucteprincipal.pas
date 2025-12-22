@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
   StdCtrls, Menus, Buttons, DBGrids, EditBtn, Spin, DBCtrls, ZConnection,
-  ZDataset, DateTimePicker, SynEdit, Types, IniFiles, ACBrCTe,
+  ZDataset, DateTimePicker, SynEdit, SynGutterBase, Types, IniFiles, ACBrCTe,
   ACBrCTeDACTEClass, ACBrCTeDACTeRLClass, ACBrMail, ACBrBase, ACBrDFe,
   pcnConversao, pcteConversaoCTe, DateUtils, ACBrUtil, db, ACBrDFeSSL,IdHTTP, httpsend;
 
