@@ -4,8 +4,8 @@ object fCTePrincipal: TfCTePrincipal
   Top = 18
   Width = 1305
   Caption = 'CTe - Conhecimento de Transporte Eletrônico'
-  ClientHeight = 649
-  ClientWidth = 1305
+  ClientHeight = 0
+  ClientWidth = 0
   Position = poScreenCenter
   LCLVersion = '4.0.0.4'
   OnCreate = FormCreate
@@ -691,9 +691,9 @@ object fCTePrincipal: TfCTePrincipal
     Height = 583
     Top = 0
     Width = 1305
-    ActivePage = TabCteGeradas
+    ActivePage = TabCte
     Align = alClient
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     OnChange = pcPrincipalChange
     object TabCteGeradas: TTabSheet
@@ -1580,9 +1580,9 @@ object fCTePrincipal: TfCTePrincipal
         Height = 555
         Top = 0
         Width = 1297
-        ActivePage = TabSheet1
+        ActivePage = TabSheet3
         Align = alClient
-        TabIndex = 10
+        TabIndex = 1
         TabOrder = 0
         OnChange = pcCteChange
         OnChanging = pcCteChanging
@@ -5334,6 +5334,54 @@ object fCTePrincipal: TfCTePrincipal
             ParentBidiMode = False
             TabOrder = 15
             OnClick = btnProximo1Click
+          end
+          object edtCST_IBS_CBS: TEdit
+            Left = 72
+            Height = 23
+            Top = 368
+            Width = 80
+            TabOrder = 16
+            Text = 'edtCST_IBS_CBS'
+          end
+          object edtCCLASSTRIB: TEdit
+            Left = 176
+            Height = 23
+            Top = 368
+            Width = 80
+            TabOrder = 17
+            Text = 'edtCCLASSTRIB'
+          end
+          object edtREDUCAO_CBS: TEdit
+            Left = 176
+            Height = 23
+            Top = 472
+            Width = 80
+            TabOrder = 18
+            Text = 'edtREDUCAO_CBS'
+          end
+          object edtP_CBS: TEdit
+            Left = 176
+            Height = 23
+            Top = 424
+            Width = 80
+            TabOrder = 19
+            Text = 'edtP_CBS'
+          end
+          object edtP_IBS: TEdit
+            Left = 72
+            Height = 23
+            Top = 424
+            Width = 80
+            TabOrder = 20
+            Text = 'edtP_IBS'
+          end
+          object edtREDUCAO_IBS: TEdit
+            Left = 72
+            Height = 23
+            Top = 472
+            Width = 80
+            TabOrder = 21
+            Text = 'edtREDUCAO_IBS'
           end
         end
         object TabTomador: TTabSheet

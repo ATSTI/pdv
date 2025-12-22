@@ -9,7 +9,7 @@ uses
   StdCtrls, Menus, Buttons, DBGrids, EditBtn, Spin, DBCtrls, ZConnection,
   ZDataset, DateTimePicker, SynEdit, SynGutterBase, Types, IniFiles, ACBrCTe,
   ACBrCTeDACTEClass, ACBrCTeDACTeRLClass, ACBrMail, ACBrBase, ACBrDFe,
-  pcnConversao, pcteConversaoCTe, DateUtils, ACBrUtil, db, ACBrDFeSSL,IdHTTP, httpsend;
+  DateUtils, ACBrUtil, db, ACBrDFeSSL,IdHTTP, httpsend;
 
 type
 
@@ -138,6 +138,12 @@ type
     edInutSerie: TEdit;
     edInutJustificativa: TEdit;
     Edit1: TEdit;
+    edtCST_IBS_CBS: TEdit;
+    edtCCLASSTRIB: TEdit;
+    edtP_CBS: TEdit;
+    edtP_IBS: TEdit;
+    edtREDUCAO_CBS: TEdit;
+    edtREDUCAO_IBS: TEdit;
     edtRenavam: TEdit;
     edtPlaca: TEdit;
     edtUF: TEdit;
@@ -863,7 +869,8 @@ const
 implementation
 
 uses udmpdv, ufrmStatus, uDmCte, uNFe, uCompValor, uQuantCarga, uVeiculoCte,
-  uClienteBusca, umunicipiobusca, uCertificadoLer,TypInfo, blcksock;
+  uClienteBusca, umunicipiobusca, uCertificadoLer,TypInfo, blcksock
+  ,ACBrDFe.Conversao,pcteConversaoCTe,pcnConversao;
 
 {$R *.lfm}
 
@@ -1348,6 +1355,7 @@ var
  LCST : TCSTIBSCBS;
  pIBS_CBS : string;
  pCASTRIB : string;
+ pA   : double;
  pIBS : double;
  pCBS : double;
  pReducao : double;
@@ -2067,8 +2075,8 @@ begin
 
            pReducao  := dmPdv.sqEmpresaREDUCAO_IBS .AsFloat; // fazer do CBS
 
-           baseIBS_CBS := dmPdv.cdsItensNFVALTOTAL.AsFloat - dmPdv.cdsItensNFVALOR_ICMS.AsFloat - dmPdv.cdsItensNFVALOR_COFINS.AsFloat
-           - dmPdv.cdsItensNFVALOR_PIS.AsFloat;
+           baseIBS_CBS :=  dmCte.cdsCteVPREST.AsFloat; //dmPdv.cdsItensNFVALTOTAL.AsFloat - dmPdv.cdsItensNFVALOR_ICMS.AsFloat - dmPdv.cdsItensNFVALOR_COFINS.AsFloat
+          // - dmPdv.cdsItensNFVALOR_PIS.AsFloat;
 
            // CST
            for LCST := Low(TCSTIBSCBS) to High(TCSTIBSCBS) do
@@ -2085,9 +2093,9 @@ begin
          Imp.IBSCBS.cClassTrib := pCASTRIB; // dmPdv.sqEmpresaCCLASSTRIB.AsString; //;'000001';
          //Imp.IBSCBS.indDoacao := tieSim; //tieNenhum;
 
-         Imp.IBSCBS.gIBSCBS.vBC := 100;
+         Imp.IBSCBS.gIBSCBS.vBC := dmCte.cdsCteVPREST.AsFloat;
 
-         Imp.IBSCBS.gIBSCBS.gIBSUF.pIBS := 5;
+         Imp.IBSCBS.gIBSCBS.gIBSUF.pIBS := dmPdv.sqEmpresaP_IBS.AsFloat;;
          //Imp.IBSCBS.gIBSCBS.gIBSUF.gDif.pDif := 5;
          //Imp.IBSCBS.gIBSCBS.gIBSUF.gDif.vDif := 50;
          //Imp.IBSCBS.gIBSCBS.gIBSUF.gDevTrib.vDevTrib := 50;
@@ -2098,9 +2106,12 @@ begin
            Imp.IBSCBS.gIBSCBS.gIBSUF.gRed.pAliqEfet := ((baseIBS_CBS*pIBS)/100);
          end;
 
-         Imp.IBSCBS.gIBSCBS.gIBSUF.vIBS := 50;
 
-         Imp.IBSCBS.gIBSCBS.gIBSMun.pIBS := 5;
+
+         Imp.IBSCBS.gIBSCBS.gIBSUF.vIBS := ((baseIBS_CBS*pIBS)/100); ;
+
+         Imp.IBSCBS.gIBSCBS.gIBSMun.pIBS := 0;
+
          //Imp.IBSCBS.gIBSCBS.gIBSMun.gDif.pDif := 5;
          //Imp.IBSCBS.gIBSCBS.gIBSMun.gDif.vDif := 50;
          //Imp.IBSCBS.gIBSCBS.gIBSMun.gDevTrib.vDevTrib := 50;
@@ -2111,15 +2122,17 @@ begin
          Imp.IBSCBS.gIBSCBS.gIBSMun.gRed.pAliqEfet := 0;
 
 
-         Imp.IBSCBS.gIBSCBS.gIBSMun.vIBS := 50;
+         Imp.IBSCBS.gIBSCBS.gIBSMun.vIBS := 0;
 
 
 
 
 
          //\\\\ vIBS = vIBS do IBSUF + vIBS do IBSMun
-         Imp.IBSCBS.gIBSCBS.vIBS := 100;
-         Imp.IBSCBS.gIBSCBS.gCBS.pCBS := 5;
+         Imp.IBSCBS.gIBSCBS.vIBS := dmCte.cdsCteVPREST.AsFloat;;
+
+         Imp.IBSCBS.gIBSCBS.gCBS.pCBS := pCBS ;
+
          //Imp.IBSCBS.gIBSCBS.gCBS.gDif.pDif := 5;
          //Imp.IBSCBS.gIBSCBS.gCBS.gDif.vDif := 50;
          //Imp.IBSCBS.gIBSCBS.gCBS.gDevTrib.vDevTrib := 50;
@@ -2128,11 +2141,11 @@ begin
          begin
          //Imp.IBSCBS.gIBSCBS.gCBS.gRed.pRedAliq := 5;
          //Imp.IBSCBS.gIBSCBS.gCBS.gRed.pAliqEfet := 5;
-           Imp.IBSCBS.gIBSCBS.gCBS.gRed.pRedAliq := dmPdv.cdsItensNFREDUCAO_CBS.AsFloat;
+           Imp.IBSCBS.gIBSCBS.gCBS.gRed.pRedAliq := dmPdv.sqEmpresaREDUCAO_CBS.AsFloat;
            Imp.IBSCBS.gIBSCBS.gCBS.gRed.pAliqEfet := vpCBS ;
          end;
 
-         Imp.IBSCBS.gIBSCBS.gCBS.vCBS := 50;
+         Imp.IBSCBS.gIBSCBS.gCBS.vCBS := ((baseIBS_CBS*pCBS)/100);;
 
          {
          Imp.IBSCBS.gIBSCBS.gTribRegular.CSTReg := cst000;
@@ -2353,6 +2366,14 @@ begin
  edtEmitCidade.Text := dmPdv.sqBusca.FieldByName('CIDADE').AsString;
  edtEmitUF.Text := dmPdv.sqBusca.FieldByName('UF').AsString;
  edtEmitenteCte.Text := dmPdv.sqBusca.FieldByName('EMPRESA').AsString;
+ edtCST_IBS_CBS.Text := dmPdv.sqBusca.FieldByName('CST_IBS_CBS').AsString;
+ edtCCLASSTRIB.Text  := dmPdv.sqBusca.FieldByName('CCLASSTRIB').AsString;
+ edtP_IBS.Text       := dmPdv.sqBusca.FieldByName('P_IBS').AsString;
+ edtP_CBS.Text       := dmPdv.sqBusca.FieldByName('P_CBS').AsString;
+ edtREDUCAO_IBS.Text := dmPdv.sqBusca.FieldByName('REDUCAO_IBS').AsString;
+ edtREDUCAO_CBS.Text := dmPdv.sqBusca.FieldByName('REDUCAO_CBS').AsString;
+
+
  label55.Caption := ' Emitente Iniciado' ;
 
  // pcPrincipal.ActivePage := TabDados;  // Dados

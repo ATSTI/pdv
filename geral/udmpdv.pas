@@ -737,6 +737,7 @@ type
     sqEmpresaANOLETIVO: TLongintField;
     sqEmpresaBAIRRO: TStringField;
     sqEmpresaBASECALCULOCREDITO: TSmallintField;
+    sqEmpresaCCLASSTRIB: TStringField;
     sqEmpresaCCUSTO: TLongintField;
     sqEmpresaCD_IBGE: TStringField;
     sqEmpresaCEP: TStringField;
@@ -767,6 +768,8 @@ type
     sqEmpresaCONTADOR_FONE: TStringField;
     sqEmpresaCONTADOR_NUMEND: TStringField;
     sqEmpresaCRT: TLongintField;
+    sqEmpresaCST_IBS_CBS: TStringField;
+    sqEmpresaDATABOLETO: TDateField;
     sqEmpresaDDD: TStringField;
     sqEmpresaDIVERSOS1: TStringField;
     sqEmpresaDIVERSOS2: TStringField;
@@ -808,7 +811,11 @@ type
     sqEmpresaNUMERO: TStringField;
     sqEmpresaOUTRAS_INFO: TStringField;
     sqEmpresaPORTA: TLongintField;
+    sqEmpresaP_CBS: TFloatField;
+    sqEmpresaP_IBS: TFloatField;
     sqEmpresaRAZAO: TStringField;
+    sqEmpresaREDUCAO_CBS: TFloatField;
+    sqEmpresaREDUCAO_IBS: TFloatField;
     sqEmpresaSENHA: TStringField;
     sqEmpresaSLOGAN: TStringField;
     sqEmpresaSMTP: TStringField;
