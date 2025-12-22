@@ -138,8 +138,8 @@ type
     edInutSerie: TEdit;
     edInutJustificativa: TEdit;
     Edit1: TEdit;
-    edtCST_IBS_CBS: TEdit;
     edtCCLASSTRIB: TEdit;
+    edtCST_IBS_CBS: TEdit;
     edtP_CBS: TEdit;
     edtP_IBS: TEdit;
     edtREDUCAO_CBS: TEdit;
@@ -318,6 +318,7 @@ type
     GroupBox19: TGroupBox;
     GroupBox2: TGroupBox;
     GroupBox20: TGroupBox;
+    GroupBox21: TGroupBox;
     GroupBox22: TGroupBox;
     GroupBox3: TGroupBox;
     GroupBox4: TGroupBox;
@@ -342,7 +343,13 @@ type
     Label102: TLabel;
     Label103: TLabel;
     Label104: TLabel;
+    Label105: TLabel;
+    Label106: TLabel;
+    Label107: TLabel;
+    Label108: TLabel;
+    Label109: TLabel;
     Label11: TLabel;
+    Label110: TLabel;
     Label12: TLabel;
     Label120: TLabel;
     Label121: TLabel;
@@ -750,11 +757,6 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: char);
     procedure FormShow(Sender: TObject);
-    procedure Label120Click(Sender: TObject);
-    procedure Label138Click(Sender: TObject);
-    procedure Label155Click(Sender: TObject);
-    procedure Label176Click(Sender: TObject);
-    procedure Label60Click(Sender: TObject);
     procedure mmEmailMsgChange(Sender: TObject);
     procedure pcCteChange(Sender: TObject);
     procedure pcCteChanging(Sender: TObject; var AllowChange: Boolean);
@@ -7280,29 +7282,11 @@ begin
   pcPrincipal.PageIndex := 0;
 end;
 
-procedure TfCTePrincipal.Label120Click(Sender: TObject);
-begin
 
-end;
 
-procedure TfCTePrincipal.Label138Click(Sender: TObject);
-begin
 
-end;
 
-procedure TfCTePrincipal.Label155Click(Sender: TObject);
-begin
-  end;
 
-procedure TfCTePrincipal.Label176Click(Sender: TObject);
-begin
-
-end;
-
-procedure TfCTePrincipal.Label60Click(Sender: TObject);
-begin
-
-end;
 
 procedure TfCTePrincipal.mmEmailMsgChange(Sender: TObject);
 begin
