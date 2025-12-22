@@ -22,18 +22,18 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCtePrincipal"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="2103"/>
-        <CursorPos Y="2109"/>
+        <TopLine Value="2113"/>
+        <CursorPos X="66" Y="2123"/>
         <ComponentState Value="1"/>
         <UsageCount Value="200"/>
         <Bookmarks Count="8">
           <Item0 X="33" Y="1075" ID="4"/>
-          <Item1 X="3" Y="5402" ID="6"/>
-          <Item2 Y="2172" ID="9"/>
-          <Item3 X="17" Y="3080" ID="8"/>
-          <Item4 X="4" Y="3639" ID="2"/>
-          <Item5 X="5" Y="3616" ID="3"/>
-          <Item6 X="40" Y="5144" ID="5"/>
+          <Item1 X="3" Y="5393" ID="6"/>
+          <Item2 Y="2163" ID="9"/>
+          <Item3 X="17" Y="3071" ID="8"/>
+          <Item4 X="4" Y="3630" ID="2"/>
+          <Item5 X="5" Y="3607" ID="3"/>
+          <Item6 X="40" Y="5135" ID="5"/>
           <Item7 X="36" Y="2069" Left="1" Top="2062" ID="1"/>
         </Bookmarks>
         <Loaded Value="True"/>
@@ -48,7 +48,6 @@
         <EditorIndex Value="8"/>
         <TopLine Value="1704"/>
         <CursorPos Y="1723"/>
-        <ComponentState Value="1"/>
         <UsageCount Value="200"/>
         <Bookmarks Count="1">
           <Item0 X="6" Y="1456" ID="7"/>
@@ -494,7 +493,7 @@
       </Position29>
       <Position30>
         <Filename Value="ucteprincipal.pas"/>
-        <Caret Line="3" Column="112" TopLine="40"/>
+        <Caret Line="186" Column="31" TopLine="210"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -509,7 +508,7 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="ucteprincipal.pas"/>
-        <Line Value="5976"/>
+        <Line Value="5967"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
@@ -523,42 +522,42 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="ucteprincipal.pas"/>
-        <Line Value="4344"/>
+        <Line Value="4335"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="ucteprincipal.pas"/>
-        <Line Value="3708"/>
+        <Line Value="3699"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="ucteprincipal.pas"/>
-        <Line Value="3645"/>
+        <Line Value="3636"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="ucteprincipal.pas"/>
-        <Line Value="7536"/>
+        <Line Value="7527"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="ucteprincipal.pas"/>
-        <Line Value="5000"/>
+        <Line Value="4991"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="ucteprincipal.pas"/>
-        <Line Value="6542"/>
+        <Line Value="6533"/>
       </Item>
     </BreakPoints>
   </Debugging>

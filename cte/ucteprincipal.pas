@@ -2087,18 +2087,12 @@ begin
              end;
            end;
 
-
-         //Imp.vTotDFe := 100;
-         //Imp.IBSCBS.CST := cst000; //edtCBS.Text;// dmPdv.sqEmpresaCST_IBS_CBS.AsString;// cst000;
-         Imp.IBSCBS.cClassTrib := pCASTRIB; // dmPdv.sqEmpresaCCLASSTRIB.AsString; //;'000001';
-         //Imp.IBSCBS.indDoacao := tieSim; //tieNenhum;
+         Imp.IBSCBS.cClassTrib := pCASTRIB;
 
          Imp.IBSCBS.gIBSCBS.vBC := dmCte.cdsCteVPREST.AsFloat;
 
          Imp.IBSCBS.gIBSCBS.gIBSUF.pIBS := dmPdv.sqEmpresaP_IBS.AsFloat;;
-         //Imp.IBSCBS.gIBSCBS.gIBSUF.gDif.pDif := 5;
-         //Imp.IBSCBS.gIBSCBS.gIBSUF.gDif.vDif := 50;
-         //Imp.IBSCBS.gIBSCBS.gIBSUF.gDevTrib.vDevTrib := 50;
+
 
          if(pReducao > 0)then
          begin
@@ -2125,11 +2119,8 @@ begin
          Imp.IBSCBS.gIBSCBS.gIBSMun.vIBS := 0;
 
 
-
-
-
          //\\\\ vIBS = vIBS do IBSUF + vIBS do IBSMun
-         Imp.IBSCBS.gIBSCBS.vIBS := dmCte.cdsCteVPREST.AsFloat;;
+         Imp.IBSCBS.gIBSCBS.vIBS := ((baseIBS_CBS*pIBS)/100); // dmCte.cdsCteVPREST.AsFloat;;
 
          Imp.IBSCBS.gIBSCBS.gCBS.pCBS := pCBS ;
 
