@@ -4,8 +4,8 @@ object fCTePrincipal: TfCTePrincipal
   Top = 18
   Width = 1305
   Caption = 'CTe - Conhecimento de Transporte Eletrônico'
-  ClientHeight = 0
-  ClientWidth = 0
+  ClientHeight = 649
+  ClientWidth = 1305
   Position = poScreenCenter
   LCLVersion = '4.0.0.4'
   OnCreate = FormCreate

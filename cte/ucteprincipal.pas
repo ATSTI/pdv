@@ -6997,13 +6997,13 @@ begin
   try
       ZConn.Connected       := False;
       ZConn.HostName        := Ini.ReadString('ZConn', 'Hostname', '');
-      ZConn.Port            := Ini.ReadInteger('ZConn', 'Port', 0);
-      ZConn.Protocol        := Ini.ReadString('ZConn', 'Protocol', '');
-      ZConn.LibraryLocation := Ini.ReadString('ZConn', 'LibraryLocation', '');
-      ZConn.User            := Ini.ReadString('ZConn', 'User', '');
-      ZConn.Password        := Ini.ReadString('ZConn', 'Password', '');
+      //ZConn.Port            := Ini.ReadInteger('ZConn', 'Port', 0);
+      //ZConn.Protocol        := Ini.ReadString('ZConn', 'Protocol', '');
+      //ZConn.LibraryLocation := Ini.ReadString('ZConn', 'LibraryLocation', '');
+      //ZConn.User            := Ini.ReadString('ZConn', 'User', '');
+      //ZConn.Password        := Ini.ReadString('ZConn', 'Password', '');
       ZConn.Database        := Ini.ReadString('ZConn', 'Database', '');
-      ZConn.ClientCodepage  := Ini.ReadString('ZConn', 'Charset', '');
+      //ZConn.ClientCodepage  := Ini.ReadString('ZConn', 'Charset', '');
       ZQuery1.Open;
   except
        on E:Exception do
