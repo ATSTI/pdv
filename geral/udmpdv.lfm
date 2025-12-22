@@ -1786,15 +1786,15 @@ object dmPdv: TdmPdv
         Precision = -1
       end    
       item
-        Name = 'TREGIME'
-        DataType = ftInteger
-        Precision = -1
-      end    
-      item
         Name = 'IM'
         DataType = ftString
         Precision = -1
         Size = 15
+      end    
+      item
+        Name = 'TREGIME'
+        DataType = ftInteger
+        Precision = -1
       end    
       item
         Name = 'CONTADOR'
@@ -2041,6 +2041,62 @@ object dmPdv: TdmPdv
         DataType = ftString
         Precision = -1
         Size = 3
+      end    
+      item
+        Name = 'CERTIFICADO'
+        DataType = ftString
+        Precision = -1
+        Size = 50
+      end    
+      item
+        Name = 'GIAF1'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 1
+      end    
+      item
+        Name = 'GIAF3'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 1
+      end    
+      item
+        Name = 'GIAF4'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 1
+      end    
+      item
+        Name = 'CST_IBS_CBS'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 3
+      end    
+      item
+        Name = 'CCLASSTRIB'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 6
+      end    
+      item
+        Name = 'P_IBS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'P_CBS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'REDUCAO_IBS'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'REDUCAO_CBS'
+        DataType = ftFloat
+        Precision = -1
       end>
     Database = IbCon
     Transaction = sTrans
@@ -2835,6 +2891,106 @@ object dmPdv: TdmPdv
       ReadOnly = False
       Required = False
       Size = 3
+    end
+    object sqEmpresaCERTIFICADO: TStringField
+      FieldKind = fkData
+      FieldName = 'CERTIFICADO'
+      Index = 82
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 50
+    end
+    object sqEmpresaGIAF1: TStringField
+      FieldKind = fkData
+      FieldName = 'GIAF1'
+      Index = 83
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sqEmpresaGIAF3: TStringField
+      FieldKind = fkData
+      FieldName = 'GIAF3'
+      Index = 84
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sqEmpresaGIAF4: TStringField
+      FieldKind = fkData
+      FieldName = 'GIAF4'
+      Index = 85
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sqEmpresaCST_IBS_CBS: TStringField
+      FieldKind = fkData
+      FieldName = 'CST_IBS_CBS'
+      Index = 86
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 3
+    end
+    object sqEmpresaCCLASSTRIB: TStringField
+      FieldKind = fkData
+      FieldName = 'CCLASSTRIB'
+      Index = 87
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 6
+    end
+    object sqEmpresaP_IBS: TFloatField
+      FieldKind = fkData
+      FieldName = 'P_IBS'
+      Index = 88
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqEmpresaP_CBS: TFloatField
+      FieldKind = fkData
+      FieldName = 'P_CBS'
+      Index = 89
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqEmpresaREDUCAO_IBS: TFloatField
+      FieldKind = fkData
+      FieldName = 'REDUCAO_IBS'
+      Index = 90
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqEmpresaREDUCAO_CBS: TFloatField
+      FieldKind = fkData
+      FieldName = 'REDUCAO_CBS'
+      Index = 91
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
     end
   end
   object sqUpdate: TSQLQuery

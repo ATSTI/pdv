@@ -1,7 +1,7 @@
 object fCTePrincipal: TfCTePrincipal
-  Left = 23
+  Left = 24
   Height = 649
-  Top = 18
+  Top = 34
   Width = 1305
   Caption = 'CTe - Conhecimento de Transporte Eletrônico'
   ClientHeight = 649
@@ -691,9 +691,9 @@ object fCTePrincipal: TfCTePrincipal
     Height = 583
     Top = 0
     Width = 1305
-    ActivePage = TabCte
+    ActivePage = TabCteGeradas
     Align = alClient
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 0
     OnChange = pcPrincipalChange
     object TabCteGeradas: TTabSheet
@@ -5365,7 +5365,7 @@ object fCTePrincipal: TfCTePrincipal
           object btnProximo1: TBitBtn
             Left = 896
             Height = 30
-            Top = 520
+            Top = 526
             Width = 94
             BidiMode = bdRightToLeft
             Caption = 'Próximo'
@@ -5438,6 +5438,100 @@ object fCTePrincipal: TfCTePrincipal
             ParentBidiMode = False
             TabOrder = 15
             OnClick = btnProximo1Click
+          end
+          object GroupBox23: TGroupBox
+            Left = 24
+            Height = 176
+            Top = 336
+            Width = 240
+            Caption = 'Reforma Tributaria'
+            ClientHeight = 156
+            ClientWidth = 236
+            TabOrder = 16
+            object Label182: TLabel
+              Left = 24
+              Height = 15
+              Top = 0
+              Width = 21
+              Caption = 'CST'
+            end
+            object edtCST: TEdit
+              Left = 24
+              Height = 23
+              Top = 17
+              Width = 80
+              TabOrder = 0
+            end
+            object Label183: TLabel
+              Left = 136
+              Height = 15
+              Top = 0
+              Width = 48
+              Caption = 'Ccasstrib'
+            end
+            object edtCcasstib: TEdit
+              Left = 136
+              Height = 23
+              Top = 17
+              Width = 80
+              TabOrder = 1
+            end
+            object Label187: TLabel
+              Left = 24
+              Height = 15
+              Top = 46
+              Width = 29
+              Caption = '% IBS'
+            end
+            object edtIBS: TEdit
+              Left = 24
+              Height = 23
+              Top = 65
+              Width = 80
+              TabOrder = 2
+            end
+            object edtCBS: TEdit
+              Left = 136
+              Height = 23
+              Top = 65
+              Width = 80
+              TabOrder = 3
+            end
+            object Label185: TLabel
+              Left = 24
+              Height = 15
+              Top = 96
+              Width = 65
+              Caption = 'Redução IBS'
+            end
+            object edtReducaoIBS: TEdit
+              Left = 24
+              Height = 23
+              Top = 120
+              Width = 80
+              TabOrder = 4
+            end
+            object Label186: TLabel
+              Left = 136
+              Height = 15
+              Top = 96
+              Width = 70
+              Caption = 'Redução CBS'
+            end
+            object Label184: TLabel
+              Left = 136
+              Height = 15
+              Top = 46
+              Width = 34
+              Caption = '% CBS'
+            end
+            object edtReducaoCBS: TEdit
+              Left = 136
+              Height = 23
+              Top = 120
+              Width = 80
+              TabOrder = 5
+            end
           end
         end
         object TabTomador: TTabSheet
@@ -14687,7 +14781,7 @@ object fCTePrincipal: TfCTePrincipal
     DisableSavepoints = False
     HostName = 'localhost'
     Port = 3050
-    Database = 'D:\clientes\vca\2024\sge_cteos.fdb'
+    Database = 'D:\clientes\vanlog\bd\sge_vanlog.fdb'
     User = 'sysdba'
     Password = 'masterkey'
     Protocol = 'firebird'

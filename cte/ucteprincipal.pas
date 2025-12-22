@@ -7,9 +7,9 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
   StdCtrls, Menus, Buttons, DBGrids, EditBtn, Spin, DBCtrls, ZConnection,
-  ZDataset, DateTimePicker, Types, IniFiles, ACBrCTe, ACBrCTeDACTEClass,
-  ACBrCTeDACTeRLClass, ACBrMail, ACBrBase, ACBrDFe, ACBrNFe, pcnConversao,
-  pcteConversaoCTe, DateUtils, ACBrUtil, db, ACBrDFeSSL;
+  ZDataset, ZAbstractRODataset, DateTimePicker, Types, IniFiles, ACBrCTe,
+  ACBrCTeDACTEClass, ACBrCTeDACTeRLClass, ACBrMail, ACBrBase, ACBrDFe, ACBrNFe,
+  DateUtils, ACBrUtil, db, ACBrDFeSSL;
 
 type
 
@@ -153,6 +153,10 @@ type
     edInutSerie: TEdit;
     edInutJustificativa: TEdit;
     Edit1: TEdit;
+    edtCBS: TEdit;
+    edtCcasstib: TEdit;
+    edtCST: TEdit;
+    edtIBS: TEdit;
     edtComp: TEdit;
     edtQC: TEdit;
     edModeloAtualiza: TEdit;
@@ -177,6 +181,8 @@ type
     edtNatOpe1: TEdit;
     edtNumCte1: TEdit;
     edtPathLogs: TEdit;
+    edtReducaoCBS: TEdit;
+    edtReducaoIBS: TEdit;
     edtSenha: TEdit;
     edtSmtpHost: TEdit;
     edtSmtpPass: TEdit;
@@ -352,6 +358,7 @@ type
     GroupBox20: TGroupBox;
     GroupBox21: TGroupBox;
     GroupBox22: TGroupBox;
+    GroupBox23: TGroupBox;
     GroupBox3: TGroupBox;
     GroupBox4: TGroupBox;
     GroupBox5: TGroupBox;
@@ -457,6 +464,12 @@ type
     Label179: TLabel;
     Label180: TLabel;
     Label181: TLabel;
+    Label182: TLabel;
+    Label183: TLabel;
+    Label184: TLabel;
+    Label185: TLabel;
+    Label186: TLabel;
+    Label187: TLabel;
     lblCteAtual: TLabel;
     Label17: TLabel;
     Label19: TLabel;
@@ -923,7 +936,7 @@ const
 implementation
 
 uses udmpdv, ufrmStatus, uDmCte, uNFe, uCompValor, uQuantCarga, uVeiculoCte,
-  uClienteBusca, umunicipiobusca, uCertificadoLer,TypInfo, blcksock;
+  uClienteBusca, umunicipiobusca, uCertificadoLer,TypInfo, blcksock ,ACBrDFe.Conversao,pcteConversaoCTe,pcnConversao;
 
 {$R *.lfm}
 
@@ -1401,6 +1414,15 @@ procedure TfCTePrincipal.GerarCTe(NumCTe: String);
 var
  i, j, CodigoMunicipio, Tomador: Integer;
  IE  : string;
+ LCST : TCSTIBSCBS;
+ pIBS_CBS : string;
+ pCASTRIB : string;
+ pIBS : double;
+ pCBS : double;
+ pReducao : double;
+ baseIBS_CBS : double;
+ vpCBS  : double;
+ vpIBS  : double;
 begin
   //if ((rgTipoServico.ItemIndex = 1) or (rgTiposCte.ItemIndex = 1) and (edtAntCHCTE.Text = '')) then
   if (((rgTipoServico.ItemIndex = 1) or (rgTiposCte.ItemIndex = 1)) and (edtAntCHCTE.Text = '')) then
@@ -2033,6 +2055,95 @@ begin
        end;
     end;
 
+    // Inicio Reforma Tributaria
+            pIBS_CBS := dmPdv.sqEmpresaCST_IBS_CBS.AsString;
+            pCASTRIB := dmPdv.sqEmpresaCCLASSTRIB.AsString;
+
+            pIBS := StrToFloat(dmPdv.sqEmpresaP_IBS.AsString);
+            pCBS := StrToFloat(dmPdv.sqEmpresaP_CBS.AsString);
+
+            pReducao  := dmPdv.sqEmpresaREDUCAO_IBS .AsFloat; // fazer do CBS
+
+            baseIBS_CBS := dmPdv.cdsItensNFVALTOTAL.AsFloat - dmPdv.cdsItensNFVALOR_ICMS.AsFloat - dmPdv.cdsItensNFVALOR_COFINS.AsFloat
+            - dmPdv.cdsItensNFVALOR_PIS.AsFloat;
+    
+            // CST
+            for LCST := Low(TCSTIBSCBS) to High(TCSTIBSCBS) do
+            begin
+              if Trim(pIBS_CBS) = TCSTIBSCBSArrayStrings[LCST] then
+              begin
+                imp.IBSCBS.CST := LCST;
+              end;
+            end;
+
+
+          //Imp.vTotDFe := 100;
+          //Imp.IBSCBS.CST := cst000; //edtCBS.Text;// dmPdv.sqEmpresaCST_IBS_CBS.AsString;// cst000;
+          Imp.IBSCBS.cClassTrib := pCASTRIB; // dmPdv.sqEmpresaCCLASSTRIB.AsString; //;'000001';
+          //Imp.IBSCBS.indDoacao := tieSim; //tieNenhum;
+
+          Imp.IBSCBS.gIBSCBS.vBC := 100;
+
+          Imp.IBSCBS.gIBSCBS.gIBSUF.pIBS := 5;
+          //Imp.IBSCBS.gIBSCBS.gIBSUF.gDif.pDif := 5;
+          //Imp.IBSCBS.gIBSCBS.gIBSUF.gDif.vDif := 50;
+          //Imp.IBSCBS.gIBSCBS.gIBSUF.gDevTrib.vDevTrib := 50;
+
+          if(pReducao > 0)then
+          begin
+            Imp.IBSCBS.gIBSCBS.gIBSUF.gRed.pRedAliq := dmPdv.sqEmpresaREDUCAO_IBS.AsFloat;
+            Imp.IBSCBS.gIBSCBS.gIBSUF.gRed.pAliqEfet := ((baseIBS_CBS*pIBS)/100);
+          end;
+
+          Imp.IBSCBS.gIBSCBS.gIBSUF.vIBS := 50;
+
+          Imp.IBSCBS.gIBSCBS.gIBSMun.pIBS := 5;
+          //Imp.IBSCBS.gIBSCBS.gIBSMun.gDif.pDif := 5;
+          //Imp.IBSCBS.gIBSCBS.gIBSMun.gDif.vDif := 50;
+          //Imp.IBSCBS.gIBSCBS.gIBSMun.gDevTrib.vDevTrib := 50;
+
+;
+
+          Imp.IBSCBS.gIBSCBS.gIBSMun.gRed.pRedAliq := dmPdv.sqEmpresaREDUCAO_IBS.AsFloat;
+          Imp.IBSCBS.gIBSCBS.gIBSMun.gRed.pAliqEfet := 0;
+
+
+          Imp.IBSCBS.gIBSCBS.gIBSMun.vIBS := 50;
+
+
+
+
+
+          //\\\\ vIBS = vIBS do IBSUF + vIBS do IBSMun
+          Imp.IBSCBS.gIBSCBS.vIBS := 100;
+          Imp.IBSCBS.gIBSCBS.gCBS.pCBS := 5;
+          //Imp.IBSCBS.gIBSCBS.gCBS.gDif.pDif := 5;
+          //Imp.IBSCBS.gIBSCBS.gCBS.gDif.vDif := 50;
+          //Imp.IBSCBS.gIBSCBS.gCBS.gDevTrib.vDevTrib := 50;
+
+          if(pReducao > 0 )then
+          begin
+          //Imp.IBSCBS.gIBSCBS.gCBS.gRed.pRedAliq := 5;
+          //Imp.IBSCBS.gIBSCBS.gCBS.gRed.pAliqEfet := 5;
+            Imp.IBSCBS.gIBSCBS.gCBS.gRed.pRedAliq := dmPdv.cdsItensNFREDUCAO_CBS.AsFloat;
+            Imp.IBSCBS.gIBSCBS.gCBS.gRed.pAliqEfet := vpCBS ;
+          end;
+
+          Imp.IBSCBS.gIBSCBS.gCBS.vCBS := 50;
+
+          {
+          Imp.IBSCBS.gIBSCBS.gTribRegular.CSTReg := cst000;
+          Imp.IBSCBS.gIBSCBS.gTribRegular.cClassTribReg := '000001';
+          Imp.IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegIBSUF := 5;
+          Imp.IBSCBS.gIBSCBS.gTribRegular.vTribRegIBSUF := 50;
+          Imp.IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegIBSMun := 5;
+          Imp.IBSCBS.gIBSCBS.gTribRegular.vTribRegIBSMun := 50;
+          Imp.IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegCBS := 5;
+          Imp.IBSCBS.gIBSCBS.gTribRegular.vTribRegCBS := 50;
+          }
+
+    // Fim Reforma Tributaria
+
     //
     //  Informações da Carga
     //                                  //Format('%8.2f', [edPesoVol1.Value]);
@@ -2238,6 +2349,15 @@ begin
  edtEmitCidade.Text := dmPdv.sqBusca.FieldByName('CIDADE').AsString;
  edtEmitUF.Text := dmPdv.sqBusca.FieldByName('UF').AsString;
  edtEmitenteCte.Text := dmPdv.sqBusca.FieldByName('EMPRESA').AsString;
+ edtCST.Text := dmPdv.sqBusca.FieldByName('CST_IBS_CBS').AsString;
+ edtCcasstib.Text := dmPdv.sqBusca.FieldByName('CCLASSTRIB').AsString;
+ edtIBS.Text := dmPdv.sqBusca.FieldByName('P_IBS').AsString;
+ edtCBS.Text := dmPdv.sqBusca.FieldByName('P_CBS').AsString;
+ edtReducaoIBS.Text := dmPdv.sqBusca.FieldByName('REDUCAO_IBS').AsString;
+ edtReducaoCBS.Text := dmPdv.sqBusca.FieldByName('REDUCAO_CBS').AsString;
+
+
+
  label55.Caption := ' Emitente Iniciado' ;
 
  // pcPrincipal.ActivePage := TabDados;  // Dados
