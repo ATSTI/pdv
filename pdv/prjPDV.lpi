@@ -356,7 +356,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="D:\clientes\felicita\cx1_2025\prjPDV"/>
+      <Filename Value="C:\home\sisadmin\prjPDV"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
