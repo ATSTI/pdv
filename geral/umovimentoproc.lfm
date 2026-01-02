@@ -7,7 +7,7 @@ object fMovimentoProc: TfMovimentoProc
   ClientHeight = 566
   ClientWidth = 1120
   Position = poScreenCenter
-  LCLVersion = '4.0.0.4'
+  LCLVersion = '4.4.0.0'
   OnCreate = FormCreate
   OnShow = FormShow
   object Panel1: TPanel
@@ -48,7 +48,7 @@ object fMovimentoProc: TfMovimentoProc
       Top = 4
       Width = 105
       CenturyFrom = 1941
-      MaxDate = 46022
+      MaxDate = 47848
       MinDate = 43313
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
@@ -76,7 +76,7 @@ object fMovimentoProc: TfMovimentoProc
       Top = 4
       Width = 105
       CenturyFrom = 1941
-      MaxDate = 46022
+      MaxDate = 47848
       MinDate = 43313
       Font.CharSet = ANSI_CHARSET
       Font.Height = -16
