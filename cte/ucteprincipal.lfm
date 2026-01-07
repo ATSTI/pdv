@@ -673,7 +673,7 @@ object fCTePrincipal: TfCTePrincipal
       Height = 15
       Top = 28
       Width = 86
-      Caption = 'EXE : 20/02/2024'
+      Caption = 'EXE : 07/01/2026'
       ParentColor = False
     end
   end
