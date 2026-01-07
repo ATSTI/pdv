@@ -2068,91 +2068,90 @@ begin
        end;
     end;
 
-   // Inicio Reforma Tributaria
-           pIBS_CBS := dmPdv.sqEmpresaCST_IBS_CBS.AsString;
-           pCASTRIB := dmPdv.sqEmpresaCCLASSTRIB.AsString;
+    if(dmpdv.ReformaTributaria = 'SIM')then
+    begin
+      // Inicio Reforma Tributaria
+      pIBS_CBS := dmPdv.sqEmpresaCST_IBS_CBS.AsString;
+      pCASTRIB := dmPdv.sqEmpresaCCLASSTRIB.AsString;
 
-           pIBS := StrToFloat(dmPdv.sqEmpresaP_IBS.AsString);
-           pCBS := StrToFloat(dmPdv.sqEmpresaP_CBS.AsString);
+      pIBS := StrToFloat(dmPdv.sqEmpresaP_IBS.AsString);
+      pCBS := StrToFloat(dmPdv.sqEmpresaP_CBS.AsString);
 
-           pReducao  := dmPdv.sqEmpresaREDUCAO_IBS .AsFloat; // fazer do CBS
+      pReducao  := dmPdv.sqEmpresaREDUCAO_IBS .AsFloat; // fazer do CBS
 
-           baseIBS_CBS :=  dmCte.cdsCteVPREST.AsFloat; //dmPdv.cdsItensNFVALTOTAL.AsFloat - dmPdv.cdsItensNFVALOR_ICMS.AsFloat - dmPdv.cdsItensNFVALOR_COFINS.AsFloat
-          // - dmPdv.cdsItensNFVALOR_PIS.AsFloat;
+      baseIBS_CBS :=  dmCte.cdsCteVPREST.AsFloat; //dmPdv.cdsItensNFVALTOTAL.AsFloat - dmPdv.cdsItensNFVALOR_ICMS.AsFloat - dmPdv.cdsItensNFVALOR_COFINS.AsFloat
+      // - dmPdv.cdsItensNFVALOR_PIS.AsFloat;
 
-           // CST
-           for LCST := Low(TCSTIBSCBS) to High(TCSTIBSCBS) do
-           begin
-             if Trim(pIBS_CBS) = TCSTIBSCBSArrayStrings[LCST] then
-             begin
-               imp.IBSCBS.CST := LCST;
-             end;
-           end;
+      // CST
+      for LCST := Low(TCSTIBSCBS) to High(TCSTIBSCBS) do
+      begin
+        if Trim(pIBS_CBS) = TCSTIBSCBSArrayStrings[LCST] then
+        begin
+          imp.IBSCBS.CST := LCST;
+        end;
+      end;
 
-         Imp.IBSCBS.cClassTrib := pCASTRIB;
+      Imp.IBSCBS.cClassTrib := pCASTRIB;
 
-         Imp.IBSCBS.gIBSCBS.vBC := dmCte.cdsCteVPREST.AsFloat;
+      Imp.IBSCBS.gIBSCBS.vBC := dmCte.cdsCteVPREST.AsFloat;
 
-         Imp.IBSCBS.gIBSCBS.gIBSUF.pIBS := dmPdv.sqEmpresaP_IBS.AsFloat;;
-
-
-         if(pReducao > 0)then
-         begin
-           Imp.IBSCBS.gIBSCBS.gIBSUF.gRed.pRedAliq := dmPdv.sqEmpresaREDUCAO_IBS.AsFloat;
-           Imp.IBSCBS.gIBSCBS.gIBSUF.gRed.pAliqEfet := ((baseIBS_CBS*pIBS)/100);
-         end;
+      Imp.IBSCBS.gIBSCBS.gIBSUF.pIBS := dmPdv.sqEmpresaP_IBS.AsFloat;;
 
 
-
-         Imp.IBSCBS.gIBSCBS.gIBSUF.vIBS := ((baseIBS_CBS*pIBS)/100); ;
-
-         Imp.IBSCBS.gIBSCBS.gIBSMun.pIBS := 0;
-
-         //Imp.IBSCBS.gIBSCBS.gIBSMun.gDif.pDif := 5;
-         //Imp.IBSCBS.gIBSCBS.gIBSMun.gDif.vDif := 50;
-         //Imp.IBSCBS.gIBSCBS.gIBSMun.gDevTrib.vDevTrib := 50;
-
-;
-
-         Imp.IBSCBS.gIBSCBS.gIBSMun.gRed.pRedAliq := dmPdv.sqEmpresaREDUCAO_IBS.AsFloat;
-         Imp.IBSCBS.gIBSCBS.gIBSMun.gRed.pAliqEfet := 0;
+      if(pReducao > 0)then
+      begin
+        Imp.IBSCBS.gIBSCBS.gIBSUF.gRed.pRedAliq := dmPdv.sqEmpresaREDUCAO_IBS.AsFloat;
+        Imp.IBSCBS.gIBSCBS.gIBSUF.gRed.pAliqEfet := ((baseIBS_CBS*pIBS)/100);
+      end;
 
 
-         Imp.IBSCBS.gIBSCBS.gIBSMun.vIBS := 0;
+
+      Imp.IBSCBS.gIBSCBS.gIBSUF.vIBS := ((baseIBS_CBS*pIBS)/100); ;
+
+      Imp.IBSCBS.gIBSCBS.gIBSMun.pIBS := 0;
+
+      //Imp.IBSCBS.gIBSCBS.gIBSMun.gDif.pDif := 5;
+      //Imp.IBSCBS.gIBSCBS.gIBSMun.gDif.vDif := 50;
+      //Imp.IBSCBS.gIBSCBS.gIBSMun.gDevTrib.vDevTrib := 50;
 
 
-         //\\\\ vIBS = vIBS do IBSUF + vIBS do IBSMun
-         Imp.IBSCBS.gIBSCBS.vIBS := ((baseIBS_CBS*pIBS)/100); // dmCte.cdsCteVPREST.AsFloat;;
+      Imp.IBSCBS.gIBSCBS.gIBSMun.gRed.pRedAliq := dmPdv.sqEmpresaREDUCAO_IBS.AsFloat;
+      Imp.IBSCBS.gIBSCBS.gIBSMun.gRed.pAliqEfet := 0;
 
-         Imp.IBSCBS.gIBSCBS.gCBS.pCBS := pCBS ;
+      Imp.IBSCBS.gIBSCBS.gIBSMun.vIBS := 0;
 
-         //Imp.IBSCBS.gIBSCBS.gCBS.gDif.pDif := 5;
-         //Imp.IBSCBS.gIBSCBS.gCBS.gDif.vDif := 50;
-         //Imp.IBSCBS.gIBSCBS.gCBS.gDevTrib.vDevTrib := 50;
+      //\\\\ vIBS = vIBS do IBSUF + vIBS do IBSMun
+      Imp.IBSCBS.gIBSCBS.vIBS := ((baseIBS_CBS*pIBS)/100); // dmCte.cdsCteVPREST.AsFloat;;
 
-         if(pReducao > 0 )then
-         begin
-         //Imp.IBSCBS.gIBSCBS.gCBS.gRed.pRedAliq := 5;
-         //Imp.IBSCBS.gIBSCBS.gCBS.gRed.pAliqEfet := 5;
-           Imp.IBSCBS.gIBSCBS.gCBS.gRed.pRedAliq := dmPdv.sqEmpresaREDUCAO_CBS.AsFloat;
-           Imp.IBSCBS.gIBSCBS.gCBS.gRed.pAliqEfet := vpCBS ;
-         end;
+      Imp.IBSCBS.gIBSCBS.gCBS.pCBS := pCBS ;
 
-         Imp.IBSCBS.gIBSCBS.gCBS.vCBS := ((baseIBS_CBS*pCBS)/100);;
+      //Imp.IBSCBS.gIBSCBS.gCBS.gDif.pDif := 5;
+      //Imp.IBSCBS.gIBSCBS.gCBS.gDif.vDif := 50;
+      //Imp.IBSCBS.gIBSCBS.gCBS.gDevTrib.vDevTrib := 50;
 
-         {
-         Imp.IBSCBS.gIBSCBS.gTribRegular.CSTReg := cst000;
-         Imp.IBSCBS.gIBSCBS.gTribRegular.cClassTribReg := '000001';
-         Imp.IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegIBSUF := 5;
-         Imp.IBSCBS.gIBSCBS.gTribRegular.vTribRegIBSUF := 50;
-         Imp.IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegIBSMun := 5;
-         Imp.IBSCBS.gIBSCBS.gTribRegular.vTribRegIBSMun := 50;
-         Imp.IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegCBS := 5;
-         Imp.IBSCBS.gIBSCBS.gTribRegular.vTribRegCBS := 50;
-         }
+      if(pReducao > 0 )then
+      begin
+        //Imp.IBSCBS.gIBSCBS.gCBS.gRed.pRedAliq := 5;
+        //Imp.IBSCBS.gIBSCBS.gCBS.gRed.pAliqEfet := 5;
+        Imp.IBSCBS.gIBSCBS.gCBS.gRed.pRedAliq := dmPdv.sqEmpresaREDUCAO_CBS.AsFloat;
+        Imp.IBSCBS.gIBSCBS.gCBS.gRed.pAliqEfet := vpCBS ;
+      end;
 
-   // Fim Reforma Tributaria
+      Imp.IBSCBS.gIBSCBS.gCBS.vCBS := ((baseIBS_CBS*pCBS)/100);;
 
+      {
+      Imp.IBSCBS.gIBSCBS.gTribRegular.CSTReg := cst000;
+      Imp.IBSCBS.gIBSCBS.gTribRegular.cClassTribReg := '000001';
+      Imp.IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegIBSUF := 5;
+      Imp.IBSCBS.gIBSCBS.gTribRegular.vTribRegIBSUF := 50;
+      Imp.IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegIBSMun := 5;
+      Imp.IBSCBS.gIBSCBS.gTribRegular.vTribRegIBSMun := 50;
+      Imp.IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegCBS := 5;
+      Imp.IBSCBS.gIBSCBS.gTribRegular.vTribRegCBS := 50;
+      }
+
+      // Fim Reforma Tributaria
+    end;
 
     //
     //  Informações da Carga

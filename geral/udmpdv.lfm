@@ -6,10 +6,10 @@ object dmPdv: TdmPdv
   VerticalOffset = 0
   Width = 934
   object IbCon: TIBConnection
-    Connected = True
+    Connected = False
     LoginPrompt = False
     AfterConnect = IbConAfterConnect
-    DatabaseName = 'D:\clientes\vca\01122025\bd\sge_cteos.fdb'
+    DatabaseName = 'D:\clientes\stylus\bd\sge_stylus.fdb'
     KeepConnection = False
     Params.Strings = (
       'port=3050'
@@ -25,7 +25,7 @@ object dmPdv: TdmPdv
     Top = 18
   end
   object sTrans: TSQLTransaction
-    Active = True
+    Active = False
     Database = IbCon
     Left = 136
     Top = 16

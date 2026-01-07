@@ -691,9 +691,9 @@ object fCTePrincipal: TfCTePrincipal
     Height = 583
     Top = 0
     Width = 1305
-    ActivePage = TabCteGeradas
+    ActivePage = TabCte
     Align = alClient
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     OnChange = pcPrincipalChange
     object TabCteGeradas: TTabSheet
@@ -1580,9 +1580,9 @@ object fCTePrincipal: TfCTePrincipal
         Height = 555
         Top = 0
         Width = 1297
-        ActivePage = TabDados
+        ActivePage = TabSheet3
         Align = alClient
-        TabIndex = 0
+        TabIndex = 1
         TabOrder = 0
         OnChange = pcCteChange
         OnChanging = pcCteChanging
@@ -13780,10 +13780,12 @@ object fCTePrincipal: TfCTePrincipal
       'AutoEncodeStrings=True'
       'controls_cp=CP_UTF8'
       'codepage=WIN1252'
+      'RawStringEncoding=DB_CP'
     )
     DisableSavepoints = False
     HostName = 'localhost'
     Port = 3050
+    Database = 'D:\clientes\stylus\bd\sge_stylus.fdb'
     User = 'sysdba'
     Password = 'masterkey'
     Protocol = 'firebird'

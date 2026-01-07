@@ -1037,6 +1037,7 @@ type
     function existe_campo(tabela, campo: String): Boolean;
 
   public
+    ReformaTributaria: String;
     caminhoEXEpdv: String;
     odoo_database: String;
     odoo_user: STring;
@@ -1298,6 +1299,7 @@ begin
       //imp_desconto_item := conf.ReadString( 'Outros','ImprimeDescontoItem','N');
       modoDesenvolvedor := conf.ReadString( 'Outros','modoDesenvolvedor','N');
       caminhoEXEpdv  := conf.ReadString( 'Outros','caminhoEXEpdv','');
+      ReformaTributaria := conf.ReadString( 'Outros','ReformaTributaria','NAO');
      {
       ZCon.Connected       := False;
       ZCon.HostName        := conf.ReadString('ZConn', 'Hostname', '');
