@@ -4155,7 +4155,6 @@ begin
             pIBS_CBS := dmPdv.cdsItensNFCST_IBS_CBS.AsString;
             pCASTRIB := dmPdv.cdsItensNFCCLASSTRIB.AsString;
 
-          //  DecimalSeparator := '.';
             pIBS := StrToFloat(dmPdv.cdsItensNFP_IBS.AsString);
             pCBS := StrToFloat(dmPdv.cdsItensNFP_CBS.AsString);
 
@@ -4170,19 +4169,7 @@ begin
               end;
             end;
 
-            // CASTRIB
-            {
-            for LcClassTrib := Low(TcClassTrib) to High(TcClassTrib) do
-            begin
-              if Trim(pCASTRIB) = TcClassTribArrayStrings[LcClassTrib] then
-              begin
-                IBSCBS.cClassTrib := LcClassTrib;
-              end;
-            end;
-
-           }
-
-            IBSCBS.cClassTrib := pCASTRIB;
+             IBSCBS.cClassTrib := pCASTRIB;
 
             baseIBS_CBS := dmPdv.cdsItensNFVALTOTAL.AsFloat - dmPdv.cdsItensNFVALOR_ICMS.AsFloat - dmPdv.cdsItensNFVALOR_COFINS.AsFloat
             - dmPdv.cdsItensNFVALOR_PIS.AsFloat;
@@ -4192,54 +4179,46 @@ begin
 
             IBSCBS.gIBSCBS.vIBS := ((baseIBS_CBS*pIBS)/100);
 
-         pA :=  RoundABNT((baseIBS_CBS*pIBS)/100,2);
+            pA :=  RoundABNT((baseIBS_CBS*pIBS)/100,2);
 
-         pA := ((100 - pReducao)/100);
+            pA := ((100 - pReducao)/100);
 
-         pA :=  (pA*(pIBS))/100;
+            pA :=  (pA*(pIBS))/100;
 
-         pA := RoundABNT((baseIBS_CBS*pA),2);
+            pA := RoundABNT((baseIBS_CBS*pA),2);
 
-         if(pIBS_CBS <> '000')then
-         begin
-           IBSCBS.gIBSCBS.vIBS := pA ;
-         end;
+            if(pIBS_CBS <> '000')then
+            begin
+              IBSCBS.gIBSCBS.vIBS := pA ;
+            end;
 
-
-
-         IBSCBS.gIBSCBS.gIBSUF.pIBSUF := pIBS;
+            IBSCBS.gIBSCBS.gIBSUF.pIBSUF := pIBS;
 
 
-         pA:= (baseIBS_CBS*pIBS)/100;
+            pA:= (baseIBS_CBS*pIBS)/100;
+            pA := ((100 - pReducao)/100);
+            pA :=  (pA*(pIBS))/100;
+            pA := RoundABNT((baseIBS_CBS*pA),2);
+            vpIBS := ((pIBS)*(100- pReducao)/100);
 
-         pA := ((100 - pReducao)/100);
-
-         pA :=  (pA*(pIBS))/100;
-
-         pA := RoundABNT((baseIBS_CBS*pA),2);
-
-         vpIBS := ((pIBS)*(100- pReducao)/100);
-
+            IBSCBS.gIBSCBS.gIBSUF.vIBSUF := pA ;
+            total_ibs += pA;
 
 
-           IBSCBS.gIBSCBS.gIBSUF.vIBSUF := pA ;
-           total_ibs += pA;
+            if(pReducao > 0)then
+            begin
+              IBSCBS.gIBSCBS.gIBSUF.gRed.pRedAliq := dmPdv.cdsItensNFREDUCAO_IBS.AsFloat;
+              IBSCBS.gIBSCBS.gIBSUF.gRed.pAliqEfet := ((baseIBS_CBS*pIBS)/100);
+            end;
 
+            IBSCBS.gIBSCBS.gIBSMun.pIBSMun := 0;
+            IBSCBS.gIBSCBS.gIBSMun.vIBSMun := 0;
 
-         if(pReducao > 0)then
-         begin
-           IBSCBS.gIBSCBS.gIBSUF.gRed.pRedAliq := dmPdv.cdsItensNFREDUCAO_IBS.AsFloat;
-           IBSCBS.gIBSCBS.gIBSUF.gRed.pAliqEfet := ((baseIBS_CBS*pIBS)/100);
-         end;
-
-         IBSCBS.gIBSCBS.gIBSMun.pIBSMun := 0;
-         IBSCBS.gIBSCBS.gIBSMun.vIBSMun := 0;
-
-         if(pIBS_CBS <> '000')then
-         begin
-           vpIBS := ((pIBS)*(100- pReducao)/100);
-           IBSCBS.gIBSCBS.gIBSUF.gRed.pAliqEfet := vpIBS ;
-         end;
+            if(pIBS_CBS <> '000')then
+            begin
+              vpIBS := ((pIBS)*(100- pReducao)/100);
+              IBSCBS.gIBSCBS.gIBSUF.gRed.pAliqEfet := vpIBS ;
+            end;
 
             IBSCBS.gIBSCBS.gIBSMun.pIBSMun := 0;
             IBSCBS.gIBSCBS.gIBSMun.vIBSMun := 0;
@@ -4247,28 +4226,19 @@ begin
             IBSCBS.gIBSCBS.gIBSMun.gRed.pRedAliq := dmPdv.cdsItensNFREDUCAO_IBS.AsFloat;
             IBSCBS.gIBSCBS.gIBSMun.gRed.pAliqEfet := 0;
 
-        if(pReducao > 0 )then
-        begin
+            if(pReducao > 0 )then
+            begin
+              vpCBS := ((pCBS)*(100- pReducao)/100);
 
-          vpCBS := ((pCBS)*(100- pReducao)/100);
+              IBSCBS.gIBSCBS.gCBS.gRed.pRedAliq := dmPdv.cdsItensNFREDUCAO_CBS.AsFloat;
+              IBSCBS.gIBSCBS.gCBS.gRed.pAliqEfet := vpCBS ;
 
-          IBSCBS.gIBSCBS.gCBS.gRed.pRedAliq := dmPdv.cdsItensNFREDUCAO_CBS.AsFloat;
-          IBSCBS.gIBSCBS.gCBS.gRed.pAliqEfet := vpCBS ;
-
-          vpIBS := ((pIBS)*(100- pReducao)/100);
-
-
-        end;
-
-           
-
+              vpIBS := ((pIBS)*(100- pReducao)/100);
+            end;
 
             IBSCBS.gIBSCBS.gCBS.pCBS := pCBS;
 
-
             IBSCBS.gIBSCBS.gCBS.vCBS := ((baseIBS_CBS*pCBS)/100);
-
-
 
             pA := ((100 - pReducao)/100);
 
@@ -4278,8 +4248,6 @@ begin
 
             total_cbs += pA;
             IBSCBS.gIBSCBS.gCBS.vCBS := pA ;
-
-
 
           end;  //Fim da reforma
 
@@ -5817,25 +5785,11 @@ begin
         begin
           Total.IBSCBSTot.vBCIBSCBS := total_nota;
 
-
-        //    pA := ((100 - pReducao)/100);
-        //    pA :=  (pA*(pIBS))/100;
-        //    pA := RoundABNT((total_nota*pA),2);
-
           Total.IBSCBSTot.gIBS.vIBS  := total_ibs ;
-
-
 
           Total.IBSCBSTot.gIBS.gIBSUFTot.vDif := 0.00;
           Total.IBSCBSTot.gIBS.gIBSUFTot.vDevTrib := 0.00;
 
-
-
-         //   pA := ((100 - pReducao)/100);
-
-         //   pA :=  (pA*(pIBS))/100;
-
-        //    pA := RoundABNT((total_nota*pA),2);
 
           Total.IBSCBSTot.gIBS.gIBSUFTot.vIBSUF := total_ibs ;
 
@@ -5846,13 +5800,6 @@ begin
 
           Total.IBSCBSTot.gCBS.vDif := 0.00;
           Total.IBSCBSTot.gCBS.vDevTrib := 0.00;
-
-
-       // pA := ((100 - pReducao)/100);
-
-      //  pA := (pA*(pCBS))/100;
-
-      //  pA := (total_nota)*(pA);
 
 
           Total.IBSCBSTot.gCBS.vCBS := total_cbs ;
