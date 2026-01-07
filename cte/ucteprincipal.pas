@@ -4356,7 +4356,7 @@ begin
     InfEvento.detEvento.UF := Trim(dmPdv.sqEmpresaUF.AsString);
     infEvento.detEvento.nProt := dmCte.cdsCteNPROT.AsString;
   end;}
-  ACBrCTe1.Cancelamento(vAux, 1);
+  ACBrCTe1.Cancelamento(vAux, StrToInt(edCteCancelar.Text));
   MemoResp.Lines.Text := UTF8Encode(ACBrCTe1.WebServices.EnvEvento.RetWS);
   memoRespWS.Lines.Text := UTF8Encode(ACBrCTe1.WebServices.EnvEvento.RetWS);
   MemoDados.Lines.Add('');
