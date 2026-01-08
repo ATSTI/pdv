@@ -200,6 +200,7 @@ type
     Label53: TLabel;
     Label54: TLabel;
     Label55: TLabel;
+    Label56: TLabel;
     lblMsgSuframa: TLabel;
     lblVencimentoCert: TLabel;
     Label6: TLabel;
@@ -4169,10 +4170,10 @@ begin
               end;
             end;
 
-             IBSCBS.cClassTrib := pCASTRIB;
+            IBSCBS.cClassTrib := pCASTRIB;
 
             baseIBS_CBS := dmPdv.cdsItensNFVALTOTAL.AsFloat - dmPdv.cdsItensNFVALOR_ICMS.AsFloat - dmPdv.cdsItensNFVALOR_COFINS.AsFloat
-            - dmPdv.cdsItensNFVALOR_PIS.AsFloat;
+            - dmPdv.cdsItensNFVALOR_PIS.AsFloat + dmPdv.cdsItensNFFRETE.AsFloat + dmPdv.cdsItensNFVALOR_OUTROS.AsFloat;
 
             IBSCBS.gIBSCBS.vBC := baseIBS_CBS ;
 
