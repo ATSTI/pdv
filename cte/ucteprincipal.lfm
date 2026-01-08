@@ -673,7 +673,7 @@ object fCTePrincipal: TfCTePrincipal
       Height = 15
       Top = 28
       Width = 101
-      Caption = 'Versão : 05/04/2024'
+      Caption = 'Versão : 08/01/2026'
       ParentColor = False
     end
   end
@@ -691,9 +691,9 @@ object fCTePrincipal: TfCTePrincipal
     Height = 583
     Top = 0
     Width = 1305
-    ActivePage = TabCte
+    ActivePage = TabCteGeradas
     Align = alClient
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 0
     OnChange = pcPrincipalChange
     object TabCteGeradas: TTabSheet
@@ -1580,9 +1580,9 @@ object fCTePrincipal: TfCTePrincipal
         Height = 555
         Top = 0
         Width = 1297
-        ActivePage = TabSheet3
+        ActivePage = TabDados
         Align = alClient
-        TabIndex = 1
+        TabIndex = 0
         TabOrder = 0
         OnChange = pcCteChange
         OnChanging = pcCteChanging
@@ -11554,6 +11554,7 @@ object fCTePrincipal: TfCTePrincipal
             Height = 112
             Top = 80
             Width = 496
+            MaxLength = 300
             TabOrder = 7
           end
           object memComplemento: TMemo
@@ -11576,7 +11577,7 @@ object fCTePrincipal: TfCTePrincipal
             Height = 19
             Top = 48
             Width = 248
-            Caption = 'Informações Gerais'
+            Caption = 'Informações Gerais    ( 300Caracteres )'
             TabOrder = 10
           end
         end
@@ -11746,10 +11747,10 @@ object fCTePrincipal: TfCTePrincipal
         OnClick = Button30Click
       end
       object btnAtualizarBD: TButton
-        Left = 752
-        Height = 56
-        Top = 504
-        Width = 346
+        Left = 887
+        Height = 40
+        Top = 496
+        Width = 338
         Caption = 'Atualizar Banco de Dados'
         TabOrder = 2
         OnClick = btnAtualizarBDClick
