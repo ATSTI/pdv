@@ -123,6 +123,8 @@ type
     ckVisualizar: TCheckBox;
     combCodSitTrib: TComboBox;
     combICMSDevido: TComboBox;
+    cbCampo: TComboBox;
+    edtCceGrupo: TComboBox;
     comboEmpresa: TComboBox;
     combOutrosDocs: TComboBox;
     dataGerarCte: TDateTimePicker;
@@ -282,9 +284,7 @@ type
     edtNomeTomador: TEdit;
     edtNumCte: TEdit;
     edtCceChave: TEdit;
-    edtCceGrupo: TEdit;
     edtCceSequencia: TEdit;
-    edtCceTextoVelho: TEdit;
     edtCceTextoNovo: TEdit;
     edtCceNumItem: TEdit;
     edtCteReferenciada: TEdit;
@@ -5254,8 +5254,8 @@ begin
       exit;
     end;
 
-    vCampo := edtCceTextoVelho.Text;
-    if (edtCceTextoVelho.Text = '') then
+    vCampo := cbCampo.Text;
+    if (cbCampo.Text = '') then
     begin
       ShowMessage('Informe o Campo para ser corrigido');
       exit;

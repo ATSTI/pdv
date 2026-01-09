@@ -7,7 +7,7 @@ object fCTePrincipal: TfCTePrincipal
   ClientHeight = 649
   ClientWidth = 1305
   Position = poScreenCenter
-  LCLVersion = '4.0.0.4'
+  LCLVersion = '4.4.0.0'
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnShow = FormShow
@@ -12165,40 +12165,26 @@ object fCTePrincipal: TfCTePrincipal
         Width = 736
         TabOrder = 1
       end
-      object edtCceGrupo: TEdit
-        Left = 280
-        Height = 23
-        Top = 240
-        Width = 736
-        TabOrder = 2
-      end
       object edtCceSequencia: TEdit
         Left = 280
         Height = 23
         Top = 192
         Width = 80
-        TabOrder = 3
-      end
-      object edtCceTextoVelho: TEdit
-        Left = 280
-        Height = 23
-        Top = 288
-        Width = 736
-        TabOrder = 4
+        TabOrder = 2
       end
       object edtCceTextoNovo: TEdit
         Left = 280
         Height = 23
         Top = 336
         Width = 736
-        TabOrder = 5
+        TabOrder = 3
       end
       object edtCceNumItem: TEdit
         Left = 280
         Height = 23
         Top = 384
         Width = 80
-        TabOrder = 6
+        TabOrder = 4
       end
       object Label125: TLabel
         Left = 280
@@ -12240,18 +12226,18 @@ object fCTePrincipal: TfCTePrincipal
         Left = 280
         Height = 15
         Top = 272
-        Width = 76
+        Width = 102
         Align = alCustom
-        Caption = 'Texto Digitado'
+        Caption = 'Campo a modificar'
         ParentColor = False
       end
       object Label130: TLabel
         Left = 280
         Height = 15
-        Top = 320
-        Width = 81
+        Top = 312
+        Width = 89
         Align = alCustom
-        Caption = 'Texto Corrigido'
+        Caption = 'Novo valor/texto'
         ParentColor = False
       end
       object Label131: TLabel
@@ -12271,6 +12257,40 @@ object fCTePrincipal: TfCTePrincipal
         Align = alCustom
         Caption = '(Digitar 1 para Primeiro)'
         ParentColor = False
+      end
+      object edtCceGrupo: TComboBox
+        Left = 280
+        Height = 23
+        Top = 241
+        Width = 736
+        ItemHeight = 15
+        Items.Strings = (
+          'ide'
+          'compl'
+          'emit'
+          'toma'
+          'vPrest'
+          'imp'
+        )
+        TabOrder = 5
+      end
+      object cbCampo: TComboBox
+        Left = 280
+        Height = 23
+        Top = 286
+        Width = 184
+        ItemHeight = 15
+        Items.Strings = (
+          'cUF'
+          'natOp'
+          'xMunEnv'
+          'UFEnv'
+          'xMunIni'
+          'UFIni'
+          'xMunFim'
+          'UFFim'
+        )
+        TabOrder = 6
       end
     end
     object TabSheet19: TTabSheet
@@ -14710,6 +14730,7 @@ object fCTePrincipal: TfCTePrincipal
     Configuracoes.Geral.FormatoAlerta = 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.'
     Configuracoes.Arquivos.OrdenacaoPath = <>
     Configuracoes.Arquivos.SepararPorMes = True
+    Configuracoes.Arquivos.SalvarEvento = True
     Configuracoes.WebServices.Visualizar = True
     Configuracoes.WebServices.UF = 'SP'
     Configuracoes.WebServices.Ambiente = taProducao
