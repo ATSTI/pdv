@@ -574,7 +574,7 @@ class IntegracaoOdoo:
                 tipo = partner_id['tipofirma']
                 vendedor = partner_id['codusuario']
                 ie = 'Null'
-                fiscal = 'J'
+                fiscal = '9'
                 regiao = partner_id['regiao']
                 insere = 'insert into clientes (\
                             CODCLIENTE, NOMECLIENTE, RAZAOSOCIAL,\
