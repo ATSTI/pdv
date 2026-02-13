@@ -4,8 +4,8 @@ object fNFe: TfNFe
   Top = 26
   Width = 1069
   Caption = 'ATS-NFe'
-  ClientHeight = 0
-  ClientWidth = 0
+  ClientHeight = 662
+  ClientWidth = 1069
   DefaultMonitor = dmMainForm
   Position = poDesktopCenter
   LCLVersion = '4.0.0.4'
@@ -2415,7 +2415,7 @@ object fNFe: TfNFe
           Height = 15
           Top = 14
           Width = 66
-          Caption = '08/01/2026'
+          Caption = '12/02/2026'
           Font.Color = clBlue
           Font.Style = [fsBold]
           ParentFont = False
@@ -5280,8 +5280,40 @@ object fNFe: TfNFe
     end
     object TabSheet10: TTabSheet
       Caption = 'Ultimas Correções'
+      ClientHeight = 611
+      ClientWidth = 1061
       ImageIndex = 3
-      TabVisible = False
+      object Memo2: TMemo
+        Left = 48
+        Height = 584
+        Top = 24
+        Width = 985
+        Lines.Strings = (
+          'exe 08/01/2026       '
+          '    '
+          ' baseIBS_CBS := dmPdv.cdsItensNFVALTOTAL.AsFloat - dmPdv.cdsItensNFVALOR_ICMS.AsFloat - dmPdv.cdsItensNFVALOR_COFINS.AsFloat'
+          '            - dmPdv.cdsItensNFVALOR_PIS.AsFloat + dmPdv.cdsItensNFFRETE.AsFloat + dmPdv.cdsItensNFVALOR_OUTROS.AsFloat;'
+          ''
+          '            IBSCBS.gIBSCBS.vBC := baseIBS_CBS ;   '
+          ''
+          '----------------------------------------------------------------------'
+          'exe 28/01/2026'
+          ''
+          '        if ((cstSuframa <> ''00'') and ( pSuframa <> '''')) then'
+          '        begin'
+          '          // comentei o if abaixo por causa da DNZ'
+          '          //if (cst_utilizado <> ''101'') then  // foi descomentado dia 15/09/2025 Velopark'
+          '            Total.ICMSTot.vICMSDeson := dmPdv.qcdsNFVALOR_ICMS.AsVariant;'
+          '        end;  '
+          '---------------------------------------------------------------------'
+          'exe 11/02/2026'
+          'antes    =   total_nota := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsFloat  - dmPdv.qcdsNFVALOR_ICMS.AsFloat - dmPdv.qcdsNFVALOR_IPI.AsFloat'
+          '        - dmPdv.qcdsNFVALOR_COFINS.AsFloat - dmPdv.qcdsNFVALOR_PIS.AsFloat  ;'
+          'correção   = total_nota := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsFloat  - dmPdv.qcdsNFVALOR_ICMS.AsFloat - dmPdv.qcdsNFVALOR_IPI.AsFloat'
+          '        - dmPdv.qcdsNFVALOR_COFINS.AsFloat - dmPdv.qcdsNFVALOR_PIS.AsFloat  - dmPdv.cdsItensNFII.AsVariant - dmPdv.cdsItensNFVALOR_OUTROS.AsFloat;             '
+        )
+        TabOrder = 0
+      end
     end
   end
   object ACBrNFe1: TACBrNFe

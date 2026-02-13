@@ -216,6 +216,7 @@ type
     cbSSLTypeLbl: TLabel;
     Memo1: TMemo;
     mDFe: TMemo;
+    Memo2: TMemo;
     memoDados: TMemo;
     memoLog: TMemo;
     MemoResp: TMemo;
@@ -397,14 +398,31 @@ type
     pCBS : double;
     pReducao : double;
     pA : double;
+    pVALORIBS : double;
+    pVALORCBS : double;
     total_ibs : double;
     total_cbs : double;
     total_nota : double;
     baseIBS_CBS : double;
+    bNFVALTOTAL : double;
+    bNFVALOR_ICMS : double;
+    bNFVALOR_COFINS : double;
+    bNFVALOR_PIS : double;
+    bNFFRETE : double;
+    bFVALOR_OUTROS : double;
+
     pIBS_CBS : string;
     pCASTRIB : string;
     vpCBS  : double;
     vpIBS  : double;
+    pVALOR_TOTAL_NOTA : double;
+    pNFVALOR_ICMS : double;
+    pNFVALOR_IPI : double;
+    pNFVALOR_COFINS : double;
+    pNFVALOR_PIS : double;
+    pNFII        : double;
+    pNFVALOR_OUTROS : double;
+
     function GetVersion :  string;
 
   end;
@@ -3046,10 +3064,15 @@ begin
         if (dmPdv.qcdsFaturaVALOR.AsFloat > 0) then
         begin
           cobr.Fat.nFat  := Trim(dmPdv.qcdsNFNOTASERIE.ASSTRING);
-          cobr.Fat.vOrig := vlr_total + dmPdv.qcdsNFVALOR_DESCONTO.AsVariant;
-
-          cobr.Fat.vDesc := RoundTo(dmPdv.qcdsNFVALOR_DESCONTO.AsCurrency, -2);
-
+          if ((cstSuframa <> '00') and ( pSuframa <> '')) then
+          begin
+            cobr.Fat.vOrig := vlr_total;
+            cobr.Fat.vDesc := 0;
+          end else
+          begin
+            cobr.Fat.vOrig := vlr_total + dmPdv.qcdsNFVALOR_DESCONTO.AsVariant;
+            cobr.Fat.vDesc := RoundTo(dmPdv.qcdsNFVALOR_DESCONTO.AsCurrency, -2);
+          end;
           cobr.Fat.vLiq  := vlr_total;
 
         end;
@@ -4066,6 +4089,7 @@ begin
               if( Trim(pSuframa) <> '') then
               begin
                 vICMSDeson := dmPdv.cdsItensNFVALOR_ICMS.Value;
+                Prod.vDesc := 0;
                 //vICMS      := cdsItensNFVALOR_ICMS.Value;
                 motDesICMS := mdiSuframa ;
                 indDeduzDeson := tieSim;
@@ -4172,10 +4196,29 @@ begin
 
             IBSCBS.cClassTrib := pCASTRIB;
 
+            bNFVALTOTAL := dmPdv.cdsItensNFVALTOTAL.AsFloat;
+            bNFVALOR_ICMS := dmPdv.cdsItensNFVALOR_ICMS.AsFloat;
+            bNFVALOR_COFINS := dmPdv.cdsItensNFVALOR_COFINS.AsFloat;
+            bNFVALOR_PIS := dmPdv.cdsItensNFVALOR_PIS.AsFloat;
+            bNFFRETE := dmPdv.cdsItensNFFRETE.AsFloat;
+            bFVALOR_OUTROS := dmPdv.cdsItensNFVALOR_OUTROS.AsFloat;
+
             baseIBS_CBS := dmPdv.cdsItensNFVALTOTAL.AsFloat - dmPdv.cdsItensNFVALOR_ICMS.AsFloat - dmPdv.cdsItensNFVALOR_COFINS.AsFloat
             - dmPdv.cdsItensNFVALOR_PIS.AsFloat + dmPdv.cdsItensNFFRETE.AsFloat + dmPdv.cdsItensNFVALOR_OUTROS.AsFloat;
 
             IBSCBS.gIBSCBS.vBC := baseIBS_CBS ;
+
+            if(pCASTRIB = '000001')then      //11/02/2026
+            begin
+              baseIBS_CBS := dmPdv.cdsItensNFVALTOTAL.AsFloat;
+              IBSCBS.gIBSCBS.vBC := baseIBS_CBS ;
+            end;
+
+            if(pCASTRIB = '410999')then      //12/02/2026
+            begin
+              baseIBS_CBS := dmPdv.cdsItensNFVALTOTAL.AsFloat;
+              IBSCBS.gIBSCBS.vBC := baseIBS_CBS ;
+            end;
 
 
             IBSCBS.gIBSCBS.vIBS := ((baseIBS_CBS*pIBS)/100);
@@ -4195,8 +4238,12 @@ begin
 
             IBSCBS.gIBSCBS.gIBSUF.pIBSUF := pIBS;
 
+            if(pSuframa <> '')then
+            begin
+              IBSCBS.gIBSCBS.gIBSUF.pIBSUF := 0;
+            end;
 
-            pA:= (baseIBS_CBS*pIBS)/100;
+            pVALORIBS:= (baseIBS_CBS*pIBS)/100;
             pA := ((100 - pReducao)/100);
             pA :=  (pA*(pIBS))/100;
             pA := RoundABNT((baseIBS_CBS*pA),2);
@@ -4204,6 +4251,7 @@ begin
 
             IBSCBS.gIBSCBS.gIBSUF.vIBSUF := pA ;
             total_ibs += pA;
+
 
 
             if(pReducao > 0)then
@@ -4239,16 +4287,49 @@ begin
 
             IBSCBS.gIBSCBS.gCBS.pCBS := pCBS;
 
-            IBSCBS.gIBSCBS.gCBS.vCBS := ((baseIBS_CBS*pCBS)/100);
+            if( pSuframa <> '')then
+            begin
+              IBSCBS.gIBSCBS.gCBS.pCBS := 0;
+            end;
+
+
+            //  IBSCBS.gIBSCBS.gCBS.vCBS := ((baseIBS_CBS*pCBS)/100);
+            pA :=  (pCBS)/100;
+            pVALORCBS := RoundABNT((baseIBS_CBS)*(pA),2);
 
             pA := ((100 - pReducao)/100);
 
             pA :=  (pA*(pCBS))/100;
 
-            pA := RoundABNT((baseIBS_CBS)*(pA),2);
 
+            pA := RoundABNT((baseIBS_CBS)*(pA),2);
+           // pAR := ((baseIBS_CBS*pCBS)/100)
             total_cbs += pA;
+
             IBSCBS.gIBSCBS.gCBS.vCBS := pA ;
+
+
+            //antes dmPdv.cdsItensNFCFOP.AsString = '6109'
+            if(pSuframa <> '')then
+            begin
+              for LCST := Low(TCSTIBSCBS) to High(TCSTIBSCBS) do
+              begin
+                if Trim('000') = TCSTIBSCBSArrayStrings[LCST] then
+                begin
+                  IBSCBS.gIBSCBS.gTribRegular.CSTReg := LCST;
+                end;
+              end;
+
+              IBSCBS.gIBSCBS.gTribRegular.cClassTribReg:= '000001';
+
+              IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegIBSUF := pIBS ;
+              IBSCBS.gIBSCBS.gTribRegular.vTribRegIBSUF := pVALORIBS ;
+              IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegIBSMun :=0 ;
+              IBSCBS.gIBSCBS.gTribRegular.vTribRegIBSMun := 0 ;
+              IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegCBS:= pCBS;
+              IBSCBS.gIBSCBS.gTribRegular.vTribRegCBS := pVALORCBS ;
+            end;
+
 
           end;  //Fim da reforma
 
@@ -4433,6 +4514,8 @@ begin
               CST   := pis08
             else if (dmPdv.cdsItensNFCSTPIS.AsString = '09') then
               CST   := pis09
+            else if (dmPdv.cdsItensNFCSTPIS.AsString = '49') then
+              CST   := pis49
             else if (dmPdv.cdsItensNFCSTPIS.AsString = '99') then
               CST   := pis99;
           end;
@@ -4475,6 +4558,8 @@ begin
               CST   := cof08
             else if (dmPdv.cdsItensNFCSTCOFINS.AsString = '09') then
               CST   := cof09
+            else if (dmPdv.cdsItensNFCSTCOFINS.AsString = '49') then
+              CST   := cof49
             else if (dmPdv.cdsItensNFCSTCOFINS.AsString = '99') then
               CST   := cof99;
           end;
@@ -5449,7 +5534,7 @@ begin
 
         Ide.natOp     := copy(dmPdv.qsCFOPCFNOME.AsString,0,59);
            //Verifica tipo de Pagamento
-        getPagamento;
+       // 28/01/2026 getPagamento;
         try
           Ide.cMunFG    := StrToInt(RemoveChar(dmPdv.qsEmpresaCD_IBGE.AsString));
         except
@@ -5651,6 +5736,7 @@ begin
             Exit;
           end;
         getCLi_Fornec();
+        getPagamento ;
         ///
         ide.indFinal := cfNao;
         if (vTipoFiscal = '9') then
@@ -5748,6 +5834,7 @@ begin
             Total.ICMSTot.vICMS   := dmPdv.qcdsNFVALOR_ICMS.AsVariant;
           end;
         end;
+
         Total.ICMSTot.vBCST := dmPdv.qcdsNFBASE_ICMS_SUBST.AsVariant;
         Total.ICMSTot.vST   := dmPdv.qcdsNFVALOR_ICMS_SUBST.AsVariant;
         Total.ICMSTot.vProd := dmPdv.qcdsNFVALOR_PRODUTO.AsVariant;
@@ -5779,12 +5866,36 @@ begin
 
         // Reforma Tributaria
 
-        total_nota := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsFloat - dmPdv.qcdsNFVALOR_ICMS.AsFloat - dmPdv.qcdsNFVALOR_IPI.AsFloat
-        - dmPdv.qcdsNFVALOR_COFINS.AsFloat - dmPdv.qcdsNFVALOR_PIS.AsFloat;
+        pVALOR_TOTAL_NOTA := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsFloat;
+        pNFVALOR_ICMS     := dmPdv.qcdsNFVALOR_ICMS.AsFloat;
+        pNFVALOR_IPI      := dmPdv.qcdsNFVALOR_IPI.AsFloat;
+        pNFVALOR_COFINS   := dmPdv.qcdsNFVALOR_COFINS.AsFloat;
+        pNFVALOR_PIS      := dmPdv.qcdsNFVALOR_PIS.AsFloat;
+        pNFII             := dmPdv.cdsItensNFII.AsVariant;
+        pNFVALOR_OUTROS   := dmPdv.cdsItensNFVALOR_OUTROS.AsFloat;
+
+
+        total_nota := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsFloat  - dmPdv.qcdsNFVALOR_ICMS.AsFloat - dmPdv.qcdsNFVALOR_IPI.AsFloat
+        - dmPdv.qcdsNFVALOR_COFINS.AsFloat - dmPdv.qcdsNFVALOR_PIS.AsFloat  - dmPdv.cdsItensNFII.AsVariant - dmPdv.cdsItensNFVALOR_OUTROS.AsFloat;
 
         if(dmPdv.ReformaTributaria = 'SIM')then
         begin
-          Total.IBSCBSTot.vBCIBSCBS := total_nota;
+          Total.IBSCBSTot.vBCIBSCBS := total_nota ;
+
+          if(pCASTRIB = '410999')then      //12/02/2026
+          begin
+            Total.IBSCBSTot.vBCIBSCBS := 0.00 ;
+          end;
+
+          if(pCASTRIB = '000001')then      //12/02/2026
+          begin
+            Total.IBSCBSTot.vBCIBSCBS := pVALOR_TOTAL_NOTA ;
+          end;
+
+          if(pSuframa <> '')then
+          begin
+            Total.IBSCBSTot.vBCIBSCBS := total_nota + dmPdv.qcdsNFVALOR_ICMS.AsVariant;
+          end;
 
           Total.IBSCBSTot.gIBS.vIBS  := total_ibs ;
 
@@ -5802,16 +5913,19 @@ begin
           Total.IBSCBSTot.gCBS.vDif := 0.00;
           Total.IBSCBSTot.gCBS.vDevTrib := 0.00;
 
+          Total.IBSCBSTot.gCBS.vCBS := total_cbs;
 
-          Total.IBSCBSTot.gCBS.vCBS := total_cbs ;
-
+          if( pSuframa <> '')then   ///huhuhuhuhu
+          begin
+            Total.IBSCBSTot.gCBS.vCBS := total_cbs ;
+          end;
 
           Total.IBSCBSTot.gCBS.vCredPres := 0.00;
           Total.IBSCBSTot.gCBS.vCredPresCondSus := 0.00;
 
         end;
 
-        Total.ICMSTot.vNF   := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant;
+        Total.ICMSTot.vNF   := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsVariant ;
         Total.ICMSTot.vTotTrib := dmPdv.qcdsNFVLRTOT_TRIB.AsVariant;
 
         if (totIPIDevol > 0) then
@@ -5824,8 +5938,9 @@ begin
         if ((cstSuframa <> '00') and ( pSuframa <> '')) then
         begin
           // comentei o if abaixo por causa da DNZ
-          if (cst_utilizado <> '101') then  // foi descomentado dia 15/09/2025 Velopark
+          //if (cst_utilizado <> '101') then  // foi descomentado dia 15/09/2025 Velopark
             Total.ICMSTot.vICMSDeson := dmPdv.qcdsNFVALOR_ICMS.AsVariant;
+            Total.ICMSTot.vDesc := 0;
         end;
       end;
       break; // saio do while se a já peguei a nota selecionada

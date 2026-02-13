@@ -1427,12 +1427,13 @@ begin
             pIBS_CBS := dmPdv.sqLancamentosCST_IBS_CBS.AsString;
             pCASTRIB := dmPdv.sqLancamentosCCLASSTRIB.AsString;
 
-            DecimalSeparator := '.';
-            pReducaoIBS := StrToFloat(dmPdv.sqLancamentosP_IBS.AsString);
-            pReducaoCBS := StrToFloat(dmPdv.sqLancamentosP_CBS.AsString);
-
-            pRedcomRed  := dmPdv.sqLancamentosREDUCAO_CBS.AsFloat;
-
+            if(dmPdv.ReformaTributaria = 'SIM') then
+            begin
+              DecimalSeparator := '.';
+              pReducaoIBS := StrToFloat(dmPdv.sqLancamentosP_IBS.AsString);
+              pReducaoCBS := StrToFloat(dmPdv.sqLancamentosP_CBS.AsString);
+              pRedcomRed  := dmPdv.sqLancamentosREDUCAO_CBS.AsFloat;
+            end;
 
             //Reforma Tributaria
             if(dmPdv.ReformaTributaria = 'SIM') then
