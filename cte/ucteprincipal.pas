@@ -2071,6 +2071,9 @@ begin
     if(dmpdv.ReformaTributaria = 'SIM')then
     begin
       // Inicio Reforma Tributaria
+
+
+
       pIBS_CBS := dmPdv.sqEmpresaCST_IBS_CBS.AsString;
       pCASTRIB := dmPdv.sqEmpresaCCLASSTRIB.AsString;
 
@@ -2106,7 +2109,7 @@ begin
 
 
 
-      Imp.IBSCBS.gIBSCBS.gIBSUF.vIBS := ((baseIBS_CBS*pIBS)/100); ;
+      Imp.IBSCBS.gIBSCBS.gIBSUF.vIBS := ((baseIBS_CBS*pIBS)/100);
 
       Imp.IBSCBS.gIBSCBS.gIBSMun.pIBS := 0;
 
@@ -2137,7 +2140,9 @@ begin
         Imp.IBSCBS.gIBSCBS.gCBS.gRed.pAliqEfet := vpCBS ;
       end;
 
-      Imp.IBSCBS.gIBSCBS.gCBS.vCBS := ((baseIBS_CBS*pCBS)/100);;
+      Imp.IBSCBS.gIBSCBS.gCBS.vCBS := ((baseIBS_CBS*pCBS)/100);
+
+      Imp.vTotDFe := dmCte.cdsCteVPREST.AsFloat;
 
       {
       Imp.IBSCBS.gIBSCBS.gTribRegular.CSTReg := cst000;
