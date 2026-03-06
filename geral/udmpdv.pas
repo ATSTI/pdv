@@ -1295,9 +1295,11 @@ begin
       CobraJuros := conf.ReadString('IMPRESSORA', 'CobraJuros', 'Nao');
       TempoPromocao := conf.ReadInteger('IMPRESSORA', 'TempoPromocao',10);
       //CobraJuros=Nao
+      snh := conf.ReadString('DATABASE','Acesso','') ;
       //snh:= EncodeStringBase64(snh); // Ver a senha Encryptada
       snh:= DecodeStringBase64(snh);
       IBCon.Password := snh;
+      IBCon.UserName := 'sysdba';
       SSLLib     := conf.ReadInteger( 'Certificado','SSLLib' ,0) ;
       CryptLib   := conf.ReadInteger( 'Certificado','CryptLib' , 0) ;
       HttpLib    := conf.ReadInteger( 'Certificado','HttpLib' , 0) ;

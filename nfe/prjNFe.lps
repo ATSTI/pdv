@@ -10,7 +10,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
         <TopLine Value="4"/>
-        <CursorPos Y="23"/>
+        <CursorPos X="28" Y="17"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -21,20 +21,19 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uNFe"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="4551"/>
-        <CursorPos X="69" Y="4557"/>
+        <TopLine Value="4201"/>
+        <CursorPos X="58" Y="4217"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="8">
-          <Item0 X="35" Y="5618" Left="1" Top="5614" ID="8"/>
-          <Item1 X="37" Y="4260" Left="1" Top="4247" ID="6"/>
-          <Item2 X="8" Y="3067" Left="1" Top="3059" ID="5"/>
-          <Item3 X="24" Y="5739" Left="1" Top="5725" ID="9"/>
-          <Item4 X="7" Y="4199" Left="1" Top="4192" ID="2"/>
-          <Item5 X="10" Y="5869" Left="1" Top="5860" ID="1"/>
-          <Item6 X="28" Y="3810" Left="1" Top="3803" ID="3"/>
-          <Item7 X="4" Y="4240" Left="1" Top="4230" ID="7"/>
+          <Item0 X="35" Y="5622" Left="1" Top="5618" ID="8"/>
+          <Item1 X="37" Y="4264" Left="1" Top="4251" ID="6"/>
+          <Item2 X="8" Y="3068" Left="1" Top="3060" ID="5"/>
+          <Item3 X="24" Y="5743" Left="1" Top="5729" ID="9"/>
+          <Item4 X="7" Y="4200" Left="1" Top="4193" ID="2"/>
+          <Item5 X="10" Y="5874" Left="1" Top="5865" ID="1"/>
+          <Item6 X="28" Y="3811" Left="1" Top="3804" ID="3"/>
+          <Item7 X="54" Y="4228" Left="1" Top="4224" ID="7"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -45,8 +44,9 @@
         <ComponentName Value="dmPdv"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <TopLine Value="2321"/>
-        <CursorPos X="7" Y="2338"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="1290"/>
+        <CursorPos X="7" Y="1302"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -223,8 +223,8 @@
         <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrDFe.Conversao.pas"/>
         <EditorIndex Value="5"/>
         <TopLine Value="312"/>
-        <CursorPos X="14" Y="322"/>
-        <UsageCount Value="92"/>
+        <CursorPos Y="322"/>
+        <UsageCount Value="96"/>
         <Loaded Value="True"/>
       </Unit25>
       <Unit26>
@@ -296,130 +296,130 @@
         <EditorIndex Value="3"/>
         <TopLine Value="69"/>
         <CursorPos Y="38"/>
-        <UsageCount Value="59"/>
+        <UsageCount Value="63"/>
         <Loaded Value="True"/>
       </Unit35>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="3193" Column="50" TopLine="3176"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1308" TopLine="1292"/>
       </Position1>
       <Position2>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="3194" Column="60" TopLine="3177"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1309" TopLine="1293"/>
       </Position2>
       <Position3>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="3250" Column="97" TopLine="3234"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1310" TopLine="1294"/>
       </Position3>
       <Position4>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="3252" Column="17" TopLine="3236"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1311" TopLine="1295"/>
       </Position4>
       <Position5>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="3253" Column="50" TopLine="3237"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1312" TopLine="1296"/>
       </Position5>
       <Position6>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="3256" Column="60" TopLine="3240"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1313" TopLine="1297"/>
       </Position6>
       <Position7>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="4202" Column="54" TopLine="4186"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1314" TopLine="1298"/>
       </Position7>
       <Position8>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="4207" Column="40" TopLine="4200"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1315" TopLine="1299"/>
       </Position8>
       <Position9>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="4456" Column="18" TopLine="4440"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1316" TopLine="1300"/>
       </Position9>
       <Position10>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="4592" Column="11" TopLine="4561"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1317" TopLine="1301"/>
       </Position10>
       <Position11>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="5858" Column="75" TopLine="5842"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1318" TopLine="1302"/>
       </Position11>
       <Position12>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="5859" Column="54" TopLine="5843"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1319" TopLine="1303"/>
       </Position12>
       <Position13>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="5873" Column="51" TopLine="5857"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1320" TopLine="1304"/>
       </Position13>
       <Position14>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="5879" Column="67" TopLine="5863"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1321" TopLine="1305"/>
       </Position14>
       <Position15>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="410" Column="17" TopLine="402"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1322" TopLine="1306"/>
       </Position15>
       <Position16>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="422" Column="17" TopLine="406"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1323" TopLine="1307"/>
       </Position16>
       <Position17>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="518" Column="73" TopLine="502"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1324" TopLine="1308"/>
       </Position17>
       <Position18>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="519" Column="53" TopLine="503"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1325" TopLine="1309"/>
       </Position18>
       <Position19>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="584" Column="67" TopLine="568"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1327" TopLine="1311"/>
       </Position19>
       <Position20>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="585" Column="32" TopLine="569"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1328" TopLine="1312"/>
       </Position20>
       <Position21>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="3189" Column="98" TopLine="3172"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1329" TopLine="1313"/>
       </Position21>
       <Position22>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="3193" Column="50" TopLine="3176"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1330" TopLine="1314"/>
       </Position22>
       <Position23>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="3194" Column="60" TopLine="3177"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1331" TopLine="1315"/>
       </Position23>
       <Position24>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="3250" Column="97" TopLine="3234"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1332" TopLine="1316"/>
       </Position24>
       <Position25>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="3252" Column="17" TopLine="3236"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1298" TopLine="1289"/>
       </Position25>
       <Position26>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="3253" Column="50" TopLine="3237"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1376" TopLine="1366"/>
       </Position26>
       <Position27>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="3256" Column="60" TopLine="3240"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="2257" Column="37" TopLine="1954"/>
       </Position27>
       <Position28>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="4202" Column="54" TopLine="4186"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1299" Column="7" TopLine="1293"/>
       </Position28>
       <Position29>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="4207" Column="40" TopLine="4191"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1376" TopLine="1366"/>
       </Position29>
       <Position30>
-        <Filename Value="unfe.pas"/>
-        <Caret Line="4456" Column="18" TopLine="4440"/>
+        <Filename Value="..\geral\udmpdv.pas"/>
+        <Caret Line="1299" Column="7" TopLine="1289"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -434,7 +434,7 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfe.pas"/>
-        <Line Value="918"/>
+        <Line Value="919"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
@@ -462,7 +462,7 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfe.pas"/>
-        <Line Value="5354"/>
+        <Line Value="5358"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
@@ -476,63 +476,35 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfe.pas"/>
-        <Line Value="5883"/>
+        <Line Value="5905"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfe.pas"/>
-        <Line Value="5928"/>
+        <Line Value="4200"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfe.pas"/>
-        <Line Value="5869"/>
+        <Line Value="5888"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfe.pas"/>
-        <Line Value="4209"/>
+        <Line Value="4213"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
-        <Source Value="unfe.pas"/>
-        <Line Value="4252"/>
-      </Item>
-      <Item>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="unfe.pas"/>
-        <Line Value="4491"/>
-      </Item>
-      <Item>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="unfe.pas"/>
-        <Line Value="4239"/>
-      </Item>
-      <Item>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="unfe.pas"/>
-        <Line Value="5916"/>
-      </Item>
-      <Item>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="unfe.pas"/>
-        <Line Value="4199"/>
+        <Source Value="..\geral\udmpdv.pas"/>
+        <Line Value="1296"/>
       </Item>
     </BreakPoints>
     <Watches>

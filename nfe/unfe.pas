@@ -410,6 +410,7 @@ type
     bNFVALOR_PIS : double;
     bNFFRETE : double;
     bFVALOR_OUTROS : double;
+    bNFII        : double;
 
     pIBS_CBS : string;
     pCASTRIB : string;
@@ -4202,18 +4203,21 @@ begin
             bNFVALOR_PIS := dmPdv.cdsItensNFVALOR_PIS.AsFloat;
             bNFFRETE := dmPdv.cdsItensNFFRETE.AsFloat;
             bFVALOR_OUTROS := dmPdv.cdsItensNFVALOR_OUTROS.AsFloat;
+            bNFII        := dmPdv.cdsItensNFII.AsFloat;
 
             baseIBS_CBS := dmPdv.cdsItensNFVALTOTAL.AsFloat - dmPdv.cdsItensNFVALOR_ICMS.AsFloat - dmPdv.cdsItensNFVALOR_COFINS.AsFloat
-            - dmPdv.cdsItensNFVALOR_PIS.AsFloat + dmPdv.cdsItensNFFRETE.AsFloat + dmPdv.cdsItensNFVALOR_OUTROS.AsFloat;
+            - dmPdv.cdsItensNFVALOR_PIS.AsFloat + dmPdv.cdsItensNFFRETE.AsFloat + dmPdv.cdsItensNFVALOR_OUTROS.AsFloat - dmPdv.cdsItensNFII.AsFloat;
 
             IBSCBS.gIBSCBS.vBC := baseIBS_CBS ;
 
-            if(pCASTRIB = '000001')then      //11/02/2026
+            total_nota += baseIBS_CBS ;
+            {
+            if(pCASTRIB = '000001')then      //20/02/2026  descomentei para condor
             begin
               baseIBS_CBS := dmPdv.cdsItensNFVALTOTAL.AsFloat;
               IBSCBS.gIBSCBS.vBC := baseIBS_CBS ;
             end;
-
+           }
             if(pCASTRIB = '410999')then      //12/02/2026
             begin
               baseIBS_CBS := dmPdv.cdsItensNFVALTOTAL.AsFloat;
@@ -4221,7 +4225,7 @@ begin
             end;
 
 
-            IBSCBS.gIBSCBS.vIBS := ((baseIBS_CBS*pIBS)/100);
+            IBSCBS.gIBSCBS.vIBS := RoundABNT((baseIBS_CBS*pIBS)/100,2);
 
             pA :=  RoundABNT((baseIBS_CBS*pIBS)/100,2);
 
@@ -5767,8 +5771,9 @@ begin
         InfAdic.infCpl := infCplTrib;
 
         i := 1;
-        total_ibs := 0;  // reforma tributaria
-        total_cbs :=0;
+        total_ibs  := 0;  // reforma tributaria
+        total_cbs  := 0;
+        total_nota := 0;
 
         while not dmPdv.cdsItensNF.Eof do // Escrevo os itens
         begin
@@ -5875,8 +5880,8 @@ begin
         pNFVALOR_OUTROS   := dmPdv.cdsItensNFVALOR_OUTROS.AsFloat;
 
 
-        total_nota := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsFloat  - dmPdv.qcdsNFVALOR_ICMS.AsFloat - dmPdv.qcdsNFVALOR_IPI.AsFloat
-        - dmPdv.qcdsNFVALOR_COFINS.AsFloat - dmPdv.qcdsNFVALOR_PIS.AsFloat  - dmPdv.cdsItensNFII.AsVariant - dmPdv.cdsItensNFVALOR_OUTROS.AsFloat;
+    //    total_nota := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsFloat  - dmPdv.qcdsNFVALOR_ICMS.AsFloat - dmPdv.qcdsNFVALOR_IPI.AsFloat
+    //    - dmPdv.qcdsNFVALOR_COFINS.AsFloat - dmPdv.qcdsNFVALOR_PIS.AsFloat  - dmPdv.qcdsNFII.AsVariant + dmPdv.qcdsNFOUTRAS_DESP.AsFloat + dmPdv.qcdsNFFRETE.AsFloat ;
 
         if(dmPdv.ReformaTributaria = 'SIM')then
         begin
@@ -5886,12 +5891,12 @@ begin
           begin
             Total.IBSCBSTot.vBCIBSCBS := 0.00 ;
           end;
-
+          {
           if(pCASTRIB = '000001')then      //12/02/2026
           begin
-            Total.IBSCBSTot.vBCIBSCBS := pVALOR_TOTAL_NOTA ;
+            Total.IBSCBSTot.vBCIBSCBS :=  pVALOR_TOTAL_NOTA ;
           end;
-
+         }
           if(pSuframa <> '')then
           begin
             Total.IBSCBSTot.vBCIBSCBS := total_nota + dmPdv.qcdsNFVALOR_ICMS.AsVariant;

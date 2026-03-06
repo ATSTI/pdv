@@ -2415,7 +2415,7 @@ object fNFe: TfNFe
           Height = 15
           Top = 14
           Width = 66
-          Caption = '12/02/2026'
+          Caption = '20/02/2026'
           Font.Color = clBlue
           Font.Style = [fsBold]
           ParentFont = False
@@ -5311,6 +5311,9 @@ object fNFe: TfNFe
           '        - dmPdv.qcdsNFVALOR_COFINS.AsFloat - dmPdv.qcdsNFVALOR_PIS.AsFloat  ;'
           'correção   = total_nota := dmPdv.qcdsNFVALOR_TOTAL_NOTA.AsFloat  - dmPdv.qcdsNFVALOR_ICMS.AsFloat - dmPdv.qcdsNFVALOR_IPI.AsFloat'
           '        - dmPdv.qcdsNFVALOR_COFINS.AsFloat - dmPdv.qcdsNFVALOR_PIS.AsFloat  - dmPdv.cdsItensNFII.AsVariant - dmPdv.cdsItensNFVALOR_OUTROS.AsFloat;             '
+          '------------------'
+          'incluido  RoundABNT  na linha 4224'
+          'IBSCBS.gIBSCBS.vIBS := RoundABNT((baseIBS_CBS*pIBS)/100,2); '
         )
         TabOrder = 0
       end
