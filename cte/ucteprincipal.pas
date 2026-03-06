@@ -2128,6 +2128,8 @@ begin
 
       Imp.IBSCBS.gIBSCBS.gCBS.vCBS := ((baseIBS_CBS*pCBS)/100);
 
+      Imp.vTotDFe := dmCte.cdsCteVPREST.AsFloat;
+
       {
       Imp.IBSCBS.gIBSCBS.gTribRegular.CSTReg := cst000;
       Imp.IBSCBS.gIBSCBS.gTribRegular.cClassTribReg := '000001';
