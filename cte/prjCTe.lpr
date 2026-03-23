@@ -8,7 +8,8 @@ uses
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, zcomponent, datetimectrls, uCtePrincipal, uDmCte, uNFe, uCompValor,
-  uQuantCarga, udmpdv, ufrmStatus, uClienteBusca, umunicipiobusca, uVeiculoCte;
+  uQuantCarga, udmpdv, ufrmStatus, uClienteBusca, umunicipiobusca, uVeiculoCte,
+  urelcte;
 
 {$R *.res}
 
@@ -26,6 +27,7 @@ begin
   Application.CreateForm(TfMunicipioBusca, fMunicipioBusca);
   Application.CreateForm(TfVeiculoCte, fVeiculoCte);
   Application.CreateForm(TfNFe, fNFe);
+  Application.CreateForm(Tfrelcte, frelcte);
   Application.Run;
 end.
 

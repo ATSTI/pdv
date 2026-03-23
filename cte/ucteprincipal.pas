@@ -33,6 +33,7 @@ type
     BitBtn20: TBitBtn;
     BitBtn21: TBitBtn;
     BitBtn22: TBitBtn;
+    BitBtn23: TBitBtn;
     btnEditarNFe1: TBitBtn;
     btnExcluirNFe1: TBitBtn;
     btnGerarCte1: TBitBtn;
@@ -707,6 +708,7 @@ type
     ZsqNFeDPREV: TDateField;
     ZsqNFePIN: TLongintField;
     procedure BitBtn18Click(Sender: TObject);
+    procedure BitBtn23Click(Sender: TObject);
     function busca_generator(generator: String): integer;
     procedure ACBrCTe1StatusChange(Sender: TObject);
     procedure BitBtn10Click(Sender: TObject);
@@ -935,7 +937,7 @@ const
 
 implementation
 
-uses udmpdv, ufrmStatus, uDmCte, uNFe, uCompValor, uQuantCarga, uVeiculoCte,
+uses udmpdv, ufrmStatus, uDmCte, uNFe, uCompValor, uQuantCarga, uVeiculoCte,urelcte,
   uClienteBusca, umunicipiobusca, uCertificadoLer,TypInfo, blcksock ,ACBrDFe.Conversao,pcteConversaoCTe,pcnConversao;
 
 {$R *.lfm}
@@ -4234,6 +4236,8 @@ begin
     // nao tem protocolo cancelamento
     strEdita := strEdita + 'UPDATE CTE SET  STATUS_CTE = ';
     strEdita := strEdita + QuotedStr('CTe CANCELADA');
+    strEdita := strEdita + ', VREC = ';
+    strEdita := strEdita + QuotedStr('0');
     strEdita := strEdita + ' WHERE CTE_NUMERO = ';
     strEdita := strEdita + (edCteCancelar.Text); // corrigido manoel 24/03/2022(edtNumCte.Text);
     try
@@ -5061,6 +5065,14 @@ end;
 
 procedure TfCTePrincipal.BitBtn18Click(Sender: TObject);
 begin
+
+end;
+
+procedure TfCTePrincipal.BitBtn23Click(Sender: TObject);
+begin
+//  frelcte.ShowModal;
+
+  frelcte.RLReport1.Preview;
 
 end;
 

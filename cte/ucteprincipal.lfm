@@ -4,8 +4,8 @@ object fCTePrincipal: TfCTePrincipal
   Top = 34
   Width = 1305
   Caption = 'CTe - Conhecimento de Transporte Eletrônico'
-  ClientHeight = 649
-  ClientWidth = 1305
+  ClientHeight = 0
+  ClientWidth = 0
   Position = poScreenCenter
   LCLVersion = '4.6.0.0'
   OnCreate = FormCreate
@@ -691,9 +691,9 @@ object fCTePrincipal: TfCTePrincipal
     Height = 583
     Top = 0
     Width = 1305
-    ActivePage = TabCteGeradas
+    ActivePage = TabCte
     Align = alClient
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     OnChange = pcPrincipalChange
     object TabCteGeradas: TTabSheet
@@ -1569,6 +1569,15 @@ object fCTePrincipal: TfCTePrincipal
           MaxLength = 0
           TabOrder = 11
         end
+        object BitBtn23: TBitBtn
+          Left = 807
+          Height = 30
+          Top = 72
+          Width = 75
+          Caption = 'Imprimir'
+          TabOrder = 12
+          OnClick = BitBtn23Click
+        end
       end
     end
     object TabCte: TTabSheet
@@ -1580,9 +1589,9 @@ object fCTePrincipal: TfCTePrincipal
         Height = 555
         Top = 0
         Width = 1297
-        ActivePage = TabDados
+        ActivePage = TabSheet11
         Align = alClient
-        TabIndex = 0
+        TabIndex = 8
         TabOrder = 0
         OnChange = pcCteChange
         OnChanging = pcCteChanging
