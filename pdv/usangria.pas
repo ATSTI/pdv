@@ -5,15 +5,17 @@ unit usangria;
 interface
 
 uses
-  Classes, SysUtils, sqldb, db, FileUtil, Forms, Controls, Graphics, Dialogs,
-  Buttons, MaskEdit, StdCtrls, ExtCtrls, DBGrids, udmpdv, fphttpclient, fpjson,
-  uIntegraSimples, jsonConf;
+  Classes, SysUtils, sqldb, db, FileUtil, DateTimePicker, Forms, Controls,
+  Graphics, Dialogs, Buttons, MaskEdit, StdCtrls, ExtCtrls, DBGrids, udmpdv,
+  fphttpclient, fpjson, uIntegraSimples, jsonConf;
 
 type
 
   { TfSangria }
 
   TfSangria = class(TForm)
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
     btnFechar: TBitBtn;
     btnGravar: TBitBtn;
     btnInsereMotivo: TBitBtn;
@@ -23,7 +25,13 @@ type
     DBGrid1: TDBGrid;
     DBGrid2: TDBGrid;
     dsReforco: TDataSource;
+    dsReforco1: TDataSource;
     dsSangrias: TDataSource;
+    dsSangrias1: TDataSource;
+    dtData: TDateTimePicker;
+    dtData1: TDateTimePicker;
+    dtData2: TDateTimePicker;
+    dtData3: TDateTimePicker;
     Edit1: TEdit;
     Edit2: TEdit;
     GroupAbreCaixa: TGroupBox;
@@ -41,18 +49,31 @@ type
     memoResult: TMemo;
     PanelSangria: TPanel;
     sqReforco: TSQLQuery;
+    sqReforco1: TSQLQuery;
     sqReforcoCAIXA: TSmallintField;
+    sqReforcoCAIXA1: TSmallintField;
     sqReforcoCAIXINHA: TFloatField;
+    sqReforcoCAIXINHA1: TFloatField;
     sqReforcoCODFORMA: TLongintField;
+    sqReforcoCODFORMA1: TLongintField;
     sqReforcoCOD_VENDA: TLongintField;
+    sqReforcoCOD_VENDA1: TLongintField;
     sqReforcoDATAABERTURA: TDateField;
+    sqReforcoDATAABERTURA1: TDateField;
     sqReforcoDESCONTO: TFloatField;
+    sqReforcoDESCONTO1: TFloatField;
     sqReforcoFORMA_PGTO: TStringField;
+    sqReforcoFORMA_PGTO1: TStringField;
     sqReforcoID_ENTRADA: TLongintField;
+    sqReforcoID_ENTRADA1: TLongintField;
     sqReforcoN_DOC: TStringField;
+    sqReforcoN_DOC1: TStringField;
     sqReforcoSTATE: TSmallintField;
+    sqReforcoSTATE1: TSmallintField;
     sqReforcoTROCO: TFloatField;
+    sqReforcoTROCO1: TFloatField;
     sqReforcoVALOR_PAGO: TFloatField;
+    sqReforcoVALOR_PAGO1: TFloatField;
     sqSangrias: TSQLQuery;
     sqPagamento: TSQLQuery;
     sqPagamentoCAIXA: TSmallintField;
@@ -66,18 +87,33 @@ type
     sqPagamentoSTATE: TSmallintField;
     sqPagamentoTROCO: TFloatField;
     sqPagamentoVALOR_PAGO: TFloatField;
+    sqSangrias1: TSQLQuery;
     sqSangriasCAIXA: TSmallintField;
+    sqSangriasCAIXA1: TSmallintField;
     sqSangriasCAIXINHA: TFloatField;
+    sqSangriasCAIXINHA1: TFloatField;
     sqSangriasCODFORMA: TLongintField;
+    sqSangriasCODFORMA1: TLongintField;
     sqSangriasCOD_VENDA: TLongintField;
+    sqSangriasCOD_VENDA1: TLongintField;
     sqSangriasDATAABERTURA: TDateField;
+    sqSangriasDATAABERTURA1: TDateField;
     sqSangriasDESCONTO: TFloatField;
+    sqSangriasDESCONTO1: TFloatField;
     sqSangriasFORMA_PGTO: TStringField;
+    sqSangriasFORMA_PGTO1: TStringField;
     sqSangriasID_ENTRADA: TLongintField;
+    sqSangriasID_ENTRADA1: TLongintField;
     sqSangriasN_DOC: TStringField;
+    sqSangriasN_DOC1: TStringField;
     sqSangriasSTATE: TSmallintField;
+    sqSangriasSTATE1: TSmallintField;
     sqSangriasTROCO: TFloatField;
+    sqSangriasTROCO1: TFloatField;
     sqSangriasVALOR_PAGO: TFloatField;
+    sqSangriasVALOR_PAGO1: TFloatField;
+    procedure BitBtn1Click(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
     procedure btnInsereMotivoClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure btnGravarClick(Sender: TObject);
@@ -100,7 +136,7 @@ var
   fSangria: TfSangria;
 
 implementation
-  uses uPdv,uMovimentoProc,uabrircaixa,uPermissaoCX;
+  uses uPdv,uMovimentoProc,uabrircaixa,uPermissaoCX,uimprsangria;
 {$R *.lfm}
 
 { TfSangria }
@@ -328,6 +364,11 @@ end;
 
 procedure TfSangria.FormShow(Sender: TObject);
 begin
+  dtData.Date:= now;
+  dtData1.Date:= now;
+  dtData2.Date:= now;
+  dtData3.Date:= now;
+
   if(dmpdv.SenhaAbrirCX = 'SIM')then
   begin
     fPermissaoCX.ShowModal;
@@ -359,6 +400,21 @@ end;
 procedure TfSangria.btnInsereMotivoClick(Sender: TObject);
 begin
   edMotivo.Text:= 'Abrir ' + Edit1.Text ;
+end;
+
+procedure TfSangria.BitBtn1Click(Sender: TObject);
+begin
+   fimprisangria.RLReport1.Preview;
+end;
+
+procedure TfSangria.BitBtn2Click(Sender: TObject);
+begin
+  sqSangrias1.Active;
+  sqSangrias1.Params[0].AsDateTime := dtData.DateTime;
+  sqSangrias1.Params[1].AsDateTime := dtData2.DateTime;
+  sqSangrias1.Open;
+
+  fimprisangria.RLReport2.Preview;
 end;
 
 procedure TfSangria.Sangria();
