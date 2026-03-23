@@ -8,7 +8,7 @@ object dmPdv: TdmPdv
   object IbCon: TIBConnection
     Connected = False
     LoginPrompt = False
-    DatabaseName = 'D:\clientes\loide_agropecuaria\bd\SGE_VS_LOJA.FDB'
+    DatabaseName = 'D:\clientes\dnz\bd\SGE_DNZ.FDB'
     KeepConnection = False
     Params.Strings = (
       'port=3050'
@@ -7252,6 +7252,7 @@ object dmPdv: TdmPdv
     end
   end
   object cdsItensNF: TSQLQuery
+    MaxIndexesCount = 4
     FieldDefs = <    
       item
         Name = 'CODPRODUTO'
@@ -7674,6 +7675,12 @@ object dmPdv: TdmPdv
         Name = 'REDUCAO_CBS'
         DataType = ftFloat
         Precision = -1
+      end    
+      item
+        Name = 'CBENEF'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 8
       end>
     Database = IbCon
     Transaction = sTrans
@@ -7745,6 +7752,7 @@ object dmPdv: TdmPdv
       '        , UDF_ROUNDDEC(md.P_CBS, 2) as P_CBS'
       '        , UDF_ROUNDDEC(md.REDUCAO_IBS, 2) as REDUCAO_IBS'
       '        , UDF_ROUNDDEC(md.REDUCAO_CBS, 2) as REDUCAO_CBS'
+      '        , md.CBENEF'
       'from VENDA vd'
       'inner join MOVIMENTODETALHE md on'
       'md.CODMOVIMENTO = vd.CODMOVIMENTO'
@@ -8566,6 +8574,16 @@ object dmPdv: TdmPdv
       ReadOnly = False
       Required = False
       Precision = -1
+    end
+    object cdsItensNFCBENEF: TStringField
+      FieldKind = fkData
+      FieldName = 'CBENEF'
+      Index = 81
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8
     end
   end
   object sqlTotal_tributos: TSQLQuery

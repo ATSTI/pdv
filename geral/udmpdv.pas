@@ -15,6 +15,7 @@ type
 
   TdmPdv = class(TDataModule)
     cdsItensNFBCII: TFloatField;
+    cdsItensNFCBENEF: TStringField;
     cdsItensNFCCLASSTRIB: TStringField;
     cdsItensNFCEST: TStringField;
     cdsItensNFCFOP: TStringField;

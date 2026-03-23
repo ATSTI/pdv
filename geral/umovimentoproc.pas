@@ -110,6 +110,9 @@ begin
   fSangria.GroupAbreCaixa.Visible := True;
   fSangria.btnReimprimirReforco.Visible:= True;
   fSangria.DBGrid2.Visible:= True;
+  fSangria.BitBtn2.Visible:= True;
+  fSangria.dtData2.Visible:= True;
+  fSangria.dtData3.Visible:= True;
   fSangria.ComboBox1.ItemIndex := 1;
   fSangria.ShowModal;
 end;
@@ -373,6 +376,9 @@ begin
   fSangria.Edit1.Visible := False;
   fSangria.btnInsereMotivo.Visible := False;
   fSangria.GroupAbreCaixa.Visible := False;
+  fSangria.BitBtn2.Visible:= False;
+  fSangria.dtData2.Visible:= False;
+  fSangria.dtData3.Visible:= False;
   fSangria.btnReimprimirReforco.Visible:= False;
   fSangria.DBGrid2.Visible:= False;
   fSangria.ComboBox1.ItemIndex := 0;

@@ -8,7 +8,7 @@ object fNFe: TfNFe
   ClientWidth = 1069
   DefaultMonitor = dmMainForm
   Position = poDesktopCenter
-  LCLVersion = '4.0.0.4'
+  LCLVersion = '4.6.0.0'
   Scaled = False
   OnCreate = FormCreate
   OnShow = FormShow
@@ -2415,7 +2415,7 @@ object fNFe: TfNFe
           Height = 15
           Top = 14
           Width = 66
-          Caption = '20/02/2026'
+          Caption = '18/03/2026'
           Font.Color = clBlue
           Font.Style = [fsBold]
           ParentFont = False
@@ -4316,6 +4316,8 @@ object fNFe: TfNFe
             MouseActions = <>
             MaxExtraMarksColums = 0
             Options = [sgmoDeDuplicateMarksOnOverflow]
+            MarkupInfo.Background = clBtnFace
+            MarkupInfo.Foreground = clNone
           end
           object SynGutterLineNumber1: TSynGutterLineNumber
             Width = 17
@@ -4332,6 +4334,9 @@ object fNFe: TfNFe
             MouseActions = <>
             ModifiedColor = 59900
             SavedColor = clGreen
+            MarkupInfo.Background = clNone
+            MarkupInfo.Foreground = clGreen
+            MarkupInfo.FrameColor = 59900
           end
           object SynGutterSeparator1: TSynGutterSeparator
             Width = 2

@@ -3235,7 +3235,7 @@ begin
       ' , md.P_CBS ' +
       ' , md.REDUCAO_IBS ' +
       ' , md.REDUCAO_CBS ' +
-
+      ' , md.CBENEF ' +
       ' from compra cp  inner join MOVIMENTODETALHE md on md.CODMOVIMENTO = cp.CODMOVIMENTO ' +
       'inner join NOTAFISCAL nf on nf.CODVENDA = cp.CODCOMPRA ' +
       'inner join PRODUTOS pr on pr.CODPRODUTO = md.CODPRODUTO ' +
@@ -3297,6 +3297,7 @@ begin
       ' , md.P_CBS ' +
       ' , md.REDUCAO_IBS ' +
       ' , md.REDUCAO_CBS ' +
+      ' , md.CBENEF ' +
       ' from VENDA vd inner join MOVIMENTODETALHE md on md.CODMOVIMENTO = vd.CODMOVIMENTO ' +
       'inner join NOTAFISCAL nf on nf.CODVENDA = vd.CODVENDA ' +
       'inner join PRODUTOS pr on pr.CODPRODUTO = md.CODPRODUTO ' +
@@ -3721,6 +3722,7 @@ begin
         Prod.cProd    := Trim(dmPdv.cdsItensNFCODPRO.AsString);
 
       Prod.xProd    := LeftStr(Trim(dmPdv.cdsItensNFDESCPRODUTO.AsString), 99);
+      Prod.cBenef   := Trim(dmPdv.cdsItensNFCBENEF.AsString);
       Prod.CFOP     := Trim(dmPdv.cdsItensNFCFOP.AsString);
       Prod.uCom     := Trim(dmPdv.cdsItensNFUNIDADEMEDIDA.AsString);
       Prod.qCom     := dmPdv.cdsItensNFQUANTIDADE.AsFloat;
@@ -4178,6 +4180,8 @@ begin
           if(dmPdv.ReformaTributaria = 'SIM' )then
           begin
 
+
+
             pIBS_CBS := dmPdv.cdsItensNFCST_IBS_CBS.AsString;
             pCASTRIB := dmPdv.cdsItensNFCCLASSTRIB.AsString;
 
@@ -4325,13 +4329,13 @@ begin
               end;
 
               IBSCBS.gIBSCBS.gTribRegular.cClassTribReg:= '000001';
-
               IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegIBSUF := pIBS ;
               IBSCBS.gIBSCBS.gTribRegular.vTribRegIBSUF := pVALORIBS ;
               IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegIBSMun :=0 ;
               IBSCBS.gIBSCBS.gTribRegular.vTribRegIBSMun := 0 ;
               IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegCBS:= pCBS;
               IBSCBS.gIBSCBS.gTribRegular.vTribRegCBS := pVALORCBS ;
+
             end;
 
 
@@ -5891,6 +5895,12 @@ begin
           begin
             Total.IBSCBSTot.vBCIBSCBS := 0.00 ;
           end;
+
+          if(pCASTRIB = '410014')then      //18/03/2026
+          begin
+            Total.IBSCBSTot.vBCIBSCBS := 0.00 ;
+          end;
+
           {
           if(pCASTRIB = '000001')then      //12/02/2026
           begin
@@ -5899,7 +5909,7 @@ begin
          }
           if(pSuframa <> '')then
           begin
-            Total.IBSCBSTot.vBCIBSCBS := total_nota + dmPdv.qcdsNFVALOR_ICMS.AsVariant;
+            Total.IBSCBSTot.vBCIBSCBS := total_nota ;// 10/03/26 + dmPdv.qcdsNFVALOR_ICMS.AsVariant;
           end;
 
           Total.IBSCBSTot.gIBS.vIBS  := total_ibs ;
