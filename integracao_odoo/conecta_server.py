@@ -41,7 +41,7 @@ class EnviaServer:
 
     def get_session(self, ):
         headers = {'Content-type': 'application/json'}
-        AUTH_URL = "http://%s/web/session/authenticate" %(self.url)
+        AUTH_URL = "https://%s/web/session/authenticate" %(self.url)
         data = {
                 "jsonrpc": "2.0",
                 "params": {
@@ -78,7 +78,7 @@ class EnviaServer:
         vals['params'] = json.load(arquivo)
         vals['tipo'] = arq
         json_data = json.dumps(vals)
-        return rq.post("http://{}".format(base_url), data=json_data, headers=json_headers, cookies=cookies)
+        return rq.post("https://{}".format(base_url), data=json_data, headers=json_headers, cookies=cookies)
         
         # if not retorno:
         #     file_retorno = f"{self.path_retorno}/retorno.json"
@@ -94,7 +94,7 @@ class EnviaServer:
         # conn = db.connect('lancamento.db')
         # cur_db = conn.cursor()
         headers = {'Content-type': 'application/json'}
-        AUTH_URL = "http://%s/web/session/authenticate" %(self.url)
+        AUTH_URL = "https://%s/web/session/authenticate" %(self.url)
         data = {
                 "jsonrpc": "2.0",
                 "params": {
@@ -129,7 +129,7 @@ class EnviaServer:
         # vals['params'] = json.load(arquivo)
         # vals['tipo'] = arq
         json_data = json.dumps(vals)
-        retorno = rq.post("http://{}".format(base_url), data=json_data, headers=json_headers, cookies=cookies)
+        retorno = rq.post("https://{}".format(base_url), data=json_data, headers=json_headers, cookies=cookies)
         # hj = datetime.now()       
         # hj = datetime.strftime(hj,'%m-%d-%Y')
         if retorno:
@@ -163,7 +163,7 @@ class EnviaServer:
     def buscando_clientes(self):
         # conn = db.connect('lancamento.db')
         headers = {'Content-type': 'application/json'}
-        AUTH_URL = "http://%s/web/session/authenticate" %(self.url)
+        AUTH_URL = "https://%s/web/session/authenticate" %(self.url)
         data = {
                 "jsonrpc": "2.0",
                 "params": {
@@ -193,7 +193,7 @@ class EnviaServer:
         vals = {}
         json_data = json.dumps(vals)
         arquivo_json = os.path.join(self.path_envio, "clientes.json")
-        retorno = rq.post("http://{}".format(base_url), data=json_data, headers=json_headers, cookies=cookies)
+        retorno = rq.post("https://{}".format(base_url), data=json_data, headers=json_headers, cookies=cookies)
         if retorno:
             file_json = retorno.json()
             with open(arquivo_json, 'w', encoding='utf-8') as f:
