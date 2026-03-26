@@ -435,7 +435,7 @@ begin
   if sqPagamento.active then
     sqPagamento.Close;
   sqPagamento.Params.ParamByName('PCODMOV').AsInteger:=vCodMovimento;
-  sqPagamento.Params.ParamByName('PCODCAIXA').AsInteger := vCaixa_Local;
+  sqPagamento.Params.ParamByName('PCODCAIXA').AsInteger := StrToInt(dmPdv.idcaixa);
   sqPagamento.open;
   if (not sqPagamento.IsEmpty) then
   begin

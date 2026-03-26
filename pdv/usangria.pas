@@ -135,7 +135,8 @@ begin
   end;
 
   Sangria();
-
+  sqReforco.Active:=False;
+  sqReforco.Active:=True;
 
   if (dmPdv.CupomImp = 'Texto') then
   begin
