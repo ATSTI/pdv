@@ -138,6 +138,11 @@ type
     edInutSerie: TEdit;
     edInutJustificativa: TEdit;
     Edit1: TEdit;
+    Edit2: TEdit;
+    Edit3: TEdit;
+    Edit4: TEdit;
+    Edit5: TEdit;
+    Edit6: TEdit;
     edtCCLASSTRIB: TEdit;
     edtCST_IBS_CBS: TEdit;
     edtP_CBS: TEdit;
@@ -1364,6 +1369,7 @@ var
  baseIBS_CBS : double;
  vpCBS  : double;
  vpIBS  : double;
+ crt : integer;
 begin
   //if ((rgTipoServico.ItemIndex = 1) or (rgTiposCte.ItemIndex = 1) and (edtAntCHCTE.Text = '')) then
   if (((rgTipoServico.ItemIndex = 1) or (rgTiposCte.ItemIndex = 1)) and (edtAntCHCTE.Text = '')) then
@@ -1391,6 +1397,10 @@ begin
         1: infCTe.versao := 3.0;
         2: infCTe.versao := 4.0;
       end;
+
+    dmPdv.sqEmpresa.Active:= True;
+
+    crt := dmPdv.sqEmpresaCRT.AsInteger;
 
     if dmPdv.sqEmpresaCRT.AsInteger = 0 then
       Emit.CRT := crtSimplesNacional;
@@ -1996,7 +2006,7 @@ begin
    // TpcnCSTIcms = (cst00, cst10, cst20, cst30, cst40, cst41, cst45, cst50, cst51, cst60, cst70, cst80, cst81, cst90);
    // 80 e 81 apenas para CTe
 
-   //Lazarus-Cte
+   //Lazarus-Cte OS
 
    case combCodSitTrib.ItemIndex of    //00 - Tributação Normal do ICMS
     0: begin
@@ -2067,6 +2077,16 @@ begin
          Imp.ICMS.ICMSSN.indSN := 1;
        end;
     end;
+
+   if(CheckBox1.Checked = True)then
+   begin
+   //Impostos federais
+   imp.infTribFed.vPIS    := StrToFloat(Edit2.Text);
+   imp.infTribFed.vCOFINS := StrToFloat(Edit3.Text);
+   imp.infTribFed.vIR     := StrToFloat(Edit4.Text);
+   imp.infTribFed.vINSS   := StrToFloat(Edit5.Text);
+   imp.infTribFed.vCSLL   := StrToFloat(Edit6.Text);
+   end;
 
     if(dmpdv.ReformaTributaria = 'SIM')then
     begin
@@ -2304,7 +2324,6 @@ begin
      1: Ide.forPag := fpAPagar;
      2: Ide.forPag := fpOutros;
     end;
-
 
     if not (dmCte.sqQC.Active)then
     begin

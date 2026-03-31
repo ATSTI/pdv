@@ -4,8 +4,8 @@ object fCTePrincipal: TfCTePrincipal
   Top = 18
   Width = 1305
   Caption = 'CTe - Conhecimento de Transporte Eletrônico'
-  ClientHeight = 649
-  ClientWidth = 1305
+  ClientHeight = 0
+  ClientWidth = 0
   Position = poScreenCenter
   LCLVersion = '4.6.0.0'
   OnCreate = FormCreate
@@ -1580,9 +1580,9 @@ object fCTePrincipal: TfCTePrincipal
         Height = 555
         Top = 0
         Width = 1297
-        ActivePage = TabDados
+        ActivePage = TabServicosImpostos
         Align = alClient
-        TabIndex = 0
+        TabIndex = 7
         TabOrder = 0
         OnChange = pcCteChange
         OnChanging = pcCteChanging
@@ -8416,7 +8416,7 @@ object fCTePrincipal: TfCTePrincipal
             Height = 20
             Top = 40
             Width = 216
-            Caption = 'Valor BC ICMS'
+            Caption = 'Valor PIS'
             TabOrder = 13
           end
           object StaticText21: TStaticText
@@ -8424,7 +8424,7 @@ object fCTePrincipal: TfCTePrincipal
             Height = 24
             Top = 72
             Width = 216
-            Caption = 'Aliquota Interna UF Término'
+            Caption = 'Valor Cofins'
             TabOrder = 14
           end
           object StaticText23: TStaticText
@@ -8432,7 +8432,7 @@ object fCTePrincipal: TfCTePrincipal
             Height = 24
             Top = 136
             Width = 216
-            Caption = 'Percentual de Partilha UF Término'
+            Caption = 'Valor INSS'
             TabOrder = 15
           end
           object dbValInfCarga13: TEdit
@@ -8449,6 +8449,7 @@ object fCTePrincipal: TfCTePrincipal
             Width = 216
             Caption = 'Valor ICMS de Partilha UF Término'
             TabOrder = 17
+            Visible = False
           end
           object valIMCSPartF: TEdit
             Left = 992
@@ -8456,6 +8457,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 200
             Width = 224
             TabOrder = 18
+            Visible = False
           end
           object StaticText26: TStaticText
             Left = 744
@@ -8464,6 +8466,7 @@ object fCTePrincipal: TfCTePrincipal
             Width = 216
             Caption = '% ICMS FCP UF Término'
             TabOrder = 19
+            Visible = False
           end
           object dbValInfCarga16: TEdit
             Left = 992
@@ -8471,6 +8474,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 232
             Width = 224
             TabOrder = 20
+            Visible = False
           end
           object StaticText27: TStaticText
             Left = 744
@@ -8479,6 +8483,7 @@ object fCTePrincipal: TfCTePrincipal
             Width = 216
             Caption = 'Valor ICMS FCP UF Término'
             TabOrder = 21
+            Visible = False
           end
           object dbValInfCarga17: TEdit
             Left = 992
@@ -8486,6 +8491,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 264
             Width = 224
             TabOrder = 22
+            Visible = False
           end
           object StaticText22: TStaticText
             Left = 32
@@ -8501,7 +8507,7 @@ object fCTePrincipal: TfCTePrincipal
             Height = 27
             Top = 104
             Width = 216
-            Caption = 'Aliquota Interestadual'
+            Caption = 'Valor IR'
             TabOrder = 24
           end
           object valAliInter: TEdit
@@ -8523,7 +8529,7 @@ object fCTePrincipal: TfCTePrincipal
             Height = 24
             Top = 168
             Width = 216
-            Caption = 'Valor ICMS de Partilha UF Início'
+            Caption = 'Valor CSLL'
             TabOrder = 27
           end
           object memInfAdFisco: TMemo
@@ -8572,7 +8578,7 @@ object fCTePrincipal: TfCTePrincipal
             Height = 24
             Top = 8
             Width = 352
-            Caption = 'Preencher o ICMS Devido para UF Término Serviço'
+            Caption = 'infTribFed'
             TabOrder = 32
           end
           object BitBtn15: TBitBtn
@@ -8964,6 +8970,7 @@ object fCTePrincipal: TfCTePrincipal
               'Outro Valor'
             )
             TabOrder = 43
+            Visible = False
           end
           object btnProximo7: TBitBtn
             Left = 896
@@ -9165,6 +9172,41 @@ object fCTePrincipal: TfCTePrincipal
             TabOrder = 47
             Visible = False
             OnChange = edtCompChange
+          end
+          object Edit2: TEdit
+            Left = 832
+            Height = 23
+            Top = 37
+            Width = 80
+            TabOrder = 48
+          end
+          object Edit3: TEdit
+            Left = 832
+            Height = 23
+            Top = 70
+            Width = 80
+            TabOrder = 49
+          end
+          object Edit4: TEdit
+            Left = 832
+            Height = 23
+            Top = 103
+            Width = 80
+            TabOrder = 50
+          end
+          object Edit5: TEdit
+            Left = 832
+            Height = 23
+            Top = 132
+            Width = 80
+            TabOrder = 51
+          end
+          object Edit6: TEdit
+            Left = 832
+            Height = 23
+            Top = 163
+            Width = 80
+            TabOrder = 52
           end
         end
         object TabSheet11: TTabSheet
