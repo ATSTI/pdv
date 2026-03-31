@@ -24,6 +24,7 @@ type
     BitBtn11: TBitBtn;
     BitBtn12: TBitBtn;
     BitBtn13: TBitBtn;
+    BitBtn14: TBitBtn;
     btnGerarCte1: TBitBtn;
     btnGravarCTe1: TBitBtn;
     btnInsereProtocolo: TButton;
@@ -646,6 +647,7 @@ type
     ZsqNFeCTE_NFE: TLongintField;
     ZsqNFeDPREV: TDateField;
     ZsqNFePIN: TLongintField;
+    procedure BitBtn14Click(Sender: TObject);
     procedure BitBtn18Click(Sender: TObject);
     procedure btnInsereProtocoloClick(Sender: TObject);
     function busca_generator(generator: String): integer;
@@ -877,7 +879,7 @@ implementation
 
 uses udmpdv, ufrmStatus, uDmCte, uNFe, uCompValor, uQuantCarga, uVeiculoCte,
   uClienteBusca, umunicipiobusca, uCertificadoLer,TypInfo, blcksock
-  ,ACBrDFe.Conversao,pcteConversaoCTe,pcnConversao;
+  ,ACBrDFe.Conversao,pcteConversaoCTe,pcnConversao,urelcte;
 
 {$R *.lfm}
 
@@ -5247,6 +5249,11 @@ end;
 procedure TfCTePrincipal.BitBtn18Click(Sender: TObject);
 begin
 
+end;
+
+procedure TfCTePrincipal.BitBtn14Click(Sender: TObject);
+begin
+  frelcte.RLReport1.Preview;
 end;
 
 procedure TfCTePrincipal.btnInsereProtocoloClick(Sender: TObject);

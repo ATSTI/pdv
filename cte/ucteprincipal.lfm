@@ -1569,6 +1569,15 @@ object fCTePrincipal: TfCTePrincipal
           MaxLength = 0
           TabOrder = 11
         end
+        object BitBtn14: TBitBtn
+          Left = 800
+          Height = 30
+          Top = 72
+          Width = 75
+          Caption = 'BitBtn14'
+          TabOrder = 12
+          OnClick = BitBtn14Click
+        end
       end
     end
     object TabCte: TTabSheet
