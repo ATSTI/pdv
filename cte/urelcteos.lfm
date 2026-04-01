@@ -1,8 +1,170 @@
 object frelcteOS: TfrelcteOS
-  Left = 416
-  Height = 240
-  Top = 262
-  Width = 320
+  Left = 231
+  Height = 383
+  Top = 119
+  Width = 852
   Caption = 'frelcteOS'
+  ClientHeight = 383
+  ClientWidth = 852
   LCLVersion = '4.6.0.0'
+  object RLReport1: TRLReport
+    Left = 8
+    Height = 1123
+    Top = 0
+    Width = 794
+    DataSource = dmCte.dsCte
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'Arial'
+    BeforePrint = RLReport1BeforePrint
+    object RLBand1: TRLBand
+      Left = 38
+      Height = 56
+      Top = 38
+      Width = 718
+      BandType = btHeader
+      object RLLabel1: TRLLabel
+        Left = 85
+        Height = 16
+        Top = 15
+        Width = 139
+        Caption = 'CTE emitida no periodo'
+      end
+      object RLLabel2: TRLLabel
+        Left = 424
+        Height = 16
+        Top = 15
+        Width = 58
+      end
+      object RLLabel4: TRLLabel
+        Left = 536
+        Height = 16
+        Top = 15
+        Width = 58
+      end
+      object RLLabel5: TRLLabel
+        Left = 504
+        Height = 16
+        Top = 15
+        Width = 11
+        Caption = 'a'
+      end
+      object RLLabel8: TRLLabel
+        Left = 9
+        Height = 16
+        Top = 35
+        Width = 704
+        Caption = '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'
+      end
+    end
+    object RLBand2: TRLBand
+      Left = 38
+      Height = 24
+      Top = 94
+      Width = 718
+      object RLDBText1: TRLDBText
+        Left = 682
+        Height = 14
+        Top = 8
+        Width = 43
+        Alignment = taRightJustify
+        DataField = 'VPREST'
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        ParentFont = False
+      end
+      object RLDBText2: TRLDBText
+        Left = 452
+        Height = 14
+        Top = 8
+        Width = 37
+        DataField = 'NPROT'
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        ParentFont = False
+      end
+      object RLDBText3: TRLDBText
+        Left = -10
+        Height = 14
+        Top = 8
+        Width = 71
+        DataField = 'CTE_NUMERO'
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        ParentFont = False
+      end
+      object RLDBText4: TRLDBText
+        Left = 168
+        Height = 14
+        Top = 8
+        Width = 68
+        DataField = 'D_FANTASIA'
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        ParentFont = False
+      end
+      object RLDBText5: TRLDBText
+        Left = 565
+        Height = 14
+        Top = 8
+        Width = 69
+        DataField = 'STATUS_CTE'
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        ParentFont = False
+      end
+      object RLDBText6: TRLDBText
+        Left = 44
+        Height = 14
+        Top = 8
+        Width = 33
+        DataField = 'DHEMI'
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        ParentFont = False
+      end
+    end
+    object RLBand3: TRLBand
+      Left = 38
+      Height = 40
+      Top = 118
+      Width = 718
+      BandType = btSummary
+      object RLLabel3: TRLLabel
+        Left = 440
+        Height = 16
+        Top = 16
+        Width = 32
+        Caption = 'Total'
+      end
+      object RLDBResult1: TRLDBResult
+        Left = 639
+        Height = 16
+        Top = 16
+        Width = 95
+        DataField = 'VPREST'
+        DataSource = dmCte.dsCte
+        Info = riSum
+      end
+      object RLLabel7: TRLLabel
+        Left = 9
+        Height = 16
+        Top = -2
+        Width = 704
+        Caption = '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'
+      end
+    end
+    object RLLabel6: TRLLabel
+      Left = 316
+      Height = 16
+      Top = 14
+      Width = 58
+    end
+  end
 end

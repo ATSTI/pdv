@@ -5253,8 +5253,8 @@ end;
 
 procedure TfCTePrincipal.BitBtn14Click(Sender: TObject);
 begin
-  //frelcte.RLReport1.Preview;
- frelcteOS.show;
+ frelcteOS.RLReport1.Preview;
+ //frelcteOS.show;
 end;
 
 procedure TfCTePrincipal.btnInsereProtocoloClick(Sender: TObject);
