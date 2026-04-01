@@ -1573,8 +1573,8 @@ object fCTePrincipal: TfCTePrincipal
           Left = 800
           Height = 30
           Top = 72
-          Width = 75
-          Caption = 'BitBtn14'
+          Width = 179
+          Caption = 'Relatorios CTEOs : No Periodo'
           TabOrder = 12
           OnClick = BitBtn14Click
         end

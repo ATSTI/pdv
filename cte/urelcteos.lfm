@@ -63,12 +63,14 @@ object frelcteOS: TfrelcteOS
       Top = 94
       Width = 718
       object RLDBText1: TRLDBText
-        Left = 682
+        Left = 674
         Height = 14
         Top = 8
         Width = 43
         Alignment = taRightJustify
         DataField = 'VPREST'
+        DataSource = dmCte.dsCte
+        DisplayMask = '#,##0.00'
         Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'Arial'
@@ -80,13 +82,14 @@ object frelcteOS: TfrelcteOS
         Top = 8
         Width = 37
         DataField = 'NPROT'
+        DataSource = dmCte.dsCte
         Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'Arial'
         ParentFont = False
       end
       object RLDBText3: TRLDBText
-        Left = -10
+        Left = -47
         Height = 14
         Top = 8
         Width = 71
@@ -97,11 +100,12 @@ object frelcteOS: TfrelcteOS
         ParentFont = False
       end
       object RLDBText4: TRLDBText
-        Left = 168
+        Left = 143
         Height = 14
         Top = 8
-        Width = 68
-        DataField = 'D_FANTASIA'
+        Width = 67
+        DataField = 'T_FANTASIA'
+        DataSource = dmCte.dsCte
         Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'Arial'
@@ -113,17 +117,19 @@ object frelcteOS: TfrelcteOS
         Top = 8
         Width = 69
         DataField = 'STATUS_CTE'
+        DataSource = dmCte.dsCte
         Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'Arial'
         ParentFont = False
       end
       object RLDBText6: TRLDBText
-        Left = 44
+        Left = 33
         Height = 14
         Top = 8
         Width = 33
         DataField = 'DHEMI'
+        DataSource = dmCte.dsCte
         Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'Arial'
@@ -150,6 +156,7 @@ object frelcteOS: TfrelcteOS
         Width = 95
         DataField = 'VPREST'
         DataSource = dmCte.dsCte
+        DisplayMask = '#,##0.00'
         Info = riSum
       end
       object RLLabel7: TRLLabel
