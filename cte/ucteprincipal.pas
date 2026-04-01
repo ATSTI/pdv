@@ -879,7 +879,7 @@ implementation
 
 uses udmpdv, ufrmStatus, uDmCte, uNFe, uCompValor, uQuantCarga, uVeiculoCte,
   uClienteBusca, umunicipiobusca, uCertificadoLer,TypInfo, blcksock
-  ,ACBrDFe.Conversao,pcteConversaoCTe,pcnConversao,urelcte;
+  ,ACBrDFe.Conversao,pcteConversaoCTe,pcnConversao,urelcteOS;
 
 {$R *.lfm}
 
@@ -5253,7 +5253,8 @@ end;
 
 procedure TfCTePrincipal.BitBtn14Click(Sender: TObject);
 begin
-  frelcte.RLReport1.Preview;
+  //frelcte.RLReport1.Preview;
+ frelcteOS.show;
 end;
 
 procedure TfCTePrincipal.btnInsereProtocoloClick(Sender: TObject);

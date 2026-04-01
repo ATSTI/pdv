@@ -9,7 +9,7 @@ uses
   Interfaces, // this includes the LCL widgetset
   Forms, indylaz, zcomponent, datetimectrls, uCtePrincipal, uDmCte, uNFe,
   uCompValor, uQuantCarga, udmpdv, ufrmStatus, uClienteBusca, umunicipiobusca,
-  uVeiculoCte;
+  uVeiculoCte, urelcteOS;
 
 {$R *.res}
 
@@ -27,6 +27,7 @@ begin
   Application.CreateForm(TfMunicipioBusca, fMunicipioBusca);
   Application.CreateForm(TfVeiculoCte, fVeiculoCte);
   Application.CreateForm(TfNFe, fNFe);
+  Application.CreateForm(TfrelcteOS, frelcteOS);
   Application.Run;
 end.
 

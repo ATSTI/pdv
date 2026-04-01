@@ -1,0 +1,8 @@
+object frelcteOS: TfrelcteOS
+  Left = 416
+  Height = 240
+  Top = 262
+  Width = 320
+  Caption = 'frelcteOS'
+  LCLVersion = '4.6.0.0'
+end
