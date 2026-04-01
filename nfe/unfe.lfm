@@ -4,8 +4,8 @@ object fNFe: TfNFe
   Top = 26
   Width = 1069
   Caption = 'ATS-NFe'
-  ClientHeight = 662
-  ClientWidth = 1069
+  ClientHeight = 0
+  ClientWidth = 0
   DefaultMonitor = dmMainForm
   Position = poDesktopCenter
   LCLVersion = '4.6.0.0'
@@ -2415,7 +2415,7 @@ object fNFe: TfNFe
           Height = 15
           Top = 14
           Width = 66
-          Caption = '18/03/2026'
+          Caption = '31/03/2026'
           Font.Color = clBlue
           Font.Style = [fsBold]
           ParentFont = False
