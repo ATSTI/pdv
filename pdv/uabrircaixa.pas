@@ -500,6 +500,7 @@ var
   saldoini : Double;
   data_hoje: String;
   data_sis : String;
+  idcaixacontrole : Integer;
 begin
   total :=0;
   totalliquido :=0;
@@ -520,10 +521,10 @@ begin
        ' AND DATAABERTURA = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', dtData.Date)) +
        '  ORDER BY IDCAIXACONTROLE DESC');
     // ' ) OR (DATAFECHAMENTO = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', dtData.Date)) +
-    cx_m := IntToStr(dmPdv.sqBusca.FieldByName('IDCAIXACONTROLE').AsInteger);
+    idcaixacontrole := dmPdv.sqBusca.FieldByName('IDCAIXACONTROLE').AsInteger;
   end;
   sqlP := 'select COALESCE(VALORABRE,0) as Valor from CAIXA_CONTROLE';
-  sqlP += ' where IDCAIXACONTROLE = ' + cx_m;
+  sqlP += ' where IDCAIXACONTROLE = ' + IntToStr(idcaixacontrole);
   dmPdv.busca_sql(sqlP);
   if (not dmPdv.sqBusca.IsEmpty) then
   begin
