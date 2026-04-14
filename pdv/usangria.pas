@@ -14,10 +14,10 @@ type
   { TfSangria }
 
   TfSangria = class(TForm)
-    BitBtn1: TBitBtn;
-    BitBtn2: TBitBtn;
     btnFechar: TBitBtn;
     btnGravar: TBitBtn;
+    btnImpR: TBitBtn;
+    btnImpS: TBitBtn;
     btnInsereMotivo: TBitBtn;
     btnReimprimir: TButton;
     btnReimprimirReforco: TButton;
@@ -112,14 +112,15 @@ type
     sqSangriasTROCO1: TFloatField;
     sqSangriasVALOR_PAGO: TFloatField;
     sqSangriasVALOR_PAGO1: TFloatField;
-    procedure BitBtn1Click(Sender: TObject);
-    procedure BitBtn2Click(Sender: TObject);
+    procedure btnImpRClick(Sender: TObject);
+    procedure btnImpSClick(Sender: TObject);
     procedure btnInsereMotivoClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure btnGravarClick(Sender: TObject);
     procedure btnReimprimirClick(Sender: TObject);
     procedure btnReimprimirReforcoClick(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
+    procedure edValorChange(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormShow(Sender: TObject);
   private
@@ -136,7 +137,7 @@ var
   fSangria: TfSangria;
 
 implementation
-  uses uPdv,uMovimentoProc,uabrircaixa,uPermissaoCX,uimprsangria;
+  uses uPdv,uMovimentoProc,uabrircaixa,uPermissaoCX,uimprsangria,uimprreforco;
 {$R *.lfm}
 
 { TfSangria }
@@ -355,6 +356,31 @@ begin
   end;
 end;
 
+procedure TfSangria.edValorChange(Sender: TObject);
+var
+  S: string;
+  V: Double;
+begin
+  // Remove tudo que não for dígito
+  S := StringReplace(edValor.Text, '.', '', [rfReplaceAll]);
+  S := StringReplace(S, ',', '', [rfReplaceAll]);
+
+  if S = '' then S := '0';
+
+  // Converte para valor numérico e formata
+  V := StrToFloatDef(S, 0) / 100;
+
+  // Bloqueia o evento para não entrar em loop infinito
+  edValor.OnChange := nil;
+  try
+    edValor.Text := FormatFloat('#,##0.00', V);
+    edValor.SelStart := Length(edValor.Text); // Joga o cursor para o fim
+  finally
+    edValor.OnChange := @edValorChange;
+  end;
+
+end;
+
 
 
 
@@ -403,19 +429,25 @@ begin
   edMotivo.Text:= 'Abrir ' + Edit1.Text ;
 end;
 
-procedure TfSangria.BitBtn1Click(Sender: TObject);
+procedure TfSangria.btnImpRClick(Sender: TObject);
 begin
-   fimprisangria.RLReport1.Preview;
+  sqReforco1.Close;
+  sqReforco1.Active;
+  sqReforco1.Params[0].AsDateTime := dtData.DateTime;
+  sqReforco1.Params[1].AsDateTime := dtData1.DateTime;
+  sqReforco1.Open;
+  fimprreforco.RLReport2.Preview;
+
 end;
 
-procedure TfSangria.BitBtn2Click(Sender: TObject);
+procedure TfSangria.btnImpSClick(Sender: TObject);
 begin
+  sqSangrias1.Close;
   sqSangrias1.Active;
-  sqSangrias1.Params[0].AsDateTime := dtData.DateTime;
-  sqSangrias1.Params[1].AsDateTime := dtData2.DateTime;
+  sqSangrias1.Params[0].AsDateTime := dtData2.DateTime;
+  sqSangrias1.Params[1].AsDateTime := dtData3.DateTime;
   sqSangrias1.Open;
-
-  fimprisangria.RLReport2.Preview;
+  fimprisangria.RLReport1.Preview;
 end;
 
 procedure TfSangria.Sangria();
@@ -472,7 +504,8 @@ begin
   sqPagamentoID_ENTRADA.AsInteger:= StrToINT(dmPdv.idcaixa);
   sqPagamentoN_DOC.AsString      := edMotivo.Text;
   sqPagamentoSTATE.AsInteger     := 1;
-  vlrSangria := StrToFloat(edValor.Text);
+  //StringReplace(edValor.Text, '.', '', [rfReplaceAll]);
+  vlrSangria := StrToFloat(StringReplace(edValor.Text, '.', '', [rfReplaceAll]));
   //DecimalSeparator:='.';
   sqPagamentoVALOR_PAGO.AsFloat := vlrSangria;
   //DecimalSeparator:=',';

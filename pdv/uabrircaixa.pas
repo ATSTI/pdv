@@ -43,6 +43,7 @@ type
     Label20: TLabel;
     Label21: TLabel;
     Label22: TLabel;
+    Label23: TLabel;
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
@@ -507,6 +508,7 @@ begin
   totalcaixa := 0;
   vendacaixa := 0;
   saldoini := 0;
+  Label23.Caption:= dmpdv.idcaixa;
   cx_m := dmpdv.idcaixa;
   data_hoje := FormatDateTime('dd/mm/yyyy', Now);
   if(cxsangria = 1) then
@@ -522,9 +524,15 @@ begin
        '  ORDER BY IDCAIXACONTROLE DESC');
     // ' ) OR (DATAFECHAMENTO = ' + QuotedStr(FormatDateTime('mm/dd/yyyy', dtData.Date)) +
     idcaixacontrole := dmPdv.sqBusca.FieldByName('IDCAIXACONTROLE').AsInteger;
+    if(idcaixacontrole <> 0)then
+    begin
+      cx_m := IntToStr(idcaixacontrole);
+      Label23.Caption:= IntToStr(idcaixacontrole);
+    end;
   end;
   sqlP := 'select COALESCE(VALORABRE,0) as Valor from CAIXA_CONTROLE';
-  sqlP += ' where IDCAIXACONTROLE = ' + IntToStr(idcaixacontrole);
+  //sqlP += ' where IDCAIXACONTROLE = ' + IntToStr(idcaixacontrole);
+  sqlP += ' where IDCAIXACONTROLE = ' + (cx_m);
   dmPdv.busca_sql(sqlP);
   if (not dmPdv.sqBusca.IsEmpty) then
   begin

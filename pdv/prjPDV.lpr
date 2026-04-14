@@ -13,7 +13,7 @@ uses
   uClienteBusca, uSenhaNova, uPermissao,uPermissaoCX, uExcluirItem, uNfce, uabrircaixa,
   uCadeira, usangria, uAbrirCaixa2, uCursoBusca, uAlunoBusca, uComandaJuntar,
   uReceber, uEstoqueExecuta, uIntegracaoOdoo, uIntegraSimples, uMsg, usaldo,
-  umsgpromo, uimprsangria;
+  umsgpromo, uimprsangria, uimprreforco;
 
 {$R *.res}
 
@@ -47,6 +47,7 @@ begin
   Application.CreateForm(Tfsaldo, fsaldo);
   Application.CreateForm(TfMsgPromo, fMsgPromo);
   Application.CreateForm(Tfimprisangria, fimprisangria);
+  Application.CreateForm(Tfimprreforco, fimprreforco);
   Application.Run;
 end.
 

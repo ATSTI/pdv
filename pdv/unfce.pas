@@ -8,7 +8,7 @@ uses
   Classes, typinfo, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
   MaskEdit, Buttons, StdCtrls, ExtCtrls, ComCtrls, Menus, ActnList, udmpdv,
   uCertificadoLer, ufrmStatus, ACBrNFe, ACBrNFeDANFeESCPOS,
-  pcnConversao, pcnConversaoNFe, ACBrDFeSSL, ACBrPosPrinter, ACBrIntegrador,
+  pcnConversao,  ACBrDFeSSL, ACBrPosPrinter, ACBrIntegrador,
   ACBrValidador, ACBrEnterTab, ACBrUtil, ACBrSAT, StrUtils, IniFiles, math,
   ACBrSATClass, ACBrSATExtratoESCPOS, dateutils, ACBrBase, ACBrDFe, ACBrDFeUtil, blcksock;
 
@@ -183,7 +183,15 @@ var
 
 implementation
 uses
-ACBrNFe.Classes,ACBrDFe.Conversao;
+ACBrNFe.Classes,ACBrDFe.Conversao ,  ACBrNFe.EnvEvento,
+  ACBrNFe.EventoClass, pcnConversaoNFe,
+ FileCtrl, Grids,
+ACBrUtil.Base, ACBrUtil.FilesIO, ACBrUtil.DateTime, ACBrUtil.Strings,
+ACBrUtil.XMLHTML, pcnNFeRTXT,
+ACBrDFeConfiguracoes,  ACBrDFeOpenSSL,
+ACBrNFeNotasFiscais, ACBrNFeConfiguracoes;
+
+
 
 {$R *.lfm}
 
@@ -1262,6 +1270,7 @@ begin
         Prod.cProd    := dmPdv.sqLancamentosCODPRO.AsString;
         //Prod.cEAN     := '7896523206646';
         Prod.xProd    := LeftStr(dmPdv.sqLancamentosDESCPRODUTO.AsString, 99);
+       // Prod.cBenef   := 'SP010360'; //CBENEF
         Prod.CFOP     := dmPdv.sqLancamentosCFOP.AsString;
         Prod.uCom     := dmPdv.sqLancamentosUNIDADEMEDIDA.AsString;
         //vlr_itemnf := dmPdv.sqLancamentosQUANTIDADE.AsFloat;
@@ -1424,11 +1433,15 @@ begin
                 CST := cst00;
             end;
 
-            pIBS_CBS := dmPdv.sqLancamentosCST_IBS_CBS.AsString;
-            pCASTRIB := dmPdv.sqLancamentosCCLASSTRIB.AsString;
+           // pIBS_CBS := dmPdv.sqLancamentosCST_IBS_CBS.AsString;
+           // pCASTRIB := dmPdv.sqLancamentosCCLASSTRIB.AsString;
 
             if(dmPdv.ReformaTributaria = 'SIM') then
             begin
+
+              pIBS_CBS := dmPdv.sqLancamentosCST_IBS_CBS.AsString;
+              pCASTRIB := dmPdv.sqLancamentosCCLASSTRIB.AsString;
+
               DecimalSeparator := '.';
               pReducaoIBS := StrToFloat(dmPdv.sqLancamentosP_IBS.AsString);
               pReducaoCBS := StrToFloat(dmPdv.sqLancamentosP_CBS.AsString);
@@ -1894,6 +1907,7 @@ begin
 
       //Prod.cEAN := cod_barra;
       Prod.xProd := LeftStr(dmPdv.sqLancamentosDESCPRODUTO.AsString, 99);
+     // Prod.cb
       desc := Copy(dmPdv.sqLancamentosDESCPRODUTO.AsString, 100, 200);
       if ( Length(desc) > 0) then
         infAdProd     := MidStr(dmPdv.sqLancamentosDESCPRODUTO.AsString, 100, 200)  +

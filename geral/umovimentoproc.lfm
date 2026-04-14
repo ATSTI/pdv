@@ -1127,7 +1127,7 @@ object fMovimentoProc: TfMovimentoProc
       OnClick = btnSangriaClick
     end
     object btnReforco: TBitBtn
-      Left = 270
+      Left = 272
       Height = 30
       Top = 0
       Width = 141
