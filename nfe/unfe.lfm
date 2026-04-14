@@ -4,8 +4,8 @@ object fNFe: TfNFe
   Top = 26
   Width = 1069
   Caption = 'ATS-NFe'
-  ClientHeight = 0
-  ClientWidth = 0
+  ClientHeight = 662
+  ClientWidth = 1069
   DefaultMonitor = dmMainForm
   Position = poDesktopCenter
   LCLVersion = '4.6.0.0'
@@ -5281,6 +5281,26 @@ object fNFe: TfNFe
           'Memo2'
         )
         TabOrder = 1
+      end
+      object btnInactive: TBitBtn
+        Left = 637
+        Height = 30
+        Top = 440
+        Width = 75
+        Caption = 'btnInactive'
+        TabOrder = 2
+        Visible = False
+        OnClick = btnInactiveClick
+      end
+      object btnActive: TBitBtn
+        Left = 744
+        Height = 30
+        Top = 440
+        Width = 75
+        Caption = 'btnActive'
+        TabOrder = 3
+        Visible = False
+        OnClick = btnActiveClick
       end
     end
     object TabSheet10: TTabSheet

@@ -29,6 +29,8 @@ type
     ACBrValidador1: TACBrValidador;
     BitBtn1: TBitBtn;
     BitBtn8: TBitBtn;
+    btnActive: TBitBtn;
+    btnInactive: TBitBtn;
     btnAbaPrincipal1: TBitBtn;
     BtnCCe1: TBitBtn;
     BtnEnvEmail: TBitBtn;
@@ -258,6 +260,7 @@ type
     procedure BitBtn3Click(Sender: TObject);
     procedure BitBtn8Click(Sender: TObject);
     procedure btnAbaPrincipalClick(Sender: TObject);
+    procedure btnActiveClick(Sender: TObject);
     procedure btnAlteraStatusClick(Sender: TObject);
     procedure BtnCCe1Click(Sender: TObject);
     procedure BtnCCeClick(Sender: TObject);
@@ -279,6 +282,7 @@ type
     procedure btnImprimeClick(Sender: TObject);
     procedure btnImprimirCCe1Click(Sender: TObject);
     procedure btnImprimirCCeClick(Sender: TObject);
+    procedure btnInactiveClick(Sender: TObject);
     procedure btnInutilizarClick(Sender: TObject);
     procedure btnListarCCeClick(Sender: TObject);
     procedure btnListarClick(Sender: TObject);
@@ -831,6 +835,23 @@ begin
 
 
     ACBrNFe1.ImprimirEvento;
+end;
+
+procedure TfNFe.btnInactiveClick(Sender: TObject);
+var strs : string;
+begin
+  try
+    strs := 'ALTER TRIGGER CALCULA_ICMS_ST INACTIVE;';
+    dmPdv.IbCon.ExecuteDirect(strs);
+    dmPdv.strans.Commit;
+  except
+    on E : Exception do
+    begin
+      ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
+      dmPdv.strans.Rollback; //on failure, undo the changes}
+    end;
+  end;
+
 end;
 
 procedure TfNFe.btnInutilizarClick(Sender: TObject);
@@ -1550,6 +1571,23 @@ end;
 procedure TfNFe.btnAbaPrincipalClick(Sender: TObject);
 begin
   PageControl2.ActivePage := TabSheet1;
+end;
+
+procedure TfNFe.btnActiveClick(Sender: TObject);
+var strs : string;
+begin
+  try
+    strs := 'ALTER TRIGGER CALCULA_ICMS_ST ACTIVE;';
+    dmPdv.IbCon.ExecuteDirect(strs);
+    dmPdv.strans.Commit;
+  except
+    on E : Exception do
+    begin
+      ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
+      dmPdv.strans.Rollback; //on failure, undo the changes}
+    end;
+  end;
+
 end;
 
 procedure TfNFe.btnAlteraStatusClick(Sender: TObject);
@@ -3694,7 +3732,8 @@ var
   IBSCBS: TIBSCBS;
   //LcClassTrib: TcClassTrib;
   LCST      : TCSTIBSCBS;
- // Produto: TDetCollectionItem;
+  // Produto: TDetCollectionItem;
+  valorCbenef : string;
 begin
   BC := 0;
   BCST := 4;
@@ -3722,6 +3761,8 @@ begin
         Prod.cProd    := Trim(dmPdv.cdsItensNFCODPRO.AsString);
 
       Prod.xProd    := LeftStr(Trim(dmPdv.cdsItensNFDESCPRODUTO.AsString), 99);
+      valorCbenef   := Trim(dmPdv.cdsItensNFCBENEF.AsString);
+
       Prod.cBenef   := Trim(dmPdv.cdsItensNFCBENEF.AsString);
       Prod.CFOP     := Trim(dmPdv.cdsItensNFCFOP.AsString);
       Prod.uCom     := Trim(dmPdv.cdsItensNFUNIDADEMEDIDA.AsString);
