@@ -35,6 +35,7 @@ class Conexao:
             self.cursor.execute(query)
             self.connection.commit()
         except:
+            print("ERRO %s" %(query))
             self.connection.rollback()
 
     def query(self, query):
