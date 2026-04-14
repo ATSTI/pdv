@@ -21,10 +21,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCtePrincipal"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="1657"/>
+        <TopLine Value="1658"/>
         <CursorPos X="14" Y="1673"/>
-        <ComponentState Value="1"/>
         <UsageCount Value="200"/>
         <Bookmarks Count="8">
           <Item0 X="33" Y="1141" ID="4"/>
@@ -206,6 +204,7 @@
         <ComponentName Value="frelcte"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <TopLine Value="39"/>
         <CursorPos X="78" Y="45"/>
