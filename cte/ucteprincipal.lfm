@@ -4,8 +4,8 @@ object fCTePrincipal: TfCTePrincipal
   Top = 18
   Width = 1305
   Caption = 'CTe - Conhecimento de Transporte Eletrônico'
-  ClientHeight = 649
-  ClientWidth = 1305
+  ClientHeight = 0
+  ClientWidth = 0
   Position = poScreenCenter
   LCLVersion = '4.6.0.0'
   OnCreate = FormCreate
@@ -1589,9 +1589,9 @@ object fCTePrincipal: TfCTePrincipal
         Height = 555
         Top = 0
         Width = 1297
-        ActivePage = TabServicosImpostos
+        ActivePage = TabDados
         Align = alClient
-        TabIndex = 7
+        TabIndex = 0
         TabOrder = 0
         OnChange = pcCteChange
         OnChanging = pcCteChanging
@@ -8450,11 +8450,12 @@ object fCTePrincipal: TfCTePrincipal
             Top = 136
             Width = 224
             TabOrder = 16
+            Visible = False
           end
           object StaticText25: TStaticText
             Left = 744
             Height = 27
-            Top = 200
+            Top = 232
             Width = 216
             Caption = 'Valor ICMS de Partilha UF Término'
             TabOrder = 17
@@ -8471,7 +8472,7 @@ object fCTePrincipal: TfCTePrincipal
           object StaticText26: TStaticText
             Left = 744
             Height = 24
-            Top = 232
+            Top = 256
             Width = 216
             Caption = '% ICMS FCP UF Término'
             TabOrder = 19
@@ -8488,7 +8489,7 @@ object fCTePrincipal: TfCTePrincipal
           object StaticText27: TStaticText
             Left = 744
             Height = 28
-            Top = 264
+            Top = 280
             Width = 216
             Caption = 'Valor ICMS FCP UF Término'
             TabOrder = 21
@@ -8525,6 +8526,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 104
             Width = 224
             TabOrder = 25
+            Visible = False
           end
           object valICMSPartI: TEdit
             Left = 992
@@ -8532,6 +8534,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 168
             Width = 224
             TabOrder = 26
+            Visible = False
           end
           object StaticText28: TStaticText
             Left = 744
@@ -8574,21 +8577,6 @@ object fCTePrincipal: TfCTePrincipal
               '90 - SIMPLES NACIONAL'
             )
             TabOrder = 30
-          end
-          object CheckBox1: TCheckBox
-            Left = 744
-            Height = 17
-            Top = 5
-            Width = 18
-            TabOrder = 31
-          end
-          object StaticText30: TStaticText
-            Left = 768
-            Height = 24
-            Top = 8
-            Width = 352
-            Caption = 'infTribFed'
-            TabOrder = 32
           end
           object BitBtn15: TBitBtn
             Left = 32
@@ -8666,7 +8654,7 @@ object fCTePrincipal: TfCTePrincipal
               11FF0F7E14FF188120FF59AF61FFC4FFC9FFEDFFF0FFF8FFF9FFFBFFFFFFFFFD
               FFFFFFFBFFFFFFFBFFFFFCFEFFFFF9FFFEFFFBFFFFFFFAFFFDFFFFFFFCFF
             }
-            TabOrder = 33
+            TabOrder = 31
             OnClick = BitBtn15Click
           end
           object btnEditarComp: TBitBtn
@@ -8761,7 +8749,7 @@ object fCTePrincipal: TfCTePrincipal
               E9FFFFFFF3FFFDFAF2FFF6FBF9FFF6FAFBFFF5F9FAFFFAF9FBFFFCFAF9FFFFFC
               F4FF
             }
-            TabOrder = 34
+            TabOrder = 32
             OnClick = btnEditarCompClick
           end
           object btnExcluirComp: TBitBtn
@@ -8852,7 +8840,7 @@ object fCTePrincipal: TfCTePrincipal
               90FF4E4D91FF4E4D91FF4E4E91FF4E4E92FF4F4E92FF4F4F93FF504F94FF5050
               94FF515095FF515195FF515194FF6C6C92FFB2B2C0FFF8F8F9FFFEFEFEFF
             }
-            TabOrder = 35
+            TabOrder = 33
             OnClick = btnExcluirCompClick
           end
           object dbValTotPrest: TDBEdit
@@ -8901,7 +8889,7 @@ object fCTePrincipal: TfCTePrincipal
             DataSource = dmCte.dsCte
             Alignment = taRightJustify
             MaxLength = 0
-            TabOrder = 36
+            TabOrder = 34
           end
           object dbValvBC: TDBEdit
             Left = 364
@@ -8912,7 +8900,7 @@ object fCTePrincipal: TfCTePrincipal
             DataSource = dmCte.dsCte
             Alignment = taRightJustify
             MaxLength = 0
-            TabOrder = 37
+            TabOrder = 35
           end
           object dbValPIcms: TDBEdit
             Left = 364
@@ -8923,7 +8911,7 @@ object fCTePrincipal: TfCTePrincipal
             DataSource = dmCte.dsCte
             Alignment = taRightJustify
             MaxLength = 0
-            TabOrder = 38
+            TabOrder = 36
           end
           object dbValVICMS: TDBEdit
             Left = 364
@@ -8934,7 +8922,7 @@ object fCTePrincipal: TfCTePrincipal
             DataSource = dmCte.dsCte
             Alignment = taRightJustify
             MaxLength = 0
-            TabOrder = 39
+            TabOrder = 37
           end
           object dbValVCred: TDBEdit
             Left = 364
@@ -8945,7 +8933,7 @@ object fCTePrincipal: TfCTePrincipal
             DataSource = dmCte.dsCte
             Alignment = taRightJustify
             MaxLength = 0
-            TabOrder = 40
+            TabOrder = 38
           end
           object calValB: TDBEdit
             Left = 992
@@ -8954,7 +8942,8 @@ object fCTePrincipal: TfCTePrincipal
             Width = 224
             DataSource = dmCte.dsCte
             MaxLength = 0
-            TabOrder = 41
+            TabOrder = 39
+            Visible = False
           end
           object valAliIn: TDBEdit
             Left = 992
@@ -8963,7 +8952,8 @@ object fCTePrincipal: TfCTePrincipal
             Width = 224
             DataSource = dmCte.dsCte
             MaxLength = 0
-            TabOrder = 42
+            TabOrder = 40
+            Visible = False
           end
           object combICMSDevido: TComboBox
             Left = 992
@@ -8978,7 +8968,7 @@ object fCTePrincipal: TfCTePrincipal
               '100%  partir de 2019'
               'Outro Valor'
             )
-            TabOrder = 43
+            TabOrder = 41
             Visible = False
           end
           object btnProximo7: TBitBtn
@@ -9055,7 +9045,7 @@ object fCTePrincipal: TfCTePrincipal
               F8F8F8F8F8F8F8F8F800
             }
             ParentBidiMode = False
-            TabOrder = 44
+            TabOrder = 42
             OnClick = btnProximo7Click
           end
           object GroupBox20: TGroupBox
@@ -9066,7 +9056,7 @@ object fCTePrincipal: TfCTePrincipal
             Caption = 'Informações dos Tributos Federais (Prestações interestaduais para Consumidor Final, não contribuinte.'
             ClientHeight = 39
             ClientWidth = 827
-            TabOrder = 45
+            TabOrder = 43
             object DBEdit1: TDBEdit
               Left = 64
               Height = 23
@@ -9169,7 +9159,7 @@ object fCTePrincipal: TfCTePrincipal
             Top = 267
             Width = 99
             Caption = 'btnInsertComp'
-            TabOrder = 46
+            TabOrder = 44
             Visible = False
             OnClick = btnInsertCompClick
           end
@@ -9178,43 +9168,82 @@ object fCTePrincipal: TfCTePrincipal
             Height = 23
             Top = 295
             Width = 520
-            TabOrder = 47
+            TabOrder = 45
             Visible = False
             OnChange = edtCompChange
           end
-          object Edit2: TEdit
-            Left = 832
+          object DBEdit8: TDBEdit
+            Left = 824
             Height = 23
-            Top = 37
+            Top = 69
             Width = 80
+            DataField = 'VCOFINS'
+            DataSource = dmCte.dsCte
+            MaxLength = 0
+            TabOrder = 46
+          end
+          object DBEdit9: TDBEdit
+            Left = 824
+            Height = 23
+            Top = 100
+            Width = 80
+            DataField = 'VIR'
+            DataSource = dmCte.dsCte
+            MaxLength = 0
+            TabOrder = 47
+          end
+          object DBEdit10: TDBEdit
+            Left = 824
+            Height = 23
+            Top = 128
+            Width = 80
+            DataField = 'VINSS'
+            DataSource = dmCte.dsCte
+            MaxLength = 0
             TabOrder = 48
           end
-          object Edit3: TEdit
-            Left = 832
+          object DBEdit11: TDBEdit
+            Left = 824
             Height = 23
-            Top = 70
+            Top = 160
             Width = 80
+            DataField = 'VCSLL'
+            DataSource = dmCte.dsCte
+            MaxLength = 0
             TabOrder = 49
           end
-          object Edit4: TEdit
-            Left = 832
+          object DBEdit12: TDBEdit
+            Left = 824
             Height = 23
-            Top = 103
+            Top = 35
             Width = 80
+            DataField = 'VPIS'
+            DataSource = dmCte.dsCte
+            MaxLength = 0
             TabOrder = 50
           end
-          object Edit5: TEdit
-            Left = 832
-            Height = 23
-            Top = 132
-            Width = 80
+          object StaticText31: TStaticText
+            Left = 745
+            Height = 39
+            Top = 193
+            Width = 439
+            Caption = '*  Grupo a ser informado nas prestações interestaduais para consumidor final.'#13#10'                                     Não contribuinte do ICMS'
+            Font.Color = clRed
+            Font.Style = [fsBold]
+            ParentFont = False
             TabOrder = 51
           end
-          object Edit6: TEdit
-            Left = 832
-            Height = 23
-            Top = 163
-            Width = 80
+          object StaticText30: TStaticText
+            Left = 743
+            Height = 24
+            Top = 15
+            Width = 200
+            Caption = 'Informações dos tributos federais'
+            Color = clBlue
+            Font.Color = clHighlight
+            Font.Style = [fsBold]
+            ParentFont = False
+            ParentColor = False
             TabOrder = 52
           end
         end

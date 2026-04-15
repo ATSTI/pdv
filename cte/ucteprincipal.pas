@@ -108,7 +108,6 @@ type
     cbUF: TComboBox;
     cbVersaoDF: TComboBox;
     cbXmlSignLib: TComboBox;
-    CheckBox1: TCheckBox;
     ckSalvar: TCheckBox;
     ckVisualizar: TCheckBox;
     combCodSitTrib: TComboBox;
@@ -120,6 +119,11 @@ type
     dataOutrosEmi: TDateTimePicker;
     dataRodPrev: TDateTimePicker;
     DataSource1: TDataSource;
+    DBEdit10: TDBEdit;
+    DBEdit11: TDBEdit;
+    DBEdit12: TDBEdit;
+    DBEdit8: TDBEdit;
+    DBEdit9: TDBEdit;
     DSZqsQC: TDataSource;
     DSZsqcomp: TDataSource;
     DateTimePicker1: TDateTimePicker;
@@ -139,11 +143,6 @@ type
     edInutSerie: TEdit;
     edInutJustificativa: TEdit;
     Edit1: TEdit;
-    Edit2: TEdit;
-    Edit3: TEdit;
-    Edit4: TEdit;
-    Edit5: TEdit;
-    Edit6: TEdit;
     edtCCLASSTRIB: TEdit;
     edtCST_IBS_CBS: TEdit;
     edtP_CBS: TEdit;
@@ -593,6 +592,7 @@ type
     StaticText28: TStaticText;
     StaticText29: TStaticText;
     StaticText30: TStaticText;
+    StaticText31: TStaticText;
     StaticText7: TStaticText;
     StaticText8: TStaticText;
     StaticText9: TStaticText;
@@ -2080,14 +2080,14 @@ begin
        end;
     end;
 
-   if(CheckBox1.Checked = True)then
+   if(dmCte.cdsCteVPIS.AsFloat <> null)then
    begin
    //Impostos federais
-   imp.infTribFed.vPIS    := StrToFloat(Edit2.Text);
-   imp.infTribFed.vCOFINS := StrToFloat(Edit3.Text);
-   imp.infTribFed.vIR     := StrToFloat(Edit4.Text);
-   imp.infTribFed.vINSS   := StrToFloat(Edit5.Text);
-   imp.infTribFed.vCSLL   := StrToFloat(Edit6.Text);
+   imp.infTribFed.vPIS    := dmCte.cdsCteVPIS.AsFloat;    //StrToFloat(Edit2.Text);
+   imp.infTribFed.vCOFINS := dmCte.cdsCteVCOFINS.AsFloat; //StrToFloat(Edit3.Text);
+   imp.infTribFed.vIR     := dmCte.cdsCteVIR.AsFloat;     //StrToFloat(Edit4.Text);
+   imp.infTribFed.vINSS   := dmCte.cdsCteVINSS.AsFloat;   //StrToFloat(Edit5.Text);
+   imp.infTribFed.vCSLL   := dmCte.cdsCteVCSLL.AsFloat;   //StrToFloat(Edit6.Text);
    end;
 
     if(dmpdv.ReformaTributaria = 'SIM')then
