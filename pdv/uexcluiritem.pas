@@ -67,11 +67,14 @@ begin
     dmPdv.sqBusca.Open;
     if (not dmPdv.sqBusca.IsEmpty) then
     begin
+      dsqlAltera := 'DELETE FROM MOVIMENTODETALHE ';
+      {
       dsqlAltera := 'UPDATE MOVIMENTODETALHE SET ';
       dsqlAltera := dsqlAltera + ' STATUS        = ' + QuotedStr('2');
       dsqlAltera := dsqlAltera + ', OBS = ' +
         QuotedStr('Usuario: ' + IntToStr(excCodUser) + '-' + excUser +
         ' Data : ' + DateToStr(Now));
+      }
       dsqlAltera := dsqlAltera + ' WHERE CODDETALHE = ' + IntToStr(
         dmPdv.sqBusca.FieldByName('CODDETALHE').AsInteger);
       dmPdv.IbCon.ExecuteDirect(dsqlAltera);

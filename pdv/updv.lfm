@@ -10,7 +10,7 @@ object fPdv: TfPdv
   Color = clBlack
   PopupMenu = PopupMenu1
   Position = poWorkAreaCenter
-  LCLVersion = '4.0.0.4'
+  LCLVersion = '4.6.0.0'
   WindowState = wsMaximized
   OnClose = FormClose
   OnCreate = FormCreate
@@ -11895,7 +11895,7 @@ object fPdv: TfPdv
           MaxSize = 120
           Title.Alignment = taRightJustify
           Title.Caption = 'Preço'
-          Width = 70
+          Width = 100
           FieldName = 'PRECO'
           DisplayFormat = ',##0.00'
         end      
@@ -11904,7 +11904,7 @@ object fPdv: TfPdv
           MaxSize = 140
           Title.Alignment = taRightJustify
           Title.Caption = 'Total'
-          Width = 70
+          Width = 120
           FieldName = 'TOTALITEM'
         end>
       DataSource = dsLanc
@@ -11977,7 +11977,7 @@ object fPdv: TfPdv
           item
             MaxSize = 300
             Title.Caption = 'Descrição'
-            Width = 500
+            Width = 400
           end        
           item
             MaxSize = 60
@@ -11988,7 +11988,7 @@ object fPdv: TfPdv
             MaxSize = 80
             Title.Alignment = taRightJustify
             Title.Caption = 'Preço'
-            Width = 80
+            Width = 150
           end>
         DataSource = dsProdProc
         Font.CharSet = ANSI_CHARSET

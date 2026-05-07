@@ -4,11 +4,11 @@ object fPDV_Rec: TfPDV_Rec
   Top = 74
   Width = 776
   Caption = 'Frente De caixa'
-  ClientHeight = 584
-  ClientWidth = 776
+  ClientHeight = 0
+  ClientWidth = 0
   PopupMenu = PopupMenu1
   Position = poScreenCenter
-  LCLVersion = '4.0.0.4'
+  LCLVersion = '4.6.0.0'
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
@@ -4680,5 +4680,192 @@ object fPDV_Rec: TfPDV_Rec
     ConfigQRCode.ErrorLevel = 0
     LinhasEntreCupons = 0
     Left = 264
+  end
+  object sqPagaCaixa: TSQLQuery
+    PacketRecords = 1
+    FieldDefs = <    
+      item
+        Name = 'CODFORMA'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'COD_VENDA'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'ID_ENTRADA'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'FORMA_PGTO'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 1
+      end    
+      item
+        Name = 'CAIXA'
+        DataType = ftSmallint
+        Precision = -1
+      end    
+      item
+        Name = 'N_DOC'
+        DataType = ftString
+        Precision = -1
+        Size = 60
+      end    
+      item
+        Name = 'VALOR_PAGO'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'CAIXINHA'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'TROCO'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'DESCONTO'
+        DataType = ftFloat
+        Precision = -1
+      end    
+      item
+        Name = 'STATE'
+        DataType = ftSmallint
+        Precision = -1
+      end>
+    Database = dmPdv.IbCon
+    Transaction = dmPdv.sTrans
+    SQL.Strings = (
+      'SELECT CODFORMA, COD_VENDA, ID_ENTRADA, FORMA_PGTO'
+      ', CAIXA , N_DOC, VALOR_PAGO, CAIXINHA,'
+      'TROCO, DESCONTO, STATE'
+      'FROM FORMA_ENTRADA'
+      'WHERE STATE < 2'
+      '  AND ID_ENTRADA = :PCODMOV'
+      ''
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'PCODMOV'
+        ParamType = ptInput
+      end>
+    Macros = <>
+    ParseSQL = False
+    Left = 136
+    Top = 8
+    object sqPagaCaixaCODFORMA: TLongintField
+      FieldKind = fkData
+      FieldName = 'CODFORMA'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object sqPagaCaixaCOD_VENDA: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_VENDA'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object sqPagaCaixaID_ENTRADA: TLongintField
+      FieldKind = fkData
+      FieldName = 'ID_ENTRADA'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object sqPagaCaixaFORMA_PGTO: TStringField
+      FieldKind = fkData
+      FieldName = 'FORMA_PGTO'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sqPagaCaixaCAIXA: TSmallintField
+      FieldKind = fkData
+      FieldName = 'CAIXA'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sqPagaCaixaN_DOC: TStringField
+      FieldKind = fkData
+      FieldName = 'N_DOC'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 60
+    end
+    object sqPagaCaixaVALOR_PAGO: TFloatField
+      FieldKind = fkData
+      FieldName = 'VALOR_PAGO'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqPagaCaixaCAIXINHA: TFloatField
+      FieldKind = fkData
+      FieldName = 'CAIXINHA'
+      Index = 7
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqPagaCaixaTROCO: TFloatField
+      FieldKind = fkData
+      FieldName = 'TROCO'
+      Index = 8
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqPagaCaixaDESCONTO: TFloatField
+      FieldKind = fkData
+      FieldName = 'DESCONTO'
+      Index = 9
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+    end
+    object sqPagaCaixaSTATE: TSmallintField
+      FieldKind = fkData
+      FieldName = 'STATE'
+      Index = 10
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
   end
 end

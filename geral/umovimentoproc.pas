@@ -170,6 +170,7 @@ begin
     sqlProc += ' AND m.CODNATUREZA = 1 '
   else
     sqlProc += ' AND m.CODNATUREZA = 3 ';
+    sqlProc += ' and m.CONTROLE is not null';
   // sqlProc += ' AND m.CODALMOXARIFADO = ' + dmPdv.ccusto;  tem q ser usuario
   // pois o  CCUSTO muda com o caixa todo dia
   sqlProc += ' AND m.CODCLIENTE > 0 ';
@@ -354,7 +355,8 @@ begin
     end;
     if (nao_fechado <> '') then
     begin
-      ShowMessage('Existe pedidos nao Encerrados : ' + nao_fechado);
+      ShowMessage('Existe pedidos nao Encerrados' +#13+ 'Precisam ser Finalizaos' +#13+ 'Pedidos a ser Fechado : ' + nao_fechado);
+      Exit;
     end;
     fAbrirCaixa.AbrirFechar:= 'Fechar';
     fAbrirCaixa.cxsangria := 0 ;

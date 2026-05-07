@@ -100,7 +100,19 @@ type
     Panel3: TPanel;
     Panel4: TPanel;
     PopupMenu1: TPopupMenu;
+    sqPagaCaixaCAIXA: TSmallintField;
+    sqPagaCaixaCAIXINHA: TFloatField;
+    sqPagaCaixaCODFORMA: TLongintField;
+    sqPagaCaixaCOD_VENDA: TLongintField;
+    sqPagaCaixaDESCONTO: TFloatField;
+    sqPagaCaixaFORMA_PGTO: TStringField;
+    sqPagaCaixaID_ENTRADA: TLongintField;
+    sqPagaCaixaN_DOC: TStringField;
+    sqPagaCaixaSTATE: TSmallintField;
+    sqPagaCaixaTROCO: TFloatField;
+    sqPagaCaixaVALOR_PAGO: TFloatField;
     sqPagamento: TSQLQuery;
+    sqPagaCaixa: TSQLQuery;
     sqPagamentoCAIXA: TSmallintField;
     sqPagamentoCAIXINHA: TFloatField;
     sqPagamentoCODFORMA: TLongintField;
@@ -427,15 +439,22 @@ end;
 
 procedure TfPDV_Rec.carrega_valores;
 var vcResto,vcDesc,vcTroco, vcPago: Double;
+    pCaixaMov : integer;
 begin
   vcResto := 0;
   vcDesc := StrParaFloat(edDesconto.Text);
   vcTroco := 0;
   vcPago := 0;
+  if sqPagaCaixa.active then
+    sqPagaCaixa.Close;
+  sqPagaCaixa.Params.ParamByName('PCODMOV').AsInteger:=vCodMovimento;
+  sqPagaCaixa.open;
+  pCaixaMov := sqPagaCaixaCAIXA.AsInteger;
+
   if sqPagamento.active then
     sqPagamento.Close;
   sqPagamento.Params.ParamByName('PCODMOV').AsInteger:=vCodMovimento;
-  sqPagamento.Params.ParamByName('PCODCAIXA').AsInteger := StrToInt(dmPdv.idcaixa);
+  sqPagamento.Params.ParamByName('PCODCAIXA').AsInteger := pCaixaMov ; //StrToInt(dmPdv.idcaixa);
   sqPagamento.open;
   if (not sqPagamento.IsEmpty) then
   begin
