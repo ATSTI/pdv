@@ -3153,6 +3153,15 @@ begin
     vCteStr += ',VALPICMS = ' + FloatToStr(dmCte.cdsCteVALPICMS.AsFloat);
     vCteStr += ',VALVICMS = ' + FloatToStr(dmCte.cdsCteVALVICMS.AsFloat);
     vCteStr += ',VALVCRED = ' + FloatToStr(dmCte.cdsCteVALVCRED.AsFloat);
+
+    vCteStr += ',vPIS    = ' + FloatToStr(dmCte.cdsCteVPIS.AsFloat);
+    vCteStr += ',vCOFINS = ' + FloatToStr(dmCte.cdsCteVCOFINS.AsFloat);
+    vCteStr += ',vIR    = ' + FloatToStr(dmCte.cdsCteVIR.AsFloat);
+    vCteStr += ',vINSS   = ' + FloatToStr(dmCte.cdsCteVINSS.AsFloat);
+    vCteStr += ',vCSLL   = ' + FloatToStr(dmCte.cdsCteVCSLL.AsFloat);
+
+
+
     vCteStr := vCteStr +' where COD_CTE = ' ;
     vCteStr := vCteStr +  IntToStr(val_genCte);
     MemoDados.Text := vCteStr;
