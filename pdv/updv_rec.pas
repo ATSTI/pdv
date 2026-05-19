@@ -1237,7 +1237,7 @@ begin
 
       /////
       linhaTxt := 'P' ;
-      {
+
       if linhaTxt = 'P' then
       begin
         sqPagamento.First;
@@ -1251,7 +1251,7 @@ begin
         end;
 
       end;
-      }
+
       ////
 
     end;

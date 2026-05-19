@@ -4,8 +4,8 @@ object fPDV_Rec: TfPDV_Rec
   Top = 74
   Width = 776
   Caption = 'Frente De caixa'
-  ClientHeight = 0
-  ClientWidth = 0
+  ClientHeight = 584
+  ClientWidth = 776
   PopupMenu = PopupMenu1
   Position = poScreenCenter
   LCLVersion = '4.6.0.0'
