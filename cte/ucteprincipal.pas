@@ -3330,7 +3330,7 @@ end;
 
 procedure TfCTePrincipal.EditarT;
 begin
- { if(rgTomador.ItemIndex <> 4) then
+{  if(rgTomador.ItemIndex <> 4) then
   begin
     vCteStr := 'UPDATE CTE SET  TOMADORSERVICO = ';
     vCteStr := vCteStr + IntToStr(rgTomador.ItemIndex);
@@ -3365,8 +3365,43 @@ begin
     vCteStr := vCteStr +  IntToStr(val_genCte);
     MemoDados.Text := vCteStr;
   end;
-  }
+ }
 
+  if(rgTomador.ItemIndex <> 4) then
+   begin
+     vCteStr := 'UPDATE CTE SET  TOMADORSERVICO = ';
+     vCteStr := vCteStr + IntToStr(rgTomador.ItemIndex);
+     vCteStr := vCteStr + ', T_CNPJCPF = ';
+     vCteStr := vCteStr + QuotedStr(edtCNPJTomador.text);
+     vCteStr := vCteStr +  ',T_IESTADUAL = ';
+     vCteStr := vCteStr + QuotedStr(edtIETomador.text);
+     vCteStr := vCteStr +  ',T_RSOCIAL = ';
+     vCteStr := vCteStr + QuotedStr(edtRazaoTomador.text);
+     vCteStr := vCteStr +  ',T_FANTASIA = ';
+     vCteStr := vCteStr + QuotedStr(edtNomeTomador.text);
+     vCteStr := vCteStr +  ',T_TELEFONE = ';
+     vCteStr := vCteStr + QuotedStr(edtFoneTomador.text);
+     vCteStr := vCteStr +  ',T_ENDERECO = ';
+     vCteStr := vCteStr + QuotedStr(edtEndTomador.text);
+     vCteStr := vCteStr +  ',T_NUMERO = ';
+     vCteStr := vCteStr + QuotedStr(edtNumTomador.text);
+     vCteStr := vCteStr +  ',T_COMPLEMENTO = ';
+     vCteStr := vCteStr + QuotedStr(edtCompTomador.text);
+     vCteStr := vCteStr +  ',T_BAIRRO = ';
+     vCteStr := vCteStr + QuotedStr(edtBairroTomador.text);
+     vCteStr := vCteStr +  ',T_CODIGOMUNICIPI = ';
+     vCteStr := vCteStr + QuotedStr(edtTomadorCodCidade.text);
+     vCteStr := vCteStr +  ',T_CIDADE = ';
+     vCteStr := vCteStr + QuotedStr(edtTomadorCidade.text);
+     vCteStr := vCteStr +  ',T_CEP = ';
+     vCteStr := vCteStr + QuotedStr(edtCepTomador.text);
+     vCteStr := vCteStr +  ',T_ESTADO = ';
+     vCteStr := vCteStr + QuotedStr(edtTomadorUF.text);
+
+     vCteStr := vCteStr +' where COD_CTE = ' ;
+     vCteStr := vCteStr +  IntToStr(val_genCte);
+     MemoDados.Text := vCteStr;
+  end;
   if(rgTomador.ItemIndex = 4) then
   begin
     vCteStr := 'UPDATE CTE SET  TOMADORSERVICO = ';
