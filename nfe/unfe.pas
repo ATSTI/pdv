@@ -310,6 +310,7 @@ type
     procedure cbEmpresaChange(Sender: TObject);
     procedure cbHttpLibChange(Sender: TObject);
     procedure cbSSLLibChange(Sender: TObject);
+    procedure cbSSLTypeChange(Sender: TObject);
     procedure cbXmlSignLibChange(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
     procedure ComboBox2Change(Sender: TObject);
@@ -441,7 +442,9 @@ implementation
 uses udmpdv , ufrmStatus,
 StrUtils, math, TypInfo, DateUtils, synacode, blcksock, FileCtrl,
 IniFiles, Printers,
-pcnAuxiliar, ACBrNFe.Classes, pcnConversao, pcnConversaoNFe, pcnNFeRTXT, pcnRetConsReciDFe,
+pcnAuxiliar, ACBrNFe.Classes, pcnConversao, pcnConversaoNFe,
+//pcnNFeRTXT,  22/05/2026 Manoel
+pcnRetConsReciDFe,
 ACBrDFeConfiguracoes, ACBrDFeSSL, ACBrDFeOpenSSL, ACBrDFeUtil,
 ACBrNFeNotasFiscais, ACBrNFeConfiguracoes,ACBrDFe.Conversao,
                                                                // Grids,
@@ -2246,6 +2249,12 @@ begin
   finally
     AtualizaSSLLibsCombo;
   end;
+end;
+
+procedure TfNFe.cbSSLTypeChange(Sender: TObject);
+begin
+   if cbSSLType.ItemIndex <> -1 then
+     ACBrNFe1.SSL.SSLType := TSSLType(cbSSLType.ItemIndex);
 end;
 
 procedure TfNFe.cbXmlSignLibChange(Sender: TObject);

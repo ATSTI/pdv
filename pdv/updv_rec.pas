@@ -185,6 +185,7 @@ type
       vlr_via_rec: Double);
     procedure gerarjson;
   public
+    vcPago : Double; // 28/05/2026 manoel
     OutrosCartoes: String;
     v_log: String;
     vStatus : Integer;
@@ -361,7 +362,7 @@ begin
   //valResto := StrParaFloat(edRestante.Text);
   //if vaTotal > 0.00 then
   //  vaTroco := vaTotal - vResto - vDesconto;
-  {if sqPagamento.active then
+  if sqPagamento.active then
     sqPagamento.Close;
   sqPagamento.Params.ParamByName('PCODMOV').AsInteger:=vCodMovimento;
   sqPagamento.Params.ParamByName('PCODCAIXA').AsInteger := StrToInt(dmPdv.idcaixa);
@@ -379,6 +380,7 @@ begin
       sqPagamento.Next;
     end;
   end;
+  {
   vaDesc := vaDesc + vDesconto;
 
   //vResto := StrParaFloat(edPagamento.Text);
@@ -438,7 +440,7 @@ begin
 end;
 
 procedure TfPDV_Rec.carrega_valores;
-var vcResto,vcDesc,vcTroco, vcPago: Double;
+var vcResto,vcDesc,vcTroco : Double;
     pCaixaMov : integer;
 begin
   vcResto := 0;
@@ -667,23 +669,24 @@ begin
   vlr_prazo := 0;
   tot_lanc := 0;
   num_lanc := 0;
+
   dmPdv.IbCon.ExecuteDirect('UPDATE FORMA_ENTRADA SET STATE = 1 ' +
     ' WHERE STATE = 0 AND ID_ENTRADA = ' +
     IntToStr(vCodMovimento));
   try
     ver_sql := 'UPDATE MOVIMENTO SET STATUS = 1 ' +
-      ' , CODCLIENTE = ' + IntToStr(vCliente) +
-      ' , DATA_FECHOU = ' + QuotedStr(FormatDateTime('mm/dd/yyyy hh:MM:ss', Now)) +
-      ' , CONTROLE = ' + QuotedStr(IntToStr(num_cx)) +
-      ' WHERE CODMOVIMENTO  = ' +
-      IntToStr(vCodMovimento) + ' AND STATUS = 0';
+    ' , CODCLIENTE = ' + IntToStr(vCliente) +
+    ' , DATA_FECHOU = ' + QuotedStr(FormatDateTime('mm/dd/yyyy hh:MM:ss', Now)) +
+    ' , CONTROLE = ' + QuotedStr(IntToStr(num_cx)) +
+    ' WHERE CODMOVIMENTO  = ' +
+    IntToStr(vCodMovimento) + ' AND STATUS = 0';
     dmPdv.IbCon.ExecuteDirect(ver_sql);
     dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTODETALHE SET BAIXA = 1 ' +
-      ' WHERE CODMOVIMENTO  = ' + IntToStr(vCodMovimento) +
-      ' AND BAIXA IS NULL AND STATUS = 0');
+    ' WHERE CODMOVIMENTO  = ' + IntToStr(vCodMovimento) +
+    ' AND BAIXA IS NULL AND STATUS = 0');
     dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTODETALHE SET BAIXA = NULL ' +
-      ' WHERE CODMOVIMENTO  = ' + IntToStr(vCodMovimento) +
-      ' AND BAIXA = 1 AND STATUS = 2');
+    ' WHERE CODMOVIMENTO  = ' + IntToStr(vCodMovimento) +
+    ' AND BAIXA = 1 AND STATUS = 2');
   except
     {dmPdv.IbCon.ExecuteDirect('ALTER TABLE MOVIMENTO ' +
       ' ADD DATA_FECHOU TIMESTAMP');
@@ -2033,6 +2036,7 @@ begin
     ShowMessage('Informe o Pagamento.');
     Exit;
   end;
+
   if vStatus = 0 then
   begin
     encerra_venda();

@@ -353,15 +353,30 @@ begin
       end;
       dmPdv.sqBusca.Next;
     end;
-    if (nao_fechado <> '') then
+
+    if(dmPdv.Fechar_pedido_aberto = 'NAO') then
     begin
-      ShowMessage('Existe pedidos nao Encerrados' +#13+ 'Precisam ser Finalizaos' +#13+ 'Pedidos a ser Fechado : ' + nao_fechado);
-      Exit;
+      if (nao_fechado <> '') then
+      begin
+        ShowMessage('Existe pedidos nao Encerrados' +#13+ 'Precisam ser Finalizaos' +#13+ 'Pedidos a ser Fechado : ' + nao_fechado);
+
+      end;
     end;
+
+    if(dmPdv.Fechar_pedido_aberto = 'SIM') then
+    begin
+      if (nao_fechado <> '') then
+      begin
+        ShowMessage('Existe pedidos nao Encerrados' +#13+ 'Precisam ser Finalizaos' +#13+ 'Pedidos a ser Fechado : ' + nao_fechado);
+        Exit;
+      end;
+    end;
+
     fAbrirCaixa.AbrirFechar:= 'Fechar';
     fAbrirCaixa.cxsangria := 0 ;
     fAbrirCaixa.ShowModal;
     acBuscar.Execute;
+
   end;
 end;
 

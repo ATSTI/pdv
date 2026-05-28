@@ -24,9 +24,9 @@ object fNFe: TfNFe
     Height = 639
     Top = 0
     Width = 1069
-    ActivePage = NFe
+    ActivePage = Certificado
     Align = alClient
-    TabIndex = 0
+    TabIndex = 2
     TabOrder = 1
     object NFe: TTabSheet
       Caption = 'NFe'
@@ -4816,7 +4816,7 @@ object fNFe: TfNFe
           ItemHeight = 15
           Style = csDropDownList
           TabOrder = 4
-          OnChange = cbXmlSignLibChange
+          OnChange = cbSSLTypeChange
         end
         object cbSSLTypeLbl: TLabel
           Left = 40

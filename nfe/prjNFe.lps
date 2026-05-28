@@ -23,18 +23,18 @@
         <UnitName Value="uNFe"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="5942"/>
-        <CursorPos Y="5956"/>
+        <TopLine Value="4776"/>
+        <CursorPos Y="4776"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="8">
-          <Item0 X="35" Y="5667" Left="1" Top="5663" ID="8"/>
-          <Item1 X="37" Y="4309" Left="1" Top="4296" ID="6"/>
-          <Item2 X="8" Y="3106" Left="1" Top="3098" ID="5"/>
-          <Item3 X="24" Y="5788" Left="1" Top="5774" ID="9"/>
-          <Item4 X="28" Y="3854" Left="1" Top="3847" ID="3"/>
-          <Item5 X="54" Y="4273" Left="1" Top="4269" ID="7"/>
-          <Item6 X="27" Y="4372" Left="1" Top="4364" ID="2"/>
-          <Item7 X="7" Y="4401" Left="1" Top="4391" ID="1"/>
+          <Item0 X="35" Y="5676" Left="1" Top="5672" ID="8"/>
+          <Item1 X="37" Y="4318" Left="1" Top="4305" ID="6"/>
+          <Item2 X="8" Y="3115" Left="1" Top="3107" ID="5"/>
+          <Item3 X="24" Y="5797" Left="1" Top="5783" ID="9"/>
+          <Item4 X="28" Y="3863" Left="1" Top="3856" ID="3"/>
+          <Item5 X="54" Y="4282" Left="1" Top="4278" ID="7"/>
+          <Item6 X="27" Y="4381" Left="1" Top="4373" ID="2"/>
+          <Item7 X="7" Y="4410" Left="1" Top="4400" ID="1"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -201,7 +201,7 @@
         <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrDFe\ACBrNFe\Base\ACBrNFe.Classes.pas"/>
         <EditorIndex Value="4"/>
         <TopLine Value="1582"/>
-        <CursorPos X="17" Y="1592"/>
+        <CursorPos X="15" Y="1592"/>
         <UsageCount Value="102"/>
         <Loaded Value="True"/>
       </Unit22>
@@ -300,119 +300,127 @@
         <Loaded Value="True"/>
       </Unit35>
     </Units>
-    <JumpHistory Count="28" HistoryIndex="27">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="unfe.pas"/>
-        <Caret Line="5837" TopLine="5827"/>
+        <Caret Line="4403" TopLine="4391"/>
       </Position1>
       <Position2>
         <Filename Value="unfe.pas"/>
-        <Caret Line="5843" TopLine="5827"/>
+        <Caret Line="4404" TopLine="4391"/>
       </Position2>
       <Position3>
         <Filename Value="unfe.pas"/>
-        <Caret Line="5849" TopLine="5839"/>
+        <Caret Line="4405" TopLine="4391"/>
       </Position3>
       <Position4>
         <Filename Value="unfe.pas"/>
-        <Caret Line="5857" TopLine="5841"/>
+        <Caret Line="5430" TopLine="5420"/>
       </Position4>
       <Position5>
         <Filename Value="unfe.pas"/>
-        <Caret Line="4401" TopLine="4392"/>
+        <Caret Line="5668" TopLine="5659"/>
       </Position5>
       <Position6>
         <Filename Value="unfe.pas"/>
-        <Caret Line="5430" TopLine="5419"/>
+        <Caret Line="4401" Column="7" TopLine="4391"/>
       </Position6>
       <Position7>
         <Filename Value="unfe.pas"/>
-        <Caret Line="5668" TopLine="5659"/>
+        <Caret Line="4403" TopLine="4391"/>
       </Position7>
       <Position8>
         <Filename Value="unfe.pas"/>
-        <Caret Line="4401" TopLine="4391"/>
+        <Caret Line="4404" TopLine="4391"/>
       </Position8>
       <Position9>
         <Filename Value="unfe.pas"/>
-        <Caret Line="4403" TopLine="4391"/>
+        <Caret Line="4405" TopLine="4391"/>
       </Position9>
       <Position10>
         <Filename Value="unfe.pas"/>
-        <Caret Line="4404" TopLine="4391"/>
+        <Caret Line="5668" TopLine="5658"/>
       </Position10>
       <Position11>
         <Filename Value="unfe.pas"/>
-        <Caret Line="4405" TopLine="4391"/>
+        <Caret Line="4401" TopLine="4391"/>
       </Position11>
       <Position12>
         <Filename Value="unfe.pas"/>
-        <Caret Line="5430" TopLine="5420"/>
+        <Caret Line="4501" TopLine="4491"/>
       </Position12>
       <Position13>
         <Filename Value="unfe.pas"/>
-        <Caret Line="5668" TopLine="5659"/>
+        <Caret Line="5933" TopLine="5923"/>
       </Position13>
       <Position14>
         <Filename Value="unfe.pas"/>
-        <Caret Line="4401" TopLine="4391"/>
+        <Caret Line="5951" TopLine="5941"/>
       </Position14>
       <Position15>
         <Filename Value="unfe.pas"/>
-        <Caret Line="4403" TopLine="4391"/>
+        <Caret Line="5956" TopLine="5949"/>
       </Position15>
       <Position16>
         <Filename Value="unfe.pas"/>
-        <Caret Line="4404" TopLine="4391"/>
+        <Caret Line="445" Column="33" TopLine="436"/>
       </Position16>
       <Position17>
         <Filename Value="unfe.pas"/>
-        <Caret Line="4405" TopLine="4391"/>
+        <Caret Line="2266" Column="58" TopLine="2253"/>
       </Position17>
       <Position18>
         <Filename Value="unfe.pas"/>
-        <Caret Line="5430" TopLine="5420"/>
+        <Caret Line="4779" Column="16" TopLine="4769"/>
       </Position18>
       <Position19>
         <Filename Value="unfe.pas"/>
-        <Caret Line="5668" TopLine="5659"/>
+        <Caret Line="4807" Column="8" TopLine="4793"/>
       </Position19>
       <Position20>
         <Filename Value="unfe.pas"/>
-        <Caret Line="4401" Column="7" TopLine="4391"/>
+        <Caret Line="4806" Column="42" TopLine="4798"/>
       </Position20>
       <Position21>
         <Filename Value="unfe.pas"/>
-        <Caret Line="4403" TopLine="4391"/>
+        <Caret Line="4812" Column="7" TopLine="4806"/>
       </Position21>
       <Position22>
         <Filename Value="unfe.pas"/>
-        <Caret Line="4404" TopLine="4391"/>
+        <Caret Line="2257" Column="60" TopLine="2253"/>
       </Position22>
       <Position23>
         <Filename Value="unfe.pas"/>
-        <Caret Line="4405" TopLine="4391"/>
+        <Caret Line="2453" Column="14" TopLine="2450"/>
       </Position23>
       <Position24>
         <Filename Value="unfe.pas"/>
-        <Caret Line="5668" TopLine="5658"/>
+        <Caret Line="5072" Column="54" TopLine="5066"/>
       </Position24>
       <Position25>
         <Filename Value="unfe.pas"/>
-        <Caret Line="4401" TopLine="4391"/>
+        <Caret Line="87" Column="14" TopLine="80"/>
       </Position25>
       <Position26>
         <Filename Value="unfe.pas"/>
-        <Caret Line="4501" TopLine="4491"/>
+        <Caret Line="218" Column="14" TopLine="205"/>
       </Position26>
       <Position27>
         <Filename Value="unfe.pas"/>
-        <Caret Line="5933" TopLine="5923"/>
+        <Caret Line="313" Column="24" TopLine="300"/>
       </Position27>
       <Position28>
         <Filename Value="unfe.pas"/>
-        <Caret Line="5951" TopLine="5941"/>
+        <Caret Line="1361" TopLine="1335"/>
       </Position28>
+      <Position29>
+        <Filename Value="unfe.pas"/>
+        <Caret Line="1800" Column="3" TopLine="1797"/>
+      </Position29>
+      <Position30>
+        <Filename Value="unfe.pas"/>
+        <Caret Line="2262" Column="37" TopLine="2254"/>
+      </Position30>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
@@ -426,7 +434,7 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfe.pas"/>
-        <Line Value="940"/>
+        <Line Value="943"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
@@ -454,7 +462,7 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfe.pas"/>
-        <Line Value="5403"/>
+        <Line Value="5412"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
@@ -468,42 +476,56 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfe.pas"/>
-        <Line Value="5956"/>
+        <Line Value="5965"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfe.pas"/>
-        <Line Value="5933"/>
+        <Line Value="5942"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfe.pas"/>
-        <Line Value="5951"/>
+        <Line Value="5960"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfe.pas"/>
-        <Line Value="4501"/>
+        <Line Value="4510"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfe.pas"/>
-        <Line Value="5668"/>
+        <Line Value="5677"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="unfe.pas"/>
-        <Line Value="4401"/>
+        <Line Value="4410"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="unfe.pas"/>
+        <Line Value="1361"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="unfe.pas"/>
+        <Line Value="4776"/>
       </Item>
     </BreakPoints>
     <Watches>

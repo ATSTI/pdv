@@ -187,7 +187,7 @@ ACBrNFe.Classes,ACBrDFe.Conversao ,  ACBrNFe.EnvEvento,
   ACBrNFe.EventoClass, pcnConversaoNFe,
  FileCtrl, Grids,
 ACBrUtil.Base, ACBrUtil.FilesIO, ACBrUtil.DateTime, ACBrUtil.Strings,
-ACBrUtil.XMLHTML, pcnNFeRTXT,
+ACBrUtil.XMLHTML, //pcnNFeRTXT,
 ACBrDFeConfiguracoes,  ACBrDFeOpenSSL,
 ACBrNFeNotasFiscais, ACBrNFeConfiguracoes;
 
