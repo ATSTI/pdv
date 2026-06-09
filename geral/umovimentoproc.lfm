@@ -7,7 +7,7 @@ object fMovimentoProc: TfMovimentoProc
   ClientHeight = 566
   ClientWidth = 1120
   Position = poScreenCenter
-  LCLVersion = '4.4.0.0'
+  LCLVersion = '4.6.0.0'
   OnCreate = FormCreate
   OnShow = FormShow
   object Panel1: TPanel
@@ -1127,7 +1127,7 @@ object fMovimentoProc: TfMovimentoProc
       OnClick = btnSangriaClick
     end
     object btnReforco: TBitBtn
-      Left = 270
+      Left = 272
       Height = 30
       Top = 0
       Width = 141

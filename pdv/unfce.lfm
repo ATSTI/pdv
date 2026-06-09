@@ -7,7 +7,7 @@ object fNfce: TfNfce
   ClientHeight = 508
   ClientWidth = 687
   Position = poScreenCenter
-  LCLVersion = '4.0.0.4'
+  LCLVersion = '4.6.0.0'
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow

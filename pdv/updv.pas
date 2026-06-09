@@ -594,8 +594,11 @@ begin
   pSemValor := dmPdv.sqLancZeroCODMOVIMENTO.AsInteger;
   if(pSemValor > 0 )then
   begin
-    if  MessageDlg('Confirma Receber com Produtos Sem Preços ?',
-    mtConfirmation, [mbYes, mbNo],0) = mrNo then exit;
+   // if  MessageDlg('Confirma Receber com Produtos Sem Preços ?',
+   // mtConfirmation, [mbYes, mbNo],0) = mrNo then exit;
+    ShowMessage('Produtos sem Preço' +#13+ 'Precisam ser Corrigido' +#13+ 'Não pode Receber essa Venda');
+    Exit;
+
   end;
 
   if (dmpdv.sqLancamentosSTATUS.AsInteger = 2) then
@@ -851,7 +854,7 @@ end;
 procedure TfPdv.acQuantidadeExecute(Sender: TObject);
 var i: Integer;
 begin
-  precoL := 0.00;
+ // precoL := 0.00;
   if ((edProduto.Text = '') and (edProduto_copia.Text = '')) then
   begin
     ShowMessage('Selecione o ITEM.');
@@ -886,7 +889,9 @@ begin
   end;
   qtdeAtacadoL := fProdutoProc.qtdeAtacado;
   precoAtacadoL:= fProdutoProc.precoVendaAtacado;
-  precoL := fProdutoProc.precoVenda;
+  //precoL := fProdutoProc.precoVenda;
+  if(fProdutoProc.precoVenda = 0)then
+  precoL := precoL ;
   //consultaItem := 'SIM';
   pnAltera.Visible:=True;
   edQtde1.Enabled:= True;

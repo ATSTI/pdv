@@ -110,6 +110,12 @@ begin
   fSangria.GroupAbreCaixa.Visible := True;
   fSangria.btnReimprimirReforco.Visible:= True;
   fSangria.DBGrid2.Visible:= True;
+  fSangria.btnImpR.Visible:= True;
+  fSangria.dtData.Visible:= True;
+  fSangria.dtData1.Visible:= True;
+  fSangria.btnImpS.Visible:= False;
+  fSangria.dtData2.Visible:= False;
+  fSangria.dtData3.Visible:= False;
   fSangria.ComboBox1.ItemIndex := 1;
   fSangria.ShowModal;
 end;
@@ -164,6 +170,7 @@ begin
     sqlProc += ' AND m.CODNATUREZA = 1 '
   else
     sqlProc += ' AND m.CODNATUREZA = 3 ';
+    sqlProc += ' and m.CONTROLE is not null';
   // sqlProc += ' AND m.CODALMOXARIFADO = ' + dmPdv.ccusto;  tem q ser usuario
   // pois o  CCUSTO muda com o caixa todo dia
   sqlProc += ' AND m.CODCLIENTE > 0 ';
@@ -346,14 +353,30 @@ begin
       end;
       dmPdv.sqBusca.Next;
     end;
-    if (nao_fechado <> '') then
+
+    if(dmPdv.Fechar_pedido_aberto = 'NAO') then
     begin
-      ShowMessage('Existe pedidos nao Encerrados : ' + nao_fechado);
+      if (nao_fechado <> '') then
+      begin
+        ShowMessage('Existe pedidos nao Encerrados' +#13+ 'Precisam ser Finalizaos' +#13+ 'Pedidos a ser Fechado : ' + nao_fechado);
+
+      end;
     end;
+
+    if(dmPdv.Fechar_pedido_aberto = 'SIM') then
+    begin
+      if (nao_fechado <> '') then
+      begin
+        ShowMessage('Existe pedidos nao Encerrados' +#13+ 'Precisam ser Finalizaos' +#13+ 'Pedidos a ser Fechado : ' + nao_fechado);
+        Exit;
+      end;
+    end;
+
     fAbrirCaixa.AbrirFechar:= 'Fechar';
     fAbrirCaixa.cxsangria := 0 ;
     fAbrirCaixa.ShowModal;
     acBuscar.Execute;
+
   end;
 end;
 
@@ -373,6 +396,12 @@ begin
   fSangria.Edit1.Visible := False;
   fSangria.btnInsereMotivo.Visible := False;
   fSangria.GroupAbreCaixa.Visible := False;
+  fSangria.btnImpR.Visible:= False;
+  fSangria.dtData.Visible:= False;
+  fSangria.dtData1.Visible:= False;
+  fSangria.btnImpS.Visible:= True;
+  fSangria.dtData2.Visible:= True;
+  fSangria.dtData3.Visible:= True;
   fSangria.btnReimprimirReforco.Visible:= False;
   fSangria.DBGrid2.Visible:= False;
   fSangria.ComboBox1.ItemIndex := 0;

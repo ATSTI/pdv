@@ -15,6 +15,7 @@ type
 
   TdmPdv = class(TDataModule)
     cdsItensNFBCII: TFloatField;
+    cdsItensNFCBENEF: TStringField;
     cdsItensNFCCLASSTRIB: TStringField;
     cdsItensNFCEST: TStringField;
     cdsItensNFCFOP: TStringField;
@@ -1122,6 +1123,7 @@ type
     SenhaAbrirCX : string;
     ReformaTributaria : string;
     FiltrarPedidos : string;
+    Fechar_pedido_aberto : string;
     path_xml_alternativo : string;
 
     function executaSql(strSql: String): Boolean;
@@ -1331,6 +1333,8 @@ begin
       SenhaAbrirCx  := conf.ReadString( 'Outros','SenhaAbrirCx','NAO');
       ReformaTributaria := conf.ReadString( 'Outros','ReformaTributaria','NAO');
       FiltrarPedidos := conf.ReadString( 'Outros','FiltrarPedidos','SIM');
+      Fechar_pedido_aberto := conf.ReadString( 'Outros','Fechar_pedido_aberto','NAO');
+
      {
       ZCon.Connected       := False;
       ZCon.HostName        := conf.ReadString('ZConn', 'Hostname', '');

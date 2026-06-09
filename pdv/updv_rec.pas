@@ -100,7 +100,19 @@ type
     Panel3: TPanel;
     Panel4: TPanel;
     PopupMenu1: TPopupMenu;
+    sqPagaCaixaCAIXA: TSmallintField;
+    sqPagaCaixaCAIXINHA: TFloatField;
+    sqPagaCaixaCODFORMA: TLongintField;
+    sqPagaCaixaCOD_VENDA: TLongintField;
+    sqPagaCaixaDESCONTO: TFloatField;
+    sqPagaCaixaFORMA_PGTO: TStringField;
+    sqPagaCaixaID_ENTRADA: TLongintField;
+    sqPagaCaixaN_DOC: TStringField;
+    sqPagaCaixaSTATE: TSmallintField;
+    sqPagaCaixaTROCO: TFloatField;
+    sqPagaCaixaVALOR_PAGO: TFloatField;
     sqPagamento: TSQLQuery;
+    sqPagaCaixa: TSQLQuery;
     sqPagamentoCAIXA: TSmallintField;
     sqPagamentoCAIXINHA: TFloatField;
     sqPagamentoCODFORMA: TLongintField;
@@ -173,6 +185,7 @@ type
       vlr_via_rec: Double);
     procedure gerarjson;
   public
+    vcPago : Double; // 28/05/2026 manoel
     OutrosCartoes: String;
     v_log: String;
     vStatus : Integer;
@@ -349,7 +362,7 @@ begin
   //valResto := StrParaFloat(edRestante.Text);
   //if vaTotal > 0.00 then
   //  vaTroco := vaTotal - vResto - vDesconto;
-  {if sqPagamento.active then
+  if sqPagamento.active then
     sqPagamento.Close;
   sqPagamento.Params.ParamByName('PCODMOV').AsInteger:=vCodMovimento;
   sqPagamento.Params.ParamByName('PCODCAIXA').AsInteger := StrToInt(dmPdv.idcaixa);
@@ -367,6 +380,7 @@ begin
       sqPagamento.Next;
     end;
   end;
+  {
   vaDesc := vaDesc + vDesconto;
 
   //vResto := StrParaFloat(edPagamento.Text);
@@ -426,16 +440,23 @@ begin
 end;
 
 procedure TfPDV_Rec.carrega_valores;
-var vcResto,vcDesc,vcTroco, vcPago: Double;
+var vcResto,vcDesc,vcTroco : Double;
+    pCaixaMov : integer;
 begin
   vcResto := 0;
   vcDesc := StrParaFloat(edDesconto.Text);
   vcTroco := 0;
   vcPago := 0;
+  if sqPagaCaixa.active then
+    sqPagaCaixa.Close;
+  sqPagaCaixa.Params.ParamByName('PCODMOV').AsInteger:=vCodMovimento;
+  sqPagaCaixa.open;
+  pCaixaMov := sqPagaCaixaCAIXA.AsInteger;
+
   if sqPagamento.active then
     sqPagamento.Close;
   sqPagamento.Params.ParamByName('PCODMOV').AsInteger:=vCodMovimento;
-  sqPagamento.Params.ParamByName('PCODCAIXA').AsInteger := StrToInt(dmPdv.idcaixa);
+  sqPagamento.Params.ParamByName('PCODCAIXA').AsInteger := pCaixaMov ; //StrToInt(dmPdv.idcaixa);
   sqPagamento.open;
   if (not sqPagamento.IsEmpty) then
   begin
@@ -648,23 +669,24 @@ begin
   vlr_prazo := 0;
   tot_lanc := 0;
   num_lanc := 0;
+
   dmPdv.IbCon.ExecuteDirect('UPDATE FORMA_ENTRADA SET STATE = 1 ' +
     ' WHERE STATE = 0 AND ID_ENTRADA = ' +
     IntToStr(vCodMovimento));
   try
     ver_sql := 'UPDATE MOVIMENTO SET STATUS = 1 ' +
-      ' , CODCLIENTE = ' + IntToStr(vCliente) +
-      ' , DATA_FECHOU = ' + QuotedStr(FormatDateTime('mm/dd/yyyy hh:MM:ss', Now)) +
-      ' , CONTROLE = ' + QuotedStr(IntToStr(num_cx)) +
-      ' WHERE CODMOVIMENTO  = ' +
-      IntToStr(vCodMovimento) + ' AND STATUS = 0';
+    ' , CODCLIENTE = ' + IntToStr(vCliente) +
+    ' , DATA_FECHOU = ' + QuotedStr(FormatDateTime('mm/dd/yyyy hh:MM:ss', Now)) +
+    ' , CONTROLE = ' + QuotedStr(IntToStr(num_cx)) +
+    ' WHERE CODMOVIMENTO  = ' +
+    IntToStr(vCodMovimento) + ' AND STATUS = 0';
     dmPdv.IbCon.ExecuteDirect(ver_sql);
     dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTODETALHE SET BAIXA = 1 ' +
-      ' WHERE CODMOVIMENTO  = ' + IntToStr(vCodMovimento) +
-      ' AND BAIXA IS NULL AND STATUS = 0');
+    ' WHERE CODMOVIMENTO  = ' + IntToStr(vCodMovimento) +
+    ' AND BAIXA IS NULL AND STATUS = 0');
     dmPdv.IbCon.ExecuteDirect('UPDATE MOVIMENTODETALHE SET BAIXA = NULL ' +
-      ' WHERE CODMOVIMENTO  = ' + IntToStr(vCodMovimento) +
-      ' AND BAIXA = 1 AND STATUS = 2');
+    ' WHERE CODMOVIMENTO  = ' + IntToStr(vCodMovimento) +
+    ' AND BAIXA = 1 AND STATUS = 2');
   except
     {dmPdv.IbCon.ExecuteDirect('ALTER TABLE MOVIMENTO ' +
       ' ADD DATA_FECHOU TIMESTAMP');
@@ -1218,7 +1240,7 @@ begin
 
       /////
       linhaTxt := 'P' ;
-      {
+
       if linhaTxt = 'P' then
       begin
         sqPagamento.First;
@@ -1232,7 +1254,7 @@ begin
         end;
 
       end;
-      }
+
       ////
 
     end;
@@ -2014,6 +2036,7 @@ begin
     ShowMessage('Informe o Pagamento.');
     Exit;
   end;
+
   if vStatus = 0 then
   begin
     encerra_venda();

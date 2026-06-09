@@ -29,6 +29,8 @@ type
     ACBrValidador1: TACBrValidador;
     BitBtn1: TBitBtn;
     BitBtn8: TBitBtn;
+    btnActive: TBitBtn;
+    btnInactive: TBitBtn;
     btnAbaPrincipal1: TBitBtn;
     BtnCCe1: TBitBtn;
     BtnEnvEmail: TBitBtn;
@@ -258,6 +260,7 @@ type
     procedure BitBtn3Click(Sender: TObject);
     procedure BitBtn8Click(Sender: TObject);
     procedure btnAbaPrincipalClick(Sender: TObject);
+    procedure btnActiveClick(Sender: TObject);
     procedure btnAlteraStatusClick(Sender: TObject);
     procedure BtnCCe1Click(Sender: TObject);
     procedure BtnCCeClick(Sender: TObject);
@@ -279,6 +282,7 @@ type
     procedure btnImprimeClick(Sender: TObject);
     procedure btnImprimirCCe1Click(Sender: TObject);
     procedure btnImprimirCCeClick(Sender: TObject);
+    procedure btnInactiveClick(Sender: TObject);
     procedure btnInutilizarClick(Sender: TObject);
     procedure btnListarCCeClick(Sender: TObject);
     procedure btnListarClick(Sender: TObject);
@@ -306,6 +310,7 @@ type
     procedure cbEmpresaChange(Sender: TObject);
     procedure cbHttpLibChange(Sender: TObject);
     procedure cbSSLLibChange(Sender: TObject);
+    procedure cbSSLTypeChange(Sender: TObject);
     procedure cbXmlSignLibChange(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
     procedure ComboBox2Change(Sender: TObject);
@@ -437,7 +442,9 @@ implementation
 uses udmpdv , ufrmStatus,
 StrUtils, math, TypInfo, DateUtils, synacode, blcksock, FileCtrl,
 IniFiles, Printers,
-pcnAuxiliar, ACBrNFe.Classes, pcnConversao, pcnConversaoNFe, pcnNFeRTXT, pcnRetConsReciDFe,
+pcnAuxiliar, ACBrNFe.Classes, pcnConversao, pcnConversaoNFe,
+//pcnNFeRTXT,  22/05/2026 Manoel
+pcnRetConsReciDFe,
 ACBrDFeConfiguracoes, ACBrDFeSSL, ACBrDFeOpenSSL, ACBrDFeUtil,
 ACBrNFeNotasFiscais, ACBrNFeConfiguracoes,ACBrDFe.Conversao,
                                                                // Grids,
@@ -831,6 +838,23 @@ begin
 
 
     ACBrNFe1.ImprimirEvento;
+end;
+
+procedure TfNFe.btnInactiveClick(Sender: TObject);
+var strs : string;
+begin
+  try
+    strs := 'ALTER TRIGGER CALCULA_ICMS_ST INACTIVE;';
+    dmPdv.IbCon.ExecuteDirect(strs);
+    dmPdv.strans.Commit;
+  except
+    on E : Exception do
+    begin
+      ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
+      dmPdv.strans.Rollback; //on failure, undo the changes}
+    end;
+  end;
+
 end;
 
 procedure TfNFe.btnInutilizarClick(Sender: TObject);
@@ -1552,6 +1576,23 @@ begin
   PageControl2.ActivePage := TabSheet1;
 end;
 
+procedure TfNFe.btnActiveClick(Sender: TObject);
+var strs : string;
+begin
+  try
+    strs := 'ALTER TRIGGER CALCULA_ICMS_ST ACTIVE;';
+    dmPdv.IbCon.ExecuteDirect(strs);
+    dmPdv.strans.Commit;
+  except
+    on E : Exception do
+    begin
+      ShowMessage('Classe: ' + e.ClassName + chr(13) + 'Mensagem: ' + e.Message);
+      dmPdv.strans.Rollback; //on failure, undo the changes}
+    end;
+  end;
+
+end;
+
 procedure TfNFe.btnAlteraStatusClick(Sender: TObject);
 begin
 
@@ -2208,6 +2249,12 @@ begin
   finally
     AtualizaSSLLibsCombo;
   end;
+end;
+
+procedure TfNFe.cbSSLTypeChange(Sender: TObject);
+begin
+   if cbSSLType.ItemIndex <> -1 then
+     ACBrNFe1.SSL.SSLType := TSSLType(cbSSLType.ItemIndex);
 end;
 
 procedure TfNFe.cbXmlSignLibChange(Sender: TObject);
@@ -3235,7 +3282,7 @@ begin
       ' , md.P_CBS ' +
       ' , md.REDUCAO_IBS ' +
       ' , md.REDUCAO_CBS ' +
-
+      ' , md.CBENEF ' +
       ' from compra cp  inner join MOVIMENTODETALHE md on md.CODMOVIMENTO = cp.CODMOVIMENTO ' +
       'inner join NOTAFISCAL nf on nf.CODVENDA = cp.CODCOMPRA ' +
       'inner join PRODUTOS pr on pr.CODPRODUTO = md.CODPRODUTO ' +
@@ -3297,6 +3344,7 @@ begin
       ' , md.P_CBS ' +
       ' , md.REDUCAO_IBS ' +
       ' , md.REDUCAO_CBS ' +
+      ' , md.CBENEF ' +
       ' from VENDA vd inner join MOVIMENTODETALHE md on md.CODMOVIMENTO = vd.CODMOVIMENTO ' +
       'inner join NOTAFISCAL nf on nf.CODVENDA = vd.CODVENDA ' +
       'inner join PRODUTOS pr on pr.CODPRODUTO = md.CODPRODUTO ' +
@@ -3693,7 +3741,8 @@ var
   IBSCBS: TIBSCBS;
   //LcClassTrib: TcClassTrib;
   LCST      : TCSTIBSCBS;
- // Produto: TDetCollectionItem;
+  // Produto: TDetCollectionItem;
+  valorCbenef : string;
 begin
   BC := 0;
   BCST := 4;
@@ -3721,6 +3770,9 @@ begin
         Prod.cProd    := Trim(dmPdv.cdsItensNFCODPRO.AsString);
 
       Prod.xProd    := LeftStr(Trim(dmPdv.cdsItensNFDESCPRODUTO.AsString), 99);
+      valorCbenef   := Trim(dmPdv.cdsItensNFCBENEF.AsString);
+
+      Prod.cBenef   := Trim(dmPdv.cdsItensNFCBENEF.AsString);
       Prod.CFOP     := Trim(dmPdv.cdsItensNFCFOP.AsString);
       Prod.uCom     := Trim(dmPdv.cdsItensNFUNIDADEMEDIDA.AsString);
       Prod.qCom     := dmPdv.cdsItensNFQUANTIDADE.AsFloat;
@@ -4178,6 +4230,8 @@ begin
           if(dmPdv.ReformaTributaria = 'SIM' )then
           begin
 
+
+
             pIBS_CBS := dmPdv.cdsItensNFCST_IBS_CBS.AsString;
             pCASTRIB := dmPdv.cdsItensNFCCLASSTRIB.AsString;
 
@@ -4325,13 +4379,13 @@ begin
               end;
 
               IBSCBS.gIBSCBS.gTribRegular.cClassTribReg:= '000001';
-
               IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegIBSUF := pIBS ;
               IBSCBS.gIBSCBS.gTribRegular.vTribRegIBSUF := pVALORIBS ;
               IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegIBSMun :=0 ;
               IBSCBS.gIBSCBS.gTribRegular.vTribRegIBSMun := 0 ;
               IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegCBS:= pCBS;
               IBSCBS.gIBSCBS.gTribRegular.vTribRegCBS := pVALORCBS ;
+
             end;
 
 
@@ -5891,6 +5945,12 @@ begin
           begin
             Total.IBSCBSTot.vBCIBSCBS := 0.00 ;
           end;
+
+          if(pCASTRIB = '410014')then      //18/03/2026
+          begin
+            Total.IBSCBSTot.vBCIBSCBS := 0.00 ;
+          end;
+
           {
           if(pCASTRIB = '000001')then      //12/02/2026
           begin
@@ -5899,7 +5959,7 @@ begin
          }
           if(pSuframa <> '')then
           begin
-            Total.IBSCBSTot.vBCIBSCBS := total_nota + dmPdv.qcdsNFVALOR_ICMS.AsVariant;
+            Total.IBSCBSTot.vBCIBSCBS := total_nota ;// 10/03/26 + dmPdv.qcdsNFVALOR_ICMS.AsVariant;
           end;
 
           Total.IBSCBSTot.gIBS.vIBS  := total_ibs ;

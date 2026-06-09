@@ -38,54 +38,60 @@
         <Mode0 Name="default"/>
       </Modes>
     </RunParams>
-    <RequiredPackages Count="15">
+    <RequiredPackages Count="17">
       <Item1>
-        <PackageName Value="SQLDBLaz"/>
+        <PackageName Value="DateTimeCtrlsDsgn"/>
       </Item1>
       <Item2>
-        <PackageName Value="ACBr_Integrador"/>
+        <PackageName Value="frce"/>
       </Item2>
       <Item3>
-        <PackageName Value="ACBr_SAT_Extrato_ESCPOS"/>
+        <PackageName Value="SQLDBLaz"/>
       </Item3>
       <Item4>
-        <PackageName Value="ACBr_SAT"/>
+        <PackageName Value="ACBr_Integrador"/>
       </Item4>
       <Item5>
-        <PackageName Value="lhelpcontrolpkg"/>
+        <PackageName Value="ACBr_SAT_Extrato_ESCPOS"/>
       </Item5>
       <Item6>
-        <PackageName Value="MultiThreadProcsLaz"/>
+        <PackageName Value="ACBr_SAT"/>
       </Item6>
       <Item7>
-        <PackageName Value="ACBrSerial"/>
+        <PackageName Value="lhelpcontrolpkg"/>
       </Item7>
       <Item8>
-        <PackageName Value="ACBrDiversos"/>
+        <PackageName Value="MultiThreadProcsLaz"/>
       </Item8>
       <Item9>
-        <PackageName Value="ACBr_NFe_DanfeESCPOS"/>
+        <PackageName Value="ACBrSerial"/>
       </Item9>
       <Item10>
-        <PackageName Value="ACBr_NFe"/>
+        <PackageName Value="ACBrDiversos"/>
       </Item10>
       <Item11>
-        <PackageName Value="DateTimeCtrls"/>
+        <PackageName Value="ACBr_NFe_DanfeESCPOS"/>
       </Item11>
       <Item12>
-        <PackageName Value="FCL"/>
+        <PackageName Value="ACBr_NFe"/>
       </Item12>
       <Item13>
-        <PackageName Value="RunTimeTypeInfoControls"/>
+        <PackageName Value="DateTimeCtrls"/>
       </Item13>
       <Item14>
-        <PackageName Value="SynEdit"/>
+        <PackageName Value="FCL"/>
       </Item14>
       <Item15>
-        <PackageName Value="LCL"/>
+        <PackageName Value="RunTimeTypeInfoControls"/>
       </Item15>
+      <Item16>
+        <PackageName Value="SynEdit"/>
+      </Item16>
+      <Item17>
+        <PackageName Value="LCL"/>
+      </Item17>
     </RequiredPackages>
-    <Units Count="38">
+    <Units Count="40">
       <Unit0>
         <Filename Value="prjPDV.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -350,13 +356,27 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit37>
+      <Unit38>
+        <Filename Value="uimprsangria.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fimprisangria"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit38>
+      <Unit39>
+        <Filename Value="uimprreforco.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fimprreforco"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit39>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="C:\home\sisadmin\prjPDV"/>
+      <Filename Value="D:\clientes\loide_agropecuaria\prjPDV"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>

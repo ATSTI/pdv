@@ -7,7 +7,7 @@ object fAbrirCaixa: TfAbrirCaixa
   ClientHeight = 358
   ClientWidth = 575
   Position = poScreenCenter
-  LCLVersion = '4.0.0.4'
+  LCLVersion = '4.6.0.0'
   OnShow = FormShow
   object Panel1: TPanel
     Left = -1
@@ -34,9 +34,9 @@ object fAbrirCaixa: TfAbrirCaixa
       SpaceChar = '_'
     end
     object Label2: TLabel
-      Left = 368
+      Left = 379
       Height = 19
-      Top = 0
+      Top = 5
       Width = 131
       Caption = 'Resumo Vendas:'
       Font.CharSet = ANSI_CHARSET
@@ -318,7 +318,7 @@ object fAbrirCaixa: TfAbrirCaixa
     object Label14: TLabel
       Left = 80
       Height = 19
-      Top = 0
+      Top = 5
       Width = 117
       Caption = 'Resumo Caixa:'
       Font.CharSet = ANSI_CHARSET
@@ -475,6 +475,20 @@ object fAbrirCaixa: TfAbrirCaixa
       ParentColor = False
       ParentFont = False
     end
+    object Label23: TLabel
+      Left = 202
+      Height = 21
+      Hint = 'Se escolher uma data que Não Foi Aberto o CAIXA'#13#10'             Independete da Data Escolhida'#13#10'       Sempre Mostrara o Ultimo Caixa Aberto.'
+      Top = 3
+      Width = 59
+      Caption = 'Label23'
+      Font.Color = clRed
+      Font.Height = -16
+      Font.Style = [fsBold]
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+    end
   end
   object Panel2: TPanel
     Left = 0
@@ -516,6 +530,7 @@ object fAbrirCaixa: TfAbrirCaixa
     object dtData: TDateTimePicker
       Left = 116
       Height = 27
+      Hint = 'Se escolher uma data que Não Foi Aberto o CAIXA'#13#10'             Independete da Data Escolhida'#13#10'       Sempre Mostrara o Ultimo Caixa Aberto.'
       Top = 16
       Width = 107
       CenturyFrom = 1941
@@ -531,6 +546,8 @@ object fAbrirCaixa: TfAbrirCaixa
       TrailingSeparator = False
       TextForNullDate = 'NULL'
       LeadingZeros = True
+      ShowHint = True
+      ParentShowHint = False
       Kind = dtkDate
       TimeFormat = tf24
       TimeDisplay = tdHMS
