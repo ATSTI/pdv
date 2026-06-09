@@ -14,23 +14,24 @@ import sys
 #sys.setdefaultencoding("utf-8")
 
 # CONEXAO ODOO ORIGEM
-origem = odoorpc.ODOO('felicita.atsti.com.br', port=48069)
+origem = odoorpc.ODOO('xxxxx.atsti.com.br', port=8069)
 
 #CONEXAO ODOO DESTINO
 # Prepare the connection to the server
 #odoo = odoorpc.ODOO('192.168.6.100', port=8069)
-dest = odoorpc.ODOO('felicita14.atsti.com.br', port=48069)
+#dest = odoorpc.ODOO('fxxxxx.atsti.com.br', port=8069)
 #dest = odoorpc.ODOO('127.0.0.1', port=14069)
 # Login
-origem.login('felicita_atsti_com_br', 'ats@atsti.com.br', 'a2t00s7')
-dest.login('felicita14', 'ats@atsti.com.br', 'a2t00s7')
+#origem.login('xxxx_com_br', 'xxxx@atsti.com.br', 'abcde')
+# dest.login('gggggg', 'xxxx@atsti.com.br', 'abcde')
+origem.login('ggggg', 'xxxxx@atsti.com.br', 'abcde')
 
 # odoo_user = odoo.env['res.users']
 
-b_order = dest.env['pos.order']
+#b_order = dest.env['pos.order']
 a_prod = origem.env['product.product']
-b_prod = dest.env['product.product']
-# db = con.Conexao()
+#b_prod = dest.env['product.product']
+db = con.Conexao()
 #sist = db.sistema()
 #arq = open('C:\home\programas\lazarus\pdv\pdv\log_pedido.log', 'w')
 #order = odoo.env['pos.order']
@@ -40,10 +41,34 @@ hj = datetime.strftime(hj,'%m-%d-%Y')
 
 x = sys.argv[1]
 y = sys.argv[2]
+
+#breakpoint()
+x = int(x) - 2
+y = int(x) + 5001
+
 print (f"fazendo id : {x} - {y}")
-"""
+
 p = a_prod.search([('id', '>', x), ('id', '<', y)])
+contar = 0
 for pr in a_prod.browse(p):
+    sqld = "SELECT codproduto, codpro from PRODUTOS WHERE codpro = '%s'" %(pr.default_code)
+
+    fb_prod = db.query(sqld)
+    #print ('Importando Pedidos .....')
+    if not len(fb_prod):
+        print ('Sem produto para corrigir.')
+
+    for fp in fb_prod:
+        if fp[0] == pr.id:
+             continue
+        mudar = "UPDATE PRODUTOS SET CODPRODUTO = %s WHERE CODPRO = '%s';" %(str(pr.id), pr.default_code)
+        print ('PRODUTO ALTERADO %s' %(pr.default_code))
+        fb_prod = db.insert(mudar)
+        contar += 1
+print ('TOTAL alterado - %s, de %s ate %s' %(str(contar), str(x), str(y)))
+
+
+"""
     pbd = b_prod.search([('default_code', '=', pr.default_code)])
     preco_a = round(pr.list_price,2)
     if pbd:
@@ -54,7 +79,7 @@ for pr in a_prod.browse(p):
         prod_id.write({'list_price': preco_a})
         print (f"produto: {prod_id.product_tmpl_id.id} preco_a {preco_a} preco_b {preco_b}")
 """
-
+"""
 import pudb;pu.db
 p = a_prod.search([('qtde_atacado', '>', 0)])
 for pr in a_prod.browse(p):
@@ -65,7 +90,7 @@ for pr in a_prod.browse(p):
         print (f"produto: {prod_id.product_tmpl_id.id}")
     
 # Corringindo user_id do pos order
-"""
+
 sqld = "select CODMOVIMENTO,CODALMOXARIFADO from MOVIMENTO where DATAMOVIMENTO > '31.12.2023' and CODVENDEDOR = 40"
 #'   AND m.CODMOVIMENTO = 199'
 #       ' WHERE m.STATUS = 1 ' \
