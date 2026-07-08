@@ -1081,8 +1081,8 @@ class IntegracaoOdoo:
                     #total_gx = total_g
                     #if str(mvs[0]) == '10416':
                     for md in md_ids:
-                        if linhas == 's': 
-                            num_linha -= 1
+                        # if linhas == 's': 
+                        #     num_linha -= 1
                         try:
                             prdname = self.removerAcentosECaracteresEspeciais(md[6])
                         except:
@@ -1094,19 +1094,19 @@ class IntegracaoOdoo:
                         vlr_totprod = (md[2]*md[3])-md[4]
                         desconto = 0.0
                         if (md[4] > 0):
-                            teve_desconto = 's'
+                            # teve_desconto = 's'
                             # comentei aqui pq nao testei
                             #if num_linha > 0:
                             desconto = md[4] / (vlr_totprod+md[4])
                             #else:
                             #    desconto = md[4] / (vlr_totprod+total_g)
                         
-                        if num_linha > 0:
-                            desconto = (desconto + desconto_t) * 100
-                        else:
-                            #desconto Zero, vou editar depois de gravado
-                            # pra calcular o desconto correto
-                            desconto = 0.0
+                        # if num_linha > 0:
+                        #     desconto = (desconto + desconto_t) * 100
+                        # else:
+                        #     #desconto Zero, vou editar depois de gravado
+                        #     # pra calcular o desconto correto
+                        #     desconto = 0.0
                         prd = {}
                         tipo = '1'
                         if md[7].strip():
@@ -1136,9 +1136,9 @@ class IntegracaoOdoo:
                     
                     vals['statement_ids'] = pag_line
                     
-                    if teve_desconto == 's':
-                        # uso nb_print pra saber q veio do pdv lazarus
-                        vals['nb_print'] = 9
+                    # if teve_desconto == 's':
+                    #     # uso nb_print pra saber q veio do pdv lazarus
+                    #     vals['nb_print'] = 9
 
                     # try:
                     vals_ped = vals 
@@ -1155,15 +1155,15 @@ class IntegracaoOdoo:
                     # except:
                     # msg_erro += 'ERRO, nao integrado pedido : %s ' %(prdname)
 
-                    if teve_desconto == 's' and linhas == 's' and ord_p:
-                        #ord_p = pos_ord.browse(ords)
-                        if (total_g != ord_p.amount_total):
-                            tam = len(ord_p.lines)
-                            for line in ord_p.lines[tam-1]:
-                                x = line.price_unit * line.qty
-                                desconto = (ord_p.amount_total-round(total_g,2))/x*100
+                    # if teve_desconto == 's' and linhas == 's' and ord_p:
+                    #     #ord_p = pos_ord.browse(ords)
+                    #     if (total_g != ord_p.amount_total):
+                    #         tam = len(ord_p.lines)
+                    #         for line in ord_p.lines[tam-1]:
+                    #             x = line.price_unit * line.qty
+                    #             desconto = (ord_p.amount_total-round(total_g,2))/x*100
                             
-                    if teve_desconto == 's' and ord_p:
+                    if ord_p:
                         # coloquei isto aqui pq qdo tem desconto
                         # e era a prazo o desconto do ultimo item nao ia pra
                         # fatura estas duas linhas abaixo eram feitas no create
