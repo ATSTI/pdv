@@ -4,8 +4,8 @@ object fNfce: TfNfce
   Top = 130
   Width = 687
   Caption = 'Nota Fiscal Eletronica - Consumidor'
-  ClientHeight = 508
-  ClientWidth = 687
+  ClientHeight = 0
+  ClientWidth = 0
   Position = poScreenCenter
   LCLVersion = '4.6.0.0'
   OnCreate = FormCreate

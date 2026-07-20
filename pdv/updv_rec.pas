@@ -516,7 +516,8 @@ var
   vlr_desc, vlr_Troco: Double;
   ver_str, insert_pag: String;
 begin
-  if vStatus = 1 then
+  //if ((vStatus = 1)then
+  if ((vStatus = 1) and (dmpdv.permiteCancelarBaixao = 0)) then   // manoel 29/05/2026
   begin
     ShowMessage('Venda já finalizada');
     Exit;
@@ -1238,7 +1239,8 @@ begin
           Writeln(Impressora,lFile[i]);
       end;
 
-      /////
+      /////   29/05/2026 Caldana
+
       linhaTxt := 'P' ;
 
       if linhaTxt = 'P' then

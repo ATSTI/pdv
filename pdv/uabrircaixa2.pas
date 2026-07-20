@@ -116,12 +116,12 @@ begin
           //strans.Rollback;
         end;
       end;
-
+ {
   if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
   begin
    btnAbreCX.Click;
-   end;
-
+  end;
+ }
    abri_cx := 1;
    btnSair.Click;
    fMovimentoProc.Close;

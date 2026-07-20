@@ -1270,7 +1270,7 @@ begin
         Prod.cProd    := dmPdv.sqLancamentosCODPRO.AsString;
         //Prod.cEAN     := '7896523206646';
         Prod.xProd    := LeftStr(dmPdv.sqLancamentosDESCPRODUTO.AsString, 99);
-       // Prod.cBenef   := 'SP010360'; //CBENEF
+        //Prod.cBenef   := 'SEM CBENEF'; //CBENEF
         Prod.CFOP     := dmPdv.sqLancamentosCFOP.AsString;
         Prod.uCom     := dmPdv.sqLancamentosUNIDADEMEDIDA.AsString;
         //vlr_itemnf := dmPdv.sqLancamentosQUANTIDADE.AsFloat;

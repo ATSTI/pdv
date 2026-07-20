@@ -6,7 +6,7 @@ object fAbreCaixa: TfAbreCaixa
   Caption = 'Abertura do Caixa'
   ClientHeight = 278
   ClientWidth = 522
-  LCLVersion = '4.0.0.4'
+  LCLVersion = '4.6.0.0'
   OnCreate = FormCreate
   OnShow = FormShow
   object Panel1: TPanel
