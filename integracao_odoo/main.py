@@ -15,8 +15,11 @@ class Main():
         self.buscando_script()
 
     def buscando_script(self):
-        path_url = "https://github.com/ATSTI/pdv/raw/master/integracao_odoo/%s" %(self.versao_name)
-        retorno = rq.get(path_url)
+        try:
+            path_url = "https://github.com/ATSTI/pdv/raw/master/integracao_odoo/%s" %(self.versao_name)
+            retorno = rq.get(path_url)
+        except:
+            return
         if "SISTEMA" not in retorno.text:
             print ("------------------------------------")
             print ("Erro na atualizacao da versao,")
