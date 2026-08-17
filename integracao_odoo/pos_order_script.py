@@ -350,6 +350,8 @@ class IntegracaoOdoo:
                     DATACADASTRO, VALOR_PRAZO from produtos \
                     where codpro = \'%s\'" %(codpro)
                 prods = db.query(sqlp)
+                if len(prods):
+                    codproduto = prods[0][0]                
 
             # serve pra identificar se usa o pdv_integracao ou o pdv_integracao_outros
             if 'tipo_venda' in pr:
