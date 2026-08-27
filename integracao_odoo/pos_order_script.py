@@ -339,13 +339,13 @@ class IntegracaoOdoo:
             codp = str(pr['codproduto'])
 
             sqlp = "select FIRST 1 CODPRODUTO,\
-                    DATACADASTRO, VALOR_PRAZO from produtos \
+                    DATACADASTRO, VALOR_PRAZO, CODPRO from produtos \
                     where codproduto = %s" %(str(codproduto))
             print(sqlp)
             prods = db.query(sqlp)
             if pr['codpro']:
                 codpro = pr['codpro'].strip()
-            if not len(prods) and pr['codpro']:
+            if (len(prods) and codpro != prods[0][3]) or (not len(prods) and pr['codpro']):
                 sqlp = "select FIRST 1 CODPRODUTO,\
                     DATACADASTRO, VALOR_PRAZO from produtos \
                     where codpro = \'%s\'" %(codpro)
