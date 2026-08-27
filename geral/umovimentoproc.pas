@@ -162,6 +162,7 @@ begin
     5 : sqlProc += ' AND f.FORMA_PGTO = ' + QuotedStr('5') ;
     6 : sqlProc += ' AND f.FORMA_PGTO = ' + QuotedStr('6') ;
     7 : sqlProc += ' AND f.FORMA_PGTO = ' + QuotedStr('9') ;
+    8 : sqlProc += ' AND f.FORMA_PGTO = ' + QuotedStr('0') ;
 
   end;
 

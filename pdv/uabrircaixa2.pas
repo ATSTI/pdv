@@ -116,7 +116,7 @@ begin
           //strans.Rollback;
         end;
       end;
- {
+ { Manoel Comentei aqui porque não usa mais 20/0/2026
   if (UpperCase(dmPdv.usoSistema) = 'ODOO') then
   begin
    btnAbreCX.Click;

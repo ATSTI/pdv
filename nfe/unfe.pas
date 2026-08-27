@@ -403,6 +403,9 @@ type
     pCBS : double;
     pReducao : double;
     pA : double;
+    pRes : double;
+    pDifi : double;
+    pvIBSUF : double;
     pVALORIBS : double;
     pVALORCBS : double;
     total_ibs : double;
@@ -3499,7 +3502,8 @@ begin
     // FORNECEDOR
     if (cbTipoNota.ItemIndex = 0) then
     begin
-      Dest.CNPJCPF           := RemoveChar(Trim(dmPdv.qsFornecCNPJ.AsString));
+      //Dest.CNPJCPF           := RemoveChar(Trim(dmPdv.qsFornecCNPJ.AsString)); Manoel 29/0/26
+      Dest.CNPJCPF           := Trim(dmPdv.qsFornecCNPJ.AsString);
       Dest.xNome             := Trim(dmPdv.qsFornecRAZAOSOCIAL.AsString);
       Dest.EnderDest.xLgr    := Trim(dmPdv.qsFornecLOGRADOURO.AsString);
       if ((dmPdv.qsFornecNUMERO.IsNull) or (Trim(dmPdv.qsFornecNUMERO.AsString) = '')) then
@@ -3586,7 +3590,8 @@ begin
     begin
 
       if (Trim(dmPdv.qsClienteUF.AsString) <> 'EX') then
-        Dest.CNPJCPF := RemoveChar(Trim(dmPdv.qsClienteCNPJ.AsString));
+        //Dest.CNPJCPF := RemoveChar(Trim(dmPdv.qsClienteCNPJ.AsString));  manoel 29/07/2026
+        Dest.CNPJCPF := Trim(dmPdv.qsClienteCNPJ.AsString);
       Dest.xNome             := Trim(dmPdv.qsClienteRAZAOSOCIAL.AsString);
 
       lblMsgSuframa.Caption := Trim(dmPdv.qsClienteSUFRAMA.AsString);
@@ -4230,8 +4235,6 @@ begin
           if(dmPdv.ReformaTributaria = 'SIM' )then
           begin
 
-
-
             pIBS_CBS := dmPdv.cdsItensNFCST_IBS_CBS.AsString;
             pCASTRIB := dmPdv.cdsItensNFCCLASSTRIB.AsString;
 
@@ -4264,6 +4267,8 @@ begin
 
             IBSCBS.gIBSCBS.vBC := baseIBS_CBS ;
 
+
+
             total_nota += baseIBS_CBS ;
             {
             if(pCASTRIB = '000001')then      //20/02/2026  descomentei para condor
@@ -4278,7 +4283,6 @@ begin
               IBSCBS.gIBSCBS.vBC := baseIBS_CBS ;
             end;
 
-
             IBSCBS.gIBSCBS.vIBS := RoundABNT((baseIBS_CBS*pIBS)/100,2);
 
             pA :=  RoundABNT((baseIBS_CBS*pIBS)/100,2);
@@ -4291,10 +4295,20 @@ begin
 
             if(pIBS_CBS <> '000')then
             begin
-              IBSCBS.gIBSCBS.vIBS := pA ;
+              IBSCBS.gIBSCBS.vIBS := RoundABNT(pA,2);
             end;
 
-            IBSCBS.gIBSCBS.gIBSUF.pIBSUF := pIBS;
+            //19/08/2026
+            if(pCASTRIB = '515001')then begin
+              pA := ((pIBS)*(100 - pReducao)/100);
+              pRes := RoundABNT((baseIBS_CBS*pA)/100,2);
+              pDifi := (pRes*0.6);
+              pvIBSUF := (pRes - pDifi);
+              IBSCBS.gIBSCBS.vIBS := RoundABNT(pvIBSUF,2);
+            end;
+
+
+            IBSCBS.gIBSCBS.gIBSUF.pIBSUF := RoundABNT(pIBS,2);
 
             if(pSuframa <> '')then
             begin
@@ -4307,10 +4321,29 @@ begin
             pA := RoundABNT((baseIBS_CBS*pA),2);
             vpIBS := ((pIBS)*(100- pReducao)/100);
 
-            IBSCBS.gIBSCBS.gIBSUF.vIBSUF := pA ;
-            total_ibs += pA;
+            IBSCBS.gIBSCBS.gIBSUF.vIBSUF := RoundABNT(pA,2) ;
+            total_ibs += RoundABNT(pA,2);
 
+            //19/08/2026
 
+            if(pCASTRIB = '515001')then begin
+              pA := ((pIBS)*(100 - pReducao)/100);
+              pRes := RoundABNT((baseIBS_CBS*pA)/100,2);
+              pDifi := (pRes*0.6);
+              pvIBSUF := (pRes - pDifi);
+              IBSCBS.gIBSCBS.gIBSUF.gDif.pDif := pReducao;
+              IBSCBS.gIBSCBS.gIBSUF.vIBSUF := RoundABNT(pvIBSUF,2) ;
+              IBSCBS.gIBSCBS.gIBSUF.gDif.vDif := RoundABNT(pDifi,2);
+            end;
+             {
+
+            if(pCASTRIB = '515001')then begin
+              pA := ((pIBS)*(100- pReducao)/100);
+              IBSCBS.gIBSCBS.gIBSUF.vIBSUF := 10.12 ;
+              IBSCBS.gIBSCBS.gIBSUF.gDif.pDif := 60 ;
+              IBSCBS.gIBSCBS.gIBSUF.gDif.vDif := 15.19 ;
+            end;
+             }
 
             if(pReducao > 0)then
             begin
@@ -4329,6 +4362,13 @@ begin
 
             IBSCBS.gIBSCBS.gIBSMun.pIBSMun := 0;
             IBSCBS.gIBSCBS.gIBSMun.vIBSMun := 0;
+
+            //19/08/2026
+
+            if(pCASTRIB = '515001')then begin
+              IBSCBS.gIBSCBS.gIBSMun.gDif.pDif := pReducao;
+              IBSCBS.gIBSCBS.gIBSMun.gDif.vDif := 0;
+            end;
 
             IBSCBS.gIBSCBS.gIBSMun.gRed.pRedAliq := dmPdv.cdsItensNFREDUCAO_IBS.AsFloat;
             IBSCBS.gIBSCBS.gIBSMun.gRed.pAliqEfet := 0;
@@ -4350,7 +4390,6 @@ begin
               IBSCBS.gIBSCBS.gCBS.pCBS := 0;
             end;
 
-
             //  IBSCBS.gIBSCBS.gCBS.vCBS := ((baseIBS_CBS*pCBS)/100);
             pA :=  (pCBS)/100;
             pVALORCBS := RoundABNT((baseIBS_CBS)*(pA),2);
@@ -4366,6 +4405,26 @@ begin
 
             IBSCBS.gIBSCBS.gCBS.vCBS := pA ;
 
+            //19/08/2026
+            if(pCASTRIB = '515001')then begin
+
+              pRes := pA;
+              pDifi := (pRes*0.6);
+              pvIBSUF := (pRes - pDifi);
+
+              IBSCBS.gIBSCBS.gCBS.vCBS := RoundABNT(pvIBSUF,2)  ;
+              IBSCBS.gIBSCBS.gCBS.gDif.pDif := pReducao;
+              IBSCBS.gIBSCBS.gCBS.gDif.vDif := RoundABNT(pDifi,2) ;
+            end;
+
+            {
+            if(pCASTRIB = '515001')then begin
+              IBSCBS.gIBSCBS.gCBS.vCBS := 91.10 ;
+              ///// errado IBSCBS.gIBSCBS.vIBS := 10.12;
+              IBSCBS.gIBSCBS.gCBS.gDif.pDif := 60;
+              IBSCBS.gIBSCBS.gCBS.gDif.vDif := 136.65;
+            end;
+            }
 
             //antes dmPdv.cdsItensNFCFOP.AsString = '6109'
             if(pSuframa <> '')then
@@ -5951,6 +6010,16 @@ begin
             Total.IBSCBSTot.vBCIBSCBS := 0.00 ;
           end;
 
+          if(pCASTRIB = '410002')then      //18/03/2026
+          begin
+            Total.IBSCBSTot.vBCIBSCBS := 0.00 ;
+          end;
+
+          if(pCASTRIB = '410016')then      //18/03/2026
+          begin
+            Total.IBSCBSTot.vBCIBSCBS := 0.00 ;
+          end;
+
           {
           if(pCASTRIB = '000001')then      //12/02/2026
           begin
@@ -5962,14 +6031,31 @@ begin
             Total.IBSCBSTot.vBCIBSCBS := total_nota ;// 10/03/26 + dmPdv.qcdsNFVALOR_ICMS.AsVariant;
           end;
 
-          Total.IBSCBSTot.gIBS.vIBS  := total_ibs ;
+          Total.IBSCBSTot.gIBS.vIBS  := RoundABNT(total_ibs,2) ;
 
           Total.IBSCBSTot.gIBS.gIBSUFTot.vDif := 0.00;
           Total.IBSCBSTot.gIBS.gIBSUFTot.vDevTrib := 0.00;
 
 
-          Total.IBSCBSTot.gIBS.gIBSUFTot.vIBSUF := total_ibs ;
+          Total.IBSCBSTot.gIBS.gIBSUFTot.vIBSUF := RoundABNT(total_ibs,2) ;
 
+          //19/08/2026
+          if(pCASTRIB = '515001')then begin
+
+            pRes := total_ibs; ;
+            pDifi := (pRes*0.6);
+            pvIBSUF := (pRes - pDifi);
+            Total.IBSCBSTot.gIBS.vIBS := pvIBSUF;
+            Total.IBSCBSTot.gIBS.gIBSUFTot.vDif := pDifi;
+            Total.IBSCBSTot.gIBS.gIBSUFTot.vIBSUF := RoundABNT(pvIBSUF,2);
+          end;
+          {
+          if(pCASTRIB = '515001')then begin
+            Total.IBSCBSTot.gIBS.vIBS  := 10.12 ;
+            Total.IBSCBSTot.gIBS.gIBSUFTot.vDif := 15.19;
+            Total.IBSCBSTot.gIBS.gIBSUFTot.vIBSUF := 10.12;
+          end;
+          }
 
           Total.IBSCBSTot.gIBS.gIBSMunTot.vDif := 0.00;
           Total.IBSCBSTot.gIBS.gIBSMunTot.vDevTrib := 0.00;
@@ -5978,11 +6064,26 @@ begin
           Total.IBSCBSTot.gCBS.vDif := 0.00;
           Total.IBSCBSTot.gCBS.vDevTrib := 0.00;
 
-          Total.IBSCBSTot.gCBS.vCBS := total_cbs;
+          Total.IBSCBSTot.gCBS.vCBS := RoundABNT(total_cbs,2);
+
+          //19/08/2026
+          if(pCASTRIB = '515001')then begin
+            pRes := total_cbs;
+            pDifi := (pRes*0.6);
+            pvIBSUF := (pRes - pDifi);
+
+            Total.IBSCBSTot.gCBS.vDif := pDifi;
+            Total.IBSCBSTot.gCBS.vCBS := pvIBSUF;
+          end;
+          {
+          if(pCASTRIB = '515001')then begin
+            Total.IBSCBSTot.gCBS.vDif := 136.65;
+            Total.IBSCBSTot.gCBS.vCBS := 91.10;
+          }
 
           if( pSuframa <> '')then   ///huhuhuhuhu
           begin
-            Total.IBSCBSTot.gCBS.vCBS := total_cbs ;
+            Total.IBSCBSTot.gCBS.vCBS := RoundABNT(total_cbs,2) ;
           end;
 
           Total.IBSCBSTot.gCBS.vCredPres := 0.00;

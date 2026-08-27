@@ -461,11 +461,11 @@ object fAbrirCaixa: TfAbrirCaixa
       Caption = 'Serie NFCe : '
     end
     object Label22: TLabel
-      Left = 330
+      Left = 356
       Height = 16
       Top = 197
-      Width = 78
-      Caption = 'Pix Servipa:'
+      Width = 53
+      Caption = 'Servipa:'
       Font.CharSet = ANSI_CHARSET
       Font.Height = -13
       Font.Name = 'Arial'
