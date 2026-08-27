@@ -15,6 +15,7 @@ class MainArquivos():
             'atualiza_produtos.py',
             'atualiza_caixas.py',
             'app_executa.py',
-            'main_arquivos.py'
+            'main_arquivos.py',
+            'main.py',
         ]
         return arquivos

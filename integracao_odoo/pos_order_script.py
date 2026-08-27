@@ -196,11 +196,11 @@ class IntegracaoOdoo:
             #sess_temp = 4564
             # num_sessao = int(session.name[len(ses.name)-4:])
             # num_sessao = ses.id
-        sqlp = "SELECT IDCAIXACONTROLE \
+        sqlp = "SELECT FIRST 10 IDCAIXACONTROLE \
                 ,CODCAIXA, CODUSUARIO, SITUACAO, DATAFECHAMENTO \
                 ,NOMECAIXA, DATAABERTURA FROM CAIXA_CONTROLE \
                 WHERE DATAABERTURA > '%s' \
-                AND CODUSUARIO = %s" %(hj, self.caixa_user)
+                AND CODUSUARIO = %s ORDER BY IDCAIXACONTROLE DESC" %(hj, self.caixa_user)
         sess = db.query(sqlp)
         for ses in sess:
             nomecli = ses[5]
@@ -350,6 +350,8 @@ class IntegracaoOdoo:
                     DATACADASTRO, VALOR_PRAZO from produtos \
                     where codpro = \'%s\'" %(codpro)
                 prods = db.query(sqlp)
+                if len(prods):
+                    codproduto = prods[0][0]                
 
             # serve pra identificar se usa o pdv_integracao ou o pdv_integracao_outros
             if 'tipo_venda' in pr:
