@@ -4,10 +4,10 @@ object fRecebimento: TfRecebimento
   Top = 86
   Width = 845
   Caption = 'Recebimento'
-  ClientHeight = 565
-  ClientWidth = 845
+  ClientHeight = 0
+  ClientWidth = 0
   Position = poDesktopCenter
-  LCLVersion = '4.0.0.4'
+  LCLVersion = '4.6.0.0'
   OnCreate = FormCreate
   OnShow = FormShow
   object Panel1: TPanel
@@ -2931,7 +2931,6 @@ object fRecebimento: TfRecebimento
     Top = 216
     Width = 564
     TabOrder = 4
-    Visible = False
   end
   object dsRec: TDataSource
     DataSet = dmPdv.sqBusca

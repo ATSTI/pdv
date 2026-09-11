@@ -38,58 +38,61 @@
         <Mode0 Name="default"/>
       </Modes>
     </RunParams>
-    <RequiredPackages Count="17">
+    <RequiredPackages Count="18">
       <Item1>
-        <PackageName Value="DateTimeCtrlsDsgn"/>
+        <PackageName Value="python4lazarus_package"/>
       </Item1>
       <Item2>
-        <PackageName Value="frce"/>
+        <PackageName Value="DateTimeCtrlsDsgn"/>
       </Item2>
       <Item3>
-        <PackageName Value="SQLDBLaz"/>
+        <PackageName Value="frce"/>
       </Item3>
       <Item4>
-        <PackageName Value="ACBr_Integrador"/>
+        <PackageName Value="SQLDBLaz"/>
       </Item4>
       <Item5>
-        <PackageName Value="ACBr_SAT_Extrato_ESCPOS"/>
+        <PackageName Value="ACBr_Integrador"/>
       </Item5>
       <Item6>
-        <PackageName Value="ACBr_SAT"/>
+        <PackageName Value="ACBr_SAT_Extrato_ESCPOS"/>
       </Item6>
       <Item7>
-        <PackageName Value="lhelpcontrolpkg"/>
+        <PackageName Value="ACBr_SAT"/>
       </Item7>
       <Item8>
-        <PackageName Value="MultiThreadProcsLaz"/>
+        <PackageName Value="lhelpcontrolpkg"/>
       </Item8>
       <Item9>
-        <PackageName Value="ACBrSerial"/>
+        <PackageName Value="MultiThreadProcsLaz"/>
       </Item9>
       <Item10>
-        <PackageName Value="ACBrDiversos"/>
+        <PackageName Value="ACBrSerial"/>
       </Item10>
       <Item11>
-        <PackageName Value="ACBr_NFe_DanfeESCPOS"/>
+        <PackageName Value="ACBrDiversos"/>
       </Item11>
       <Item12>
-        <PackageName Value="ACBr_NFe"/>
+        <PackageName Value="ACBr_NFe_DanfeESCPOS"/>
       </Item12>
       <Item13>
-        <PackageName Value="DateTimeCtrls"/>
+        <PackageName Value="ACBr_NFe"/>
       </Item13>
       <Item14>
-        <PackageName Value="FCL"/>
+        <PackageName Value="DateTimeCtrls"/>
       </Item14>
       <Item15>
-        <PackageName Value="RunTimeTypeInfoControls"/>
+        <PackageName Value="FCL"/>
       </Item15>
       <Item16>
-        <PackageName Value="SynEdit"/>
+        <PackageName Value="RunTimeTypeInfoControls"/>
       </Item16>
       <Item17>
-        <PackageName Value="LCL"/>
+        <PackageName Value="SynEdit"/>
       </Item17>
+      <Item18>
+        <PackageName Value="LCL"/>
+      </Item18>
     </RequiredPackages>
     <Units Count="40">
       <Unit0>
@@ -376,7 +379,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="D:\clientes\loide_agropecuaria\prjPDV"/>
+      <Filename Value="C:\home\caixa2\prjPDV"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>

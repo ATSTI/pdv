@@ -213,8 +213,11 @@ implementation
 procedure TfPDV_Rec.FormShow(Sender: TObject);
 var vr_curso: string;
 begin
+
   cupom_mv := '0';
   cod_compra := 0;
+  vDesconto := 0;
+  edDesconto.Text:='0,00';
 
   num_cx := 0;
   MemoImp.Clear;
@@ -913,6 +916,13 @@ begin
 end;
 
 procedure TfPDV_Rec.imprimirTxt();
+const
+c10cpi = #18;
+c12cpi = #27#77;
+c17cpi = #15;
+c14cpi = #27#103;
+cIExpandido = #14;
+cFExpandido = #20;
 var
   IMPRESSORA:TextFile;
   lFile   : TStringList;
@@ -1054,13 +1064,16 @@ begin
           //produto_cupomf := trim(RemoveAcento(dmPdv.sqLancamentosDESCPRODUTO.Value));
           produto_cupomf := trim(RemoveAcento(dmPdv.sqLancamentosCODPRO.Value)) + '-' + trim(RemoveAcento(dmPdv.sqLancamentosDESCPRODUTO.Value));
           texto6 := texto6 + '  ' + Copy(produto_cupomf, 0, dmPdv.tamanhoLinha);       //descrição do produto
+          //Writeln(Impressora,c14cpi, texto6); // VS
           Writeln(Impressora, texto6);
           if (length(produto_cupomf)>dmPdv.tamanhoLinha) then
           begin
-            texto6 := '    ' + Copy(produto_cupomf, dmPdv.tamanhoLinha+1, dmPdv.tamanhoLinha*2);       //descrição do produto
-            Writeln(Impressora, texto6);
+            texto6 := '' + Copy(produto_cupomf, dmPdv.tamanhoLinha+1, dmPdv.tamanhoLinha*2);       //descrição do produto
+            //Writeln(Impressora,c14cpi, texto6); // VS
+            Writeln(Impressora,texto6);
           end;
-          Writeln(Impressora, texto3);//NOME DO PRODUTO
+          //Writeln(Impressora,c14cpi, texto3);//NOME DO PRODUTO   VS
+          Writeln(Impressora,texto3);//NOME DO PRODUTO
           dmPdv.sqLancamentos.next;
         end;
       end
@@ -2278,7 +2291,7 @@ end;
 
 procedure TfPDV_Rec.actionPix_ServipaExecute(Sender: TObject);
 begin
-  lblForma.Caption:='0-Pix Servipa';
+  lblForma.Caption:='0-Servipa';
   edPagamento.SetFocus;
 end;
 
