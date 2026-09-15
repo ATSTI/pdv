@@ -1,318 +1,301 @@
-import requests as rq
+# -*- coding: utf-8 -*-
+"""Comunicacao HTTP com o Odoo."""
+import configparser
 import json
 import os
-import configparser
-from datetime import datetime, timedelta
-# from atscon import Conexao as con
+from datetime import datetime
+
+import requests as rq
+
+from integracao_log import get_logger
 from sqlite_bd import Database as local_db
-# import numpy as np
-# import pandas as pd
-# from pandas import DataFrame, Series
-import sqlite3 as db
+
+_logger = get_logger(__name__)
+
+TIMEOUT = 60
 
 
 class EnviaServer:
 
     def __init__(self, tipo):
         cfg = configparser.ConfigParser()
-        cfg.read('conf.ini')
-        self.path_envio  = cfg.get('INTEGRA', 'Path_envio')
-        self.path_retorno  = cfg.get('INTEGRA', 'Path_retorno')
-        self.url = cfg.get('INTEGRA', 'url')
-        self.db = cfg.get('INTEGRA', 'db')
-        self.login = cfg.get('INTEGRA', 'login')
-        self.passwd = cfg.get('INTEGRA', 'password')
+        if not cfg.read("conf.ini"):
+            raise FileNotFoundError("conf.ini nao encontrado")
 
-        # host = cfg.get('DATABASE', 'hostname' ),
-        # db = cfg.get('DATABASE', 'database' ),
+        self.path_envio   = cfg.get("INTEGRA", "path_envio")
+        self.path_retorno = cfg.get("INTEGRA", "path_retorno")
+        self.url          = cfg.get("INTEGRA", "url")
+        self.db           = cfg.get("INTEGRA", "db")
+        self.login        = cfg.get("INTEGRA", "login")
+        self.passwd       = cfg.get("INTEGRA", "password")
 
-        # TODO path_retorno remover arquivos velhos
-        # self.buscando_script()
+        os.makedirs(self.path_envio, exist_ok=True)
+        os.makedirs(self.path_retorno, exist_ok=True)
+
+        self.session = rq.Session()
+
         if tipo == "produto":
             self.buscando_produtos()
-        if tipo == "cliente":
+        elif tipo == "cliente":
             self.buscando_clientes()
-        if tipo == "pedido":
-            self.lendo_arquivos()
-        if tipo == "devolucao":
-            self.lendo_arquivos()
-        if tipo == "sangria":
+        elif tipo in ("pedido", "devolucao", "sangria"):
             self.lendo_arquivos()
 
-    def get_session(self, ):
-        headers = {'Content-type': 'application/json'}
-        AUTH_URL = "https://%s/web/session/authenticate" %(self.url)
-        data = {
-                "jsonrpc": "2.0",
-                "params": {
-                        "db": self.db,
-                        "login": self.login,
-                        "password": self.passwd,
-                    }
-                }  
-        res = rq.get(AUTH_URL, data=json.dumps(data),headers=headers)
-        session_id = res.cookies["session_id"]
+    def get_session(self):
+        url = "https://%s/web/session/authenticate" % self.url
+        payload = {
+            "jsonrpc": "2.0",
+            "params": {
+                "db": self.db,
+                "login": self.login,
+                "password": self.passwd,
+            },
+        }
+        r = self.session.post(
+            url, json=payload,
+            headers={"Content-Type": "application/json"},
+            timeout=TIMEOUT,
+        )
+        r.raise_for_status()
+        session_id = self.session.cookies.get("session_id")
+        if not session_id:
+            raise RuntimeError(
+                "Login Odoo falhou: HTTP %s - %s"
+                % (r.status_code, r.text[:500])
+            )
+        _logger.info("Sessao Odoo OK: %s...", session_id[:8])
         return session_id
 
-    def enviando_arquivo(self, retorno, arq, file_name, session_id):
-        parameter = {
-                        "db": self.db,
-                        "login": self.login,
-                        "password": self.passwd,
-                    }
-        base_url = '%s/integrapdv' %(self.url)
-        # base_url = "127.0.0.1:8072/api/v1/modules/" # your api 
-        json_data = json.dumps(parameter)
-        json_headers = {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            }
-        cookies = {
-            'login': self.login, 
-            'password': self.passwd,
-            'session_id':session_id
-        }
-        file_path = os.path.join(self.path_envio, file_name)
-        arquivo = open(file_path, mode="r")
-        vals = {}
-        vals['params'] = json.load(arquivo)
-        vals['tipo'] = arq
-        json_data = json.dumps(vals)
-        return rq.post("https://{}".format(base_url), data=json_data, headers=json_headers, cookies=cookies)
-        
-        # if not retorno:
-        #     file_retorno = f"{self.path_retorno}/retorno.json"
-        #     with open(file_retorno, mode="a") as arq_retorno:
-        #         dados = json.loads(req.content)
-        #         if len(dados['result']) > 2:
-        #             arq_retorno.write(dados["result"])
-        #         # dados = req.json()
-        #         print(req.content)
+    def _post_json(self, url, payload):
+        r = self.session.post(
+            url, json=payload,
+            headers={"Content-Type": "application/json",
+                     "Accept": "application/json"},
+            timeout=TIMEOUT,
+        )
+        r.raise_for_status()
+        return r.json()
 
     def buscando_produtos(self):
-        # dblocal = local_db(filename = 'lancamento.db', table = 'lancamento')
-        # conn = db.connect('lancamento.db')
-        # cur_db = conn.cursor()
-        headers = {'Content-type': 'application/json'}
-        AUTH_URL = "https://%s/web/session/authenticate" %(self.url)
-        data = {
-                "jsonrpc": "2.0",
-                "params": {
-                        "db": self.db,
-                        "login": self.login,
-                        "password": self.passwd,
-                    }
-                }  
-        parameter = {
-                        "db": self.db,
-                        "login": self.login,
-                        "password": self.passwd,
-                    }
-        res = rq.get(AUTH_URL, data=json.dumps(data),headers=headers)
-        session_id = res.cookies["session_id"]
-        base_url = '%s/produtoconsulta' %(self.url)
-        # base_url = "127.0.0.1:8072/api/v1/modules/" # your api 
-        json_data = json.dumps(parameter)
-        json_headers = {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            }
-        cookies = {
-            'login': self.login, 
-            'password': self.passwd,
-            'session_id':session_id
-        }
+        self.get_session()
+        url = "https://%s/produtoconsulta" % self.url
+        dados = self._post_json(url, {})
 
-        # arquivo = open(self.path_envio + '/' + file_name, mode="r")
-        arquivo_json = os.path.join(self.path_envio, "produtos.json")
-        vals = {}
-        # vals['params'] = json.load(arquivo)
-        # vals['tipo'] = arq
-        json_data = json.dumps(vals)
-        retorno = rq.post("https://{}".format(base_url), data=json_data, headers=json_headers, cookies=cookies)
-        # hj = datetime.now()       
-        # hj = datetime.strftime(hj,'%m-%d-%Y')
-        if retorno:
-            file_json = retorno.json()
-            with open(arquivo_json, 'w', encoding='utf-8') as f:
-                json.dump(file_json, f, ensure_ascii=False, indent=4)
+        if not isinstance(dados, dict) or "result" not in dados:
+            _logger.error("Resposta inesperada de /produtoconsulta: %s",
+                          str(dados)[:500])
+            return
+        if not dados["result"]:
+            _logger.warning("Produtos vieram vazios - mantendo arquivo antigo")
+            return
 
-            # for item in file_json.values():
-            #     if item != None and len(item)>5:
-            #         item_json = eval(item)
-            #         # for dado in item_json:
-            #         m_df = pd.DataFrame(item_json)
-            #         # print(m_df)
-            #         m_df.to_sql('produto', conn, if_exists='replace', index=False)
-
-            #         
-            #             ja_recebido = self.dblocal.consulta_nome(
-            #                 'produto', 1, 9, dado['codproduto'], hj)
-            #             if ja_recebido:
-            #                 continue                    
-            #             self.dblocal.insert(dict(
-            #                 tipo = 'produto',
-            #                 user = 1,
-            #                 nome = dado['codproduto'],
-            #                 caixa = 1,
-            #                 codigo = 9,
-            #                 data_lancamento = hj
-            #             ))
-            #             # Atualizar no banco de DADOS (firebird) ou fazer insert
+        arquivo = os.path.join(self.path_envio, "produtos.json")
+        tmp = arquivo + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(dados, f, ensure_ascii=False, indent=4)
+        os.replace(tmp, arquivo)
+        _logger.info("Produtos gravados em %s", arquivo)
 
     def buscando_clientes(self):
-        # conn = db.connect('lancamento.db')
-        headers = {'Content-type': 'application/json'}
-        AUTH_URL = "https://%s/web/session/authenticate" %(self.url)
-        data = {
-                "jsonrpc": "2.0",
-                "params": {
-                        "db": self.db,
-                        "login": self.login,
-                        "password": self.passwd,
-                    }
-                }  
-        parameter = {
-                        "db": self.db,
-                        "login": self.login,
-                        "password": self.passwd,
-                    }
-        res = rq.get(AUTH_URL, data=json.dumps(data),headers=headers)
-        session_id = res.cookies["session_id"]
-        base_url = '%s/clienteconsulta' %(self.url)
-        json_data = json.dumps(parameter)
-        json_headers = {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            }
-        cookies = {
-            'login': self.login, 
-            'password': self.passwd,
-            'session_id':session_id
-        }
-        vals = {}
-        json_data = json.dumps(vals)
-        arquivo_json = os.path.join(self.path_envio, "clientes.json")
-        retorno = rq.post("https://{}".format(base_url), data=json_data, headers=json_headers, cookies=cookies)
-        if retorno:
-            file_json = retorno.json()
-            with open(arquivo_json, 'w', encoding='utf-8') as f:
-                json.dump(file_json, f, ensure_ascii=False, indent=4)
+        self.get_session()
+        url = "https://%s/clienteconsulta" % self.url
+        dados = self._post_json(url, {})
 
-            # for item in file_json.values():
-            #     # print (item)
-            #     if item != None and len(item)>5:
-            #         item_json = eval(item)
-            #         m_df = pd.DataFrame(item_json)
-            #         # print(m_df)
-            #         m_df.to_sql('cliente', conn, if_exists='replace', index=False)
+        if not isinstance(dados, dict) or "result" not in dados:
+            _logger.error("Resposta inesperada de /clienteconsulta: %s",
+                          str(dados)[:500])
+            return
+        if not dados["result"]:
+            _logger.warning("Clientes vieram vazios - mantendo arquivo antigo")
+            return
+
+        arquivo = os.path.join(self.path_envio, "clientes.json")
+        tmp = arquivo + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(dados, f, ensure_ascii=False, indent=4)
+        os.replace(tmp, arquivo)
+        _logger.info("Clientes gravados em %s", arquivo)
+
+    def enviando_arquivo(self, arq, file_name):
+        url = "https://%s/integrapdv" % self.url
+        caminho = os.path.join(self.path_envio, file_name)
+        with open(caminho, "r", encoding="utf-8") as f:
+            conteudo = json.load(f)
+
+        vals = {"params": conteudo, "tipo": arq}
+        r = self.session.post(
+            url, json=vals,
+            headers={"Content-Type": "application/json",
+                     "Accept": "application/json"},
+            timeout=TIMEOUT,
+        )
+        return r
 
     def lendo_arquivos(self):
-        hj = datetime.now()       
-        hj = datetime.strftime(hj,'%m-%d-%Y')
-        # hoje = datetime.today()
-        # name_file_controle = 'file_controle_pedido%s_%s.txt' %(str(hoje.day), str(hoje.month))
-        # if os.path.exists(name_file_controle):
-        #     ontem = datetime.today() - timedelta(days=1)
-        #     old_file_name = 'file_controle_pedido%s_%s.txt' %(str(ontem.day-1), str(ontem.month))
-        #     os.remove(old_file_name)
+        self.get_session()
+        hj = datetime.now().strftime("%m-%d-%Y")
 
-        dblocal = local_db(filename = 'lancamento.db', table = 'lancamento')
-        # le arquivos na pasta
-        arquivos = os.listdir(self.path_envio)
-        # para cada arquivo na pasta
-        # db = con.Conexao(host, db)
-        get_return = False
-        session_id = self.get_session()
-        for i in arquivos:
-            nome_arq = i[:i.index('.')]
-            retorno_ids = []
-            # print('Arquivo: %s' %(nome_arq)) 
-            if nome_arq[:3] not in ('cai', 'ped', 'dev', 'san'):
-                continue
-            tipo = ''
-            caixa = 0
-            codigo = 0
-            if nome_arq[:7] == 'pedido_' and 'codmovimento':
-                tipo = 'pedido'
-                codigo = nome_arq[nome_arq.find('-')+1:]
-                caixa = nome_arq[7:nome_arq.find('-')]
-            if nome_arq[:6] == 'caixa_' and 'caixa':
-                tipo = 'sessao'
-                caixa = nome_arq[6:]
-            if nome_arq[:10] == 'devolucao_':
-                tipo = 'devolucao'
-                caixa = nome_arq[10:nome_arq.find('-')]
-            if nome_arq[:8] == 'sangria_':
-                tipo = 'sangria'
-                caixa = nome_arq[8:nome_arq.find('-')]
-            ja_enviado = dblocal.consulta(
-                tipo, caixa, codigo)
-            
-            if ja_enviado:
-                # os.remove(self.path_envio + '/' + i)
-                file_remove = os.path.join(self.path_envio, i)
-                os.remove(file_remove)
-                continue
+        with local_db(filename="lancamento.db", table="lancamento") as dblocal:
+            try:
+                arquivos = os.listdir(self.path_envio)
+            except FileNotFoundError:
+                _logger.error("Pasta de envio inexistente: %s", self.path_envio)
+                return
 
-            if len(retorno_ids):
-                enviado = False
-                for arq in retorno_ids:
-                    if nome_arq[:7] == 'pedido_' and 'codmovimento' in arq and nome_arq[7:] == arq['codmovimento']:
-                        enviado = True
+            for nome in arquivos:
+                try:
+                    self._processar_arquivo(nome, dblocal, hj)
+                except Exception:
+                    _logger.exception("Falha processando arquivo %s", nome)
 
-                    if nome_arq[:6] == 'caixa_' and 'caixa' in arq and nome_arq[6:] == arq['caixa']:
-                        enviado = True
+    def _processar_arquivo(self, nome, dblocal, hj):
+        caminho = os.path.join(self.path_envio, nome)
+        if not os.path.isfile(caminho):
+            return
+        if "." not in nome:
+            return
 
-                    if nome_arq[:10] == 'devolucao_' and 'devolucao' in arq and nome_arq[10:] == arq['devolucao']:
-                        enviado = True
+        nome_arq = nome[:nome.index(".")]
 
-                    if nome_arq[:8] == 'sangria_' and 'sangria' in arq and nome_arq[8:] == arq['sangria']:
-                        enviado = True
+        if nome_arq[:3] not in ("cai", "ped", "dev", "san"):
+            return
 
-                if not enviado and ((nome_arq[:6] == 'caixa_') or (nome_arq[:7] == 'pedido_') or (nome_arq[:10] == 'devolucao_') or (nome_arq[:8] == 'sangria_')):
-                    get_return = self.enviando_arquivo(get_return, nome_arq[:3], i, session_id)
+        tipo   = ""
+        caixa  = 0
+        codigo = 0
 
-                if enviado and ((nome_arq[:6] == 'caixa_') or (nome_arq[:7] == 'pedido_') or (nome_arq[:10] == 'devolucao_') or (nome_arq[:8] == 'sangria_')):
-                    # os.remove(self.path_envio + '/' + i)
-                    file_remove = os.path.join(self.path_envio, i)
-                    os.remove(file_remove)
-            else:
-                get_return = self.enviando_arquivo(get_return, nome_arq[:3], i, session_id)
-                if tipo and caixa:
-                    dblocal.insert(dict(
-                            tipo = tipo,
-                            user = 1,
-                            nome = nome_arq,
-                            caixa = caixa,
-                            codigo = codigo,
-                            data_lancamento = hj
-                        ))
-                # get_return = True
-        if get_return:
-            file_json = get_return.json()
-            for item in file_json.values():
-                # print('item %s:' %(item))
-                if item != None and len(item)>5:
-                    item_json = json.loads(json.dumps(eval(eval(item))))
-                    for z in item_json:
-                        codigo = 0
-                        if 'name' in z:
-                            name = z['name']
-                        if 'codmovimento' in z:
-                            codigo = z['codmovimento']
-                            codigo = codigo[codigo.find('-')+1:]
-                            name = z['order_id']
-                        ja_enviado = dblocal.consulta(
-                            z['tipo'], z['caixa'], codigo)
-            
-                        if ja_enviado:
-                            continue
-                        dblocal.insert(dict(
-                            tipo = z['tipo'],
-                            user = z['user_id'],
-                            nome = name,
-                            caixa = z['caixa'],
-                            codigo = codigo,
-                            data_lancamento = hj
-                        ))
+        if nome_arq.startswith("caixa_"):
+            tipo  = "sessao"
+            caixa = nome_arq[6:]
+        elif nome_arq.startswith("caixaf_"):
+            tipo  = "sessao_fechada"
+            caixa = nome_arq[7:]
+        elif nome_arq.startswith("pedido_"):
+            tipo = "pedido"
+            partes = nome_arq[7:].split("-")
+            if partes:
+                caixa = partes[0]
+            if len(partes) >= 2:
+                codigo = partes[1]
+        elif nome_arq.startswith("devolucao_"):
+            tipo = "devolucao"
+            partes = nome_arq[10:].split("-")
+            if partes:
+                caixa = partes[0]
+            if len(partes) >= 2:
+                codigo = partes[1]
+        elif nome_arq.startswith("sangria_"):
+            tipo = "sangria"
+            partes = nome_arq[8:].split("-")
+            if partes:
+                caixa = partes[0]
+            if len(partes) >= 3:
+                codigo = partes[2]
+            elif len(partes) >= 2:
+                codigo = partes[1]
+
+        if not tipo:
+            return
+
+        if dblocal.consulta(tipo, caixa, codigo):
+            try:
+                os.remove(caminho)
+            except OSError:
+                _logger.exception("Falha removendo %s", nome)
+            return
+
+        arq_tipo = nome_arq[:3]
+        try:
+            r = self.enviando_arquivo(arq_tipo, nome)
+        except Exception:
+            _logger.exception("Excecao ao enviar %s", nome)
+            return
+
+        if r.status_code >= 400:
+            _logger.error("Envio de %s falhou: HTTP %s - %s",
+                          nome, r.status_code, r.text[:500])
+            return
+
+        try:
+            corpo = r.json()
+        except ValueError:
+            _logger.error("Resposta nao-JSON para %s: %s",
+                          nome, r.text[:500])
+            return
+
+        if isinstance(corpo, dict) and corpo.get("error"):
+            _logger.error("Odoo retornou erro para %s: %s",
+                          nome, str(corpo["error"])[:500])
+            return
+
+        if tipo and caixa:
+            try:
+                dblocal.insert({
+                    "tipo": tipo,
+                    "user": 1,
+                    "nome": nome_arq,
+                    "caixa": caixa,
+                    "codigo": codigo,
+                    "data_lancamento": hj,
+                })
+            except Exception:
+                _logger.exception("Falha registrando envio de %s no SQLite", nome)
+
+        try:
+            os.remove(caminho)
+        except OSError:
+            _logger.exception("Envio OK mas nao consegui remover %s", nome)
+
+    # ==================================================================
+    # Validacao em massa (ativos/inativos)
+    # ==================================================================
+    def buscando_clientes_validar(self):
+        """Retorna lista completa (ativos + inativos) para validacao."""
+        self.get_session()
+        url = "https://%s/clientesvalidar" % self.url
+        dados = self._post_json(url, {})
+
+        if not isinstance(dados, dict) or "result" not in dados:
+            _logger.error("Resposta inesperada de /clientesvalidar: %s",
+                          str(dados)[:500])
+            return None
+
+        try:
+            return json.loads(dados["result"])
+        except (TypeError, json.JSONDecodeError):
+            _logger.error("result de /clientesvalidar nao e JSON valido")
+            return None
+
+    def buscando_produtos_validar(self):
+        """Retorna lista completa (ativos + inativos) para validacao."""
+        self.get_session()
+        url = "https://%s/produtosvalidar" % self.url
+        dados = self._post_json(url, {})
+
+        if not isinstance(dados, dict) or "result" not in dados:
+            _logger.error("Resposta inesperada de /produtosvalidar: %s",
+                          str(dados)[:500])
+            return None
+
+        try:
+            return json.loads(dados["result"])
+        except (TypeError, json.JSONDecodeError):
+            _logger.error("result de /produtosvalidar nao e JSON valido")
+            return None
+
+    def _carregar_config(self):
+        """Carrega config + abre Session sem disparar buscas."""
+        cfg = configparser.ConfigParser()
+        if not cfg.read("conf.ini"):
+            raise FileNotFoundError("conf.ini nao encontrado")
+
+        self.path_envio   = cfg.get("INTEGRA", "path_envio")
+        self.path_retorno = cfg.get("INTEGRA", "path_retorno")
+        self.url          = cfg.get("INTEGRA", "url")
+        self.db           = cfg.get("INTEGRA", "db")
+        self.login        = cfg.get("INTEGRA", "login")
+        self.passwd       = cfg.get("INTEGRA", "password")
+
+        os.makedirs(self.path_envio, exist_ok=True)
+        os.makedirs(self.path_retorno, exist_ok=True)
+        self.session = rq.Session()

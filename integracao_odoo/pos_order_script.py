@@ -1,1321 +1,920 @@
-# -*- coding:utf-8 -*-
-
-from datetime import datetime
-from datetime import timedelta
-import logging
-import unicodedata
-import re
-import time
-import os
-import json
-import base64
+# -*- coding: utf-8 -*-
+"""Integracao PDV (Firebird) <-> Odoo."""
 import configparser
-from main import Main as verifica_versao
+import json
+import os
+import re
+import unicodedata
+from datetime import datetime, timedelta
+
 from atscon import Conexao as con
 from conecta_server import EnviaServer as envia
-from sqlite_bd import Database as local_db
-from pathlib import Path
-from logging.handlers import RotatingFileHandler
+from integracao_log import get_logger
+from main import Main as verifica_versao
+
+_logger = get_logger(__name__)
 
 
-_logger = logging.getLogger(__name__)
-Path('logs').mkdir(parents=True, exist_ok=True) # Create folder if not exists
-handlers = [ RotatingFileHandler(filename='logs/log.txt',
-            mode='w', 
-            maxBytes=512000, 
-            backupCount=4)
-           ]
-logging.basicConfig(handlers=handlers, 
-                    level=logging.INFO, 
-                    format='%(levelname)s %(asctime)s %(message)s', 
-                    datefmt='%d/%m/%Y %I:%M:%S %p',force=True)
-_logger.setLevel(logging.INFO)
+def _normaliza_doc(valor):
+    """Remove pontuacao de CPF/CNPJ. Retorna so digitos."""
+    if not valor:
+        return ""
+    return re.sub(r"[^0-9]", "", str(valor))
 
+
+def _doc_igual(doc_a, doc_b):
+    """
+    Compara CPF/CNPJ de forma tolerante.
+
+    Regras:
+    - Ambos vazios             -> iguais
+    - Um vazio, outro com dado -> diferentes
+    - Mesmo tamanho            -> compara exato
+    - Tamanhos diferentes      -> compara o prefixo comum (o menor)
+                                 (caso o Odoo tenha digitos a mais por erro
+                                  de digitacao, tipo zero a esquerda)
+    """
+    a = _normaliza_doc(doc_a)
+    b = _normaliza_doc(doc_b)
+
+    if not a and not b:
+        return True
+    if not a or not b:
+        return False
+    if len(a) == len(b):
+        return a == b
+    # tamanhos diferentes: compara prefixo comum
+    n = min(len(a), len(b))
+    return a[:n] == b[:n]
 
 
 class IntegracaoOdoo:
-    _name = 'integracao.odoo'
-    
-    def _inicia(self, tipo='geral'):
-        # _logger.info("verificando versao")
+
+    def _inicia(self):
         verifica_versao()
         cfg = configparser.ConfigParser()
-        cfg.read('conf.ini')
-        self.path_envio  = cfg.get('INTEGRA', 'path_envio')
-        self.path_retorno = cfg.get('INTEGRA', 'path_retorno' )
-        # self.host = cfg.get('DATABASE', 'hostname')
-        # self.db = cfg.get('DATABASE', 'path')
-        # tipo = '1-executa_tudo'
-        #tipo = 'executa_produto'
-        #print("Tipo : %s" %('teste tetetstet'))
-        # _logger.info (f'Tipo - {tipo}')
-        self.caixa_user = cfg.get('INTEGRA', 'caixa_user')
-        # if tipo == 'executa_tudo':
-        # self._executando(tipo)
-        # if tipo == 'executa_produto':
-        #     print ("Atualizando produtos.")
-        #     _logger.info('Atualizando produtos')
-        #     envia('produto')
-        #     self.action_atualiza_produtos()
-        # # self.action_devolucao()
-        _logger.info ('Cursor liberado')
+        if not cfg.read("conf.ini"):
+            raise FileNotFoundError("conf.ini nao encontrado")
+        self.path_envio   = cfg.get("INTEGRA", "path_envio")
+        self.path_retorno = cfg.get("INTEGRA", "path_retorno")
+        self.caixa_user   = cfg.get("INTEGRA", "caixa_user")
+        self._garantir_fila()
 
-    def _executando_venda(self, tipo='geral'):
-        # rodou = 1
-        # print(tipo)
-        if tipo == 'geral':
-            # while(True):
-            if tipo == 'geral':
-                # Cria o ARQUIVO JSON dos Pedidos para ser enviado
-                # msg = "Iniciando atualizacoes - %s" %(str(rodou))
-                msg = "Iniciando atualizacoes"
-                _logger.info(msg)
-                print("Atualizando vendas ...")
-                self.action_atualiza_vendas()
-                # # Cria o ARQUIVO JSON dos Caixas para ser enviado
-                # if rodou == 1 or rodou % 10 == 0:
-                #     _logger.info ('Caixa atualizando.')
-                #     self.action_atualiza_caixas()
-                #     # ESTA SENDO FEITO DIRETO NO PDV usando o main
-                #     # _logger.info ('Atualiza devolucoes.')
-                #     # self.action_devolucao()
-                _logger.info ('Enviando pedidos.')
-                envia("pedido")
-                # # Busca alteracoes dos produtos e grava no database local para ser comparado com o BD do PDV
-                # if rodou == 1 or rodou % 5 == 0:
-                #    _logger.info ('Produto atualizando.')
-                #    envia("produto")
-                #    # Compara as ataulizacoes do produto com o BD do PDV e atualiza ou insere se necessario
-                #    self.action_atualiza_produtos()
-                # _logger.info("Rodou : %s vezes" %(rodou))
-                # if rodou == 1 or rodou % 4 == 0:
-                #     _logger.info ('Cliente atualizando.')
-                #     envia("cliente")
-                #     self.action_atualiza_clientes()
-                # rodou += 1
-                # time.sleep(600)
-        # elif tipo == 'produto':
-        #     print ("Atualizando produtos.")
-        #     envia("produto")
-        #     # Compara as ataulizacoes do produto com o BD do PDV e atualiza ou insere se necessario
-        #     self.action_atualiza_produtos()
-        # elif tipo == 'cliente':
-        #     print ("Atualizando Clientes.")
-        #     envia("cliente")
-        #     self.action_atualiza_clientes()
-        # elif tipo == 'caixa':
-        #     print ("Atualizando Caixa.")
-        #     self.action_atualiza_caixas(None)
-        return True
+    def _garantir_fila(self):
+        """Cria INTEGRACAO_FILA compativel com Firebird 2.5."""
+        with con() as db:
+            # tabela
+            if not db.query(
+                "SELECT 1 FROM RDB$RELATIONS "
+                "WHERE RDB$RELATION_NAME = 'INTEGRACAO_FILA'"
+            ):
+                r = db.ddl("""
+                    CREATE TABLE INTEGRACAO_FILA (
+                        ID           INTEGER NOT NULL PRIMARY KEY,
+                        TIPO         VARCHAR(20),
+                        ID_ORIGEM    INTEGER,
+                        PAYLOAD      BLOB SUB_TYPE TEXT,
+                        STATUS       VARCHAR(10) DEFAULT 'PENDENTE',
+                        TENTATIVAS   INTEGER DEFAULT 0,
+                        DT_CRIACAO   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        DT_ENVIO     TIMESTAMP,
+                        ERRO         BLOB SUB_TYPE TEXT
+                    )
+                """)
+                if r:
+                    _logger.error("Falha criando INTEGRACAO_FILA: %s", r)
+                    raise RuntimeError("Nao foi possivel criar INTEGRACAO_FILA")
 
-    def _executando(self, tipo='geral'):
-        rodou = 1
-        # print(tipo)
-        if tipo == 'geral':
-            while(True):
-                # if tipo == 'geral':
-                # Cria o ARQUIVO JSON dos Pedidos para ser enviado
-                # msg = "Iniciando atualizacoes - %s" %(str(rodou))
-                msg = "Iniciando atualizacoes"
-                _logger.info(msg)
-                print("Atualizando vendas ...")
-                self.action_atualiza_vendas()
-                # # Cria o ARQUIVO JSON dos Caixas para ser enviado
-                if rodou == 1 or rodou % 10 == 0:
-                    _logger.info ('Caixa atualizando.')
-                    self.action_atualiza_caixas()
-                    # ESTA SENDO FEITO DIRETO NO PDV usando o main
-                    _logger.info ('Atualiza devolucoes.')
-                    self.action_devolucao()
-                _logger.info ('Enviando pedidos.')
-                envia("pedido")
-                # # Busca alteracoes dos produtos e grava no database local para ser comparado com o BD do PDV
-                if rodou == 1 or rodou % 5 == 0:
-                   _logger.info ('Produto atualizando.')
-                   envia("produto")
-                   # Compara as ataulizacoes do produto com o BD do PDV e atualiza ou insere se necessario
-                   self.action_atualiza_produtos()
-                _logger.info("Rodou : %s vezes" %(rodou))
-                if rodou == 1 or rodou % 4 == 0:
-                    _logger.info ('Cliente atualizando.')
-                    envia("cliente")
-                    self.action_atualiza_clientes()
-                print("Rodou : %s vezes" %(rodou))
-                rodou += 1
-                time.sleep(600)
-        # elif tipo == 'produto':
-        #     print ("Atualizando produtos.")
-        #     envia("produto")
-        #     # Compara as ataulizacoes do produto com o BD do PDV e atualiza ou insere se necessario
-        #     self.action_atualiza_produtos()
-        # elif tipo == 'cliente':
-        #     print ("Atualizando Clientes.")
-        #     envia("cliente")
-        #     self.action_atualiza_clientes()
-        # elif tipo == 'caixa':
-        #     print ("Atualizando Caixa.")
-        #     self.action_atualiza_caixas(None)
-        return True
+            # sequence
+            if not db.query(
+                "SELECT 1 FROM RDB$GENERATORS "
+                "WHERE RDB$GENERATOR_NAME = 'GEN_INTEGRACAO_FILA_ID'"
+            ):
+                db.ddl("CREATE SEQUENCE GEN_INTEGRACAO_FILA_ID")
 
-    """
-    A remoco de acentos foi baseada em uma resposta no Stack Overflow.
-    http://stackoverflow.com/a/517974/3464573
-    """
+            # trigger
+            if not db.query(
+                "SELECT 1 FROM RDB$TRIGGERS "
+                "WHERE RDB$TRIGGER_NAME = 'TR_INTEGRACAO_FILA_BI'"
+            ):
+                db.ddl("""
+                    CREATE TRIGGER TR_INTEGRACAO_FILA_BI FOR INTEGRACAO_FILA
+                    ACTIVE BEFORE INSERT POSITION 0
+                    AS
+                    BEGIN
+                        IF (NEW.ID IS NULL) THEN
+                            NEW.ID = NEXT VALUE FOR GEN_INTEGRACAO_FILA_ID;
+                    END
+                """)
+
+    def _validar_colunas_fila(self, db):
+        """Garante que a tabela tem todas as colunas que o código usa."""
+        esperadas = {
+            "ID", "TIPO", "ID_ORIGEM", "PAYLOAD",
+            "STATUS", "TENTATIVAS", "DT_CRIACAO", "DT_ENVIO", "ERRO",
+        }
+        r = db.query(
+            "SELECT RDB$FIELD_NAME FROM RDB$RELATION_FIELDS "
+            "WHERE RDB$RELATION_NAME = 'INTEGRACAO_FILA'"
+        )
+        existentes = {(linha[0] or "").strip().upper() for linha in r}
+        faltando = esperadas - existentes
+        if faltando:
+            raise RuntimeError(
+                "INTEGRACAO_FILA sem colunas esperadas: %s" % sorted(faltando)
+            )
+
     def removerAcentosECaracteresEspeciais(self, palavra):
-
-        # Unicode normalize transforma um caracter em seu equivalente em latin.
-        nfkd = unicodedata.normalize('NFKD', palavra)
-        palavraSemAcento = u"".join([c for c in nfkd if not unicodedata.combining(c)])
-
-        # Usa expressao regular para retornar a palavra apenas com numeros, letras e espaco
-        return re.sub('[^a-zA-Z0-9]', ' ', palavraSemAcento)    
-
-    def action_atualiza_caixas(self):
-        self._inicia()
-        try:
-            # db = con.Conexao(self.host, self.database)
-            db = con()
-        except:
-            msg_sis = u'Caminho ou nome do banco invalido. '
-        msg_erro = ''
-        #breakpoint()
-        print('Atualizando Caixa.')
-        hj = datetime.now()
-        hj = hj - timedelta(days=5)
-        hj = datetime.strftime(hj,'%Y-%m-%d')
-        executando_msg = ""
-        # sessao_ids = self.env['pos.session'].search([
-        #     ('create_date', '>=', hj),   
-        #     ('state','=','opened')
-        #     ])
-        #('state','=','opened')
-        # for ses in sessao_ids:
-        
-            # TODO trocar os numeros abaixo pelas variaveis
-            #user_temp = 11
-            #sess_temp = 4564
-            # num_sessao = int(session.name[len(ses.name)-4:])
-            # num_sessao = ses.id
-        sqlp = "SELECT FIRST 10 IDCAIXACONTROLE \
-                ,CODCAIXA, CODUSUARIO, SITUACAO, DATAFECHAMENTO \
-                ,NOMECAIXA, DATAABERTURA FROM CAIXA_CONTROLE \
-                WHERE DATAABERTURA > '%s' \
-                AND CODUSUARIO = %s ORDER BY IDCAIXACONTROLE DESC" %(hj, self.caixa_user)
-        sess = db.query(sqlp)
-        for ses in sess:
-            nomecli = ses[5]
-            nomecli = self.removerAcentosECaracteresEspeciais(nomecli)
-            vals = {}
-            vals['user_id'] = ses[2]
-            vals['name'] = ses[5]
-            vals['caixa'] = ses[1]
-            # vals['config_id'] = ses.config_id.id
-            data_abertura = "%s 20:00:00" %(ses[6])
-            vals['start_at'] = data_abertura
-            if ses[3] == 'o':
-                vals['state'] = 'draft'
-                arquivo_nome = self.path_envio + '/caixa_%s.json' %(ses[1])
-            elif ses[3] == 'F':
-                vals['state'] = 'closed'
-                arquivo_nome = self.path_envio + '/caixaf_%s.json' %(ses[1])
-            if os.path.exists(arquivo_nome):
-                continue
-            arquivo_json = open(arquivo_nome, 'w+')
-            dados_vals = json.dumps(vals)
-            arquivo_json.write(dados_vals)
-            executando_msg += " Caixa enviando : " + arquivo_nome
-        sqlp = "SELECT f.CAIXA, f.CODFORMA, f.COD_VENDA, \
-            f.VALOR_PAGO, f.N_DOC FROM FORMA_ENTRADA f, CAIXA_CONTROLE c \
-            WHERE c.CODCAIXA = f. CAIXA and DATAABERTURA > '%s' \
-            and f.COD_VENDA = 1 AND CODUSUARIO = %s" %(hj, self.caixa_user)
-        sess_ids = db.query(sqlp)
-        amount = 0.0
-        for sess in sess_ids:
-            cod_caixa = sess[0]
-            cod_forma = sess[1]
-            cod_venda = sess[2]
-            valor = sess[3] or 0.0
-            if not valor:
-                continue
-            motivo = sess[4]
-            motivo = self.removerAcentosECaracteresEspeciais(motivo)
-            if int(cod_caixa) != sess[0]:
-                continue
-            if int(cod_venda) == 1:
-                amount = -valor
-            else:
-                amount = valor
-
-            lancamento = 'Caixa-%s-%s' %(cod_caixa, cod_forma)
-            vals = {
-                        'date': hj,
-                        'amount': amount,
-                        'ref': lancamento,
-                        'motivo': motivo,
-                        'tipo': 'san',
-                        'name': str(cod_forma),
-                        'caixa': cod_caixa,
-                        'cod_venda': cod_venda,
-                        'user_id': self.caixa_user,
-            }
-            arquivo_nome = self.path_envio + '/sangria_%s.json' %(cod_forma)
-            if os.path.exists(arquivo_nome):
-                continue
-            arquivo_json = open(arquivo_nome, 'w+')
-            dados_vals = json.dumps(vals)
-            arquivo_json.write(dados_vals)
-            executando_msg += " Caixa lancamento : " + arquivo_nome
-        if executando_msg:
-            print(executando_msg)
-        else:
-            print("CAIXA sem atualizacao.")
-
-    def cron_integra_produtos(self):
-        self.action_atualiza_produtos()
-
-    def action_integra_produtos(self):
-        # se nao for no pos enviar email com as msg_erro
-        self.msg_integracao = self.action_atualiza_produtos(self)
+        if not palavra:
+            return ""
+        nfkd = unicodedata.normalize("NFKD", str(palavra))
+        sem_acento = "".join(c for c in nfkd
+                             if not unicodedata.combining(c))
+        return re.sub(r"[^a-zA-Z0-9]", " ", sem_acento)
 
     def action_atualiza_produtos(self):
         self._inicia()
         envia("produto")
-        db = con()
-        _logger.info("Integrando PRODUTOS para o PDV")
-        #import pudb;pu.db
-        # hj = datetime.now()
-        # data_limpa = hj - timedelta(days=5)
-        # # hj = datetime.strftime(hj,'%Y-%m-%d')
-        # data_limpa = data_limpa.day
-        # # limpa produtos antigos atualizados
-        # sql_delete = "delete from produto where CAST(substr(DataCadastro, 4, 2) AS INTEGER) < %s" %(str(data_limpa))
-        # # print (sql_delete)
-        # dblocal = local_db(filename = 'lancamento.db', table = 'lancamento')
-        # dblocal.delete_produto(sql_delete)     
-        # prod_novo = dblocal.consulta_produto()
 
-        # 09/05/2024 parei de usar o sqlite usando um arquivo em json
         arquivo_json = os.path.join(self.path_envio, "produtos.json")
+        if not os.path.isfile(arquivo_json):
+            _logger.warning("produtos.json nao encontrado")
+            return False
+
+        with open(arquivo_json, encoding="utf-8") as f:
+            dados = json.load(f)
+
         try:
-            f = open(arquivo_json)
-        except:
-            return
-        produto_arquivo = json.load(f)
-        
-        prod_novo = json.loads(produto_arquivo['result'])
-        # for t in qa:
-        #     print(str(t['codproduto']) + '-' + t['produto'])
-        incluido = 0
-        alterado = 0
-        #breakpoint()
+            prod_novo = json.loads(dados["result"])
+        except (KeyError, TypeError, json.JSONDecodeError):
+            _logger.error("produtos.json com formato inesperado")
+            return False
+
         if not prod_novo:
             _logger.info("Sem produtos pra atualizar")
             return False
-        for pr in prod_novo:
-            codproduto = pr['codproduto']
-            ncm = ''
-            if 'ncm' in pr and pr['ncm']:
-                ncm = pr['ncm']
-                if ncm:
-                    ncm = re.sub('[^0-9]', '', ncm)
-            if ncm and len(ncm) > 8:
-                ncm = '00000000'
-            p_custo = 0.0
-            if 'custo' in pr and pr['custo']:
-                p_custo = pr['custo']
-            p_venda = 0.00
-            if 'valor_prazo' in pr and pr['valor_prazo']:
-                p_venda = pr['valor_prazo']
-            codbarra = ''
-            if 'cod_barra' in pr and pr['cod_barra'] and len(pr['cod_barra']) < 14:
-                codbarra = pr['cod_barra'].strip()
-            produto = pr['produto'].strip()
-            produto = produto.replace("'"," ")
-            try:
-                produto = self.removerAcentosECaracteresEspeciais(produto)
-            except:
-                produto = produto
-            produto = produto.replace("'","")
-            codp = str(pr['codproduto'])
 
-            sqlp = "select FIRST 1 CODPRODUTO,\
-                    DATACADASTRO, VALOR_PRAZO, CODPRO from produtos \
-                    where codproduto = %s" %(str(codproduto))
-            print(sqlp)
-            prods = db.query(sqlp)
-            if pr['codpro']:
-                codpro = pr['codpro'].strip()
-            if (len(prods) and codpro != prods[0][3]) or (not len(prods) and pr['codpro']):
-                sqlp = "select FIRST 1 CODPRODUTO,\
-                    DATACADASTRO, VALOR_PRAZO from produtos \
-                    where codpro = \'%s\'" %(codpro)
-                prods = db.query(sqlp)
-                if len(prods):
-                    codproduto = prods[0][0]                
-
-            # serve pra identificar se usa o pdv_integracao ou o pdv_integracao_outros
-            if 'tipo_venda' in pr:
-                if not os.path.exists('promocao'):
-                    os.makedirs('promocao')
-                promo_jpg = f"promocao{codpro}.jpg"
-                promo_txt = f"promocao{codpro}.txt"
-                img_sql = ''
-                if pr['promocao_jpg']:
-                    img_sql = promo_jpg
-                    if not os.path.exists(promo_jpg):
-                        imagem = pr['promocao_jpg']
-                        imagem_dec = base64.b64decode(imagem)
-                        with open(promo_jpg, 'wb') as f:
-                            f.write(imagem_dec)
-                else:
-                    if os.path.exists(promo_jpg):
-                        os.remove(promo_jpg)
-                if pr['promocao_txt']:
-                    img_sql = promo_txt
-                    if not os.path.exists(promo_txt):
-                        with open(promo_txt, 'w') as f:
-                            f.write(pr['promocao_txt'])
-                else:
-                    if os.path.exists(promo_txt):
-                        os.remove(promo_txt)
-
-            #sqlp = 'select codproduto from produtos where codpro like \'%s\'' %(codp+'%')
-            if codbarra:
-                # 03/10/2022 limpando o codigo de barra qdo ja existe  
-                sql_bar = 'select codpro from produtos where cod_barra = \'%s\' AND CODPRODUTO <> \'%s\'' %(codbarra, codproduto)
-                barra = db.query(sql_bar)
-                if len(barra):
-                    _logger.info("Limpando codigo de barras, se existir outro item %s - %s-%s" %(codbarra,codpro,produto)) 
-                    up_bar = 'UPDATE PRODUTOS SET COD_BARRA = NULL WHERE COD_BARRA = \'%s\' AND CODPRODUTO <> \'%s\'' %(codbarra, codproduto)
-                    for sess_bar in barra:
-                        cod_p_barra = str(sess_bar[0])
-                        if str(codpro) == cod_p_barra:
-                            up_bar = ''
-                    if len(barra) and up_bar:
-                        db.insert(up_bar)
-            #prods = db.query(sqlp)
-            #print ('TESTE - %s' %(product_id.name))
-            data_cad = '2023/01/01 01:00:00'
-            if len(prods):
-                data_cad = datetime.strftime(prods[0][1],'%Y/%m/%d %H:%M:%S')
-            data_nova = pr['datacadastro']
-            data_nova = datetime.strptime(data_nova,'%m/%d/%Y %H:%M:%S')
-            data_fb = datetime.strftime(data_nova,'%Y.%m.%d, %H:%M:%S.0000')
-            data_nova = datetime.strftime(data_nova,'%Y/%m/%d %H:%M:%S')
-            origem = '0'
-            if 'origem' in pr and pr['origem']:
-                    origem = str(pr['origem'])
-            tipo_venda = '1'
-            if 'tipo_venda' in pr and pr['tipo_venda']:
-                    tipo_venda = str(pr['tipo_venda'])
-            qtdeatacado = '0.0'
-            if 'qtdeatacado' in pr and pr['qtdeatacado']:
-                    qtdeatacado = str(pr['qtdeatacado'])
-            precoatacado = '0.0'
-            if 'precoatacado' in pr and pr['precoatacado']:
-                    precoatacado = str(pr['precoatacado'])
-            if not len(prods) and pr['usa'] == 'S':
-                incluido += 1
-                _logger.info("Inserindo item : %s-%s" %(codpro,produto))
-                print ('Incluindo - %s' %(produto))
-                #sqlp = 'select codproduto from produtos where codpro like \'%s\'' %(codp+'%')
-
-                #prodsa = db.query(sqlp)					
-                #if len(prodsa):
-                #    if product_id.default_code:
-                #        codp = product_id.default_code + '(%s)' %(str(len(prodsa)+1))
-                #if len(codp) > 14:
-                #    codp = str(product_id.id) 
-                #print ('Incluindo - %s-%s' %(str(product_id.id),product_id.name))
-                un = pr['unidademedida'][:2]
-                
-                insere = 'INSERT INTO PRODUTOS (UNIDADEMEDIDA, PRODUTO, PRECOMEDIO, CODPRO,\
-                          TIPOPRECOVENDA, ORIGEM, NCM, VALORUNITARIOATUAL, VALOR_PRAZO, TIPO, RATEIO, \
-                          QTDEATACADO, PRECOATACADO, DATACADASTRO, CODPRODUTO'
-                if 'tipo_venda' in pr and img_sql:
-                    insere += ', FOTOPRODUTO'
-                if codbarra:
-                    insere += ', COD_BARRA'
-
-                insere += ') VALUES ('
-                insere += '\'' + un + '\''
-                insere += ', \'' + produto + '\''
-                insere += ', ' + str(p_custo)
-                insere += ', \'' + str(codpro) + '\''
-                insere += ',\'F\''
-                insere += ',' + origem
-                insere += ',\'' + str(ncm) + '\''
-                insere += ', ' + str(p_custo)
-                insere += ',' + str(round(p_venda,2))
-                insere += ',\'' + str('PROD') + '\''
-                insere += ', \'' + tipo_venda + '\''
-                insere += ',' + qtdeatacado
-                insere += ',' + precoatacado
-                insere += ', \'' + data_fb + '\''
-                insere += ',' + str(codproduto)
-                if 'tipo_venda' in pr and img_sql:
-                    insere += ',' + img_sql                
-                if codbarra:
-                    insere += ', \'' + str(codbarra) + '\''
-                insere += ')'
-                # try:
-                retorno = db.insert(insere)
-                if retorno:
-                    print ('ERRRRRRRRRRRRROOOOOOOOOOOO : ' + codp + '-' + produto)
-                    _logger.info("SQL erro: %s" %(retorno))
-                print (codp+'-'+produto)
-                # TODO tratar isso e enviar email
-            elif len(prods):
-                alterado += 1
-                print(data_cad + ' - ' + data_nova)
-                if data_cad == data_nova and round(prods[0][2],2) == round(p_venda,2):
-                    _logger.info("Item ja atualizado: %s-%s" %(codpro, produto))
-                    print("Item ja atualizado: %s-%s" %(codpro, produto))
-                    continue
-                _logger.info("Atualizando item: %s-%s" %(codpro, produto))
-                print("Atualizando item: %s-%s" %(codpro, produto))
-                ativo = 'S'
-                codprox = pr['codpro']
-                if pr['usa'] != 'S':
-                    ativo = 'N'
-                    codbarra = ''
-              
-               
-                altera = 'UPDATE PRODUTOS SET PRODUTO = '
-                altera += '\'' + produto + '\''
-                altera += ', VALOR_PRAZO = ' + str(round(p_venda, 2))
-                altera += ', NCM = ' +  '\'' + str(ncm) + '\''
-                altera += ', CODPRO = ' +  '\'' + str(codprox) + '\''
-                altera += ', ORIGEM = ' + origem 
-                altera += ', USA = \'' + ativo + '\''  
-                altera += ', RATEIO = \'' + tipo_venda + '\''
-                altera += ', QTDEATACADO = ' + qtdeatacado 
-                altera += ', PRECOATACADO = ' + precoatacado
-                altera += ', DATACADASTRO = \'' + data_fb + '\''
-                if 'tipo_venda' in pr and img_sql:
-                    altera += ', FOTOPRODUTO = \'' + img_sql + '\''
-                if codbarra:
-                    altera += ', COD_BARRA = \'' + str(codbarra) + '\''
-                #altera += ' WHERE CODPRO = \'' + str(pr['codpro']) + '\''
-                altera += ' WHERE CODPRODUTO = ' + str(codproduto)
-                #print(altera)
-                #breakpoint()
-                retorno = db.insert(altera)
-                if retorno:
-                    print ('SQL : %s' %(altera))
-                    print ('**** ERRO **** : %s' %(retorno))
-                    _logger.info("SQL erro : %s" %(retorno))
-        msg = ""
-        if incluido:
-            msg += " -Incluido: " + str(incluido)
-        if alterado:
-            msg += " -Alterado: " + str(alterado)
-        print("Atualizacao produto executada. " + msg)
-        _logger.info("Atualizacao do produto executada com sucesso.")
+        incluido = alterado = 0
+        with con() as db:
+            for pr in prod_novo:
+                try:
+                    r = self._processar_produto(db, pr)
+                    if r == "I":
+                        incluido += 1
+                    elif r == "U":
+                        alterado += 1
+                except Exception:
+                    _logger.exception(
+                        "Erro processando produto %s", pr.get("codproduto")
+                    )
+        _logger.info("Produtos: incluido=%s alterado=%s", incluido, alterado)
         return True
 
-    def cron_integra_clientes(self):
-        session_ids = self.env['pos.session'].search([
-                ('state', '=', 'opened')])
-        for ses in session_ids:
-             self.action_atualiza_clientes(ses, False)
+    def _processar_produto(self, db, pr):
+        codproduto = pr["codproduto"]
+        codpro     = (pr.get("codpro") or "").strip()
+        produto    = self.removerAcentosECaracteresEspeciais(
+            (pr.get("produto") or "").strip()
+        )
+        p_venda    = float(pr.get("valor_prazo") or 0)
+        ncm        = re.sub(r"[^0-9]", "", pr.get("ncm") or "")
+        if ncm and len(ncm) > 8:
+            ncm = "00000000"
+        codbarra   = (pr.get("cod_barra") or "").strip()
+        if codbarra and len(codbarra) >= 14:
+            codbarra = ""
 
-    def action_integra_clientes(self):
-        # se nao for no pos enviar email com as msg_erro
-        self.msg_integracao = self.action_atualiza_clientes(self, False)
+        prods = db.query(
+            "SELECT FIRST 1 CODPRODUTO, DATACADASTRO, VALOR_PRAZO, CODPRO "
+            "FROM PRODUTOS WHERE CODPRODUTO = ?",
+            (codproduto,),
+        )
+
+        data_nova = datetime.strptime(pr["datacadastro"], "%m/%d/%Y %H:%M:%S")
+        data_fb = data_nova.strftime("%Y.%m.%d, %H:%M:%S.0000")
+
+        if not prods and pr.get("usa") == "S":
+            db.insert(
+                "INSERT INTO PRODUTOS ("
+                "  UNIDADEMEDIDA, PRODUTO, PRECOMEDIO, CODPRO, "
+                "  TIPOPRECOVENDA, ORIGEM, NCM, VALORUNITARIOATUAL, "
+                "  VALOR_PRAZO, TIPO, RATEIO, QTDEATACADO, PRECOATACADO, "
+                "  DATACADASTRO, CODPRODUTO, COD_BARRA"
+                ") VALUES (?, ?, ?, ?, 'F', ?, ?, ?, ?, 'PROD', ?, ?, ?, ?, ?, ?)",
+                (
+                    (pr.get("unidademedida") or "")[:2],
+                    produto, 0.0, codpro,
+                    str(pr.get("origem") or "0"),
+                    ncm, 0.0, round(p_venda, 2),
+                    str(pr.get("tipo_venda") or "1"),
+                    str(pr.get("qtdeatacado") or "0.0"),
+                    str(pr.get("precoatacado") or "0.0"),
+                    data_fb, codproduto, codbarra or None,
+                ),
+            )
+            _logger.info("Incluido: %s-%s", codpro, produto)
+            return "I"
+
+        if prods:
+            data_cad = (prods[0][1].strftime("%Y/%m/%d %H:%M:%S")
+                        if prods[0][1] else "2023/01/01 01:00:00")
+            if (data_cad == data_nova.strftime("%Y/%m/%d %H:%M:%S")
+                    and round(prods[0][2], 2) == round(p_venda, 2)):
+                return None
+
+            ativo = "S" if pr.get("usa") == "S" else "N"
+            db.insert(
+                "UPDATE PRODUTOS SET "
+                "  PRODUTO = ?, VALOR_PRAZO = ?, NCM = ?, CODPRO = ?, "
+                "  ORIGEM = ?, USA = ?, RATEIO = ?, "
+                "  QTDEATACADO = ?, PRECOATACADO = ?, DATACADASTRO = ?, "
+                "  COD_BARRA = ? "
+                "WHERE CODPRODUTO = ?",
+                (
+                    produto, round(p_venda, 2), ncm, codpro,
+                    str(pr.get("origem") or "0"), ativo,
+                    str(pr.get("tipo_venda") or "1"),
+                    str(pr.get("qtdeatacado") or "0.0"),
+                    str(pr.get("precoatacado") or "0.0"),
+                    data_fb, codbarra or None, codproduto,
+                ),
+            )
+            _logger.info("Atualizado: %s-%s", codpro, produto)
+            return "U"
+        return None
 
     def action_atualiza_clientes(self):
         self._inicia()
         envia("cliente")
-        # try:
-        db = con()
-        #     dblocal = local_db(filename = 'lancamento.db', table = 'cliente')
-        # except:
-        #     msg_sis = u'Caminho ou nome do banco invalido. '
-        msg_erro = ''
-        msg_sis = 'Integrando Clientes para o PDV '
-        print("Atualizando clientes.")
-        incluido = 0
-        alterado = 0
-        hj = datetime.now()
-        hj = datetime.strftime(hj,'%Y-%m-%d')
-        # cli_ids = dblocal.consulta_cliente()
+
         arquivo_json = os.path.join(self.path_envio, "clientes.json")
+        if not os.path.isfile(arquivo_json):
+            return False
+
+        with open(arquivo_json, encoding="utf-8") as f:
+            dados = json.load(f)
+
         try:
-            f = open(arquivo_json)
-        except:
-            return
-        cliente_arquivo = json.load(f)
-        
-        cli_novo = json.loads(cliente_arquivo['result'])
+            cli_novo = json.loads(dados["result"])
+        except (KeyError, TypeError, json.JSONDecodeError):
+            _logger.error("clientes.json com formato inesperado")
+            return False
 
         if not cli_novo:
-            print('Sem clientes pra atualizar')
-            return
-        for partner_id in cli_novo:
-            nome = partner_id['nomecliente']
-            nome = self.removerAcentosECaracteresEspeciais(nome)
-            razao = nome  
-            sqlc = 'select codcliente, datacadastro from clientes where codcliente = %s' %(partner_id['codcliente'])
-            cli = db.query(sqlc)
-            if len(cli):
-                alterado += 1
-                data_cad = '2023/01/01 01:00:00'
-                if len(cli):
-                    data_cad = datetime.strftime(cli[0][1],'%Y-%m-%d')
-                if data_cad == hj:
-                    continue
-                altera =  "UPDATE CLIENTES SET STATUS = 0 \
-                    ,NOMECLIENTE = \'%s\', DATACADASTRO = \'%s\'  \
-                    WHERE CODCLIENTE = %s" %(nome, hj, str(partner_id['codcliente']))
-                retorno = db.insert(altera )
-                if retorno:
-                    msg_erro += 'ERRO : %s ' %(retorno)
-            if not len(cli):
-                incluido += 1
-                tipo = partner_id['tipofirma']
-                vendedor = partner_id['codusuario']
-                ie = 'Null'
-                fiscal = '9'
-                regiao = partner_id['regiao']
-                insere = 'insert into clientes (\
-                            CODCLIENTE, NOMECLIENTE, RAZAOSOCIAL,\
-                            TIPOFIRMA,CNPJ, INSCESTADUAL,\
-                            SEGMENTO, REGIAO, LIMITECREDITO,\
-                            DATACADASTRO, CODUSUARIO, STATUS, CODBANCO, CODFISCAL)\
-                            values (%s, \'%s\', \'%s\',\
-                            %s, \'%s\',\'%s\',\
-                            %s, %s, %s,\
-                            %s, %s, %s, %s, \'%s\')'\
-                            %(str(partner_id['codcliente']), nome, razao, \
-                            tipo, partner_id['cnpj'], ie,\
-                            '1', regiao, '0.0',\
-                            'current_date', vendedor, '1', '1', fiscal)
-                retorno = db.insert(insere)
-                if retorno:
-                    msg_erro += 'ERRO : %s ' %(retorno)                
-                
-                #buscar Cidade/UF/Pais
-                ibge = 'Null'
-                cidade = 'Artur Nogueira'
-                uf = 'SP'
-                pais = 'Br'
-                endereco = 'Rua x'
-                bairro = 'centro'
-                complemento = 'Null'
-                cep = '123'
-                email = 'fulano@gmail.com'
-                obs = 'Null'
-                numero = '413'
-                inserir = 'INSERT INTO ENDERECOCLIENTE (CODENDERECO, \
-                          CODCLIENTE, LOGRADOURO, BAIRRO, COMPLEMENTO,\
-                          CIDADE, UF, CEP, TELEFONE, TELEFONE1, TELEFONE2,\
-                          E_MAIL, TIPOEND,\
-                          DADOSADICIONAIS, DDD, DDD1, DDD2,\
-                          NUMERO, CD_IBGE, PAIS) VALUES ('
-                inserir += str(partner_id['codcliente'])
-                inserir += ',' + str(partner_id['codcliente'])
-                if endereco != 'Null':
-                    inserir += ', \'%s\'' %(str(endereco.encode('ascii', 'ignore')))
-                else:
-                    inserir += ', Null'
-                if bairro != 'Null':
-                    inserir += ', \'%s\'' % (str(bairro.encode('ascii', 'ignore')))
-                else:
-                    inserir += ', Null'
-                if complemento != 'Null':
-                    inserir += ', \'%s\'' % (str(complemento.encode('ascii', 'ignore')))
-                else:
-                    inserir += ', Null'
-                if cidade != 'Null':
-                    inserir += ', \'%s\'' % (str(cidade.encode('ascii', 'ignore')))
-                else:
-                    inserir += ', Null'
-                if uf != 'Null':
-                    inserir += ', \'%s\'' % (str(uf))
-                else:
-                    inserir += ', Null'
-                if cep != 'Null':
-                    inserir += ', \'%s\'' % (cep)
-                else:
-                    inserir += ', Null'
-                if email != 'Null':
-                    inserir += ', \'%s\'' % (email)
-                else:
-                    inserir += ', Null'
-                inserir += ', 0' # tipoEnd
-                if obs != 'Null':
-                    inserir += ', \'%s\'' % (str(obs.encode('ascii', 'ignore')))
-                else:
-                    inserir += ', Null'
-                if numero != 'Null':
-                    inserir += ', \'%s\'' % (numero)
-                else:
-                    inserir += ', Null'
-                if ibge != 'Null':
-                    inserir += ', \'%s\'' % (ibge)
-                else:
-                    inserir += ', Null'
-                if pais != 'Null':
-                    inserir += ', \'%s\');' % (pais)
-                else:
-                    inserir += ', Null);'
-                
-                retorno = db.insert(inserir)
-                if retorno:
-                    msg_erro += 'ERRO : %s ' %(retorno)
-            else:
-                regiao = partner_id['regiao']
-                altera =  'UPDATE CLIENTES SET REGIAO = %s \
-                    ,NOMECLIENTE = \'%s\', STATUS = 1 \
-                    WHERE CODCLIENTE = %s' %(regiao, nome, str(partner_id['codcliente']))
-                retorno = db.insert(altera )
-                if retorno:
-                    msg_erro += 'ERRO : %s ' %(retorno)
-        msg = ""
-        if incluido:
-            msg += " -Incluido: " + str(incluido)
-        if alterado:
-            msg += " -Alterado: " + str(alterado)       
-        msg_sis += 'Integracao Clientes finalizada. ' + msg
-        print('Integracao Clientes finalizada. ' + msg)
-        return  msg_sis + ' ' + msg_erro
+            _logger.info("Sem clientes pra atualizar")
+            return False
 
-    def cron_integra_recebidos(self):
-        session_ids = self.env['pos.session'].search([
-                ('state', '=', 'opened')])
-        for ses in session_ids:
-            if self.verifica_se_esta_rodando(ses):
-                ses.integracao_andamento = datetime.strftime(datetime.now(),'%Y-%m-%d %H:%M:%S')
-                self.action_atualiza_recebidos(ses)
+        incluido = alterado = 0
+        hj = datetime.now().strftime("%Y-%m-%d")
 
-    def action_integra_recebidos(self):
-        self._inicia()
-        # se nao for no pos enviar email com as msg_erro
-        #if self.verifica_se_esta_rodando(self):
-        #    self.integracao_andamento = datetime.strftime(datetime.now(),'%Y-%m-%d %H:%M:%S')
-        self.msg_integracao = self.action_atualiza_recebidos(self)
-        #else:
-        #    raise UserError(
-        #            u'Ja existe Atualizacao em Andamento, aguarde.')
-        
-    def action_atualiza_recebidos(self, session):
-        self._inicia()
-        try:
-            if session.config_id.ip_terminal:
-                db = con.Conexao(session.config_id.ip_terminal, session.config_id.database)
-            else:
-                return False
-        except:
-            msg_sis = u'Caminho ou nome do banco invalido. '
-        msg_erro = ''
-        msg_sis = 'Integrando Contas a Receber para o PDV '
-        hj = datetime.now()
-        hj = hj - timedelta(days=session.periodo_integracao+10)
-        hj = datetime.strftime(hj,'%Y-%m-%d %H:%M:%S')
-        # se dois bds, entao preciso verificar se o contas a receber esta correto
-        order_ids = self.env['pos.order'].search([
-            ('state','=', 'invoiced'),
-            ('date_order','>',hj),
-        ])
-        # repeti a variavel hj aqui, pq acima tem horas, minutos
-        hj = datetime.now()
-        hj = hj - timedelta(days=session.periodo_integracao)
-        hj = datetime.strftime(hj,'%Y-%m-%d')
-        
-        for odr in order_ids:
-            #verifico se existe no contas a receber
-            codmov = odr.pos_reference[odr.pos_reference.find('-')+1:]
-            #codcaixa = odr.pos_reference[:odr.pos_reference.find('-')]
-            codcaixa = odr.session_id.id
-            sqld = 'SELECT r.CODRECEBIMENTO, r.CODCLIENTE, r.STATUS FROM RECEBIMENTO r \
-                    LEFT OUTER JOIN VENDA v ON r.CODVENDA = v.CODVENDA \
-                    WHERE r.CODCLIENTE = %s AND r.CODALMOXARIFADO = %s \
-                    AND ((r.TITULO = \'%s\') \
-                     OR (v.CODMOVIMENTO = %s))' %(
-                   str(odr.partner_id.id), codcaixa, str(odr.name), codmov)
-            recs = db.query(sqld)
-            if len(recs):
-                # TODO
-                # recebido entao precisa colocar recebido aqui tbem
-                if recs[0][2] == '5-':
-                    faturas_ids = self.env['account.invoice'].search([
-                        ('state','=', 'paid'),
-                        ('partner_id','=', odr.partner_id.id),
-                        ('origin','=', odr.name), 
-                    ])
-                    if faturas_ids:
-                        recebe = 'UPDATE RECEBIMENTO SET STATUS = \'7-\' \
-                              WHERE CODRECEBIMENTO = %s' %(str(recs[0][0]))
-                        retorno = db.insert(recebe)
-                        if retorno:
-                            msg_erro += 'ERRO : %s ' %(retorno)
-                    """ PRECISO DISTO ABAIXO
+        with con() as db:
+            for partner in cli_novo:
+                try:
+                    nome = self.removerAcentosECaracteresEspeciais(
+                        partner["nomecliente"])
+                    cod = partner["codcliente"]
+                    cli = db.query(
+                        "SELECT CODCLIENTE FROM CLIENTES WHERE CODCLIENTE = ?",
+                        (cod,),
+                    )
+                    if cli:
+                        db.insert(
+                            "UPDATE CLIENTES SET STATUS = 1, "
+                            "NOMECLIENTE = ?, DATACADASTRO = ?, REGIAO = ? "
+                            "WHERE CODCLIENTE = ?",
+                            (nome, hj, partner.get("regiao"), cod),
+                        )
+                        alterado += 1
                     else:
-                        vlr := fatura_ids.amount_total - fatura_ids.residual
-                        recebe = 'UPDATE RECEBIMENTO SET VALOR_RESTO = %s \
-                              ,VALORTITULO = %s \
-                              WHERE CODRECEBIMENTO = %s' %(str(vlr),str(recs[0][0]))
-                        retorno = db.insert(recebe)
-                        if retorno:
-                            msg_erro += 'ERRO : %s ' %(retorno)
-                    """   
-                continue
-            else:
-                sqlc = 'SELECT CODCLIENTE FROM CLIENTES WHERE CODCLIENTE = %s' %(
-                    str(odr.partner_id.id))
-                clis = db.query(sqlc)
-                if not len(clis):
-                    self.action_atualiza_clientes(session, odr.partner_id.id)
-                sqld = 'SELECT r.CODRECEBIMENTO, r.CODCLIENTE, r.STATUS FROM RECEBIMENTO r \
-                    WHERE r.CODCLIENTE = %s AND r.CODALMOXARIFADO = %s \
-                    AND (r.TITULO = \'%s\')' %(
-                   str(odr.partner_id.id), codcaixa, str(odr.name))
-                recs = db.query(sqld)
-                if len(recs):
-                    continue
-                #incluindo no RECEBIMENTO
-                # ve se a fatura esta aberta
-                faturas_ids = self.env['account.invoice'].search([
-                    ('state','=', 'open'),
-                    ('partner_id','=', odr.partner_id.id),
-                    ('origin','=', odr.name), 
-                    ])
-                for ftr in faturas_ids:
-                    dt_vc = ftr.date_invoice
-                    if ftr.date_due:
-                        dt_vc = ftr.date_due
-                    ins_rec = 'INSERT INTO RECEBIMENTO (CODRECEBIMENTO, TITULO ' \
-                              ',EMISSAO, CODCLIENTE, DATAVENCIMENTO ' \
-                              ',STATUS, VIA, FORMARECEBIMENTO, HISTORICO' \
-                              ',CODALMOXARIFADO, CODVENDEDOR, CODUSUARIO' \
-                              ',VALORRECEBIDO, JUROS ' \
-                              ',DESCONTO, PERDA, TROCA, FUNRURAL ' \
-                              ',VALOR_PRIM_VIA, VALOR_RESTO, VALORTITULO' \
-                              ',OUTRO_CREDITO, OUTRO_DEBITO, PARCELAS)' \
-                              ' VALUES(' \
-                                  'GEN_ID(COD_AREC,1), \'%s\' ' \
-                                  ',\'%s\', %s, \'%s\'' \
-                                  ',\'5-\', \'1\', \'1\', \'Importado Odoo\'' \
-                                  ',%s, %s, %s, 0.0, 0.0, 0.0, 0.0, 0.0,0.0' \
-                                  ',%s, %s, %s, 0.0, 0.0, 1)' %(
-                                ftr.origin, ftr.date_invoice, ftr.partner_id.id, 
-                                dt_vc, codcaixa, ftr.user_id.id, 
-                                ftr.user_id.id, ftr.residual, 
-                                ftr.residual, ftr.residual)
-                    # print(ins_rec)
-                    retorno = db.insert(ins_rec)
-                    if retorno:
-                        msg_erro += 'ERRO : %s ' %(retorno)
-        # contas recebidas colocar no PDV ODOO
-        sqld = 'SELECT  r.CODRECEBIMENTO, r.DATARECEBIMENTO, \
-                   r.CODALMOXARIFADO, r.FORMARECEBIMENTO, \
-                   r.VALORRECEBIDO, r.TITULO, r.CODCLIENTE \
-                   , f.CAIXA , f.ID_ENTRADA \
-                FROM RECEBIMENTO r, FORMA_ENTRADA f  \
-                WHERE f.CODFORMA = CAST(r.N_DOCUMENTO AS INTEGER) \
-                   AND r.DATARECEBIMENTO >= \'%s\' \
-                   AND r.STATUS = \'7-\' \
-                   AND r.CODALMOXARIFADO = %s' %(hj,str(session.id))
-        recs = db.query(sqld)
+                        db.insert(
+                            "INSERT INTO CLIENTES ("
+                            " CODCLIENTE, NOMECLIENTE, RAZAOSOCIAL, TIPOFIRMA, "
+                            " CNPJ, INSCESTADUAL, SEGMENTO, REGIAO, LIMITECREDITO, "
+                            " DATACADASTRO, CODUSUARIO, STATUS, CODBANCO, CODFISCAL"
+                            ") VALUES (?, ?, ?, ?, ?, 'Null', 1, ?, 0.0, "
+                            "          CURRENT_DATE, ?, 1, 1, '9')",
+                            (
+                                cod, nome, nome,
+                                partner.get("tipofirma"),
+                                partner.get("cnpj"),
+                                partner.get("regiao"),
+                                partner.get("codusuario"),
+                            ),
+                        )
+                        incluido += 1
+                except Exception:
+                    _logger.exception("Erro processando cliente %s",
+                                      partner.get("codcliente"))
 
-        if not len(recs):
-            msg_sis = 'Sem Contas Receber para importar. '
-        for rcs in recs:
-            # procura o pedido pdv odoo
-            lanc = '%s-%s' %(str(rcs[7]), str(rcs[8]))
-            # ppdv = self.env['pos.order'].search([
-            #     ('pos_reference','=',lanc)
-            # ])
-            ppdv = ''
-            if not ppdv:
-                continue
-            msg_sis = 'Receber novos : %s ' %(str(rcs[0]))
-            jrn = '1-'
-            # cartao Credito ATSAdmin    
-            if rcs[3] == '6':
-                jrn = '3-'
-            # cartao Debito ATSAdmin
-            if rcs[3] == '7':
-                jrn = '2-'
-            jrn_id = self.env['account.journal'].search([
-                ('name','like', jrn)])[0]
-            stmt = session.cash_register_id
-            if jrn != '1-':
-                stmt = self.env['account.bank.statement'].search([
-                    ('journal_id','=', jrn_id.id),
-                    ('pos_session_id','=',rcs[2]),
-                ])
-            lancado_id = self.env['account.bank.statement.line'].search([
-                ('move_name','=',str(rcs[0])),
-                ('statement_id','=', stmt.id),
-                ('journal_id','=', jrn_id.id),
-            ])
-            # if lancado_id:
-            #     faturas_ids = self.env['account.invoice'].search([
-            #         ('partner_id','=', rcs[6]),
-            #         ('origin', '=', ppdv.name)
-            #         ('state','=', 'open'),
-            #     ])
-            #     for ftr in faturas_ids:
-            #         ftr.pay_and_reconcile(jrn_id.id, rcs[4])
-            #     continue
-            values = {}
-            values['statement_id'] = stmt.id
-            values['journal_id'] = jrn_id.id
-            values['ref'] = session.name
-            values['move_name'] = str(rcs[0])
-            values['name'] = 'Recebimento conta %s' %(str(rcs[5]))
-            values['amount'] = rcs[4]
-            self.env['account.bank.statement.line'].create(values)                                        
-            # baixar a fatura do cliente
-            faturas_ids = self.env['account.invoice'].search([
-                ('partner_id','=', rcs[6]),
-                ('state','=', 'open'),
-                ('origin', '=', ppdv.name)
-            ])
-            for ftr in faturas_ids:
-                ftr.pay_and_reconcile(jrn_id.id, rcs[4])
-
-    def action_devolucao(self):  
-        self._inicia()     
-        db = con()
-        _logger.info("Integrando Devolucao PDV para Odoo")
-        hj = datetime.now()
-        hj = hj - timedelta(days=20)
-        hj = datetime.strftime(hj, '%m-%d-%Y')
-        sqlc = "SELECT r.IDCAIXACONTROLE, r.CODCAIXA,  \
-               r.VALORABRE, r.VALORFECHA  \
-               FROM CAIXA_CONTROLE r \
-               WHERE DATAABERTURA > '%s' AND r.CODUSUARIO = %s \
-               ORDER BY r.CODCAIXA " %(hj, self.caixa_user)
-        caixa_aberto = db.query(sqlc)
-        sqld = False
-        for cx in caixa_aberto:
-            sqld = ' Select c.caixa, c.codmovimento, movd.quantidade, movd.codproduto,'\
-                ' mov.hist_mov, p.produto, mov.controle, mov.codusuario, p.codpro '\
-                ' from compra c '\
-                ' inner join movimentodetalhe movd on (c.codmovimento = movd.codmovimento) '\
-                ' inner join produtos p on (movd.codproduto = p.codproduto) '\
-                ' inner join movimento mov on (c.codmovimento = mov.codmovimento) '\
-                ' where c.caixa = %s ' %(str(cx[1]))
-            movs = db.query(sqld)
-            if not len(movs):
-                _logger.info("Sem Devolucao para importar.")
-            for mvs in movs:
-                ord_name = '%s-%s' %(str(cx[1]),str(mvs[1]))
-                arquivo_nome = self.path_envio + '/devolucao_%s.json' %(ord_name)
-                if os.path.exists(arquivo_nome):
-                    continue
-                nome_busca = 'DEV-' + ord_name
-                _logger.info("Devolucao %s" %(ord_name))
-                item = []
-                vals = {}
-                vals['tipo'] = 'devolucao'
-                vals['name'] = nome_busca
-                vals['origin'] = nome_busca
-                vals['user_id'] = mvs[7]
-                vals['motivo'] = mvs[4]
-                vals['caixa'] = mvs[0]
-                prd = {}
-
-                prd['product_code']= mvs[3]
-                prd['product_uom_qty'] = mvs[2]
-                prd['product_uom_id'] = 1
-                prd['product_uom'] = 1
-                prd['qty_done'] = mvs[2]
-                prd['name']= str(mvs[5])
-                item.append((0, 0, prd))
-                
-                vals['move_lines'] = item
-
-                dados_vals = json.dumps(vals)
-                if not os.path.exists(arquivo_nome):
-                    arquivo_json = open(arquivo_nome, 'w')
-                    arquivo_json.write(dados_vals)
-                    arquivo_json.close()
-                _logger.info("Devolucao enviada: %s" %(nome_busca))
-        envia("devolucao")
+        _logger.info("Clientes: incluido=%s alterado=%s", incluido, alterado)
+        return True
 
     def action_atualiza_vendas(self):
-        #breakpoint()
         self._inicia()
-        caixa_falta = False
-        # Fazer um loop pela pasta de arquivos pegando o codigo dos pedidos
-        # Para remover do select da movimento
-        db = con()
-        _logger.info("Integrando Vendas para o PDV")
-        hj = datetime.now()
-        # hj = hj - timedelta(days=session.periodo_integracao)
-        hj = hj - timedelta(days=3)
-        hj = datetime.strftime(hj,'%m-%d-%Y')
-        caixa_usado = 'None'
-        # TODO le o ultimo arquivo de retorno com as ultimas atualizacos
-        # retorno = open(self.path_retorno, '+r')
-        str_ord = '0'
-        # TODO buscar caixa aberto
-        sqlc = "SELECT r.IDCAIXACONTROLE, r.CODCAIXA,  \
-               r.VALORABRE, r.VALORFECHA  \
-               FROM CAIXA_CONTROLE r"
-        if caixa_falta:
-            sqlc += " WHERE r.CODCAIXA = %s AND r.CODUSUARIO = %s \
-               ORDER BY r.CODCAIXA " %(caixa_falta, self.caixa_user)
-        else:       
-            sqlc += " WHERE DATAABERTURA > '%s' AND r.CODUSUARIO = %s \
-               ORDER BY r.CODCAIXA " %(hj, self.caixa_user)
-        
-        caixa_aberto = db.query(sqlc)
-        sqld = False
-        for cx in caixa_aberto:
-            # print(cx[1])
-            sqld = 'SELECT m.CODMOVIMENTO, m.DATAMOVIMENTO, ' \
-               'm.CODCLIENTE, m.STATUS, m.CODUSUARIO, m.CODVENDEDOR, ' \
-               'm.CODALMOXARIFADO, DATEADD(3 hour to m.DATA_SISTEMA) ' \
-               ', c.NOMECLIENTE ' \
-               '  FROM MOVIMENTO m, CLIENTES c ' \
-               ' WHERE c.CODCLIENTE = m.CODCLIENTE ' \
-               '   AND m.CODALMOXARIFADO = %s' \
-               '   AND m.STATUS = 1 ' \
-               '   AND m.CODNATUREZA = 3 ' \
-               '   AND m.CODMOVIMENTO NOT IN (%s)' %(str(cx[1]),str_ord)
-            if not sqld:
-                _logger.info("Sem caixa aberto.")
-                return
-                    # return msg_sis
-            movs = db.query(sqld)
-            if not len(movs):
-                _logger.info("Sem Pedidos para importar.")
-                # for mvs in movs:
-                #    print ('cod mov: %s' %(str(mvs[0]))) 
-            for mvs in movs:
-                ord_p = False
-                ord_name = '%s-%s' %(str(cx[1]),str(mvs[0]))
-                _logger.info("Pedidos novos: %s" %(ord_name))
-                arquivo_nome = self.path_envio + '/pedido_%s.json' %(ord_name)
-                if os.path.exists(arquivo_nome):
+        with con() as db:
+            self._enfileirar_vendas(db)
+            self._drenar_fila(db)
+
+    def _enfileirar_vendas(self, db):
+        hj = (datetime.now() - timedelta(days=3)).strftime("%m-%d-%Y")
+        caixas = db.query(
+            "SELECT CODCAIXA FROM CAIXA_CONTROLE "
+            "WHERE DATAABERTURA > ? AND CODUSUARIO = ? "
+            "ORDER BY CODCAIXA",
+            (hj, self.caixa_user),
+        )
+        enfileirados = 0
+        for (codcaixa,) in caixas:
+            vendas = db.query(
+                "SELECT m.CODMOVIMENTO, m.CODCLIENTE, m.CODUSUARIO, "
+                "       m.CODVENDEDOR, DATEADD(3 hour to m.DATA_SISTEMA) "
+                "FROM MOVIMENTO m "
+                "WHERE m.CODALMOXARIFADO = ? AND m.STATUS = 1 "
+                "  AND m.CODNATUREZA = 3",
+                (codcaixa,),
+            )
+            for v in vendas:
+                codmov = v[0]
+                ja = db.query(
+                    "SELECT 1 FROM INTEGRACAO_FILA "
+                    "WHERE TIPO = 'VENDA' AND ID_ORIGEM = ?",
+                    (codmov,),
+                )
+                if ja:
                     continue
-                teve_desconto = 'n'
-                dt_ord = '2018.01.01'
-                
-                # coloquei so pra manter o if
-                if ord_name:
-                    # cortesia = tipo_venda n
-                    vals = {}               
-                    cli = mvs[2]
-                    dt_ord = str(mvs[7])
-                    vals['name'] = ord_name
-                    vals['nb_print'] = 0
-                    vals['pos_reference'] = ord_name
-                    vals['session_id'] = cx[1]
-                    vals['pos_session_id'] = cx[1]
-                    # vals['pricelist_id'] = cx[2].config_id.pricelist_id.id
-                    vals['create_date'] = dt_ord #datetime.strftime(datetime.now(),'%Y-%m-%d %H:%M:%S')
-                    vals['date_order'] = dt_ord
-                    vals['sequence_number'] = mvs[0]
-                    #print('XXXXXX' + str(cli))
-                    vals['partner_id'] = cli
-                    userid = mvs[5]
-                    #if userid == 17:
-                    if userid > 1:
-                        vals['user_id'] = userid
-                    else:
-                        vals['user_id'] = mvs[4]
-                    
-                    sqld = 'SELECT f.CODFORMA, f.FORMA_PGTO, f.VALOR_PAGO, ' \
-                        'f.STATE, f.TROCO, f.DESCONTO from FORMA_ENTRADA f' \
-                        ' WHERE ID_ENTRADA = %s AND f.STATE = 1' %(str(mvs[0]))
-                    pag_ids = db.query(sqld)
+                payload = self._montar_payload_venda(db, codcaixa, v)
+                if payload is None:
+                    continue
+                db.insert(
+                    "INSERT INTO INTEGRACAO_FILA "
+                    "(TIPO, ID_ORIGEM, PAYLOAD, STATUS) "
+                    "VALUES ('VENDA', ?, ?, 'PENDENTE')",
+                    (codmov, json.dumps(payload)),
+                )
+                enfileirados += 1
+                print("  Enfileirando venda %s-%s" % (codcaixa, codmov))
 
-                    pag_line = []
-                    desconto_t = 0.0
-                    total_g = 0.0
-                    troca = 0.0
-                    for pg in pag_ids:
-                        pag = {}
-                        controle_troca = 0
-                        if pg[5]:
-                            desconto_t += pg[5]
-                            teve_desconto = 's'
-                        total_g += pg[2]
-                        jrn = '%s-' %(pg[1])
-                        if jrn == '5-':
-                            jrn = '1-'
-                        if jrn == '9-':
-                            troca = pg[2]
-                            controle_troca = 1
-                            
-                        #pag['account_id'] = self.env['res.partner'].browse(cli).property_account_receivable_id.id
-                        pag['date'] = dt_ord
-                        pag['amount'] = pg[2]
-                        # pag['journal_id'] = jrn_id.id
-                        pag['journal'] = jrn
-                        pag['partner_id'] = cli
-                        pag['name'] = ord_name
-                        if controle_troca == 0:
-                            pag_line.append((0, 0,pag))
+        if enfileirados:
+            print("Vendas novas enfileiradas: %s" % enfileirados)
+        else:
+            print("Vendas: nada novo.")
 
-                    #ord_id = pos_ord.create(vals)
-                    order_line = []
-                    sqld = 'SELECT md.CODDETALHE, md.CODPRODUTO, ' \
-                        ' md.QUANTIDADE, md.PRECO, COALESCE(md.VALOR_DESCONTO,0),' \
-                        ' md.BAIXA, md.DESCPRODUTO, md.CORTESIA, p.CODPRO ' \
-                        ' FROM MOVIMENTODETALHE md, PRODUTOS p ' \
-                        ' WHERE p.CODPRODUTO = md.CODPRODUTO ' \
-                        ' AND   md.STATUS = 0 AND md.CodMovimento = %s' %(str(mvs[0]))
-                    md_ids = db.query(sqld)
-                    if not len(md_ids):
+    def _montar_payload_venda(self, db, codcaixa, mov):
+        codmov, cli, codusuario, codvendedor, dt_sistema = mov
+        ord_name = "%s-%s" % (codcaixa, codmov)
+
+        pag_ids = db.query(
+            "SELECT f.CODFORMA, f.FORMA_PGTO, f.VALOR_PAGO, f.STATE, "
+            "       f.TROCO, f.DESCONTO "
+            "FROM FORMA_ENTRADA f WHERE f.ID_ENTRADA = ? AND f.STATE = 1",
+            (codmov,),
+        )
+        md_ids = db.query(
+            "SELECT md.CODDETALHE, md.CODPRODUTO, md.QUANTIDADE, md.PRECO, "
+            "       COALESCE(md.VALOR_DESCONTO, 0), md.BAIXA, md.DESCPRODUTO, "
+            "       md.CORTESIA, p.CODPRO "
+            "FROM MOVIMENTODETALHE md, PRODUTOS p "
+            "WHERE p.CODPRODUTO = md.CODPRODUTO "
+            "  AND md.STATUS = 0 AND md.CodMovimento = ?",
+            (codmov,),
+        )
+        if not md_ids:
+            return None
+
+        order_line = []
+        for md in md_ids:
+            try:
+                prdname = self.removerAcentosECaracteresEspeciais(md[6])
+            except Exception:
+                prdname = md[6] or "Sem descricao"
+            order_line.append((0, 0, {
+                "product_id": md[1],
+                "qty": md[2],
+                "price_unit": md[3],
+                "discount": md[4] or 0.0,
+                "tipo_venda": (md[7] or "1").strip(),
+                "name": prdname,
+                "codpro": md[8],
+            }))
+
+        pag_line = []
+        for pg in pag_ids:
+            jrn = "%s-" % pg[1]
+            if jrn == "5-":
+                jrn = "1-"
+            if jrn == "9-":
+                continue
+            pag_line.append((0, 0, {
+                "date": str(dt_sistema),
+                "amount": pg[2],
+                "journal": jrn,
+                "partner_id": cli,
+                "name": ord_name,
+            }))
+
+        return {
+            "name": ord_name,
+            "pos_reference": ord_name,
+            "session_id": codcaixa,
+            "pos_session_id": codcaixa,
+            "create_date": str(dt_sistema),
+            "date_order": str(dt_sistema),
+            "sequence_number": codmov,
+            "partner_id": cli,
+            "user_id": codvendedor if codvendedor > 1 else codusuario,
+            "lines": order_line,
+            "statement_ids": pag_line,
+        }
+
+    def _drenar_fila(self, db):
+        pend = db.query(
+            "SELECT FIRST 50 ID, ID_ORIGEM, PAYLOAD "
+            "FROM INTEGRACAO_FILA "
+            "WHERE STATUS = 'PENDENTE' AND TENTATIVAS < 5 ORDER BY ID"
+        )
+        if not pend:
+            print("Fila de vendas: nada pendente.")
+            return
+
+        print("Fila de vendas: %s pendente(s)." % len(pend))
+
+        for id_fila, id_origem, payload_blob in pend:
+            try:
+                payload = json.loads(payload_blob)
+            except Exception:
+                print("  [ERRO] fila ID=%s: payload invalido" % id_fila)
+                _logger.exception("Payload invalido na fila ID=%s", id_fila)
+                db.insert(
+                    "UPDATE INTEGRACAO_FILA SET STATUS='ERRO', "
+                    "ERRO = 'payload invalido' WHERE ID = ?",
+                    (id_fila,),
+                )
+                continue
+
+            ord_name = payload.get("pos_reference", "?")
+            nome_arq = "pedido_%s.json" % ord_name
+            caminho = os.path.join(self.path_envio, nome_arq)
+
+            with open(caminho, "w", encoding="utf-8") as f:
+                json.dump(payload, f, ensure_ascii=False)
+
+            print("  Enviando venda %s (fila ID=%s)..." % (ord_name, id_fila))
+
+            try:
+                envia("pedido")
+                db.insert(
+                    "UPDATE INTEGRACAO_FILA SET STATUS='ENVIADO', "
+                    "DT_ENVIO = CURRENT_TIMESTAMP WHERE ID = ?",
+                    (id_fila,),
+                )
+                print("  [OK] venda %s enviada" % ord_name)
+                try:
+                    os.remove(caminho)
+                except OSError:
+                    pass
+            except Exception as e:
+                db.insert(
+                    "UPDATE INTEGRACAO_FILA SET "
+                    "TENTATIVAS = TENTATIVAS + 1, ERRO = ? WHERE ID = ?",
+                    (str(e)[:2000], id_fila),
+                )
+                print("  [ERRO] venda %s: %s" % (ord_name, e))
+                _logger.exception("Falha enviando fila ID=%s", id_fila)
+
+    def action_atualiza_caixas(self):
+        self._inicia()
+        with con() as db:
+            self._atualiza_caixas(db)
+            self._atualiza_sangrias(db)
+        envia("sangria")
+
+    def _atualiza_caixas(self, db):
+        hj = (datetime.now() - timedelta(days=5)).strftime("%Y-%m-%d")
+        caixas = db.query(
+            "SELECT FIRST 10 IDCAIXACONTROLE, CODCAIXA, CODUSUARIO, "
+            "       SITUACAO, DATAFECHAMENTO, NOMECAIXA, DATAABERTURA "
+            "FROM CAIXA_CONTROLE "
+            "WHERE DATAABERTURA > ? AND CODUSUARIO = ? "
+            "ORDER BY IDCAIXACONTROLE DESC",
+            (hj, self.caixa_user),
+        )
+        enviados = 0
+        for cx in caixas:
+            _, codcaixa, codusuario, situacao, _, nomecaixa, data_abertura = cx
+            nome = self.removerAcentosECaracteresEspeciais(nomecaixa or "")
+            estado = "draft" if situacao == "o" else "closed"
+            prefixo = "caixa_" if situacao == "o" else "caixaf_"
+            arquivo = os.path.join(self.path_envio, "%s%s.json" % (prefixo, codcaixa))
+            if os.path.exists(arquivo):
+                continue
+            vals = {
+                "user_id": int(codusuario) if codusuario else None,
+                "name": nome,
+                "caixa": codcaixa,
+                "start_at": "%s 20:00:00" % data_abertura,
+                "state": estado,
+            }
+            tmp = arquivo + ".tmp"
+            with open(tmp, "w", encoding="utf-8") as f:
+                json.dump(vals, f, ensure_ascii=False)
+            os.replace(tmp, arquivo)
+            enviados += 1
+        if enviados:
+            _logger.info("Caixas: %s arquivo(s) gerado(s)", enviados)
+
+    def _atualiza_sangrias(self, db):
+        hj = (datetime.now() - timedelta(days=5)).strftime("%Y-%m-%d")
+        sangrias = db.query(
+            "SELECT f.CAIXA, f.CODFORMA, f.COD_VENDA, "
+            "       f.VALOR_PAGO, f.N_DOC, c.DATAABERTURA "
+            "FROM FORMA_ENTRADA f "
+            "INNER JOIN CAIXA_CONTROLE c ON c.CODCAIXA = f.CAIXA "
+            "WHERE c.DATAABERTURA > ? AND f.COD_VENDA = 1 "
+            "  AND c.CODUSUARIO = ? "
+            "ORDER BY f.CAIXA, f.CODFORMA, f.N_DOC",
+            (hj, self.caixa_user),
+        )
+        if not sangrias:
+            _logger.info("Sangria sem atualizacao.")
+            return
+        gerados = 0
+        for sx in sangrias:
+            cod_caixa, cod_forma, cod_venda, valor, n_doc, data_abertura = sx
+            valor = float(valor or 0.0)
+            if valor == 0.0:
+                continue
+            amount = -valor if int(cod_venda or 0) == 1 else valor
+            chave = "%s-%s-%s" % (cod_caixa, cod_forma, n_doc or 0)
+            motivo = self.removerAcentosECaracteresEspeciais(str(n_doc or ""))
+            vals = {
+                "date": str(data_abertura),
+                "amount": amount,
+                "ref": "Caixa-%s-%s" % (cod_caixa, cod_forma),
+                "motivo": motivo,
+                "tipo": "san",
+                "name": str(cod_forma),
+                "caixa": cod_caixa,
+                "cod_venda": cod_venda,
+                "user_id": int(self.caixa_user),
+            }
+            arquivo = os.path.join(self.path_envio, "sangria_%s.json" % chave)
+            if os.path.exists(arquivo):
+                continue
+            tmp = arquivo + ".tmp"
+            with open(tmp, "w", encoding="utf-8") as f:
+                json.dump(vals, f, ensure_ascii=False)
+            os.replace(tmp, arquivo)
+            gerados += 1
+            _logger.info("Sangria gerada: %s (valor=%s)", chave, amount)
+        if not gerados:
+            _logger.info("Sangria sem novidades.")
+
+    def action_devolucao(self):
+        self._inicia()
+        with con() as db:
+            hj = (datetime.now() - timedelta(days=20)).strftime("%m-%d-%Y")
+            caixas = db.query(
+                "SELECT CODCAIXA FROM CAIXA_CONTROLE "
+                "WHERE DATAABERTURA > ? AND CODUSUARIO = ? "
+                "ORDER BY CODCAIXA",
+                (hj, self.caixa_user),
+            )
+            for (codcaixa,) in caixas:
+                movs = db.query(
+                    "SELECT c.codmovimento, movd.quantidade, movd.codproduto, "
+                    "       mov.hist_mov, p.produto, mov.codusuario, p.codpro "
+                    "FROM compra c "
+                    "INNER JOIN movimentodetalhe movd "
+                    "  ON c.codmovimento = movd.codmovimento "
+                    "INNER JOIN produtos p ON movd.codproduto = p.codproduto "
+                    "INNER JOIN movimento mov ON c.codmovimento = mov.codmovimento "
+                    "WHERE c.caixa = ?",
+                    (codcaixa,),
+                )
+                for mv in movs:
+                    ord_name = "%s-%s" % (codcaixa, mv[0])
+                    arquivo = os.path.join(self.path_envio,
+                                           "devolucao_%s.json" % ord_name)
+                    if os.path.exists(arquivo):
                         continue
-                    #order = pos_ord.browse(ord_id)
-                    #order.write({'fiscal_position_id' : })
-                    vlr_total = 0.0
-                    vlr_totprod = 0.0
-                    if desconto_t > 0:
-                        desconto_t = desconto_t / (total_g+desconto_t)
+                    vals = {
+                        "tipo": "devolucao",
+                        "name": "DEV-%s" % ord_name,
+                        "origin": "DEV-%s" % ord_name,
+                        "user_id": mv[5],
+                        "motivo": mv[3],
+                        "caixa": codcaixa,
+                        "move_lines": [(0, 0, {
+                            "product_code": mv[2],
+                            "product_uom_qty": mv[1],
+                            "product_uom_id": 1,
+                            "product_uom": 1,
+                            "qty_done": mv[1],
+                            "name": mv[4],
+                        })],
+                    }
+                    with open(arquivo, "w", encoding="utf-8") as f:
+                        json.dump(vals, f, ensure_ascii=False)
 
-                    num_linha = len(md_ids)
-                    # se so 1 linha ignora
-                    linhas = 's'
-                    
-                    if num_linha == 1:
-                        linhas = 'n'
+        envia("devolucao")
 
-                    soma_t = 0.0
-                    #total_gx = total_g
-                    #if str(mvs[0]) == '10416':
-                    for md in md_ids:
-                        # if linhas == 's': 
-                        #     num_linha -= 1
-                        try:
-                            prdname = self.removerAcentosECaracteresEspeciais(md[6])
-                        except:
-                            if md[6]:
-                                prdname = md[6]
-                            else:
-                                prdname = "Sem descricao"
-                        vlr_total += (md[2]*md[3])-md[4]
-                        vlr_totprod = (md[2]*md[3])-md[4]
-                        desconto = 0.0
-                        if (md[4] > 0):
-                            # teve_desconto = 's'
-                            # comentei aqui pq nao testei
-                            #if num_linha > 0:
-                            desconto = md[4] / (vlr_totprod+md[4])
-                            #else:
-                            #    desconto = md[4] / (vlr_totprod+total_g)
-                        
-                        # if num_linha > 0:
-                        #     desconto = (desconto + desconto_t) * 100
-                        # else:
-                        #     #desconto Zero, vou editar depois de gravado
-                        #     # pra calcular o desconto correto
-                        #     desconto = 0.0
-                        prd = {}
-                        tipo = '1'
-                        if md[7].strip():
-                            tipo = md[7].strip()
+    # ==================================================================
+    # Validacao em massa — clientes
+    # ==================================================================
+    def validar_clientes(self, dry_run=False, min_pct=0.5):
+        """
+        Compara clientes Firebird x Odoo.
 
-                        prd['product_id'] = md[1]
-                        prd['discount'] = desconto
-                        prd['qty'] = md[2]
-                        prd['price_unit'] = md[3]
-                        prd['tipo_venda'] = tipo
-                        prd['name'] = prdname
-                        prd['codpro'] = md[8]
+        Regras:
+        - codcliente existe no Odoo:
+            - Odoo active=False       -> inativa no Firebird (STATUS=0)
+            - nome/cnpj divergem      -> atualiza no Firebird
+            - tudo OK                 -> nada
+        - codcliente NAO existe no Odoo:
+            - inativa no Firebird (STATUS=0)
 
-                        order_line.append((0, 0,prd))
-                    if troca:
-                        prd = {}
-                        prd['product_id'] = 2
-                        prd['qty'] = 1
-                        prd['price_unit'] = troca * (-1)
-                        prd['tipo_venda'] = tipo
-                        prd['name'] = 'Troca/Devolucao'
-                        prd['codpro'] = md[8]
-                        order_line.append((0, 0,prd))
+        Seguranca:
+        - min_pct: fraçao minima (0..1) de clientes do Odoo em relacao ao
+          total do Firebird. Se o Odoo devolver menos que isso, aborta
+          para evitar catastrofe (ex: Odoo com problema devolvendo vazio).
 
-                    vals['amount_return'] = vlr_total
-                    vals['lines'] = order_line
-                    
-                    vals['statement_ids'] = pag_line
-                    
-                    # if teve_desconto == 's':
-                    #     # uso nb_print pra saber q veio do pdv lazarus
-                    #     vals['nb_print'] = 9
+        Args:
+            dry_run: se True, apenas mostra o que faria, sem alterar nada.
+            min_pct: 0.5 = exige 50% dos clientes do FB presentes no Odoo.
+                     Use 0 para desligar a protecao (nao recomendado).
+        """
+        self._inicia()
+        _logger.info("=== Validacao de CLIENTES iniciada (dry_run=%s) ===",
+                     dry_run)
 
-                    # try:
-                    vals_ped = vals 
-                    nomecliente = self.removerAcentosECaracteresEspeciais(mvs[8])
-                    nomecliente = (nomecliente)
-                    vals_ped['nomecliente'] = nomecliente
-                    dados_vals = json.dumps(vals_ped)
-                    #breakpoint()
-                    if not os.path.exists(arquivo_nome):
-                        arquivo_json = open(arquivo_nome, 'w')
-                        arquivo_json.write(dados_vals)
-                        arquivo_json.close()
+        # 1. busca lista do Odoo
+        env = envia.__new__(envia)
+        env._carregar_config()
+        lista_odoo = env.buscando_clientes_validar()
+        if lista_odoo is None:
+            _logger.error("Nao foi possivel obter lista de clientes do Odoo")
+            print("FALHA: nao foi possivel obter lista do Odoo.")
+            return
 
-                    # except:
-                    # msg_erro += 'ERRO, nao integrado pedido : %s ' %(prdname)
+        mapa_odoo = {int(c["codcliente"]): c for c in lista_odoo}
+        _logger.info("Odoo retornou %s clientes", len(mapa_odoo))
 
-                    # if teve_desconto == 's' and linhas == 's' and ord_p:
-                    #     #ord_p = pos_ord.browse(ords)
-                    #     if (total_g != ord_p.amount_total):
-                    #         tam = len(ord_p.lines)
-                    #         for line in ord_p.lines[tam-1]:
-                    #             x = line.price_unit * line.qty
-                    #             desconto = (ord_p.amount_total-round(total_g,2))/x*100
-                            
-                    if ord_p:
-                        # coloquei isto aqui pq qdo tem desconto
-                        # e era a prazo o desconto do ultimo item nao ia pra
-                        # fatura estas duas linhas abaixo eram feitas no create
-                        arquivo_nome = self.path_envio + '/pagline_%s.json' %(ord_name)
-                        arquivo_json = open(arquivo_nome, 'w')
-                        dados_vals = json.dumps(vals)
-                        arquivo_json.write(dados_vals)
-                        arquivo_json.close()                    
-        print ('Integracao VENDAS realizada com sucesso.')
-                #if ord_p and jrn == '4-':
-                #    pedido_venda = self.env['sale.order']
-                #    pv = {}
-                #    pv['name'] = ord_p.pos_reference
-                #    pv['partner_id'] = ord_p.partner_id.id
-                #    pv['date_order'] = ord_p.date_order
-                #    pv['user_id'] = ord_p.user_id.id
-                #    pv['fiscal_position_id'] = 5
-                #    pv['origin'] = ord_p.name
-                #    pv_line = []
-                #    pv_ln = {}
-                #    for pvl in order_line:
-                #        pv_ln['product_uom_qty'] = pvl[2]['qty']
-                #        pv_ln['product_id'] = pvl[2]['product_id']
-                #        pv_ln['price_unit'] = pvl[2]['price_unit']
-                #        pv_ln['name'] = pvl[2]['name']
-                #        pv_line.append((0, 0,pv_ln))
-                #    pv['order_line'] = pv_line
-                #    pedido_venda.create(pv)
-                    #ord_p.create_picking()
-                # 02/03/2023 Comentei as 3 linhas abaixo pq estava baixando o estoque 2x
-                #if teve_desconto == 's' and ord_p:
-                #    if jrn != '4-':
-                #        ord_p.action_pos_order_paid()
-        # 19/12/19
-        # CRIAR FATURA - coloquei isso pq faturado nao esta entrando em faturas            
-        #ord_ids = self.env['pos.order'].search([(
-        #    'session_id','=',session.id)])
-        #str_ord = ",".join(str(x.sequence_number) for x in ord_ids)
-        #if not str_ord:
-        #    str_ord = '1'
-        #sqld = 'SELECT m.CODMOVIMENTO, m.DATAMOVIMENTO, ' \
-        #       'm.CODCLIENTE, m.STATUS, m.CODUSUARIO, m.CODVENDEDOR, ' \
-        #       'm.CODALMOXARIFADO, DATEADD(3 hour to m.DATA_SISTEMA) ' \
-        #       '  FROM MOVIMENTO m ' \
-        #       ' WHERE m.STATUS = 1 ' \
-        #       '   AND m.CODNATUREZA = 3 ' \
-        #       '   AND m.CODCLIENTE > 1 ' \
-        #       '   AND m.CODMOVIMENTO IN (%s)' %(str_ord)
-        #movs = db.query(sqld)
+        # 2. protecao: lista do Odoo tem que cobrir X% do Firebird
+        with con() as db:
+            total_fb = db.query("SELECT COUNT(*) FROM CLIENTES")[0][0]
 
-        #if not len(movs):
-        #    msg_sis = 'Sem Pedidos para importar. '
-        #for mvs in movs:
-        #    pos_ord = self.env['pos.order']
-        #    ord_name = '%s-%s' %(str(mvs[6]),str(mvs[0]))
-        #    ords = pos_ord.search([('pos_reference','=', ord_name)])
-        #    for pdv in ords:
-        #        for sttm in pdv.statement_ids:
-        #            if sttm.journal_id.id == 10:
-        #                # procuro se existe a fatura
-        #                ftr = self.env['account.invoice'].search([('origin','=', pdv.name)])
-        #                if ftr:
-        #                    continue
-        #                #pdv.create_order(pdv.statement_ids, pdv)
-        #                pdv.action_pos_order_invoice()
-        #                pdv.invoice_id.sudo().action_invoice_open()
-        #                pdv.create_picking()
+        if total_fb > 0 and min_pct > 0:
+            pct = len(mapa_odoo) / float(total_fb)
+            if pct < min_pct:
+                msg = ("ABORTADO: Odoo devolveu %s clientes, Firebird tem %s "
+                       "(%.1f%% < %.0f%%). Verifique o Odoo antes de rodar."
+                       % (len(mapa_odoo), total_fb, pct * 100, min_pct * 100))
+                _logger.error(msg)
+                print(msg)
+                return
+            _logger.info("Cobertura Odoo: %.1f%% (%s / %s)",
+                         pct * 100, len(mapa_odoo), total_fb)
 
-        # Fim CRIAR FATURA
-        
-        #msg_sis += 'Integracao Finalizada. '
+        inativados = 0
+        atualizados = 0
+        sem_match = 0
+        ja_ok = 0
 
-        #sqlc = 'SELECT FIRST 3 r.IDCAIXACONTROLE, r.CODCAIXA,  \
-        #       r.VALORABRE, r.VALORFECHA  \
-        #       FROM CAIXA_CONTROLE r WHERE r.VALORFECHA = 1 \
-        #       ORDER BY r.CODCAIXA DESC '
-        #caixa_fechado = db.query(sqlc)
-        #for cx in caixa_fechado:
-        #    pos_ses = self.env['pos.session'].search([
-        #        ('id', '=', cx[1]), 
-        #        ('state','=','opened'),
-        #        ('venda_finalizada','=', False)])
-            #session = self.env['pos.session'].browse(pos_ses)
-        #    if pos_ses:
-        #        pos_ses.write({'venda_finalizada': True})
-        #        msg_sis = 'CAIXA FECHADO , COM SUCESSO. '
-        # return msg_sis + ' ' + msg_erro
+        with con() as db:
+            clientes_fb = db.query(
+                "SELECT CODCLIENTE, NOMECLIENTE, COALESCE(CNPJ, ''), "
+                "       COALESCE(STATUS, 1) "
+                "FROM CLIENTES"
+            )
 
-# class PosConfig(models.Model):
-    # _inherit = 'pos.config'
-    
-    # ip_terminal = fields.Char(string='ip Terminal Vendas')
-    # database = fields.Char(string='Banco de Dados')
-    
-    # def action_testar_acesso_terminal(self):
-    #     try:
-    #         db = con.Conexao(self.ip_terminal, self.database)
-    #     except:
-            # raise UserError(u'Caminho ou nome do banco invalido.')
+            for codcli, nome_fb, cnpj_fb, status_fb in clientes_fb:
+                dados_odoo = mapa_odoo.get(int(codcli))
 
-# class PosOrder(models.Model):
-#     _inherit = 'pos.order'
+                # ---- caso 1: nao existe no Odoo -> inativa
+                if not dados_odoo:
+                    if int(status_fb) != 0:
+                        if dry_run:
+                            print("[DRY-RUN] inativaria cliente %s (%s) "
+                                  "[nao existe no Odoo]"
+                                  % (codcli, nome_fb))
+                        else:
+                            db.insert(
+                                "UPDATE CLIENTES SET STATUS = 0 "
+                                "WHERE CODCLIENTE = ?",
+                                (codcli,),
+                            )
+                            _logger.info("Inativado cliente %s (%s) "
+                                         "[nao existe no Odoo]",
+                                         codcli, nome_fb)
+                        inativados += 1
+                    else:
+                        ja_ok += 1
+                    sem_match += 1
+                    continue
 
-#     def _payment_fields(self, ui_paymentline):
-#         if 'date' in ui_paymentline:
-#             dt = ui_paymentline['date']
-#         else:
-#             dt = ui_paymentline['name']
+                ativo_odoo = bool(dados_odoo.get("active"))
+                nome_odoo  = self.removerAcentosECaracteresEspeciais(
+                    dados_odoo.get("nomecliente") or "")
+                cnpj_odoo  = _normaliza_doc(dados_odoo.get("cnpj") or "")
+                cnpj_fb_n  = _normaliza_doc(cnpj_fb or "")
 
-#         return {
-#             'amount':       ui_paymentline['amount'] or 0.0,
-#             'payment_date': dt,
-#             'statement_id': ui_paymentline['statement_id'],
-#             'payment_name': ui_paymentline.get('note', False),
-#             'journal':      ui_paymentline['journal_id'],
-#         }
+                # ---- caso 2: Odoo inativo -> inativa no FB
+                if not ativo_odoo:
+                    if int(status_fb) != 0:
+                        if dry_run:
+                            print("[DRY-RUN] inativaria cliente %s (%s) "
+                                  "[Odoo inativo]" % (codcli, nome_fb))
+                        else:
+                            db.insert(
+                                "UPDATE CLIENTES SET STATUS = 0 "
+                                "WHERE CODCLIENTE = ?",
+                                (codcli,),
+                            )
+                            _logger.info("Inativado cliente %s (%s) "
+                                         "[Odoo inativo]", codcli, nome_fb)
+                        inativados += 1
+                    else:
+                        ja_ok += 1
+                    continue
 
-#     @api.model
-#     def create_order(self, orders, order):
-#         # Keep only new orders
-#         order_ids = []
-#         to_invoice = False
-#         for stm in orders:
-#             if stm[2]['journal_id'] == 10:
-#                 to_invoice = True
-#             amount = order.amount_total - order.amount_paid
-#             data = stm[2]
-#             if amount != 0.0:
-#                 order.add_payment(data)
-#             if order.test_paid() and not to_invoice:
-#                 order.action_pos_order_paid()        
-            
-#         if to_invoice:
-#             order.action_pos_order_invoice()
-#             order.invoice_id.sudo().action_invoice_open()
-#             order.create_picking()
-    
+                # ---- caso 3: divergencia de nome ou doc
+                mudou = False
+                if nome_odoo != (nome_fb or "").strip():
+                    mudou = True
+                if not _doc_igual(cnpj_odoo, cnpj_fb_n):
+                    mudou = True
 
-#     @api.model
-#     def create(self, values):
-#         if 'pos_session_id' in values:
-#             stm_ids = values['statement_ids']
-#             del values['statement_ids']
-#             res = super(PosOrder, self).create(values)
-#             #uso nb_print = 9 qdo importo pdv lazarus
-#             if values['nb_print'] == 0:
-#                 self.create_order(stm_ids, res)
-#         else:
-#             res = super(PosOrder, self).create(values)
-#         return res
+                if mudou:
+                    if dry_run:
+                        print("[DRY-RUN] atualizaria cliente %s: "
+                              "nome=%r->%r doc=%r->%r"
+                              % (codcli, nome_fb, nome_odoo,
+                                 cnpj_fb_n, cnpj_odoo))
+                    else:
+                        db.insert(
+                            "UPDATE CLIENTES SET "
+                            "  NOMECLIENTE = ?, CNPJ = ?, STATUS = 1 "
+                            "WHERE CODCLIENTE = ?",
+                            (nome_odoo, cnpj_odoo, codcli),
+                        )
+                        _logger.info("Atualizado cliente %s: %s -> %s",
+                                     codcli, nome_fb, nome_odoo)
+                    atualizados += 1
+                else:
+                    ja_ok += 1
 
-executa = IntegracaoOdoo()
-# executa
+        resumo = ("Validacao CLIENTES (%s): inativados=%s atualizados=%s "
+                  "ja_ok=%s sem_match_no_odoo=%s"
+                  % ("DRY-RUN" if dry_run else "APLICADO",
+                     inativados, atualizados, ja_ok, sem_match))
+        _logger.info(resumo)
+        print(resumo)
+
+    # ==================================================================
+    # Validacao em massa — produtos
+    # ==================================================================
+    def validar_produtos(self, dry_run=False, min_pct=0.5):
+        """
+        Compara produtos Firebird x Odoo.
+
+        Regras:
+        - codproduto existe no Odoo:
+            - Odoo active=False       -> inativa (USA='N')
+            - nome/codpro/cod_barra divergem -> atualiza
+            - tudo OK                 -> nada
+        - codproduto NAO existe no Odoo -> inativa (USA='N')
+
+        Seguranca: ver validar_clientes().
+        """
+        self._inicia()
+        _logger.info("=== Validacao de PRODUTOS iniciada (dry_run=%s) ===",
+                     dry_run)
+
+        env = envia.__new__(envia)
+        env._carregar_config()
+        lista_odoo = env.buscando_produtos_validar()
+        if lista_odoo is None:
+            _logger.error("Nao foi possivel obter lista de produtos do Odoo")
+            print("FALHA: nao foi possivel obter lista do Odoo.")
+            return
+
+        mapa_odoo = {int(p["codproduto"]): p for p in lista_odoo}
+        _logger.info("Odoo retornou %s produtos", len(mapa_odoo))
+
+        with con() as db:
+            total_fb = db.query("SELECT COUNT(*) FROM PRODUTOS")[0][0]
+
+        if total_fb > 0 and min_pct > 0:
+            pct = len(mapa_odoo) / float(total_fb)
+            if pct < min_pct:
+                msg = ("ABORTADO: Odoo devolveu %s produtos, Firebird tem %s "
+                       "(%.1f%% < %.0f%%). Verifique o Odoo antes de rodar."
+                       % (len(mapa_odoo), total_fb, pct * 100, min_pct * 100))
+                _logger.error(msg)
+                print(msg)
+                return
+            _logger.info("Cobertura Odoo: %.1f%% (%s / %s)",
+                         pct * 100, len(mapa_odoo), total_fb)
+
+        inativados = 0
+        atualizados = 0
+        sem_match = 0
+        ja_ok = 0
+
+        with con() as db:
+            produtos_fb = db.query(
+                "SELECT CODPRODUTO, PRODUTO, COALESCE(CODPRO, ''), "
+                "       COALESCE(COD_BARRA, ''), COALESCE(USA, 'S') "
+                "FROM PRODUTOS"
+            )
+
+            for codprd, produto_fb, codpro_fb, codbarra_fb, usa_fb in produtos_fb:
+                dados_odoo = mapa_odoo.get(int(codprd))
+
+                # ---- caso 1: nao existe no Odoo -> inativa
+                if not dados_odoo:
+                    if usa_fb != "N":
+                        if dry_run:
+                            print("[DRY-RUN] inativaria produto %s (%s) "
+                                  "[nao existe no Odoo]"
+                                  % (codprd, produto_fb))
+                        else:
+                            db.insert(
+                                "UPDATE PRODUTOS SET USA = 'N' "
+                                "WHERE CODPRODUTO = ?",
+                                (codprd,),
+                            )
+                            _logger.info("Inativado produto %s (%s) "
+                                         "[nao existe no Odoo]",
+                                         codprd, produto_fb)
+                        inativados += 1
+                    else:
+                        ja_ok += 1
+                    sem_match += 1
+                    continue
+
+                ativo_odoo = bool(dados_odoo.get("active"))
+                nome_odoo  = self.removerAcentosECaracteresEspeciais(
+                    dados_odoo.get("produto") or "")
+                codpro_odoo = (dados_odoo.get("codpro") or "").strip()
+                codbarra_odoo = (dados_odoo.get("cod_barra") or "").strip()
+
+                # ---- caso 2: Odoo inativo -> inativa
+                if not ativo_odoo:
+                    if usa_fb != "N":
+                        if dry_run:
+                            print("[DRY-RUN] inativaria produto %s (%s) "
+                                  "[Odoo inativo]" % (codprd, produto_fb))
+                        else:
+                            db.insert(
+                                "UPDATE PRODUTOS SET USA = 'N' "
+                                "WHERE CODPRODUTO = ?",
+                                (codprd,),
+                            )
+                            _logger.info("Inativado produto %s (%s) "
+                                         "[Odoo inativo]", codprd, produto_fb)
+                        inativados += 1
+                    else:
+                        ja_ok += 1
+                    continue
+
+                # ---- caso 3: divergencias
+                mudou = False
+                if nome_odoo != (produto_fb or "").strip():
+                    mudou = True
+                if codpro_odoo and codpro_odoo != (codpro_fb or "").strip():
+                    mudou = True
+                if codbarra_odoo and \
+                        codbarra_odoo != (codbarra_fb or "").strip():
+                    mudou = True
+
+                if mudou:
+                    if dry_run:
+                        print("[DRY-RUN] atualizaria produto %s: "
+                              "nome=%r->%r codpro=%r->%r codbarra=%r->%r"
+                              % (codprd, produto_fb, nome_odoo,
+                                 codpro_fb, codpro_odoo,
+                                 codbarra_fb, codbarra_odoo))
+                    else:
+                        db.insert(
+                            "UPDATE PRODUTOS SET "
+                            "  PRODUTO = ?, CODPRO = ?, COD_BARRA = ?, "
+                            "  USA = 'S' "
+                            "WHERE CODPRODUTO = ?",
+                            (nome_odoo, codpro_odoo,
+                             codbarra_odoo or None, codprd),
+                        )
+                        _logger.info("Atualizado produto %s: %s -> %s",
+                                     codprd, produto_fb, nome_odoo)
+                    atualizados += 1
+                else:
+                    ja_ok += 1
+
+        resumo = ("Validacao PRODUTOS (%s): inativados=%s atualizados=%s "
+                  "ja_ok=%s sem_match_no_odoo=%s"
+                  % ("DRY-RUN" if dry_run else "APLICADO",
+                     inativados, atualizados, ja_ok, sem_match))
+        _logger.info(resumo)
+        print(resumo)
+
+# executa = IntegracaoOdoo()
