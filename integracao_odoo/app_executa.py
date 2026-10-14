@@ -15,6 +15,7 @@ Os botoes "Validar" abrem um popup:
 - Nao, aplicar agora        -> pede confirmacao extra e roda com 'aplicar'
 """
 import datetime
+import logging
 import os
 import subprocess
 import sys
@@ -28,6 +29,40 @@ from integracao_log import get_logger
 _logger = get_logger(__name__)
 
 PASTA = os.path.dirname(os.path.abspath(__file__))
+
+
+class _TextHandler(logging.Handler):
+    """
+    Handler que joga as mensagens de logging dentro do Text widget
+    do Tkinter. Precisa usar after(0, ...) porque so a thread principal
+    pode mexer no widget.
+    """
+
+    def __init__(self, tk_widget, tk_root, formatter=None):
+        super().__init__()
+        self.widget = tk_widget
+        self.root = tk_root
+        if formatter is not None:
+            self.setFormatter(formatter)
+
+    def emit(self, record):
+        try:
+            msg = self.format(record) + "\n"
+        except Exception:
+            self.handleError(record)
+            return
+
+        def _escreve(m=msg):
+            try:
+                self.widget.insert("end", m)
+                self.widget.see("end")
+            except Exception:
+                pass
+
+        try:
+            self.root.after(0, _escreve)
+        except Exception:
+            pass
 
 
 class MinhaGUI:
@@ -50,6 +85,18 @@ class MinhaGUI:
         # area de log
         self.logbox = Text(self.janela_principal, width=100, height=30)
         self.logbox.pack()
+
+        # liga o logging ao Text widget: tudo que for _logger.info/error/etc
+        # dentro do app aparece tambem na tela.
+        th = _TextHandler(
+            self.logbox, self.janela_principal,
+            formatter=logging.Formatter(
+                "%(levelname)s %(asctime)s: %(message)s",
+                datefmt="%H:%M:%S",
+            ),
+        )
+        th.setLevel(logging.INFO)
+        logging.getLogger().addHandler(th)
 
         # ---- botoes de sincronizacao automatica ----
         botoes_sync = [
@@ -174,28 +221,53 @@ class MinhaGUI:
         ).start()
 
     def _executar(self, script, args_extra=None):
+        """
+        Executa o script filho lendo stdout/stderr LINHA A LINHA, para que
+        os prints apareçam em tempo real no Text widget.
+        """
         cmd = [sys.executable, "-u", script]
         if args_extra:
             cmd.extend(args_extra)
 
+        self._log("\n>>> %s\n" % " ".join(cmd))
+
         try:
-            r = subprocess.run(
+            proc = subprocess.Popen(
                 cmd,
-                capture_output=True, text=True, timeout=600,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                bufsize=1,        # line-buffered
                 cwd=PASTA,
             )
-            saida = (r.stdout or "") + (r.stderr or "")
-            if saida:
-                self._log(saida)
-            if r.returncode != 0:
-                self._log("[ERRO] %s (rc=%s)\n" % (script, r.returncode))
-            else:
-                self._log("--- %s: feito ---\n" % script)
-        except subprocess.TimeoutExpired:
-            self._log("[TIMEOUT] %s excedeu 600s\n" % script)
         except Exception as e:
-            self._log("[EXCECAO] %s: %s\n" % (script, e))
+            self._log("[EXCECAO] nao consegui iniciar %s: %s\n" % (script, e))
+            with self.lock:
+                self.rodando.discard(script)
+            return
+
+        try:
+            for linha in proc.stdout:
+                self._log(linha)
+            proc.wait()
+        except Exception as e:
+            self._log("[EXCECAO] lendo saida de %s: %s\n" % (script, e))
+            try:
+                proc.kill()
+            except Exception:
+                pass
         finally:
+            try:
+                if proc.stdout:
+                    proc.stdout.close()
+            except Exception:
+                pass
+
+            if proc.returncode not in (0, None):
+                self._log("[ERRO] %s (rc=%s)\n" % (script, proc.returncode))
+            elif proc.returncode == 0:
+                self._log("--- %s: feito ---\n" % script)
+
             with self.lock:
                 self.rodando.discard(script)
 
@@ -204,11 +276,18 @@ class MinhaGUI:
     # ==================================================================
     def _log(self, texto):
         # agenda a escrita na thread principal do Tk
-        self.janela_principal.after(0, lambda: self._log_direto(texto))
+        try:
+            self.janela_principal.after(0, lambda: self._log_direto(texto))
+        except Exception:
+            # se a janela ja foi fechada, ignora silenciosamente
+            pass
 
     def _log_direto(self, texto):
-        self.logbox.insert("end", texto)
-        self.logbox.see("end")
+        try:
+            self.logbox.insert("end", texto)
+            self.logbox.see("end")
+        except Exception:
+            pass
 
     # ==================================================================
     # Tick automatico (a cada 1 min)

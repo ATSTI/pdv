@@ -31,8 +31,6 @@ def _doc_igual(doc_a, doc_b):
     - Um vazio, outro com dado -> diferentes
     - Mesmo tamanho            -> compara exato
     - Tamanhos diferentes      -> compara o prefixo comum (o menor)
-                                 (caso o Odoo tenha digitos a mais por erro
-                                  de digitacao, tipo zero a esquerda)
     """
     a = _normaliza_doc(doc_a)
     b = _normaliza_doc(doc_b)
@@ -43,7 +41,6 @@ def _doc_igual(doc_a, doc_b):
         return False
     if len(a) == len(b):
         return a == b
-    # tamanhos diferentes: compara prefixo comum
     n = min(len(a), len(b))
     return a[:n] == b[:n]
 
@@ -63,7 +60,6 @@ class IntegracaoOdoo:
     def _garantir_fila(self):
         """Cria INTEGRACAO_FILA compativel com Firebird 2.5."""
         with con() as db:
-            # tabela
             if not db.query(
                 "SELECT 1 FROM RDB$RELATIONS "
                 "WHERE RDB$RELATION_NAME = 'INTEGRACAO_FILA'"
@@ -85,14 +81,12 @@ class IntegracaoOdoo:
                     _logger.error("Falha criando INTEGRACAO_FILA: %s", r)
                     raise RuntimeError("Nao foi possivel criar INTEGRACAO_FILA")
 
-            # sequence
             if not db.query(
                 "SELECT 1 FROM RDB$GENERATORS "
                 "WHERE RDB$GENERATOR_NAME = 'GEN_INTEGRACAO_FILA_ID'"
             ):
                 db.ddl("CREATE SEQUENCE GEN_INTEGRACAO_FILA_ID")
 
-            # trigger
             if not db.query(
                 "SELECT 1 FROM RDB$TRIGGERS "
                 "WHERE RDB$TRIGGER_NAME = 'TR_INTEGRACAO_FILA_BI'"
@@ -132,9 +126,13 @@ class IntegracaoOdoo:
                              if not unicodedata.combining(c))
         return re.sub(r"[^a-zA-Z0-9]", " ", sem_acento)
 
+    # ==================================================================
+    # PRODUTOS
+    # ==================================================================
     def action_atualiza_produtos(self):
         self._inicia()
-        envia("produto")
+        with envia("produto"):
+            pass
 
         arquivo_json = os.path.join(self.path_envio, "produtos.json")
         if not os.path.isfile(arquivo_json):
@@ -170,6 +168,46 @@ class IntegracaoOdoo:
         _logger.info("Produtos: incluido=%s alterado=%s", incluido, alterado)
         return True
 
+    def _resolver_codpro_duplicado(self, db, codpro, codproduto):
+        """
+        Se ja existe OUTRO produto com o mesmo codpro, devolve um codpro
+        novo no formato '<codpro>/<n>' que nao colida.
+        Caso contrario devolve o codpro original, sem logar nada.
+
+        IMPORTANTE: so deve ser chamado quando o produto VAI ser gravado
+        (INSERT ou UPDATE). Se o produto ja esta atualizado, nem chame.
+        """
+        if not codpro:
+            return codpro
+
+        outros = db.query(
+            "SELECT CODPRO FROM PRODUTOS WHERE CODPRO = ? AND CODPRODUTO <> ?",
+            (codpro, codproduto),
+        )
+        if not outros:
+            return codpro
+
+        usados = {codpro}
+        candidatos = db.query(
+            "SELECT CODPRO FROM PRODUTOS WHERE CODPRO STARTING WITH ?",
+            (codpro + "/",),
+        )
+        for (cp,) in candidatos:
+            usados.add((cp or "").strip())
+
+        n = 1
+        novo = "%s/%s" % (codpro, n)
+        while novo in usados:
+            n += 1
+            novo = "%s/%s" % (codpro, n)
+
+        _logger.info(
+            "Produto %s: codpro %r ja existe em %s outro(s) produto(s); "
+            "renomeando para %r",
+            codproduto, codpro, len(outros), novo,
+        )
+        return novo
+
     def _processar_produto(self, db, pr):
         codproduto = pr["codproduto"]
         codpro     = (pr.get("codpro") or "").strip()
@@ -193,7 +231,11 @@ class IntegracaoOdoo:
         data_nova = datetime.strptime(pr["datacadastro"], "%m/%d/%Y %H:%M:%S")
         data_fb = data_nova.strftime("%Y.%m.%d, %H:%M:%S.0000")
 
+        # ----------------------------------------------------------
+        # CASO 1: produto novo -> INSERT
+        # ----------------------------------------------------------
         if not prods and pr.get("usa") == "S":
+            codpro = self._resolver_codpro_duplicado(db, codpro, codproduto)
             db.insert(
                 "INSERT INTO PRODUTOS ("
                 "  UNIDADEMEDIDA, PRODUTO, PRECOMEDIO, CODPRO, "
@@ -215,12 +257,29 @@ class IntegracaoOdoo:
             _logger.info("Incluido: %s-%s", codpro, produto)
             return "I"
 
+        # ----------------------------------------------------------
+        # CASO 2: produto ja existe -> talvez UPDATE
+        # ----------------------------------------------------------
         if prods:
-            data_cad = (prods[0][1].strftime("%Y/%m/%d %H:%M:%S")
-                        if prods[0][1] else "2023/01/01 01:00:00")
-            if (data_cad == data_nova.strftime("%Y/%m/%d %H:%M:%S")
-                    and round(prods[0][2], 2) == round(p_venda, 2)):
+            dt_fb = prods[0][1]
+            if dt_fb is not None:
+                dt_fb = dt_fb.replace(microsecond=0)
+            dt_nova = data_nova.replace(microsecond=0)
+
+            preco_fb = round(prods[0][2], 2) if prods[0][2] is not None else 0.0
+            preco_odoo = round(p_venda, 2)
+
+            # nada mudou? entao NAO faz nada e NAO loga nada.
+            # Alem disso, evita a query extra de codpro duplicado.
+            if dt_fb == dt_nova and preco_fb == preco_odoo:
+                _logger.debug(
+                    "Produto %s ja atualizado (data=%s preco=%s)",
+                    codproduto, dt_fb, preco_fb,
+                )
                 return None
+
+            # so a partir daqui vale a pena resolver codpro duplicado
+            codpro = self._resolver_codpro_duplicado(db, codpro, codproduto)
 
             ativo = "S" if pr.get("usa") == "S" else "N"
             db.insert(
@@ -241,11 +300,16 @@ class IntegracaoOdoo:
             )
             _logger.info("Atualizado: %s-%s", codpro, produto)
             return "U"
+
         return None
 
+    # ==================================================================
+    # CLIENTES
+    # ==================================================================
     def action_atualiza_clientes(self):
         self._inicia()
-        envia("cliente")
+        with envia("cliente"):
+            pass
 
         arquivo_json = os.path.join(self.path_envio, "clientes.json")
         if not os.path.isfile(arquivo_json):
@@ -309,6 +373,9 @@ class IntegracaoOdoo:
         _logger.info("Clientes: incluido=%s alterado=%s", incluido, alterado)
         return True
 
+    # ==================================================================
+    # VENDAS
+    # ==================================================================
     def action_atualiza_vendas(self):
         self._inicia()
         with con() as db:
@@ -352,12 +419,12 @@ class IntegracaoOdoo:
                     (codmov, json.dumps(payload)),
                 )
                 enfileirados += 1
-                print("  Enfileirando venda %s-%s" % (codcaixa, codmov))
+                _logger.info("  Enfileirando venda %s-%s", codcaixa, codmov)
 
         if enfileirados:
-            print("Vendas novas enfileiradas: %s" % enfileirados)
+            _logger.info("Vendas novas enfileiradas: %s", enfileirados)
         else:
-            print("Vendas: nada novo.")
+            _logger.info("Vendas: nada novo.")
 
     def _montar_payload_venda(self, db, codcaixa, mov):
         codmov, cli, codusuario, codvendedor, dt_sistema = mov
@@ -433,16 +500,15 @@ class IntegracaoOdoo:
             "WHERE STATUS = 'PENDENTE' AND TENTATIVAS < 5 ORDER BY ID"
         )
         if not pend:
-            print("Fila de vendas: nada pendente.")
+            _logger.info("Fila de vendas: nada pendente.")
             return
 
-        print("Fila de vendas: %s pendente(s)." % len(pend))
+        _logger.info("Fila de vendas: %s pendente(s).", len(pend))
 
         for id_fila, id_origem, payload_blob in pend:
             try:
                 payload = json.loads(payload_blob)
             except Exception:
-                print("  [ERRO] fila ID=%s: payload invalido" % id_fila)
                 _logger.exception("Payload invalido na fila ID=%s", id_fila)
                 db.insert(
                     "UPDATE INTEGRACAO_FILA SET STATUS='ERRO', "
@@ -458,16 +524,18 @@ class IntegracaoOdoo:
             with open(caminho, "w", encoding="utf-8") as f:
                 json.dump(payload, f, ensure_ascii=False)
 
-            print("  Enviando venda %s (fila ID=%s)..." % (ord_name, id_fila))
+            _logger.info("  Enviando venda %s (fila ID=%s)...",
+                         ord_name, id_fila)
 
             try:
-                envia("pedido")
+                with envia("pedido"):
+                    pass
                 db.insert(
                     "UPDATE INTEGRACAO_FILA SET STATUS='ENVIADO', "
                     "DT_ENVIO = CURRENT_TIMESTAMP WHERE ID = ?",
                     (id_fila,),
                 )
-                print("  [OK] venda %s enviada" % ord_name)
+                _logger.info("  [OK] venda %s enviada", ord_name)
                 try:
                     os.remove(caminho)
                 except OSError:
@@ -478,15 +546,19 @@ class IntegracaoOdoo:
                     "TENTATIVAS = TENTATIVAS + 1, ERRO = ? WHERE ID = ?",
                     (str(e)[:2000], id_fila),
                 )
-                print("  [ERRO] venda %s: %s" % (ord_name, e))
+                _logger.error("  [ERRO] venda %s: %s", ord_name, e)
                 _logger.exception("Falha enviando fila ID=%s", id_fila)
 
+    # ==================================================================
+    # CAIXAS
+    # ==================================================================
     def action_atualiza_caixas(self):
         self._inicia()
         with con() as db:
             self._atualiza_caixas(db)
             self._atualiza_sangrias(db)
-        envia("sangria")
+        with envia("sangria"):
+            pass
 
     def _atualiza_caixas(self, db):
         hj = (datetime.now() - timedelta(days=5)).strftime("%Y-%m-%d")
@@ -569,6 +641,9 @@ class IntegracaoOdoo:
         if not gerados:
             _logger.info("Sangria sem novidades.")
 
+    # ==================================================================
+    # DEVOLUCAO
+    # ==================================================================
     def action_devolucao(self):
         self._inicia()
         with con() as db:
@@ -616,10 +691,11 @@ class IntegracaoOdoo:
                     with open(arquivo, "w", encoding="utf-8") as f:
                         json.dump(vals, f, ensure_ascii=False)
 
-        envia("devolucao")
+        with envia("devolucao"):
+            pass
 
     # ==================================================================
-    # Validacao em massa — clientes
+    # VALIDACAO EM MASSA — CLIENTES
     # ==================================================================
     def validar_clientes(self, dry_run=False, min_pct=0.5):
         """
@@ -637,29 +713,22 @@ class IntegracaoOdoo:
         - min_pct: fraçao minima (0..1) de clientes do Odoo em relacao ao
           total do Firebird. Se o Odoo devolver menos que isso, aborta
           para evitar catastrofe (ex: Odoo com problema devolvendo vazio).
-
-        Args:
-            dry_run: se True, apenas mostra o que faria, sem alterar nada.
-            min_pct: 0.5 = exige 50% dos clientes do FB presentes no Odoo.
-                     Use 0 para desligar a protecao (nao recomendado).
         """
         self._inicia()
         _logger.info("=== Validacao de CLIENTES iniciada (dry_run=%s) ===",
                      dry_run)
 
-        # 1. busca lista do Odoo
-        env = envia.__new__(envia)
-        env._carregar_config()
-        lista_odoo = env.buscando_clientes_validar()
+        with envia(None) as env:
+            lista_odoo = env.buscando_clientes_validar()
+
         if lista_odoo is None:
             _logger.error("Nao foi possivel obter lista de clientes do Odoo")
-            print("FALHA: nao foi possivel obter lista do Odoo.")
+            _logger.info("FALHA: nao foi possivel obter lista do Odoo.")
             return
 
         mapa_odoo = {int(c["codcliente"]): c for c in lista_odoo}
         _logger.info("Odoo retornou %s clientes", len(mapa_odoo))
 
-        # 2. protecao: lista do Odoo tem que cobrir X% do Firebird
         with con() as db:
             total_fb = db.query("SELECT COUNT(*) FROM CLIENTES")[0][0]
 
@@ -670,7 +739,6 @@ class IntegracaoOdoo:
                        "(%.1f%% < %.0f%%). Verifique o Odoo antes de rodar."
                        % (len(mapa_odoo), total_fb, pct * 100, min_pct * 100))
                 _logger.error(msg)
-                print(msg)
                 return
             _logger.info("Cobertura Odoo: %.1f%% (%s / %s)",
                          pct * 100, len(mapa_odoo), total_fb)
@@ -694,9 +762,9 @@ class IntegracaoOdoo:
                 if not dados_odoo:
                     if int(status_fb) != 0:
                         if dry_run:
-                            print("[DRY-RUN] inativaria cliente %s (%s) "
-                                  "[nao existe no Odoo]"
-                                  % (codcli, nome_fb))
+                            _logger.info("[DRY-RUN] inativaria cliente %s (%s) "
+                                         "[nao existe no Odoo]",
+                                         codcli, nome_fb)
                         else:
                             db.insert(
                                 "UPDATE CLIENTES SET STATUS = 0 "
@@ -722,8 +790,8 @@ class IntegracaoOdoo:
                 if not ativo_odoo:
                     if int(status_fb) != 0:
                         if dry_run:
-                            print("[DRY-RUN] inativaria cliente %s (%s) "
-                                  "[Odoo inativo]" % (codcli, nome_fb))
+                            _logger.info("[DRY-RUN] inativaria cliente %s (%s) "
+                                         "[Odoo inativo]", codcli, nome_fb)
                         else:
                             db.insert(
                                 "UPDATE CLIENTES SET STATUS = 0 "
@@ -746,10 +814,10 @@ class IntegracaoOdoo:
 
                 if mudou:
                     if dry_run:
-                        print("[DRY-RUN] atualizaria cliente %s: "
-                              "nome=%r->%r doc=%r->%r"
-                              % (codcli, nome_fb, nome_odoo,
-                                 cnpj_fb_n, cnpj_odoo))
+                        _logger.info("[DRY-RUN] atualizaria cliente %s: "
+                                     "nome=%r->%r doc=%r->%r",
+                                     codcli, nome_fb, nome_odoo,
+                                     cnpj_fb_n, cnpj_odoo)
                     else:
                         db.insert(
                             "UPDATE CLIENTES SET "
@@ -768,10 +836,9 @@ class IntegracaoOdoo:
                   % ("DRY-RUN" if dry_run else "APLICADO",
                      inativados, atualizados, ja_ok, sem_match))
         _logger.info(resumo)
-        print(resumo)
 
     # ==================================================================
-    # Validacao em massa — produtos
+    # VALIDACAO EM MASSA — PRODUTOS
     # ==================================================================
     def validar_produtos(self, dry_run=False, min_pct=0.5):
         """
@@ -790,12 +857,12 @@ class IntegracaoOdoo:
         _logger.info("=== Validacao de PRODUTOS iniciada (dry_run=%s) ===",
                      dry_run)
 
-        env = envia.__new__(envia)
-        env._carregar_config()
-        lista_odoo = env.buscando_produtos_validar()
+        with envia(None) as env:
+            lista_odoo = env.buscando_produtos_validar()
+
         if lista_odoo is None:
             _logger.error("Nao foi possivel obter lista de produtos do Odoo")
-            print("FALHA: nao foi possivel obter lista do Odoo.")
+            _logger.info("FALHA: nao foi possivel obter lista do Odoo.")
             return
 
         mapa_odoo = {int(p["codproduto"]): p for p in lista_odoo}
@@ -811,7 +878,6 @@ class IntegracaoOdoo:
                        "(%.1f%% < %.0f%%). Verifique o Odoo antes de rodar."
                        % (len(mapa_odoo), total_fb, pct * 100, min_pct * 100))
                 _logger.error(msg)
-                print(msg)
                 return
             _logger.info("Cobertura Odoo: %.1f%% (%s / %s)",
                          pct * 100, len(mapa_odoo), total_fb)
@@ -835,9 +901,9 @@ class IntegracaoOdoo:
                 if not dados_odoo:
                     if usa_fb != "N":
                         if dry_run:
-                            print("[DRY-RUN] inativaria produto %s (%s) "
-                                  "[nao existe no Odoo]"
-                                  % (codprd, produto_fb))
+                            _logger.info("[DRY-RUN] inativaria produto %s (%s) "
+                                         "[nao existe no Odoo]",
+                                         codprd, produto_fb)
                         else:
                             db.insert(
                                 "UPDATE PRODUTOS SET USA = 'N' "
@@ -863,8 +929,8 @@ class IntegracaoOdoo:
                 if not ativo_odoo:
                     if usa_fb != "N":
                         if dry_run:
-                            print("[DRY-RUN] inativaria produto %s (%s) "
-                                  "[Odoo inativo]" % (codprd, produto_fb))
+                            _logger.info("[DRY-RUN] inativaria produto %s (%s) "
+                                         "[Odoo inativo]", codprd, produto_fb)
                         else:
                             db.insert(
                                 "UPDATE PRODUTOS SET USA = 'N' "
@@ -890,11 +956,11 @@ class IntegracaoOdoo:
 
                 if mudou:
                     if dry_run:
-                        print("[DRY-RUN] atualizaria produto %s: "
-                              "nome=%r->%r codpro=%r->%r codbarra=%r->%r"
-                              % (codprd, produto_fb, nome_odoo,
-                                 codpro_fb, codpro_odoo,
-                                 codbarra_fb, codbarra_odoo))
+                        _logger.info("[DRY-RUN] atualizaria produto %s: "
+                                     "nome=%r->%r codpro=%r->%r codbarra=%r->%r",
+                                     codprd, produto_fb, nome_odoo,
+                                     codpro_fb, codpro_odoo,
+                                     codbarra_fb, codbarra_odoo)
                     else:
                         db.insert(
                             "UPDATE PRODUTOS SET "
@@ -915,6 +981,47 @@ class IntegracaoOdoo:
                   % ("DRY-RUN" if dry_run else "APLICADO",
                      inativados, atualizados, ja_ok, sem_match))
         _logger.info(resumo)
-        print(resumo)
 
-# executa = IntegracaoOdoo()
+
+# ======================================================================
+# Entrypoint: permite rodar direto para testar.
+#   python pos_order_script.py atualiza_vendas
+#   python pos_order_script.py atualiza_produtos
+#   python pos_order_script.py atualiza_clientes
+#   python pos_order_script.py atualiza_caixas
+#   python pos_order_script.py devolucao
+#   python pos_order_script.py validar_produtos [aplicar]
+#   python pos_order_script.py validar_clientes [aplicar]
+# ======================================================================
+if __name__ == "__main__":
+    import sys
+
+    if len(sys.argv) < 2:
+        _logger.error("Uso: python pos_order_script.py <acao> [aplicar]")
+        _logger.info(
+            "Acoes: atualiza_vendas | atualiza_produtos | atualiza_clientes | "
+            "atualiza_caixas | devolucao | validar_produtos | validar_clientes"
+        )
+        sys.exit(2)
+
+    acao = sys.argv[1]
+    aplicar = "aplicar" in sys.argv[2:]
+    obj = IntegracaoOdoo()
+
+    if acao == "atualiza_vendas":
+        obj.action_atualiza_vendas()
+    elif acao == "atualiza_produtos":
+        obj.action_atualiza_produtos()
+    elif acao == "atualiza_clientes":
+        obj.action_atualiza_clientes()
+    elif acao == "atualiza_caixas":
+        obj.action_atualiza_caixas()
+    elif acao == "devolucao":
+        obj.action_devolucao()
+    elif acao == "validar_produtos":
+        obj.validar_produtos(dry_run=not aplicar)
+    elif acao == "validar_clientes":
+        obj.validar_clientes(dry_run=not aplicar)
+    else:
+        _logger.error("Acao desconhecida: %s", acao)
+        sys.exit(2)

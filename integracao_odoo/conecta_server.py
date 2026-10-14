@@ -17,7 +17,25 @@ TIMEOUT = 60
 
 class EnviaServer:
 
-    def __init__(self, tipo):
+    def __init__(self, tipo=None):
+        # config + Session criados aqui, em um unico lugar
+        self.session = None
+        self.scheme = "https"
+        self.verify = True
+        self._carregar_config()
+
+        if tipo == "produto":
+            self.buscando_produtos()
+        elif tipo == "cliente":
+            self.buscando_clientes()
+        elif tipo in ("pedido", "devolucao", "sangria"):
+            self.lendo_arquivos()
+
+    # ------------------------------------------------------------------
+    # config / sessao HTTP
+    # ------------------------------------------------------------------
+    def _carregar_config(self):
+        """Carrega conf.ini + abre requests.Session. Idempotente."""
         cfg = configparser.ConfigParser()
         if not cfg.read("conf.ini"):
             raise FileNotFoundError("conf.ini nao encontrado")
@@ -29,20 +47,92 @@ class EnviaServer:
         self.login        = cfg.get("INTEGRA", "login")
         self.passwd       = cfg.get("INTEGRA", "password")
 
+        # ---- esquema: http ou https ----
+        scheme = cfg.get("INTEGRA", "scheme", fallback="https")
+        scheme = (scheme or "").strip().lower()
+        if scheme not in ("http", "https"):
+            _logger.warning(
+                "scheme invalido no conf.ini (%r) - usando https", scheme
+            )
+            scheme = "https"
+        self.scheme = scheme
+
+        # ---- verify_tls: aceita certificado self-signed em dev ----
+        verify_raw = cfg.get(
+            "INTEGRA", "verify_tls", fallback="true"
+        ).strip().lower()
+        self.verify = verify_raw not in ("0", "false", "no", "nao", "não")
+        if not self.verify:
+            try:
+                import urllib3
+                urllib3.disable_warnings(
+                    urllib3.exceptions.InsecureRequestWarning
+                )
+            except Exception:
+                pass
+            _logger.warning(
+                "TLS verification DESLIGADO (verify_tls=false) - "
+                "use apenas em dev local"
+            )
+
         os.makedirs(self.path_envio, exist_ok=True)
         os.makedirs(self.path_retorno, exist_ok=True)
 
+        if self.session is not None:
+            try:
+                self.session.close()
+            except Exception:
+                pass
         self.session = rq.Session()
 
-        if tipo == "produto":
-            self.buscando_produtos()
-        elif tipo == "cliente":
-            self.buscando_clientes()
-        elif tipo in ("pedido", "devolucao", "sangria"):
-            self.lendo_arquivos()
+        _logger.info("Odoo configurado: %s://%s", self.scheme, self.url)
 
+    def _url(self, path):
+        """
+        Monta a URL final aceitando host COM ou SEM porta.
+
+        conf.ini:
+            url    = 192.168.0.200:8089      (com porta)
+            scheme = http
+
+            url    = odoo.suaempresa.com     (sem porta)
+            scheme = https
+
+        path sempre comeca com '/'  ->  /web/session/authenticate
+        """
+        host = (self.url or "").strip().rstrip("/")
+        # remove esquema colado por engano no conf.ini
+        for prefixo in ("https://", "http://"):
+            if host.startswith(prefixo):
+                host = host[len(prefixo):]
+        if not path.startswith("/"):
+            path = "/" + path
+        return "%s://%s%s" % (self.scheme, host, path)
+
+    def close(self):
+        try:
+            if self.session is not None:
+                self.session.close()
+        except Exception:
+            _logger.exception("Falha fechando Session HTTP")
+        finally:
+            self.session = None
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        self.close()
+        return False
+
+    # ------------------------------------------------------------------
+    # autenticacao
+    # ------------------------------------------------------------------
     def get_session(self):
-        url = "https://%s/web/session/authenticate" % self.url
+        if self.session is None:
+            self._carregar_config()
+
+        url = self._url("/web/session/authenticate")
         payload = {
             "jsonrpc": "2.0",
             "params": {
@@ -55,6 +145,7 @@ class EnviaServer:
             url, json=payload,
             headers={"Content-Type": "application/json"},
             timeout=TIMEOUT,
+            verify=self.verify,
         )
         r.raise_for_status()
         session_id = self.session.cookies.get("session_id")
@@ -72,13 +163,17 @@ class EnviaServer:
             headers={"Content-Type": "application/json",
                      "Accept": "application/json"},
             timeout=TIMEOUT,
+            verify=self.verify,
         )
         r.raise_for_status()
         return r.json()
 
+    # ------------------------------------------------------------------
+    # produtos / clientes (download)
+    # ------------------------------------------------------------------
     def buscando_produtos(self):
         self.get_session()
-        url = "https://%s/produtoconsulta" % self.url
+        url = self._url("/produtoconsulta")
         dados = self._post_json(url, {})
 
         if not isinstance(dados, dict) or "result" not in dados:
@@ -98,7 +193,7 @@ class EnviaServer:
 
     def buscando_clientes(self):
         self.get_session()
-        url = "https://%s/clienteconsulta" % self.url
+        url = self._url("/clienteconsulta")
         dados = self._post_json(url, {})
 
         if not isinstance(dados, dict) or "result" not in dados:
@@ -116,8 +211,11 @@ class EnviaServer:
         os.replace(tmp, arquivo)
         _logger.info("Clientes gravados em %s", arquivo)
 
+    # ------------------------------------------------------------------
+    # envio de arquivos (upload)
+    # ------------------------------------------------------------------
     def enviando_arquivo(self, arq, file_name):
-        url = "https://%s/integrapdv" % self.url
+        url = self._url("/integrapdv")
         caminho = os.path.join(self.path_envio, file_name)
         with open(caminho, "r", encoding="utf-8") as f:
             conteudo = json.load(f)
@@ -128,6 +226,7 @@ class EnviaServer:
             headers={"Content-Type": "application/json",
                      "Accept": "application/json"},
             timeout=TIMEOUT,
+            verify=self.verify,
         )
         return r
 
@@ -246,13 +345,13 @@ class EnviaServer:
         except OSError:
             _logger.exception("Envio OK mas nao consegui remover %s", nome)
 
-    # ==================================================================
-    # Validacao em massa (ativos/inativos)
-    # ==================================================================
+    # ------------------------------------------------------------------
+    # validacao em massa (ativos/inativos)
+    # ------------------------------------------------------------------
     def buscando_clientes_validar(self):
         """Retorna lista completa (ativos + inativos) para validacao."""
         self.get_session()
-        url = "https://%s/clientesvalidar" % self.url
+        url = self._url("/clientesvalidar")
         dados = self._post_json(url, {})
 
         if not isinstance(dados, dict) or "result" not in dados:
@@ -269,7 +368,7 @@ class EnviaServer:
     def buscando_produtos_validar(self):
         """Retorna lista completa (ativos + inativos) para validacao."""
         self.get_session()
-        url = "https://%s/produtosvalidar" % self.url
+        url = self._url("/produtosvalidar")
         dados = self._post_json(url, {})
 
         if not isinstance(dados, dict) or "result" not in dados:
@@ -282,20 +381,3 @@ class EnviaServer:
         except (TypeError, json.JSONDecodeError):
             _logger.error("result de /produtosvalidar nao e JSON valido")
             return None
-
-    def _carregar_config(self):
-        """Carrega config + abre Session sem disparar buscas."""
-        cfg = configparser.ConfigParser()
-        if not cfg.read("conf.ini"):
-            raise FileNotFoundError("conf.ini nao encontrado")
-
-        self.path_envio   = cfg.get("INTEGRA", "path_envio")
-        self.path_retorno = cfg.get("INTEGRA", "path_retorno")
-        self.url          = cfg.get("INTEGRA", "url")
-        self.db           = cfg.get("INTEGRA", "db")
-        self.login        = cfg.get("INTEGRA", "login")
-        self.passwd       = cfg.get("INTEGRA", "password")
-
-        os.makedirs(self.path_envio, exist_ok=True)
-        os.makedirs(self.path_retorno, exist_ok=True)
-        self.session = rq.Session()

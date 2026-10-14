@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-Logging centralizado para a integração PDV <-> Odoo.
+Logging centralizado para a integracao PDV <-> Odoo.
 
-Todos os módulos devem fazer:
+Todos os modulos devem fazer:
 
     from integracao_log import get_logger
     _logger = get_logger(__name__)
 
-Assim evitamos o problema de 'basicConfig() só funciona uma vez'.
+Assim evitamos o problema de 'basicConfig() so funciona uma vez'.
 """
 import logging
 import os
+import sys
 from logging.handlers import RotatingFileHandler
 
 _CONFIGURADO = False
@@ -34,17 +35,28 @@ def _configurar():
         datefmt="%d/%m/%Y %I:%M:%S %p",
     ))
 
-    console = logging.StreamHandler()
-    console.setFormatter(logging.Formatter(
-        "%(levelname)s: %(message)s"
-    ))
+    # Console: escreve em stderr por padrao (bom para subprocess ser capturado
+    # pelo app_executa via stderr=STDOUT). Se stderr nao existir (pythonw,
+    # PyInstaller --windowed), caimos para stdout. Se nenhum existir,
+    # simplesmente nao adicionamos o handler de console.
+    console_stream = sys.stderr or sys.stdout
+    console = None
+    if console_stream is not None:
+        console = logging.StreamHandler(console_stream)
+        console.setFormatter(logging.Formatter(
+            "%(levelname)s: %(message)s"
+        ))
 
     root = logging.getLogger()
     root.setLevel(logging.INFO)
-    # evita duplicar handlers se rodar 2x no mesmo processo
-    if not any(isinstance(h, RotatingFileHandler) for h in root.handlers):
+
+    # IMPORTANTE: RotatingFileHandler e subclasse de StreamHandler.
+    # Por isso usamos type(h) is X em vez de isinstance(h, X),
+    # senao o console nunca seria adicionado.
+    if not any(type(h) is RotatingFileHandler for h in root.handlers):
         root.addHandler(handler)
-    if not any(isinstance(h, logging.StreamHandler) for h in root.handlers):
+    if console is not None and \
+            not any(type(h) is logging.StreamHandler for h in root.handlers):
         root.addHandler(console)
 
     _CONFIGURADO = True

@@ -21,7 +21,7 @@ class Database:
         self._db = sqlite3.connect(
             self._filename,
             timeout=30.0,
-            isolation_level=None,
+            isolation_level=None,       # autocommit
             check_same_thread=False,
         )
         self._db.row_factory = sqlite3.Row
@@ -32,6 +32,9 @@ class Database:
         if novo:
             self._criar_schema()
 
+    # ------------------------------------------------------------------
+    # schema
+    # ------------------------------------------------------------------
     def _criar_schema(self):
         _logger.info("Criando schema em %s", self._filename)
         self._db.executescript("""
@@ -58,6 +61,9 @@ class Database:
             );
         """)
 
+    # ------------------------------------------------------------------
+    # API usada pelo resto do sistema
+    # ------------------------------------------------------------------
     def insert(self, row):
         try:
             self._db.execute(
@@ -118,18 +124,36 @@ class Database:
     def update(self, row):
         self._db.execute(row)
 
+    # ------------------------------------------------------------------
+    # ciclo de vida / context manager
+    # ------------------------------------------------------------------
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc, tb):
         try:
-            if exc_type:
+            if exc_type is not None:
                 try:
                     self._db.rollback()
                 except Exception:
-                    pass
+                    _logger.exception("Falha no rollback")
+            else:
+                try:
+                    # com autocommit e no-op; util se isolation_level mudar
+                    self._db.commit()
+                except Exception:
+                    _logger.exception("Falha no commit")
         finally:
             self.close()
+        # nao suprime excecoes
+        return False
+
+    def __del__(self):
+        # rede de seguranca: se alguem esquecer o with/close, ainda fecha
+        try:
+            self.close()
+        except Exception:
+            pass
 
     def close(self):
         if getattr(self, "_db", None) is None:
@@ -141,6 +165,9 @@ class Database:
         finally:
             self._db = None
 
+    # ------------------------------------------------------------------
+    # propriedades
+    # ------------------------------------------------------------------
     @property
     def filename(self):
         return self._filename
