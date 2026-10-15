@@ -23,7 +23,8 @@ import requests as rq
 
 from main_arquivos import MainArquivos
 
-URL_BASE = "https://raw.githubusercontent.com/ATSTI/pdv/master/integracao_odoo/"
+# URL_BASE = "https://raw.githubusercontent.com/ATSTI/pdv/master/integracao_odoo/"
+URL_BASE = "https://raw.githubusercontent.com/ATSTI/pdv/integracao-odoo-2.0/integracao_odoo/"
 TIMEOUT = 15
 VERSAO_ARQ = "versao.cfg"
 CHECKSUMS_ARQ = "checksums.json"
