@@ -497,7 +497,7 @@ class IntegracaoOdoo:
                             " CNPJ, INSCESTADUAL, SEGMENTO, REGIAO, LIMITECREDITO, "
                             " DATACADASTRO, CODUSUARIO, STATUS, CODBANCO, CODFISCAL"
                             ") VALUES (?, ?, ?, ?, ?, 'Null', 1, ?, 0.0, "
-                            "          ?, ?, ?, 1, 1, '9')",
+                            "          ?, ?, ?, 1, '9')",
                             (
                                 cod,       # CODCLIENTE
                                 nome,      # NOMECLIENTE
