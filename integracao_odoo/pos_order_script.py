@@ -14,6 +14,7 @@ from main import Main as verifica_versao
 
 _logger = get_logger(__name__)
 
+# ==================== HELPERS DE MODULO ====================
 
 def _normaliza_doc(valor):
     """Remove pontuacao de CPF/CNPJ. Retorna so digitos."""
@@ -25,12 +26,7 @@ def _normaliza_doc(valor):
 def _doc_igual(doc_a, doc_b):
     """
     Compara CPF/CNPJ de forma tolerante.
-
-    Regras:
-    - Ambos vazios             -> iguais
-    - Um vazio, outro com dado -> diferentes
-    - Mesmo tamanho            -> compara exato
-    - Tamanhos diferentes      -> compara o prefixo comum (o menor)
+    ...
     """
     a = _normaliza_doc(doc_a)
     b = _normaliza_doc(doc_b)
@@ -45,6 +41,28 @@ def _doc_igual(doc_a, doc_b):
     return a[:n] == b[:n]
 
 
+def _blob_para_texto(valor):
+    """Normaliza BLOB SUB_TYPE TEXT que pode voltar como bytes ou str."""
+    if valor is None:
+        return ""
+    if isinstance(valor, bytes):
+        try:
+            return valor.decode("utf-8")
+        except UnicodeDecodeError:
+            return valor.decode("latin-1", errors="replace")
+    return str(valor)
+
+
+def _formata_cnpj(valor):
+    """Formata CNPJ como 00.000.000/0000-00 a partir de so digitos."""
+    d = _normaliza_doc(valor)
+    if len(d) != 14:
+        return ""
+    return "%s.%s.%s/%s-%s" % (
+        d[0:2], d[2:5], d[5:8], d[8:12], d[12:14],
+    )
+
+
 class IntegracaoOdoo:
 
     def _inicia(self):
@@ -57,12 +75,47 @@ class IntegracaoOdoo:
         self.caixa_user   = cfg.get("INTEGRA", "caixa_user")
         self._garantir_fila()
 
+    def _corta(self, valor, tamanho):
+        """Trunca string para caber num VARCHAR(tamanho) do Firebird 2.5."""
+        if valor is None:
+            return None
+        s = str(valor)
+        return s[:tamanho] if len(s) > tamanho else s
+
+    def _to_int(self, valor, default=None):
+        """Converte para int. Retorna default se vazio/invalido."""
+        if valor is None or valor == "":
+            return default
+        try:
+            return int(float(str(valor).strip()))
+        except (ValueError, TypeError):
+            return default
+
+    def _to_float(self, valor, default=0.0):
+        """Converte para float. Retorna default se vazio/invalido."""
+        if valor is None or valor == "":
+            return default
+        try:
+            return float(str(valor).strip().replace(",", "."))
+        except (ValueError, TypeError):
+            return default
+
+    # ==================================================================
+    # ESTRUTURA DA FILA (COMPATIVEL COM FIREBIRD 2.5)
+    # ==================================================================
     def _garantir_fila(self):
-        """Cria INTEGRACAO_FILA compativel com Firebird 2.5."""
+        """
+        Cria INTEGRACAO_FILA compativel com Firebird 2.5.
+
+        No FB 2.5 nao existe CREATE SEQUENCE (isso e do FB 3+).
+        Usamos CREATE GENERATOR + GEN_ID(...) no trigger.
+        """
         with con() as db:
+            # ---------- TABELA ----------
             if not db.query(
                 "SELECT 1 FROM RDB$RELATIONS "
-                "WHERE RDB$RELATION_NAME = 'INTEGRACAO_FILA'"
+                "WHERE RDB$RELATION_NAME = 'INTEGRACAO_FILA' "
+                "  AND RDB$VIEW_BLR IS NULL"
             ):
                 r = db.ddl("""
                     CREATE TABLE INTEGRACAO_FILA (
@@ -81,28 +134,40 @@ class IntegracaoOdoo:
                     _logger.error("Falha criando INTEGRACAO_FILA: %s", r)
                     raise RuntimeError("Nao foi possivel criar INTEGRACAO_FILA")
 
+            # ---------- GENERATOR (FB 2.5) ----------
             if not db.query(
                 "SELECT 1 FROM RDB$GENERATORS "
                 "WHERE RDB$GENERATOR_NAME = 'GEN_INTEGRACAO_FILA_ID'"
             ):
-                db.ddl("CREATE SEQUENCE GEN_INTEGRACAO_FILA_ID")
+                r = db.ddl("CREATE GENERATOR GEN_INTEGRACAO_FILA_ID")
+                if r:
+                    _logger.error("Falha criando GENERATOR: %s", r)
+                    raise RuntimeError("Nao foi possivel criar GEN_INTEGRACAO_FILA_ID")
 
+            # ---------- TRIGGER (GEN_ID no FB 2.5) ----------
             if not db.query(
                 "SELECT 1 FROM RDB$TRIGGERS "
-                "WHERE RDB$TRIGGER_NAME = 'TR_INTEGRACAO_FILA_BI'"
+                "WHERE RDB$TRIGGER_NAME = 'TR_INTEGRACAO_FILA_BI' "
+                "  AND RDB$TRIGGER_INACTIVE = 0"
             ):
-                db.ddl("""
+                r = db.ddl("""
                     CREATE TRIGGER TR_INTEGRACAO_FILA_BI FOR INTEGRACAO_FILA
                     ACTIVE BEFORE INSERT POSITION 0
                     AS
                     BEGIN
-                        IF (NEW.ID IS NULL) THEN
-                            NEW.ID = NEXT VALUE FOR GEN_INTEGRACAO_FILA_ID;
+                        IF (NEW.ID IS NULL OR NEW.ID = 0) THEN
+                            NEW.ID = GEN_ID(GEN_INTEGRACAO_FILA_ID, 1);
                     END
                 """)
+                if r:
+                    _logger.error("Falha criando TRIGGER: %s", r)
+                    raise RuntimeError("Nao foi possivel criar TR_INTEGRACAO_FILA_BI")
+
+            # valida colunas depois de tudo pronto
+            self._validar_colunas_fila(db)
 
     def _validar_colunas_fila(self, db):
-        """Garante que a tabela tem todas as colunas que o código usa."""
+        """Garante que a tabela tem todas as colunas que o codigo usa."""
         esperadas = {
             "ID", "TIPO", "ID_ORIGEM", "PAYLOAD",
             "STATUS", "TENTATIVAS", "DT_CRIACAO", "DT_ENVIO", "ERRO",
@@ -172,10 +237,8 @@ class IntegracaoOdoo:
         """
         Se ja existe OUTRO produto com o mesmo codpro, devolve um codpro
         novo no formato '<codpro>/<n>' que nao colida.
-        Caso contrario devolve o codpro original, sem logar nada.
 
-        IMPORTANTE: so deve ser chamado quando o produto VAI ser gravado
-        (INSERT ou UPDATE). Se o produto ja esta atualizado, nem chame.
+        IMPORTANTE: so deve ser chamado quando o produto VAI ser gravado.
         """
         if not codpro:
             return codpro
@@ -209,18 +272,47 @@ class IntegracaoOdoo:
         return novo
 
     def _processar_produto(self, db, pr):
-        codproduto = pr["codproduto"]
-        codpro     = (pr.get("codpro") or "").strip()
-        produto    = self.removerAcentosECaracteresEspeciais(
-            (pr.get("produto") or "").strip()
-        )
-        p_venda    = float(pr.get("valor_prazo") or 0)
-        ncm        = re.sub(r"[^0-9]", "", pr.get("ncm") or "")
-        if ncm and len(ncm) > 8:
+        codproduto = self._to_int(pr.get("codproduto"))
+        if codproduto is None:
+            _logger.warning("Produto sem codproduto, ignorado: %r", pr)
+            return None
+
+        # CODPRO VARCHAR(15)
+        codpro = self._corta((pr.get("codpro") or "").strip(), 15)
+
+        # PRODUTO VARCHAR(300) NOT NULL
+        produto = self.removerAcentosECaracteresEspeciais(
+            (pr.get("produto") or "").strip())
+        produto = self._corta(produto, 300) or "SEM DESCRICAO"
+
+        # numericos
+        p_venda = self._to_float(pr.get("valor_prazo"), 0.0)
+
+        # NCM VARCHAR(8)
+        ncm = re.sub(r"[^0-9]", "", pr.get("ncm") or "")
+        if len(ncm) > 8:
             ncm = "00000000"
-        codbarra   = (pr.get("cod_barra") or "").strip()
+        ncm = self._corta(ncm, 8) or None
+
+        # COD_BARRA VARCHAR(20)
+        codbarra = self._corta((pr.get("cod_barra") or "").strip(), 20)
         if codbarra and len(codbarra) >= 14:
             codbarra = ""
+
+        # UNIDADEMEDIDA CHAR(2)
+        unidade = self._corta((pr.get("unidademedida") or "").strip(), 2)
+        if not unidade:
+            unidade = "UN"
+
+        # ORIGEM INTEGER (era str!)
+        origem = self._to_int(pr.get("origem"), 0)
+
+        # RATEIO CHAR(1) — era str(tipo_venda)
+        rateio = self._corta(str(pr.get("tipo_venda") or "1"), 1) or "1"
+
+        # QTDEATACADO / PRECOATACADO DOUBLE PRECISION (eram str!)
+        qtde_atac = self._to_float(pr.get("qtdeatacado"), 0.0)
+        preco_atac = self._to_float(pr.get("precoatacado"), 0.0)
 
         prods = db.query(
             "SELECT FIRST 1 CODPRODUTO, DATACADASTRO, VALOR_PRAZO, CODPRO "
@@ -236,7 +328,9 @@ class IntegracaoOdoo:
         # ----------------------------------------------------------
         if not prods and pr.get("usa") == "S":
             codpro = self._resolver_codpro_duplicado(db, codpro, codproduto)
-            db.insert(
+            codpro = self._corta(codpro, 15)
+
+            r = db.insert(
                 "INSERT INTO PRODUTOS ("
                 "  UNIDADEMEDIDA, PRODUTO, PRECOMEDIO, CODPRO, "
                 "  TIPOPRECOVENDA, ORIGEM, NCM, VALORUNITARIOATUAL, "
@@ -244,21 +338,30 @@ class IntegracaoOdoo:
                 "  DATACADASTRO, CODPRODUTO, COD_BARRA"
                 ") VALUES (?, ?, ?, ?, 'F', ?, ?, ?, ?, 'PROD', ?, ?, ?, ?, ?, ?)",
                 (
-                    (pr.get("unidademedida") or "")[:2],
-                    produto, 0.0, codpro,
-                    str(pr.get("origem") or "0"),
-                    ncm, 0.0, round(p_venda, 2),
-                    str(pr.get("tipo_venda") or "1"),
-                    str(pr.get("qtdeatacado") or "0.0"),
-                    str(pr.get("precoatacado") or "0.0"),
-                    data_fb, codproduto, codbarra or None,
+                    unidade,          # CHAR(2)
+                    produto,          # VARCHAR(300)
+                    0.0,              # PRECOMEDIO
+                    codpro,           # VARCHAR(15)
+                    origem,           # INTEGER
+                    ncm,              # VARCHAR(8)
+                    0.0,              # VALORUNITARIOATUAL
+                    round(p_venda, 2),# DOUBLE
+                    rateio,           # CHAR(1)
+                    qtde_atac,        # DOUBLE
+                    preco_atac,       # DOUBLE
+                    data_fb,          # TIMESTAMP (string FB)
+                    codproduto,       # INTEGER
+                    codbarra or None, # VARCHAR(20)
                 ),
             )
-            _logger.info("Incluido: %s-%s", codpro, produto)
+            if r:
+                _logger.error("Falha INSERT produto %s: %s", codproduto, r)
+                return None
+            _logger.info("Incluido: %s-%s", codpro, produto[:60])
             return "I"
 
         # ----------------------------------------------------------
-        # CASO 2: produto ja existe -> talvez UPDATE
+        # CASO 2: ja existe -> talvez UPDATE
         # ----------------------------------------------------------
         if prods:
             dt_fb = prods[0][1]
@@ -269,20 +372,15 @@ class IntegracaoOdoo:
             preco_fb = round(prods[0][2], 2) if prods[0][2] is not None else 0.0
             preco_odoo = round(p_venda, 2)
 
-            # nada mudou? entao NAO faz nada e NAO loga nada.
-            # Alem disso, evita a query extra de codpro duplicado.
             if dt_fb == dt_nova and preco_fb == preco_odoo:
-                _logger.debug(
-                    "Produto %s ja atualizado (data=%s preco=%s)",
-                    codproduto, dt_fb, preco_fb,
-                )
+                _logger.debug("Produto %s ja atualizado", codproduto)
                 return None
 
-            # so a partir daqui vale a pena resolver codpro duplicado
             codpro = self._resolver_codpro_duplicado(db, codpro, codproduto)
+            codpro = self._corta(codpro, 15)
 
             ativo = "S" if pr.get("usa") == "S" else "N"
-            db.insert(
+            r = db.insert(
                 "UPDATE PRODUTOS SET "
                 "  PRODUTO = ?, VALOR_PRAZO = ?, NCM = ?, CODPRO = ?, "
                 "  ORIGEM = ?, USA = ?, RATEIO = ?, "
@@ -290,15 +388,24 @@ class IntegracaoOdoo:
                 "  COD_BARRA = ? "
                 "WHERE CODPRODUTO = ?",
                 (
-                    produto, round(p_venda, 2), ncm, codpro,
-                    str(pr.get("origem") or "0"), ativo,
-                    str(pr.get("tipo_venda") or "1"),
-                    str(pr.get("qtdeatacado") or "0.0"),
-                    str(pr.get("precoatacado") or "0.0"),
-                    data_fb, codbarra or None, codproduto,
+                    produto,
+                    round(p_venda, 2),
+                    ncm,
+                    codpro,
+                    origem,           # INTEGER
+                    ativo,
+                    rateio,           # CHAR(1)
+                    qtde_atac,        # DOUBLE
+                    preco_atac,       # DOUBLE
+                    data_fb,          # TIMESTAMP
+                    codbarra or None,
+                    codproduto,
                 ),
             )
-            _logger.info("Atualizado: %s-%s", codpro, produto)
+            if r:
+                _logger.error("Falha UPDATE produto %s: %s", codproduto, r)
+                return None
+            _logger.info("Atualizado: %s-%s", codpro, produto[:60])
             return "U"
 
         return None
@@ -306,6 +413,7 @@ class IntegracaoOdoo:
     # ==================================================================
     # CLIENTES
     # ==================================================================
+
     def action_atualiza_clientes(self):
         self._inicia()
         with envia("cliente"):
@@ -329,48 +437,91 @@ class IntegracaoOdoo:
             return False
 
         incluido = alterado = 0
-        hj = datetime.now().strftime("%Y-%m-%d")
+        falhas = 0
+        hj = datetime.now().date()          # DATE nativo, nao string
 
         with con() as db:
             for partner in cli_novo:
                 try:
+                    cod = self._to_int(partner.get("codcliente"))
+                    if cod is None:
+                        _logger.warning("Cliente sem codcliente, ignorado: %r",
+                                        partner.get("nomecliente"))
+                        falhas += 1
+                        continue
+
+                    # ---- NOMECLIENTE / RAZAOSOCIAL: VARCHAR(60) ----
                     nome = self.removerAcentosECaracteresEspeciais(
-                        partner["nomecliente"])
-                    cod = partner["codcliente"]
+                        partner.get("nomecliente") or "")
+                    nome = self._corta(nome, 60)
+
+                    # ---- CNPJ: VARCHAR(18), com mascara 00.000.000/0000-00 ----
+                    cnpj = _formata_cnpj(partner.get("cnpj") or "")
+                    cnpj = self._corta(cnpj, 18) or None
+
+                    # ---- TIPOFIRMA SMALLINT NOT NULL ----
+                    tipo = self._to_int(partner.get("tipofirma"), 1)
+
+                    # ---- REGIAO SMALLINT NOT NULL ----
+                    regiao = self._to_int(partner.get("regiao"), 1)
+
+                    # ---- CODUSUARIO INTEGER NOT NULL ----
+                    codusu = self._to_int(partner.get("codusuario"), 1)
+
+                    status = self._to_int(partner.get("status"), 1)
+
                     cli = db.query(
                         "SELECT CODCLIENTE FROM CLIENTES WHERE CODCLIENTE = ?",
                         (cod,),
                     )
+
                     if cli:
-                        db.insert(
-                            "UPDATE CLIENTES SET STATUS = 1, "
-                            "NOMECLIENTE = ?, DATACADASTRO = ?, REGIAO = ? "
+                        # ------------------ UPDATE ------------------
+                        r = db.insert(
+                            "UPDATE CLIENTES SET STATUS = ?, "
+                            "NOMECLIENTE = ?, DATACADASTRO = ?, REGIAO = ?, "
+                            "CNPJ = ?, TIPOFIRMA = ? "
                             "WHERE CODCLIENTE = ?",
-                            (nome, hj, partner.get("regiao"), cod),
+                            (status, nome, hj, regiao, cnpj, tipo, cod),
                         )
-                        alterado += 1
+                        if r:
+                            _logger.error("Falha UPDATE cliente %s: %s", cod, r)
+                            falhas += 1
+                        else:
+                            alterado += 1
                     else:
-                        db.insert(
+                        # ------------------ INSERT ------------------
+                        r = db.insert(
                             "INSERT INTO CLIENTES ("
                             " CODCLIENTE, NOMECLIENTE, RAZAOSOCIAL, TIPOFIRMA, "
                             " CNPJ, INSCESTADUAL, SEGMENTO, REGIAO, LIMITECREDITO, "
                             " DATACADASTRO, CODUSUARIO, STATUS, CODBANCO, CODFISCAL"
                             ") VALUES (?, ?, ?, ?, ?, 'Null', 1, ?, 0.0, "
-                            "          CURRENT_DATE, ?, 1, 1, '9')",
+                            "          ?, ?, ?, 1, 1, '9')",
                             (
-                                cod, nome, nome,
-                                partner.get("tipofirma"),
-                                partner.get("cnpj"),
-                                partner.get("regiao"),
-                                partner.get("codusuario"),
+                                cod,       # CODCLIENTE
+                                nome,      # NOMECLIENTE
+                                nome,      # RAZAOSOCIAL
+                                tipo,      # TIPOFIRMA (int)
+                                cnpj,      # CNPJ (com mascara)
+                                regiao,    # REGIAO (int)
+                                hj,        # DATACADASTRO (date)
+                                codusu,    # CODUSUARIO (int)
+                                status,    # STATUS (int)
                             ),
                         )
-                        incluido += 1
+                        if r:
+                            _logger.error("Falha INSERT cliente %s: %s", cod, r)
+                            falhas += 1
+                        else:
+                            incluido += 1
                 except Exception:
                     _logger.exception("Erro processando cliente %s",
-                                      partner.get("codcliente"))
+                                    partner.get("codcliente"))
+                    falhas += 1
 
-        _logger.info("Clientes: incluido=%s alterado=%s", incluido, alterado)
+        _logger.info("Clientes: incluido=%s alterado=%s falhas=%s",
+                    incluido, alterado, falhas)
         return True
 
     # ==================================================================
@@ -412,11 +563,14 @@ class IntegracaoOdoo:
                 payload = self._montar_payload_venda(db, codcaixa, v)
                 if payload is None:
                     continue
+                # BLOB TEXT: enviar sempre como bytes para evitar mojibake
+                # em clientes Firebird 2.5 com charset ambiguo.
+                payload_bytes = json.dumps(payload).encode("utf-8")
                 db.insert(
                     "INSERT INTO INTEGRACAO_FILA "
                     "(TIPO, ID_ORIGEM, PAYLOAD, STATUS) "
                     "VALUES ('VENDA', ?, ?, 'PENDENTE')",
-                    (codmov, json.dumps(payload)),
+                    (codmov, payload_bytes),
                 )
                 enfileirados += 1
                 _logger.info("  Enfileirando venda %s-%s", codcaixa, codmov)
@@ -506,8 +660,10 @@ class IntegracaoOdoo:
         _logger.info("Fila de vendas: %s pendente(s).", len(pend))
 
         for id_fila, id_origem, payload_blob in pend:
+            # BLOB TEXT pode voltar como bytes em FB 2.5
             try:
-                payload = json.loads(payload_blob)
+                payload_txt = _blob_para_texto(payload_blob)
+                payload = json.loads(payload_txt)
             except Exception:
                 _logger.exception("Payload invalido na fila ID=%s", id_fila)
                 db.insert(
@@ -521,15 +677,18 @@ class IntegracaoOdoo:
             nome_arq = "pedido_%s.json" % ord_name
             caminho = os.path.join(self.path_envio, nome_arq)
 
-            with open(caminho, "w", encoding="utf-8") as f:
-                json.dump(payload, f, ensure_ascii=False)
-
-            _logger.info("  Enviando venda %s (fila ID=%s)...",
-                         ord_name, id_fila)
-
+            # IMPORTANTE: try envolve TAMBEM o write do arquivo,
+            # para que falhas de disco/permissao nao matem o loop inteiro.
             try:
+                with open(caminho, "w", encoding="utf-8") as f:
+                    json.dump(payload, f, ensure_ascii=False)
+
+                _logger.info("  Enviando venda %s (fila ID=%s)...",
+                             ord_name, id_fila)
+
                 with envia("pedido"):
                     pass
+
                 db.insert(
                     "UPDATE INTEGRACAO_FILA SET STATUS='ENVIADO', "
                     "DT_ENVIO = CURRENT_TIMESTAMP WHERE ID = ?",
@@ -710,9 +869,8 @@ class IntegracaoOdoo:
             - inativa no Firebird (STATUS=0)
 
         Seguranca:
-        - min_pct: fraçao minima (0..1) de clientes do Odoo em relacao ao
-          total do Firebird. Se o Odoo devolver menos que isso, aborta
-          para evitar catastrofe (ex: Odoo com problema devolvendo vazio).
+        - min_pct: fracao minima (0..1) de clientes do Odoo em relacao ao
+          total do Firebird. Se o Odoo devolver menos que isso, aborta.
         """
         self._inicia()
         _logger.info("=== Validacao de CLIENTES iniciada (dry_run=%s) ===",
@@ -729,26 +887,28 @@ class IntegracaoOdoo:
         mapa_odoo = {int(c["codcliente"]): c for c in lista_odoo}
         _logger.info("Odoo retornou %s clientes", len(mapa_odoo))
 
-        with con() as db:
-            total_fb = db.query("SELECT COUNT(*) FROM CLIENTES")[0][0]
-
-        if total_fb > 0 and min_pct > 0:
-            pct = len(mapa_odoo) / float(total_fb)
-            if pct < min_pct:
-                msg = ("ABORTADO: Odoo devolveu %s clientes, Firebird tem %s "
-                       "(%.1f%% < %.0f%%). Verifique o Odoo antes de rodar."
-                       % (len(mapa_odoo), total_fb, pct * 100, min_pct * 100))
-                _logger.error(msg)
-                return
-            _logger.info("Cobertura Odoo: %.1f%% (%s / %s)",
-                         pct * 100, len(mapa_odoo), total_fb)
-
         inativados = 0
         atualizados = 0
         sem_match = 0
         ja_ok = 0
 
+        # Uma unica conexao para count + loop principal.
         with con() as db:
+            total_fb = db.query("SELECT COUNT(*) FROM CLIENTES")[0][0]
+
+            if total_fb > 0 and min_pct > 0:
+                pct = len(mapa_odoo) / float(total_fb)
+                if pct < min_pct:
+                    msg = ("ABORTADO: Odoo devolveu %s clientes, Firebird tem "
+                           "%s (%.1f%% < %.0f%%). Verifique o Odoo antes de "
+                           "rodar."
+                           % (len(mapa_odoo), total_fb, pct * 100,
+                              min_pct * 100))
+                    _logger.error(msg)
+                    return
+                _logger.info("Cobertura Odoo: %.1f%% (%s / %s)",
+                             pct * 100, len(mapa_odoo), total_fb)
+
             clientes_fb = db.query(
                 "SELECT CODCLIENTE, NOMECLIENTE, COALESCE(CNPJ, ''), "
                 "       COALESCE(STATUS, 1) "
@@ -868,26 +1028,27 @@ class IntegracaoOdoo:
         mapa_odoo = {int(p["codproduto"]): p for p in lista_odoo}
         _logger.info("Odoo retornou %s produtos", len(mapa_odoo))
 
-        with con() as db:
-            total_fb = db.query("SELECT COUNT(*) FROM PRODUTOS")[0][0]
-
-        if total_fb > 0 and min_pct > 0:
-            pct = len(mapa_odoo) / float(total_fb)
-            if pct < min_pct:
-                msg = ("ABORTADO: Odoo devolveu %s produtos, Firebird tem %s "
-                       "(%.1f%% < %.0f%%). Verifique o Odoo antes de rodar."
-                       % (len(mapa_odoo), total_fb, pct * 100, min_pct * 100))
-                _logger.error(msg)
-                return
-            _logger.info("Cobertura Odoo: %.1f%% (%s / %s)",
-                         pct * 100, len(mapa_odoo), total_fb)
-
         inativados = 0
         atualizados = 0
         sem_match = 0
         ja_ok = 0
 
         with con() as db:
+            total_fb = db.query("SELECT COUNT(*) FROM PRODUTOS")[0][0]
+
+            if total_fb > 0 and min_pct > 0:
+                pct = len(mapa_odoo) / float(total_fb)
+                if pct < min_pct:
+                    msg = ("ABORTADO: Odoo devolveu %s produtos, Firebird tem "
+                           "%s (%.1f%% < %.0f%%). Verifique o Odoo antes de "
+                           "rodar."
+                           % (len(mapa_odoo), total_fb, pct * 100,
+                              min_pct * 100))
+                    _logger.error(msg)
+                    return
+                _logger.info("Cobertura Odoo: %.1f%% (%s / %s)",
+                             pct * 100, len(mapa_odoo), total_fb)
+
             produtos_fb = db.query(
                 "SELECT CODPRODUTO, PRODUTO, COALESCE(CODPRO, ''), "
                 "       COALESCE(COD_BARRA, ''), COALESCE(USA, 'S') "

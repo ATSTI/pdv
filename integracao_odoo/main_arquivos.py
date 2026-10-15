@@ -14,6 +14,7 @@ class MainArquivos():
             'atualiza_clientes.py',
             'atualiza_produtos.py',
             'atualiza_caixas.py',
+            'integracao_log.py',
             'app_executa.py',
             'main_arquivos.py',
             'main.py',

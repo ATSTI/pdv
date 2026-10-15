@@ -1,0 +1,16 @@
+{
+  "__init__.py": "844a1fd3a86e4c2983da62e82e455cc498fe5c71b893088121c6b51513ce8acc",
+  "app_executa.py": "783b5b6960882e67a8212a49638c7e397a691d1f23cf4f01c1a7f673b8c4e8b9",
+  "atscon.py": "7869fb04bcbfa9db321de854ffbf42796f867e56fdeb08d95a222fefaf0c5313",
+  "atualiza_caixas.py": "cfbd8e1b6b192dc64d80607c655869ebdc60872fe6a03b4b28c65687a359f6c9",
+  "atualiza_clientes.py": "85db2765c9d00b37d6731f016fb23911701ce798c7c1037a39e3db6616fba1b2",
+  "atualiza_produtos.py": "5b8ce5784afd42ea6e00985e919281882cb078eb786f73af7ff2d3b7b3efebf9",
+  "conecta_server.py": "14c82656a0e212032be5271b120b11ddebf3f77f16e4b308d702563047d08a0b",
+  "integracao_log.py": "a4c6b871e78a4b9647995a785c00ca37cabc6f98c8570b9200f14ec9eec4101a",
+  "main.py": "98722c618e104f6ee063fc3876e5bafbfa25809632902f5edd7f60d4b879b59a",
+  "main_arquivos.py": "eb2eed8342b869ef42835f6c7f82e25c10bfe2cd76cbff222f04022bbadb7d1e",
+  "pos_order.py": "c508ef2512995014a2f9d5f7636bc5efab74e20d6a13984346cb2ab02dd643c3",
+  "pos_order_exec.py": "b37d6aef00eac87eba83fd270fd1689b8e265aeded3356cd9f9bb461b8b1e58b",
+  "pos_order_script.py": "d90f5a80beb95df698482dc1063eb92970dd2584b7910f001a0a9a65a3725d4f",
+  "sqlite_bd.py": "0e7a66c78186a914311d4321d3aaa462bec7b8ab2b0603b1b980d198dc78ec00"
+}
