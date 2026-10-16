@@ -546,9 +546,10 @@ class IntegracaoOdoo:
             vendas = db.query(
                 "SELECT m.CODMOVIMENTO, m.CODCLIENTE, m.CODUSUARIO, "
                 "       m.CODVENDEDOR, DATEADD(3 hour to m.DATA_SISTEMA) "
-                "FROM MOVIMENTO m "
+                ", c.NOMECLIENTE "
+                "FROM MOVIMENTO m, CLIENTES c "
                 "WHERE m.CODALMOXARIFADO = ? AND m.STATUS = 1 "
-                "  AND m.CODNATUREZA = 3",
+                "  AND m.CODNATUREZA = 3 AND m.CODCLIENTE = c.CODCLIENTE",
                 (codcaixa,),
             )
             for v in vendas:
@@ -581,7 +582,11 @@ class IntegracaoOdoo:
             _logger.info("Vendas: nada novo.")
 
     def _montar_payload_venda(self, db, codcaixa, mov):
-        codmov, cli, codusuario, codvendedor, dt_sistema = mov
+        codmov, cli, codusuario, codvendedor, dt_sistema, nomecliente = mov
+        try:
+            nomecliente = self.removerAcentosECaracteresEspeciais(nomecliente)
+        except Exception:
+            nomecliente = nomecliente or "Consumidor"
         ord_name = "%s-%s" % (codcaixa, codmov)
 
         pag_ids = db.query(
@@ -603,11 +608,15 @@ class IntegracaoOdoo:
             return None
 
         order_line = []
+        vlr_total = 0.0
+        vlr_totprod = 0.0        
         for md in md_ids:
             try:
                 prdname = self.removerAcentosECaracteresEspeciais(md[6])
             except Exception:
                 prdname = md[6] or "Sem descricao"
+            vlr_total += (md[2]*md[3])-md[4]
+            vlr_totprod = (md[2]*md[3])-md[4]                
             order_line.append((0, 0, {
                 "product_id": md[1],
                 "qty": md[2],
@@ -636,6 +645,7 @@ class IntegracaoOdoo:
         return {
             "name": ord_name,
             "pos_reference": ord_name,
+            "nomecliente": nomecliente,
             "session_id": codcaixa,
             "pos_session_id": codcaixa,
             "create_date": str(dt_sistema),
@@ -645,6 +655,7 @@ class IntegracaoOdoo:
             "user_id": codvendedor if codvendedor > 1 else codusuario,
             "lines": order_line,
             "statement_ids": pag_line,
+            "amount_return": vlr_total,
         }
 
     def _drenar_fila(self, db):
