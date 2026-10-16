@@ -609,14 +609,14 @@ class IntegracaoOdoo:
 
         order_line = []
         vlr_total = 0.0
-        vlr_totprod = 0.0        
+        # vlr_totprod = 0.0        
         for md in md_ids:
             try:
                 prdname = self.removerAcentosECaracteresEspeciais(md[6])
             except Exception:
                 prdname = md[6] or "Sem descricao"
             vlr_total += (md[2]*md[3])-md[4]
-            vlr_totprod = (md[2]*md[3])-md[4]                
+            # vlr_totprod = (md[2]*md[3])-md[4]                
             order_line.append((0, 0, {
                 "product_id": md[1],
                 "qty": md[2],
