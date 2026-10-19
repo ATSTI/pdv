@@ -607,39 +607,100 @@ class IntegracaoOdoo:
         if not md_ids:
             return None
 
-        order_line = []
-        vlr_total = 0.0
-        # vlr_totprod = 0.0        
+        # ---------- 1) somatorios ----------
+        # bruto = soma de (qty * preco) SEM desconto de linha
+        bruto_total = 0.0
+        desc_itens_total = 0.0       # soma dos VALOR_DESCONTO por linha
         for md in md_ids:
-            try:
-                prdname = self.removerAcentosECaracteresEspeciais(md[6])
-            except Exception:
-                prdname = md[6] or "Sem descricao"
-            vlr_total += (md[2]*md[3])-md[4]
-            # vlr_totprod = (md[2]*md[3])-md[4]                
-            order_line.append((0, 0, {
-                "product_id": md[1],
-                "qty": md[2],
-                "price_unit": md[3],
-                "discount": md[4] or 0.0,
-                "tipo_venda": (md[7] or "1").strip(),
-                "name": prdname,
-                "codpro": md[8],
-            }))
+            qty, preco, desc_linha = md[2], md[3], (md[4] or 0.0)
+            bruto_linha = round(qty * preco, 2)
+            bruto_total += bruto_linha
+            desc_itens_total += desc_linha
 
+        # desconto dado na(s) forma(s) de pagamento (FORMA_ENTRADA.DESCONTO)
+        # alguns PDVs gravam o desconto total na 1a linha e 0 nas demais;
+        # somamos para garantir.
+        desc_forma_total = 0.0
+        troco = 0.0
+        total_pago = 0.0
         pag_line = []
         for pg in pag_ids:
-            jrn = "%s-" % pg[1]
+            cod_forma, forma_pgto, valor_pago, _state, troco_f, desc_f = pg
+            valor_pago = float(valor_pago or 0.0)
+            troco += float(troco_f or 0.0)
+            desc_forma_total += float(desc_f or 0.0)
+
+            jrn = "%s-" % forma_pgto
             if jrn == "5-":
                 jrn = "1-"
             if jrn == "9-":
+                # troco/forma interna: nao entra como pagamento
                 continue
+            total_pago += valor_pago
             pag_line.append((0, 0, {
                 "date": str(dt_sistema),
-                "amount": pg[2],
+                "amount": valor_pago,
                 "journal": jrn,
                 "partner_id": cli,
                 "name": ord_name,
+            }))
+
+        # valor liquido que o pedido DEVE fechar
+        # bruto - desconto_itens - desconto_forma
+        alvo_liquido = round(bruto_total - desc_itens_total - desc_forma_total, 2)
+
+        # ---------- 2) monta linhas com desconto percentual ----------
+        # desconto adicional da forma, rateado pro-rata sobre o bruto de cada linha
+        order_line = []
+        soma_liquida_antes = 0.0
+        n = len(md_ids)
+
+        for i, md in enumerate(md_ids):
+            _coddet, product_id, qty, preco, desc_linha, _baixa, desc_prod, cortesia, codpro = md
+            qty = float(qty or 0.0)
+            preco = float(preco or 0.0)
+            desc_linha = float(desc_linha or 0.0)
+            bruto_linha = round(qty * preco, 2)
+
+            # rateio do desconto da forma (proporcional ao bruto da linha)
+            if bruto_total > 0 and desc_forma_total > 0:
+                desc_forma_linha = round(desc_forma_total * (bruto_linha / bruto_total), 2)
+            else:
+                desc_forma_linha = 0.0
+
+            # ultima linha: absorve a diferenca de arredondamento para fechar
+            if i == n - 1:
+                liquido_linha = round(alvo_liquido - soma_liquida_antes, 2)
+                desc_total_linha = round(bruto_linha - liquido_linha, 2)
+            else:
+                desc_total_linha = round(desc_linha + desc_forma_linha, 2)
+                liquido_linha = round(bruto_linha - desc_total_linha, 2)
+                soma_liquida_antes += liquido_linha
+
+            # percentual (0-100) com 2 casas
+            if bruto_linha > 0:
+                perc = round((desc_total_linha / bruto_linha) * 100.0, 2)
+            else:
+                perc = 0.0
+            # trava em [0, 100] — nunca manda > 100 pro Odoo
+            if perc < 0:
+                perc = 0.0
+            elif perc > 100:
+                perc = 100.0
+
+            try:
+                prdname = self.removerAcentosECaracteresEspeciais(desc_prod)
+            except Exception:
+                prdname = desc_prod or "Sem descricao"
+
+            order_line.append((0, 0, {
+                "product_id": product_id,
+                "qty": qty,
+                "price_unit": preco,
+                "discount": perc,
+                "tipo_venda": (cortesia or "1").strip(),
+                "name": prdname,
+                "codpro": codpro,
             }))
 
         return {
@@ -655,12 +716,20 @@ class IntegracaoOdoo:
             "user_id": codvendedor if codvendedor > 1 else codusuario,
             "lines": order_line,
             "statement_ids": pag_line,
-            "amount_return": vlr_total,
+            # amount_return e apenas informativo pro seu lado; o Odoo
+            # recalcula por lines. Mantemos o liquido alvo pra conferencia.
+            "amount_return": alvo_liquido,
+            # campos de conferencia (uteis no log; o Odoo ignora extras)
+            "_bruto_total": round(bruto_total, 2),
+            "_desc_itens_total": round(desc_itens_total, 2),
+            "_desc_forma_total": round(desc_forma_total, 2),
+            "_total_pago": round(total_pago, 2),
+            "_troco": round(troco, 2),
         }
 
     def _drenar_fila(self, db):
         pend = db.query(
-            "SELECT FIRST 50 ID, ID_ORIGEM, PAYLOAD "
+            "SELECT FIRST 200 ID, ID_ORIGEM, PAYLOAD "
             "FROM INTEGRACAO_FILA "
             "WHERE STATUS = 'PENDENTE' AND TENTATIVAS < 5 ORDER BY ID"
         )
