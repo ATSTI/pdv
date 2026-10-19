@@ -4,6 +4,7 @@ import configparser
 import json
 import os
 import re
+import base64
 import unicodedata
 from datetime import datetime, timedelta
 
@@ -286,6 +287,7 @@ class IntegracaoOdoo:
         produto = self._corta(produto, 300) or "SEM DESCRICAO"
 
         # numericos
+        p_custo = self._to_float(pr.get("custo"), 0.0)
         p_venda = self._to_float(pr.get("valor_prazo"), 0.0)
 
         # NCM VARCHAR(8)
@@ -304,15 +306,49 @@ class IntegracaoOdoo:
         if not unidade:
             unidade = "UN"
 
-        # ORIGEM INTEGER (era str!)
+        # ORIGEM INTEGER
         origem = self._to_int(pr.get("origem"), 0)
 
-        # RATEIO CHAR(1) — era str(tipo_venda)
+        # RATEIO CHAR(1)
         rateio = self._corta(str(pr.get("tipo_venda") or "1"), 1) or "1"
 
-        # QTDEATACADO / PRECOATACADO DOUBLE PRECISION (eram str!)
+        # QTDEATACADO / PRECOATACADO DOUBLE PRECISION
         qtde_atac = self._to_float(pr.get("qtdeatacado"), 0.0)
         preco_atac = self._to_float(pr.get("precoatacado"), 0.0)
+
+        # ---------------- FOTOPRODUTO (promocao jpg/txt) ----------------
+        # So processa se o produto veio de um PDV que usa imagem de promocao
+        # (identificado pela presenca da chave 'tipo_venda' no payload).
+        img_sql = None
+        if "tipo_venda" in pr:
+            pasta_promo = "promocao"
+            os.makedirs(pasta_promo, exist_ok=True)
+            promo_jpg = os.path.join(pasta_promo, "promocao%s.jpg" % codpro)
+            promo_txt = os.path.join(pasta_promo, "promocao%s.txt" % codpro)
+
+            if pr.get("promocao_jpg"):
+                if not os.path.exists(promo_jpg):
+                    try:
+                        with open(promo_jpg, "wb") as fimg:
+                            fimg.write(base64.b64decode(pr["promocao_jpg"]))
+                    except Exception:
+                        _logger.exception(
+                            "Produto %s: falha gravando promocao_jpg", codproduto)
+                        img_sql = None
+                    else:
+                        img_sql = promo_jpg
+                else:
+                    img_sql = promo_jpg
+            elif os.path.exists(promo_jpg):
+                os.remove(promo_jpg)
+
+            if pr.get("promocao_txt"):
+                if not os.path.exists(promo_txt):
+                    with open(promo_txt, "w", encoding="utf-8") as ftxt:
+                        ftxt.write(pr["promocao_txt"])
+                img_sql = promo_txt
+            elif os.path.exists(promo_txt):
+                os.remove(promo_txt)
 
         prods = db.query(
             "SELECT FIRST 1 CODPRODUTO, DATACADASTRO, VALOR_PRAZO, CODPRO "
@@ -330,30 +366,40 @@ class IntegracaoOdoo:
             codpro = self._resolver_codpro_duplicado(db, codpro, codproduto)
             codpro = self._corta(codpro, 15)
 
-            r = db.insert(
-                "INSERT INTO PRODUTOS ("
-                "  UNIDADEMEDIDA, PRODUTO, PRECOMEDIO, CODPRO, "
-                "  TIPOPRECOVENDA, ORIGEM, NCM, VALORUNITARIOATUAL, "
-                "  VALOR_PRAZO, TIPO, RATEIO, QTDEATACADO, PRECOATACADO, "
-                "  DATACADASTRO, CODPRODUTO, COD_BARRA"
-                ") VALUES (?, ?, ?, ?, 'F', ?, ?, ?, ?, 'PROD', ?, ?, ?, ?, ?, ?)",
-                (
-                    unidade,          # CHAR(2)
-                    produto,          # VARCHAR(300)
-                    0.0,              # PRECOMEDIO
-                    codpro,           # VARCHAR(15)
-                    origem,           # INTEGER
-                    ncm,              # VARCHAR(8)
-                    0.0,              # VALORUNITARIOATUAL
-                    round(p_venda, 2),# DOUBLE
-                    rateio,           # CHAR(1)
-                    qtde_atac,        # DOUBLE
-                    preco_atac,       # DOUBLE
-                    data_fb,          # TIMESTAMP (string FB)
-                    codproduto,       # INTEGER
-                    codbarra or None, # VARCHAR(20)
-                ),
+            colunas = [
+                "UNIDADEMEDIDA", "PRODUTO", "PRECOMEDIO", "CODPRO",
+                "TIPOPRECOVENDA", "ORIGEM", "NCM", "VALORUNITARIOATUAL",
+                "VALOR_PRAZO", "TIPO", "RATEIO", "QTDEATACADO",
+                "PRECOATACADO", "DATACADASTRO", "CODPRODUTO", "COD_BARRA",
+            ]
+            valores = [
+                unidade,               # CHAR(2)
+                produto,               # VARCHAR(300)
+                round(p_custo, 2),     # PRECOMEDIO
+                codpro,                # VARCHAR(15)
+                "F",                   # TIPOPRECOVENDA
+                origem,                # INTEGER
+                ncm,                   # VARCHAR(8)
+                round(p_custo, 2),     # VALORUNITARIOATUAL
+                round(p_venda, 2),     # DOUBLE
+                "PROD",                # TIPO
+                rateio,                # CHAR(1)
+                qtde_atac,             # DOUBLE
+                preco_atac,            # DOUBLE
+                data_fb,               # TIMESTAMP
+                codproduto,            # INTEGER
+                codbarra or None,      # VARCHAR(20)
+            ]
+            if "tipo_venda" in pr and img_sql:
+                # insere FOTOPRODUTO antes de COD_BARRA (posicao -1)
+                colunas.insert(-1, "FOTOPRODUTO")
+                valores.insert(-1, img_sql)
+
+            sql = "INSERT INTO PRODUTOS (%s) VALUES (%s)" % (
+                ", ".join(colunas),
+                ", ".join(["?"] * len(colunas)),
             )
+            r = db.insert(sql, tuple(valores))
             if r:
                 _logger.error("Falha INSERT produto %s: %s", codproduto, r)
                 return None
@@ -380,28 +426,33 @@ class IntegracaoOdoo:
             codpro = self._corta(codpro, 15)
 
             ativo = "S" if pr.get("usa") == "S" else "N"
-            r = db.insert(
-                "UPDATE PRODUTOS SET "
-                "  PRODUTO = ?, VALOR_PRAZO = ?, NCM = ?, CODPRO = ?, "
-                "  ORIGEM = ?, USA = ?, RATEIO = ?, "
-                "  QTDEATACADO = ?, PRECOATACADO = ?, DATACADASTRO = ?, "
-                "  COD_BARRA = ? "
-                "WHERE CODPRODUTO = ?",
-                (
-                    produto,
-                    round(p_venda, 2),
-                    ncm,
-                    codpro,
-                    origem,           # INTEGER
-                    ativo,
-                    rateio,           # CHAR(1)
-                    qtde_atac,        # DOUBLE
-                    preco_atac,       # DOUBLE
-                    data_fb,          # TIMESTAMP
-                    codbarra or None,
-                    codproduto,
-                ),
-            )
+
+            sets = [
+                "PRODUTO = ?", "VALOR_PRAZO = ?", "NCM = ?", "CODPRO = ?",
+                "ORIGEM = ?", "USA = ?", "RATEIO = ?",
+                "QTDEATACADO = ?", "PRECOATACADO = ?", "DATACADASTRO = ?",
+                "COD_BARRA = ?",
+            ]
+            params = [
+                produto,
+                round(p_venda, 2),
+                ncm,
+                codpro,
+                origem,
+                ativo,
+                rateio,
+                qtde_atac,
+                preco_atac,
+                data_fb,
+                codbarra or None,
+            ]
+            if "tipo_venda" in pr and img_sql:
+                sets.append("FOTOPRODUTO = ?")
+                params.append(img_sql)
+            params.append(codproduto)
+
+            sql = "UPDATE PRODUTOS SET %s WHERE CODPRODUTO = ?" % ", ".join(sets)
+            r = db.insert(sql, tuple(params))
             if r:
                 _logger.error("Falha UPDATE produto %s: %s", codproduto, r)
                 return None
