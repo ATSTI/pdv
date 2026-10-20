@@ -367,7 +367,7 @@ class IntegracaoOdoo:
         p_venda   = float(self._to_float(pr.get("valor_prazo"), 0.0))
         preco_atac = float(self._to_float(pr.get("precoatacado"), 0.0))        
 
-        # CODPRO VARCHAR(15)
+        # CODPRO VARCHAR(15) 
         codpro = self._corta((pr.get("codpro") or "").strip(), 15)
 
         # PRODUTO VARCHAR(300) NOT NULL
