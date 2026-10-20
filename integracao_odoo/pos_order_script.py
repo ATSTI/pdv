@@ -237,12 +237,20 @@ class IntegracaoOdoo:
     def _resolver_codpro_duplicado(self, db, codpro, codproduto):
         """
         Se ja existe OUTRO produto com o mesmo codpro, devolve um codpro
-        novo no formato '<codpro>/<n>' que nao colida.
+        novo que caiba em VARCHAR(15) e nao colida com IDX_CODPRO (UNIQUE).
 
-        IMPORTANTE: so deve ser chamado quando o produto VAI ser gravado.
+        Estrategia de sufixo:
+        - se codpro <= 13 chars:            '<codpro>/<n>'      (1 digito)
+        - se codpro == 14 chars:            '<codpro[:13]>/<n>' (1 digito)
+        - se codpro == 15 chars:            '<codpro[:13]>/<n>' (1 digito)
+            e, se esgotar, '<codpro[:12]>/<nn>' (2 digitos)
+
+        Todos os valores devolvidos respeitam 15 chars.
         """
         if not codpro:
             return codpro
+
+        codpro = self._corta(codpro, 15)
 
         outros = db.query(
             "SELECT CODPRO FROM PRODUTOS WHERE CODPRO = ? AND CODPRODUTO <> ?",
@@ -251,28 +259,98 @@ class IntegracaoOdoo:
         if not outros:
             return codpro
 
+        # Coleta os codpros ja usados que compartilham o prefixo.
+        # Precisamos disso para nao tentar sufixos ja ocupados.
         usados = {codpro}
-        candidatos = db.query(
-            "SELECT CODPRO FROM PRODUTOS WHERE CODPRO STARTING WITH ?",
-            (codpro + "/",),
+        for base_len in (13, 12, 11, 10, 9, 8):
+            base = codpro[:base_len]
+            if not base:
+                continue
+            prefixo = base + "/"
+            try:
+                candidatos = db.query(
+                    "SELECT CODPRO FROM PRODUTOS WHERE CODPRO STARTING WITH ?",
+                    (prefixo,),
+                )
+            except Exception:
+                # em caso de duvida de charset, segue sem essa base
+                continue
+            for (cp,) in candidatos:
+                usados.add((cp or "").strip())
+
+        # Tenta sufixos de 1 digito primeiro, com prefixos que preservam
+        # o maximo do codpro original.
+        for base_len in (13, 12, 11, 10, 9, 8):
+            base = codpro[:base_len]
+            if not base:
+                continue
+            for n in range(1, 100):
+                novo = "%s/%s" % (base, n)
+                if len(novo) > 15:
+                    continue
+                if novo not in usados:
+                    _logger.info(
+                        "Produto %s: codpro %r colide (IDX_CODPRO UNIQUE); "
+                        "renomeando para %r",
+                        codproduto, codpro, novo,
+                    )
+                    return novo
+
+        # Nao conseguiu gerar nada unico que caiba em 15 chars.
+        _logger.error(
+            "Produto %s: impossivel gerar codpro unico para %r em "
+            "VARCHAR(15); produto NAO sera gravado.",
+            codproduto, codpro,
         )
-        for (cp,) in candidatos:
-            usados.add((cp or "").strip())
+        return None    
 
-        n = 1
-        novo = "%s/%s" % (codpro, n)
-        while novo in usados:
-            n += 1
-            novo = "%s/%s" % (codpro, n)
+    def _liberar_cod_barra(self, db, codbarra, codproduto):
+        """
+        Garante que 'codbarra' ficara livre para o produto 'codproduto'.
 
+        Regra de negocio: o COD_BARRA e unico e pertence sempre ao
+        registro mais recente que esta sendo gravado. Se ja existe em
+        OUTRO produto (ativo ou inativo), anula o COD_BARRA desses
+        outros ANTES do INSERT/UPDATE do produto atual.
+
+        - codproduto e excluido da checagem (no UPDATE o produto nao
+        pode "roubar" de si mesmo).
+        - Devolve o proprio 'codbarra' (ou None se veio vazio), para o
+        chamador usar direto no INSERT/UPDATE.
+        """
+        if not codbarra:
+            return None
+
+        outros = db.query(
+            "SELECT CODPRODUTO FROM PRODUTOS "
+            "WHERE COD_BARRA = ? AND CODPRODUTO <> ?",
+            (codbarra, codproduto),
+        )
+        if not outros:
+            return codbarra
+
+        ids = [r[0] for r in outros]
         _logger.info(
-            "Produto %s: codpro %r ja existe em %s outro(s) produto(s); "
-            "renomeando para %r",
-            codproduto, codpro, len(outros), novo,
+            "Produto %s: COD_BARRA %r sera transferido; anulando em %s",
+            codproduto, codbarra, ids,
         )
-        return novo
 
-    def _processar_produto(self, db, pr):
+        # anula em lote (Firebird 2.5 nao tem UPDATE ... WHERE IN com
+        # lista dinamica de forma limpa; faz um UPDATE por id, que aqui
+        # e barato porque a lista e' pequena)
+        for cpd in ids:
+            r = db.insert(
+                "UPDATE PRODUTOS SET COD_BARRA = NULL WHERE CODPRODUTO = ?",
+                (cpd,),
+            )
+            if r:
+                _logger.error(
+                    "Falha anulando COD_BARRA do produto %s: %s", cpd, r
+                )
+
+        return codbarra
+
+    def _processar_produto_inner(self, db, pr):
         codproduto = self._to_int(pr.get("codproduto"))
         if codproduto is None:
             _logger.warning("Produto sem codproduto, ignorado: %r", pr)
@@ -364,7 +442,12 @@ class IntegracaoOdoo:
         # ----------------------------------------------------------
         if not prods and pr.get("usa") == "S":
             codpro = self._resolver_codpro_duplicado(db, codpro, codproduto)
-            codpro = self._corta(codpro, 15)
+            if codpro is None:
+                return None
+            codpro = self._corta(codpro, 15)            
+
+            # NOVO: libera COD_BARRA anulando em outros produtos
+            codbarra = self._liberar_cod_barra(db, codbarra, codproduto)            
 
             colunas = [
                 "UNIDADEMEDIDA", "PRODUTO", "PRECOMEDIO", "CODPRO",
@@ -423,7 +506,12 @@ class IntegracaoOdoo:
                 return None
 
             codpro = self._resolver_codpro_duplicado(db, codpro, codproduto)
-            codpro = self._corta(codpro, 15)
+            if codpro is None:
+                return None
+            codpro = self._corta(codpro, 15)            
+
+            # NOVO: libera COD_BARRA anulando em outros produtos (exclui o proprio)
+            codbarra = self._liberar_cod_barra(db, codbarra, codproduto)            
 
             ativo = "S" if pr.get("usa") == "S" else "N"
 
@@ -460,6 +548,19 @@ class IntegracaoOdoo:
             return "U"
 
         return None
+
+    def _processar_produto(self, db, pr):
+        try:
+            return self._processar_produto_inner(db, pr)
+        except Exception as e:
+            msg = str(e)
+            if "right truncation" in msg or "-303" in msg:
+                _logger.error(
+                    "TRUNCATION no produto codproduto=%r codpro=%r: %s",
+                    pr.get("codproduto"), pr.get("codpro"), msg,
+                )
+                _logger.error("payload: %r", pr)
+            raise
 
     # ==================================================================
     # CLIENTES
