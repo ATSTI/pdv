@@ -351,10 +351,21 @@ class IntegracaoOdoo:
         return codbarra
 
     def _processar_produto_inner(self, db, pr):
+        # inteiros (colunas INTEGER/SMALLINT do Firebird)
         codproduto = self._to_int(pr.get("codproduto"))
         if codproduto is None:
             _logger.warning("Produto sem codproduto, ignorado: %r", pr)
             return None
+        codproduto = int(codproduto)
+
+        origem = int(self._to_int(pr.get("origem"), 0) or 0)
+
+        qtde_atac = int(self._to_int(pr.get("qtdeatacado"), 0) or 0)
+
+        # floats (DOUBLE PRECISION / DECIMAL)
+        p_custo   = float(self._to_float(pr.get("custo"), 0.0))
+        p_venda   = float(self._to_float(pr.get("valor_prazo"), 0.0))
+        preco_atac = float(self._to_float(pr.get("precoatacado"), 0.0))        
 
         # CODPRO VARCHAR(15)
         codpro = self._corta((pr.get("codpro") or "").strip(), 15)
@@ -363,10 +374,6 @@ class IntegracaoOdoo:
         produto = self.removerAcentosECaracteresEspeciais(
             (pr.get("produto") or "").strip())
         produto = self._corta(produto, 300) or "SEM DESCRICAO"
-
-        # numericos
-        p_custo = self._to_float(pr.get("custo"), 0.0)
-        p_venda = self._to_float(pr.get("valor_prazo"), 0.0)
 
         # NCM VARCHAR(8)
         ncm = re.sub(r"[^0-9]", "", pr.get("ncm") or "")
@@ -384,15 +391,9 @@ class IntegracaoOdoo:
         if not unidade:
             unidade = "UN"
 
-        # ORIGEM INTEGER
-        origem = self._to_int(pr.get("origem"), 0)
 
         # RATEIO CHAR(1)
         rateio = self._corta(str(pr.get("tipo_venda") or "1"), 1) or "1"
-
-        # QTDEATACADO / PRECOATACADO DOUBLE PRECISION
-        qtde_atac = self._to_float(pr.get("qtdeatacado"), 0.0)
-        preco_atac = self._to_float(pr.get("precoatacado"), 0.0)
 
         # ---------------- FOTOPRODUTO (promocao jpg/txt) ----------------
         # So processa se o produto veio de um PDV que usa imagem de promocao
