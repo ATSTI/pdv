@@ -784,8 +784,8 @@ class IntegracaoOdoo:
             desc_forma_total += float(desc_f or 0.0)
 
             jrn = "%s-" % forma_pgto
-            if jrn == "5-":
-                jrn = "1-"
+            # if jrn == "5-":
+            #     jrn = "1-"
             if jrn == "9-":
                 # troco/forma interna: nao entra como pagamento
                 continue
@@ -963,6 +963,7 @@ class IntegracaoOdoo:
             (hj, self.caixa_user),
         )
         enviados = 0
+        arquivos = ""
         for cx in caixas:
             _, codcaixa, codusuario, situacao, _, nomecaixa, data_abertura = cx
             nome = self.removerAcentosECaracteresEspeciais(nomecaixa or "")
@@ -983,8 +984,9 @@ class IntegracaoOdoo:
                 json.dump(vals, f, ensure_ascii=False)
             os.replace(tmp, arquivo)
             enviados += 1
+            arquivos += "%s " % arquivo
         if enviados:
-            _logger.info("Caixas: %s arquivo(s) gerado(s)", enviados)
+            _logger.info("Caixas: %s arquivo(s) gerado(s), arquivos: %s", enviados, arquivos)
 
     def _atualiza_sangrias(self, db):
         hj = (datetime.now() - timedelta(days=5)).strftime("%Y-%m-%d")
