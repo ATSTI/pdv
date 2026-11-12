@@ -6,7 +6,8 @@ import os
 import re
 import base64
 import unicodedata
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 
 from atscon import Conexao as con
 from conecta_server import EnviaServer as envia
@@ -954,6 +955,10 @@ class IntegracaoOdoo:
 
     def _atualiza_caixas(self, db):
         hj = (datetime.now() - timedelta(days=5)).strftime("%Y-%m-%d")
+        # DATAABERTURA é DATE (sem hora). Combina a data de abertura
+        # com a hora atual do PC, e converte para UTC (Odoo espera UTC).
+        tz_local = ZoneInfo('America/Sao_Paulo')
+        agora_local = datetime.now(tz_local)          # hora real do PC, fuso SP
         caixas = db.query(
             "SELECT FIRST 10 IDCAIXACONTROLE, CODCAIXA, CODUSUARIO, "
             "       SITUACAO, DATAFECHAMENTO, NOMECAIXA, DATAABERTURA "
@@ -967,6 +972,10 @@ class IntegracaoOdoo:
         for cx in caixas:
             _, codcaixa, codusuario, situacao, _, nomecaixa, data_abertura = cx
             nome = self.removerAcentosECaracteresEspeciais(nomecaixa or "")
+            start_at_local = datetime.combine(data_abertura, agora_local.time().replace(tzinfo=None))
+            start_at_utc = start_at_local.replace(tzinfo=tz_local).astimezone(timezone.utc)
+            start_at_str = start_at_utc.strftime("%Y-%m-%d %H:%M:%S")
+
             estado = "draft" if situacao == "o" else "closed"
             prefixo = "caixa_" if situacao == "o" else "caixaf_"
             arquivo = os.path.join(self.path_envio, "%s%s.json" % (prefixo, codcaixa))
@@ -976,7 +985,7 @@ class IntegracaoOdoo:
                 "user_id": int(codusuario) if codusuario else None,
                 "name": nome,
                 "caixa": codcaixa,
-                "start_at": "%s 20:00:00" % data_abertura,
+                "start_at": start_at_str,
                 "state": estado,
             }
             tmp = arquivo + ".tmp"
