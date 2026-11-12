@@ -1,9 +1,7 @@
-# -*- encoding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 
-import fdb
-import odoorpc
 import configparser
-import base64
+import fdb
 
 
 class Conexao:
@@ -11,42 +9,95 @@ class Conexao:
     def __init__(self):
         cfg = configparser.ConfigParser()
         cfg.read('conf.ini')
-        psw = cfg.get('DATABASE', 'password')
-        #psw = base64.b64decode(psw)
+
+        psw  = cfg.get('DATABASE', 'password')
         host = cfg.get('DATABASE', 'HostName')
-        name = cfg.get('DATABASE', 'user')
-        #import pdb; pdb.set_trace()
-        self.connection = fdb.connect(dsn=host, \
-            user='sysdba', password= psw, charset='utf-8')
+
+        self.connection = fdb.connect(
+            dsn=host,
+            user='sysdba',
+            password=psw,
+            charset='utf-8'
+        )
         self.cursor = self.connection.cursor()
 
-        #db = cfg.get('SISTEMA', 'Database')
-        #user = cfg.get('SISTEMA', 'User')
-        #psw = cfg.get('SISTEMA', 'Acesso')
-        #host = cfg.get('SISTEMA', 'HostName')
-        #port = cfg.get('SISTEMA', 'Port')
-        #psw = base64.b64decode(psw)
-        #self.odoo = odoorpc.ODOO(host, port=port)
-        # Login
-        #self.odoo.login(db, user, psw.decode())
-
-    def insert(self, query):
+    # ------------------------------------------------------------------
+    def insert(self, query, params=None):
+        """
+        Executa INSERT/UPDATE/DELETE com commit.
+        Retorna True em sucesso, False em erro.
+        """
         try:
-            self.cursor.execute(query)
+            if params is not None:
+                self.cursor.execute(query, params)
+            else:
+                self.cursor.execute(query)
             self.connection.commit()
-        except:
-            print("ERRO %s" %(query))
+            return True
+        except Exception as e:
+            print("ERRO SQL: %s\n  -> %s" % (query, e))
+            try:
+                self.connection.rollback()
+            except Exception:
+                pass
+            return False
+
+    # ------------------------------------------------------------------
+    def query(self, query, params=None):
+        """
+        Executa SELECT e devolve uma lista de tuplas (materializada).
+        Assim o cursor fica livre para a próxima chamada.
+        """
+        try:
+            if params is not None:
+                cur = self.cursor.execute(query, params)
+            else:
+                cur = self.cursor.execute(query)
+            return cur.fetchall()
+        except Exception as e:
+            print("ERRO SELECT: %s\n  -> %s" % (query, e))
+            raise
+
+    # ------------------------------------------------------------------
+    def scalar(self, query, params=None):
+        """Executa SELECT e devolve apenas o primeiro campo da primeira linha (ou None)."""
+        rows = self.query(query, params)
+        if not rows:
+            return None
+        row = rows[0]
+        return row[0] if row else None
+
+    # ------------------------------------------------------------------
+    def commit(self):
+        try:
+            self.connection.commit()
+        except Exception as e:
+            print("ERRO COMMIT: %s" % e)
+
+    def rollback(self):
+        try:
             self.connection.rollback()
+        except Exception:
+            pass
 
-    def query(self, query):
-        #cursor = self.connection.cursor( MySQLdb.cursors.DictCursor )
-        cur = self.cursor.execute(query)
-
-        return cur.fetchall()
-
-    #def sistema(self):
-    #    return self.odoo     
-
+    # ------------------------------------------------------------------
+    def close(self):
+        try:
+            if self.cursor is not None:
+                self.cursor.close()
+        except Exception:
+            pass
+        try:
+            if self.connection is not None:
+                self.connection.close()
+        except Exception:
+            pass
+        self.cursor = None
+        self.connection = None
 
     def __del__(self):
-        self.connection.close()
+        # protege contra o interpretador já estar encerrando
+        try:
+            self.close()
+        except Exception:
+            pass
